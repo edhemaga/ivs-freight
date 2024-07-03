@@ -161,8 +161,24 @@
             </ng-container>
 
             <!-- Plus Add New Things -->
+            <ng-container *ngIf="hasHistoryButton">
+                <div
+                    class="d-flex align-items-center justify-content-center action-plus-icon-container"
+                    (click)="onAction($event, 'add')"
+                >
+                    <svg-icon
+                        [src]="'assets/svg/common/ic_history.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
-            <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
+            <ng-container
+                *ngIf="
+                    hasActionSvg &&
+                    !disableMultipleReviews &&
+                    !showFinishReordering
+                "
+            >
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
@@ -222,6 +238,16 @@
                 </div>
             </ng-container>
 
+            <ng-container *ngIf="showFinishReordering">
+                <button
+                    class="reodering-button ta-font-bold"
+                    (click)="onAction($event, 'reordering')"
+                    [ngClass]="{ error: reorderingSaveError }"
+                >
+                    FINISH REORDERING
+                </button>
+            </ng-container>
+
             <!-- Edit & Delete Actions -->
 
             <svg-icon
@@ -268,7 +294,7 @@
         class="ta-card-body"
         [ngClass]="{
             scroll: hasScrollBody,
-            'scroll-x-axis': hasScrollBodyXAxis && _isCardOpen
+            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen
         }"
         [@.disabled]="disableAnimation"
     >

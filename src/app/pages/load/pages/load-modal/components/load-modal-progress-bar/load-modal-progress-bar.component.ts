@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+// Pipes
+import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
+
 @Component({
     selector: 'app-load-modal-progress-bar',
     templateUrl: './load-modal-progress-bar.component.html',
@@ -11,6 +14,9 @@ import { FormsModule } from '@angular/forms';
         // Module
         CommonModule,
         FormsModule,
+
+        // Pipes
+        NFormatterPipe
     ],
 })
 export class LoadModalProgressBarComponent implements OnChanges {

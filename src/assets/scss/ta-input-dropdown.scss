@@ -372,6 +372,15 @@
                     display: flex;
                     align-items: center;
 
+                    &.hazardous {
+                        display: flex;
+                        flex-direction: row-reverse;
+                        justify-content: flex-end;
+
+                        svg {
+                            margin-right: 5px;
+                        }
+                    }
                     .svgtext-template-logo {
                         display: flex;
                         margin-right: 6px;
@@ -594,6 +603,16 @@
                     grid-template-columns: auto 14px 1fr;
                     align-items: center;
                     justify-content: space-between;
+
+                    &.load-details-template {
+                        grid-template-columns: 30px 130px 1fr;
+                        grid-gap: 4px;
+                    }
+
+                    &.add-new {
+                        grid-template-columns: 1fr 1fr;
+                        margin-right: 6px;
+                    }
 
                     &.dropdown-option {
                         position: relative;
@@ -916,6 +935,13 @@
                 }
             }
 
+            &.dropdown-status {
+                .dropdown-option {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+
             //------------------------ Load Dispatcher Template ------------------------
             .load-dispatcher-template {
                 display: flex;
@@ -926,7 +952,7 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 156px) 97px;
+                grid-template-columns: repeat(3, 155px) 97px;
                 align-items: center;
 
                 .load-dispatches-container {
@@ -934,6 +960,14 @@
                     align-items: center;
                     gap: 6px;
                     position: relative;
+
+                    .owner-avatar {
+                        position: absolute;
+                        left: 13px;
+                        bottom: -3px;
+                        width: 10px;
+                        height: 10px;
+                    }
 
                     .load-dispatch-driver,
                     .load-dispatch-truck,
@@ -980,7 +1014,7 @@
                 }
 
                 .load-dispatch-driver-rate {
-                    width: 115px;
+                    width: 130px;
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
@@ -999,16 +1033,27 @@
                         width: 80px;
                     }
                 }
+
+                &.active {
+                    .load-dispatch-driver-rate,
+                    .load-dispatch-driver,
+                    .load-dispatch-truck,
+                    .load-dispatch-trailer {
+                        font-weight: 700;
+                    }
+                }
             }
 
             //------------------------ Load Broker Template ------------------------
             .load-broker-template {
                 display: grid;
                 align-items: center;
-                grid-template-columns: 232px 82px 39px;
+                grid-template-columns: 276px 92px;
                 -moz-column-gap: 29px;
                 column-gap: 29px;
-
+                &.hide-loads {
+                    grid-template-columns: 333px 92px !important;
+                }
                 .load-broker-status-text {
                     display: flex;
                     align-items: center;
@@ -1082,7 +1127,7 @@
             //------------------------ Load Shipper Contact Template -----------------------
             .load-shipper-template {
                 display: grid;
-                grid-template-columns: 305px 166px 87px;
+                grid-template-columns: 405px 166px;
                 align-items: center;
                 padding-right: 25px;
 
@@ -1117,6 +1162,7 @@
 
                         &.active {
                             color: #6f9ee0;
+                            font-weight: bold;
                         }
                     }
                 }
@@ -1633,4 +1679,182 @@
             }
         }
     }
+}
+
+.dropdown-trailer-hover {
+    &:hover {
+        // TRUCKS
+        .ic_truck_semi-truck {
+            svg {
+                path {
+                    fill: $ta-green;
+                }
+            }
+        }
+
+        .ic_truck_semi-wSleeper {
+            svg {
+                path {
+                    fill: $ta-yellow-1;
+                }
+            }
+        }
+
+        .ic_truck_box-truck {
+            svg {
+                path {
+                    fill: $ta-red-10;
+                }
+            }
+        }
+
+        .ic_truck_cargo-van {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+
+        .ic_truck_tow-truck {
+            svg {
+                path {
+                    fill: $ta-purple-1;
+                }
+            }
+        }
+
+        .ic_truck_car-hauler {
+            svg {
+                path {
+                    fill: $ta-red-18;
+                }
+            }
+        }
+
+        .ic_truck_spotter {
+            svg {
+                path {
+                    fill: $ta-orange-5;
+                }
+            }
+        }
+
+        // TRAILERS
+        .ic_trailer_reefer {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+
+        .ic_trailer_dryvan {
+            svg {
+                path {
+                    fill: $ta-blue-24;
+                }
+            }
+        }
+
+        .ic_trailer_side-kit {
+            svg {
+                path {
+                    fill: $ta-orange-4;
+                }
+            }
+        }
+
+        .ic_trailer_conestoga {
+            svg {
+                path {
+                    fill: $ta-yellow-8;
+                }
+            }
+        }
+
+        .ic_trailer_dumper {
+            svg {
+                path {
+                    fill: $ta-purple-1;
+                }
+            }
+        }
+
+        .ic_trailer_container {
+            svg {
+                path {
+                    fill: $ta-yellow-1;
+                }
+            }
+        }
+
+        .ic_trailer_tanker {
+            svg {
+                path {
+                    fill: $ta-green-6;
+                }
+            }
+        }
+
+        .ic_trailer_carhauler {
+            svg {
+                path {
+                    fill: $ta-red-18;
+                }
+            }
+        }
+
+        .ic_trailer_flatbed {
+            svg {
+                path {
+                    fill: $ta-red-13;
+                }
+            }
+        }
+
+        .ic_trailer_low-boy {
+            svg {
+                path {
+                    fill: $ta-red-11;
+                }
+            }
+        }
+
+        .ic_trailer_chassis {
+            svg {
+                path {
+                    fill: $ta-orange-5;
+                }
+            }
+        }
+
+        .ic_trailer_step-deck {
+            svg {
+                path {
+                    fill: $ta-red-10;
+                }
+            }
+        }
+
+        .ic_trailer_tanker_pneumatic {
+            svg {
+                path {
+                    fill: $ta-green;
+                }
+            }
+        }
+
+        .ic_carhauler_stinger {
+            svg {
+                path {
+                    fill: $ta-red-19;
+                }
+            }
+        }
+    }
+}
+
+.hide-after-arrow .dropdown-option.active::after {
+    display: none !important;
 }

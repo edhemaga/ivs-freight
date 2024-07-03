@@ -24,20 +24,12 @@ export class FinancialCalculationPipe implements PipeTransform {
 
         if (type === 'payment') {
             Object.entries(item).map((key1: any, _: any) => {
-                if (key1[0] === 'shortPaid') {
-                    if (key1[1]?.length) {
-                        // eslint-disable-next-line no-unused-vars
-                        for (const [key2, _] of Object.entries(item[key1[0]])) {
-                        }
-                    }
-                } else {
-                    sum +=
-                        key1[1] == '0'
-                            ? 0
-                            : MethodsCalculationsHelper.convertThousanSepInNumber(
-                                  key1[1]
-                              );
-                }
+                sum +=
+                    key1[1] == '0'
+                        ? 0
+                        : MethodsCalculationsHelper.convertThousanSepInNumber(
+                              key1[1]
+                          );
             });
         }
         return sum;

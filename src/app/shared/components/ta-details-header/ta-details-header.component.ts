@@ -1,12 +1,25 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // bootstrap
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
-//components
+// components
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
@@ -16,8 +29,11 @@ import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//pipes
+// pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+// models
+import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -44,26 +60,23 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
         FormatCurrencyPipe,
     ],
 })
-export class TaDetailsHeaderComponent implements OnInit {
+export class TaDetailsHeaderComponent implements OnInit, OnChanges {
+    @ViewChild('popover') multipleDetailsPopover: NgbPopover;
+
     @Input() headerText: string = null;
     @Input() tooltipHeaderName: string = '';
     @Input() route: string = '';
     @Input() options: any = [];
     @Input() counterData: number = 0;
-    @Output() openModalAction = new EventEmitter<any>();
     @Input() hasIcon: boolean = false;
     @Input() hasDateArrow: boolean = false;
     @Input() hidePlus: boolean = true;
     @Input() customText: string = '';
-    @Output() changeDataArrowUp = new EventEmitter<any>();
-    @Output() changeDataArrowDown = new EventEmitter<any>();
     @Input() hasRequest: boolean;
-    @Output() makeRequest = new EventEmitter<any>();
     @Input() arrayIcons: any[] = [];
     @Input() statusInactive: boolean = true;
     @Input() danger: boolean = false;
     @Input() isInactive: boolean = false;
-    @Output() public dropActions = new EventEmitter<any>();
     @Input() public optionsId: number;
     @Input() hasDateNav: boolean = true;
     @Input() counterViolation: number;
@@ -71,7 +84,6 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() totalCost: any;
     @Input() businessOpen: boolean;
     @Input() showClosedBadge: boolean;
-    @Input() loadNames: boolean;
     @Input() secondNameHeader: string = '';
     @Input() countViolation: number;
     @Input() hideCounter: boolean;
@@ -85,6 +97,22 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() brokerLoadDrop: boolean = false;
     @Input() hasSearch: boolean = false;
     @Input() searchPlaceholder: string;
+    @Input() subText: string;
+    @Input() capsulaText: string;
+    @Input() isMapBtn: boolean;
+    @Input() isMapDisplayed: boolean;
+    @Input() hasMultipleDetailsSelectDropdown: boolean;
+    @Input() multipleDetailsSelectDropdown: MultipleSelectDetailsDropdownItem[];
+    @Input() isSearchBtn: boolean;
+
+    @Output() openModalAction = new EventEmitter<any>();
+    @Output() changeDataArrowUp = new EventEmitter<any>();
+    @Output() changeDataArrowDown = new EventEmitter<any>();
+    @Output() makeRequest = new EventEmitter<any>();
+    @Output() mapBtnEmitter = new EventEmitter<boolean>();
+    @Output() searchBtnEmitter = new EventEmitter<boolean>();
+    @Output() multipleDetailsSelectDropdownEmitter = new EventEmitter<number>();
+    @Output() dropActions = new EventEmitter<any>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
@@ -93,9 +121,21 @@ export class TaDetailsHeaderComponent implements OnInit {
     public dropOpened: boolean = false;
     public tooltip: any;
     public activeTemplate: any = 'All Load';
-    constructor(private routes: ActivatedRoute) {}
+    public isMapBtnClicked: boolean = true;
+    public isSearchBtnDisplayed: boolean = true;
+
+    constructor() {}
 
     ngOnInit(): void {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes?.isMapDisplayed?.currentValue !==
+            changes?.isMapDisplayed?.previousValue
+        ) {
+            this.isMapBtnClicked = changes?.isMapDisplayed?.currentValue;
+        }
+    }
 
     public openModal(val: string) {
         this.openModalAction.emit(val);
@@ -279,5 +319,23 @@ export class TaDetailsHeaderComponent implements OnInit {
 
     dropdownClosed() {
         this.dropOpened = false;
+    }
+
+    public handleMapBtnClick(): void {
+        this.isMapBtnClicked = !this.isMapBtnClicked;
+
+        this.mapBtnEmitter.emit(this.isMapBtnClicked);
+    }
+
+    public handleSearchBtnClick(): void {
+        this.isSearchBtnDisplayed = false;
+
+        this.searchBtnEmitter.emit(true);
+    }
+
+    public handleMultipleDetailsSelectDropdownClick(id: number): void {
+        this.multipleDetailsSelectDropdownEmitter.emit(id);
+
+        this.multipleDetailsPopover.close();
     }
 }

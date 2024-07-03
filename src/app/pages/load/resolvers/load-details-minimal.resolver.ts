@@ -18,8 +18,9 @@ import { LoadMinimalListResponse } from 'appcoretruckassist';
 export class LoadDetailsMinimalResolver
     implements Resolve<LoadMinimalListResponse>
 {
-    pageIndex: number = 1;
-    pageSize: number = 25;
+    private pageIndex: number = 1;
+    private pageSize: number = 25;
+
     constructor(
         private loadService: LoadService,
         private loadMinimalListStore: LoadMinimalListStore
@@ -28,11 +29,11 @@ export class LoadDetailsMinimalResolver
         return this.loadService
             .getLoadMinimalList(this.pageIndex, this.pageSize)
             .pipe(
-                catchError(() => {
-                    return of('No load data for...');
-                }),
                 tap((loadListData: LoadMinimalListResponse) => {
                     this.loadMinimalListStore.set(loadListData.pagination.data);
+                }),
+                catchError(() => {
+                    return of('No load data for...');
                 })
             );
     }

@@ -98,19 +98,19 @@
                 <!-- Svg -->
                 <svg-icon
                     class="confirmation-svg"
-                    *ngIf="editData?.svg && editData?.data?.avatar"
-                    [src]="editData?.data?.avatar"
+                    *ngIf="editData?.svg && editData?.data?.avatarImg"
+                    [src]="editData?.data?.avatarImg"
                 ></svg-icon>
                 <!-- Image -->
                 <img
-                    *ngIf="editData?.image && editData?.data?.avatar"
-                    [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
+                    *ngIf="editData?.image && editData?.data?.avatarImg"
+                    [src]="editData?.data?.avatarImg"
                     [alt]="editData?.data?.name?.substring(0, 1)"
                     class="confirmation-img"
                 />
                 <!-- Initial name, if avatar not upload -->
                 <div
-                    *ngIf="editData?.image && !editData?.data?.avatar"
+                    *ngIf="editData?.image && !editData?.data?.avatarImg"
                     class="no-profile-image"
                 >
                     <app-ta-profile-images
@@ -938,12 +938,16 @@
                         <!-- Load -->
 
                         <ng-container *ngSwitchCase="'load'">
-                            <div class="confirmation-info">
+                            <div class="confirmation-info w-100">
                                 <div class="d-flex align-items-center gap-1">
                                     <p
-                                        class="m-0 confirmation-text-1 large-text-1"
+                                        class="m-0 confirmation-text-1 large-text-1 limit-text"
                                     >
-                                        {{ editData?.data?.loadNumber }}
+                                        {{
+                                            editData?.subType === 'template'
+                                                ? editData?.data?.name
+                                                : editData?.data?.loadNumber
+                                        }}
                                     </p>
 
                                     <ng-container
@@ -968,7 +972,9 @@
                                     </ng-container>
                                 </div>
 
-                                <p class="m-0 confirmation-text-2 large-text-2">
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
                                     {{ editData?.data?.broker?.businessName }}
                                 </p>
                             </div>
@@ -1039,19 +1045,19 @@
                     <!-- Svg -->
                     <svg-icon
                         class="confirmation-svg"
-                        *ngIf="editData?.svg && item?.data?.avatar"
-                        [src]="item?.data?.avatar"
+                        *ngIf="editData?.svg && item?.data?.avatarImg"
+                        [src]="item?.data?.avatarImg"
                     ></svg-icon>
                     <!-- Image -->
                     <img
-                        *ngIf="editData?.image && item?.data?.avatar"
-                        [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
+                        *ngIf="editData?.image && item?.data?.avatarImg"
+                        [src]="item?.data?.avatarImg"
                         [alt]="item?.data?.name?.substring(0, 1)"
                         class="confirmation-img"
                     />
                     <!-- Initial name, if avatar not upload -->
                     <div
-                        *ngIf="editData?.image && !item?.data?.avatar"
+                        *ngIf="editData?.image && !item?.data?.avatarImg"
                         class="no-profile-image"
                     >
                         <app-ta-profile-images
@@ -1355,7 +1361,11 @@
                                     <p
                                         class="m-0 confirmation-text-1 large-text-1"
                                     >
-                                        {{ item?.data?.loadNumber }}
+                                        {{
+                                            editData?.subType === 'template'
+                                                ? item?.data?.name
+                                                : item?.data?.loadNumber
+                                        }}
                                     </p>
 
                                     <ng-container
@@ -1452,7 +1462,7 @@
                 editData.subType !== 'cdl void' &&
                 editData.type !== 'void'
             "
-            class="confirmation-header"
+            class="confirmation-header pb-2"
         >
             <p class="m-0 ta-font-medium">
                 {{

@@ -21,7 +21,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 
 // components
@@ -94,10 +93,9 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     constructor(
         private router: Router,
         private navigationService: NavigationService,
-        private imageBase64Service: ImageBase64Service,
         private userProfileUpdateService: UserProfileUpdateService,
         private cdRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.navigationService.getValueNavHovered().subscribe((value) => {
@@ -130,9 +128,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.loggedUser = {
             ...this.loggedUser,
-            avatar: this.loggedUser.avatar
-                ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
-                : 'assets/svg/common/ic_profile.svg',
+            avatar: this.loggedUser.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
         };
 
         this.footerData[2] = {
@@ -155,11 +151,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser.avatar
-                            ? this.imageBase64Service.sanitizer(
-                                  this.loggedUser.avatar
-                              )
-                            : 'assets/svg/common/ic_profile.svg',
+                        avatar: this.loggedUser?.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
                     };
 
                     this.footerData[2] = {

@@ -9,7 +9,7 @@
                 : ''
         "
         [subTextClass]="cardData.totalDue ? 'red' : 'green'"
-        [hasCounter]="cardData.paymentCount + 1"
+        [hasCounter]="paymentCount"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
         [animationMarginParams]="{
@@ -50,7 +50,15 @@
                         <span
                             class="m-0"
                             [ngStyle]="{
-                                color: cardData.totalDue ? '#DF3C3C' : '#259F94'
+                                color:
+                                    paymentData.title === 'DUE' &&
+                                    cardData.totalDue
+                                        ? '#DF3C3C'
+                                        : paymentData.title ===
+                                              'PAID IN FULL' &&
+                                          cardData.totalPaid
+                                        ? '#259F94'
+                                        : '#2f2f2f'
                             }"
                             [ngClass]="{
                                 'ta-font-semi-bold':

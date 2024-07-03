@@ -30,15 +30,15 @@
     }
 
     &.confirmed {
-        background: $ta-blue-16;
+        background: $ta-blue-16 !important;
 
         &:hover {
-            background: $ta-blue-17;
+            background: $ta-blue-17 !important;
 
             .input-container {
                 .btn-container {
                     .clear-icon {
-                        display: flex;
+                        display: flex !important;
                     }
                 }
             }
@@ -48,19 +48,19 @@
             .search-icon {
                 svg {
                     path {
-                        fill: $ta-blue-13;
+                        fill: $ta-blue-13 !important;
                     }
                 }
             }
         }
 
         .search-border {
-            background: $ta-blue-13;
+            background: $ta-blue-13 !important;
         }
 
         .input-container {
             input {
-                color: $ta-black-2;
+                color: $ta-black-2 !important;
 
                 &::-moz-selection {
                     color: $ta-black-2;
@@ -75,23 +75,61 @@
 
             .btn-container {
                 .clear-icon {
-                    display: none;
+                    display: none !important;
 
                     &:hover {
                         svg {
                             rect {
-                                fill: $ta-blue-15;
+                                fill: $ta-blue-15 !important;
                             }
                         }
                     }
 
                     svg {
                         rect {
-                            fill: $ta-blue-13;
+                            fill: $ta-blue-13 !important;
                         }
 
                         path {
-                            fill: $ta-blue-17;
+                            fill: $ta-blue-17 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.details-layout {
+        height: 26px;
+
+        &-valid {
+            background: $ta-blue-15;
+
+            .icon-container {
+                .search-icon {
+                    svg {
+                        path {
+                            fill: $white-4;
+                        }
+                    }
+                }
+            }
+
+            .search-border {
+                background: $white-4;
+            }
+
+            .input-container {
+                .btn-container {
+                    .clear-icon {
+                        svg {
+                            rect {
+                                fill: $white-4;
+                            }
+
+                            path {
+                                fill: $ta-blue-15;
+                            }
                         }
                     }
                 }

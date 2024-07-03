@@ -11,7 +11,7 @@
         class="list-name d-flex justify-content-center align-items-center ta-font-black"
         *ngIf="listName && !options.toolbarActions.hideListName"
     >
-        {{ listName | titlecase }}
+        {{ listName | listNameCase : isUpperCaseTitle }}
     </div>
 
     <!-- ONE TAB -->

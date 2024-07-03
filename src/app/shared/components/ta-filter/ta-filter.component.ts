@@ -24,7 +24,8 @@ import { CommonModule } from '@angular/common';
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
-import { FilterTrailerColorPipe } from './pipes/filter-trailer-color.pipe';
+import { FilterTrailerColorPipe } from '@shared/components/ta-filter//pipes/filter-trailer-color.pipe';
+import { FilterLoadStatusPipe } from '@shared/components/ta-filter/pipes/filter-load-status-color.pipe';
 
 // validators
 import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -61,6 +62,11 @@ import { stateHeader } from '@shared/components/ta-filter/animations/state-heade
 // models
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
+// Enums
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
+
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -85,6 +91,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
         // pipes
         TaSvgPipe,
         FilterTrailerColorPipe,
+        FilterLoadStatusPipe,
     ],
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],
@@ -106,23 +113,27 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     autoClose: TaAutoclosePopoverComponent;
     public hoverFilter: boolean = false;
 
-    @Input() type: string = 'userFilter';
+    @Input() type: string = ToolbarFilterStringEnum.USER_FILTER;
     @Input() icon: string = 'user';
     @Input() subType: string = 'pendingStatus';
-    @Input() pmSubtype: string = '';
+    @Input() pmSubtype: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     @Input() searchState: boolean = false;
-    @Input() filterTitle: any = '';
+    @Input() filterTitle: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     @Input() defFilterHolder: boolean = false;
     @Input() noLeftIcon: boolean = false;
     @Input() leftSideIcon: boolean = false;
     @Input() largeLeftIcon: boolean = false;
     @Input() moneyFilter: boolean = false;
     @Input() fuelType: boolean = false;
+    @Input() loadType: boolean = false;
     @Input() swipeFilter: boolean = false;
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
     @Input() isRepairFilter: boolean = false;
-    @Input() toDoSubType: string = '';
+    @Input() toDoSubType: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     @Input() dataArray: any;
     @Input() areaFilter: boolean = false;
 
@@ -143,6 +154,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         DirectiveConstants.ACTIVE_STATUS_ARRAY;
     public closedStatusArray: ArrayStatus[] =
         DirectiveConstants.CLOSED_STATUS_ARRAY;
+
+    public loadStatusOptionsArray = [];
+
     public pmFilterArray: ArrayStatus[];
     public categoryFuelArray: ArrayStatus[] = JSON.parse(
         JSON.stringify(DirectiveConstants.CATEGORY_FUEL_ARRAY)
@@ -168,9 +182,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public canadaStates: ArrayStatus[] = DirectiveConstants.CANADA_STATES;
 
     public selectedDispatcher: any[] = [];
-    public selectedTimeValue: any = '';
+    public selectedTimeValue: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public selectedTimeYear: number = null;
     public expandSearch: boolean = false;
-    public searchInputValue: any = '';
+    public searchInputValue: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     public showPart1: any = true;
     public showPart2: any = true;
     public showPart3: any = true;
@@ -181,24 +198,33 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public sliderForm!: UntypedFormGroup;
     public rangeForm!: UntypedFormGroup;
     public areaForm!: UntypedFormGroup;
-    public searchTerm: string = '';
+    public searchTerm: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
     public rangeValue: number = 0;
     public usaSelectedStates: any[] = [];
     public canadaSelectedStates: any[] = [];
-    public locationState: string = '';
-    public originState: string = '';
-    public destinationState: string = '';
-    public singleFormError: any = '';
-    public multiFormFirstError: any = '';
-    public multiFormSecondError: any = '';
-    public multiFormThirdError: any = '';
+    public locationState: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public originState: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public destinationState: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public singleFormError: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public multiFormFirstError: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public multiFormSecondError: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public multiFormThirdError: any =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     public moneyFilterStatus: boolean = false;
     public setButtonAvailable: boolean = false;
     public filterActiveArray: any[] = [];
     public filterUsaActiveArray: any[] = [];
     public filterCanadaActiveArray: any[] = [];
-    public filterActiveTime: string = '';
+    public filterActiveTime: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     public swipeActiveRange: number = 0;
     public singleFromActive: number | string = 0;
     public singleToActive: number | string = 0;
@@ -252,11 +278,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public destLatValSet: number = 0;
 
     public locationRangeSet: number = 25;
-    public loactionNameSet: string = '';
+    public loactionNameSet: string =
+        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
     public activeFormNum: number = 0;
-    public lastYear: any = '';
-    public last2Years: any = '';
+    public lastYear: any = ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+    public last2Years: any = ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     public totalFiltersNum: number = 0;
     public singleFormActive: boolean = false;
     public sideAnimation: boolean = false;
@@ -276,9 +303,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public isAscendingOrderPm: boolean = true;
     public isAscendingOrderTrailer: boolean = true;
     public isAscendingOrderTruck: boolean = true;
+    public isAscendingOrderStatus: boolean = true;
+    public isAscendingOrderUser: boolean = true;
+
+    public isAscendingSortOrder: boolean = true;
+
     public resizeObserver: ResizeObserver;
 
     public isAnimated: any = false;
+
+    public loadStatusEnum = LoadStatusEnum;
+
+    public unselectedVisibleCount: number = 0;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -309,20 +345,23 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.watchSearchFormValueChanges();
 
         this.watchTableServiceValueChanges();
+
+        this.watchLoadStatusFilterValueChanges();
     }
 
     private createForm(): void {
         this.rangeForm = this.formBuilder.group({
             rangeFrom: '0',
             rangeTo:
-                this.type === 'payFilter' ||
-                (this.type === 'moneyFilter' && this.isRepairFilter)
+                this.type === ToolbarFilterStringEnum.PAY_FILTER ||
+                (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                    this.isRepairFilter)
                     ? '20,000'
                     : '5,000',
         });
 
         this.searchForm = this.formBuilder.group({
-            search: '',
+            search: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
         });
 
         this.sliderForm = this.formBuilder.group({
@@ -330,14 +369,17 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         });
 
         this.moneyForm = this.formBuilder.group({
-            singleFrom: '',
-            singleTo: '',
-            multiFromFirstFrom: '',
-            multiFromFirstTo: '',
-            multiFormSecondFrom: '',
-            multiFormSecondTo: '',
-            multiFormThirdFrom: '',
-            multiFormThirdTo: '',
+            singleFrom: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            singleTo: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFromFirstFrom:
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFromFirstTo: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFormSecondFrom:
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFormSecondTo: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFormThirdFrom:
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            multiFormThirdTo: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
         });
 
         this.locationForm = this.formBuilder.group({
@@ -350,8 +392,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         });
 
         this.payForm = this.formBuilder.group({
-            payFrom: '',
-            payTo: '',
+            payFrom: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+            payTo: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
         });
     }
 
@@ -359,7 +401,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.locationForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-                if (!changes.address) this.locationState = '';
+                if (!changes.address)
+                    this.locationState =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
             });
     }
 
@@ -371,14 +415,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.areaForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
-                if (!changes.origin) this.originState = '';
+                if (!changes.origin)
+                    this.originState =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
-                if (!changes.destination) this.destinationState = '';
+                if (!changes.destination)
+                    this.destinationState =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
             });
     }
 
     private timeAndPayFilter(): void {
-        if (this.type === 'timeFilter') {
+        if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             const date = new Date();
             const pastYear = date.getFullYear() - 1;
             const past2Year = date.getFullYear() - 2;
@@ -388,8 +436,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         }
 
         if (
-            this.type === 'payFilter' ||
-            (this.type === 'moneyFilter' && this.isRepairFilter)
+            this.type === ToolbarFilterStringEnum.PAY_FILTER ||
+            (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                this.isRepairFilter)
         ) {
             this.maxValueRange = '20,000';
             this.maxValueSet = '20,000';
@@ -403,11 +452,17 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (changes) {
                     let rangeFromNum = 0;
                     let rangeToNum = parseInt(
-                        this.maxValueRange.replace(/,/g, ''),
+                        this.maxValueRange.replace(
+                            /,/g,
+                            ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                        ),
                         10
                     );
                     let maxRangeNum = parseInt(
-                        this.maxValueRange.replace(/,/g, ''),
+                        this.maxValueRange.replace(
+                            /,/g,
+                            ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                        ),
                         10
                     );
 
@@ -416,7 +471,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         typeof changes.rangeFrom === 'string'
                     ) {
                         rangeFromNum = parseInt(
-                            changes.rangeFrom.replace(/,/g, ''),
+                            changes.rangeFrom.replace(
+                                /,/g,
+                                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                            ),
                             10
                         );
                     }
@@ -426,7 +484,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         typeof changes.rangeTo === 'string'
                     ) {
                         rangeToNum = parseInt(
-                            changes.rangeTo.replace(/,/g, ''),
+                            changes.rangeTo.replace(
+                                /,/g,
+                                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                            ),
                             10
                         );
                     }
@@ -626,7 +687,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     const inputValue = changes.search;
                     this.searchInputValue = inputValue;
 
-                    if (this.type === 'userFilter') {
+                    if (this.type === ToolbarFilterStringEnum.USER_FILTER) {
                         this.unselectedUser.map((item) => {
                             item.hidden = true;
                             if (
@@ -638,8 +699,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'statusFilter') {
-                        this.pendingStatusArray.map((item) => {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATUS_FILTER
+                    ) {
+                        this.loadStatusOptionsArray.map((item) => {
                             item.hidden = true;
                             if (
                                 item.name
@@ -650,31 +713,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-
-                        this.activeStatusArray.map((item) => {
-                            item.hidden = true;
-                            if (
-                                item.name
-                                    .toLowerCase()
-                                    .includes(inputValue.toLowerCase())
-                            ) {
-                                item.hidden = false;
-                            }
-                            return item;
-                        });
-
-                        this.closedStatusArray.map((item) => {
-                            item.hidden = true;
-                            if (
-                                item.name
-                                    .toLowerCase()
-                                    .includes(inputValue.toLowerCase())
-                            ) {
-                                item.hidden = false;
-                            }
-                            return item;
-                        });
-                    } else if (this.type === 'truckFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRUCK_FILTER
+                    ) {
                         this.truckArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -686,7 +727,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'fuelStopFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER
+                    ) {
                         this.fuelStopArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -698,7 +741,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'trailerFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                    ) {
                         this.trailerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -710,7 +755,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'brokerFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.BROKER_FILTER
+                    ) {
                         this.brokerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -722,7 +769,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'driverFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.DRIVER_FILTER
+                    ) {
                         this.driverArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -734,7 +783,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === 'stateFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATE_FILTER
+                    ) {
                         this.usaStates.map((item) => {
                             item.hidden = true;
                             if (
@@ -760,43 +811,49 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                     }
                 } else {
-                    if (this.type === 'userFilter') {
+                    if (this.type === ToolbarFilterStringEnum.USER_FILTER) {
                         this.unselectedUser.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'statusFilter') {
-                        this.pendingStatusArray.map((item) => {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATUS_FILTER
+                    ) {
+                        this.loadStatusOptionsArray.map((item) => {
                             item.hidden = false;
                         });
-
-                        this.activeStatusArray.map((item) => {
-                            item.hidden = false;
-                        });
-
-                        this.closedStatusArray.map((item) => {
-                            item.hidden = false;
-                        });
-                    } else if (this.type === 'truckFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRUCK_FILTER
+                    ) {
                         this.truckArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'trailerFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                    ) {
                         this.trailerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'fuelStopFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER
+                    ) {
                         this.fuelStopArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'brokerFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.BROKER_FILTER
+                    ) {
                         this.brokerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'driverFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.DRIVER_FILTER
+                    ) {
                         this.driverArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === 'stateFilter') {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATE_FILTER
+                    ) {
                         this.usaStates.map((item) => {
                             item.hidden = false;
                         });
@@ -806,7 +863,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                     }
 
-                    this.searchInputValue = '';
+                    this.searchInputValue =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 }
             });
     }
@@ -815,7 +873,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (this.type === 'truckTypeFilter') {
+                if (this.type === ToolbarFilterStringEnum.TRUCK_TYPE_FILTER) {
                     if (res?.animation === 'truck-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -825,7 +883,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
                         this.truckTypeArray = newData;
                     }
-                } else if (this.type === 'trailerTypeFilter') {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_TYPE_FILTER
+                ) {
                     if (res?.animation === 'trailer-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -834,7 +894,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                         this.trailerTypeArray = newData;
                     }
-                } else if (this.type === 'categoryRepairFilter') {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER
+                ) {
                     if (res?.animation === 'repair-category-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -843,17 +905,22 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                         this.categoryRepairArray = newData;
                     }
-                } else if (this.type === 'categoryFuelFilter') {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER
+                ) {
                     if (res?.animation === 'fuel-category-update') {
                         this.categoryFuelArray = res.data;
                     }
-                } else if (this.type === 'stateFilter') {
+                } else if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
                     if (res?.animation === 'state-data-update') {
                         const usaArray = [];
                         const canadaArray = [];
 
-                        res.data.map((state: any) => {
-                            if (state.countryType.name == 'Canada') {
+                        res.data.map((state) => {
+                            if (
+                                state.countryType.name ==
+                                ToolbarFilterStringEnum.CANADA_2
+                            ) {
                                 canadaArray.push(state);
                             } else {
                                 usaArray.push(state);
@@ -863,12 +930,14 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         this.usaStates = usaArray;
                         this.canadaStates = canadaArray;
                     }
-                } else if (this.type === 'departmentFilter') {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.DEPARTMENT_FILTER
+                ) {
                     if (res?.animation === 'department-data-update') {
                         this.departmentArray = res.data;
                     }
                 } else if (
-                    this.type === 'pmFilter' &&
+                    this.type === ToolbarFilterStringEnum.PM_FILTER &&
                     this.pmSubtype === 'truck'
                 ) {
                     if (res?.animation === 'pm-truck-data-update') {
@@ -890,7 +959,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         }
                     }
                 } else if (
-                    this.type === 'pmFilter' &&
+                    this.type === ToolbarFilterStringEnum.PM_FILTER &&
                     this.pmSubtype === 'trailer'
                 ) {
                     if (res?.animation === 'pm-trailer-data-update') {
@@ -911,18 +980,17 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             this.pmFilterArray = [];
                         }
                     }
-                } else if (this.type === 'userFilter') {
+                } else if (this.type === ToolbarFilterStringEnum.USER_FILTER) {
                     if (res?.animation === 'dispatch-data-update') {
-                        const newData = res.data.pagination.data.map(
-                            (type: any) => {
-                                type['name'] = type.fullName;
-                                return type;
-                            }
-                        );
+                        const newData = res.data.map((type: any) => {
+                            type['name'] = type.fullName;
+                            type['count'] = type.loadCount;
+                            return type;
+                        });
 
                         this.unselectedUser = newData;
                     }
-                } else if (this.type === 'truckFilter') {
+                } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     if (res?.animation === 'truck-list-update') {
                         let newData;
                         if (this.isRepairFilter) {
@@ -941,7 +1009,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         }
                         this.truckArray = newData;
                     }
-                } else if (this.type === 'trailerFilter') {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                ) {
                     if (res?.animation === 'trailer-list-update') {
                         let newData;
                         if (this.isRepairFilter) {
@@ -963,98 +1033,35 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             });
     }
 
+    private watchLoadStatusFilterValueChanges(): void {
+        this.tableService.currentLoadStatusFilterOptions
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && this.type === LoadFilterStringEnum.STATUS_FILTER) {
+                    this.loadStatusOptionsArray = res.options;
+                }
+            });
+    }
+
     public checkForType(): void {
-        switch (this.type) {
-            case 'truckTypeFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'trailerTypeFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'categoryRepairFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'categoryFuelFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'stateFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'departmentFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'userFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'pmFilter':
-                this.getBackendData(this.type, this.pmSubtype);
-                break;
-
-            case 'truckFilter':
-                this.getBackendData(this.type);
-                break;
-
-            case 'trailerFilter':
-                this.getBackendData(this.type);
-                break;
+        if (this.type === ToolbarFilterStringEnum.PM_FILTER) {
+            this.getBackendData(this.type, this.pmSubtype);
+        } else {
+            this.getBackendData(this.type);
         }
     }
 
     public addToSelectedUser(item, indx, subType?): void {
-        let mainArray: any[] = [];
-        if (this.type === 'departmentFilter') {
-            mainArray = this.departmentArray;
-        } else if (this.type === 'statusFilter') {
-            if (subType === 'pending') {
-                mainArray = this.pendingStatusArray;
-            } else if (subType === 'active') {
-                mainArray = this.activeStatusArray;
-            } else {
-                mainArray = this.closedStatusArray;
-            }
-        } else if (this.type === 'pmFilter') {
-            mainArray = this.pmFilterArray;
-        } else if (this.type === 'categoryFuelFilter') {
-            mainArray = this.categoryFuelArray;
-        } else if (this.type === 'categoryRepairFilter') {
-            mainArray = this.categoryRepairArray;
-        } else if (this.type === 'truckFilter') {
-            mainArray = this.truckArray;
-        } else if (this.type === 'trailerFilter') {
-            mainArray = this.trailerArray;
-        } else if (this.type === 'fuelStopFilter') {
-            mainArray = this.fuelStopArray;
-        } else if (this.type === 'brokerFilter') {
-            mainArray = this.brokerArray;
-        } else if (this.type === 'driverFilter') {
-            mainArray = this.driverArray;
-        } else if (this.type === 'truckTypeFilter') {
-            mainArray = this.truckTypeArray;
-        } else if (this.type === 'userFilter') {
-            mainArray = this.unselectedUser;
-        } else if (this.type === 'trailerTypeFilter') {
-            mainArray = this.trailerTypeArray;
-        } else if (this.type === 'stateFilter') {
-            if (subType === 'canada') {
-                mainArray = this.canadaStates;
-            } else {
-                mainArray = this.usaStates;
-            }
-        } else if (this.type === 'labelFilter') {
-            mainArray = this.labelArray;
-        }
+        const mainArray = this.getMainArray(subType);
 
         mainArray[indx].isSelected = true;
 
-        if (this.type === 'stateFilter') {
-            if (subType === 'canada') {
+        this.unselectedVisibleCount = mainArray.filter(
+            (item2) => !item2.isSelected
+        )?.length;
+
+        if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
+            if (subType === ToolbarFilterStringEnum.CANADA) {
                 this.canadaSelectedStates.push(item);
             } else {
                 this.usaSelectedStates.push(item);
@@ -1068,8 +1075,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public removeFromSelectedUser(item, indx, subType?): void {
         this.selectedUser.splice(indx, 1);
 
-        if (this.type === 'stateFilter') {
-            if (subType === 'canada') {
+        if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
+            if (subType === ToolbarFilterStringEnum.CANADA) {
                 this.canadaSelectedStates.splice(indx, 1);
             } else {
                 this.usaSelectedStates.splice(indx, 1);
@@ -1078,135 +1085,47 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         const id = item.id;
 
-        if (this.type === 'departmentFilter') {
-            this.departmentArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'statusFilter') {
-            const checkActiveStatusArray = this.activeStatusArray.indexOf(item);
-            const checkPendingStatusArray =
-                this.pendingStatusArray.indexOf(item);
+        const mainArray = this.getMainArray(subType);
 
-            let mainArray: any[] = [];
+        mainArray.map((item2) => {
+            if (
+                this.type === ToolbarFilterStringEnum.TRUCK_FILTER ||
+                this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+            ) {
+                if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
+                    if (this.isRepairFilter) {
+                        if (item2.truckNumber === item.truckNumber) {
+                            item2.isSelected = false;
+                        }
+                    } else {
+                        if (item2.truckType.id === item?.truckType.id) {
+                            item2.isSelected = false;
+                        }
+                    }
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                ) {
+                    if (this.isRepairFilter) {
+                        if (item2.trailerNumber === item.trailerNumber) {
+                            item2.isSelected = false;
+                        }
+                    } else {
+                        if (item2.id === id) {
+                            item2.isSelected = false;
+                        }
+                    }
+                }
+            } else {
+                if (item2.id === id) {
+                    item2.isSelected = false;
+                }
+            }
+        });
 
-            if (checkActiveStatusArray > -1) {
-                mainArray = this.activeStatusArray;
-            } else if (checkPendingStatusArray > -1) {
-                mainArray = this.pendingStatusArray;
-            } else {
-                mainArray = this.closedStatusArray;
-            }
+        this.unselectedVisibleCount = mainArray.filter(
+            (item2) => !item2.isSelected
+        )?.length;
 
-            mainArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'pmFilter') {
-            this.pmFilterArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'categoryFuelFilter') {
-            this.categoryFuelArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'categoryRepairFilter') {
-            this.categoryRepairArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'truckFilter') {
-            if (this.isRepairFilter) {
-                this.truckArray.map((truck) => {
-                    if (truck.truckNumber === item.truckNumber) {
-                        truck.isSelected = false;
-                    }
-                });
-            } else {
-                this.truckArray.map((truck) => {
-                    if (truck.truckType.id === item?.truckType.id) {
-                        truck.isSelected = false;
-                    }
-                });
-            }
-        } else if (this.type === 'trailerFilter') {
-            if (this.isRepairFilter) {
-                this.trailerArray.map((trailer) => {
-                    if (trailer.trailerNumber === item.trailerNumber) {
-                        trailer.isSelected = false;
-                    }
-                });
-            } else {
-                this.trailerArray.map((item) => {
-                    if (item.id === id) {
-                        item.isSelected = false;
-                    }
-                });
-            }
-        } else if (this.type === 'fuelStopFilter') {
-            this.fuelStopArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'brokerFilter') {
-            this.brokerArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'driverFilter') {
-            this.driverArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'truckTypeFilter') {
-            this.truckTypeArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'trailerTypeFilter') {
-            this.trailerTypeArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'userFilter') {
-            this.unselectedUser.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        } else if (this.type === 'stateFilter') {
-            if (subType === 'canada') {
-                this.canadaStates.map((item) => {
-                    if (item.id === id) {
-                        item.isSelected = false;
-                    }
-                });
-            } else {
-                this.usaStates.map((item) => {
-                    if (item.id === id) {
-                        item.isSelected = false;
-                    }
-                });
-            }
-        } else if (this.type === 'labelFilter') {
-            this.labelArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
-        }
         this.checkFilterActiveValue();
     }
 
@@ -1216,98 +1135,98 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         if (mod) this.hoverClose = false;
 
         const element = event.target;
-        if (!element.classList.contains('active') && !mod) false;
+        if (!element.classList.contains(ToolbarFilterStringEnum.ACTIVE) && !mod)
+            false;
 
-        if (this.type === 'timeFilter') {
-            this.selectedTimeValue = '';
-            this.filterActiveTime = '';
+        if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
+            this.selectedTimeValue =
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+            this.filterActiveTime =
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
         } else {
             this.unselectedUser = [
                 ...this.unselectedUser,
                 ...this.selectedUser,
             ];
+
+            this.unselectedUser = this.unselectedUser.filter(
+                (value, index, self) =>
+                    index === self.findIndex((user) => user.id === value.id)
+            );
+
             this.selectedUser = [];
             this.usaSelectedStates = [];
             this.canadaSelectedStates = [];
 
             switch (this.type) {
-                case 'departmentFilter':
+                case ToolbarFilterStringEnum.DEPARTMENT_FILTER:
                     this.departmentArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'statusFilter':
-                    this.pendingStatusArray.map((item) => {
+                case ToolbarFilterStringEnum.STATUS_FILTER:
+                    this.loadStatusOptionsArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
 
-                    this.activeStatusArray.map((item) => {
-                        item.isSelected = false;
-                        item.currentSet = false;
-                    });
-
-                    this.closedStatusArray.map((item) => {
-                        item.isSelected = false;
-                        item.currentSet = false;
-                    });
                     break;
-                case 'pmFilter':
+                case ToolbarFilterStringEnum.PM_FILTER:
                     this.pmFilterArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'categoryFuelFilter':
+                case ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER:
                     this.categoryFuelArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'categoryRepairFilter':
+                case ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER:
                     this.categoryRepairArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'truckFilter':
+                case ToolbarFilterStringEnum.TRUCK_FILTER:
                     this.truckArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'trailerFilter':
+                case ToolbarFilterStringEnum.TRAILER_FILTER:
                     this.trailerArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'brokerFilter':
+                case ToolbarFilterStringEnum.BROKER_FILTER:
                     this.brokerArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'driverFilter':
+                case ToolbarFilterStringEnum.DRIVER_FILTER:
                     this.driverArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'truckTypeFilter':
+                case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
                     this.truckTypeArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'userFilter':
+                case ToolbarFilterStringEnum.USER_FILTER:
                     this.unselectedUser.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
                     break;
-                case 'stateFilter':
+                case ToolbarFilterStringEnum.STATE_FILTER:
                     this.usaStates.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
@@ -1318,28 +1237,32 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         item.currentSet = false;
                     });
                     break;
-                case 'injuryFilter':
-                case 'fatalityFilter':
-                case 'violationFilter':
+                case ToolbarFilterStringEnum.INJURY_FILTER:
+                case ToolbarFilterStringEnum.FATALITY_FILTER:
+                case ToolbarFilterStringEnum.VIOLATION_FILTER:
                     this.rangeValue = 0;
                     break;
-                case 'locationFilter':
+                case ToolbarFilterStringEnum.LOCATION_FILTER:
                     this.locationForm.setValue({
-                        address: '',
+                        address:
+                            ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
                     });
                     this.areaForm.setValue({
-                        origin: '',
-                        destination: '',
+                        origin: ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        destination:
+                            ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
                     });
                     this.locationRange = 25;
-                    this.locationState = '';
+                    this.locationState =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                     this.longVal = 0;
                     this.latVal = 0;
                     this.originLongVal = 0;
                     this.originLatVal = 0;
                     this.destLongVal = 0;
                     this.destLatVal = 0;
-                    this.loactionNameSet = '';
+                    this.loactionNameSet =
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                     this.longValueSet = this.longVal;
                     this.latValSet = this.latVal;
@@ -1349,7 +1272,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.destLongValSet = this.destLongVal;
                     this.locationRangeSet = this.locationRange;
                     break;
-                case 'moneyFilter':
+                case ToolbarFilterStringEnum.MONEY_FILTER:
                     if (!this.isRepairFilter) {
                         if (this.subType != 'all') {
                             this.clearForm('singleForm');
@@ -1368,9 +1291,15 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                     this.activeFormNum = 0;
                     break;
-                case 'milesFilter':
-                case 'payFilter' ||
-                    (this.type === 'moneyFilter' && this.isRepairFilter):
+                case ToolbarFilterStringEnum.MILES_FILTER:
+                case ToolbarFilterStringEnum.PAY_FILTER:
+                case ToolbarFilterStringEnum.MONEY_FILTER:
+                    if (
+                        this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                        !this.isRepairFilter
+                    ) {
+                        break;
+                    }
                     const maxNum = this.thousandSeparator.transform(
                         this.maxValueRange
                     );
@@ -1379,6 +1308,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
                     this.maxValueSet = maxNum;
                     this.minValueSet = this.minValueRange;
+                    break;
+                default:
                     break;
             }
         }
@@ -1412,11 +1343,19 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         });
     }
 
-    public setTimeValue(mod): void {
+    public setTimeValue(mod: string, year?: number): void {
         if (this.selectedTimeValue === mod) {
-            this.selectedTimeValue = '';
+            this.selectedTimeValue =
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
         } else {
             this.selectedTimeValue = mod;
+        }
+
+        if (year) {
+            if (this.selectedTimeYear === year) this.selectedTimeYear = null;
+            else this.selectedTimeYear = year;
+        } else {
+            this.selectedTimeYear = null;
         }
 
         if (this.filterActiveTime === mod) {
@@ -1428,7 +1367,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     public removeTimeValue(event): void {
         event.stopPropagation();
-        this.selectedTimeValue = '';
+        this.selectedTimeValue =
+            ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
+        this.selectedTimeYear = null;
     }
 
     public showSearch(mod?): void {
@@ -1463,7 +1404,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public setRangeValue(mod): void {
-        if (this.type != 'locationFilter') {
+        if (this.type != ToolbarFilterStringEnum.LOCATION_FILTER) {
             this.rangeValue = mod;
         } else {
             this.locationRange = mod;
@@ -1503,8 +1444,16 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public clearForm(mod): void {
         switch (mod) {
             case 'singleForm':
-                this.moneyForm.get('singleFrom')?.setValue('');
-                this.moneyForm.get('singleTo')?.setValue('');
+                this.moneyForm
+                    .get('singleFrom')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
+                this.moneyForm
+                    .get('singleTo')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
                 this.singleFormError = false;
                 this.moneyFilterStatus = false;
                 this.singleToActive = 0;
@@ -1512,18 +1461,42 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 this.setButtonAvailable = false;
                 break;
             case 'multiFromFirst':
-                this.moneyForm.get('multiFromFirstFrom')?.setValue('');
-                this.moneyForm.get('multiFromFirstTo')?.setValue('');
+                this.moneyForm
+                    .get('multiFromFirstFrom')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
+                this.moneyForm
+                    .get('multiFromFirstTo')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
                 this.multiFormFirstError = false;
                 break;
             case 'multiFormSecond':
-                this.moneyForm.get('multiFormSecondFrom')?.setValue('');
-                this.moneyForm.get('multiFormSecondTo')?.setValue('');
+                this.moneyForm
+                    .get('multiFormSecondFrom')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
+                this.moneyForm
+                    .get('multiFormSecondTo')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
                 this.multiFormSecondError = false;
                 break;
             case 'multiFormThird':
-                this.moneyForm.get('multiFormThirdFrom')?.setValue('');
-                this.moneyForm.get('multiFormThirdTo')?.setValue('');
+                this.moneyForm
+                    .get('multiFormThirdFrom')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
+                this.moneyForm
+                    .get('multiFormThirdTo')
+                    ?.setValue(
+                        ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                    );
                 this.multiFormThirdError = false;
                 break;
             case 'clearAll':
@@ -1543,13 +1516,14 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     public setFilterValue(event): boolean {
         const element = event.target;
-        if (element.classList.contains('active')) {
+        if (element.classList.contains(ToolbarFilterStringEnum.ACTIVE)) {
             let queryParams = {};
-            let subType = '';
+            let subType =
+                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER.toString();
 
             this.setButtonAvailable = false;
 
-            if (this.type === 'timeFilter') {
+            if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
                 this.filterActiveTime = this.selectedTimeValue;
 
                 if (!this.selectedTimeValue) {
@@ -1557,12 +1531,19 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     return false;
                 }
 
-                queryParams = {
-                    timeSelected: this.filterActiveTime,
-                };
+                if (this.selectedTimeYear) {
+                    queryParams = {
+                        timeSelected: this.filterActiveTime,
+                        year: this.selectedTimeYear,
+                    };
+                } else {
+                    queryParams = {
+                        timeSelected: this.filterActiveTime,
+                    };
+                }
             } else if (this.swipeFilter) {
                 this.swipeActiveRange = this.rangeValue;
-            } else if (this.type === 'stateFilter') {
+            } else if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
                 this.filterUsaActiveArray = [...this.usaSelectedStates];
                 this.filterCanadaActiveArray = [...this.canadaSelectedStates];
 
@@ -1575,7 +1556,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
                 };
-            } else if (this.type === 'moneyFilter' && !this.isRepairFilter) {
+            } else if (
+                this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                !this.isRepairFilter
+            ) {
                 if (this.subType === 'all') {
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
@@ -1599,7 +1583,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     queryParams = {
                         firstFormFrom:
                             this.moneyForm.get('multiFromFirstFrom')?.value,
-                        firstFormFTo:
+                        firstFormTo:
                             this.moneyForm.get('multiFromFirstTo')?.value,
                         secondFormFrom: this.moneyForm.get(
                             'multiFormSecondFrom'
@@ -1657,16 +1641,17 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     queryParams = {
                         singleFrom: this.moneyForm.get('singleFrom')?.value
                             ? parseInt(this.moneyForm.get('singleFrom')?.value)
-                            : '',
+                            : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
                         singleTo: this.moneyForm.get('singleTo')?.value
                             ? parseInt(this.moneyForm.get('singleTo')?.value)
-                            : '',
+                            : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER,
                     };
                 }
             } else if (
-                this.type === 'milesFilter' ||
-                this.type === 'payFilter' ||
-                (this.type === 'moneyFilter' && this.isRepairFilter)
+                this.type === ToolbarFilterStringEnum.MILES_FILTER ||
+                this.type === ToolbarFilterStringEnum.PAY_FILTER ||
+                (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                    this.isRepairFilter)
             ) {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
@@ -1674,13 +1659,23 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 this.singleFormActive = true;
                 queryParams = {
                     singleTo: parseInt(
-                        this.rangeForm.get('rangeTo')?.value.replace(',', '')
+                        this.rangeForm
+                            .get('rangeTo')
+                            ?.value.replace(
+                                ',',
+                                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                            )
                     ),
                     singleFrom: parseInt(
-                        this.rangeForm.get('rangeFrom')?.value.replace(',', '')
+                        this.rangeForm
+                            .get('rangeFrom')
+                            ?.value.replace(
+                                ',',
+                                ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER
+                            )
                     ),
                 };
-            } else if (this.type === 'locationFilter') {
+            } else if (this.type === ToolbarFilterStringEnum.LOCATION_FILTER) {
                 if (this.areaFilterSelected != 'Location') {
                     queryParams = {
                         originLatValue: this.originLatVal,
@@ -1715,38 +1710,41 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
                 let mainArray: any[] = [];
                 switch (this.type) {
-                    case 'departmentFilter':
+                    case ToolbarFilterStringEnum.DEPARTMENT_FILTER:
                         mainArray = this.departmentArray;
                         break;
-                    case 'pmFilter':
+                    case ToolbarFilterStringEnum.PM_FILTER:
                         mainArray = this.pmFilterArray;
                         break;
-                    case 'categoryFuelFilter':
+                    case ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER:
                         mainArray = this.categoryFuelArray;
                         break;
-                    case 'categoryRepairFilter':
+                    case ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER:
                         mainArray = this.categoryRepairArray;
                         break;
-                    case 'truckFilter':
+                    case ToolbarFilterStringEnum.TRUCK_FILTER:
                         mainArray = this.truckArray;
                         break;
-                    case 'trailerFilter':
+                    case ToolbarFilterStringEnum.TRAILER_FILTER:
                         mainArray = this.trailerArray;
                         break;
-                    case 'brokerFilter':
+                    case ToolbarFilterStringEnum.BROKER_FILTER:
                         mainArray = this.brokerArray;
                         break;
-                    case 'driverFilter':
+                    case ToolbarFilterStringEnum.DRIVER_FILTER:
                         mainArray = this.driverArray;
                         break;
-                    case 'truckTypeFilter':
+                    case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
                         mainArray = this.truckTypeArray;
                         break;
-                    case 'trailerTypeFilter':
+                    case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
                         mainArray = this.trailerTypeArray;
                         break;
-                    case 'userFilter':
+                    case ToolbarFilterStringEnum.USER_FILTER:
                         mainArray = this.unselectedUser;
+                        break;
+                    case ToolbarFilterStringEnum.STATUS_FILTER:
+                        mainArray = this.loadStatusOptionsArray;
                         break;
                 }
 
@@ -1758,11 +1756,14 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this.type === 'pmFilter' || this.isRepairFilter) {
+                if (
+                    this.type === ToolbarFilterStringEnum.PM_FILTER ||
+                    this.isRepairFilter
+                ) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
                     });
-                } else if (this.type === 'truckFilter') {
+                } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.truckType.id);
                     });
@@ -1778,7 +1779,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
 
                 queryParams = selectedUsersIdArray;
-                subType = this.toDoSubType ? this.toDoSubType : '';
+                subType =
+                    this.toDoSubType ??
+                    ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER.toString();
             }
 
             const data = {
@@ -1798,7 +1801,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public checkFilterActiveValue(): void {
-        if (this.type === 'stateFilter') {
+        if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
             let usaArrayChanged = false;
             let canadaArrayChanged = false;
 
@@ -1989,50 +1992,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         let mainElementHolder;
 
-        if (this.type === 'timeFilter') {
+        if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             mainElementHolder = document.querySelector('.time-filter-holder');
         } else {
             mainElementHolder = document.querySelector('.filter-holder');
         }
 
         mainElementHolder?.classList.add('closeFilterAnimation');
-        if (this.defFilterHolder && this.type != 'stateFilter') {
-            let mainArray: any[] = [];
-            switch (this.type) {
-                case 'departmentFilter':
-                    mainArray = this.departmentArray;
-                    break;
-                case 'pmFilter':
-                    mainArray = this.pmFilterArray;
-                    break;
-                case 'categoryFuelFilter':
-                    mainArray = this.categoryFuelArray;
-                    break;
-                case 'categoryRepairFilter':
-                    mainArray = this.categoryRepairArray;
-                    break;
-                case 'truckFilter':
-                    mainArray = this.truckArray;
-                    break;
-                case 'trailerFilter':
-                    mainArray = this.trailerArray;
-                    break;
-                case 'brokerFilter':
-                    mainArray = this.brokerArray;
-                    break;
-                case 'driverFilter':
-                    mainArray = this.driverArray;
-                    break;
-                case 'truckTypeFilter':
-                    mainArray = this.truckTypeArray;
-                    break;
-                case 'trailerTypeFilter':
-                    mainArray = this.trailerTypeArray;
-                    break;
-                case 'userFilter':
-                    mainArray = this.unselectedUser;
-                    break;
-            }
+        if (
+            this.defFilterHolder &&
+            this.type != ToolbarFilterStringEnum.STATE_FILTER
+        ) {
+            const mainArray = this.getMainArray();
 
             mainArray.map((item) => {
                 if (
@@ -2048,20 +2019,23 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 }
             });
-        } else if (this.type === 'timeFilter') {
+        } else if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue = this.filterActiveTime;
-        } else if (this.type === 'moneyFilter' && !this.isRepairFilter) {
+        } else if (
+            this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+            !this.isRepairFilter
+        ) {
             if (this.subType != 'all') {
                 const setFromValue =
                     this.singleFromActive != 'null' && this.singleFromActive
                         ? this.singleFromActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 this.moneyForm.get('singleFrom')?.setValue(setFromValue);
 
                 const setToValue =
                     this.singleToActive != 'null' && this.singleToActive
                         ? this.singleToActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 this.moneyForm.get('singleTo')?.setValue(setToValue);
                 if (!setFromValue) {
                     this.setButtonAvailable = false;
@@ -2071,12 +2045,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.multiFromFirstFromActive &&
                     this.multiFromFirstFromActive != 'null'
                         ? this.multiFromFirstFromActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 const firstToActive =
                     this.multiFromFirstToActive &&
                     this.multiFromFirstToActive != 'null'
                         ? this.multiFromFirstToActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                 this.moneyForm.get('multiFromFirstTo')?.setValue(firstToActive);
                 this.moneyForm
@@ -2087,12 +2061,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.multiFormSecondFromActive &&
                     this.multiFormSecondFromActive != 'null'
                         ? this.multiFormSecondFromActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 const secToActive =
                     this.multiFormSecondToActive &&
                     this.multiFormSecondToActive != 'null'
                         ? this.multiFormSecondToActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                 this.moneyForm
                     .get('multiFormSecondFrom')
@@ -2103,24 +2077,24 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.multiFormThirdFromActive &&
                     this.multiFormThirdFromActive != 'null'
                         ? this.multiFormThirdFromActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
                 const thirdToActive =
                     this.multiFormThirdToActive &&
                     this.multiFormThirdToActive != 'null'
                         ? this.multiFormThirdToActive
-                        : '';
+                        : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
 
                 this.moneyForm
                     .get('multiFormThirdFrom')
                     ?.setValue(thirdFromActive);
                 this.moneyForm.get('multiFormThirdTo')?.setValue(thirdToActive);
             }
-        } else if (this.type === 'locationFilter') {
+        } else if (this.type === ToolbarFilterStringEnum.LOCATION_FILTER) {
             this.locationForm.setValue({ address: this.loactionNameSet });
             this.longVal = this.longValueSet;
             this.latVal = this.latValSet;
             this.locationRange = this.locationRangeSet;
-        } else if (this.type === 'stateFilter') {
+        } else if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
             this.usaSelectedStates = [...this.filterUsaActiveArray];
             this.canadaSelectedStates = [...this.filterCanadaActiveArray];
             this.setButtonAvailable = false;
@@ -2148,34 +2122,34 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     public getBackendData(type: any, subType?: string): void {
         switch (this.type) {
-            case 'truckTypeFilter': {
+            case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER: {
                 this.filterService.getTruckType();
                 break;
             }
-            case 'trailerTypeFilter': {
+            case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER: {
                 this.filterService.getTrailerType();
                 break;
             }
-            case 'categoryRepairFilter': {
+            case ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER: {
                 this.filterService.getRepairCategory();
                 break;
             }
-            case 'categoryFuelFilter': {
+            case ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER: {
                 this.filterService.getFuelCategory();
                 break;
             }
-            case 'stateFilter': {
+            case ToolbarFilterStringEnum.STATE_FILTER: {
                 this.filterService.getStateData();
             }
-            case 'departmentFilter': {
+            case ToolbarFilterStringEnum.DEPARTMENT_FILTER: {
                 this.filterService.getDepartmentData();
                 break;
             }
-            case 'userFilter': {
-                this.filterService.getDispatchData();
+            case ToolbarFilterStringEnum.USER_FILTER: {
+                //this.filterService.getDispatchData(); - Disable for now
                 break;
             }
-            case 'truckFilter': {
+            case ToolbarFilterStringEnum.TRUCK_FILTER: {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
@@ -2184,7 +2158,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'trailerFilter': {
+            case ToolbarFilterStringEnum.TRAILER_FILTER: {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTrailerData();
                     this.filterService.getPmData('trailer');
@@ -2193,80 +2167,159 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'pmFilter': {
+            case ToolbarFilterStringEnum.PM_FILTER: {
                 this.filterService.getPmData(subType);
                 break;
             }
         }
     }
-    private sortItems(): boolean {
-        console.log(this.type);
+
+    public sortItems(): void {
         switch (this.type) {
-            case 'categoryRepairFilter': {
+            case ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER:
                 this.categoryRepairArray.sort((a, b) => {
-                    if (this.isAscendingOrderCategoryRepair) {
+                    if (this.isAscendingSortOrder) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-                this.isAscendingOrderCategoryRepair =
-                    !this.isAscendingOrderCategoryRepair;
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
-            }
-            case 'truckFilter': {
+
+            case ToolbarFilterStringEnum.TRUCK_FILTER:
                 this.truckArray.sort((a, b) => {
-                    if (this.isAscendingOrderTruck) {
+                    if (this.isAscendingSortOrder) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-                this.isAscendingOrderTruck = !this.isAscendingOrderTruck;
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
-            }
-            case 'trailerFilter': {
+
+            case ToolbarFilterStringEnum.TRAILER_FILTER:
                 this.trailerArray.sort((a, b) => {
-                    if (this.isAscendingOrderTrailer) {
+                    if (this.isAscendingSortOrder) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
 
-                this.isAscendingOrderTrailer = !this.isAscendingOrderTrailer;
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
-            }
-            case 'pmFilter': {
+
+            case ToolbarFilterStringEnum.PM_FILTER:
                 this.pmFilterArray.sort((a, b) => {
-                    if (this.isAscendingOrderPm) {
+                    if (this.isAscendingSortOrder) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-                this.isAscendingOrderPm = !this.isAscendingOrderPm;
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
-            }
+
+            case ToolbarFilterStringEnum.STATUS_FILTER:
+                this.loadStatusOptionsArray.sort((a, b) => {
+                    if (this.isAscendingSortOrder) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
+                break;
+
+            case ToolbarFilterStringEnum.USER_FILTER:
+                this.unselectedUser.sort((a, b) => {
+                    if (this.isAscendingSortOrder) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+
+                this.selectedUser.sort((a, b) => {
+                    if (this.isAscendingSortOrder) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
+                break;
+
+            default:
+                break;
         }
-        return this.getSortOrder();
     }
+
     private sortComparison(a: number, b: number, ascending: boolean): number {
         return ascending ? a - b : b - a;
     }
-    private getSortOrder(): boolean {
+
+    private getMainArray(subType?: string): any[] {
+        let mainArray = [];
+
         switch (this.type) {
-            case 'categoryRepairFilter':
-                return this.isAscendingOrderCategoryRepair;
-            case 'truckFilter':
-                return this.isAscendingOrderTruck;
-            case 'trailerFilter':
-                return this.isAscendingOrderTrailer;
-            case 'pmFilter':
-                return this.isAscendingOrderPm;
+            case ToolbarFilterStringEnum.DEPARTMENT_FILTER:
+                mainArray = this.departmentArray;
+                break;
+            case ToolbarFilterStringEnum.STATUS_FILTER:
+                mainArray = this.loadStatusOptionsArray;
+                break;
+            case ToolbarFilterStringEnum.PM_FILTER:
+                mainArray = this.pmFilterArray;
+                break;
+            case ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER:
+                mainArray = this.categoryFuelArray;
+                break;
+            case ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER:
+                mainArray = this.categoryRepairArray;
+                break;
+            case ToolbarFilterStringEnum.TRUCK_FILTER:
+                mainArray = this.truckArray;
+                break;
+            case ToolbarFilterStringEnum.TRAILER_FILTER:
+                mainArray = this.trailerArray;
+                break;
+            case ToolbarFilterStringEnum.FUEL_STOP_FILTER:
+                mainArray = this.fuelStopArray;
+                break;
+            case ToolbarFilterStringEnum.BROKER_FILTER:
+                mainArray = this.brokerArray;
+                break;
+            case ToolbarFilterStringEnum.DRIVER_FILTER:
+                mainArray = this.driverArray;
+                break;
+            case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
+                mainArray = this.truckTypeArray;
+                break;
+            case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
+                mainArray = this.trailerTypeArray;
+                break;
+            case ToolbarFilterStringEnum.USER_FILTER:
+                mainArray = this.unselectedUser;
+                break;
+            case ToolbarFilterStringEnum.STATE_FILTER:
+                if (subType === ToolbarFilterStringEnum.CANADA) {
+                    mainArray = this.canadaStates;
+                } else {
+                    mainArray = this.usaStates;
+                }
+                break;
+            case ToolbarFilterStringEnum.LABEL_FILTER:
+                mainArray = this.labelArray;
+                break;
             default:
-                return false;
+                break;
         }
+
+        return mainArray;
     }
 
     ngOnDestroy(): void {

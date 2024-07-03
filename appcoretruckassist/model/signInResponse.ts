@@ -20,7 +20,6 @@ export interface SignInResponse {
     userId?: number;
     firstName?: string | null;
     lastName?: string | null;
-    avatar?: string | null;
     avatarFile?: FileResponse;
     driverId?: number | null;
     companies?: Array<CompanyShortResponse> | null;

@@ -45,6 +45,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { InputTypePipe } from '@shared/components/ta-input/pipes/input-type.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { InputErrorPipe } from '@shared/components/ta-input/pipes/input-error.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -56,7 +57,6 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 import { FormService } from '@shared/services/form.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // components
 import { TaCustomDatetimePickersComponent } from '@shared/components/ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
@@ -99,6 +99,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         InputTypePipe,
         TaSvgPipe,
         InputErrorPipe,
+        LoadStatusColorPipe,
 
         // Directive
         HoverSvgDirective,
@@ -106,8 +107,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TaInputComponent
-    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
-{
+    implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
     @ViewChild('input', { static: true }) public input: ElementRef;
     @ViewChild('span1', { static: false }) span1: ElementRef;
     @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -249,7 +249,6 @@ export class TaInputComponent
         private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
-        public imageBase64Service: ImageBase64Service,
         private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;
@@ -283,11 +282,11 @@ export class TaInputComponent
         this.onChange = fn;
     }
 
-    public onChange(_: any): void {}
+    public onChange(_: any): void { }
 
-    public registerOnTouched(_: any): void {}
+    public registerOnTouched(_: any): void { }
 
-    public setDisabledState?(_: boolean): void {}
+    public setDisabledState?(_: boolean): void { }
 
     ngOnInit(): void {
         //Track input changes
@@ -362,7 +361,11 @@ export class TaInputComponent
                 this.selectionInput = -1;
             }
 
-            this.t2.close();
+            if (this._inputConfig.placeholderIcon) {
+                this.t2.close();
+            } else {
+                this.t2.open();
+            }
         }
 
         // Dropdown
@@ -860,11 +863,11 @@ export class TaInputComponent
             this.timeoutCleaner = setTimeout(() => {
                 this.input.nativeElement.setSelectionRange(
                     this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1
-                            ? 1
-                            : 0),
+                    (this.getSuperControl.value.indexOf('.') === -1
+                        ? 1
+                        : 0),
                     this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1 ? 1 : 0)
+                    (this.getSuperControl.value.indexOf('.') === -1 ? 1 : 0)
                 );
             }, 0);
         }
@@ -984,7 +987,7 @@ export class TaInputComponent
             ) {
                 if (
                     this.getSuperControl?.value?.length ===
-                        this.originPriceSeparatorLimit &&
+                    this.originPriceSeparatorLimit &&
                     event.keyCode !== 46
                 ) {
                     event.preventDefault();
@@ -1735,7 +1738,7 @@ export class TaInputComponent
                             action: 'confirm',
                             mode:
                                 !this._inputConfig.dropdownLabelNew &&
-                                this._inputConfig.name !==
+                                    this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
                                     ? 'edit'
                                     : 'new',
@@ -1990,11 +1993,11 @@ export class TaInputComponent
                     this.input.nativeElement.value = newText.substring(0, 10);
                     this.getSuperControl.setValue(
                         '(' +
-                            this.input.nativeElement.value.substring(0, 3) +
-                            ') ' +
-                            this.input.nativeElement.value.substring(3, 6) +
-                            '-' +
-                            this.input.nativeElement.value.substring(6)
+                        this.input.nativeElement.value.substring(0, 3) +
+                        ') ' +
+                        this.input.nativeElement.value.substring(3, 6) +
+                        '-' +
+                        this.input.nativeElement.value.substring(6)
                     );
                 }, 0);
             }
@@ -2005,8 +2008,8 @@ export class TaInputComponent
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
                         this.input.nativeElement.value.substring(0, 2) +
-                            '-' +
-                            this.input.nativeElement.value.substring(2)
+                        '-' +
+                        this.input.nativeElement.value.substring(2)
                     );
                 }, 0);
             }
@@ -2017,10 +2020,10 @@ export class TaInputComponent
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
                         this.input.nativeElement.value.substring(0, 3) +
-                            '-' +
-                            this.input.nativeElement.value.substring(3, 5) +
-                            '-' +
-                            this.input.nativeElement.value.substring(5)
+                        '-' +
+                        this.input.nativeElement.value.substring(3, 5) +
+                        '-' +
+                        this.input.nativeElement.value.substring(5)
                     );
                 }, 0);
             }
@@ -2040,7 +2043,7 @@ export class TaInputComponent
         if (this._inputConfig.name === 'timepicker')
             this.dateTimeInputDate = new Date(
                 moment().format('MM/DD/YYYY') +
-                    (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
+                (this._inputConfig?.isFromDate ? ' 12:15' : ' 12:00')
             );
     }
     public setTimeDateInput(date) {
@@ -2287,7 +2290,7 @@ export class TaInputComponent
         if (this._inputConfig.name !== 'datepickerBankCard') {
             span3Value =
                 isNaN(this.span3.nativeElement.innerHTML) ||
-                this.newInputChanged
+                    this.newInputChanged
                     ? ''
                     : parseInt(this.span3.nativeElement.innerHTML);
         }
@@ -2312,7 +2315,7 @@ export class TaInputComponent
                             this.dateTimeInputDate.setMonth(
                                 parseInt(
                                     this.span1.nativeElement.innerHTML +
-                                        parseInt(e.key)
+                                    parseInt(e.key)
                                 ) - 1
                             )
                         );
@@ -2365,7 +2368,7 @@ export class TaInputComponent
                             this.dateTimeInputDate.setDate(
                                 parseInt(
                                     this.span2.nativeElement.innerHTML +
-                                        parseInt(e.key)
+                                    parseInt(e.key)
                                 )
                             )
                         );
@@ -2453,7 +2456,7 @@ export class TaInputComponent
                             this.dateTimeInputDate.setMonth(
                                 parseInt(
                                     this.span1.nativeElement.innerHTML +
-                                        parseInt(e.key)
+                                    parseInt(e.key)
                                 ) - 1
                             )
                         );

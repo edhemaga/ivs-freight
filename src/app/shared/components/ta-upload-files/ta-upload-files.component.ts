@@ -82,6 +82,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
+    @Input() dropZoneIndex: number = 0;
 
     //Carousel
     @Input() dontUseSlider: boolean = false;

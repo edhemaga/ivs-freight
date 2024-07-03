@@ -27,7 +27,6 @@ import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -55,6 +54,7 @@ import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
+import { TaCommentHighlistComponentPipe } from './pipes/ta-comment-higlits-comment.pipe';
 
 @Component({
     selector: 'app-ta-comment',
@@ -72,7 +72,7 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
 
         // pipes
         SafeHtmlPipe,
-
+        TaCommentHighlistComponentPipe,
         // components
         TaAppTooltipV2Component,
     ],
@@ -94,12 +94,15 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() isMe?: boolean = false;
     @Input() isEditButtonDisabled?: boolean = false;
 
+    @Input() isDetailsCommentLayout?: boolean = false;
+
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() closeDropdown = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
     private placeholder: string = CommentStringEnum.WRITE_COMMENT_PLACEHOLDER;
+
     public commentAvatar: SafeResourceUrl;
 
     public isCommenting: boolean = true;
@@ -114,30 +117,35 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public editingCardComment: boolean = false;
 
     public loggedUserCommented: boolean;
+
     constructor(
-        private imageBase64Service: ImageBase64Service,
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer,
+
+        // services
         private formatDatePipe: FormatDatePipe,
         private commentsService: CommentsService,
         private loadService: LoadService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
-        private taInputDropdownTableService: TaInputDropdownTableService,
-        private cdr: ChangeDetectorRef,
-        private sanitizer: DomSanitizer
+        private taInputDropdownTableService: TaInputDropdownTableService
     ) {}
 
     ngOnInit(): void {
-        this.sanitazeAvatar();
+        this.commentAvatar =
+            this.commentData?.companyUser?.avatarFile?.url ?? null;
 
         this.commentData?.commentContent && this.patchCommentData();
 
         this.checkIfNewCommentOpen();
 
-        this.checkIfLoggedUserCommented(
-            this.commentCardsDataDropdown.companyUser.id
-        );
+        if (this.commentCardsDataDropdown) {
+            this.checkIfLoggedUserCommented(
+                this.commentCardsDataDropdown.companyUser.id
+            );
 
-        this.transformDate(this.commentCardsDataDropdown.createdAt);
+            this.transformDate(this.commentCardsDataDropdown.createdAt);
+        }
     }
 
     ngAfterViewInit(): void {
@@ -247,14 +255,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    private sanitazeAvatar(): void {
-        this.commentAvatar = this.commentData?.companyUser?.avatar
-            ? this.imageBase64Service.sanitizer(
-                  this.commentData.companyUser.avatar
-              )
-            : null;
-    }
-
     public toogleComment(comment: Comment): void {
         if (comment.isOpen) {
             this.commentCardsDataDropdown = { ...comment, isOpen: false };
@@ -315,6 +315,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.isEditing = false;
                 }
+
+                console.log('this.isEdited', this.isEdited);
 
                 const dateAndTimeNow =
                     MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(

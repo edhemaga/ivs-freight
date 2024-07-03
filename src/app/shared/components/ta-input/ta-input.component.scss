@@ -378,3 +378,19 @@
     @import './scss/ta-dropdown-input-image.scss';
     @import './scss/ta-input.placeholdericon-rightside.scss';
 }
+
+
+
+.input-fixed-placehoder { 
+    &-label {
+        color: $default-placeholderIcon;
+        position: absolute;
+        right: 0;
+        font-size: 14px;
+        top: 3px;
+    }
+
+    &-input {
+        padding-right: 25px !important;
+    }
+}

@@ -29,15 +29,17 @@
 
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-load-cards-container
+            <app-load-card
+                (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
                 [cardTitleLink]="cardTitleLink"
-                [displayRowsFront]="sendDataToCardsFront"
-                [displayRowsBack]="sendDataToCardsBack"
+                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
+                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
+                [page]="page"
                 [selectedTab]="selectedTab"
-            ></app-load-cards-container>
+            ></app-load-card>
 
             <!-- Show More -->
 
@@ -47,11 +49,11 @@
                     [ngStyle]="{ 'width.px': tableWidth }"
                 >
                     <div class="showing ta-font-semi-bold">
-                        {{ viewData.length }} OF
-                        {{ activeTableData.length }}
+                        {{ viewData?.length }} OF
+                        {{ activeTableData?.length }}
                     </div>
                     <ng-container
-                        *ngIf="viewData.length < activeTableData.length"
+                        *ngIf="viewData?.length < activeTableData?.length"
                     >
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"

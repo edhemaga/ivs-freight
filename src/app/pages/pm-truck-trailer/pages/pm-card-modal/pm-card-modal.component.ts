@@ -40,7 +40,7 @@ import { PMCardModalQuery } from '@pages/pm-truck-trailer/pages/pm-card-modal/st
 
 // Constants
 import { PMCardsModalData } from '@pages/pm-truck-trailer/pages/pm-card-modal/utils/constants/pm-cards-modal.constants';
-import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
+import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
 @Component({
     selector: 'app-pm-card-modal',
@@ -71,7 +71,7 @@ export class PMCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
-        LoadCardsModalConstants.defaultCardsValues;
+        CardsModalConstants.defaultCardsValues;
 
     public cardsAllData: CardRows[] = PMCardsModalData.allDataPMTruck;
 

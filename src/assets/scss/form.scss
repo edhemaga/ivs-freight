@@ -973,9 +973,11 @@
     margin-top: 26px;
     margin-bottom: 32px;
 
-    &.template-row {
-        grid-template-columns: 94px repeat(2, 249px);
+    &.edit-load {
+        grid-template-columns: 132px repeat(2, 230px);
+    }
 
+    &.template-row {
         .company-template-name-container {
             order: 2;
         }
@@ -1075,7 +1077,7 @@
 
 .load-ftl-second-row {
     display: grid;
-    grid-template-columns: 234px 370px;
+    grid-template-columns: 172px 432px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -1084,7 +1086,7 @@
 
 .load-ftl-third-row {
     display: grid;
-    grid-template-columns: 234px 200px 158px;
+    grid-template-columns: 308px 142px 142px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -1096,7 +1098,7 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
-    margin-bottom: 22px;
+    margin-bottom: 32px;
 }
 
 .load-shipper-contact-row {
@@ -1150,6 +1152,10 @@
         align-items: center;
         -moz-column-gap: 12px;
         column-gap: 12px;
+    }
+
+    &-driver {
+        margin-bottom: 6px;
     }
 }
 
@@ -1281,3 +1287,67 @@
 }
 
 // ------------------------------------------------ end ------------------------------------------------
+
+app-load-modal-stop
+    app-load-modal-stop-items
+    .input-custom-group
+    .input-control {
+    background-color: #fff;
+}
+
+.load-financial-payment .input-custom-group .input-control {
+    height: 29px !important;
+}
+
+app-load-modal {
+    .load-broker {
+        grid-template-columns: 310px 92px !important;
+
+        span:nth-child(3) {
+            display: none !important;
+        }
+    }
+}
+
+.load-shipper-stops {
+    grid-template-columns: 310px 92px !important;
+
+    div:nth-child(3) {
+        display: none;
+    }
+}
+
+.load-financial-container-override input {
+    text-decoration: line-through;
+}
+
+.load-stop-wait-time-grid {
+    .valid-focus-out-filled {
+        background-color: $white !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0 !important;
+    }
+
+    .inactive-filled {
+        .input-label {
+            display: none;
+        }
+    }
+
+    .input-control {
+        background-color: $white !important;
+        text-align: center;
+    }
+
+    &-wrapper {
+        &:hover {
+            background-color: $bw2;
+
+            .input-control {
+                background-color: $bw2 !important;
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@
     <app-ta-custom-card
         [cardName]="'Billing'"
         [subText]="!isBillingCardOpen ? '$' + cardData.baseRate : ''"
-        [hasCounter]="cardData.billingCount + 1"
+        [hasCounter]="billingCount"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
         [animationMarginParams]="{
@@ -27,8 +27,13 @@
                     <p
                         class="m-0 ta-font-medium"
                         [ngClass]="{
-                            'ta-font-semi-bold':
-                                billingData.title.includes('TOTAL')
+                            'ta-font-semi-bold': [
+                                'TOTAL RATE',
+                                'TONU RATE'
+                            ].includes(billingData.title),
+                            'tonu-rate':
+                                cardData?.tonuRate &&
+                                billingData.title !== 'TONU RATE'
                         }"
                     >
                         {{ billingData.title }}
@@ -37,8 +42,28 @@
                     <span
                         class="m-0"
                         [ngClass]="{
-                            'ta-font-semi-bold':
-                                billingData.title.includes('TOTAL')
+                            'ta-font-semi-bold': [
+                                'TOTAL RATE',
+                                'TONU RATE'
+                            ].includes(billingData.title),
+                            'tonu-rate':
+                                cardData?.tonuRate &&
+                                billingData.title !== 'TONU RATE'
+                        }"
+                        [ngStyle]="{
+                            color: billingData.title
+                                .toLowerCase()
+                                .includes('adjusted')
+                                ? '#9E47EC'
+                                : billingData.title
+                                      .toLowerCase()
+                                      .includes('driver')
+                                ? '#F89B2E'
+                                : billingData.title
+                                      .toLowerCase()
+                                      .includes('tonu')
+                                ? '#DF3C3C'
+                                : '#424242'
                         }"
                     >
                         ${{ billingData.value }}

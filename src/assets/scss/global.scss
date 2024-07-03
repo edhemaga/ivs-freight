@@ -130,7 +130,116 @@ body {
 }
 
 // Need to override to get scroll
-html body .repair-shop-card .ta-custom-card  .content-holder.openedCardClass {
+html body .content-holder .stop-items-wrapper app-load-modal-stop-items {
+    scrollbar-width: thin !important;
+}
+
+html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     overflow-x: scroll !important;
     scrollbar-width: thin !important;
+    overflow-x: scroll;
+    margin-left: 196px;
+    overflow-x: visible;
+    padding: 0;
+    scrollbar-width: thin !important;
+}
+
+.stop-items-number {
+    position: absolute;
+    width: 26px;
+    left: 26px;
+    top: auto;
+    border-top-width: 1px;
+    margin-top: -1px;
+}
+
+.stop-items-desc {
+    position: absolute;
+    width: 150px;
+    left: 60px;
+    top: auto;
+    border-top-width: 1px;
+    margin-top: -1px;
+}
+
+.dropdown-option {
+    &.booked {
+        .svgtext-template-text {
+            color: $ta-light-grey-2;
+        }
+    }
+    &.cancelled {
+        .svgtext-template-text {
+            color: $ta-red-14;
+        }
+    }
+    &.assigned {
+        .svgtext-template-text {
+            color: $ta-green-1;
+        }
+    }
+    &.unassigned {
+        .svgtext-template-text {
+            color: $muted;
+        }
+    }
+    &.dispatched {
+        .svgtext-template-text {
+            color: $ta-blue-13;
+        }
+    }
+    &.split {
+        .svgtext-template-text {
+            color: $ta-red-17;
+        }
+    }
+}
+
+.dragdrop-custom-placeholder {
+    background: $ta-light-grey-5;
+    box-shadow: 0px 0px 4px 0px #0000004d inset;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    height: 42px;
+    width: 100%;
+    display: flex;
+    border-radius: 3px;
+    max-width: 616px;
+}
+
+.load-stop-drag-icon {
+    display: none;
+}
+
+.cdk-drag-preview {
+    background-color: $white !important;
+    
+    .load-stop-counter-container {
+        display: none !important;
+    }
+
+    .load-stop-header-remove-btn {
+        display: block !important;
+    }
+
+    .load-stop-container {
+        .load-stop-drag-icon {
+            display: block;
+            svg path {
+                fill: $white !important;
+            }
+        }
+        .load-delete-drag-icon {
+            display: none;
+        }
+        .load-stop-header-bar {
+            background-color: $ta-black-2 !important;
+
+            .load-stop-content-up {
+                p,
+                span {
+                    color: $white !important;
+                }
+            }
+        }
+    }
 }

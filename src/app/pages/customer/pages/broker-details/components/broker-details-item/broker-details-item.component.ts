@@ -116,9 +116,9 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                 ...item,
                 companyUser: {
                     ...item.companyUser,
-                    avatar: item.companyUser.avatar
+                    avatar: /* item.companyUser.avatar
                         ? item.companyUser.avatar
-                        : BrokerDetailsSvgRoutes.profileIcon,
+                        : */ BrokerDetailsSvgRoutes.profileIcon,
                 },
                 commentContent: item.comment,
                 rating: item.thumb,

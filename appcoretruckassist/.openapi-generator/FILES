@@ -96,12 +96,16 @@ model/addressResponse.ts
 model/apUnit.ts
 model/apiAccidentPostRequest.ts
 model/apiAccidentPostRequest1.ts
+model/apiApplicantCdlPostRequest.ts
+model/apiApplicantCdlPostRequest1.ts
 model/apiApplicantCdlcardPostRequest.ts
 model/apiApplicantCdlcardPostRequest1.ts
 model/apiApplicantMedicalcertificatePostRequest.ts
 model/apiApplicantMedicalcertificatePostRequest1.ts
 model/apiApplicantMvrPostRequest.ts
 model/apiApplicantMvrPostRequest1.ts
+model/apiApplicantOwnerinfoCompanyPostRequest.ts
+model/apiApplicantOwnerinfoCompanyPostRequest1.ts
 model/apiApplicantPersonalPostRequest.ts
 model/apiApplicantPersonalPostRequest1.ts
 model/apiApplicantPreviousemployerDocumentsPostRequest.ts
@@ -293,7 +297,6 @@ model/createAccidentItemReviewCommand.ts
 model/createAccidentRecordCommand.ts
 model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
-model/createApplicantCdlInformationCommand.ts
 model/createApplicantCdlInformationReviewCommand.ts
 model/createApplicantCdlReviewCommand.ts
 model/createApplicantCommand.ts
@@ -307,7 +310,6 @@ model/createCompanyAccountLabelCommand.ts
 model/createCompanyContactCommand.ts
 model/createCompanyContactLabelCommand.ts
 model/createCompanyOfficeCommand.ts
-model/createCompanyOwnerInfoCommand.ts
 model/createCompanyOwnerInfoReviewCommand.ts
 model/createCompanyUserCommand.ts
 model/createContactEmailCommand.ts
@@ -373,10 +375,15 @@ model/departmentFilterResponse.ts
 model/departmentResponse.ts
 model/departmentShortResponse.ts
 model/disclosureReleaseFeedbackResponse.ts
+model/dispatchAssignedLoadListResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts
 model/dispatchBoardResponsePagination.ts
 model/dispatchHistoryDriverListResponse.ts
+model/dispatchHistoryGroupItemResponse.ts
+model/dispatchHistoryGroupListResponse.ts
+model/dispatchHistoryGroupResponse.ts
+model/dispatchHistoryGroupResponsePagination.ts
 model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
@@ -402,6 +409,7 @@ model/driverDetailsNotificationResponse.ts
 model/driverDetailsOffDutyLocationResponse.ts
 model/driverDetailsOwnerResponse.ts
 model/driverDetailsPayrollResponse.ts
+model/driverDispatchModalResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
@@ -543,6 +551,7 @@ model/intervalLabelResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
+model/invoiceAgingProgressBarResponse.ts
 model/itemFuel.ts
 model/legResponse.ts
 model/liveTrackingBaseResponse.ts
@@ -566,6 +575,7 @@ model/loadDriverInfo.ts
 model/loadItemUnit.ts
 model/loadListDto.ts
 model/loadListDtoPagination.ts
+model/loadListLoadStopResponse.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
@@ -590,6 +600,7 @@ model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
+model/loadStopLoadListResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
@@ -670,11 +681,13 @@ model/pMTruckShortResponse.ts
 model/pMTruckUnitListResponse.ts
 model/pMTruckUnitResponse.ts
 model/pMTruckUnitResponsePagination.ts
+model/parkingDispatchModalResponse.ts
 model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
 model/parkingShortResponse.ts
 model/parkingSlotCommand.ts
+model/parkingSlotDispatchModalResponse.ts
 model/parkingSlotResponse.ts
 model/parkingSlotShortResponse.ts
 model/parkingSlotType.ts
@@ -927,6 +940,8 @@ model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
 model/trailerFilterResponse.ts
+model/trailerFuelConsumptionChartResponse.ts
+model/trailerFuelConsumptionResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -973,7 +988,6 @@ model/updateAccidentItemReviewCommand.ts
 model/updateAccidentRecordCommand.ts
 model/updateAccidentRecordReviewCommand.ts
 model/updateApplicantCdlCommand.ts
-model/updateApplicantCdlInformationCommand.ts
 model/updateApplicantCdlInformationReviewCommand.ts
 model/updateApplicantCdlReviewCommand.ts
 model/updateApplicantCommand.ts
@@ -990,7 +1004,6 @@ model/updateCompanyCommand.ts
 model/updateCompanyContactCommand.ts
 model/updateCompanyContactLabelCommand.ts
 model/updateCompanyOfficeCommand.ts
-model/updateCompanyOwnerInfoCommand.ts
 model/updateCompanyOwnerInfoReviewCommand.ts
 model/updateCompanyPayrollCommand.ts
 model/updateCompanyUserCommand.ts

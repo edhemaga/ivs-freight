@@ -113,6 +113,53 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Assigned • Driver'
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex justify-content-center align-items-center gap-1"
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    card[cardRow.secondKey];
+                                                    else noAvatar
+                                                "
+                                            >
+                                                <img
+                                                    class="driver-avatar-svg"
+                                                    [src]="
+                                                        card[cardRow.secondKey]
+                                                    "
+                                                    alt="driver-image"
+                                                />
+                                            </ng-container>
+
+                                            <ng-template #noAvatar>
+                                                <ng-container
+                                                    *ngIf="card[cardRow.key]"
+                                                >
+                                                    <app-ta-profile-images
+                                                        [indx]="i"
+                                                        [size]="'small'"
+                                                        [type]="'driver'"
+                                                        [name]="
+                                                            card[cardRow.key]
+                                                        "
+                                                    ></app-ta-profile-images>
+                                                </ng-container>
+                                            </ng-template>
+                                            {{
+                                                card[cardRow.key] &&
+                                                card[cardRow.key] !== ''
+                                                    ? card[cardRow.key]
+                                                    : '/'
+                                            }}
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="cardRow.title === 'Mileage'"
                                     >
                                         <span>
@@ -121,14 +168,16 @@
                                         <ng-container
                                             *ngIf="card[cardRow.key] !== '/'"
                                         >
-                                            <span class="muted">mi</span>
+                                            <span class="small-muted">mi</span>
                                         </ng-container>
                                     </ng-container>
 
                                     <ng-container
                                         *ngIf="
-                                            cardRow.title === 'FHWA Exp.' ||
-                                            cardRow.title === 'Licence Exp.'
+                                            cardRow.title ===
+                                                'FHWA Inspection • Expiration' ||
+                                            cardRow.title ===
+                                                'Licence Detail • Expiration'
                                         "
                                     >
                                         <app-ta-progres-bar
@@ -166,6 +215,41 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                                'Title • State Issued' ||
+                                            cardRow.title ===
+                                                'Licence Detail • State Issued'
+                                        "
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !card[cardRow.key];
+                                                else titleState
+                                            "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #titleState>
+                                            <div
+                                                class="d-flex justify-content-center align-items-center gap-1"
+                                            >
+                                                <app-ta-state-image-text
+                                                    [stateAbbreviation]="
+                                                card?.[cardRow.key]
+                                                "
+                                                >
+                                                </app-ta-state-image-text>
+                                                <span class="small-muted"
+                                                    >•</span
+                                                >
+                                                <span class="small-muted">
+                                                    {{ card?.[cardRow.secondKey] }}</span
+                                                >
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="cardRow.title === 'Type'"
                                     >
                                         <svg-icon
@@ -185,10 +269,18 @@
                                         *ngIf="
                                             cardRow.title !== 'VIN' &&
                                             cardRow.title !== 'Mileage' &&
-                                            cardRow.title !== 'FHWA Exp.' &&
-                                            cardRow.title !== 'Licence Exp.' &&
+                                            cardRow.title !==
+                                                'FHWA Inspection • Expiration' &&
+                                            cardRow.title !==
+                                                'Licence Detail • Expiration' &&
                                             cardRow.title !== 'Color' &&
-                                            cardRow.title !== 'Type'
+                                            cardRow.title !== 'Type' &&
+                                            cardRow.title !==
+                                                'Title • State Issued' &&
+                                            cardRow.title !==
+                                                'Licence Detail • State Issued' &&
+                                            cardRow.title !==
+                                                'Assigned • Driver'
                                         "
                                     >
                                         {{

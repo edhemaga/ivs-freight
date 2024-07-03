@@ -750,7 +750,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
     private createDocumentsForRequest(): Array<Blob> {
         let documents: Array<Blob> = [];
-        this.files.map((item: UploadFile) => {
+        (this.files as UploadFile[]).map((item) => {
             if (item.realFile) documents.push(item.realFile);
         });
         return documents;
@@ -922,7 +922,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     ' ',
                     this.companyUser.lastName
                 ),
-                avatar: this.companyUser.avatar,
+                /*    avatar: this.companyUser.avatar, */
             },
             commentContent: '',
             createdAt: new Date().toISOString(),
