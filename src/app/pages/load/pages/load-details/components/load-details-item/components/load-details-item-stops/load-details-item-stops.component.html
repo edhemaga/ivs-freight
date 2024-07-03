@@ -163,7 +163,7 @@
 
         <ng-container
             *ngFor="
-                let stop of load?.stops;
+                let stop of loadStopData;
                 let i = index;
                 let first = first;
                 let last = last;
@@ -177,23 +177,21 @@
                         load?.statusType?.name !== 'Pending',
                     active: i === stopItemDropdownIndex
                 }"
+                [ngStyle]="{
+                    cursor: stop?.items?.length ? 'pointer' : 'unset'
+                }"
                 (click)="handleStopDropdownClick(i, stop?.items?.length)"
             >
-                <!-- [ngStyle]="{
-                    cursor: stop?.items?.length ? 'pointer' : 'unset'
-                }" -->
-
                 <!-- Stop Order -->
 
                 <div
                     class="d-flex align-items-center justify-content-center stop-order-box"
                     [ngStyle]="{
-                        background:
-                            stop?.milesType?.name === 'DeadHead'
-                                ? '#919191'
-                                : stop?.stopType?.name === 'Pickup'
-                                ? '#56B4AC'
-                                : '#E66767'
+                        background: !stop?.stopType?.id
+                            ? '#919191'
+                            : stop?.stopType?.id === 1
+                            ? '#56B4AC'
+                            : '#E66767'
                     }"
                 >
                     <p class="m-0 ta-font-bold">{{ stop?.stopOrder }}</p>
@@ -372,32 +370,71 @@
 
             <!-- Dropdown -->
 
-            <div
-                class="d-flex flex-column justify-content-center stops-main-item-dropdown"
-                [ngClass]="{
-                    expanded: i === stopItemDropdownIndex
-                }"
-            >
+            <ng-container *ngIf="stop?.items?.length">
                 <div
-                    class="d-flex flex-column justify-content-center stops-main-item-dropdown-inner"
+                    class="d-flex flex-column justify-content-center stops-main-item-dropdown"
+                    [ngClass]="{
+                        expanded: i === stopItemDropdownIndex
+                    }"
                 >
-                    <div class="align-items-center stop-items-header">
-                        <div class="align-items-center first-box">
+                    <div
+                        class="d-flex flex-column justify-content-center stops-main-item-dropdown-inner"
+                    >
+                        <div class="align-items-center stop-items-header">
+                            <div class="align-items-center first-box">
+                                <ng-container
+                                    *ngFor="
+                                        let stopItemsHeaderItem of stopItemsHeaderItems
+                                            | slice : 0 : 2;
+                                        let first = first;
+                                        trackBy: trackByIdentity
+                                    "
+                                >
+                                    <div
+                                        class="d-flex align-items-center box header-box"
+                                        [ngClass]="{
+                                            'justify-content-center': first
+                                        }"
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{ stopItemsHeaderItem.title }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+
                             <ng-container
                                 *ngFor="
                                     let stopItemsHeaderItem of stopItemsHeaderItems
-                                        | slice : 0 : 2;
-                                    let first = first;
+                                        | slice : 2;
                                     trackBy: trackByIdentity
                                 "
                             >
                                 <div
                                     class="d-flex align-items-center box header-box"
-                                    [ngClass]="{
-                                        'justify-content-center': first
-                                    }"
                                 >
-                                    <p class="m-0 ta-font-bold">
+                                    <svg-icon
+                                        class="icon"
+                                        [ngStyle]="{
+                                            'margin-right':
+                                                stopItemsHeaderItem.iconMargin
+                                        }"
+                                        [svgStyle]="{
+                                            'width.px': 14,
+                                            'height.px': 14
+                                        }"
+                                        [src]="stopItemsHeaderItem.icon"
+                                    ></svg-icon>
+
+                                    <p
+                                        class="m-0"
+                                        [ngClass]="
+                                            stopItemsHeaderItem.title?.length >
+                                            3
+                                                ? 'ta-font-bold'
+                                                : 'ta-font-medium'
+                                        "
+                                    >
                                         {{ stopItemsHeaderItem.title }}
                                     </p>
                                 </div>
@@ -406,90 +443,54 @@
 
                         <ng-container
                             *ngFor="
-                                let stopItemsHeaderItem of stopItemsHeaderItems
-                                    | slice : 2;
+                                let item of stop.items;
+                                let i = index;
                                 trackBy: trackByIdentity
                             "
                         >
-                            <div
-                                class="d-flex align-items-center box header-box"
-                            >
-                                <svg-icon
-                                    class="icon"
-                                    [ngStyle]="{
-                                        'margin-right':
-                                            stopItemsHeaderItem.iconMargin
-                                    }"
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
-                                    [src]="stopItemsHeaderItem.icon"
-                                ></svg-icon>
+                            <div class="align-items-center stop-items-item">
+                                <div class="align-items-center first-box">
+                                    <div
+                                        class="d-flex align-items-center justify-content-center box header-box"
+                                    >
+                                        <p class="m-0 ta-font-medium">
+                                            {{ i + 1 }}
+                                        </p>
+                                    </div>
 
-                                <p
-                                    class="m-0"
-                                    [ngClass]="
-                                        stopItemsHeaderItem.title?.length > 3
-                                            ? 'ta-font-bold'
-                                            : 'ta-font-medium'
+                                    <div class="d-flex align-items-center box">
+                                        <p class="m-0 ta-font-medium">
+                                            {{ item.description }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <ng-container
+                                    *ngFor="
+                                        let property of item | keyValuePairs;
+                                        trackBy: trackByIdentity
                                     "
                                 >
-                                    {{ stopItemsHeaderItem.title }}
-                                </p>
+                                    <ng-container
+                                        *ngIf="
+                                            property.key !== 'id' &&
+                                            property.key !== 'description'
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center box"
+                                        >
+                                            <p class="m-0">
+                                                {{ property.value }}
+                                            </p>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
                             </div>
                         </ng-container>
                     </div>
-
-                    <ng-container
-                        *ngFor="
-                            let item of dummyItems;
-                            let i = index;
-                            trackBy: trackByIdentity
-                        "
-                    >
-                        <div class="align-items-center stop-items-item">
-                            <div class="align-items-center first-box">
-                                <div
-                                    class="d-flex align-items-center justify-content-center box header-box"
-                                >
-                                    <p class="m-0 ta-font-medium">
-                                        {{ i + 1 }}
-                                    </p>
-                                </div>
-
-                                <div class="d-flex align-items-center box">
-                                    <p class="m-0 ta-font-medium">
-                                        {{ item.description }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <ng-container
-                                *ngFor="
-                                    let property of item
-                                        | keyvalue
-                                            : loadDetailsItemHelper.keepItemsOriginalOrder;
-                                    trackBy: trackByIdentity
-                                "
-                            >
-                                <ng-container
-                                    *ngIf="
-                                        property.key !== 'id' &&
-                                        property.key !== 'description'
-                                    "
-                                >
-                                    <div class="d-flex align-items-center box">
-                                        <p class="m-0">
-                                            {{ property.value }}
-                                        </p>
-                                    </div>
-                                </ng-container>
-                            </ng-container>
-                        </div>
-                    </ng-container>
                 </div>
-            </div>
+            </ng-container>
         </ng-container>
 
         <!-- Map -->

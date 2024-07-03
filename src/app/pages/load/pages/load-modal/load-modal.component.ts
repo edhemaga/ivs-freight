@@ -2817,8 +2817,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
-                    legHours: item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
-                    legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
+                    legHours:
+                        item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
+                    legMinutes:
+                        item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
                     items: this.remapStopItems(this.extraStopItems[index]),
                 });
             });

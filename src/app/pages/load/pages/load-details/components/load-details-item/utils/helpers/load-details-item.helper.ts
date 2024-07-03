@@ -1,5 +1,3 @@
-import { KeyValue } from '@angular/common';
-
 // models
 import { StopItemsHeaderItem } from '@pages/load/pages/load-details/components/load-details-item/models/stop-items-header-item.model';
 
@@ -69,30 +67,6 @@ export class LoadDetailsItemHelper {
                 title: 'CODE ',
             },
         ];
-    }
-
-    static keepItemsOriginalOrder(
-        a: KeyValue<string, any>,
-        b: KeyValue<string, any>
-    ): number {
-        const keys = [
-            'id',
-            'description',
-            'quantity',
-            'tmp',
-            'weight',
-            'length',
-            'height',
-            'tarp',
-            'stack',
-            'secure',
-            'bolNo',
-            'pickupNo',
-            'sealNo',
-            'code',
-        ];
-
-        return keys.indexOf(a.key) - keys.indexOf(b.key);
     }
 
     static removeNumbersFromStatusString(statusString: string) {
