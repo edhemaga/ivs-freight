@@ -3,9 +3,12 @@
 .load-status {
     font-size: 11px;
     
-    &-r {
-        background-color: $ta-orange-1;
-        color: $white;
+    &-loaded,
+    &-repairdispatched {
+        &-r {
+            background-color: $ta-orange-1;
+            color: $white;
+        }
     }
 
     &-badge {

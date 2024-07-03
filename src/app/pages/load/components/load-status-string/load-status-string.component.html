@@ -12,7 +12,7 @@
                 ? (status.valueForRequest | loadStatusColor : true)
                 : {}
         "
-        [class]="'load-status load-status-' + value.toLowerCase()"
+        [class]="'load-status load-status-' + className + '-' + value.toLowerCase()"
         [ngClass]="{
             'load-status-badge': value.length === 1,
             'mr-1': value.length === 1 && index === 0,
