@@ -22,7 +22,7 @@ export class TrailerCardsModalConfig {
             key: 'tableModel',
         },
         {
-            title: 'Lenght',
+            title: 'Length',
             key: 'trailerLength',
             secondKey: 'name',
         },
@@ -74,7 +74,7 @@ export class TrailerCardsModalConfig {
             key: 'tableModel',
         },
         {
-            title: 'Lenght',
+            title: 'Length',
             key: 'trailerLength',
             secondKey: 'name',
         },

@@ -23,6 +23,8 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TrailerCardComponent } from '@pages/trailer/pages/trailer-card/trailer-card.component';
+import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -45,6 +47,8 @@ import { trailerCardModalReducer } from '@pages/trailer/pages/trailer-card-modal
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaProgresBarComponent,
+        TaStateImageTextComponent,
+        TaProfileImagesComponent,
 
         // pipes
         ThousandSeparatorPipe,
