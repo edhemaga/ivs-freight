@@ -1,4 +1,6 @@
-<div class="input-custom-group {{ _inputConfig.customClass }}" [ngClass]="{
+<div
+    class="input-custom-group {{ _inputConfig.customClass }}"
+    [ngClass]="{
         'custom-empty-hover': !focusInput && !selectedDropdownLabelColor,
         'custom-filled-hover':
             getSuperControl.value &&
@@ -48,16 +50,20 @@
         'input-remove-trash-can': _inputConfig.removeInput,
         'input-remove-background': _inputConfig.isInputBackgroundRemoved,
         'input-blue-text': _inputConfig.isBlueText
-    }">
+    }"
+>
     <!-- Input Clear -->
-    <div *ngIf="
+    <div
+        *ngIf="
             (!_inputConfig.hideClear &&
                 (!_inputConfig.isDisabled || _inputConfig.removeInput) &&
                 !_inputConfig.customClass?.includes('details-pages') &&
                 !_inputConfig.commands?.active &&
                 !_inputConfig?.loadingSpinner?.isLoading) ||
             _inputConfig.incorrectInput
-        " class="input-clear {{ _inputConfig.customClass }}" [ngClass]="{
+        "
+        class="input-clear {{ _inputConfig.customClass }}"
+        [ngClass]="{
             focus:
                 focusInput &&
                 getSuperControl.value &&
@@ -131,38 +137,67 @@
                     !_inputConfig.blackInput &&
                     !_inputConfig.mergeDropdownBodyWithInput),
             'trash-can-svg': _inputConfig.removeInput
-        }" ngbTooltip [mainTooltip]="
+        }"
+        ngbTooltip
+        [mainTooltip]="
             _inputConfig.incorrectInput
                 ? 'Mark Incorrect'
                 : _inputConfig.removeInput
                 ? 'Remove'
                 : 'Clear'
-        " [tooltipBackground]="
+        "
+        [tooltipBackground]="
             _inputConfig.incorrectInput ? '#ef5350' : '#2F2F2F'
-        " position="top" (click)="clearInput($event)">
-        <svg-icon [src]="
+        "
+        position="top"
+        (click)="clearInput($event)"
+    >
+        <svg-icon
+            [src]="
                 _inputConfig.removeInput
                     ? 'assets/svg/common/ic_remove_input.svg'
                     : 'assets/svg/ic_x.svg'
-            " class="input-clear-x"></svg-icon>
+            "
+            class="input-clear-x"
+        ></svg-icon>
     </div>
 
     <!-- Input Clear for dispatch dropdown -->
-    <div *ngIf="template == 'svgtext-dispatch-template'" class="input-clear-dispatch" position="top" (click)="clearInput($event)">
-        <svg-icon [src]="'assets/svg/common/ic_x.svg'" class="input-clear-dispatch-icon"></svg-icon>
+    <div
+        *ngIf="template == 'svgtext-dispatch-template'"
+        class="input-clear-dispatch"
+        position="top"
+        (click)="clearInput($event)"
+    >
+        <svg-icon
+            [src]="'assets/svg/common/ic_x.svg'"
+            class="input-clear-dispatch-icon"
+        ></svg-icon>
     </div>
     <!-- Input Pen -->
-    <div *ngIf="
+    <div
+        *ngIf="
             selectedDropdownLabelColor &&
             !editInputMode &&
             !focusInput &&
             getSuperControl.value
-        " class="input-pen-container" ngbTooltip [mainTooltip]="'Edit'" [tooltipBackground]="'#2F2F2F'" position="top" (click)="onEditInput($event)">
-        <svg-icon src="assets/svg/ic_spec_input_pen.svg" class="input-pen"></svg-icon>
+        "
+        class="input-pen-container"
+        ngbTooltip
+        [mainTooltip]="'Edit'"
+        [tooltipBackground]="'#2F2F2F'"
+        position="top"
+        (click)="onEditInput($event)"
+    >
+        <svg-icon
+            src="assets/svg/ic_spec_input_pen.svg"
+            class="input-pen"
+        ></svg-icon>
     </div>
 
     <!-- Input Invalid Danger Mark -->
-    <svg-icon *ngIf="
+    <svg-icon
+        *ngIf="
             ((touchedInput || getSuperControl.touched) &&
                 getSuperControl.value &&
                 getSuperControl.invalid &&
@@ -174,11 +209,16 @@
                 !_inputConfig.dropdownLabel &&
                 !_inputConfig.hideDangerMark) ||
             _inputConfig.dangerMark
-        " class="input-invalid-danger-mark  {{ _inputConfig.customClass }}" src="assets/svg/common/ic_danger.svg">
+        "
+        class="input-invalid-danger-mark  {{ _inputConfig.customClass }}"
+        src="assets/svg/common/ic_danger.svg"
+    >
     </svg-icon>
 
     <!-- Input Valid Check -->
-    <svg-icon class="input-required-check {{ _inputConfig.customClass }}" *ngIf="
+    <svg-icon
+        class="input-required-check {{ _inputConfig.customClass }}"
+        *ngIf="
             getSuperControl.value &&
             getSuperControl.valid &&
             !focusInput &&
@@ -190,27 +230,41 @@
             !_inputConfig.incorrectInput &&
             !_inputConfig?.loadingSpinner?.isLoading &&
             !_inputConfig.dropdownLabel
-        " src="assets/svg/common/ic_confirm.svg"></svg-icon>
+        "
+        src="assets/svg/common/ic_confirm.svg"
+    ></svg-icon>
 
     <!-- Input Loading spinner -->
-    <div *ngIf="
+    <div
+        *ngIf="
             _inputConfig?.loadingSpinner?.isLoading && !_inputConfig.isDisabled
-        " class="input-loading-spinner">
-        <app-ta-spinner [size]="_inputConfig.loadingSpinner?.size" [color]="_inputConfig.loadingSpinner?.color"></app-ta-spinner>
+        "
+        class="input-loading-spinner"
+    >
+        <app-ta-spinner
+            [size]="_inputConfig.loadingSpinner?.size"
+            [color]="_inputConfig.loadingSpinner?.color"
+        ></app-ta-spinner>
     </div>
 
     <!-- Input Password Caps Lock -->
-    <p *ngIf="
+    <p
+        *ngIf="
             capsLockOn &&
             _inputConfig.type === 'password' &&
             focusInput &&
             !_inputConfig.isDisabled
-        " class="password-capslock">
+        "
+        class="password-capslock"
+    >
         Caps Lock is ON
     </p>
 
     <!-- Input Password Eye -->
-    <div *ngIf="_inputConfig.type === 'password' && getSuperControl.value" class="input-password-eye {{ _inputConfig.customClass }}" [ngClass]="{
+    <div
+        *ngIf="_inputConfig.type === 'password' && getSuperControl.value"
+        class="input-password-eye {{ _inputConfig.customClass }}"
+        [ngClass]="{
             visible: getSuperControl.value,
             inactive: _inputConfig.isDisabled,
             'valid-focus-out':
@@ -234,16 +288,26 @@
                 getSuperControl.invalid &&
                 focusInput &&
                 !_inputConfig.isDisabled
-        }" ngbTooltip mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}" tooltipBackground="#2f2f2f" position="top" (click)="onTogglePassword($event)">
-        <svg-icon src="{{
+        }"
+        ngbTooltip
+        mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
+        tooltipBackground="#2f2f2f"
+        position="top"
+        (click)="onTogglePassword($event)"
+    >
+        <svg-icon
+            src="{{
                 !togglePassword
                     ? 'assets/svg/common/ic_eye-visible.svg'
                     : 'assets/svg/common/ic_eye-hidden.svg'
-            }}"></svg-icon>
+            }}"
+        ></svg-icon>
     </div>
 
     <!-- Input Dropdown Arrow -->
-    <svg-icon class="input-dropdown-arrow {{ _inputConfig.customClass }}" *ngIf="
+    <svg-icon
+        class="input-dropdown-arrow {{ _inputConfig.customClass }}"
+        *ngIf="
             (!_inputConfig.hideDropdownArrow &&
                 (_inputConfig.isDropdown || _inputConfig.dropdownLabel) &&
                 !_inputConfig.multiSelectDropdownActive &&
@@ -253,7 +317,8 @@
                 _inputConfig.name == 'datepickerBankCard') &&
                 !_inputConfig.incorrectInput &&
                 !_inputConfig.isDisabled)
-        " [ngClass]="{
+        "
+        [ngClass]="{
             focus: focusInput,
             'valid-focus-in':
                 (!_inputConfig.dropdownLabel &&
@@ -302,65 +367,115 @@
                 getSuperControl.value &&
                 getSuperControl.invalid &&
                 !_inputConfig.isDisabled
-        }" src="assets/svg/common/ic_arrow_input.svg" (click)="toggleDropdownOptions()"></svg-icon>
+        }"
+        src="assets/svg/common/ic_arrow_input.svg"
+        (click)="toggleDropdownOptions()"
+    ></svg-icon>
 
     <!-- Input Commands -->
-    <div *ngIf="_inputConfig.commands?.active && isVisibleCommands" class="ta-input-commands" [ngClass]="{
+    <div
+        *ngIf="_inputConfig.commands?.active && isVisibleCommands"
+        class="ta-input-commands"
+        [ngClass]="{
             'blue-commands': _inputConfig.commands?.blueCommands,
             'blue-commands-focus':
                 focusInput &&
                 _inputConfig.commands?.blueCommands &&
                 _inputConfig.commands?.active &&
                 isVisibleCommands
-        }">
-        <div class="ta-input-command-first" ngbTooltip [mainTooltip]="_inputConfig.commands?.firstCommand?.popup?.name" [tooltipBackground]="
+        }"
+    >
+        <div
+            class="ta-input-command-first"
+            ngbTooltip
+            [mainTooltip]="_inputConfig.commands?.firstCommand?.popup?.name"
+            [tooltipBackground]="
                 _inputConfig.commands?.firstCommand?.popup?.backgroundColor
-            " [disableTooltip]="!_inputConfig.commands?.firstCommand?.popup" position="top">
-            <svg-icon class="ta-input-command-svg-first" [src]="_inputConfig.commands.firstCommand.svg" (click)="
+            "
+            [disableTooltip]="!_inputConfig.commands?.firstCommand?.popup"
+            position="top"
+        >
+            <svg-icon
+                class="ta-input-command-svg-first"
+                [src]="_inputConfig.commands.firstCommand.svg"
+                (click)="
                     onCommands(
                         $event,
                         _inputConfig.commands.type,
                         _inputConfig.commands.firstCommand.name
                     )
-                "></svg-icon>
+                "
+            ></svg-icon>
         </div>
-        <div class="ta-input-command-second" ngbTooltip [mainTooltip]="_inputConfig.commands?.secondCommand?.popup?.name" [tooltipBackground]="
+        <div
+            class="ta-input-command-second"
+            ngbTooltip
+            [mainTooltip]="_inputConfig.commands?.secondCommand?.popup?.name"
+            [tooltipBackground]="
                 _inputConfig.commands?.secondCommand?.popup?.backgroundColor
-            " [disableTooltip]="!_inputConfig.commands?.secondCommand?.popup" position="top">
-            <svg-icon class="ta-input-command-svg-second" [src]="_inputConfig.commands.secondCommand.svg" (click)="
+            "
+            [disableTooltip]="!_inputConfig.commands?.secondCommand?.popup"
+            position="top"
+        >
+            <svg-icon
+                class="ta-input-command-svg-second"
+                [src]="_inputConfig.commands.secondCommand.svg"
+                (click)="
                     onCommands(
                         $event,
                         _inputConfig.commands.type,
                         _inputConfig.commands.secondCommand.name
                     )
-                "></svg-icon>
+                "
+            ></svg-icon>
         </div>
         <ng-container *ngIf="_inputConfig.commands?.thirdCommand">
-            <div class="ta-input-command-third" ngbTooltip [mainTooltip]="_inputConfig.commands?.thirdCommand?.popup?.name" [tooltipBackground]="
+            <div
+                class="ta-input-command-third"
+                ngbTooltip
+                [mainTooltip]="_inputConfig.commands?.thirdCommand?.popup?.name"
+                [tooltipBackground]="
                     _inputConfig.commands?.thirdCommand?.popup?.backgroundColor
-                " [disableTooltip]="!_inputConfig.commands?.thirdCommand?.popup" position="top">
-                <svg-icon class="ta-input-command-svg-third" [src]="_inputConfig.commands.thirdCommand.svg" (click)="
+                "
+                [disableTooltip]="!_inputConfig.commands?.thirdCommand?.popup"
+                position="top"
+            >
+                <svg-icon
+                    class="ta-input-command-svg-third"
+                    [src]="_inputConfig.commands.thirdCommand.svg"
+                    (click)="
                         onCommands(
                             $event,
                             _inputConfig.commands.type,
                             _inputConfig.commands.thirdCommand.name
                         )
-                    "></svg-icon>
+                    "
+                ></svg-icon>
             </div>
         </ng-container>
     </div>
 
     <!-- Input Placeholder Icon -->
-    <div *ngIf="
+    <div
+        *ngIf="
             _inputConfig.placeholderIcon ||
             _inputConfig.name === 'datepicker' ||
             _inputConfig.name === 'timepicker'
-        " #t2="ngbPopover" [ngbPopover]="dateTimePopover" [disablePopover]="
+        "
+        #t2="ngbPopover"
+        [ngbPopover]="dateTimePopover"
+        [disablePopover]="
             (_inputConfig.name !== 'datepicker' &&
                 _inputConfig.name !== 'timepicker' &&
                 _inputConfig.name !== 'datepickerBankCard') ||
             _inputConfig.isDisabled
-        " [placement]="['left', 'left-top']" [popoverClass]="'datetimepopovermain'" autoClose="outside" [container]="'body'" class="input-icon {{ _inputConfig.customClass }}" [ngClass]="{
+        "
+        [placement]="['left', 'left-top']"
+        [popoverClass]="'datetimepopovermain'"
+        autoClose="outside"
+        [container]="'body'"
+        class="input-icon {{ _inputConfig.customClass }}"
+        [ngClass]="{
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
             'default-svg-color':
@@ -407,27 +522,45 @@
                 !_inputConfig.isDisabled,
             hidden: _inputConfig.type === 'password' && getSuperControl.value,
             'cursor-pointer': editInputMode
-        }" ngbTooltip [mainTooltip]="'Change Color'" [tooltipBackground]="'#424242'" [disableTooltip]="!editInputMode" position="bottom" (shown)="onPopoverShown()" (hidden)="onPopoverHidden()" (click)="onPlaceholderIconEvent($event)">
-        <svg-icon appHoverSvg [stretch]="true" [fill]="
+        }"
+        ngbTooltip
+        [mainTooltip]="'Change Color'"
+        [tooltipBackground]="'#424242'"
+        [disableTooltip]="!editInputMode"
+        position="bottom"
+        (shown)="onPopoverShown()"
+        (hidden)="onPopoverHidden()"
+        (click)="onPlaceholderIconEvent($event)"
+    >
+        <svg-icon
+            appHoverSvg
+            [stretch]="true"
+            [fill]="
                 _inputConfig.dropdownLabel || selectedDropdownLabelColor
                     ? selectedDropdownLabelColor?.code
                         ? selectedDropdownLabelColor.code
                         : '#b7b7b7'
                     : null
-            " [fillHover]="
+            "
+            [fillHover]="
                 (_inputConfig.dropdownLabel || selectedDropdownLabelColor) &&
                 editInputMode
                     ? selectedDropdownLabelColor?.hoverCode
                         ? selectedDropdownLabelColor.hoverCode
                         : null
                     : null
-            " [src]="
+            "
+            [src]="
                 _inputConfig.placeholderIcon?.toLowerCase() | taSvg : 'common'
-            "></svg-icon>
+            "
+        ></svg-icon>
     </div>
 
     <!-- Input Placeholder Text -->
-    <svg-icon *ngIf="_inputConfig.placeholderText && getSuperControl.value" class="placeholder-text {{ _inputConfig.customClass }}" [ngClass]="{
+    <svg-icon
+        *ngIf="_inputConfig.placeholderText && getSuperControl.value"
+        class="placeholder-text {{ _inputConfig.customClass }}"
+        [ngClass]="{
             focus: focusInput,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
             'valid-focus-in':
@@ -459,25 +592,40 @@
                 (touchedInput || getSuperControl.touched) &&
                 !focusInput &&
                 !_inputConfig.isDisabled
-        }" [style.left]="
+        }"
+        [style.left]="
             focusInput &&
             _inputConfig.placeholderText?.toLowerCase() !== 'months'
                 ? 'auto'
                 : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px'
-        " [style.right]="
+        "
+        [style.right]="
             focusInput &&
             _inputConfig.placeholderText?.toLowerCase() !== 'months'
                 ? '28px'
                 : 'auto'
-        " [src]="_inputConfig.placeholderText?.toLowerCase() | taSvg : 'common'">
+        "
+        [src]="_inputConfig.placeholderText?.toLowerCase() | taSvg : 'common'"
+    >
     </svg-icon>
 
     <!-- DateTime Picker -->
-    <div #holder1 class="date_time_holder input-control" *ngIf="
+    <div
+        #holder1
+        class="date_time_holder input-control"
+        *ngIf="
             (_inputConfig.name === 'datepicker' ||
                 _inputConfig.name === 'timepicker') &&
             !_inputConfig.isDisabled
-        " [class.active]="showDateInput" tabindex="-1" (mousedown)="selectLastOneForSelection()" (mouseup)="selectLastOneAfterMoseUp()" (paste)="onDatePaste($event)" (blur)="onBlur()" (keydown)="changeSelection($event, true)" [ngClass]="{
+        "
+        [class.active]="showDateInput"
+        tabindex="-1"
+        (mousedown)="selectLastOneForSelection()"
+        (mouseup)="selectLastOneAfterMoseUp()"
+        (paste)="onDatePaste($event)"
+        (blur)="onBlur()"
+        (keydown)="changeSelection($event, true)"
+        [ngClass]="{
             focus: focusInput,
             'valid-focus-in':
                 (getSuperControl.value &&
@@ -540,29 +688,68 @@
                 !_inputConfig.multipleInputValues?.options.length &&
                 !_inputConfig.isDisabled,
             dark: _inputConfig.customClass === 'datetimeclass dark'
-        }">
-        <span #span1 class="main" tabindex="0" (focus)="onFocus($event)" (mouseup)="setSelection($event)" (keydown)="changeSelection($event)" (blur)="onBlur()" [innerHTML]="_inputConfig.name === 'datepicker' ? 'mm' : 'HH'"></span>
+        }"
+    >
+        <span
+            #span1
+            class="main"
+            tabindex="0"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
+        ></span>
         <span>
             <div
                 class="border-picker"
                 [innerHTML]="_inputConfig.name === 'datepicker' ? '/' : ':'"
             ></div>
         </span>
-        <span #span2 class="main" tabindex="1" (focus)="onFocus($event)" (mouseup)="setSelection($event)" (keydown)="changeSelection($event)" (blur)="onBlur()" [innerHTML]="_inputConfig.name === 'datepicker' ? 'dd' : 'MM'"></span>
+        <span
+            #span2
+            class="main"
+            tabindex="1"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
+        ></span>
         <span>
             <div
                 class="border-picker"
                 [innerHTML]="_inputConfig.name === 'datepicker' ? '/' : ' '"
             ></div>
         </span>
-        <span #span3 class="main" tabindex="2" (focus)="onFocus($event)" (mouseup)="setSelection($event)" (keydown)="changeSelection($event)" (blur)="onBlur()" [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"></span>
+        <span
+            #span3
+            class="main"
+            tabindex="2"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+        ></span>
     </div>
 
     <!-- Bank Card Expire Date Picker -->
-    <div #holder1 class="date_time_holder date_time_holder_bank_card input-control" *ngIf="
+    <div
+        #holder1
+        class="date_time_holder date_time_holder_bank_card input-control"
+        *ngIf="
             _inputConfig.name === 'datepickerBankCard' &&
             !_inputConfig.isDisabled
-        " [class.active]="showDateInput" tabindex="-1" (mousedown)="selectLastOneForSelection()" (mouseup)="selectLastOneAfterMoseUp()" (paste)="onDatePaste($event)" (blur)="onBlur()" (keydown)="changeSelection($event, true)" [ngClass]="{
+        "
+        [class.active]="showDateInput"
+        tabindex="-1"
+        (mousedown)="selectLastOneForSelection()"
+        (mouseup)="selectLastOneAfterMoseUp()"
+        (paste)="onDatePaste($event)"
+        (blur)="onBlur()"
+        (keydown)="changeSelection($event, true)"
+        [ngClass]="{
             focus: focusInput,
             'valid-focus-in':
                 (getSuperControl.value &&
@@ -625,29 +812,54 @@
                 !_inputConfig.multipleInputValues?.options.length &&
                 !_inputConfig.isDisabled,
             dark: _inputConfig.customClass === 'datetimeclass dark'
-        }">
-        <span #span1 class="main" tabindex="0" (focus)="onFocus($event)" (mouseup)="setSelection($event)" (keydown)="changeSelection($event)" (blur)="onBlur()" [innerHTML]="'mm'"></span>
+        }"
+    >
+        <span
+            #span1
+            class="main"
+            tabindex="0"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'mm'"
+        ></span>
         <span>
             <div class="border-picker" [innerHTML]="'/'"></div>
         </span>
-        <span #span2 class="main" tabindex="1" (focus)="onFocus($event)" (mouseup)="setSelection($event)" (keydown)="changeSelection($event)" (blur)="onBlur()" [innerHTML]="'yy'"></span>
+        <span
+            #span2
+            class="main"
+            tabindex="1"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'yy'"
+        ></span>
     </div>
 
     <!-- Input Label Counter -->
-    <p *ngIf="
+    <p
+        *ngIf="
             selectedDropdownLabelColor &&
             getSuperControl.value &&
             !focusInput &&
             !_inputConfig.isDisabled &&
             _inputConfig.showCount
-        " [style.top]="'4px'" [style.left]="
+        "
+        [style.top]="'4px'"
+        [style.left]="
             (getSuperControl.value?.toString()?.length + 6.5) * 8 + 'px'
-        " class="input-label-counter">
+        "
+        class="input-label-counter"
+    >
         {{ selectedDropdownLabelColor.count }}
     </p>
 
     <!-- Special Dropdown Selected SVG with or Without Text -->
-    <svg-icon *ngIf="
+    <svg-icon
+        *ngIf="
             _inputConfig?.dropdownImageInput?.svg &&
             !_inputConfig?.hideAllItemsInInputDropdown &&
             !(!_inputConfig.dropdownImageInput?.withText && focusInput) &&
@@ -659,33 +871,49 @@
                 _inputConfig.dropdownImageInput?.remove
             ) &&
             !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
-        " [src]="_inputConfig.dropdownImageInput?.url" class="dropdown-selected-image {{
+        "
+        [src]="_inputConfig.dropdownImageInput?.url"
+        class="dropdown-selected-image {{
             _inputConfig.dropdownImageInput?.class
-        }}" [ngClass]="{
+        }}"
+        [ngClass]="{
             'unset-color': focusInput && _inputConfig.dropdownImageInput?.class
-        }" [svgStyle]="{
+        }"
+        [svgStyle]="{
             fill:
                 _inputConfig.dropdownImageInput?.color && !focusInput
                     ? _inputConfig.dropdownImageInput?.color
                     : '#ffffff'
-        }">
+        }"
+    >
     </svg-icon>
 
     <!-- Special Dropdown Selected Image With Text With Initials name -->
-    <img *ngIf="
+    <img
+        *ngIf="
             _inputConfig?.dropdownImageInput?.image &&
             !_inputConfig?.hideAllItemsInInputDropdown &&
             _inputConfig?.dropdownImageInput?.url &&
             !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
-        " class="dropdown-selected-image name-initials-instead-url" [src]="
-           _inputConfig?.dropdownImageInput?.url
-        " [alt]="'Input Image'" />
-    <div *ngIf="
+        "
+        class="dropdown-selected-image name-initials-instead-url"
+        [src]="_inputConfig?.dropdownImageInput?.url"
+        [alt]="'Input Image'"
+    />
+    <div
+        *ngIf="
             _inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
             !_inputConfig?.hideAllItemsInInputDropdown &&
             !(!_inputConfig.dropdownImageInput?.withText && focusInput)
-        " class="no-profile-image dropdown-selected-image name-initials-instead-url">
-        <app-ta-profile-images [indx]="0" [size]="'small'" [type]="'user'" [name]="_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl">
+        "
+        class="no-profile-image dropdown-selected-image name-initials-instead-url"
+    >
+        <app-ta-profile-images
+            [indx]="0"
+            [size]="'small'"
+            [type]="'user'"
+            [name]="_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
+        >
         </app-ta-profile-images>
     </div>
     <!-- ------------------------- -->
@@ -693,16 +921,23 @@
     <!-- Input Control -->
 
     <!-- Multiple Input Values -->
-    <div *ngIf="
+    <div
+        *ngIf="
             _inputConfig?.multipleInputValues?.options?.length && !focusInput
-        " class="input-control {{
+        "
+        class="input-control {{
             _inputConfig?.multipleInputValues?.customClass
-        }}" (click)="toggleDropdownOptions()">
-        <span style="display: flex; gap: 6px; align-items: center" *ngFor="
+        }}"
+        (click)="toggleDropdownOptions()"
+    >
+        <span
+            style="display: flex; gap: 6px; align-items: center"
+            *ngFor="
                 let item of _inputConfig.multipleInputValues.options;
                 let indx = index;
                 trackBy: trackIdentity
-            ">
+            "
+        >
             <!-- Image / SVG -->
             <span *ngIf="item?.logoName && item?.isImg">
                 <img
@@ -735,7 +970,10 @@
                 </div>
             </span>
 
-        <svg-icon *ngIf="item?.logoName && item?.isSvg" class="{{ item?.subFolder }}" [ngClass]="{
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                class="{{ item?.subFolder }}"
+                [ngClass]="{
                     'dispatch-semi-truck': item.id === 1,
                     'dispatch-semi-sleeper': item.id === 2,
                     'dispatch-box-truck': item.id === 3,
@@ -743,15 +981,22 @@
                     'dispatch-tow-truck': item.id === 5,
                     'dispatch-car-hauler': item.id === 6,
                     'dispatch-spotter': item.id === 7
-                }" [src]="item?.logoName"></svg-icon>
+                }"
+                [src]="item?.logoName"
+            ></svg-icon>
 
-        <!-- Text -->
-        <span *ngIf="!item?.isProgressBar" class="multiple-input-text" [ngStyle]="{
+            <!-- Text -->
+            <span
+                *ngIf="!item?.isProgressBar"
+                class="multiple-input-text"
+                [ngStyle]="{
                     color: '#2F2F2F'
-                }" [ngClass]="{
+                }"
+                [ngClass]="{
                     counter: item?.isCounter,
                     'counter-one': item?.value === 1
-                }">
+                }"
+            >
                 {{ item.value }}
                 <span
                     *ngIf="item?.second_value"
@@ -760,24 +1005,35 @@
                 >
             </span>
 
-        <!-- Load Broker ProgressBar -->
-        <app-load-modal-progress-bar *ngIf="item?.isProgressBar" [totalAmount]="item.second_value" [availableCredit]="item.value ? item.value : 0"></app-load-modal-progress-bar>
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+            ></app-load-modal-progress-bar>
         </span>
     </div>
 
     <!-- Multiple Input Placeholder -->
-    <div *ngIf="
+    <div
+        *ngIf="
             _inputConfig?.multipleInputValues?.options?.length &&
             focusInput &&
             !getSuperControl.value
-        " class="input-control multiple-input-placeholder {{
+        "
+        class="input-control multiple-input-placeholder {{
             _inputConfig?.multipleInputValues?.customClass
-        }}" [ngClass]="{ focus: focusInput }">
-        <span style="display: flex; gap: 6px; align-items: center" *ngFor="
+        }}"
+        [ngClass]="{ focus: focusInput }"
+    >
+        <span
+            style="display: flex; gap: 6px; align-items: center"
+            *ngFor="
                 let item of _inputConfig.multipleInputValues.options;
                 let indx = index;
                 trackBy: trackIdentity
-            ">
+            "
+        >
             <!-- Image / SVG -->
             <span
                 *ngIf="item?.logoName && item?.isImg"
@@ -806,32 +1062,55 @@
                 </div>
             </span>
 
-        <svg-icon *ngIf="item?.logoName && item?.isSvg" [ngClass]="{ 'focusable-svg': focusInput }" class="{{ item?.subFolder }} {{
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                [ngClass]="{ 'focusable-svg': focusInput }"
+                class="{{ item?.subFolder }} {{
                     item?.logoType.trim().replace(' ', '').toLowerCase()
-                }}" [src]="item?.logoName"></svg-icon>
+                }}"
+                [src]="item?.logoName"
+            ></svg-icon>
 
-        <!-- Text -->
-        <span *ngIf="!item?.isProgressBar" class="multiple-input-text" [ngClass]="{
+            <!-- Text -->
+            <span
+                *ngIf="!item?.isProgressBar"
+                class="multiple-input-text"
+                [ngClass]="{
                     'focusable-text': focusInput,
                     counter: item?.isCounter,
                     'counter-focus': item?.isCounter && focusInput,
                     'counter-one': item?.value === 1
-                }" [ngStyle]="{
+                }"
+                [ngStyle]="{
                     color: '#6F9EE0'
-                }">
+                }"
+            >
                 {{ item.value }}
                 <span *ngIf="item?.second_value">{{ item.second_value }}</span>
-        </span>
+            </span>
 
-        <!-- Load Broker ProgressBar -->
-        <app-load-modal-progress-bar *ngIf="item?.isProgressBar" [totalAmount]="item.second_value" [availableCredit]="item.value ? item.value : 0" [inputFocus]="focusInput"></app-load-modal-progress-bar>
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+                [inputFocus]="focusInput"
+            ></app-load-modal-progress-bar>
         </span>
     </div>
 
     <!-- Single Input Value -->
-    <input #input [type]="_inputConfig.type | inputType : togglePassword" [id]="_inputConfig.id ? _inputConfig.id : _inputConfig.name" [name]="_inputConfig.name" [disabled]="_inputConfig.isDisabled" [autocomplete]="
+    <input
+        #input
+        [type]="_inputConfig.type | inputType : togglePassword"
+        [id]="_inputConfig.id ? _inputConfig.id : _inputConfig.name"
+        [name]="_inputConfig.name"
+        [disabled]="_inputConfig.isDisabled"
+        [autocomplete]="
             _inputConfig.autocomplete ? _inputConfig.autocomplete : 'off'
-        " [pattern]="_inputConfig.pattern" [placeholder]="
+        "
+        [pattern]="_inputConfig.pattern"
+        [placeholder]="
             (_inputConfig.placeholderInsteadOfLabel &&
             _inputConfig.placeholder &&
             focusInput
@@ -840,12 +1119,21 @@
             (_inputConfig.placeholder && focusInput
                 ? _inputConfig.placeholder
                 : '')
-        " [minLength]="_inputConfig.minLength ? _inputConfig.minLength : 0" [maxLength]="_inputConfig.maxLength ? _inputConfig.maxLength : 999" [mask]="_inputConfig.mask" [min]="_inputConfig.min ? _inputConfig.min : 0" [max]="_inputConfig.max" [step]="_inputConfig.step ? _inputConfig.step : null"
-        [readOnly]="_inputConfig.readOnly" inputformat="dd-mm-yy" class="input-control
+        "
+        [minLength]="_inputConfig.minLength ? _inputConfig.minLength : 0"
+        [maxLength]="_inputConfig.maxLength ? _inputConfig.maxLength : 999"
+        [mask]="_inputConfig.mask"
+        [min]="_inputConfig.min ? _inputConfig.min : 0"
+        [max]="_inputConfig.max"
+        [step]="_inputConfig.step ? _inputConfig.step : null"
+        [readOnly]="_inputConfig.readOnly"
+        inputformat="dd-mm-yy"
+        class="input-control
     {{ _inputConfig.textTransform }}
     {{ _inputConfig.textAlign }}
     {{ _inputConfig.customClass }}
-    " [ngClass]="{
+    "
+        [ngClass]="{
             'input-fixed-placehoder-input':
                 _inputConfig.fixedPlacholder && input.value && !focusInput,
             focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
@@ -1006,17 +1294,32 @@
                 _inputConfig.mergeDropdownBodyWithInput,
             'dispatch-dropdown': template == 'svgtext-dispatch-template',
             'ta-font-bold text-uppercase': _inputConfig.statusStyle
-        }" (keypress)="onKeypress($event)" (keydown)="onKeydown($event)" (keyup)="onKeyup($event)" (blur)="onBlur($event)" (focus)="onFocus($event)" (select)="selectionChange($event)" (paste)="onPaste($event)" (input)="
+        }"
+        (keypress)="onKeypress($event)"
+        (keydown)="onKeydown($event)"
+        (keyup)="onKeyup($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event)"
+        (select)="selectionChange($event)"
+        (paste)="onPaste($event)"
+        (input)="
             onChange($event.target.value);
             transformText($event.target.value, false)
-        " [(ngModel)]="input.value" [ngStyle]="
+        "
+        [(ngModel)]="input.value"
+        [ngStyle]="
             _inputConfig.statusStyle ? (input.value | loadStatusColor) : ''
-        " />
+        "
+    />
 
     <!-- Input Label -->
-    <label *ngIf="!_inputConfig.multiSelectDropdownActive" [for]="_inputConfig.name" class="input-label {{ _inputConfig.customClass }} {{
+    <label
+        *ngIf="!_inputConfig.multiSelectDropdownActive"
+        [for]="_inputConfig.name"
+        class="input-label {{ _inputConfig.customClass }} {{
             _inputConfig.multipleLabel?.customClass
-        }}" [ngClass]="{
+        }}"
+        [ngClass]="{
             required: _inputConfig.isRequired && !_inputConfig.isDisabled,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'up-label':
@@ -1035,7 +1338,8 @@
                 _inputConfig?.multipleInputValues?.options?.length,
             'in-label-focus': focusInput && _inputConfig.labelInInput,
             'in-label': _inputConfig.labelInInput
-        }">
+        }"
+    >
         <span *ngIf="_inputConfig.label">{{ _inputConfig.label }} </span>
         <div
             *ngIf="_inputConfig.multipleLabel?.labels?.length"
@@ -1059,9 +1363,12 @@
     </label>
 
     <!-- Placeholder Icon on Right Side -->
-    <svg-icon *ngIf="_inputConfig.placeholderIconRightSide" class="placeholder-icon-right-side {{
+    <svg-icon
+        *ngIf="_inputConfig.placeholderIconRightSide"
+        class="placeholder-icon-right-side {{
             _inputConfig.placeholderIconColor
-        }}" [ngClass]="{
+        }}"
+        [ngClass]="{
             hide: focusInput && getSuperControl.value,
             focus: focusInput,
             'valid-focus-out':
@@ -1084,13 +1391,16 @@
                 getSuperControl.invalid &&
                 focusInput &&
                 !_inputConfig.isDisabled
-        }" [src]="
+        }"
+        [src]="
             _inputConfig.placeholderIconRightSide?.toLowerCase()
                 | taSvg : 'common'
-        "></svg-icon>
+        "
+    ></svg-icon>
 
     <!-- Input Error Message -->
-    <span *ngIf="
+    <span
+        *ngIf="
             !_inputConfig.hideErrorMessage &&
             !(!getSuperControl.value && focusInput) &&
             (touchedInput ||
@@ -1099,10 +1409,15 @@
             getSuperControl.invalid &&
             !_inputConfig.isInvalidSearchInDropdown &&
             !_inputConfig.isDisabled
-        " class="input-error {{ _inputConfig.customClass }}">
+        "
+        class="input-error {{ _inputConfig.customClass }}"
+    >
         {{ getSuperControl.errors | inputError : _inputConfig.name }}
     </span>
-    <span *ngIf="_inputConfig.fixedPlacholder && input.value" class="input-fixed-placehoder-label">{{ _inputConfig.fixedPlacholder }}</span
+    <span
+        *ngIf="_inputConfig.fixedPlacholder && input.value"
+        class="input-fixed-placehoder-label"
+        >{{ _inputConfig.fixedPlacholder }}</span
     >
 </div>
 
