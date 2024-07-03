@@ -53,6 +53,7 @@ import { DropdownCountPipe } from '@shared/components/ta-input-dropdown/pipes/dr
 import { HighlightSearchPipe } from '@shared/pipes/highlight-search.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { DropdownStatusPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-status-color.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -92,6 +93,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         DropdownCountPipe,
         HighlightSearchPipe,
         DropdownStatusPipe,
+        LoadStatusColorPipe,
 
         // Directive
         HoverSvgDirective,

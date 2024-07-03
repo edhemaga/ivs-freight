@@ -129,6 +129,7 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
 import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
 import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
 import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
+import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model'; 
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
@@ -244,7 +245,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public selectedCompany: any = null;
     public selectedDispatches: any = null;
     public selectedGeneralCommodity: EnumValue = null;
-    public selectedStatus: EnumValue = null;
+    public selectedStatus: SelectedStatus = null;
 
     // broker
     public selectedBroker: any = null;
@@ -268,7 +269,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     // load stop item labels
     public stopItemDropdownLists: LoadStopItemDropdownLists;
-    public statusDropDownList: EnumValue[];
+    public statusDropDownList: SelectedStatus[];
 
     // input configurations
     public loadDispatchesTTDInputConfig: ITaInput;
@@ -2232,11 +2233,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private updatePaymentsList(): void {
-          const isPaidInFull = !!this.additionalPayments().value.find(
-            (value: LoadAdditionalPayment) => value.paymentType === LoadModalConstants.PAID_IN_FULL
+        const isPaidInFull = !!this.additionalPayments().value.find(
+            (value: LoadAdditionalPayment) =>
+                value.paymentType === LoadModalConstants.PAID_IN_FULL
         );
         const isAdvancePay = !!this.additionalPayments().value.find(
-            (value: LoadAdditionalPayment) => value.paymentType === LoadModalConstants.ADVANCE_PAY
+            (value: LoadAdditionalPayment) =>
+                value.paymentType === LoadModalConstants.ADVANCE_PAY
         );
 
         let list = this.paymentTypesDropdownList;
@@ -2245,8 +2248,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             list = [];
         } else if (isAdvancePay) {
             list = this.orginalPaymentTypesDropdownList.filter(
-                (payments) =>
-                    payments.id !== LoadModalConstants.ADVANCE_PAY
+                (payments) => payments.id !== LoadModalConstants.ADVANCE_PAY
             );
         }
 
@@ -3417,14 +3419,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.paymentMethodsDropdownList = res.paymentMethods;
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
-                    this.selectedStatus = (
-                        this.editData?.data as LoadResponse
-                    ).status.statusValue;
+                    const status = (this.editData?.data as LoadResponse).status;
+                    this.selectedStatus = {
+                        ...status.statusValue,
+                        valueForRequest: status.statusValue.name,
+                    };
                     this.statusDropDownList = [
                         this.selectedStatus,
-                        ...res.loadPossibleNextStatuses.map(
-                            (r) => r.statusValue
-                        ),
+                        ...res.loadPossibleNextStatuses.map((r) => {
+                            return {
+                                name: r.statusString,
+                                id: r.statusValue.id,
+                                valueForRequest: r.statusValue.name,
+                            };
+                        }),
                     ];
 
                     this.originalStatus = (
@@ -3966,7 +3974,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
-            status: this.selectedStatus.name,
+            status: this.selectedStatus.valueForRequest,
             statusHistory: this.remapStopWaitTime(),
             tonuRate,
             revisedRate,
@@ -3976,7 +3984,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadService
             .updateLoadStatus(
                 this.editData.data.id,
-                this.selectedStatus.name as LoadStatus
+                this.selectedStatus.valueForRequest as LoadStatus
             )
             .subscribe((res) => {
                 this.loadService

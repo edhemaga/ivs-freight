@@ -312,6 +312,7 @@
                             'truck-text': option?.subFolder === 'trucks',
                             'flex-1': option?.additionalText
                         }"
+                        [ngStyle]="true ? (option.name | loadStatusColor) : {}"
                         class="svgtext-template-text"
                     ></div>
 
