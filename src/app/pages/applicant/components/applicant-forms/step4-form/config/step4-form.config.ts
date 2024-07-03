@@ -41,6 +41,7 @@ export class Step4FormConfig {
       minLength: 1,
       maxLength: 160,
       textTransform: 'capitalize',
+      placeholderText: 'vehicles',
       placeholderIcon: 'collision',
       isRequired: true,
       incorrectInput: config.selectedMode === 'REVIEW_MODE',
@@ -55,6 +56,7 @@ export class Step4FormConfig {
       minLength: 1,
       maxLength: 160,
       textTransform: 'capitalize',
+      placeholderText: 'persons',
       placeholderIcon: 'fatality',
       isRequired: true,
       incorrectInput: config.selectedMode === 'REVIEW_MODE',
@@ -70,6 +72,7 @@ export class Step4FormConfig {
       maxLength: 160,
       textTransform: 'capitalize',
       isRequired: true,
+      placeholderText: 'persons',
       placeholderIcon: 'injury',
       incorrectInput: config.selectedMode === 'REVIEW_MODE',
     };

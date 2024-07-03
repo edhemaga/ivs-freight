@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { of, Subject, switchMap, takeUntil } from 'rxjs';
+import { of, Subject, switchMap, take, takeUntil } from 'rxjs';
 
 // moment
 import moment from 'moment';
@@ -61,7 +61,8 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
                     } else {
                         return of(null);
                     }
-                })
+                }),
+                take(1),
             )
             .subscribe((res) => {
                 if (!res) {

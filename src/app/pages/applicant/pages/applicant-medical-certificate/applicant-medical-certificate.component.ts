@@ -55,9 +55,8 @@ import { SharedModule } from '@shared/shared.module';
         // components
         TaInputComponent,
         TaUploadFilesComponent,
-        TaCounterComponent
+        TaCounterComponent,
     ],
-
 })
 export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -205,7 +204,7 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         //                 !isFileValid,
         //             ];
         //         }
-        //         /*  
+        //         /*
         //         const filesLineInputItems =
         //             this.openAnnotationArray[1].lineInputs;
         //         const isAnyInputInLineIncorrect =
@@ -381,9 +380,7 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.medicalCertificateForm.invalid) {
-            if (this.medicalCertificateForm.invalid) {
-                this.inputService.markInvalid(this.medicalCertificateForm);
-            }
+            this.inputService.markInvalid(this.medicalCertificateForm);
 
             if (!this.documents.length) {
                 this.displayDocumentsRequiredNote = true;

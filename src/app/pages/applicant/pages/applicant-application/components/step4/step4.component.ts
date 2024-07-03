@@ -204,9 +204,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                             item.date
                         ).replace(/-/g, '/'),
                         hazmatSpill: item.hazmatSpill,
-                        fatalities: item.fatalities,
-                        /*  collisions: item.collisions, */
-                        injuries: item.injuries,
+                        fatalities: item.fatalities.toString(),
+                        injuries: item.injuries.toString(),
+                        collisions: item.collisions.toString(),
                         vehicleType: item.vehicleType.name,
                         vehicleTypeLogoName: item.vehicleType.logoName,
                         description: item.description,
@@ -226,9 +226,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),
                 hazmatSpill: lastItemInAccidentArray.hazmatSpill,
-                fatalities: lastItemInAccidentArray.fatalities,
-                /*  collisions: lastItemInAccidentArray.collisions, */
-                injuries: lastItemInAccidentArray.injuries,
+                fatalities: lastItemInAccidentArray.fatalities.toString(),
+                collisions: lastItemInAccidentArray.collisions.toString(),
+                injuries: lastItemInAccidentArray.injuries.toString(),
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
                 vehicleTypeLogoName:
                     lastItemInAccidentArray.vehicleType.logoName,
