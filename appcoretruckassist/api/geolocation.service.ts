@@ -178,17 +178,24 @@ export class GeolocationService {
     }
 
     /**
+     * @param layers 
      * @param longitude 
      * @param latitude 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGeolocationAddressReverseGet(longitude?: number, latitude?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AddressEntity>;
-    public apiGeolocationAddressReverseGet(longitude?: number, latitude?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AddressEntity>>;
-    public apiGeolocationAddressReverseGet(longitude?: number, latitude?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AddressEntity>>;
-    public apiGeolocationAddressReverseGet(longitude?: number, latitude?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiGeolocationAddressReverseGet(layers?: Array<AutocompleteSearchLayer>, longitude?: number, latitude?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AddressEntity>;
+    public apiGeolocationAddressReverseGet(layers?: Array<AutocompleteSearchLayer>, longitude?: number, latitude?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AddressEntity>>;
+    public apiGeolocationAddressReverseGet(layers?: Array<AutocompleteSearchLayer>, longitude?: number, latitude?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AddressEntity>>;
+    public apiGeolocationAddressReverseGet(layers?: Array<AutocompleteSearchLayer>, longitude?: number, latitude?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (layers) {
+            layers.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'Layers');
+            })
+        }
         if (longitude !== undefined && longitude !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>longitude, 'Longitude');
