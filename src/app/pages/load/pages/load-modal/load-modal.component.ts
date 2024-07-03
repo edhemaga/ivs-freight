@@ -129,7 +129,7 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
 import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
 import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
 import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
-import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model'; 
+import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
@@ -3420,20 +3420,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
                     const status = (this.editData?.data as LoadResponse).status;
-                    this.selectedStatus = {
-                        ...status.statusValue,
-                        valueForRequest: status.statusValue.name,
-                    };
-                    this.statusDropDownList = [
-                        this.selectedStatus,
-                        ...res.loadPossibleNextStatuses.map((r) => {
-                            return {
-                                name: r.statusString,
-                                id: r.statusValue.id,
-                                valueForRequest: r.statusValue.name,
-                            };
-                        }),
-                    ];
+                    if (status) {
+                        this.selectedStatus = {
+                            name: status.statusString,
+                            id: status.statusValue.id,
+                            valueForRequest: status.statusValue.name,
+                        };
+                        this.statusDropDownList = [
+                            this.selectedStatus,
+                            ...res.loadPossibleNextStatuses.map((r) => {
+                                return {
+                                    name: r.statusString,
+                                    id: r.statusValue.id,
+                                    valueForRequest: r.statusValue.name,
+                                };
+                            }),
+                        ];
+                    }
 
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
