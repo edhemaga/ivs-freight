@@ -2,13 +2,13 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 //Components
-import { ChatComponent } from "./components/chat/chat.component";
+import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 
 //Resolvers
-import { UserResolver } from "./resolvers/user.resolver";
+import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 
 //Services
-import { ChatService } from "./services/chat.service";
+import { ChatService } from "@pages/chat/services/chat.service";
 
 const routes: Routes = [
     {

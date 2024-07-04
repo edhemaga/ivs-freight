@@ -1,8 +1,12 @@
 import { inject } from "@angular/core";
 import { Resolve } from "@angular/router";
 import { Observable } from "rxjs";
-import { CompanyUserChat } from "../models/company-user-chat.model";
-import { ChatService } from "../services/chat.service";
+
+// Models
+import { CompanyUserChat } from "@pages/chat/models/company-user-chat.model";
+
+// Service
+import { ChatService } from "@pages/chat/services/chat.service";
 
 //TODO change any
 export class UserResolver implements Resolve<any> {

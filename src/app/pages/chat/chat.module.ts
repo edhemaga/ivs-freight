@@ -1,20 +1,22 @@
 import { NgModule } from "@angular/core";
+
+// Modules
+import { CommonModule } from "@angular/common";
 import { ChatRoutingModule } from "./chat-routing.module";
+import { AngularSvgIconModule } from "angular-svg-icon";
 
 // Components
-import { ChatMessageComponent } from "./components/chat-message/chat-message.component";
-import { ChatMessagesComponent } from "./components/chat-messages/chat-messages.component";
-import { ChatUserListComponent } from "./components/chat-user-list/chat-user-list.component";
-import { ChatComponent } from "./components/chat/chat.component";
+import { ChatMessageComponent } from "@pages/chat/components/chat-message/chat-message.component";
+import { ChatMessagesComponent } from "@pages/chat/components/chat-messages/chat-messages.component";
+import { ChatUserListComponent } from "@pages/chat/components/chat-user-list/chat-user-list.component";
+import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 
 // Services
-import { ChatService } from "./services/chat.service";
+import { ChatService } from "@pages/chat/services/chat.service";
 
 // Resolvers
-import { UserResolver } from "./resolvers/user.resolver";
-import { CommonModule } from "@angular/common";
-import { AngularSvgIconModule } from "angular-svg-icon";
-import { ChatNoDataComponent } from "./components/shared/chat-no-data/chat-no-data.component";
+import { UserResolver } from "@pages/chat/resolvers/user.resolver";
+import { ChatNoDataComponent } from "@pages/chat/components/shared/chat-no-data/chat-no-data.component";
 
 @NgModule({
     declarations: [

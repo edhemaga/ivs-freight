@@ -1,4 +1,4 @@
-import { CompanyUser } from "./company-user.model";
+import { CompanyUser } from "@pages/chat/models/company-user.model";
 
 export interface CompanyUserChat {
     companyUser: CompanyUser;
