@@ -696,9 +696,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.formService.formValueChange$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((isFormChange: boolean) => {
-                    this.isFormDirty = isFormChange;
+                    this.isFormDirty = isFormChange; 
                 });
-        }, 1000);
+        }, 500);
     }
 
     private getCompanyUser(): void {
@@ -1108,6 +1108,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
             case LoadModalStringEnum.STATUS:
+                this.loadForm.get(LoadModalStringEnum.STATUS).patchValue(event);
                 this.selectedStatus = event;
                 this.handleRevisedRateVisiblity();
                 this.handleTonuRateVisiblity();

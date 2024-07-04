@@ -56,14 +56,12 @@
 
                     <ng-template #editLoad>
                         <!-- formControlName="status" -->
-                        <ng-container *ngIf="selectedStatus && statusDropDownList.length">
-                            <ta-input-dropdown-status
+                        <ta-input-dropdown-status
                             [options]="statusDropDownList"
                             [selectedStatus]="selectedStatus"
                             [inputConfig]="getStatusInputConfig"
                             (selectedItem)="onSelectDropdown($event, 'status')"
                         ></ta-input-dropdown-status>
-                        </ng-container>
                     </ng-template>
                 </div>
 

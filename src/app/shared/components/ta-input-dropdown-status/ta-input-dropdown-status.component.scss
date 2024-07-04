@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .status__dropdown {
     width: 100%;
     height: 26px;
@@ -5,14 +7,22 @@
     padding: 4px 6px;
     font-size: 14px;
     font-weight: 400;
-    background-color: #eeeeee;
-    color: #2f2f2f;
+    background-color: $ta-blue-16;
+    color: $ta-black-2;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+
+    &-label {
+        position: absolute;
+        top: -17px;
+        left: 18px;
+        font-size: 11px;
+        color: $ta-black;
+    }
 
     &-active {
-        background-color: #e2ecf9;
-        color: #2f2f2f;
+        color: $ta-black-2;
         border-radius: 2px;
         padding: 4px 6px;
         font-size: 14px;
@@ -26,9 +36,19 @@
         z-index: 1000;
         max-height: 190px;
         width: 100%;
-        background-color: #2f2f2f;
+        background-color: $ta-black-2;
         border-radius: 3px;
         padding: 4px;
         overflow: hidden;
+        width: 132px;
+    }
+
+    &-option {
+        padding: 4px 2px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $ta-black;
+        }
     }
 }

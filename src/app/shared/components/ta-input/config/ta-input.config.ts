@@ -147,4 +147,5 @@ export interface ITaInput {
     expiredDateInvalid?: boolean; // accept only dates that didn't expire
     fixedPlacholder?: string;
     statusStyle?: boolean;
+    hideIcon?: boolean;
 }

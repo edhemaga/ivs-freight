@@ -456,12 +456,12 @@ export class TaInputDropdownComponent
             }
             this.getSuperControl.markAsDirty();
 
-            
+            this.popoverRef.close();
         }
 
         if (this._template === 'fuel-franchise') {
             this.clearTimeoutDropdown = setTimeout(() => {
-                
+                this.popoverRef.close();
             }, 100);
         }
     }
@@ -589,7 +589,7 @@ export class TaInputDropdownComponent
             placeholder: null,
         };
 
-        
+        this.popoverRef.close();
 
         this.isInAddMode = true;
         this.clearTimeoutDropdown = setTimeout(() => {
@@ -627,7 +627,7 @@ export class TaInputDropdownComponent
         this.clearInputEvent.emit(event);
 
         if (event) {
-            
+            this.popoverRef.close();
             // label dropdown
             if (this.inputConfig.dropdownLabel) {
                 this.clearDropdownLabel();
@@ -664,7 +664,7 @@ export class TaInputDropdownComponent
                     }
                 }
                 if (this._template !== 'fuel-franchise') {
-                    
+                    this.popoverRef.close();
                 }
             }
             // Focus In
@@ -679,7 +679,7 @@ export class TaInputDropdownComponent
                 this.getSuperControl.setValue(null);
 
                 if (this.popoverRef) {
-                    
+                    this.popoverRef.close();
                 }
 
                 if (this.isInAddMode) {
@@ -918,7 +918,7 @@ export class TaInputDropdownComponent
             }, 150);
         } else {
             this.inputRef.focusInput = false;
-            
+            this.popoverRef.close();
         }
     }
     // ----------------------------------  End ----------------------------------
@@ -1132,7 +1132,7 @@ export class TaInputDropdownComponent
                     this.inputRef.input.nativeElement.blur();
                 }
             }
-            
+            this.popoverRef.close();
         }
     }
 
