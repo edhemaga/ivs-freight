@@ -1523,7 +1523,7 @@
             >
                 <app-ta-custom-card
                     [cardName]="'Comment'"
-                    [isCardOpen]="comments.length"
+                    [isCardOpen]="comments.length || areCommentsVisible"
                     [hasCounter]="comments.length"
                     [hasActionSvg]="editData"
                     [hasScrollBody]="comments.length"
@@ -1539,7 +1539,8 @@
                         [load]="editData?.data"
                         [isAddNewComment]="isCommenting"
                         [isSearchComment]="false"
-                        [hideHeader]="true"
+                        [isHeaderHidden]="true"
+                        (commentsCountChanged)="commentsCountChanged()"
                     >
                     </app-load-details-item-comments>
                 </app-ta-custom-card>

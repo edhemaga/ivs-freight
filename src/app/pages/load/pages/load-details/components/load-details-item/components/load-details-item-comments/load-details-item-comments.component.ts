@@ -1,8 +1,10 @@
 import {
     Component,
+    EventEmitter,
     Input,
     OnChanges,
     OnDestroy,
+    Output,
     SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -46,7 +48,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
-    @Input() hideHeader: boolean = false;
+    @Input() isHeaderHidden: boolean = false;
 
     private destroy$ = new Subject<void>();
 
@@ -59,6 +61,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
 
     private editedCommentId: number;
     private deletedCommentId: number;
+    @Output() commentsCountChanged = new EventEmitter<boolean>();
 
     constructor(private commentsService: CommentsService) {}
 
@@ -162,7 +165,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                         commentData.commentIndex
                     );
                 }
-
+                this.commentsCountChanged.emit(true);
                 break;
             case LoadDetailsItemStringEnum.DELETE:
                 this.comments.splice(commentData.commentIndex, 1);
@@ -172,7 +175,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                 this.isCommenting = false;
 
                 this.deleteCommentById(this.deletedCommentId);
-
+                this.commentsCountChanged.emit(true);
                 break;
             default:
                 break;

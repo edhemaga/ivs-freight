@@ -386,6 +386,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public reorderingSaveError: boolean = false;
     private originalStatus: string;
     private stops: LoadStopResponse[];
+    public areCommentsVisible: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -3411,9 +3412,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createComment(): void {
+        this.areCommentsVisible = true;
         this.isCommenting = true;
-
         setTimeout(() => this.isCommenting = false, 400);
+    }
+
+    public commentsCountChanged(): void {
+        this.loadService
+            .getLoadInsideListById(this.editData.data.id)
+            .subscribe((res) => {
+                this.comments = res.pagination.data[0].comments;
+                this.loadService.updateLoadPartily(res, this.originalStatus);
+            });
     }
 
     public getDriverMessageOrNote(text: string, type: string): void {
@@ -4119,11 +4129,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // After statuse change we get times for stops that needs to send to backend
                         // together with status history
                         newData.stops.forEach((stop) => {
-                            const _stop = this.stops.find(s => s.stopOrder === stop.stopOrder);
+                            const _stop = this.stops.find(
+                                (s) => s.stopOrder === stop.stopOrder
+                            );
 
-                            if(_stop) {
+                            if (_stop) {
                                 stop.arrive = _stop.arrive;
-                                stop.depart = _stop.depart; 
+                                stop.depart = _stop.depart;
                             }
                         });
 
