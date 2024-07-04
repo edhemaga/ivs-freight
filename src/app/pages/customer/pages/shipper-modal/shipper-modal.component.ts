@@ -20,6 +20,9 @@ import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// Enums
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+
 // Validators
 import {
     addressUnitValidation,
@@ -30,6 +33,10 @@ import {
     phoneFaxRegex,
     fullNameValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+import {
+    latitudeValidator,
+    longitudeValidator,
+} from '@shared/validators/long-lat-validations';
 
 // Models
 import {
@@ -83,12 +90,6 @@ import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/u
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
 import { AddressService } from '@shared/services/address.service';
-
-//Validations
-import {
-    latitudeValidator,
-    longitudeValidator,
-} from '@shared/validators/long-lat-validations';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -192,10 +193,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
 
         this.shipperForm
-            .get('longitude')
+            .get(ShipperModalString.LONGITUDE)
             .valueChanges.subscribe(() => this.longLatChanged());
         this.shipperForm
-            .get('latitude')
+            .get(ShipperModalString.LATITUDE)
             .valueChanges.subscribe(() => this.longLatChanged());
     }
 
@@ -737,8 +738,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         };
 
         if (this.selectedPhysicalAddressTab === 2) {
-            newData.longitude = this.shipperForm.get('longitude').value;
-            newData.latitude = this.shipperForm.get('latitude').value;
+            newData.longitude = this.shipperForm.get(ShipperModalString.LONGITUDE).value;
+            newData.latitude = this.shipperForm.get(ShipperModalString.LATITUDE).value;
         }
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -1152,14 +1153,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private setAddressValidations(type: string, tabChanged?: boolean): void {
-        const longitudeControl = this.shipperForm.get('longitude');
-        const latitudeControl = this.shipperForm.get('latitude');
-        const addressControl = this.shipperForm.get('address');
-        const countryStateAddress = this.shipperForm.get('countryStateAddress');
+        const longitudeControl = this.shipperForm.get(ShipperModalString.LONGITUDE);
+        const latitudeControl = this.shipperForm.get(ShipperModalString.LATITUDE);
+        const addressControl = this.shipperForm.get(ShipperModalString.ADDRESS_1);
+        const countryStateAddress = this.shipperForm.get(ShipperModalString.COUNTRY_ADDRESS);
 
         if (tabChanged) this.selectedAddress = null;
-        console.log(type, 'typee');
-        if (type === 'Coordinates') {
+        
+        if (type === ShipperModalString.COORDINATES) {
             longitudeControl.setValidators([
                 Validators.required,
                 longitudeValidator(),
@@ -1186,26 +1187,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             ]);
         }
 
-        // Update the validity state of the controls
         longitudeControl.updateValueAndValidity();
         latitudeControl.updateValueAndValidity();
         addressControl.updateValueAndValidity();
+        countryStateAddress.updateValueAndValidity();
     }
 
     private longLatChanged(): void {
-        const longitudeControl = this.shipperForm.get('longitude');
-        const latitudeControl = this.shipperForm.get('latitude');
-
-        console.log(
-            longitudeControl.value,
-            latitudeControl.value,
-            'chaaaaaaaangeeeeeeeeeed'
-        );
-        console.log(
-            longitudeControl.valid,
-            latitudeControl.valid,
-            'chaaaaaaaangeeeeeeeeeed'
-        );
+        const longitudeControl = this.shipperForm.get(ShipperModalString.LONGITUDE);
+        const latitudeControl = this.shipperForm.get(ShipperModalString.LATITUDE);
 
         if (
             longitudeControl.valid &&
@@ -1213,16 +1203,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             latitudeControl.valid &&
             latitudeControl.value
         ) {
-            console.log('api call');
             this.addressService
                 .getAddressByLongLat(
-                    ['Locality'],
-                    this.shipperForm.get('longitude').value,
-                    this.shipperForm.get('latitude').value
+                    [ShipperModalString.LOCALITY],
+                    this.shipperForm.get(ShipperModalString.LONGITUDE).value,
+                    this.shipperForm.get(ShipperModalString.LATITUDE).value
                 )
                 .pipe()
                 .subscribe((res) => {
-                    console.log('res from');
                     this.shipperForm.patchValue({
                         countryStateAddress: res.address,
                         address: res.address,
@@ -1241,7 +1229,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
-                console.log(this.shipperForm, isFormChange, 'is form change');
                 this.isFormDirty = isFormChange;
             });
     }
