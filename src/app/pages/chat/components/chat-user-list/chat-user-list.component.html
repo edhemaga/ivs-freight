@@ -4,10 +4,10 @@
             {{ type }}
         </div>
         <div class="chat-header-message-count ta-font-extra-bold">
-            {{ data?.length ?? 0 }}
+            {{ data?.length }}
         </div>
     </div>
-    <ng-template *ngIf="data.length > 0; else noData">
+    <ng-template *ngIf="data?.length; else noData">
         <ng-container *ngFor="let chat of data; let ind = index">
             {{ chat.companyUser.fullName }}
         </ng-container>

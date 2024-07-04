@@ -8,7 +8,7 @@ import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 
 //Services
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { DriverResolver } from "@pages/driver/resolvers/driver.resolver";
 
 const routes: Routes = [
     {
@@ -16,6 +16,7 @@ const routes: Routes = [
         component: ChatComponent,
         resolve: {
             users: UserResolver,
+            drivers: DriverResolver
         },
     }
 ];

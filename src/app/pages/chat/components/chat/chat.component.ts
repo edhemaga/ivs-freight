@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
   companyUsers!: CompanyUser[];
   drivers!: CompanyUser[];
 
-  //TODO move to separate file
+  //TODO move to separate file and maybe make it static class
   // Tab and header ribbon configuration
   tabs: ChatTab[] = [
     {
@@ -33,7 +33,7 @@ export class ChatComponent implements OnInit {
       count: 1
     }
   ];
-  selectedTab: string;
+  selectedTab!: string;
 
   constructor(private activatedRoute: ActivatedRoute) { }
 
@@ -44,19 +44,11 @@ export class ChatComponent implements OnInit {
   private getData(): void {
     this.activatedRoute.data.subscribe({
       next: res => {
-        this.title = res.title;
 
-        let drivers = [];
-        let companyUsers = [];
-        // res.users?.map(user => {
-        //   if (user.userType === 'Driver') {
-        //     drivers = [...drivers, user];
-        //   } else {
-        //     companyUsers = [...companyUsers, user];
-        //   }
-        // });
-        this.drivers = drivers;
-        this.companyUsers = companyUsers;
+        this.title = res.title;
+        this.drivers = res.drivers?.pagination.data;
+        this.companyUsers = res.users.pagination.data;
+
       },
       error: () => { }
     })
@@ -67,8 +59,6 @@ export class ChatComponent implements OnInit {
     //TODO Set in localstorage 
   }
 
-  onToolBarAction(action: string): void {
-
-  }
+  onToolBarAction(action: string): void { }
 
 }
