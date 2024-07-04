@@ -3420,6 +3420,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public commentsCountChanged(): void {
         this.loadService
             .getLoadInsideListById(this.editData.data.id)
+            .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.comments = res.pagination.data[0].comments;
                 this.loadService.updateLoadPartily(res, this.originalStatus);
@@ -4130,7 +4131,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // together with status history
                         newData.stops.forEach((stop) => {
                             const _stop = this.stops.find(
-                                (s) => s.stopOrder === stop.stopOrder
+                                (initialStop) => initialStop.stopOrder === stop.stopOrder
                             );
 
                             if (_stop) {
