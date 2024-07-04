@@ -134,6 +134,7 @@ import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-s
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
 
 @Component({
     selector: 'app-load-modal',
@@ -167,6 +168,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
+        TaInputDropdownStatusComponent,
 
         // pipes
         FinancialCalculationPipe,
