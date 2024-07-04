@@ -3979,6 +3979,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             revisedRate,
             // invoicedDate,
         };
+
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))

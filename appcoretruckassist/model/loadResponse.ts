@@ -15,6 +15,7 @@ import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { LoadStatusHistoryResponse } from './loadStatusHistoryResponse';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
+import { LoadProgressResponse } from './loadProgressResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { FileResponse } from './fileResponse';
@@ -24,7 +25,6 @@ import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
 import { InvoiceAgingProgressBarResponse } from './invoiceAgingProgressBarResponse';
 import { LoadStopResponse } from './loadStopResponse';
-import { LoadStopProgressBarResponse } from './loadStopProgressBarResponse';
 import { AddressEntity } from './addressEntity';
 import { LoadBillingAdditionalResponse } from './loadBillingAdditionalResponse';
 
@@ -88,7 +88,7 @@ export interface LoadResponse {
     completedPercentage?: number;
     pendingPercentage?: number | null;
     closedPercentage?: number | null;
-    progressBar?: Array<LoadStopProgressBarResponse> | null;
+    loadProgress?: LoadProgressResponse;
     invoiceAgingProgressBar?: InvoiceAgingProgressBarResponse;
     createdAt?: string;
     updatedAt?: string;

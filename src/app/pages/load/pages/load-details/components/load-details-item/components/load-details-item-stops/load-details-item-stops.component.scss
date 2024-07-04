@@ -10,64 +10,6 @@
         margin-bottom: 8px;
         border-radius: 3px;
         background: $white;
-
-        &-top {
-            p {
-                font-size: 11px;
-                line-height: 14px;
-                color: $bw6-2;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-
-            .icon {
-                margin-left: 4px;
-                position: relative;
-                bottom: 1px;
-
-                svg {
-                    path {
-                        fill: $ta-red-10;
-                    }
-                }
-            }
-        }
-
-        &-progress-bar {
-            &-top {
-                margin-bottom: 5px;
-
-                p {
-                    font-size: 18px;
-                    line-height: 22px;
-                    color: $ta-black;
-
-                    &::-moz-selection {
-                        color: $ta-black;
-                        background: rgb(66, 66, 66, 0.2);
-                    }
-
-                    &::selection {
-                        color: $ta-black;
-                        background: rgb(66, 66, 66, 0.2);
-                    }
-                }
-            }
-
-            .progress-bar,
-            .progress-bar-inner {
-                height: 8px;
-                border-radius: 2px 0 0 2px;
-            }
-        }
     }
 
     /* Main */

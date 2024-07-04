@@ -72,9 +72,7 @@ export class LoadDetailsTitleCardComponent implements OnChanges {
     private handleStatusIdChange(statusId: number): void {
         this.statusId = null;
 
-        setTimeout(() => {
-            this.statusId = statusId;
-        }, 200);
+        this.statusId = statusId;
     }
 
     public handleCardChanges(event: LoadMinimalResponse, type: string): void {
