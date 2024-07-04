@@ -169,10 +169,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onDropdownActions();
 
         this.watchForLoadChanges();
-        
+
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
+
+        this.confirmationDataSubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -184,6 +186,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private watchForLoadChanges(): void {
         this.loadServices.modalAction$.subscribe((action) => {
             this.sendLoadData();
+        });
+    }
+
+    private confirmationDataSubscribe(): void {
+        this.confiramtionService.confirmationData$.subscribe((res) => {
+            if (res.type === TableStringEnum.DELETE) {
+                if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    this.deleteLoadTemplateById(res.id);
+                } else {
+                    this.deleteLoadById(res.id);
+                }
+            } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    this.deleteLoadTemplateList(res.array);
+                } else {
+                    this.deleteLoadList(res.array);
+                }
+            }
         });
     }
 
@@ -562,6 +582,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 //showLtlFilter: true, - hide for now
                 showMoneyFilter: true,
                 loadMoneyFilter: true,
+                hideDeleteButton:
+                    this.selectedTab !== TableStringEnum.TEMPLATE &&
+                    this.selectedTab !== TableStringEnum.PENDING,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -930,7 +953,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             loadPickup: [
                 {
-                    count: pickup.count ?? null,
+                    count: pickup?.count ?? null,
                     location: pickup?.location,
                     date: pickup?.date
                         ? this.datePipe.transform(
@@ -944,7 +967,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     delivery: false,
                 },
                 {
-                    count: delivery.count ?? null,
+                    count: delivery?.count ?? null,
                     location: delivery?.location,
                     date: delivery?.date
                         ? this.datePipe.transform(
@@ -1036,12 +1059,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             rate:
                 TableStringEnum.DOLLAR_SIGN +
                 ' ' +
-                this.thousandSeparator.transform(billing.rate),
+                this.thousandSeparator.transform(billing?.rate),
 
             paid:
-                billing.paid !== 0
+                billing?.paid !== 0
                     ? TableStringEnum.DOLLAR_SIGN +
-                      this.thousandSeparator.transform(billing.paid)
+                      this.thousandSeparator.transform(billing?.paid)
                     : TableStringEnum.DOLLAR_SIGN + '0.00',
 
             tableAdded: createdAt
@@ -1066,7 +1089,21 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private getDropdownLoadContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_DATA;
+        const dropdownData = [...TableDropdownComponentConstants.DROPDOWN_DATA];
+
+        const disableDelete =
+            this.selectedTab !== TableStringEnum.PENDING &&
+            this.selectedTab !== TableStringEnum.TEMPLATE;
+
+        dropdownData.map((item) => {
+            if (item.name === TableStringEnum.DELETE) {
+                item.mutedStyle = disableDelete;
+            }
+
+            return item;
+        });
+
+        return dropdownData;
     }
 
     private getTabData(dataType: string): LoadActiveState {
@@ -1248,15 +1285,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     modalHeaderTitle: modalTitle,
                 }
             );
-
-            this.confiramtionService.confirmationData$.subscribe((response) => {
-                if (response.type === TableStringEnum.DELETE) {
-                    this.loadServices
-                        .deleteLoadById(event.id, this.selectedTab)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(() => this.sendLoadData());
-                }
-            });
         } else if (event.type === TableStringEnum.EDIT) {
             this.loadServices
                 .getLoadById(event.id)
@@ -1371,6 +1399,44 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 });
         }
+    }
+
+    private deleteLoadById(id: number): void {
+        this.loadServices
+            .deleteLoadById(id, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.sendLoadData());
+    }
+
+    private deleteLoadList(ids: number[]): void {
+        this.loadServices
+            .deleteLoadList(ids, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendLoadData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    private deleteLoadTemplateById(id: number): void {
+        this.loadServices
+            .deleteLoadTemplateById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.sendLoadData());
+    }
+
+    private deleteLoadTemplateList(ids: any[]): void {
+        this.loadServices
+            .deleteLoadTemplateList(ids)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendLoadData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
     }
 
     public ngOnDestroy(): void {
