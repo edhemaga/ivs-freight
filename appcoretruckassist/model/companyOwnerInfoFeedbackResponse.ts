@@ -15,6 +15,7 @@ import { TrailerTypeResponse } from './trailerTypeResponse';
 import { BankResponse } from './bankResponse';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { CompanyOwnerInfoReviewResponse } from './companyOwnerInfoReviewResponse';
+import { EnumValue } from './enumValue';
 import { TrailerMakeResponse } from './trailerMakeResponse';
 import { ColorResponse } from './colorResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
@@ -23,6 +24,7 @@ import { AddressEntity } from './addressEntity';
 
 export interface CompanyOwnerInfoFeedbackResponse { 
     id?: number;
+    ownerType?: EnumValue;
     businessName?: string | null;
     ein?: string | null;
     phone?: string | null;

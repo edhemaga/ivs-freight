@@ -33,28 +33,7 @@
                             "
                             [formGroupName]="index"
                         >
-                            <p
-                                class="m-0 ta-font-bold text-left d-flex align-items-center text-uppercase"
-                                [ngStyle]="
-                                    getStatusName(index) | loadStatusColor
-                                "
-                            >
-                                {{ getStatus(index) }}
-
-                                <ng-container
-                                    *ngIf="isStatusNumberAvailable(index)"
-                                >
-                                    <span
-                                        class="status-string__value"
-                                        [ngStyle]="
-                                            getStatusName(index)
-                                                | loadStatusColor : true
-                                        "
-                                    >
-                                        {{ getStatusNumber(index) }}
-                                    </span>
-                                </ng-container>
-                            </p>
+                            <app-load-status-string [status]="statusHistoryDisplayStrings[index]" [justifyStart]="true"></app-load-status-string>
 
                             <div class="m-0 ta-font-bold">
                                 <app-ta-input
