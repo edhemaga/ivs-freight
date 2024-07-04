@@ -1,0 +1,45 @@
+@import 'src/theme/variables';
+
+.user-list-container {
+    width: fit-content;
+    background: $white;
+    border-radius: 3px;
+    padding: 6px;
+
+    .chat-header {
+        width: 318px;
+        height: 32px;
+        padding: 0 4px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid $bw-9;
+        &-type {
+            color: $ta-black;
+        }
+
+        &-message-count {
+            font-size: 11px;
+            line-height: 18px;
+            height: 18px;
+            min-width: 18px;
+            border-radius: 50px;
+            background: $bw5;
+            color: $white;
+            padding: 0px 5px;
+            margin: auto 5px;
+        }
+    }
+    .no-data-button-wrapper {
+        width: 100%;
+    }
+    .no-data-button {
+        width: 150px;
+        height: 32px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 700;
+        font-size: 14px;
+        background-color: #3b73ed;
+        border-radius: 2px;
+        color: $white;
+        border: none;
+    }
+}

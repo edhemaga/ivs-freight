@@ -48,17 +48,17 @@ export class ChatComponent implements OnInit {
 
         let drivers = [];
         let companyUsers = [];
-        res.users?.map(user => {
-          if (user.userType === 'Driver') {
-            drivers = [...drivers, user];
-          } else {
-            companyUsers = [...companyUsers, user];
-          }
-        })
+        // res.users?.map(user => {
+        //   if (user.userType === 'Driver') {
+        //     drivers = [...drivers, user];
+        //   } else {
+        //     companyUsers = [...companyUsers, user];
+        //   }
+        // });
         this.drivers = drivers;
         this.companyUsers = companyUsers;
       },
-      error: err => { }
+      error: () => { }
     })
   }
 

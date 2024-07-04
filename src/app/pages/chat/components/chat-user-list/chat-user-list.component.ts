@@ -11,8 +11,8 @@ import { CompanyUserChat } from '@pages/chat/models/company-user-chat.model';
 export class ChatUserListComponent implements OnInit {
 
   //TODO change any type
-  @Input() chatData: CompanyUserChat[];
-  @Input() userType: string;
+  @Input() data: CompanyUserChat[];
+  @Input() type: string;
 
   constructor() { }
 

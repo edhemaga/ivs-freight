@@ -1,13 +1,10 @@
-<div>
-    <div>
-
-    </div>
-    <div>
-        No data found
-    </div>
-    <div>
-        {{ message }}
+<div class="chat-no-data-wrapper">
+    <div class="illustration"></div>
+    <div class="no-data-found ta-font-extra-bold">No data found</div>
+    <div class="d-flex justify-content-center">
+        <div class="no-data-message">
+            {{ message }}
+        </div>
     </div>
     <ng-content></ng-content>
-
 </div>
