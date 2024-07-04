@@ -1,21 +1,24 @@
 import { inject } from "@angular/core";
 import { Resolve } from "@angular/router";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 
 // Models
-import { CompanyUserChat } from "@pages/chat/models/company-user-chat.model";
-import { CompanyUserForChatListResponse } from "appcoretruckassist/model/companyUserForChatListResponse";
+import { CompanyUserChatResponsePagination } from "appcoretruckassist";
 
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 
 //TODO change any
-export class UserResolver implements Resolve<any> {
+export class UserResolver implements Resolve<CompanyUserChatResponsePagination> {
 
     private userChatService = inject(UserChatService);
 
-    resolve(): Observable<CompanyUserForChatListResponse> {
-        return this.userChatService.getCompanyUserList('User');
+    resolve(): Observable<CompanyUserChatResponsePagination> {
+        return this.userChatService.getCompanyUserList('User').pipe(
+            map(res => {
+                return res.pagination
+            })
+        );
     }
 
 }

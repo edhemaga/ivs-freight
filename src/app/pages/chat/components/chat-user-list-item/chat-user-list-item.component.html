@@ -1,0 +1,17 @@
+<div class="chat-list-item-wrapper">
+    <div class="chat-list-item">
+        <ng-container *ngIf="contact.companyUser?.avatarFile?.url">
+            <img
+                class="chat-list-item-avatar"
+                [src]="contact.companyUser.avatarFile.url"
+                [alt]="contact.companyUser?.fullName"
+            />
+        </ng-container>
+        <div>
+            <div>
+                {{ contact.companyUser.fullName }}
+            </div>
+            <div></div>
+        </div>
+    </div>
+</div>

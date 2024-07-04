@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChatUserListItemComponent } from './chat-user-list-item.component';
+
+
+describe('UserChatListItemComponent', () => {
+  let component: ChatUserListItemComponent;
+  let fixture: ComponentFixture<ChatUserListItemComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ChatUserListItemComponent]
+    })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(ChatUserListItemComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

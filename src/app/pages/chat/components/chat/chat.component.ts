@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 //Models
-import { CompanyUser } from '@pages/chat/models/company-user.model';
+import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user.model';
 
 //TODO move to models
 type ChatTab = {
@@ -18,8 +18,8 @@ type ChatTab = {
 export class ChatComponent implements OnInit {
   title: string = "";
 
-  companyUsers!: CompanyUser[];
-  drivers!: CompanyUser[];
+  companyUsers!: CompanyUserChatResponsePaginationReduced;
+  drivers!: CompanyUserChatResponsePaginationReduced;
 
   //TODO move to separate file and maybe make it static class
   // Tab and header ribbon configuration
@@ -46,8 +46,8 @@ export class ChatComponent implements OnInit {
       next: res => {
 
         this.title = res.title;
-        this.drivers = res.drivers?.pagination.data;
-        this.companyUsers = res.users.pagination.data;
+        this.drivers = res.drivers;
+        this.companyUsers = res.users;
 
       },
       error: () => { }

@@ -1,4 +1,4 @@
-import { FileResponse } from "appcoretruckassist";
+import { CompanyUserChatResponse, FileResponse } from "appcoretruckassist";
 
 export interface CompanyUser {
     id: number;
@@ -8,4 +8,9 @@ export interface CompanyUser {
     avatarFile: FileResponse;
     tagGeneratedByUser: boolean;
     updatedAt: string;
+}
+
+export interface CompanyUserChatResponsePaginationReduced {
+    count: number;
+    data: CompanyUserChatResponse[];
 }

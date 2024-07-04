@@ -1,0 +1,13 @@
+.item-wrapper {
+    width: 318px;
+    min-height: 46px;
+    padding: 2px 6px 0 6px;
+    .chat-list-item {
+        padding: 4px 6px;
+        &-avatar {
+            height: 32px;
+            width: 32px;
+            border-radius: 50px;
+        }
+    }
+}

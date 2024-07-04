@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 // Models
-import { CompanyUserChat } from '@pages/chat/models/company-user-chat.model';
+import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user.model';
 
 @Component({
   selector: 'app-chat-user-list',
@@ -11,7 +11,7 @@ import { CompanyUserChat } from '@pages/chat/models/company-user-chat.model';
 export class ChatUserListComponent implements OnInit {
 
   //TODO change any type
-  @Input() data: CompanyUserChat[];
+  @Input() contact: CompanyUserChatResponsePaginationReduced;
   @Input() type: string;
 
   constructor() { }
