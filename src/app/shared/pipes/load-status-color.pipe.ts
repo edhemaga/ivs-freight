@@ -16,7 +16,10 @@ export class LoadStatusColorPipe implements PipeTransform {
             status
         );
         const statusGreenColorCondition = status === 'Assigned';
-        const statusBlueColorCondition = status === 'Dispatched';
+        const statusBlueColorCondition = [
+            'RepairDispatched',
+            'Dispatched',
+        ].includes(status);
         const statusTurquoiseColorCondition = [
             'Arrived',
             'ArrivedPickup',
@@ -31,7 +34,10 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Checked-In',
         ].includes(status);
         const statusDarkRedColorCondition = status === 'Offloaded';
-        const statusDarkRed2ColorCondition = status === 'Cancelled';
+        const statusDarkRed2ColorCondition = [
+            'Cancelled',
+            'Split',
+        ].includes(status);
         const statusDarkRed3ColorCondition = status === 'Tonu';
         const statusOrangeColorCondition = status === 'Delivered';
         const statusYellowColorCondition = ['Invoiced', 'Paid'].includes(

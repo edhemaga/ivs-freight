@@ -7,6 +7,7 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // enum
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 // store
 import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
@@ -222,7 +223,17 @@ export class LoadService {
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
-        return this.loadService.apiLoadListGet(null, null, null, null, null, null, null, null, id);
+        return this.loadService.apiLoadListGet(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            id
+        );
     }
 
     public autocompleteLoadByDescription(
@@ -275,20 +286,70 @@ export class LoadService {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
-    public updateLoadPartily(loadResponse: LoadListResponse, loadStatus: string): void {
+    private getLoadStatus(statusString: string): {
+        isPending: boolean;
+        isActive: boolean;
+        isClosed: boolean;
+    } {
+        const isPending =
+            statusString === LoadModalStringEnum.ASSIGNED ||
+            statusString === LoadModalStringEnum.UNASSIGNED;
+        const isClosed = statusString === LoadModalStringEnum.CLOSED;
+        const isActive = !isPending && !isClosed;
+
+        return {
+            isPending,
+            isActive,
+            isClosed,
+        };
+    }
+
+    public updateLoadPartily(
+        loadResponse: LoadListResponse,
+        previusStatus: string
+    ): void {
         const data = loadResponse.pagination.data[0];
         const loadId = data.id;
+        const { isActive, isPending, isClosed } = this.getLoadStatus(
+            data.status.statusString
+        );
 
-        if (loadStatus === TableStringEnum.ACTIVE) {
-            this.loadActiveStore.remove(({ id }) => id === loadId);
+        [
+            this.loadActiveStore,
+            this.loadClosedStore,
+            this.loadPendingStore,
+        ].forEach((store) => {
+            store.remove(({ id }) => id === loadId);
+        });
+
+        const loadCount = JSON.parse(
+            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+        );
+
+        if (isActive) {
             this.loadActiveStore.add(data);
-        } else if (loadStatus === TableStringEnum.CLOSED) {
-            this.loadClosedStore.remove(({ id }) => id === loadId);
+            loadCount.activeCount++;
+        } else if (isClosed) {
             this.loadClosedStore.add(data);
-        } else if (loadStatus === TableStringEnum.PENDING) {
-            this.loadPendingStore.remove(({ id }) => id === loadId);
+            loadCount.closedCount++;
+        } else if (isPending) {
             this.loadPendingStore.add(data);
+            loadCount.pendingCount++;
         }
+
+        const previusLoadStore = this.getLoadStatus(previusStatus);
+        if (previusLoadStore.isActive) {
+            loadCount.activeCount--;
+        } else if (previusLoadStore.isClosed) {
+            loadCount.closedCount--;
+        } else if (previusLoadStore.isPending) {
+            loadCount.pendingCount--;
+        }
+
+        localStorage.setItem(
+            TableStringEnum.LOAD_TABLE_COUNT,
+            JSON.stringify(loadCount)
+        );
 
         this.triggerModalAction();
     }

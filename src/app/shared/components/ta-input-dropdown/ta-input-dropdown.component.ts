@@ -43,6 +43,7 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 
 // utils
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -53,6 +54,7 @@ import { DropdownCountPipe } from '@shared/components/ta-input-dropdown/pipes/dr
 import { HighlightSearchPipe } from '@shared/pipes/highlight-search.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { DropdownStatusPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-status-color.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -85,13 +87,15 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         TaAppTooltipComponent,
         TaProfileImagesComponent,
         LoadModalProgressBarComponent,
-
+        LoadStatusStringComponent,
+        
         // Pipe
         TaSvgPipe,
         FormControlPipe,
         DropdownCountPipe,
         HighlightSearchPipe,
         DropdownStatusPipe,
+        LoadStatusColorPipe,
 
         // Directive
         HoverSvgDirective,
