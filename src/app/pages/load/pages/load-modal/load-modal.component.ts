@@ -696,7 +696,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.formService.formValueChange$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((isFormChange: boolean) => {
-                    this.isFormDirty = isFormChange; 
+                    this.isFormDirty = isFormChange;
                 });
         }, 500);
     }
@@ -3417,7 +3417,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public createComment(): void {
         this.areCommentsVisible = true;
         this.isCommenting = true;
-        setTimeout(() => this.isCommenting = false, 400);
+        setTimeout(() => (this.isCommenting = false), 400);
     }
 
     public commentsCountChanged(): void {
@@ -4134,7 +4134,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // together with status history
                         newData.stops.forEach((stop) => {
                             const _stop = this.stops.find(
-                                (initialStop) => initialStop.stopOrder === stop.stopOrder
+                                (initialStop) =>
+                                    initialStop.stopOrder === stop.stopOrder
                             );
 
                             if (_stop) {
@@ -4644,69 +4645,70 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     public drop(event: CdkDragDrop<string[]>): void {
         // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
-        this.reorderingStarted = true;
+        if (event.previousIndex !== event.currentIndex) {
+            this.reorderingStarted = true;
 
-        moveItemInArray(
-            this.loadExtraStops().controls,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.selectExtraStopType,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.selectedExtraStopShipper,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.selectedExtraStopShipperContact,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.typeOfExtraStops,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.loadExtraStopsShipperInputConfig,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.stopTimeTabsExtraStops,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.loadExtraStopsShipperContactsInputConfig,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.selectedExtraStopTime,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.extraStopItems,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.extraStopStatusHistory,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.loadExtraStopsDateRange as [],
-            event.previousIndex,
-            event.currentIndex
-        );
-
+            moveItemInArray(
+                this.loadExtraStops().controls,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.selectExtraStopType,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.selectedExtraStopShipper,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.selectedExtraStopShipperContact,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.typeOfExtraStops,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.loadExtraStopsShipperInputConfig,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.stopTimeTabsExtraStops,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.loadExtraStopsShipperContactsInputConfig,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.selectedExtraStopTime,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.extraStopItems,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.extraStopStatusHistory,
+                event.previousIndex,
+                event.currentIndex
+            );
+            moveItemInArray(
+                this.loadExtraStopsDateRange as [],
+                event.previousIndex,
+                event.currentIndex
+            );
+        }
         // Prevent opening or closing tab
         setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
