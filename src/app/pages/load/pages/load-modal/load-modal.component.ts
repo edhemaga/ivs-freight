@@ -693,9 +693,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.formService.formValueChange$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (isFormChange: boolean) => (this.isFormDirty = isFormChange)
-                );
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
+                });
         }, 1000);
     }
 
@@ -744,6 +744,87 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // stop items
         this.isCreatedNewStopItemsRow =
             LoadStopItems.IS_CREATED_NEW_STOP_ITEMS_ROW;
+    }
+
+    public validatePickupStops(loadForm: UntypedFormGroup) {
+        let isFormDirty =
+            loadForm.get('pickupShipper').touched ||
+            loadForm.get('pickupDateFrom').touched ||
+            loadForm.get('pickupDateTo').touched ||
+            loadForm.get('pickupTimeFrom').touched ||
+            loadForm.get('pickupTimeTo').touched;
+
+        let isFormInvalid = (
+            loadForm.get('pickupShipper').errors ||
+            loadForm.get('pickupDateFrom').errors ||
+            loadForm.get('pickupDateTo').errors ||
+            loadForm.get('pickupTimeFrom').errors
+        )?.required;
+
+        if (this.selectedStopTimePickup === 5) {
+            isFormInvalid =
+                isFormInvalid || loadForm.get('pickupTimeTo').errors?.required;
+        }
+
+        if (isFormDirty && isFormInvalid) {
+            return 'invalid';
+        }
+
+        return null;
+    }
+
+    public validateExtraStops(loadFormArray: UntypedFormArray, indx: number) {
+        const stopForm = loadFormArray.at(indx);
+        if (stopForm.dirty && !stopForm.valid) {
+            return 'invalid';
+        }
+
+        return null;
+    }
+
+    public validateDeliveryStops(loadForm: UntypedFormGroup) {
+        let isFormDirty =
+            loadForm.get('deliveryShipper').touched ||
+            loadForm.get('deliveryDateFrom').touched ||
+            loadForm.get('deliveryDateTo').touched ||
+            loadForm.get('deliveryTimeTo').touched ||
+            loadForm.get('deliveryTimeFrom').touched;
+
+        let isFormInvalid = (
+            loadForm.get('deliveryShipper').errors ||
+            loadForm.get('deliveryDateFrom').errors ||
+            loadForm.get('deliveryDateTo').errors ||
+            loadForm.get('deliveryTimeFrom').errors
+        )?.required;
+
+        if (
+            this.selectedStopTimeDelivery !== 8 &&
+            this.selectedStopTimeDelivery !== 2
+        ) {
+            if (!isFormInvalid) {
+                isFormInvalid =
+                    isFormInvalid ||
+                    loadForm.get('deliveryTimeTo')?.errors?.required;
+            }
+        }
+
+        if (isFormDirty && isFormInvalid) {
+            return 'invalid';
+        }
+
+        return null;
+    }
+
+    public markInputAsTouched(fieldName: string, clear?: boolean): void {
+        const field = this.loadForm.get(fieldName);
+
+        if (field) {
+            field.markAsTouched();
+
+            if (clear) {
+                field.patchValue(null);
+            }
+        }
     }
 
     public onTabChange(event: EnumValue, action: string, indx?: number): void {
@@ -843,10 +924,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get(LoadModalStringEnum.PICKUP_TIME_TO),
                         false
                     );
+                    this.loadForm
+                        .get(LoadModalStringEnum.PICKUP_TIME_TO)
+                        .markAsUntouched();
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.PICKUP_TIME_TO)
                     );
+                    this.loadForm
+                        .get(LoadModalStringEnum.PICKUP_TIME_TO)
+                        .markAsTouched();
                 }
 
                 break;
@@ -872,10 +959,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.loadForm.get(LoadModalStringEnum.DELIVERY_TIME_TO),
                         false
                     );
+                    this.loadForm
+                        .get(LoadModalStringEnum.DELIVERY_TIME_TO)
+                        .markAsUntouched();
                 } else {
                     this.inputService.changeValidators(
                         this.loadForm.get(LoadModalStringEnum.DELIVERY_TIME_TO)
                     );
+                    this.loadForm
+                        .get(LoadModalStringEnum.DELIVERY_TIME_TO)
+                        .markAsTouched();
                 }
 
                 break;
@@ -2764,7 +2857,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ): {
         legHours: number;
         legMinutes: number;
-        legMiles: number
+        legMiles: number;
     } {
         let legHours = pickuplegHours ?? 0;
         let legMinutes = pickuplegMinutes ?? 0;
@@ -2775,7 +2868,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return {
             legHours,
             legMinutes,
-            legMiles: pickuplegMiles ?? 0.2
+            legMiles: pickuplegMiles ?? 0.2,
         };
     }
 
@@ -2807,7 +2900,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // pickup
         if (this.selectedPickupShipper) {
-            const {legHours, legMinutes, legMiles} = this.mapLegTime(pickuplegHours, pickuplegMinutes, pickuplegMiles);
+            const { legHours, legMinutes, legMiles } = this.mapLegTime(
+                pickuplegHours,
+                pickuplegMinutes,
+                pickuplegMiles
+            );
             stops.push({
                 id: null,
                 stopType: pickupStop,
@@ -2845,7 +2942,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // extra Stops
         if (this.loadExtraStops().length) {
             this.loadExtraStops().controls.forEach((item, index) => {
-                const {legHours, legMinutes, legMiles} = this.mapLegTime(item.get(LoadModalStringEnum.LEG_HOURS).value, item.get(LoadModalStringEnum.LEG_MINUTES).value , item.get(LoadModalStringEnum.LEG_MILES).value);
+                const { legHours, legMinutes, legMiles } = this.mapLegTime(
+                    item.get(LoadModalStringEnum.LEG_HOURS).value,
+                    item.get(LoadModalStringEnum.LEG_MINUTES).value,
+                    item.get(LoadModalStringEnum.LEG_MILES).value
+                );
                 stops.push({
                     id: null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
@@ -2880,7 +2981,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // delivery
         if (this.selectedDeliveryShipper) {
-            const {legHours, legMinutes, legMiles} = this.mapLegTime(deliverylegHours, deliverylegMinutes, deliverylegMiles);
+            const { legHours, legMinutes, legMiles } = this.mapLegTime(
+                deliverylegHours,
+                deliverylegMinutes,
+                deliverylegMiles
+            );
             stops.push({
                 id: null,
                 stopType: deliveryStop,

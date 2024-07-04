@@ -432,27 +432,7 @@
                         [shipperContact]="{
                             fullName: selectedPickupShipperContact?.name
                         }"
-                        [state]="
-                            loadForm.get('pickupShipper').valid &&
-                            loadForm.get('pickupDateFrom').valid &&
-                            loadForm.get('pickupTimeFrom').valid &&
-                            (selectedStopTimePickup === 6
-                                ? !loadForm.get('pickupTimeTo').errors
-                                : loadForm.get('pickupTimeTo').valid)
-                                ? 'valid'
-                                : (loadForm.get('pickupShipper').errors &&
-                                      loadForm.get('pickupShipper').touched) ||
-                                  (loadForm.get('pickupDateFrom').errors &&
-                                      loadForm.get('pickupDateFrom').touched) ||
-                                  (loadForm.get('pickupDateTo').errors &&
-                                      loadForm.get('pickupDateTo').touched) ||
-                                  (loadForm.get('pickupTimeFrom').errors &&
-                                      loadForm.get('pickupTimeFrom').touched) ||
-                                  (loadForm.get('pickupTimeTo').errors &&
-                                      loadForm.get('pickupTimeTo').touched)
-                                ? 'invalid'
-                                : null
-                        "
+                        [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
                     >
@@ -522,11 +502,8 @@
                             <app-ta-input
                                 formControlName="pickupDateFrom"
                                 [inputConfig]="getPickupDateFromInputConfig"
-                                (blurInput)="
-                                    loadForm
-                                        .get('pickupDateFrom')
-                                        .markAsTouched()
-                                "
+                                (blurInput)="markInputAsTouched('pickupDateFrom')"
+                                    (clear)="markInputAsTouched('pickupDateFrom', true)"
                             ></app-ta-input>
 
                             <ng-container *ngIf="!pickupDateRange">
@@ -552,27 +529,22 @@
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
                                 [inputConfig]="loadPickupEndDateInputConfig"
-                                (blurInput)="
-                                    loadForm.get('pickupDateTo').markAsTouched()
-                                "
+                                (blurInput)="markInputAsTouched('pickupDateTo')"
+                                    (clear)="markInputAsTouched('pickupDateTo', true)"
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="getPickupTimeFromInputConfig"
-                                (blurInput)="
-                                    loadForm
-                                        .get('pickupTimeFrom')
-                                        .markAsTouched()
-                                "
+                                (blurInput)="markInputAsTouched('pickupTimeFrom')"
+                                    (clear)="markInputAsTouched('pickupTimeFrom', true)"
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="getPickupTimeToInputConfig"
-                                (blurInput)="
-                                    loadForm.get('pickupTimeTo').markAsTouched()
-                                "
+                                (blurInput)="markInputAsTouched('pickupTimeTo')"
+                                    (clear)="markInputAsTouched('pickupTimeTo', true)"
                             ></app-ta-input>
                         </div>
 
@@ -716,57 +688,10 @@
                                             !isDragAndDropActive
                                         "
                                         [state]="
-                                            loadExtraStops()
-                                                .at(indx)
-                                                .get('shipperId').valid &&
-                                            loadExtraStops()
-                                                .at(indx)
-                                                .get('dateFrom').valid &&
-                                            loadExtraStops()
-                                                .at(indx)
-                                                .get('timeFrom').valid &&
-                                            loadExtraStops()
-                                                .at(indx)
-                                                .get('timeTo').valid
-                                                ? 'valid'
-                                                : (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('shipperId')
-                                                      .errors &&
-                                                      loadExtraStops()
-                                                          .at(indx)
-                                                          .get('shipperId')
-                                                          .touched) ||
-                                                  (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('dateFrom').errors &&
-                                                      loadExtraStops()
-                                                          .at(indx)
-                                                          .get('dateFrom')
-                                                          .touched) ||
-                                                  (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('dateTo').errors &&
-                                                      loadExtraStops()
-                                                          .at(indx)
-                                                          .get('dateTo')
-                                                          .touched) ||
-                                                  (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('timeFrom').errors &&
-                                                      loadExtraStops()
-                                                          .at(indx)
-                                                          .get('timeFrom')
-                                                          .touched) ||
-                                                  (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('timeTo').errors &&
-                                                      loadExtraStops()
-                                                          .at(indx)
-                                                          .get('timeTo')
-                                                          .touched)
-                                                ? 'invalid'
-                                                : null
+                                            validateExtraStops(
+                                                loadExtraStops(),
+                                                indx
+                                            )
                                         "
                                         (delete)="removeLoadExtraStop(indx)"
                                         (toggle)="
@@ -1111,30 +1036,7 @@
                         [disabledCard]="!selectedPickupShipper"
                         [isCardOpen]="isActiveDeliveryStop"
                         [isDelivery]="true"
-                        [state]="
-                            loadForm.get('deliveryShipper').valid &&
-                            loadForm.get('deliveryDateFrom').valid &&
-                            loadForm.get('deliveryTimeFrom').valid &&
-                            (selectedStopTimeDelivery === 6
-                                ? !loadForm.get('deliveryTimeTo').errors
-                                : loadForm.get('deliveryTimeTo').valid)
-                                ? 'valid'
-                                : (loadForm.get('deliveryShipper').errors &&
-                                      loadForm.get('deliveryShipper')
-                                          .touched) ||
-                                  (loadForm.get('deliveryDateFrom').errors &&
-                                      loadForm.get('deliveryDateFrom')
-                                          .touched) ||
-                                  (loadForm.get('deliveryDateTo').errors &&
-                                      loadForm.get('deliveryDateTo').touched) ||
-                                  (loadForm.get('deliveryTimeFrom').errors &&
-                                      loadForm.get('deliveryTimeFrom')
-                                          .touched) ||
-                                  (loadForm.get('deliveryTimeTo').errors &&
-                                      loadForm.get('deliveryTimeTo').touched)
-                                ? 'invalid'
-                                : null
-                        "
+                        [state]="validateDeliveryStops(loadForm)"
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
                     >
                         <!-- Shipper -->
@@ -1238,30 +1140,27 @@
                                 formControlName="deliveryDateTo"
                                 [inputConfig]="loadDeliveryDateTo"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryDateTo')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryDateTo')
                                 "
+                                (clear)="markInputAsTouched('deliveryDateTo', true)"
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="deliveryTimeFrom"
                                 [inputConfig]="getDeliveryTimeFromInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryTimeFrom')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryTimeFrom')
                                 "
+                                (clear)="markInputAsTouched('deliveryTimeFrom', true)"
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="deliveryTimeTo"
                                 [inputConfig]="getDeliveryTimeToInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryTimeTo')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryTimeTo')
                                 "
+                                (clear)="markInputAsTouched('deliveryTimeTo', true)"
                             ></app-ta-input>
                         </div>
 
@@ -1560,7 +1459,12 @@
                                 </div>
                             </div>
 
-                            <ng-container *ngIf="showPaymentArray && paymentTypesDropdownList.length">
+                            <ng-container
+                                *ngIf="
+                                    showPaymentArray &&
+                                    paymentTypesDropdownList.length
+                                "
+                            >
                                 <app-ta-input-dropdown
                                     formControlName="paymentDropdown"
                                     [inputConfig]="
