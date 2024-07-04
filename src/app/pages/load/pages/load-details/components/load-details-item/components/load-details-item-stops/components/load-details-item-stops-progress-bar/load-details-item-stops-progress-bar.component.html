@@ -83,15 +83,15 @@
                     <p class="m-0 ta-font-semi-bold">
                         {{
                             checkedInActiveData
-                                ? checkedInActiveData.title
-                                : nextStopActiveData.title
+                                ? checkedInActiveData?.title
+                                : nextStopActiveData?.title
                         }}
                     </p>
                 </ng-container>
 
                 <ng-template #hoveringTopLeft>
                     <p class="m-0 ta-font-semi-bold">
-                        {{ activeData.loadStops[dotHoveringIndex].title }}
+                        {{ activeData?.loadStops[dotHoveringIndex]?.title }}
                     </p>
                 </ng-template>
             </div>
@@ -103,8 +103,8 @@
                     {{ checkedInActiveData ? 'EWT ≈ ' : 'ETA ≈ ' }}
 
                     <ng-container *ngIf="checkedInActiveData; else nextStop">
-                        {{ checkedInActiveData.estimatedWaitTime.hours }}h
-                        {{ checkedInActiveData.estimatedWaitTime.minutes }}m
+                        {{ checkedInActiveData?.estimatedWaitTime.hours }}h
+                        {{ checkedInActiveData?.estimatedWaitTime.minutes }}m
                     </ng-container>
 
                     <ng-template #nextStop>
@@ -123,23 +123,23 @@
                 <ng-template #hoveringTopRight>
                     <p class="m-0 ta-font-semi-bold">
                         {{
-                            activeData.loadStops[dotHoveringIndex].isVisited
+                            activeData?.loadStops[dotHoveringIndex].isVisited
                                 ? ''
                                 : 'ETA ≈ '
                         }}
                         {{
-                            activeData.loadStops[dotHoveringIndex].isVisited
-                                ? (activeData.loadStops[dotHoveringIndex]
+                            activeData?.loadStops[dotHoveringIndex].isVisited
+                                ? (activeData?.loadStops[dotHoveringIndex]
                                       .departedFrom | formatDateP)
-                                : (activeData.loadStops[dotHoveringIndex]
+                                : (activeData?.loadStops[dotHoveringIndex]
                                       .expectedAt | formatDateP)
                         }}
                         |
                         {{
-                            activeData.loadStops[dotHoveringIndex].isVisited
-                                ? (activeData.loadStops[dotHoveringIndex]
+                            activeData?.loadStops[dotHoveringIndex].isVisited
+                                ? (activeData?.loadStops[dotHoveringIndex]
                                       .departedFrom | formatTime)
-                                : (activeData.loadStops[dotHoveringIndex]
+                                : (activeData?.loadStops[dotHoveringIndex]
                                       .expectedAt | formatTime)
                         }}
                     </p>
@@ -164,8 +164,8 @@
         >
             <ng-container
                 *ngIf="
-                    pendingData?.timeToNextStop?.days >= 0 ||
-                        closedData?.totalLoadDeliveryTime?.days >= 0;
+                    pendingData?.timeToNextStop?.days > 0 ||
+                        closedData?.totalLoadDeliveryTime?.days > 0;
                     else missedFirstPickup
                 "
             >
@@ -239,29 +239,33 @@
         <ng-template #activeBig>
             <ng-container *ngIf="checkedInActiveData; else nextStop">
                 <p class="m-0 ta-font-medium">
-                    {{ checkedInActiveData.address.city }},
-                    {{ checkedInActiveData.address.stateShortName }}
-                    {{ checkedInActiveData.address.zipCode }}
+                    {{ checkedInActiveData?.address.city }},
+                    {{ checkedInActiveData?.address.stateShortName }}
+                    {{ checkedInActiveData?.address.zipCode }}
                 </p>
 
                 <ng-container
                     *ngIf="dotHoveringIndex === -1; else hoveringBigRight"
                 >
                     <p class="m-0 ta-font-medium">
-                        {{ checkedInActiveData.waitTimeInMin }}m waiting
+                        {{ checkedInActiveData?.waitTimeInMin }}m waiting
                     </p>
                 </ng-container>
 
                 <ng-template #hoveringBigRight>
                     <p class="m-0 ta-font-medium">
                         {{
-                            activeData.loadStops[dotHoveringIndex].isVisited
-                                ? activeData.truckPositionMileage -
-                                  activeData.loadStops[dotHoveringIndex]
-                                      .cumulativeTotalLegMiles
-                                : activeData.loadStops[dotHoveringIndex]
-                                      .cumulativeTotalLegMiles -
-                                  activeData.truckPositionMileage
+                            activeData?.loadStops[dotHoveringIndex].isVisited
+                                ? (
+                                      activeData?.truckPositionMileage -
+                                      activeData?.loadStops[dotHoveringIndex]
+                                          .cumulativeTotalLegMiles
+                                  ).toFixed(2) + ' mi ago'
+                                : (
+                                      activeData?.loadStops[dotHoveringIndex]
+                                          .cumulativeTotalLegMiles -
+                                      activeData?.truckPositionMileage
+                                  ).toFixed(2) + ' mi left'
                         }}
                     </p>
                 </ng-template>
@@ -269,31 +273,33 @@
 
             <ng-template #nextStop>
                 <p class="m-0 ta-font-medium">
-                    {{ nextStopActiveData.address.city }},
-                    {{ nextStopActiveData.address.stateShortName }}
-                    {{ nextStopActiveData.address.zipCode }}
+                    {{ nextStopActiveData?.address.city }},
+                    {{ nextStopActiveData?.address.stateShortName }}
+                    {{ nextStopActiveData?.address.zipCode }}
                 </p>
 
                 <ng-container
                     *ngIf="dotHoveringIndex === -1; else hoveringBigRight"
                 >
                     <p class="m-0 ta-font-medium">
-                        {{ nextStopActiveData.milesTo }} mi left
+                        {{ nextStopActiveData?.milesTo }} mi left
                     </p>
                 </ng-container>
 
                 <ng-template #hoveringBigRight>
                     <p class="m-0 ta-font-medium">
                         {{
-                            activeData.loadStops[dotHoveringIndex].isVisited
-                                ? activeData.truckPositionMileage -
-                                  activeData.loadStops[dotHoveringIndex]
-                                      .cumulativeTotalLegMiles +
-                                  ' mi ago'
-                                : activeData.loadStops[dotHoveringIndex]
-                                      .cumulativeTotalLegMiles -
-                                  activeData.truckPositionMileage +
-                                  ' mi left'
+                            activeData?.loadStops[dotHoveringIndex].isVisited
+                                ? (
+                                      activeData?.truckPositionMileage -
+                                      activeData?.loadStops[dotHoveringIndex]
+                                          .cumulativeTotalLegMiles
+                                  ).toFixed(2) + ' mi ago'
+                                : (
+                                      activeData?.loadStops[dotHoveringIndex]
+                                          .cumulativeTotalLegMiles -
+                                      activeData?.truckPositionMileage
+                                  ).toFixed(2) + ' mi left'
                         }}
                     </p>
                 </ng-template>
@@ -317,25 +323,29 @@
             <div
                 class="progress-bar"
                 [ngStyle]="{
-                    background:
-                        pendingData?.truckPositionPercentage <= 50
-                            ? '#91919133'
-                            : pendingData?.truckPositionPercentage > 50 &&
-                              pendingData?.truckPositionPercentage <= 80
-                            ? '#FAB15C33'
-                            : '#E6676733'
+                    background: pendingData?.isMissedFirstPickup
+                        ? '#E6676733'
+                        : pendingData?.truckPositionPercentage <= 50
+                        ? '#91919133'
+                        : pendingData?.truckPositionPercentage > 50 &&
+                          pendingData?.truckPositionPercentage <= 80
+                        ? '#FAB15C33'
+                        : pendingData?.isMissedFirstPickup
+                        ? '#E6676733'
+                        : '#E6676733'
                 }"
             >
                 <div
                     class="progress-bar-inner"
                     [ngStyle]="{
-                        background:
-                            pendingData?.truckPositionPercentage <= 50
-                                ? '#919191'
-                                : pendingData?.truckPositionPercentage > 50 &&
-                                  pendingData?.truckPositionPercentage <= 80
-                                ? '#FAB15C'
-                                : '#E66767',
+                        background: pendingData?.isMissedFirstPickup
+                            ? '#E66767'
+                            : pendingData?.truckPositionPercentage <= 50
+                            ? '#919191'
+                            : pendingData?.truckPositionPercentage > 50 &&
+                              pendingData?.truckPositionPercentage <= 80
+                            ? '#FAB15C'
+                            : '#E66767',
                         width: pendingData?.truckPositionPercentage + '%'
                     }"
                 ></div>
@@ -351,7 +361,7 @@
                 <div
                     class="progress-bar-inner active"
                     [ngStyle]="{
-                        width: activeData.truckPositionPercentage + '%'
+                        width: activeData?.truckPositionPercentage + '%'
                     }"
                 ></div>
             </div>
@@ -360,7 +370,7 @@
 
             <ng-container
                 *ngFor="
-                    let stop of activeData.loadStops;
+                    let stop of activeData?.loadStops;
                     let first = first;
                     let last = last;
                     trackBy: trackByIdentity
@@ -387,7 +397,7 @@
 
             <ng-container
                 *ngFor="
-                    let stop of activeData.loadStops;
+                    let stop of activeData?.loadStops;
                     let first = first;
                     let last = last;
                     let i = index;
@@ -428,9 +438,13 @@
                 class="icon"
                 [ngStyle]="{
                     left:
-                        activeData.truckPositionPercentage < 1
+                        activeData?.truckPositionPercentage < 1
                             ? '-0.3%'
-                            : activeData.truckPositionPercentage - 1 + '%'
+                            : activeData?.truckPositionPercentage === 100
+                            ? 'calc(' +
+                              activeData?.truckPositionPercentage +
+                              '% - 21px)'
+                            : activeData?.truckPositionPercentage - 1 + '%'
                 }"
                 [src]="
                     checkedInActiveData
@@ -454,12 +468,12 @@
             <div class="d-flex flex-column justify-content-center">
                 <p class="m-0 ta-font-medium">
                     Total
-                    {{ activeData.totalMiles }}
+                    {{ activeData?.totalMiles }}
                     mi
                 </p>
 
                 <span class="ta-font-medium">
-                    {{ activeData.truckPositionPercentage }}% Complete
+                    {{ activeData?.truckPositionPercentage }}% Complete
                 </span>
             </div>
         </div>
