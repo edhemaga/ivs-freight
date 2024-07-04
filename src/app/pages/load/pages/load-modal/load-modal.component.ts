@@ -60,6 +60,7 @@ import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
+import { LoadDetailsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-comments/load-details-item-comments.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -108,6 +109,7 @@ import {
     DispatchLoadModalResponse,
     LoadStatusHistoryResponse,
     LoadStopResponse,
+    CommentResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -118,8 +120,6 @@ import { LoadStopRoutes } from '@pages/load/pages/load-modal/models/load-stop-ro
 import { LoadModalTab } from '@pages/load/pages/load-modal/models/load-modal-tab.model';
 import { Load } from '@pages/load/models/load.model';
 import { Tags } from '@shared/models/tags.model';
-import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
-import { CommentData } from '@shared/models/comment-data.model';
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
 import { EditData } from '@shared/models/edit-data.model';
@@ -166,6 +166,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadModalHazardousComponent,
         TaProgresBarComponent,
         LoadModalWaitTimeComponent,
+        LoadDetailsItemCommentsComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -349,13 +350,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isDocumentsCardOpen: boolean = false;
 
     // comments
-    public comments: CommentCompanyUser[] = [];
-    private editedCommentId: number;
-    private deletedCommentId: number;
+    public comments: CommentResponse[] = [];
 
     public isCommenting: boolean = false;
-    public isCommented: boolean = false;
-    public isCommentEdited: boolean = false;
 
     // map routes
     public loadStopRoutes: MapRoute[] = [];
@@ -389,6 +386,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public reorderingSaveError: boolean = false;
     private originalStatus: string;
     private stops: LoadStopResponse[];
+    public areCommentsVisible: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -3414,65 +3412,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createComment(): void {
-        if (this.comments.some((comment) => comment.isCommenting)) return;
-
-        const newComment: CommentCompanyUser = {
-            commentId: 0,
-            companyUser: {
-                id: this.companyUser.userId,
-                name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                avatarFile: this.companyUser.avatarFile,
-            },
-            commentContent: null,
-            commentDate: null,
-            isCommenting: true,
-        };
-
+        this.areCommentsVisible = true;
         this.isCommenting = true;
-        this.isCommented = true;
-
-        this.comments = [...this.comments, newComment];
+        setTimeout(() => this.isCommenting = false, 400);
     }
 
-    public handleCommentActionEmit(commentData: CommentData): void {
-        switch (commentData.btnType) {
-            case LoadModalStringEnum.CANCEL:
-                if (!commentData.isEditCancel) {
-                    this.comments.splice(commentData.commentIndex, 1);
-
-                    this.isCommented = false;
-                }
-
-                this.isCommenting = false;
-
-                break;
-            case LoadModalStringEnum.CONFIRM:
-                this.comments[commentData.commentIndex] = {
-                    ...this.comments[commentData.commentIndex],
-                    commentContent: commentData.commentContent,
-                    commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
-                    isCommenting: false,
-                };
-
-                this.editedCommentId = commentData.commentId;
-
-                commentData.isEditConfirm && (this.isCommentEdited = true);
-
-                this.isCommenting = false;
-
-                break;
-            case LoadModalStringEnum.DELETE:
-                this.comments.splice(commentData.commentIndex, 1);
-
-                this.deletedCommentId = commentData.commentId;
-
-                this.isCommented = false;
-                this.isCommenting = false;
-
-                break;
-            default:
-                break;
-        }
+    public commentsCountChanged(): void {
+        this.loadService
+            .getLoadInsideListById(this.editData.data.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.comments = res.pagination.data[0].comments;
+                this.loadService.updateLoadPartily(res, this.originalStatus);
+            });
     }
 
     public getDriverMessageOrNote(text: string, type: string): void {
@@ -4151,23 +4103,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 LoadModalStringEnum.CREATE
             ),
-            comment: {
-                id: this.deletedCommentId
-                    ? null
-                    : this.editedCommentId ??
-                      this.comments[this.comments.length - 1]?.commentId,
-                commentContent: this.deletedCommentId
-                    ? null
-                    : this.editedCommentId
-                    ? this.comments.find(
-                          (comment) =>
-                              comment.commentId === this.editedCommentId
-                      ).commentContent
-                    : this.comments[this.comments.length - 1]?.commentContent,
-            },
-            deleteComment: {
-                id: this.deletedCommentId,
-            },
             files: documents,
             tags: tagsArray,
             filesForDeleteIds: this.filesForDelete,
@@ -4195,11 +4130,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // After statuse change we get times for stops that needs to send to backend
                         // together with status history
                         newData.stops.forEach((stop) => {
-                            const _stop = this.stops.find(s => s.stopOrder === stop.stopOrder);
+                            const _stop = this.stops.find(
+                                (initialStop) => initialStop.stopOrder === stop.stopOrder
+                            );
 
-                            if(_stop) {
+                            if (_stop) {
                                 stop.arrive = _stop.arrive;
-                                stop.depart = _stop.depart; 
+                                stop.depart = _stop.depart;
                             }
                         });
 
@@ -4502,23 +4439,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.handleOpenCloseDocumentsCard(!!this.documents.length);
 
         // comments
-        this.comments = comments.map((comment) => {
-            return {
-                companyUser: {
-                    id: comment.companyUser.id,
-                    name: comment.companyUser.fullName,
-                    avatarFile: this.companyUser.avatarFile,
-                },
-                commentId: comment.id,
-                commentContent: comment.commentContent,
-                commentDate:
-                    MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
-                        comment.createdAt
-                    ),
-                isCommenting: false,
-                isEdited: comment.isEdited,
-            };
-        });
+        this.comments = comments;
 
         // dropdowns
         this.onSelectDropdown(editedBroker, LoadModalStringEnum.BROKER);
