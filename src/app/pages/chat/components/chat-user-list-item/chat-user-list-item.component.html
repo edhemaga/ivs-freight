@@ -1,17 +1,30 @@
 <div class="chat-list-item-wrapper">
-    <div class="chat-list-item">
-        <ng-container *ngIf="contact.companyUser?.avatarFile?.url">
+    <div class="chat-list-item d-flex">
+        <ng-container
+            *ngIf="contact.companyUser?.avatarFile?.url; else noAvatar"
+        >
             <img
                 class="chat-list-item-avatar"
                 [src]="contact.companyUser.avatarFile.url"
                 [alt]="contact.companyUser?.fullName"
             />
         </ng-container>
-        <div>
-            <div>
+        <ng-template #noAvatar>
+            <app-ta-profile-images
+                [indx]="contact.companyUser?.id"
+                [withTooltip]="false"
+                [showHoverAnimation]="false"
+                [size]="'medium'"
+                [type]="'driver'"
+                [name]="contact.companyUser?.fullName"
+            >
+            </app-ta-profile-images>
+        </ng-template>
+        <div class="chat-list-item-text-wrapper">
+            <div class="chat-list-item-name">
                 {{ contact.companyUser.fullName }}
             </div>
-            <div></div>
+            <div class="chat-list-item-message">Typing...</div>
         </div>
     </div>
 </div>

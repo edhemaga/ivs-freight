@@ -8,9 +8,12 @@
         </div>
     </div>
     <ng-container *ngIf="contact?.count > 0; else noData">
-        <ng-container *ngFor="let chat of contact?.data; let ind = index">
+        <div
+            class="contact-wrapper"
+            *ngFor="let chat of contact?.data; let ind = index"
+        >
             <app-chat-user-list-item [contact]="chat"></app-chat-user-list-item>
-        </ng-container>
+        </div>
     </ng-container>
     <ng-template #noData>
         <app-chat-no-data

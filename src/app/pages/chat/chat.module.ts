@@ -21,6 +21,10 @@ import { UserChatService } from "@pages/chat/services/chat.service";
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
 
+// Pipes
+import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
+import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+
 @NgModule({
     declarations: [
         ChatComponent,
@@ -38,9 +42,16 @@ import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
         ChatNoDataComponent,
     ],
     imports: [
+        // Modules
         CommonModule,
         ChatRoutingModule,
-        AngularSvgIconModule
+        AngularSvgIconModule,
+
+        // Pipes
+        NameInitialsPipe,
+
+        // Components
+        TaProfileImagesComponent
     ],
     providers: [
         // Resolvers
@@ -48,7 +59,10 @@ import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
         DriverResolver,
 
         // Services
-        UserChatService
+        UserChatService,
+
+        // Pipes
+        NameInitialsPipe
     ]
 })
 export class ChatModule { };
