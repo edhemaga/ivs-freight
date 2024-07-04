@@ -4,27 +4,28 @@
     "
     [className]="className + ' d-flex align-items-center'"
 >
-    <span
-        *ngFor="let value of displayString; let index = index"
-        [ngStyle]="
-            value.length > 1
-                ? (status.valueForRequest | loadStatusColor)
-                : value.length === 1 && index === displayString.length - 1
-                ? (status.valueForRequest | loadStatusColor : true)
-                : {}
-        "
-        [class]="
-            'text-uppercase ta-font-bold load-status load-status-' +
-            className +
-            '-' +
-            value.toLowerCase()
-        "
-        [ngClass]="{
-            'load-status-badge': value.length === 1,
-            'mr-1': value.length === 1 && index === 0,
-            'ml-1': value.length === 1 && index === displayString.length - 1
-        }"
-    >
-        {{ value }}
-    </span>
+    <ng-container *ngFor="let value of displayString; let index = index; trackBy: trackByIdentity">
+        <span
+            [ngStyle]="
+                value.length > 1
+                    ? (status.valueForRequest | loadStatusColor)
+                    : value.length === 1 && index === displayString.length - 1
+                    ? (status.valueForRequest | loadStatusColor : true)
+                    : {}
+            "
+            [class]="
+                'text-uppercase ta-font-bold load-status load-status-' +
+                className +
+                '-' +
+                value.toLowerCase()
+            "
+            [ngClass]="{
+                'load-status-badge d-flex': value.length === 1,
+                'mr-1': value.length === 1 && index === 0,
+                'ml-1': value.length === 1 && index === displayString.length - 1
+            }"
+        >
+            {{ value }}
+        </span>
+    </ng-container>
 </div>

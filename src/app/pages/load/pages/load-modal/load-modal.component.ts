@@ -107,6 +107,7 @@ import {
     LoadStopItemResponse,
     DispatchLoadModalResponse,
     LoadStatusHistoryResponse,
+    LoadStopResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -387,6 +388,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public reorderingStarted: boolean;
     public reorderingSaveError: boolean = false;
     private originalStatus: string;
+    private stops: LoadStopResponse[];
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -748,7 +750,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public validatePickupStops(
         loadForm: UntypedFormGroup
-    ): LoadModalStringEnum.INVALID_STATUS | null {
+    ):
+        | LoadModalStringEnum.INVALID_STATUS
+        | null
+        | LoadModalStringEnum.VALID_STATUS {
         const pickupShipperControl = loadForm.get(
             LoadModalStringEnum.PICKUP_SHIPPER
         );
@@ -788,24 +793,37 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             return LoadModalStringEnum.INVALID_STATUS;
         }
 
+        if (!isFormInvalid) {
+            return LoadModalStringEnum.VALID_STATUS;
+        }
+
         return null;
     }
 
     public validateExtraStops(
         loadFormArray: UntypedFormArray,
         indx: number
-    ): LoadModalStringEnum.INVALID_STATUS | null {
+    ):
+        | LoadModalStringEnum.INVALID_STATUS
+        | null
+        | LoadModalStringEnum.VALID_STATUS {
         const stopForm = loadFormArray.at(indx);
         if (stopForm.dirty && !stopForm.valid) {
             return LoadModalStringEnum.INVALID_STATUS;
         }
 
+        if (stopForm.valid) {
+            return LoadModalStringEnum.VALID_STATUS;
+        }
         return null;
     }
 
     public validateDeliveryStops(
         loadForm: UntypedFormGroup
-    ): LoadModalStringEnum.INVALID_STATUS | null {
+    ):
+        | LoadModalStringEnum.INVALID_STATUS
+        | null
+        | LoadModalStringEnum.VALID_STATUS {
         const deliveryShipperControl = loadForm.get(
             LoadModalStringEnum.DELIVERY_SHIPPER
         );
@@ -850,6 +868,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             return LoadModalStringEnum.INVALID_STATUS;
         }
 
+        if (!isFormInvalid) {
+            return LoadModalStringEnum.VALID_STATUS;
+        }
         return null;
     }
 
@@ -4173,9 +4194,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .subscribe((response) => {
                         // After statuse change we get times for stops that needs to send to backend
                         // together with status history
-                        newData.stops.forEach((stop, index) => {
-                            stop.arrive = response.stops[index].arrive;
-                            stop.depart = response.stops[index].depart;
+                        newData.stops.forEach((stop) => {
+                            const _stop = this.stops.find(s => s.stopOrder === stop.stopOrder);
+
+                            if(_stop) {
+                                stop.arrive = _stop.arrive;
+                                stop.depart = _stop.depart; 
+                            }
                         });
 
                         if (this.isLoadClosed)
@@ -4367,6 +4392,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.deliveryStatusHistory = stop.statusHistory;
             }
         });
+
+        this.stops = stops;
 
         const loadRequirements = {
             truckType: loadModalData.loadRequirements?.truckType,

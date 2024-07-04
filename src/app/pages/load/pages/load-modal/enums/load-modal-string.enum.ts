@@ -204,5 +204,6 @@ export enum LoadModalStringEnum {
     DELIVERY_DATE_FROM = 'deliveryDateFrom',
     DELIVERY_DATE_TO = 'deliveryDateTo',
     DELIVERY_TIME_FROM = 'deliveryTimeFrom',
-    INVALID_STATUS= 'invalid'
+    INVALID_STATUS= 'invalid',
+    VALID_STATUS= 'valid',
 }

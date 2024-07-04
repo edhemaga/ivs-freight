@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 
-import { LoadStatusStringComponent } from './load-status-string.component';
 
 describe('LoadStatusStringComponent', () => {
   let component: LoadStatusStringComponent;

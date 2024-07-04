@@ -43,4 +43,9 @@ export class LoadStatusStringComponent implements OnInit, OnChanges {
         this.displayString = this.status.name.split(' ');
         this.className = this.status.valueForRequest.toLowerCase();
     }
+
+    public trackByIdentity(index: number): number {
+        return index;
+    }
+
 }
