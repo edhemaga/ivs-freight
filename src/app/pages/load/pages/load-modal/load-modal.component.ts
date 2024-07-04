@@ -481,7 +481,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public getDispatcherInputConfig(): ITaInput {
         return LoadModalConfig.getDispatcherInputConfig(
-            this.selectedDispatcher?.logoName || this.selectedDispatcher?.avatarFile?.url,
+            this.selectedDispatcher?.logoName ||
+                this.selectedDispatcher?.avatarFile?.url,
             this.selectedDispatcher?.name
         );
     }
@@ -3792,6 +3793,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             revisedRate,
             // invoicedDate,
         };
+
+        console.log('newData', newData);
+
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))

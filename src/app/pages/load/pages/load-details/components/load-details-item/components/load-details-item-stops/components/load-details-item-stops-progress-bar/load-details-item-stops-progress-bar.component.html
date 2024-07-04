@@ -1,0 +1,435 @@
+<div class="d-flex flex-column justify-content-center stops-progress">
+    <!-- Top -->
+
+    <div
+        class="d-flex align-items-center justify-content-between stops-progress-top"
+    >
+        <!-- Pending, Closed Top -->
+
+        <ng-container
+            *ngIf="
+                progressData?.statusType?.name === 'Pending' ||
+                    progressData?.statusType?.name === 'Closed';
+                else activeTop
+            "
+        >
+            <div class="d-flex align-items-center">
+                <p
+                    class="m-0 ta-font-semi-bold"
+                    [ngStyle]="{
+                        color: progressData?.loadProgress
+                            ?.pendingLoadProgressBar?.isMissedFirstPickup
+                            ? '#DF3C3C'
+                            : '#6C6C6C'
+                    }"
+                >
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ? progressData?.loadProgress?.pendingLoadProgressBar
+                                  ?.isMissedFirstPickup
+                                ? 'Missed First Pickup'
+                                : 'First Pickup'
+                            : 'Delivered'
+                    }}
+                </p>
+
+                <ng-container
+                    *ngIf="
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.isMissedFirstPickup
+                    "
+                >
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsItemSvgRoutes.dangerMarkRoute"
+                    ></svg-icon>
+                </ng-container>
+            </div>
+
+            <p class="m-0 ta-font-semi-bold">
+                ETC ≈
+                {{
+                    (progressData?.loadProgress?.pendingLoadProgressBar
+                        ?.totalTimeToDeliverLoad?.days ??
+                        progressData?.loadProgress?.closedLoadProgressBar
+                            ?.totalLoadDeliveryTime?.days) +
+                        ((progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.totalTimeToDeliverLoad?.days ??
+                            progressData?.loadProgress?.closedLoadProgressBar
+                                ?.totalLoadDeliveryTime?.days) ===
+                        1
+                            ? ' day'
+                            : ' days')
+                }}
+                {{
+                    (progressData?.loadProgress?.pendingLoadProgressBar
+                        ?.totalTimeToDeliverLoad?.hours ??
+                        progressData?.loadProgress?.closedLoadProgressBar
+                            ?.totalLoadDeliveryTime?.hours) +
+                        ((progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.totalTimeToDeliverLoad?.hours ??
+                            progressData?.loadProgress?.closedLoadProgressBar
+                                ?.totalLoadDeliveryTime?.hours) ===
+                        1
+                            ? ' hour'
+                            : ' hours')
+                }}
+            </p>
+        </ng-container>
+
+        <!-- Active Top -->
+
+        <ng-template #activeTop>
+            <div class="d-flex align-items-center">
+                <p
+                    class="m-0 ta-font-semi-bold"
+                    [ngStyle]="{
+                        color: progressData?.loadProgress
+                            ?.pendingLoadProgressBar?.isMissedFirstPickup
+                            ? '#DF3C3C'
+                            : '#6C6C6C'
+                    }"
+                >
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ? progressData?.loadProgress?.pendingLoadProgressBar
+                                  ?.isMissedFirstPickup
+                                ? 'Missed First Pickup'
+                                : 'First Pickup'
+                            : 'Delivered'
+                    }}
+                </p>
+
+                <ng-container
+                    *ngIf="
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.isMissedFirstPickup
+                    "
+                >
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsItemSvgRoutes.dangerMarkRoute"
+                    ></svg-icon>
+                </ng-container>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Top Big -->
+
+    <div
+        class="d-flex align-items-center justify-content-between stops-progress-top-big"
+    >
+        <!-- Pending, Closed Big -->
+
+        <ng-container
+            *ngIf="
+                progressData?.statusType?.name === 'Pending' ||
+                    progressData?.statusType?.name === 'Closed';
+                else activeBig
+            "
+        >
+            <ng-container
+                *ngIf="
+                    progressData?.loadProgress?.pendingLoadProgressBar
+                        ?.timeToNextStop?.days >= 0 ||
+                        progressData?.loadProgress?.closedLoadProgressBar
+                            ?.totalLoadDeliveryTime?.days >= 0;
+                    else missedFirstPickup
+                "
+            >
+                <p class="m-0 ta-font-medium">
+                    <ng-container
+                        *ngIf="
+                            progressData?.statusType?.name === 'Pending' &&
+                                isToday;
+                            else notToday
+                        "
+                    >
+                        Today,
+                        {{
+                            progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.plannedTimeFrom | formatTime
+                        }}
+                        {{
+                            progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.plannedTimeTo
+                                ? ' - ' +
+                                  (progressData?.loadProgress
+                                      ?.pendingLoadProgressBar?.plannedTimeTo
+                                      | formatTime)
+                                : ''
+                        }}
+                    </ng-container>
+
+                    <ng-template #notToday>
+                        In
+                        {{
+                            (progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.timeToNextStop?.days ??
+                                progressData?.loadProgress
+                                    ?.closedLoadProgressBar?.lastDeliveryTime
+                                    ?.days) +
+                                ((progressData?.loadProgress
+                                    ?.pendingLoadProgressBar?.timeToNextStop
+                                    ?.days ??
+                                    progressData?.loadProgress
+                                        ?.closedLoadProgressBar
+                                        ?.lastDeliveryTime?.days) ===
+                                1
+                                    ? ' day'
+                                    : ' days')
+                        }}
+                        {{
+                            progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.timeToNextStop?.hours
+                                ? progressData?.loadProgress
+                                      ?.pendingLoadProgressBar?.timeToNextStop
+                                      ?.hours +
+                                  (progressData?.loadProgress
+                                      ?.pendingLoadProgressBar?.timeToNextStop
+                                      ?.hours === 1
+                                      ? ' hour'
+                                      : ' hours')
+                                : ''
+                        }}
+                    </ng-template>
+                </p>
+            </ng-container>
+
+            <ng-template #missedFirstPickup>
+                <p class="m-0 ta-font-medium">
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.plannedTimeFrom | formatDateP
+                    }}
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.plannedTimeTo
+                            ? ' - ' +
+                              (progressData?.loadProgress
+                                  ?.pendingLoadProgressBar?.plannedTimeTo
+                                  | formatDateP)
+                            : ''
+                    }}
+                    |
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.plannedTimeFrom | formatTime
+                    }}
+                    {{
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.plannedTimeTo
+                            ? ' - ' +
+                              (progressData?.loadProgress
+                                  ?.pendingLoadProgressBar?.plannedTimeTo
+                                  | formatTime)
+                            : ''
+                    }}
+                </p>
+            </ng-template>
+
+            <p class="m-0 ta-font-medium">
+                {{
+                    progressData?.loadProgress?.pendingLoadProgressBar
+                        ?.milesToNextStop ??
+                        progressData?.loadProgress?.closedLoadProgressBar
+                            ?.totalMiles
+                }}
+                mi
+            </p>
+        </ng-container>
+
+        <!-- Active Big -->
+
+        <ng-template #activeBig>
+            <p></p>
+
+            <p class="m-0 ta-font-medium">
+                {{
+                    progressData?.loadProgress?.activeLoadProgressBar
+                        ?.milesLeftToDeliveryLoad
+                }}
+                mi left
+            </p>
+        </ng-template>
+    </div>
+
+    <!-- Progress Bar -->
+
+    <div
+        class="d-flex flex-column justify-content-between stops-progress-progress-bar"
+    >
+        <!-- Pending Progress Bar -->
+
+        <ng-container
+            *ngIf="
+                progressData?.statusType?.name === 'Pending';
+                else activeProgress
+            "
+        >
+            <div
+                class="progress-bar"
+                [ngStyle]="{
+                    background:
+                        progressData?.loadProgress?.pendingLoadProgressBar
+                            ?.truckPositionPercentage <= 50
+                            ? '#91919133'
+                            : progressData?.loadProgress?.pendingLoadProgressBar
+                                  ?.truckPositionPercentage > 50 &&
+                              progressData?.loadProgress?.pendingLoadProgressBar
+                                  ?.truckPositionPercentage <= 80
+                            ? '#FAB15C33'
+                            : '#E6676733'
+                }"
+            >
+                <div
+                    class="progress-bar-inner"
+                    [ngStyle]="{
+                        background:
+                            progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.truckPositionPercentage <= 50
+                                ? '#919191'
+                                : progressData?.loadProgress
+                                      ?.pendingLoadProgressBar
+                                      ?.truckPositionPercentage > 50 &&
+                                  progressData?.loadProgress
+                                      ?.pendingLoadProgressBar
+                                      ?.truckPositionPercentage <= 80
+                                ? '#FAB15C'
+                                : '#E66767',
+                        width:
+                            progressData?.loadProgress?.pendingLoadProgressBar
+                                ?.truckPositionPercentage + '%'
+                    }"
+                ></div>
+            </div>
+        </ng-container>
+
+        <!-- Active Progress Bar -->
+
+        <ng-template #activeProgress>
+            <!-- Progress Bar -->
+
+            <div class="progress-bar active">
+                <div
+                    class="progress-bar-inner active"
+                    [ngStyle]="{
+                        width:
+                            progressData?.loadProgress?.activeLoadProgressBar
+                                ?.truckPositionPercentage + '%'
+                    }"
+                ></div>
+            </div>
+
+            <!-- Progress Bar Pipe Positions -->
+
+            <ng-container
+                *ngFor="
+                    let stop of progressData?.loadProgress
+                        ?.activeLoadProgressBar?.loadStops;
+                    let first = first;
+                    let last = last;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="progress-pipe-position"
+                    [ngStyle]="{
+                        left: first
+                            ? '8px'
+                            : last
+                            ? unset
+                            : stop.progressBarPercentage + '%',
+                        right: first
+                            ? unset
+                            : last
+                            ? '8px'
+                            : stop.progressBarPercentage + '%'
+                    }"
+                ></div>
+            </ng-container>
+
+            <!-- Progress Bar Dots -->
+
+            <ng-container
+                *ngFor="
+                    let stop of progressData?.loadProgress
+                        ?.activeLoadProgressBar?.loadStops;
+                    let first = first;
+                    let last = last;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="progress-dot"
+                    [ngStyle]="{
+                        left: first
+                            ? '6px'
+                            : last
+                            ? unset
+                            : 'calc(' + stop.progressBarPercentage + '% - 1px)',
+                        right: first
+                            ? unset
+                            : last
+                            ? '6px'
+                            : stop.progressBarPercentage + '%',
+                        background: first
+                            ? '#CCCCCC'
+                            : last
+                            ? '#E66767'
+                            : stop.stopType.id === 1
+                            ? '#56B4AC'
+                            : stop.stopType.id === 2
+                            ? '#E66767'
+                            : ''
+                    }"
+                ></div>
+            </ng-container>
+
+            <!-- Truck Marker -->
+
+            <svg-icon
+                class="icon"
+                [ngStyle]="{
+                    left:
+                        progressData?.loadProgress?.activeLoadProgressBar
+                            ?.truckPositionPercentage -
+                        1 +
+                        '%'
+                }"
+                [src]="loadDetailsItemSvgRoutes.truckMarkerRoute"
+            ></svg-icon>
+        </ng-template>
+    </div>
+
+    <!-- Bottom -->
+
+    <ng-container *ngIf="progressData?.statusType?.name === 'Active'">
+        <div
+            class="d-flex align-items-center justify-content-between stops-progress-bottom"
+        >
+            <div
+                class="d-flex flex-column justify-content-center gps-container"
+            ></div>
+
+            <div class="d-flex flex-column justify-content-center">
+                <p class="m-0 ta-font-medium">
+                    Total
+                    {{
+                        progressData?.loadProgress?.activeLoadProgressBar
+                            ?.totalMiles
+                    }}
+                    mi
+                </p>
+
+                <span class="ta-font-medium">
+                    {{
+                        progressData?.loadProgress?.activeLoadProgressBar
+                            ?.truckPositionPercentage
+                    }}% Complete
+                </span>
+            </div>
+        </div>
+    </ng-container>
+</div>

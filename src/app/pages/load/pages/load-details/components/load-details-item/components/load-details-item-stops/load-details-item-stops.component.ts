@@ -4,14 +4,12 @@ import { CommonModule } from '@angular/common';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// routes
-import { LoadDetailsItemSvgRoutes } from '@pages/load/pages/load-details/components/load-details-item/utils/svg-routes/load-details-item-svg.routes';
-
 // helpers
 import { LoadDetailsItemHelper } from '@pages/load/pages/load-details/components/load-details-item/utils/helpers/load-details-item.helper';
 
 // components
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import { LoadDetailsItemStopsProgressBarComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-details-item-stops-progress-bar/load-details-item-stops-progress-bar.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -37,6 +35,7 @@ import { LoadStop } from '@pages/load/pages/load-details/components/load-details
 
         // components
         TaMapsComponent,
+        LoadDetailsItemStopsProgressBarComponent,
 
         // pipes
         FormatDatePipe,
@@ -53,7 +52,6 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
     public loadStopRoutes: MapRoute[] = [];
 
     public loadDetailsItemHelper = LoadDetailsItemHelper;
-    public loadDetailsItemSvgRoutes = LoadDetailsItemSvgRoutes;
 
     // items
     public stopItemsHeaderItems: StopItemsHeaderItem[] = [];
