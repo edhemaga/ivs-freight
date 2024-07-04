@@ -502,8 +502,12 @@
                             <app-ta-input
                                 formControlName="pickupDateFrom"
                                 [inputConfig]="getPickupDateFromInputConfig"
-                                (blurInput)="markInputAsTouched('pickupDateFrom')"
-                                    (clear)="markInputAsTouched('pickupDateFrom', true)"
+                                (blurInput)="
+                                    markInputAsTouched('pickupDateFrom')
+                                "
+                                (clear)="
+                                    markInputAsTouched('pickupDateFrom', true)
+                                "
                             ></app-ta-input>
 
                             <ng-container *ngIf="!pickupDateRange">
@@ -530,21 +534,29 @@
                                 formControlName="pickupDateTo"
                                 [inputConfig]="loadPickupEndDateInputConfig"
                                 (blurInput)="markInputAsTouched('pickupDateTo')"
-                                    (clear)="markInputAsTouched('pickupDateTo', true)"
+                                (clear)="
+                                    markInputAsTouched('pickupDateTo', true)
+                                "
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="getPickupTimeFromInputConfig"
-                                (blurInput)="markInputAsTouched('pickupTimeFrom')"
-                                    (clear)="markInputAsTouched('pickupTimeFrom', true)"
+                                (blurInput)="
+                                    markInputAsTouched('pickupTimeFrom')
+                                "
+                                (clear)="
+                                    markInputAsTouched('pickupTimeFrom', true)
+                                "
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="getPickupTimeToInputConfig"
                                 (blurInput)="markInputAsTouched('pickupTimeTo')"
-                                    (clear)="markInputAsTouched('pickupTimeTo', true)"
+                                (clear)="
+                                    markInputAsTouched('pickupTimeTo', true)
+                                "
                             ></app-ta-input>
                         </div>
 
@@ -1142,7 +1154,9 @@
                                 (blurInput)="
                                     markInputAsTouched('deliveryDateTo')
                                 "
-                                (clear)="markInputAsTouched('deliveryDateTo', true)"
+                                (clear)="
+                                    markInputAsTouched('deliveryDateTo', true)
+                                "
                             ></app-ta-input>
 
                             <app-ta-input
@@ -1151,7 +1165,9 @@
                                 (blurInput)="
                                     markInputAsTouched('deliveryTimeFrom')
                                 "
-                                (clear)="markInputAsTouched('deliveryTimeFrom', true)"
+                                (clear)="
+                                    markInputAsTouched('deliveryTimeFrom', true)
+                                "
                             ></app-ta-input>
 
                             <app-ta-input
@@ -1160,7 +1176,9 @@
                                 (blurInput)="
                                     markInputAsTouched('deliveryTimeTo')
                                 "
-                                (clear)="markInputAsTouched('deliveryTimeTo', true)"
+                                (clear)="
+                                    markInputAsTouched('deliveryTimeTo', true)
+                                "
                             ></app-ta-input>
                         </div>
 
@@ -1507,9 +1525,7 @@
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"
                     [hasCounter]="comments.length"
-                    [hasActionSvg]="
-                        editData && !isCommented && !isCommentEdited
-                    "
+                    [hasActionSvg]="editData"
                     [hasScrollBody]="comments.length"
                     [hasBodyData]="true"
                     [animationMarginParams]="{
@@ -1519,21 +1535,13 @@
                     [disabledCard]="!editData"
                     (onActionEvent)="createComment()"
                 >
-                    <ng-container
-                        *ngFor="let comment of comments; let i = index"
+                    <app-load-details-item-comments
+                        [load]="editData?.data"
+                        [isAddNewComment]="isCommenting"
+                        [isSearchComment]="false"
+                        [hideHeader]="true"
                     >
-                        <app-ta-comment
-                            [commentData]="comment"
-                            [commentIndex]="i"
-                            [isMe]="
-                                comment.companyUser.id === companyUser.userId
-                            "
-                            [isEditButtonDisabled]="
-                                isCommented || isCommentEdited
-                            "
-                            (btnActionEmitter)="handleCommentActionEmit($event)"
-                        ></app-ta-comment>
-                    </ng-container>
+                    </app-load-details-item-comments>
                 </app-ta-custom-card>
             </div>
 

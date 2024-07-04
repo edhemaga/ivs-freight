@@ -46,6 +46,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
+    @Input() hideHeader: boolean = false;
 
     private destroy$ = new Subject<void>();
 

@@ -36,7 +36,7 @@ import { CommentData } from '@shared/models/comment-data.model';
 export class TaCommentsSearchComponent {
     @Input() commentsData: CommentCompanyUser[];
     @Input() isDisplaySearch: boolean = false;
-
+    @Input() hideHeader: boolean = false;
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() btnSortEmitter = new EventEmitter<string>();
     @Output() searchHightlightEmitter = new EventEmitter<string>();
