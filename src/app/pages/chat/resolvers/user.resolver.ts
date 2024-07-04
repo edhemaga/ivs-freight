@@ -6,15 +6,15 @@ import { Observable } from "rxjs";
 import { CompanyUserChat } from "@pages/chat/models/company-user-chat.model";
 
 // Service
-import { ChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services/chat.service";
 
 //TODO change any
 export class UserResolver implements Resolve<any> {
 
-    private chatService = inject(ChatService);
+    private userChatService = inject(UserChatService);
 
     resolve(): Observable<CompanyUserChat[]> {
-        return this.chatService.getCompanyUserList();
+        return this.userChatService.getCompanyUserList();
     }
 
 }

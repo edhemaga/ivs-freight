@@ -1,7 +1,15 @@
 import { Observable, of } from "rxjs";
-import { CompanyUserChat } from "../models/company-user-chat.model";
+import { inject } from "@angular/core";
 
-export class ChatService {
+// Models
+import { CompanyUserChat } from "@pages/chat/models/company-user-chat.model";
+
+// Services
+import { ChatService } from "appcoretruckassist/api/chat.service";
+export class UserChatService {
+
+    chatService = inject(ChatService);
+
     constructor() { }
 
     getCompanyUserList(): Observable<CompanyUserChat[]> {

@@ -8,7 +8,7 @@ import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 
 //Services
-import { ChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services/chat.service";
 
 const routes: Routes = [
     {
