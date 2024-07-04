@@ -2,6 +2,7 @@
     <app-ta-comments-search
         [commentsData]="comments"
         [isDisplaySearch]="isSearchComment"
+        [isHeaderHidden]="isHeaderHidden"
         (btnActionEmitter)="handleCommentActionEmit($event)"
         (btnSortEmitter)="handleSortActionEmit($event)"
         (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"

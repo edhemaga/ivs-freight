@@ -34,6 +34,7 @@ export class ShipperModalConfig {
             label: 'Longitude',
             placeholderIcon: 'coordinates',
             textTransform: 'uppercase',
+            isRequired: true,
             minLength: 1,
             maxLength: 10,
         };
@@ -46,6 +47,7 @@ export class ShipperModalConfig {
             label: 'Latitude',
             placeholderIcon: 'coordinates',
             textTransform: 'uppercase',
+            isRequired: true,
             minLength: 1,
             maxLength: 10,
         };
