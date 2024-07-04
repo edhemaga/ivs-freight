@@ -76,15 +76,19 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Enums
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
-
 //Constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
 
 //Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
+import { AddressService } from '@shared/services/address.service';
+
+//Validations
+import {
+    latitudeValidator,
+    longitudeValidator,
+} from '@shared/validators/long-lat-validations';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -178,13 +182,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
-        private formService: FormService
+        private formService: FormService,
+        private addressService: AddressService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getShipperDropdowns();
         this.companyUser = JSON.parse(localStorage.getItem('user'));
+
+        this.shipperForm
+            .get('longitude')
+            .valueChanges.subscribe(() => this.longLatChanged());
+        this.shipperForm
+            .get('latitude')
+            .valueChanges.subscribe(() => this.longLatChanged());
     }
 
     private createForm() {
@@ -599,10 +611,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             files: documents,
             longitude: longitude,
             latitude: latitude,
-            locationType:
-                this.selectedPhysicalAddressTab === 1
-                    ? ShipperModalString.ADDRESS
-                    : ShipperModalString.COORDINATES,
+            locationType: this.selectedPhysicalAddressTab,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -724,13 +733,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents ? documents : this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
-            // longitude: this.longitude,
-            // latitude: this.latitude, leave this commented because api missing
-            locationType:
-                this.selectedPhysicalAddressTab === 1
-                    ? ShipperModalString.ADDRESS
-                    : ShipperModalString.COORDINATES,
+            locationType: this.selectedPhysicalAddressTab,
         };
+
+        if (this.selectedPhysicalAddressTab === 2) {
+            newData.longitude = this.shipperForm.get('longitude').value;
+            newData.latitude = this.shipperForm.get('latitude').value;
+        }
 
         for (let index = 0; index < shipperContacts.length; index++) {
             shipperContacts[index].departmentId =
@@ -860,8 +869,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                   ),
                         note: res.note,
                         shipperContacts: [],
-                        // longitude: res.longitude,
-                        // latitude: res.latitude, leave this commented because api is missing
                     });
 
                     this.shipperName = res.businessName;
@@ -942,6 +949,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.selectedPhysicalAddressTab = res.locationType.id;
+
+                    this.setAddressValidations(res.locationType.name);
+                    if (this.selectedPhysicalAddressTab === 2)
+                        this.shipperForm.patchValue({
+                            longitude: res.longitude,
+                            latitude: res.latitude,
+                        });
 
                     this.startFormChanges();
                     setTimeout(() => {
@@ -1127,6 +1141,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public tabPhysicalAddressChange(event: Tabs): void {
         this.selectedPhysicalAddressTab = event.id;
 
+        this.setAddressValidations(event.name, true);
+
         this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
             return {
                 ...item,
@@ -1135,11 +1151,97 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    private setAddressValidations(type: string, tabChanged?: boolean): void {
+        const longitudeControl = this.shipperForm.get('longitude');
+        const latitudeControl = this.shipperForm.get('latitude');
+        const addressControl = this.shipperForm.get('address');
+        const countryStateAddress = this.shipperForm.get('countryStateAddress');
+
+        if (tabChanged) this.selectedAddress = null;
+        console.log(type, 'typee');
+        if (type === 'Coordinates') {
+            longitudeControl.setValidators([
+                Validators.required,
+                longitudeValidator(),
+            ]);
+            latitudeControl.setValidators([
+                Validators.required,
+                latitudeValidator(),
+            ]);
+
+            addressControl.clearValidators();
+            addressControl.setErrors(null);
+            addressControl.setValue(null);
+        } else {
+            longitudeControl.clearValidators();
+            latitudeControl.clearValidators();
+
+            longitudeControl.setValue(null);
+            latitudeControl.setValue(null);
+            countryStateAddress.setValue(null);
+            if (tabChanged) addressControl.setValue(null);
+            addressControl.setValidators([
+                Validators.required,
+                ...addressValidation,
+            ]);
+        }
+
+        // Update the validity state of the controls
+        longitudeControl.updateValueAndValidity();
+        latitudeControl.updateValueAndValidity();
+        addressControl.updateValueAndValidity();
+    }
+
+    private longLatChanged(): void {
+        const longitudeControl = this.shipperForm.get('longitude');
+        const latitudeControl = this.shipperForm.get('latitude');
+
+        console.log(
+            longitudeControl.value,
+            latitudeControl.value,
+            'chaaaaaaaangeeeeeeeeeed'
+        );
+        console.log(
+            longitudeControl.valid,
+            latitudeControl.valid,
+            'chaaaaaaaangeeeeeeeeeed'
+        );
+
+        if (
+            longitudeControl.valid &&
+            longitudeControl.value &&
+            latitudeControl.valid &&
+            latitudeControl.value
+        ) {
+            console.log('api call');
+            this.addressService
+                .getAddressByLongLat(
+                    ['Locality'],
+                    this.shipperForm.get('longitude').value,
+                    this.shipperForm.get('latitude').value
+                )
+                .pipe()
+                .subscribe((res) => {
+                    console.log('res from');
+                    this.shipperForm.patchValue({
+                        countryStateAddress: res.address,
+                        address: res.address,
+                    });
+
+                    this.selectedAddress = res;
+                });
+        } else
+            this.shipperForm.patchValue({
+                countryStateAddress: null,
+            });
+    }
+
     private startFormChanges() {
         this.formService.checkFormChange(this.shipperForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
+                console.log(this.shipperForm, isFormChange, 'is form change');
                 this.isFormDirty = isFormChange;
             });
     }

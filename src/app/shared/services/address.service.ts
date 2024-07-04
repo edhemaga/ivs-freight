@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 
 // models
 import {
+    AddressEntity,
     AddressListResponse,
     AddressResponse,
     AutocompleteSearchLayer,
@@ -43,5 +44,17 @@ export class AddressService implements OnDestroy {
 
     public getAddressInfo(address: string): Observable<AddressResponse> {
         return this.geoService.apiGeolocationAddressGet(address);
+    }
+
+    public getAddressByLongLat(
+        layers: AutocompleteSearchLayer[],
+        longitude: number,
+        latitude: number
+    ): Observable<AddressEntity> {
+        return this.geoService.apiGeolocationAddressReverseGet(
+            layers,
+            longitude,
+            latitude
+        );
     }
 }
