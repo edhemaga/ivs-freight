@@ -17,28 +17,21 @@
                 <p
                     class="m-0 ta-font-semi-bold"
                     [ngStyle]="{
-                        color: progressData?.loadProgress
-                            ?.pendingLoadProgressBar?.isMissedFirstPickup
+                        color: pendingData?.isMissedFirstPickup
                             ? '#DF3C3C'
                             : '#6C6C6C'
                     }"
                 >
                     {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ? progressData?.loadProgress?.pendingLoadProgressBar
-                                  ?.isMissedFirstPickup
+                        pendingData
+                            ? pendingData?.isMissedFirstPickup
                                 ? 'Missed First Pickup'
                                 : 'First Pickup'
                             : 'Delivered'
                     }}
                 </p>
 
-                <ng-container
-                    *ngIf="
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.isMissedFirstPickup
-                    "
-                >
+                <ng-container *ngIf="pendingData?.isMissedFirstPickup">
                     <svg-icon
                         class="icon"
                         [src]="loadDetailsItemSvgRoutes.dangerMarkRoute"
@@ -49,27 +42,19 @@
             <p class="m-0 ta-font-semi-bold">
                 ETC ≈
                 {{
-                    (progressData?.loadProgress?.pendingLoadProgressBar
-                        ?.totalTimeToDeliverLoad?.days ??
-                        progressData?.loadProgress?.closedLoadProgressBar
-                            ?.totalLoadDeliveryTime?.days) +
-                        ((progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.totalTimeToDeliverLoad?.days ??
-                            progressData?.loadProgress?.closedLoadProgressBar
-                                ?.totalLoadDeliveryTime?.days) ===
+                    (pendingData?.totalTimeToDeliverLoad?.days ??
+                        closedData?.totalLoadDeliveryTime?.days) +
+                        ((pendingData?.totalTimeToDeliverLoad?.days ??
+                            closedData?.totalLoadDeliveryTime?.days) ===
                         1
                             ? ' day'
                             : ' days')
                 }}
                 {{
-                    (progressData?.loadProgress?.pendingLoadProgressBar
-                        ?.totalTimeToDeliverLoad?.hours ??
-                        progressData?.loadProgress?.closedLoadProgressBar
-                            ?.totalLoadDeliveryTime?.hours) +
-                        ((progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.totalTimeToDeliverLoad?.hours ??
-                            progressData?.loadProgress?.closedLoadProgressBar
-                                ?.totalLoadDeliveryTime?.hours) ===
+                    (pendingData?.totalTimeToDeliverLoad?.hours ??
+                        closedData?.totalLoadDeliveryTime?.hours) +
+                        ((pendingData?.totalTimeToDeliverLoad?.hours ??
+                            closedData?.totalLoadDeliveryTime?.hours) ===
                         1
                             ? ' hour'
                             : ' hours')
@@ -81,37 +66,85 @@
 
         <ng-template #activeTop>
             <div class="d-flex align-items-center">
-                <p
-                    class="m-0 ta-font-semi-bold"
-                    [ngStyle]="{
-                        color: progressData?.loadProgress
-                            ?.pendingLoadProgressBar?.isMissedFirstPickup
-                            ? '#DF3C3C'
-                            : '#6C6C6C'
-                    }"
-                >
-                    {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ? progressData?.loadProgress?.pendingLoadProgressBar
-                                  ?.isMissedFirstPickup
-                                ? 'Missed First Pickup'
-                                : 'First Pickup'
-                            : 'Delivered'
-                    }}
-                </p>
-
                 <ng-container
-                    *ngIf="
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.isMissedFirstPickup
-                    "
+                    *ngIf="dotHoveringIndex === -1; else hoveringTopLeft"
                 >
-                    <svg-icon
-                        class="icon"
-                        [src]="loadDetailsItemSvgRoutes.dangerMarkRoute"
-                    ></svg-icon>
+                    <p
+                        class="m-0 ta-font-semi-bold"
+                        [ngStyle]="{
+                            color: checkedInActiveData ? '#DF3C3C' : '#6C6C6C'
+                        }"
+                    >
+                        {{ checkedInActiveData ? 'Checked In' : 'Next Stop' }}
+                    </p>
+
+                    <p class="m- 0 pipe">|</p>
+
+                    <p class="m-0 ta-font-semi-bold">
+                        {{
+                            checkedInActiveData
+                                ? checkedInActiveData.title
+                                : nextStopActiveData.title
+                        }}
+                    </p>
                 </ng-container>
+
+                <ng-template #hoveringTopLeft>
+                    <p class="m-0 ta-font-semi-bold">
+                        {{ activeData.loadStops[dotHoveringIndex].title }}
+                    </p>
+                </ng-template>
             </div>
+
+            <p class="m-0 ta-font-semi-bold">
+                <ng-container
+                    *ngIf="dotHoveringIndex === -1; else hoveringTopRight"
+                >
+                    {{ checkedInActiveData ? 'EWT ≈ ' : 'ETA ≈ ' }}
+
+                    <ng-container *ngIf="checkedInActiveData; else nextStop">
+                        {{ checkedInActiveData.estimatedWaitTime.hours }}h
+                        {{ checkedInActiveData.estimatedWaitTime.minutes }}m
+                    </ng-container>
+
+                    <ng-template #nextStop>
+                        {{
+                            isToday
+                                ? (nextStopActiveData?.expectedAt | formatTime)
+                                : ((nextStopActiveData?.expectedAt
+                                      | formatDateP) +
+                                      ' ' +
+                                      nextStopActiveData?.expectedAt
+                                  | formatTime)
+                        }}
+                    </ng-template>
+                </ng-container>
+
+                <ng-template #hoveringTopRight>
+                    <p class="m-0 ta-font-semi-bold">
+                        {{
+                            activeData.loadStops[dotHoveringIndex].isVisited
+                                ? ''
+                                : 'ETA ≈ '
+                        }}
+                        {{
+                            activeData.loadStops[dotHoveringIndex].isVisited
+                                ? (activeData.loadStops[dotHoveringIndex]
+                                      .departedFrom | formatDateP)
+                                : (activeData.loadStops[dotHoveringIndex]
+                                      .expectedAt | formatDateP)
+                        }}
+                        |
+                        {{
+                            activeData.loadStops[dotHoveringIndex].isVisited
+                                ? (activeData.loadStops[dotHoveringIndex]
+                                      .departedFrom | formatTime)
+                                : (activeData.loadStops[dotHoveringIndex]
+                                      .expectedAt | formatTime)
+                        }}
+                    </p>
+                </ng-template>
+            </p>
         </ng-template>
     </div>
 
@@ -131,10 +164,8 @@
         >
             <ng-container
                 *ngIf="
-                    progressData?.loadProgress?.pendingLoadProgressBar
-                        ?.timeToNextStop?.days >= 0 ||
-                        progressData?.loadProgress?.closedLoadProgressBar
-                            ?.totalLoadDeliveryTime?.days >= 0;
+                    pendingData?.timeToNextStop?.days >= 0 ||
+                        closedData?.totalLoadDeliveryTime?.days >= 0;
                     else missedFirstPickup
                 "
             >
@@ -147,17 +178,11 @@
                         "
                     >
                         Today,
+                        {{ pendingData?.plannedTimeFrom | formatTime }}
                         {{
-                            progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.plannedTimeFrom | formatTime
-                        }}
-                        {{
-                            progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.plannedTimeTo
+                            pendingData?.plannedTimeTo
                                 ? ' - ' +
-                                  (progressData?.loadProgress
-                                      ?.pendingLoadProgressBar?.plannedTimeTo
-                                      | formatTime)
+                                  (pendingData?.plannedTimeTo | formatTime)
                                 : ''
                         }}
                     </ng-container>
@@ -165,30 +190,18 @@
                     <ng-template #notToday>
                         In
                         {{
-                            (progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.timeToNextStop?.days ??
-                                progressData?.loadProgress
-                                    ?.closedLoadProgressBar?.lastDeliveryTime
-                                    ?.days) +
-                                ((progressData?.loadProgress
-                                    ?.pendingLoadProgressBar?.timeToNextStop
-                                    ?.days ??
-                                    progressData?.loadProgress
-                                        ?.closedLoadProgressBar
-                                        ?.lastDeliveryTime?.days) ===
+                            (pendingData?.timeToNextStop?.days ??
+                                closedData?.lastDeliveryTime?.days) +
+                                ((pendingData?.timeToNextStop?.days ??
+                                    closedData?.lastDeliveryTime?.days) ===
                                 1
                                     ? ' day'
                                     : ' days')
                         }}
                         {{
-                            progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.timeToNextStop?.hours
-                                ? progressData?.loadProgress
-                                      ?.pendingLoadProgressBar?.timeToNextStop
-                                      ?.hours +
-                                  (progressData?.loadProgress
-                                      ?.pendingLoadProgressBar?.timeToNextStop
-                                      ?.hours === 1
+                            pendingData?.timeToNextStop?.hours
+                                ? pendingData?.timeToNextStop?.hours +
+                                  (pendingData?.timeToNextStop?.hours === 1
                                       ? ' hour'
                                       : ' hours')
                                 : ''
@@ -199,43 +212,24 @@
 
             <ng-template #missedFirstPickup>
                 <p class="m-0 ta-font-medium">
+                    {{ pendingData?.plannedTimeFrom | formatDateP }}
                     {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.plannedTimeFrom | formatDateP
-                    }}
-                    {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.plannedTimeTo
-                            ? ' - ' +
-                              (progressData?.loadProgress
-                                  ?.pendingLoadProgressBar?.plannedTimeTo
-                                  | formatDateP)
+                        pendingData?.plannedTimeTo
+                            ? ' - ' + (pendingData?.plannedTimeTo | formatDateP)
                             : ''
                     }}
                     |
+                    {{ pendingData?.plannedTimeFrom | formatTime }}
                     {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.plannedTimeFrom | formatTime
-                    }}
-                    {{
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.plannedTimeTo
-                            ? ' - ' +
-                              (progressData?.loadProgress
-                                  ?.pendingLoadProgressBar?.plannedTimeTo
-                                  | formatTime)
+                        pendingData?.plannedTimeTo
+                            ? ' - ' + (pendingData?.plannedTimeTo | formatTime)
                             : ''
                     }}
                 </p>
             </ng-template>
 
             <p class="m-0 ta-font-medium">
-                {{
-                    progressData?.loadProgress?.pendingLoadProgressBar
-                        ?.milesToNextStop ??
-                        progressData?.loadProgress?.closedLoadProgressBar
-                            ?.totalMiles
-                }}
+                {{ pendingData?.milesToNextStop ?? pendingData?.totalMiles }}
                 mi
             </p>
         </ng-container>
@@ -243,15 +237,67 @@
         <!-- Active Big -->
 
         <ng-template #activeBig>
-            <p></p>
+            <ng-container *ngIf="checkedInActiveData; else nextStop">
+                <p class="m-0 ta-font-medium">
+                    {{ checkedInActiveData.address.city }},
+                    {{ checkedInActiveData.address.stateShortName }}
+                    {{ checkedInActiveData.address.zipCode }}
+                </p>
 
-            <p class="m-0 ta-font-medium">
-                {{
-                    progressData?.loadProgress?.activeLoadProgressBar
-                        ?.milesLeftToDeliveryLoad
-                }}
-                mi left
-            </p>
+                <ng-container
+                    *ngIf="dotHoveringIndex === -1; else hoveringBigRight"
+                >
+                    <p class="m-0 ta-font-medium">
+                        {{ checkedInActiveData.waitTimeInMin }}m waiting
+                    </p>
+                </ng-container>
+
+                <ng-template #hoveringBigRight>
+                    <p class="m-0 ta-font-medium">
+                        {{
+                            activeData.loadStops[dotHoveringIndex].isVisited
+                                ? activeData.truckPositionMileage -
+                                  activeData.loadStops[dotHoveringIndex]
+                                      .cumulativeTotalLegMiles
+                                : activeData.loadStops[dotHoveringIndex]
+                                      .cumulativeTotalLegMiles -
+                                  activeData.truckPositionMileage
+                        }}
+                    </p>
+                </ng-template>
+            </ng-container>
+
+            <ng-template #nextStop>
+                <p class="m-0 ta-font-medium">
+                    {{ nextStopActiveData.address.city }},
+                    {{ nextStopActiveData.address.stateShortName }}
+                    {{ nextStopActiveData.address.zipCode }}
+                </p>
+
+                <ng-container
+                    *ngIf="dotHoveringIndex === -1; else hoveringBigRight"
+                >
+                    <p class="m-0 ta-font-medium">
+                        {{ nextStopActiveData.milesTo }} mi left
+                    </p>
+                </ng-container>
+
+                <ng-template #hoveringBigRight>
+                    <p class="m-0 ta-font-medium">
+                        {{
+                            activeData.loadStops[dotHoveringIndex].isVisited
+                                ? activeData.truckPositionMileage -
+                                  activeData.loadStops[dotHoveringIndex]
+                                      .cumulativeTotalLegMiles +
+                                  ' mi ago'
+                                : activeData.loadStops[dotHoveringIndex]
+                                      .cumulativeTotalLegMiles -
+                                  activeData.truckPositionMileage +
+                                  ' mi left'
+                        }}
+                    </p>
+                </ng-template>
+            </ng-template>
         </ng-template>
     </div>
 
@@ -272,13 +318,10 @@
                 class="progress-bar"
                 [ngStyle]="{
                     background:
-                        progressData?.loadProgress?.pendingLoadProgressBar
-                            ?.truckPositionPercentage <= 50
+                        pendingData?.truckPositionPercentage <= 50
                             ? '#91919133'
-                            : progressData?.loadProgress?.pendingLoadProgressBar
-                                  ?.truckPositionPercentage > 50 &&
-                              progressData?.loadProgress?.pendingLoadProgressBar
-                                  ?.truckPositionPercentage <= 80
+                            : pendingData?.truckPositionPercentage > 50 &&
+                              pendingData?.truckPositionPercentage <= 80
                             ? '#FAB15C33'
                             : '#E6676733'
                 }"
@@ -287,20 +330,13 @@
                     class="progress-bar-inner"
                     [ngStyle]="{
                         background:
-                            progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.truckPositionPercentage <= 50
+                            pendingData?.truckPositionPercentage <= 50
                                 ? '#919191'
-                                : progressData?.loadProgress
-                                      ?.pendingLoadProgressBar
-                                      ?.truckPositionPercentage > 50 &&
-                                  progressData?.loadProgress
-                                      ?.pendingLoadProgressBar
-                                      ?.truckPositionPercentage <= 80
+                                : pendingData?.truckPositionPercentage > 50 &&
+                                  pendingData?.truckPositionPercentage <= 80
                                 ? '#FAB15C'
                                 : '#E66767',
-                        width:
-                            progressData?.loadProgress?.pendingLoadProgressBar
-                                ?.truckPositionPercentage + '%'
+                        width: pendingData?.truckPositionPercentage + '%'
                     }"
                 ></div>
             </div>
@@ -315,9 +351,7 @@
                 <div
                     class="progress-bar-inner active"
                     [ngStyle]="{
-                        width:
-                            progressData?.loadProgress?.activeLoadProgressBar
-                                ?.truckPositionPercentage + '%'
+                        width: activeData.truckPositionPercentage + '%'
                     }"
                 ></div>
             </div>
@@ -326,8 +360,7 @@
 
             <ng-container
                 *ngFor="
-                    let stop of progressData?.loadProgress
-                        ?.activeLoadProgressBar?.loadStops;
+                    let stop of activeData.loadStops;
                     let first = first;
                     let last = last;
                     trackBy: trackByIdentity
@@ -354,10 +387,10 @@
 
             <ng-container
                 *ngFor="
-                    let stop of progressData?.loadProgress
-                        ?.activeLoadProgressBar?.loadStops;
+                    let stop of activeData.loadStops;
                     let first = first;
                     let last = last;
+                    let i = index;
                     trackBy: trackByIdentity
                 "
             >
@@ -369,21 +402,23 @@
                             : last
                             ? unset
                             : 'calc(' + stop.progressBarPercentage + '% - 1px)',
-                        right: first
-                            ? unset
-                            : last
-                            ? '6px'
-                            : stop.progressBarPercentage + '%',
+                        right: last ? '6px' : unset,
                         background: first
                             ? '#CCCCCC'
                             : last
                             ? '#E66767'
-                            : stop.stopType.id === 1
+                            : stop.stopType.id === 1 && !stop.isVisited
                             ? '#56B4AC'
-                            : stop.stopType.id === 2
+                            : stop.stopType.id === 1 && stop.isVisited
+                            ? '#86C9C3'
+                            : stop.stopType.id === 2 && !stop.isVisited
                             ? '#E66767'
+                            : stop.stopType.id === 2 && stop.isVisited
+                            ? '#ED9292'
                             : ''
                     }"
+                    (mouseleave)="dotHoveringIndex = -1"
+                    (mouseenter)="dotHoveringIndex = i"
                 ></div>
             </ng-container>
 
@@ -393,12 +428,15 @@
                 class="icon"
                 [ngStyle]="{
                     left:
-                        progressData?.loadProgress?.activeLoadProgressBar
-                            ?.truckPositionPercentage -
-                        1 +
-                        '%'
+                        activeData.truckPositionPercentage < 1
+                            ? '-0.3%'
+                            : activeData.truckPositionPercentage - 1 + '%'
                 }"
-                [src]="loadDetailsItemSvgRoutes.truckMarkerRoute"
+                [src]="
+                    checkedInActiveData
+                        ? loadDetailsItemSvgRoutes.truckMarkerCheckedRoute
+                        : loadDetailsItemSvgRoutes.truckMarkerRoute
+                "
             ></svg-icon>
         </ng-template>
     </div>
@@ -416,18 +454,12 @@
             <div class="d-flex flex-column justify-content-center">
                 <p class="m-0 ta-font-medium">
                     Total
-                    {{
-                        progressData?.loadProgress?.activeLoadProgressBar
-                            ?.totalMiles
-                    }}
+                    {{ activeData.totalMiles }}
                     mi
                 </p>
 
                 <span class="ta-font-medium">
-                    {{
-                        progressData?.loadProgress?.activeLoadProgressBar
-                            ?.truckPositionPercentage
-                    }}% Complete
+                    {{ activeData.truckPositionPercentage }}% Complete
                 </span>
             </div>
         </div>

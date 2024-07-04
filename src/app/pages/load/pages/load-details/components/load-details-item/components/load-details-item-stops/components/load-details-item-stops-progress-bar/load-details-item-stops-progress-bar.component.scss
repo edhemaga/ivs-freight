@@ -2,7 +2,8 @@
 
 .stops-progress {
     &-top {
-        p {
+        p,
+        span {
             font-size: 11px;
             line-height: 14px;
             color: $bw6-2;
@@ -16,6 +17,11 @@
                 color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
             }
+        }
+
+        .pipe {
+            margin: 0 2px;
+            color: $bw6-2;
         }
 
         .icon {
@@ -79,10 +85,15 @@
 
         .progress-dot {
             position: absolute;
-            top: 13px;
+            top: 15px;
             width: 6px;
             height: 6px;
             border-radius: 50%;
+            transition: transform 0.2s ease-in;
+
+            &:hover {
+                transform: scale(1.8);
+            }
         }
 
         .icon {

@@ -3794,8 +3794,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // invoicedDate,
         };
 
-        console.log('newData', newData);
-
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))

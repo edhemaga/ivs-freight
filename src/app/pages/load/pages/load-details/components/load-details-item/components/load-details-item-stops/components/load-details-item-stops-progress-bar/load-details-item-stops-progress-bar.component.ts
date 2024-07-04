@@ -22,6 +22,7 @@ import {
     ActiveLoadProgressBarResponse,
     ClosedLoadProgressBarResponse,
     LoadResponse,
+    LoadStopProgressBarResponse,
     PendingLoadProgressBarResponse,
 } from 'appcoretruckassist';
 
@@ -48,6 +49,10 @@ export class LoadDetailsItemStopsProgressBarComponent implements OnChanges {
     public pendingData: PendingLoadProgressBarResponse;
     public closedData: ClosedLoadProgressBarResponse;
     public activeData: ActiveLoadProgressBarResponse;
+    public checkedInActiveData: LoadStopProgressBarResponse;
+    public nextStopActiveData: LoadStopProgressBarResponse;
+
+    public dotHoveringIndex: number = -1;
 
     public isToday: boolean = false;
 
@@ -75,9 +80,43 @@ export class LoadDetailsItemStopsProgressBarComponent implements OnChanges {
         console.log('progressData', progressData);
         const { statusType, loadProgress } = progressData;
 
-        // pending
-        if (progressData?.statusType?.name === 'Pending') {
-            /*  this.pendingData =  */
+        switch (statusType?.name) {
+            case LoadDetailsItemStringEnum.PENDING:
+                this.pendingData = loadProgress.pendingLoadProgressBar;
+
+                break;
+            case LoadDetailsItemStringEnum.ACTIVE:
+                const {
+                    totalMiles,
+                    truckPositionPercentage,
+                    truckPositionMileage,
+                    loadStops,
+                } = loadProgress.activeLoadProgressBar;
+
+                this.activeData = {
+                    totalMiles,
+                    truckPositionPercentage,
+                    truckPositionMileage,
+                    loadStops,
+                };
+
+                this.checkedInActiveData = loadStops.find(
+                    (stop) => stop.isCheckedIn
+                );
+
+                this.nextStopActiveData = loadStops.find(
+                    (stop) => stop.isNextStop
+                );
+
+                console.log(
+                    'this.checkedInActiveData',
+                    this.checkedInActiveData
+                );
+                console.log('this.nextStopActiveData', this.nextStopActiveData);
+
+                break;
+            default:
+                this.closedData = loadProgress.closedLoadProgressBar;
         }
     }
 }

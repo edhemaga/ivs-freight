@@ -16,4 +16,7 @@ export enum LoadDetailsItemStringEnum {
     MINUTES = 'm',
 
     DAY = 'day',
+
+    PENDING = 'Pending',
+    ACTIVE = 'Active',
 }
