@@ -1427,7 +1427,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(() => this.sendLoadData());
     }
 
-    private deleteLoadTemplateList(ids: any[]): void {
+    private deleteLoadTemplateList(ids: number[]): void {
         this.loadServices
             .deleteLoadTemplateList(ids)
             .pipe(takeUntil(this.destroy$))
