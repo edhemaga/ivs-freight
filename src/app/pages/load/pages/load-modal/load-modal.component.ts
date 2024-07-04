@@ -746,55 +746,94 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             LoadStopItems.IS_CREATED_NEW_STOP_ITEMS_ROW;
     }
 
-    public validatePickupStops(loadForm: UntypedFormGroup) {
-        let isFormDirty =
-            loadForm.get('pickupShipper').touched ||
-            loadForm.get('pickupDateFrom').touched ||
-            loadForm.get('pickupDateTo').touched ||
-            loadForm.get('pickupTimeFrom').touched ||
-            loadForm.get('pickupTimeTo').touched;
+    public validatePickupStops(
+        loadForm: UntypedFormGroup
+    ): LoadModalStringEnum.INVALID_STATUS | null {
+        const pickupShipperControl = loadForm.get(
+            LoadModalStringEnum.PICKUP_SHIPPER
+        );
+        const pickupDateFromControl = loadForm.get(
+            LoadModalStringEnum.PICKUP_DATE_FROM
+        );
+        const pickupDateToControl = loadForm.get(
+            LoadModalStringEnum.PICKUP_DATE_TO
+        );
+        const pickupTimeFromControl = loadForm.get(
+            LoadModalStringEnum.PICKUP_TIME_FROM
+        );
+        const pickupTimeToControl = loadForm.get(
+            LoadModalStringEnum.PICKUP_TIME_TO
+        );
+
+        const isFormDirty =
+            pickupShipperControl.touched ||
+            pickupDateFromControl.touched ||
+            pickupDateToControl.touched ||
+            pickupTimeFromControl.touched ||
+            pickupTimeToControl.touched;
 
         let isFormInvalid = (
-            loadForm.get('pickupShipper').errors ||
-            loadForm.get('pickupDateFrom').errors ||
-            loadForm.get('pickupDateTo').errors ||
-            loadForm.get('pickupTimeFrom').errors
+            pickupShipperControl.errors ||
+            pickupDateFromControl.errors ||
+            pickupDateToControl.errors ||
+            pickupTimeFromControl.errors
         )?.required;
 
         if (this.selectedStopTimePickup === 5) {
             isFormInvalid =
-                isFormInvalid || loadForm.get('pickupTimeTo').errors?.required;
+                isFormInvalid || pickupTimeToControl.errors?.required;
         }
 
         if (isFormDirty && isFormInvalid) {
-            return 'invalid';
+            return LoadModalStringEnum.INVALID_STATUS;
         }
 
         return null;
     }
 
-    public validateExtraStops(loadFormArray: UntypedFormArray, indx: number) {
+    public validateExtraStops(
+        loadFormArray: UntypedFormArray,
+        indx: number
+    ): LoadModalStringEnum.INVALID_STATUS | null {
         const stopForm = loadFormArray.at(indx);
         if (stopForm.dirty && !stopForm.valid) {
-            return 'invalid';
+            return LoadModalStringEnum.INVALID_STATUS;
         }
 
         return null;
     }
 
-    public validateDeliveryStops(loadForm: UntypedFormGroup) {
-        let isFormDirty =
-            loadForm.get('deliveryShipper').touched ||
-            loadForm.get('deliveryDateFrom').touched ||
-            loadForm.get('deliveryDateTo').touched ||
-            loadForm.get('deliveryTimeTo').touched ||
-            loadForm.get('deliveryTimeFrom').touched;
+    public validateDeliveryStops(
+        loadForm: UntypedFormGroup
+    ): LoadModalStringEnum.INVALID_STATUS | null {
+        const deliveryShipperControl = loadForm.get(
+            LoadModalStringEnum.DELIVERY_SHIPPER
+        );
+        const deliveryDateFromControl = loadForm.get(
+            LoadModalStringEnum.DELIVERY_DATE_FROM
+        );
+        const deliveryDateToControl = loadForm.get(
+            LoadModalStringEnum.DELIVERY_DATE_TO
+        );
+        const deliveryTimeFromControl = loadForm.get(
+            LoadModalStringEnum.DELIVERY_TIME_FROM
+        );
+        const deliveryTimeToControl = loadForm.get(
+            LoadModalStringEnum.DELIVERY_TIME_TO
+        );
+
+        const isFormDirty =
+            deliveryShipperControl.touched ||
+            deliveryDateFromControl.touched ||
+            deliveryDateToControl.touched ||
+            deliveryTimeFromControl.touched ||
+            deliveryTimeToControl.touched;
 
         let isFormInvalid = (
-            loadForm.get('deliveryShipper').errors ||
-            loadForm.get('deliveryDateFrom').errors ||
-            loadForm.get('deliveryDateTo').errors ||
-            loadForm.get('deliveryTimeFrom').errors
+            deliveryShipperControl.errors ||
+            deliveryDateFromControl.errors ||
+            deliveryDateToControl.errors ||
+            deliveryTimeFromControl.errors
         )?.required;
 
         if (
@@ -803,13 +842,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         ) {
             if (!isFormInvalid) {
                 isFormInvalid =
-                    isFormInvalid ||
-                    loadForm.get('deliveryTimeTo')?.errors?.required;
+                    isFormInvalid || deliveryTimeToControl?.errors?.required;
             }
         }
 
         if (isFormDirty && isFormInvalid) {
-            return 'invalid';
+            return LoadModalStringEnum.INVALID_STATUS;
         }
 
         return null;

@@ -196,4 +196,13 @@ export enum LoadModalStringEnum {
     ASSIGNED = 'Assigned', 
     UNASSIGNED = 'Unassigned', 
     CLOSED = 'Closed', 
+    PICKUP_SHIPPER = 'pickupShipper',
+    PICKUP_DATE_FROM = 'pickupDateFrom',
+    PICKUP_DATE_TO = 'pickupDateTo',
+    PICKUP_TIME_FROM = 'pickupTimeFrom',
+    DELIVERY_SHIPPER = 'deliveryShipper',
+    DELIVERY_DATE_FROM = 'deliveryDateFrom',
+    DELIVERY_DATE_TO = 'deliveryDateTo',
+    DELIVERY_TIME_FROM = 'deliveryTimeFrom',
+    INVALID_STATUS= 'invalid'
 }
