@@ -26,7 +26,7 @@ export class PasswordUpdatedComponent implements OnInit, OnDestroy {
     constructor(
         private websiteActionsService: WebsiteActionsService,
         private imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getUserInfo();
@@ -47,7 +47,7 @@ export class PasswordUpdatedComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: string) => {
                 if (res) {
-                    this.userAvatar = this.imageBase64Service.sanitizer(res);
+                    this.userAvatar = res;
                 }
             });
     }

@@ -51,6 +51,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -58,6 +59,7 @@ import {
     NgbModule,
     NgbPopoverModule,
     type NgbPopover,
+    type NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
 
 // sanitizer
@@ -70,7 +72,7 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
-import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -87,6 +89,8 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 // constants
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
+import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
+import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/constants/load-table-stops.constants';
 
 @Titles()
 @Component({
@@ -125,6 +129,7 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         ContactPhoneEmailIconPipe,
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
+        LoadStatusColorPipe,
     ],
     providers: [
         {
@@ -199,15 +204,26 @@ export class TaTableBodyComponent
     public endorsement: boolean = false;
     public restriction: boolean = false;
     public companyUser: SignInResponse;
+    public statusDetails: { previous: string | null; next: string[] } = {
+        previous: null,
+        next: [],
+    };
+    public stops = LoadTableStopsConstants.stops;
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
+
+    // Scroll Lines
+    public isLeftScrollLineShown = false;
+    public isRightScrollLineShown = false;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef,
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private statusService: LoadTableStatusConstants
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -290,7 +306,9 @@ export class TaTableBodyComponent
 
         this.getCompanyUser();
     }
-
+    public getStopKeys() {
+        return Object.keys(this.stops);
+    }
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
@@ -414,7 +432,13 @@ export class TaTableBodyComponent
     trackTableRow(item: any) {
         return item.id;
     }
+    trackTatrackStatusDetailsbleRow(item: any) {
+        return item.id;
+    }
 
+    trackStops(item: any) {
+        return item.id;
+    }
     // Track By For Pined Columns
     trackTablePinedColumns(item: any) {
         return item.columnId;
@@ -480,15 +504,34 @@ export class TaTableBodyComponent
     // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
+            let isMaxScroll = false;
+
             document
                 .querySelectorAll('#table-not-pined-scroll-container')
                 .forEach((el) => {
                     el.scrollLeft = scrollEvent.scrollPosition;
+
+                    if (
+                        Math.round(scrollEvent.scrollPosition) ===
+                        Math.round(el.scrollWidth - el.clientWidth)
+                    ) {
+                        isMaxScroll = true;
+                    }
                 });
 
             this.horizontalScrollPosition = scrollEvent.scrollPosition;
 
             this.tableService.sendScroll(scrollEvent.scrollPosition);
+
+            if (scrollEvent.scrollPosition > 0) {
+                this.isLeftScrollLineShown = true;
+
+                this.isRightScrollLineShown = !isMaxScroll;
+            } else {
+                this.isLeftScrollLineShown = false;
+            }
+
+            this.changeDetectorRef.detectChanges();
         } else if (
             scrollEvent.eventAction === 'isScrollShowing' &&
             this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
@@ -496,6 +539,13 @@ export class TaTableBodyComponent
             this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
             this.tableService.sendIsScrollShownig(this.showScrollSectionBorder);
+
+            if (!scrollEvent.isScrollBarShowing) {
+                this.isLeftScrollLineShown = false;
+                this.isRightScrollLineShown = false;
+            } else {
+                this.isRightScrollLineShown = true;
+            }
 
             this.changeDetectorRef.detectChanges();
         }
@@ -694,7 +744,7 @@ export class TaTableBodyComponent
     }
 
     // Toggle Dropdown
-    toggleDropdown(tooltip: any, row: any) {
+    toggleDropdown(tooltip: NgbTooltip, row: any) {
         this.tooltip = tooltip;
 
         if (tooltip.isOpen()) {
@@ -771,17 +821,35 @@ export class TaTableBodyComponent
     }
 
     // Toggle Status Dropdown
-    toggleStatusDropdown(tooltip: any, row: any) {
+    public toggleStatusDropdown(
+        tooltip: NgbTooltip,
+        row: any,
+        status: string,
+        statusTab: string
+    ): void {
         this.statusTooltip = tooltip;
-
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
             tooltip.open();
         }
+        this.statusDetails = this.statusService.getStatusDetails(
+            statusTab,
+            status
+        );
 
         this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.statusDropdownData = row;
+    }
+
+    public toggleStopsDropdown(tooltip: NgbTooltip, width: number): void {
+        this.statusTooltip = tooltip;
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+        this.widthPopover = width;
     }
 
     // Show Description Dropdown
@@ -820,7 +888,7 @@ export class TaTableBodyComponent
 
     // Show Invoice Aging Dropdown
     public onShowInvoiceAgingDropdown(
-        tooltip: any,
+        tooltip: NgbTooltip,
         row: any,
         column: any
     ): void {

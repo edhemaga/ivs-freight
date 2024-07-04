@@ -84,13 +84,13 @@ export class LoadModalConstants {
         lumper: 0,
         fuelSurcharge: 0,
         escort: 0,
-        detention: 0,
+        detention: 0
     };
 
     static LOAD_MODAL_PAYMENT: LoadPayment = {
         advance: 0,
         paidInFull: 0,
-        shortPaid: [],
+        shortPaid: 0,
     };
 
     static ANIMATION_MARGIN_PARAMS: {

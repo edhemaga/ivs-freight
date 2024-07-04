@@ -89,9 +89,139 @@ p {
         color: #2f2f2f;
         font-size: 14px;
         font-weight: 800;
-        padding-right: 4px;
         line-height: 17px;
     }
+
+    .capsula-wrapper {
+        background: $bw6-2;
+        border-radius: 60px;
+        padding: 2px 10px;
+        margin-right: 4px;
+
+        p {
+            font-size: 11px;
+            line-height: 14px;
+            color: $white;
+
+            &::-moz-selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+            &::selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+        }
+    }
+
+    .multiple-details-select-dropdown-container {
+        margin: 0 4px;
+        transform: rotate(180deg);
+        border-radius: 2px;
+        transition: transform 0.2s ease-in;
+
+        &.active {
+            transform: rotate(360deg);
+
+            &:hover {
+                .icon {
+                    svg {
+                        path {
+                            fill: $bw-9;
+                        }
+
+                        rect {
+                            fill: $ta-black;
+                        }
+                    }
+                }
+            }
+
+            .icon {
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+
+                    rect {
+                        fill: $ta-black;
+                    }
+                }
+            }
+        }
+
+        .icon {
+            width: 26px;
+            height: 26px;
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+
+                    rect {
+                        fill: $bw2;
+                    }
+                }
+            }
+
+            svg {
+                path {
+                    fill: $bw5;
+
+                    transition: fill 0.2s ease-in;
+                }
+
+                rect {
+                    fill: transparent;
+                    transition: fill 0.2s ease-in;
+                }
+            }
+        }
+    }
+
+    .search-btn-container {
+        .border {
+            height: 18px;
+            width: 1px;
+            background: $ta-light-grey-6;
+            margin: 0 4px;
+        }
+
+        .search-btn-container {
+            width: 26px;
+            height: 26px;
+            border-radius: 2px;
+            transition: background 0.2s ease-in;
+            cursor: pointer;
+
+            &:hover {
+                background: $bw2;
+
+                .icon {
+                    svg {
+                        path {
+                            fill: $ta-black;
+                        }
+                    }
+                }
+            }
+
+            .icon {
+                svg {
+                    width: 16px;
+                    height: 16px;
+
+                    path {
+                        fill: $bw5;
+                        transition: fill 0.2s ease-in;
+                    }
+                }
+            }
+        }
+    }
+
     .header-plus-button {
         display: flex;
         align-items: center;
@@ -147,6 +277,38 @@ p {
                             path {
                                 fill: #6c6c6c;
                             }
+                        }
+                    }
+                }
+            }
+
+            .map-btn-container {
+                width: 26px;
+                height: 26px;
+                border-radius: 2px;
+                margin-right: 4px;
+                transition: background 0.2s ease-in-out;
+
+                &.active {
+                    background: $ta-blue-14;
+
+                    .map-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-17;
+                            }
+                        }
+                    }
+                }
+
+                .map-icon {
+                    position: relative;
+                    bottom: 1px;
+
+                    svg {
+                        path {
+                            fill: $bw6-2;
+                            transition: fill 0.2s ease-in-out;
                         }
                     }
                 }
@@ -366,6 +528,28 @@ svg {
             background: rgba(255, 255, 255, 0.2);
         }
     }
+
+    .subtext-container {
+        padding: 4px 8px;
+        margin-right: 8px;
+        border-radius: 2px;
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $white;
+
+            &::-moz-selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+
+            &::selection {
+                color: $white;
+                background: rgb(255, 255, 255, 0.2);
+            }
+        }
+    }
 }
 .violation-counter {
     font-size: 14px;
@@ -399,9 +583,7 @@ svg {
         }
     }
 }
-.pl-6-header {
-    padding-left: 6px;
-}
+
 .second-name-header-l {
     margin-left: 397px !important;
 }

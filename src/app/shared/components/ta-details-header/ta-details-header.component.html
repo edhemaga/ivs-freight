@@ -11,9 +11,7 @@
                 'Shipper Detail',
                 'Broker Detail',
                 'Roadside Insp. Detail',
-                'Active Load Detail',
-                'Pending Load Detail',
-                'Closed Load Detail'
+                'Load Detail'
             ].includes(headerText)
         "
     >
@@ -43,6 +41,22 @@
                 CLOSED
             </div>
 
+            <ng-container *ngIf="subText">
+                <div
+                    class="d-flex align-items-center subtext-container"
+                    [ngStyle]="{
+                        background:
+                            subText === 'PENDING'
+                                ? '#919191'
+                                : subText === 'ACTIVE'
+                                ? '#6692F1'
+                                : '#56B4AC'
+                    }"
+                >
+                    <p class="m-0 ta-font-bold">{{ subText }}</p>
+                </div>
+            </ng-container>
+
             <app-ta-details-dropdown
                 (click)="toggleDropdownActions()"
                 [customClassDropDown]="'drop-down-header'"
@@ -70,9 +84,7 @@
                     'Shipper Detail',
                     'Broker Detail',
                     'Roadside Insp. Detail',
-                    'Active Load Detail',
-                    'Pending Load Detail',
-                    'Closed Load Detail'
+                    'Load Detail'
                 ].includes(headerText)
             "
         >
@@ -84,7 +96,7 @@
                 }"
             >
                 <div
-                    class="counter-holder-all"
+                    class="d-flex align-items-center counter-holder-all"
                     [class.openDropdownClass]="brokerLoadDrop"
                     #t2="ngbPopover"
                     (click)="showDropdown(t2)"
@@ -98,7 +110,9 @@
                     <ng-container
                         *ngIf="
                             (danger || !counterData) &&
-                            headerText !== 'Drug & Alcohol'
+                            headerText !== 'Drug & Alcohol' &&
+                            headerText !== 'Comment' &&
+                            headerText !== 'Status History'
                         "
                     >
                         <div
@@ -120,7 +134,6 @@
                     </ng-container>
                     <div class="header-text-arrow-down">
                         <p
-                            [ngClass]="{ 'pl-6-header': loadNames }"
                             class="header-name disable-selection"
                             #t2="ngbPopover"
                             [ngbPopover]="eventsDatePopover"
@@ -147,7 +160,6 @@
                             </app-ta-counter>
                         </div>
                         <p
-                            [ngClass]="{ 'pl-6-header': loadNames }"
                             class="header-name disable-selection second-name-header-l"
                         >
                             {{ secondNameHeader }}
@@ -166,7 +178,58 @@
                         [customClass]="'circle_counter'"
                     >
                     </app-ta-counter>
+
+                    <ng-container *ngIf="capsulaText">
+                        <div
+                            class="d-flex align-items-center justify-content-center capsula-wrapper"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                {{ capsulaText }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasMultipleDetailsSelectDropdown">
+                        <div
+                            class="multiple-details-select-dropdown-container"
+                            #popover="ngbPopover"
+                            autoClose="outside"
+                            [ngbPopover]="multipleDetailsSelect"
+                            [popoverClass]="'popover-main'"
+                            [placement]="['bottom']"
+                            [container]="'body'"
+                            [ngClass]="{ active: popover?.isOpen() }"
+                        >
+                            <svg-icon
+                                class="icon"
+                                src="assets/svg/common/ic_arrow-box.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isSearchBtn && isSearchBtnDisplayed">
+                        <div
+                            class="d-flex align-items-center search-btn-container"
+                        >
+                            <div class="border"></div>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center search-btn-container"
+                                ngbTooltip
+                                mainTooltip="Search"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                (click)="handleSearchBtnClick()"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_search.svg"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
+
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
                     <span class="ic-hed" *ngIf="timeFilter">
@@ -220,6 +283,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="header-plus-button">
                 <div class="date-arrow-repair">
                     <p *ngIf="customText" class="date-repair">
@@ -242,6 +306,19 @@
                     <div class="violation-counter" *ngIf="counterViolation">
                         {{ counterViolation }}
                     </div>
+
+                    <ng-container *ngIf="isMapBtn">
+                        <div
+                            class="d-flex align-items-center justify-content-center map-btn-container"
+                            [ngClass]="{ active: isMapBtnClicked }"
+                            (click)="handleMapBtnClick()"
+                        >
+                            <svg-icon
+                                class="map-icon"
+                                src="assets/svg/common/load/ic_load_map.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
                 <div class="hide-buttons" *ngIf="!statusInactive">
                     <div
@@ -255,7 +332,9 @@
                         </svg-icon>
                     </div>
 
-                    <div class="header-divider"></div>
+                    <ng-container *ngIf="hasRequest">
+                        <div class="header-divider"></div>
+                    </ng-container>
 
                     <div
                         ngbTooltip
@@ -347,6 +426,41 @@
                     <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
                 </div>
             </div>
+        </div>
+    </ng-template>
+
+    <ng-template #multipleDetailsSelect>
+        <div
+            class="d-flex flex-column justify-content-center popover-container multiple-details-container"
+        >
+            <ng-container
+                *ngFor="
+                    let dropdownItem of multipleDetailsSelectDropdown;
+                    trackBy: trackByIndex
+                "
+            >
+                <div
+                    class="popover-item justify-content-between"
+                    [ngClass]="{ active: dropdownItem.isActive }"
+                    (click)="
+                        handleMultipleDetailsSelectDropdownClick(
+                            dropdownItem.id
+                        )
+                    "
+                >
+                    <p class="m-0">
+                        {{ dropdownItem.title }}
+                    </p>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center counter-container"
+                    >
+                        <p class="m-0">
+                            {{ dropdownItem.length }}
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </ng-template>
 </div>

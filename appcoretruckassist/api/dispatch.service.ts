@@ -23,11 +23,15 @@ import { CreateDispatchCommand } from '../model/createDispatchCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
+import { DispatchAssignedLoadListResponse } from '../model/dispatchAssignedLoadListResponse';
+// @ts-ignore
 import { DispatchBoardListResponse } from '../model/dispatchBoardListResponse';
 // @ts-ignore
 import { DispatchBoardResponse } from '../model/dispatchBoardResponse';
 // @ts-ignore
 import { DispatchHistoryDriverListResponse } from '../model/dispatchHistoryDriverListResponse';
+// @ts-ignore
+import { DispatchHistoryGroupListResponse } from '../model/dispatchHistoryGroupListResponse';
 // @ts-ignore
 import { DispatchHistoryListResponse } from '../model/dispatchHistoryListResponse';
 // @ts-ignore
@@ -117,6 +121,81 @@ export class DispatchService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchAssignedLoadListResponse>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchAssignedLoadListResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchAssignedLoadListResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiDispatchAssignedloadsIdGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dispatch/assignedloads/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<DispatchAssignedLoadListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**
@@ -374,6 +453,152 @@ export class DispatchService {
 
         let localVarPath = `/api/dispatch/board/history`;
         return this.httpClient.request<DispatchHistoryListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param dispatchBoardId 
+     * @param dispatchHistoryTime 
+     * @param truckId 
+     * @param trailerId 
+     * @param driverId 
+     * @param coDriverId 
+     * @param customDateFrom 
+     * @param customDateTo 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryGroupListResponse>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
+        }
+        if (dispatchHistoryTime !== undefined && dispatchHistoryTime !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchHistoryTime, 'DispatchHistoryTime');
+        }
+        if (truckId !== undefined && truckId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>truckId, 'TruckId');
+        }
+        if (trailerId !== undefined && trailerId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>trailerId, 'TrailerId');
+        }
+        if (driverId !== undefined && driverId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>driverId, 'DriverId');
+        }
+        if (coDriverId !== undefined && coDriverId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>coDriverId, 'CoDriverId');
+        }
+        if (customDateFrom !== undefined && customDateFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateFrom, 'CustomDateFrom');
+        }
+        if (customDateTo !== undefined && customDateTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateTo, 'CustomDateTo');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dispatch/board/history/groups`;
+        return this.httpClient.request<DispatchHistoryGroupListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

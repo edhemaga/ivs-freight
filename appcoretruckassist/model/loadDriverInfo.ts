@@ -9,13 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
+import { TrailerTypeResponse } from './trailerTypeResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface LoadDriverInfo { 
-    avatar?: string | null;
+    id?: number;
+    avatarFile?: FileResponse;
     firstName?: string | null;
     lastName?: string | null;
     truckNumber?: string | null;
+    truckType?: TruckTypeResponse;
     trailerNumber?: string | null;
+    trailerType?: TrailerTypeResponse;
 }
 

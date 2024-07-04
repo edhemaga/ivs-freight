@@ -227,7 +227,7 @@
                         'add-new': option.name === 'ADD NEW',
                         active: option.id === _activeItem?.id,
                         'all-assigned':
-                            option.name.toLowerCase() === 'all assigned',
+                            option?.name?.toLowerCase() === 'all assigned',
                         trailerContainer: option.name === 'Container',
                         lowboyrgn: option.name === 'Low Boy / RGN'
                     }"
@@ -466,8 +466,8 @@
             <ng-container *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
-                    (mouseenter)="driverHoveringIndex = i"
-                    (mouseleave)="driverHoveringIndex = -1"
+                    (mouseenter)="hoveringIndex = i"
+                    (mouseleave)="hoveringIndex = -1"
                     *ngFor="
                         let option of _options;
                         let i = index;
@@ -480,7 +480,8 @@
                             _options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
                         'all-assigned':
-                            option.name.toLowerCase() === 'all assigned'
+                            option?.name?.toLowerCase() === 'all assigned',
+                        'load-details-template': option?.statusString
                     }"
                     class="dropdown-option details-template"
                 >
@@ -505,14 +506,35 @@
 
                     <!-- Svg -->
 
-                    <svg-icon
-                        [src]="option.svg | taSvg : option.folder"
-                        class="details-template-logo"
-                    ></svg-icon>
+                    <ng-container *ngIf="option?.svg">
+                        <svg-icon
+                            [src]="option?.svg | taSvg : option?.folder"
+                            class="details-template-logo"
+                        ></svg-icon>
+                    </ng-container>
 
-                    <!-- Driver Details Template -->
+                    <ng-container *ngIf="option?.statusString">
+                        <p class="m-0 additional-text">
+                            <ng-container
+                                *ngIf="
+                                    i === hoveringIndex;
+                                    else notHoveringLeft
+                                "
+                            >
+                                ${{ option?.totalBill }}K
+                            </ng-container>
 
-                    <ng-container *ngIf="option?.address?.address">
+                            <ng-template #notHoveringLeft>
+                                {{ option?.referenceNumber }}
+                            </ng-template>
+                        </p>
+                    </ng-container>
+
+                    <!-- Driver & Load Details Template -->
+
+                    <ng-container
+                        *ngIf="option?.address?.address || option?.statusString"
+                    >
                         <div
                             class="d-flex align-items-center driver-details-template-container"
                         >
@@ -520,40 +542,87 @@
                                 <p class="m-0">
                                     <ng-container
                                         *ngIf="
-                                            i === driverHoveringIndex;
+                                            i === hoveringIndex;
                                             else notHoveringLeft
                                         "
                                     >
-                                        {{ option?.totalMiles }} mi
+                                        <ng-container
+                                            *ngIf="option?.address?.address"
+                                        >
+                                            {{ option?.totalMiles }} mi
+                                        </ng-container>
                                     </ng-container>
 
                                     <ng-template #notHoveringLeft>
-                                        {{ option?.address?.city }},
-                                        {{ option?.address?.stateShortName }}
+                                        <ng-container
+                                            *ngIf="option?.address?.address"
+                                        >
+                                            {{ option?.address?.city }},
+                                            {{
+                                                option?.address?.stateShortName
+                                            }}
+                                        </ng-container>
                                     </ng-template>
                                 </p>
                             </div>
 
-                            <div class="d-flex align-items-center right-box">
-                                <p class="m-0">
+                            <div
+                                class="d-flex align-items-center right-box"
+                                [ngStyle]="
+                                    option?.statusString && i === hoveringIndex
+                                        ? {}
+                                        : (loadStatusEnum[option?.statusId]
+                                          | dropdownLoadStatusColor : false)
+                                "
+                            >
+                                <p
+                                    class="m-0"
+                                    [ngStyle]="
+                                        option?.statusString &&
+                                        i === hoveringIndex
+                                            ? {}
+                                            : (loadStatusEnum[option?.statusId]
+                                              | dropdownLoadStatusColor : true)
+                                    "
+                                >
                                     <ng-container
                                         *ngIf="
-                                            i === driverHoveringIndex;
+                                            i === hoveringIndex;
                                             else notHoveringRight
                                         "
                                     >
-                                        ${{ option?.totalEarnings }}K
+                                        <ng-container
+                                            *ngIf="
+                                                option?.address?.address;
+                                                else brokerName
+                                            "
+                                        >
+                                            ${{ option?.totalEarnings }}K
+                                        </ng-container>
+
+                                        <ng-template #brokerName>
+                                            {{ option?.brokerName }}
+                                        </ng-template>
                                     </ng-container>
 
                                     <ng-template #notHoveringRight>
-                                        {{ option?.hiredAt }}
+                                        <ng-container
+                                            *ngIf="
+                                                option?.address?.address;
+                                                else statusString
+                                            "
+                                        >
+                                            {{ option?.hiredAt }}
+                                        </ng-container>
+
+                                        <ng-template #statusString>
+                                            {{ option?.statusString }}
+                                        </ng-template>
                                     </ng-template>
                                 </p>
                             </div>
                         </div>
                     </ng-container>
-
-                    <!-- Plus Icon -->
 
                     <!-- Additional Text -->
 
@@ -827,9 +896,7 @@
                         [ngClass]="{
                             active: option.id === _activeItem?.id
                         }"
-                        [src]="
-                            this.imageBase64Service.sanitizer(option.logoName)
-                        "
+                        [src]="option.logoName"
                         class="svg-template-logo"
                     />
                     <div
@@ -882,7 +949,7 @@
                             _options[0].name === 'No Results',
                         active: option.id === _activeItem?.id
                     }"
-                    class="dropdown-option dropdown-double-column"
+                    class="dropdown-option dropdown-double-column load-dispatches-ttd-template dropdown-trailer-hover"
                 >
                     <!-- No Results -->
                     <div
@@ -907,26 +974,13 @@
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
                         }}"
-                        [ngClass]="{
-                            'dispatch-semi-truck':
-                                option?.truck?.truckType?.id === 1,
-                            'dispatch-semi-sleeper':
-                                option?.truck?.truckType?.id === 2,
-                            'dispatch-box-truck':
-                                option?.truck?.truckType?.id === 3,
-                            'dispatch-cargo-van':
-                                option?.truck?.truckType?.id === 4,
-                            'dispatch-tow-truck':
-                                option?.truck?.truckType?.id === 5,
-                            'dispatch-car-hauler':
-                                option?.truck?.truckType?.id === 6,
-                            'dispatch-spotter':
-                                option?.truck?.truckType?.id === 7
-                        }"
                     >
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="option.truck?.logoName"
+                            [className]="
+                                option?.truck?.logoName.replace('.svg', '')
+                            "
                         ></svg-icon>
                         <div
                             [innerHtml]="
@@ -974,6 +1028,9 @@
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="option?.trailer?.logoName"
+                            [className]="
+                                option?.trailer?.logoName.replace('.svg', '')
+                            "
                         ></svg-icon>
                         <div
                             [innerHtml]="
@@ -1003,11 +1060,7 @@
                                     option.driver?.id ===
                                     _activeItem?.driver?.id
                             }"
-                            [src]="
-                                this.imageBase64Service.sanitizer(
-                                    option?.driver?.logoName
-                                )
-                            "
+                            [src]="option?.driver?.logoName"
                             class="svg-template-logo"
                         />
                         <div
@@ -1021,6 +1074,16 @@
                             >
                             </app-ta-profile-images>
                         </div>
+
+                        <img
+                            alt="avatar"
+                            src="assets/svg/truckassist-table/owner-badge-black.svg"
+                            *ngIf="
+                                _options[0].name !== 'No Results' &&
+                                option.driver?.owner
+                            "
+                            class="owner-avatar"
+                        />
                         <div
                             [innerHtml]="
                                 option.driver?.name
@@ -1034,14 +1097,6 @@
                             "
                             class="load-dispatch-driver"
                         ></div>
-                        <svg-icon
-                            *ngIf="
-                                _options[0].name !== 'No Results' &&
-                                option.driver?.owner
-                            "
-                            class="load-dipstaches-owner-flag"
-                            src="assets/svg/common/load/ic_load_driver_owner.svg"
-                        ></svg-icon>
                     </div>
                     <!-- Percentage is not driver owner -->
                     <span
@@ -1140,7 +1195,7 @@
                             [totalAmount]="option.creditLimit"
                         ></app-load-modal-progress-bar>
                     </div>
-                    <div
+                    <!-- <div
                         *ngIf="!['ADD NEW', 'No Results'].includes(option.name)"
                         [ngClass]="{
                             active: option.id === _activeItem?.id,
@@ -1149,7 +1204,7 @@
                         class="load-broker-load-counter"
                     >
                         {{ option.loadsCount }}
-                    </div>
+                    </div> -->
                 </div>
             </ng-container>
 

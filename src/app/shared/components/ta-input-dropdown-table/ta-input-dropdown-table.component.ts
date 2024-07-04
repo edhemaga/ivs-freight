@@ -35,7 +35,6 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // services
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // pipes
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
@@ -128,11 +127,10 @@ export class TaInputDropdownTableComponent
     public contactsData: ContactsData;
     public contactsDataBeforeSearch: ContactsData;
     public isContactCardOpenArray: boolean[] = [];
-
+    public showFilter: boolean = false;
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
-        public imageBase64Service: ImageBase64Service,
         private cdr: ChangeDetectorRef,
         private sanitizer: DomSanitizer
     ) {}
@@ -197,6 +195,7 @@ export class TaInputDropdownTableComponent
 
     public filterArrayCommentsRating(event: KeyboardEvent, type: string): void {
         if (event.target instanceof HTMLInputElement) {
+            this.showFilter = true;
             const searchParam = event.target.value.toLowerCase();
 
             // Check if the user has typed at least 2 characters
@@ -236,7 +235,7 @@ export class TaInputDropdownTableComponent
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
                     if (type === TaInputDropdownTableStringEnum.COMMENTS) {
-                        this.filteredData.comments = this._data.comments;
+                        this.filteredData.comments = [];
                     } else {
                         this.filteredData.rating = this._data.rating;
                     }

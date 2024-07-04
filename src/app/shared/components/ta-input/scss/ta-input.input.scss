@@ -287,7 +287,17 @@
     }
 
     &.details-pages {
-        background-color: $default-focus-input;
+        height: 32px;
+        background: $default-focus-input;
+        color: $default-focus-placeholder;
+
+        .input-dropdown-arrow:hover {
+            background: $default-focus-input;
+        }
+
+        &:hover {
+            background: $default-focus-input;
+        }
 
         &::-webkit-input-placeholder {
             color: $default-focus-placeholder;
@@ -403,6 +413,14 @@
     &.load-dispatches-ttd {
         grid-template-columns: repeat(2, 156px) 150px 122px;
         padding-top: 3px;
+        svg {
+            height: 16px;
+            width: 44px;
+
+            path {
+                fill: $valid-placholderText;
+            }
+        }
 
         span {
             &:nth-child(1),
@@ -427,7 +445,7 @@
             &:last-child {
                 justify-content: flex-end;
                 .multiple-input-text {
-                    color: #919191;
+                    color: $valid-placholderText !important;
                     font-size: 11px;
                     font-weight: 400;
                     line-height: 24px;
@@ -446,6 +464,7 @@
 
             span {
                 line-height: 23px;
+                position: relative;
             }
         }
 
@@ -529,8 +548,7 @@
         background-color: transparent !important;
         display: grid;
         align-items: center;
-
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 165px 94px;
         align-items: center;
         grid-column-gap: 20px;
         -moz-column-gap: 20px;
@@ -555,12 +573,22 @@
             }
             &:nth-child(2) {
                 justify-self: flex-end;
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 24px;
+                span {
+                    color: $valid-placholderText !important;
+                }
             }
         }
     }
 
+    &.load-shipper-contact {
+        grid-template-columns: 283px 38px;
+    }
+
     &.load-shipper {
-        grid-template-columns: 331px 143px 80px;
+        grid-template-columns: 394px 180px;
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
@@ -574,11 +602,14 @@
             &:nth-child(2),
             &:nth-child(3) {
                 justify-content: flex-end;
+                font-size: 11px;
+                color: $valid-placholderText !important;
+                font-weight: 400;
             }
 
             &:nth-child(2) {
                 span {
-                    color: #919191;
+                    color: $valid-placholderText !important;
 
                     &.focusable-text {
                         color: #6f9ee0;
@@ -698,4 +729,17 @@ input[type='number'] {
 input[type='number']:hover,
 input[type='number']:focus {
     -moz-appearance: textfield !important;
+}
+
+.load-dispatches-ttd-owner {
+    position: absolute;
+    left: 13px;
+    bottom: 7px;
+    width: 10px;
+    height: 10px;
+
+    svg {
+        width: 10px !important;
+        height: 10px !important;
+    }
 }

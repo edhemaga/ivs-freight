@@ -19,5 +19,8 @@ export interface RepairShopShortResponse {
     phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
+    pinned?: boolean;
 }
 

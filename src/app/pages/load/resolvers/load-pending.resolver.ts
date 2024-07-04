@@ -22,26 +22,40 @@ import {
 export class LoadPendingResolver implements Resolve<LoadPandingState> {
     constructor(
         private loadService: LoadService,
-        private loadPandingStore: LoadPendingStore
+        private loadPendingStore: LoadPendingStore
     ) {}
 
     resolve(): Observable<LoadPandingState | boolean> {
         return this.loadService
             .getLoadList(
-                undefined,
+                null,
                 1,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 1,
-                25
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
             )
             .pipe(
                 catchError(() => {
@@ -58,7 +72,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                         })
                     );
 
-                    // this.loadPandingStore.set(loadPagination.pagination.data);
+                    this.loadPendingStore.set(loadPagination.pagination.data);
                 })
             );
     }

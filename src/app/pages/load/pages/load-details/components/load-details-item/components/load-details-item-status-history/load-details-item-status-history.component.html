@@ -1,0 +1,57 @@
+<div class="d-flex flex-column justify-content-center status-history-container">
+    <div class="align-items-center status-history-container-header">
+        <ng-container
+            *ngFor="
+                let headerItem of statusHistoryHeaderItems;
+                let i = index;
+                trackBy: trackByIdentity
+            "
+        >
+            <p class="m-0 ta-font-bold">{{ headerItem }}</p>
+        </ng-container>
+    </div>
+
+    <div
+        class="d-flex flex-column justify-content-center status-history-container-body"
+    >
+        <ng-container
+            *ngFor="
+                let statusData of statusHistoryData;
+                let i = index;
+                trackBy: trackByIdentity
+            "
+        >
+            <div class="align-items-center status-history-container-body-item">
+                <div class="d-flex align-items-center">
+                    <p
+                        class="m-0 ta-font-bold"
+                        [ngStyle]="
+                            loadStatusEnum[statusData.id] | loadStatusColor
+                        "
+                    >
+                        {{ statusData.status }}
+                    </p>
+
+                    <ng-container *ngIf="statusData.statusStopOrder">
+                        <div
+                            class="d-flex align-items-center justify-content-center status-order-box"
+                            [ngStyle]="{
+                                background: statusData.statusOrderColor
+                            }"
+                        >
+                            <p class="m-0 ta-font-semi-bold">
+                                {{ statusData.statusStopOrder }}
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <p class="m-0">{{ statusData.statusDate }}</p>
+
+                <p class="m-0">{{ statusData.statusTime }}</p>
+
+                <p class="m-0 ta-font-medium">{{ statusData.statusLength }}</p>
+            </div>
+        </ng-container>
+    </div>
+</div>

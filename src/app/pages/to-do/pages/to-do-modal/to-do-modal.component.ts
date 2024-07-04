@@ -210,7 +210,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     ' ',
                     this.companyUser.lastName
                 ),
-                avatar: this.companyUser.avatar,
+                /*     avatar: this.companyUser.avatar, */
             },
             commentContent: null,
             createdAt: new Date().toISOString(),
@@ -470,7 +470,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                                 ...item,
                                 companyUser: {
                                     ...item.companyUser,
-                                    avatar: this.companyUser.avatar,
+                                    /*   avatar: this.companyUser.avatar, */
                                 },
                             };
                         }

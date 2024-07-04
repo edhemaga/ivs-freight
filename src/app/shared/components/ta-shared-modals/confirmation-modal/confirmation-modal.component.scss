@@ -329,6 +329,28 @@
             .confirmation-text-holder {
                 gap: 16px;
             }
+
+            .shuffle-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+            }
+
+            .item-card {
+                width: fit-content;
+                padding: 2px 6px;
+                background-color: $bw5;
+                border-radius: 2px;
+                user-select: none;
+
+                p {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white;
+                }
+            }
         }
 
         .confirmation-state {

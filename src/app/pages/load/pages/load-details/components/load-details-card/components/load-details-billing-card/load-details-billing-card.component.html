@@ -1,0 +1,75 @@
+<div class="biling-container">
+    <app-ta-custom-card
+        [cardName]="'Billing'"
+        [subText]="!isBillingCardOpen ? '$' + cardData.baseRate : ''"
+        [hasCounter]="billingCount"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+        (onOpenCard)="handleBillingCardOpen($event)"
+    >
+        <div
+            class="d-flex flex-column jutify-content-center biling-main-container"
+        >
+            <ng-container
+                *ngFor="
+                    let billingData of billingDataArray;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="d-flex align-items-center justify-content-between biling-main-container-box"
+                >
+                    <p
+                        class="m-0 ta-font-medium"
+                        [ngClass]="{
+                            'ta-font-semi-bold': [
+                                'TOTAL RATE',
+                                'TONU RATE'
+                            ].includes(billingData.title),
+                            'tonu-rate':
+                                cardData?.tonuRate &&
+                                billingData.title !== 'TONU RATE'
+                        }"
+                    >
+                        {{ billingData.title }}
+                    </p>
+
+                    <span
+                        class="m-0"
+                        [ngClass]="{
+                            'ta-font-semi-bold': [
+                                'TOTAL RATE',
+                                'TONU RATE'
+                            ].includes(billingData.title),
+                            'tonu-rate':
+                                cardData?.tonuRate &&
+                                billingData.title !== 'TONU RATE'
+                        }"
+                        [ngStyle]="{
+                            color: billingData.title
+                                .toLowerCase()
+                                .includes('adjusted')
+                                ? '#9E47EC'
+                                : billingData.title
+                                      .toLowerCase()
+                                      .includes('driver')
+                                ? '#F89B2E'
+                                : billingData.title
+                                      .toLowerCase()
+                                      .includes('tonu')
+                                ? '#DF3C3C'
+                                : '#424242'
+                        }"
+                    >
+                        ${{ billingData.value }}
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+    </app-ta-custom-card>
+</div>

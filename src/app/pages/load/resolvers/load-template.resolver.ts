@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -24,8 +24,8 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
     ) {}
 
     resolve(): Observable<any> {
-        return forkJoin([
-            this.loadService.getLoadTemplateList(
+        return this.loadService
+            .getLoadTemplateList(
                 undefined,
                 undefined,
                 undefined,
@@ -36,31 +36,21 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                 undefined,
                 undefined,
                 undefined
-            ),
-            this.tableService.getTableConfig(1),
-        ]).pipe(
-            tap(([loadPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'loadTableCount',
-                    JSON.stringify({
-                        pendingCount: loadPagination.pendingCount,
-                        activeCount: loadPagination.activeCount,
-                        closedCount: loadPagination.closedCount,
-                        templateCount: loadPagination.templateCount,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            )
+            .pipe(
+                tap((loadPagination) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.templateCount,
+                        })
                     );
-                }
 
-                this.loadTemplateStore.set(loadPagination.pagination.data);
-            })
-        );
+                    this.loadTemplateStore.set(loadPagination.pagination.data);
+                })
+            );
     }
 }

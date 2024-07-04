@@ -159,6 +159,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Input() isBluredNotice: boolean = true;
 
+    // Use case when we want user to submit form and run validation and show form errors
+    @Input() enableClickWhileFormInvalid: boolean = false;
+
     @Output() action: EventEmitter<{
         action: string;
         bool: boolean;
@@ -169,6 +172,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }> = new EventEmitter<{ data: any }>(null);
 
     @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
+    @Output() runFormValidation: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
 
     @Output('additionalPartVisibility')
     additionalPartVisibilityEvent: EventEmitter<{
@@ -301,6 +306,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
+        if (!this.isModalValid && this.enableClickWhileFormInvalid)
+            this.runFormValidation.emit(true);
+
         switch (action) {
             case 'save': {
                 this.action.emit({ action: action, bool: false });

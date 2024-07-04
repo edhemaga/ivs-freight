@@ -98,17 +98,26 @@
                     <!-- Hazardous Logo -->
 
                     <ng-container *ngIf="isVisibleHazardous">
-                        <svg-icon
-                            src="assets/svg/common/ic_hazardous.svg"
-                            class="modal-hazardous-logo"
-                            (click)="toggleAdditionalPart('hazardous')"
-                        ></svg-icon>
+                        <div
+                            [ngClass]="{ active: hazardousVisibility }"
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/ic_hazardous.svg"
+                                class="modal-hazardous-logo"
+                                (click)="toggleAdditionalPart('hazardous')"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
 
                     <!-- Load Map Button -->
 
                     <ng-container *ngIf="isVisibleMap">
                         <div
+                            ngbTooltip
+                            mainTooltip="Open Map"
+                            tooltipBackground="#424242"
+                            position="bottom"
                             class="d-flex align-items-center justify-content-center modal-header-load-map-button"
                             [ngClass]="{ active: mapVisibility }"
                             (click)="toggleAdditionalPart('map')"
@@ -559,6 +568,12 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        enableClickWhileFormInvalid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     profileUpdateText
@@ -668,7 +683,9 @@
                                     'medical',
                                     'test',
                                     'mvr',
-                                    'cdl'
+                                    'cdl',
+                                    'load',
+                                    'comment'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -719,6 +736,9 @@
                             [ngClass]="{
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
+                                ),
+                                'modal-red-btn': ['load', 'comment'].includes(
+                                    confirmationData.template
                                 ),
                                 'not-clickable': disableDelete
                             }"

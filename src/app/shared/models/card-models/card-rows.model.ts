@@ -18,4 +18,6 @@ export interface CardRows {
     field?: string;
     isDropdown?: boolean;
     values?: CardRowsItemValue[];
+    type?: string;
+    secondTitle?: string;
 }

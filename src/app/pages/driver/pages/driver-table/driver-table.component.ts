@@ -19,7 +19,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ApplicantService } from '@shared/services/applicant.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
 
@@ -145,7 +144,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private driverService: DriverService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
-        private imageBase64Service: ImageBase64Service,
         private driverCardsModalService: DriverCardsModalService,
 
         // store
@@ -159,7 +157,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -618,6 +616,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.APPLICANT,
                     applicantsData as DriverResponse[]
                 ),
+                inactive: true,
             },
             {
                 title: TableStringEnum.ACTIVE,
@@ -791,12 +790,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapDriverData(data: any): any {
+
         const {
             id,
             status,
             owner,
             name,
-            avatar,
+            avatarFile,
             dateOfBirth,
             ssn,
             phone,
@@ -827,7 +827,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             trailerType,
             truckType,
         } = data;
-        if (!avatar) this.mapingIndex++;
+
+        if (!avatarFile?.url) this.mapingIndex++;
 
         return {
             id,
@@ -836,9 +837,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isOwner: !!owner,
             textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
-            avatarImg: avatar
-                ? this.imageBase64Service.sanitizer(avatar)
-                : null,
+            avatarImg: avatarFile?.url ?? null,
             fullName: name,
             tableDOB:
                 MethodsCalculationsHelper.convertDateFromBackend(dateOfBirth),
@@ -891,8 +890,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                      twicExpirationDate
-                  )
+                    twicExpirationDate
+                )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -941,32 +940,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${
-                general?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.push
+            tabelNotificationGeneral: `${general?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.sms
+                }${general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
-            tabelNotificationPayroll: `${
-                payroll?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.push
+                }`,
+            tabelNotificationPayroll: `${payroll?.mail
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                }${payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.sms
+                }${payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+                }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:
@@ -1676,7 +1669,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(interval);
                     }, 900);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

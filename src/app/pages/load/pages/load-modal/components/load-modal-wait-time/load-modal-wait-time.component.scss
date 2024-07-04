@@ -1,0 +1,43 @@
+@import 'src/theme/variables';
+
+.load-stop-wait-time {
+    &-grid {
+        grid-template-columns: 112px 95px 95px 95px 95px 78px;
+        font-size: 11px;
+        color: $muted;
+        row-gap: 6px;
+        column-gap: 5px;
+        text-align: center;
+        padding: 0 4px;
+
+        span {
+            color: $ta-red-11;
+            margin-left: 2px;
+        }
+    }
+
+    &-footer {
+        padding: 0 6px;
+        &-total {
+            font-size: 14px;
+            color: $muted;
+        }
+        &-sum {
+            font-size: 14px;
+            color: $ta-black;
+        }
+    }
+}
+
+.status-string__value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-size: 11px;
+    height: 14px;
+    width: 14px;
+    font-weight: 600;
+    padding-top: 1px;
+    border-radius: 2px;
+}

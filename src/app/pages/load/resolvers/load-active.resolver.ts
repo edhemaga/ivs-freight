@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
@@ -23,8 +23,8 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
     ) {}
 
     resolve(): Observable<any> {
-        return forkJoin([
-            this.loadService.getLoadList(
+        return this.loadService
+            .getLoadList(
                 null,
                 2,
                 null,
@@ -53,32 +53,21 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                 null,
                 null,
                 null
-            ),
-            this.tableService.getTableConfig(3),
-        ]).pipe(
-            tap(([loadPagination, tableConfig]) => {
-                console.log('loadPagination', loadPagination);
-                localStorage.setItem(
-                    'loadTableCount',
-                    JSON.stringify({
-                        pendingCount: loadPagination.pendingCount,
-                        activeCount: loadPagination.activeCount,
-                        closedCount: loadPagination.closedCount,
-                        templateCount: loadPagination.templateCount,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            )
+            .pipe(
+                tap((loadPagination) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.templateCount,
+                        })
                     );
-                }
 
-                this.loadActiveStore.set(loadPagination.pagination.data);
-            })
-        );
+                    this.loadActiveStore.set(loadPagination.pagination.data);
+                })
+            );
     }
 }

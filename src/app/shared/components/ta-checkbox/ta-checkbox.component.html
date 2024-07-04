@@ -81,29 +81,32 @@
             }"
             ></span>
 
-            <svg-icon
-                *ngIf="isDisabledRegularCheck"
-                class="d-flex justify-content-center align-items-center ta-checkbox-disabled-regular-check"
-                src="assets/svg/applicant/check.svg"
-            ></svg-icon>
+            <ng-container *ngIf="isDisabledRegularCheck">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center ta-checkbox-disabled-regular-check"
+                    src="assets/svg/applicant/check.svg"
+                ></svg-icon>
+            </ng-container>
 
-            <svg-icon
-                *ngIf="isDisabledBlue; else disabled"
-                class="ta-checkbox-disabled-blue"
-                src="assets/svg/common/ic_disable.svg"
-            ></svg-icon>
+            <ng-container *ngIf="isDisabledBlue; else disabledTemplate"
+                ><svg-icon
+                    class="ta-checkbox-disabled-blue"
+                    src="assets/svg/common/ic_disable.svg"
+                ></svg-icon
+            ></ng-container>
 
-            <svg-icon
-                *ngIf="disabled && !disabledStillCheckMark; else svg"
-                class="ta-checkbox-disabled"
-                src="assets/svg/common/ic_disable.svg"
-            ></svg-icon>
+            <ng-template #disabledTemplate>
+                <ng-container *ngIf="disabled && !disabledStillCheckMark"
+                    ><svg-icon
+                        class="ta-checkbox-disabled"
+                        src="assets/svg/common/ic_disable.svg"
+                    ></svg-icon
+                ></ng-container>
+            </ng-template>
 
-            <svg-icon
-                *ngIf="svg"
-                class="ta-checkbox-svg"
-                src="{{ svg }}"
-            ></svg-icon>
+            <ng-container *ngIf="svg">
+                <svg-icon class="ta-checkbox-svg" src="{{ svg }}"></svg-icon>
+            </ng-container>
 
             <span
                 class="ta-checkbox-label"

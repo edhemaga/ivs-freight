@@ -117,7 +117,7 @@ export class SettingsCompanyService implements OnDestroy {
                                     ein: company.ein,
                                     email: company.email,
                                     usDot: company.usDot,
-                                    logo: company.logo,
+                                    /*   logo: company.logo, */
                                 }
                             );
                             const companiesCount = JSON.parse(

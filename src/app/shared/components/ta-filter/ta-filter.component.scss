@@ -258,7 +258,7 @@
     position: relative;
     left: -8px;
     width: 260px;
-    padding: 7px 8px 6px 8px;
+    padding: 4px;
     border-radius: 3px;
     background-color: $ta-black-2;
     box-shadow: 0 0 4px #00000026;
@@ -271,6 +271,7 @@
     .filter-header {
         position: relative;
         width: 100%;
+        padding-top: 2px;
         box-sizing: border-box;
         display: flex;
         justify-content: space-between;
@@ -314,8 +315,8 @@
         }
 
         .user-filter-box {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
 
             display: flex;
             flex-direction: column;
@@ -326,18 +327,18 @@
             border-radius: 60px;
             background-color: $ta-black;
 
-            font-size: 14px;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 700;
 
             color: $white;
-            line-height: 24px;
+            line-height: 14px;
         }
 
         .user-title-text {
             display: flex;
             align-items: center;
 
-            line-height: 18px;
+            line-height: 14px;
             font-size: 11px;
             font-weight: 800;
             color: $white;
@@ -346,11 +347,27 @@
 
             &.sort-text {
                 justify-content: flex-end !important;
+                border-radius: 1px;
+                transition: background 0.2s ease-in-out;
+
+                .sort-arrow {
+                    transform: rotate(0deg);
+                    transition: transform 0.2s;
+
+                    &.rotate {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background: $ta-black-3;
+                }
             }
+
             &.counter-padd-title {
                 padding-left: 4px;
                 padding-right: 6px;
-                line-height: 26px;
             }
         }
 
@@ -517,11 +534,10 @@
 
     .border-filter {
         width: 100%;
-        height: 2px;
+        height: 1px;
         border-radius: 1px;
-        margin: 5px 0px 6px 0px;
-        background-color: $ta-light-grey-2;
-        opacity: 0.2;
+        margin: 4px 0px;
+        background-color: $ta-black;
     }
 
     .border-second-margin {
@@ -668,7 +684,7 @@
 
             width: 100%;
             height: 26px;
-            padding-right: 8px;
+            padding-right: 4px;
             padding-left: 30px;
             border-radius: 2px;
 
@@ -814,18 +830,12 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding-right: 6px;
+                padding-right: 4px;
                 transition: all 0.2s linear;
+
                 &:hover {
                     cursor: pointer;
                     background-color: $ta-black-3;
-
-                    .user-profile-img {
-                        svg {
-                            path {
-                            }
-                        }
-                    }
                 }
 
                 &.state-main-holder {
@@ -906,24 +916,25 @@
 
         .button-clear {
             width: 120px;
-            height: 28px;
-            border-radius: 2px;
+            height: 18px;
+            border-radius: 1px;
             background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: $bw6-2;
-            line-height: 28px;
+            font-size: 11px;
+            font-weight: 700;
+            color: $ta-light-grey-2;
+            line-height: 14px;
+            text-transform: uppercase;
 
             &.active {
                 cursor: pointer;
                 color: $white;
-                background-color: rgb(255 255 255 / 20%);
+
                 &:hover {
                     cursor: pointer;
-                    background-color: rgb(255 255 255 / 40%);
+                    background-color: $bw6-2;
                     color: $white;
                 }
             }
@@ -931,25 +942,26 @@
 
         .button-set {
             width: 120px;
-            height: 28px;
-            border-radius: 2px;
+            height: 18px;
+            border-radius: 1px;
             background-color: $ta-black;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 700;
-            color: $muted;
-            line-height: 28px;
+            color: $ta-light-grey-2;
+            line-height: 14px;
+            text-transform: uppercase;
 
             &.active {
-                background-color: #6f9ee0;
-                color: #ffffff;
+                background-color: $ta-blue-13;
+                color: $white;
                 cursor: pointer;
 
                 &:hover {
                     cursor: pointer;
-                    background-color: #98b9ea;
+                    background-color: $ta-blue-15;
                     color: $white;
                 }
             }
@@ -960,7 +972,7 @@
         display: flex;
         align-items: center;
 
-        width: 90%;
+        width: 100%;
         line-height: 26px;
         .truck-icon {
             display: none;
@@ -1173,7 +1185,6 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        margin-top: 21px;
         overflow: hidden;
 
         &.single-money-main {
@@ -1183,7 +1194,6 @@
         .money-value-holder {
             position: relative;
             width: 141px;
-            height: 26px;
             border-radius: 2px;
             display: flex;
             justify-content: center;
@@ -1191,6 +1201,40 @@
             font-size: 14px;
             color: $ta-light-grey-2;
             transition: all 0.59s ease-in-out;
+            padding-top: 20px;
+
+            .input-custom-group {
+                .input-control {
+                    height: 26px;
+                    background-color: $ta-black;
+                    color: $white;
+                }
+
+                .input-label {
+                    color: $white;
+                }
+
+                &:hover {
+                    .input-control {
+                        background-color: $bw6-2 !important;
+                    }
+                }
+
+                &.valid-focus-out, &.valid-focus-in {
+                    .input-control {
+                        background-color: $ta-blue-20;
+                    }
+
+                    &:hover {
+                        .input-control {
+                            background-color: $ta-blue-21 !important;
+                        }
+                    }
+                }
+
+                // #3B73ED33
+            }
+
             .invalid-message {
                 position: absolute;
                 top: 18px;
@@ -1252,6 +1296,15 @@
             font-size: 14px;
             font-weight: 800;
             color: $white;
+            user-select: none;
+        }
+
+        .form-name-gray {
+            font-size: 11px;
+            line-height: 18px;
+            font-weight: 700;
+            color: $ta-light-grey-2;
+            user-select: none;
         }
 
         .hide-money-form {
@@ -2483,6 +2536,8 @@
     width: 100% !important;
     background: $ta-black !important;
     color: $ta-light-grey-2 !important;
+    margin-top: 6px;
+    border-radius: 2px;
 
     transition: 0.3s all;
     .input-form-holder {
@@ -2595,14 +2650,13 @@
     }
 }
 .count-holder {
-    padding: 2px 5px 2px 5px;
-    width: 18px;
-    height: 18px;
-    font-weight: 500;
+    min-width: 18px;
+    min-height: 18px;
+    font-weight: 600;
     font-size: 11px;
-    line-height: 13px;
-    color: $ta-light-grey-6;
-    background-color: $ta-light-grey-9;
+    line-height: 14px;
+    color: $white-4;
+    background-color: $ta-black;
     border-radius: 100%;
     display: flex;
     &.activeCount {

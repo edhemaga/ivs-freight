@@ -145,4 +145,6 @@ export interface ITaInput {
     isFromDate?: boolean;
     hideColorValidations?: boolean; // regular color for inputs, no blue validation
     expiredDateInvalid?: boolean; // accept only dates that didn't expire
+    fixedPlacholder?: string;
+    statusStyle?: boolean;
 }

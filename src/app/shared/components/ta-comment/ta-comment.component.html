@@ -9,68 +9,161 @@
             class="d-flex align-items-start justify-content-between comment-header"
         >
             <div class="d-flex align-items-center comment-header-left">
-                <img
-                    src="assets/svg/truckassist-table/user-avatar-no-profile.svg"
-                    [src]="
-                        commentAvatar ??
-                        'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                    "
-                    alt="User Profile Image"
-                />
+                <!-- Regular Layout -->
 
-                <p class="m-0 ta-font-semi-bold">
-                    {{ commentData.companyUser.name }}
-                </p>
+                <ng-container
+                    *ngIf="!isDetailsCommentLayout; else detailsLayout"
+                >
+                    <img
+                        [src]="
+                            commentAvatar ??
+                            'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                        "
+                        alt="User Profile Image"
+                    />
 
-                <ng-container *ngIf="!isCommenting">
-                    <ng-container *ngIf="isMe">
-                        <div class="me-container">
-                            <span class="m-0 ta-font-bold">(Me)</span>
-                        </div>
-                    </ng-container>
+                    <p class="m-0 ta-font-semi-bold">
+                        {{ commentData.companyUser.name }}
+                    </p>
 
-                    <ng-container *ngIf="commentDate">
-                        <div class="date-container">
-                            <span class="m-0 ta-font-medium">
-                                • {{ commentDate }}
-                            </span>
-                        </div>
-                    </ng-container>
+                    <ng-container *ngIf="!isCommenting">
+                        <ng-container *ngIf="isMe">
+                            <div class="me-container">
+                                <span class="m-0 ta-font-bold">(Me)</span>
+                            </div>
+                        </ng-container>
 
-                    <ng-container *ngIf="isEdited">
-                        <div class="edited-container">
-                            <span class="m-0 ta-font-medium">• Edited</span>
-                        </div>
+                        <ng-container *ngIf="commentDate">
+                            <div class="date-container">
+                                <span class="m-0 ta-font-medium">
+                                    • {{ commentDate }}
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="isEdited">
+                            <div class="edited-container">
+                                <span class="m-0 ta-font-medium">• Edited</span>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
+
+                <!-- Details layout -->
+
+                <ng-template #detailsLayout>
+                    <div class="d-flex align-items-center details-container">
+                        <img
+                            [ngStyle]="{ 'margin-bottom': !isMe ? '6px' : 0 }"
+                            [src]="
+                                commentAvatar ??
+                                'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                            "
+                            alt="User Profile Image"
+                        />
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="d-flex align-items-center">
+                                <p
+                                    class="m-0 ta-font-semi-bold"
+                                    [innerHTML]="
+                                        higlitsPartOfCommentSearchValue(
+                                            commentData.companyUser.name
+                                        )
+                                    "
+                                ></p>
+
+                                <ng-container *ngIf="!isCommenting && isMe">
+                                    <div class="me-container">
+                                        <span class="m-0 ta-font-bold">
+                                            (Me)
+                                        </span>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                            <ng-container *ngIf="!isCommenting">
+                                <div class="d-flex align-items-center">
+                                    <ng-container *ngIf="commentDate">
+                                        <div
+                                            class="date-container"
+                                            [ngStyle]="{
+                                                'margin-top': isMe
+                                                    ? '-12px'
+                                                    : '-6px'
+                                            }"
+                                        >
+                                            <span class="m-0 ta-font-medium">
+                                                {{ commentDate }}
+                                            </span>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="isEdited">
+                                        <div
+                                            class="edited-container"
+                                            [ngStyle]="{
+                                                'margin-top': isMe
+                                                    ? '-12px'
+                                                    : '-6px'
+                                            }"
+                                        >
+                                            <span class="m-0 ta-font-medium">
+                                                • Edited
+                                            </span>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
 
             <div
                 class="d-flex align-items-center justify-content-center comment-header-right"
             >
                 <ng-container *ngIf="isCommenting">
-                    <svg-icon
-                        class="confirm-icon"
-                        [ngClass]="{
-                            disabled: isDisabled
-                        }"
-                        src="assets/svg/ic_spec-confirm.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        (click)="handleBtnActionClick('Confirm')"
-                    ></svg-icon>
+                    <div
+                        ngbTooltip
+                        [mainTooltip]="isEditing ? 'Confirm Edit' : 'Confirm'"
+                        tooltipBackground="#424242"
+                        position="top"
+                    >
+                        <svg-icon
+                            class="confirm-icon"
+                            [ngClass]="{
+                                disabled: isDisabled
+                            }"
+                            src="assets/svg/ic_spec-confirm.svg"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            (click)="handleBtnActionClick('Confirm')"
+                        ></svg-icon>
+                    </div>
 
-                    <svg-icon
-                        class="cancel-icon"
-                        src="assets/svg/ic_x.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        (click)="handleBtnActionClick('Cancel')"
-                    ></svg-icon>
+                    <div
+                        ngbTooltip
+                        mainTooltip="Cancel"
+                        tooltipBackground="#424242"
+                        position="top"
+                    >
+                        <svg-icon
+                            class="cancel-icon"
+                            src="assets/svg/ic_x.svg"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            (click)="handleBtnActionClick('Cancel')"
+                        ></svg-icon>
+                    </div>
                 </ng-container>
 
                 <ng-container *ngIf="!isCommenting">
                     <ng-container *ngIf="!isEditButtonDisabled">
                         <div
                             class="d-flex justify-content-center align-items-center edit-icon-container"
+                            ngbTooltip
+                            mainTooltip="Edit"
+                            tooltipBackground="#424242"
+                            position="top"
                         >
                             <svg-icon
                                 class="icon"
@@ -83,6 +176,10 @@
 
                     <div
                         class="d-flex justify-content-center align-items-center delete-icon-container"
+                        ngbTooltip
+                        mainTooltip="Delete"
+                        tooltipBackground="#424242"
+                        position="top"
                     >
                         <svg-icon
                             class="icon"
@@ -102,9 +199,22 @@
                 #commentInput
                 class="comment-input"
                 [ngClass]="{
-                    'no-value': commentInput?.textContent === 'Write Comment...'
+                    'no-value':
+                        commentInput?.textContent === 'Write Comment...',
+                    details: isDetailsCommentLayout
+                }"
+                [ngStyle]="{
+                    'margin-top':
+                        isDetailsCommentLayout && !isCommenting
+                            ? isMe
+                                ? '-8px'
+                                : '-6px'
+                            : '0'
                 }"
                 [attr.contenteditable]="isCommenting"
+                [innerHTML]="
+                    higlitsPartOfCommentSearchValue(commentData.commentContent)
+                "
                 spellcheck="false"
                 (focus)="handleCommentChange()"
                 (input)="handleCommentChange()"
@@ -147,32 +257,8 @@
                             class="d-flex justify-content-between title-svg-holder"
                         >
                             <div class="d-flex align-items-center creds-holder">
-                                <ng-container *ngIf="loggedUserCommented">
-                                    <span
-                                        class="text-white ta-font-semi-bold"
-                                        (click)="
-                                            toogleComment(
-                                                commentCardsDataDropdown
-                                            )
-                                        "
-                                        [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
-                                                abbreviateFullName(
-                                                    commentCardsDataDropdown
-                                                        .companyUser.fullName
-                                                )
-                                            )
-                                        "
-                                    ></span>
-                                </ng-container>
-
                                 <ng-container
-                                    *ngIf="
-                                        !checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
+                                    *ngIf="loggedUserCommented; else notLogged"
                                 >
                                     <span
                                         class="text-white ta-font-semi-bold"
@@ -182,24 +268,37 @@
                                             )
                                         "
                                         [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
+                                            abbreviateFullName(
                                                 commentCardsDataDropdown
                                                     .companyUser.fullName
                                             )
+                                                | taCommentHighlistComponentPipe
+                                                    : commentHighlight
                                         "
                                     ></span>
                                 </ng-container>
 
+                                <ng-template #notLogged>
+                                    <ng-container *ngIf="!loggedUserCommented">
+                                        <span
+                                            class="text-white ta-font-semi-bold"
+                                            (click)="
+                                                toogleComment(
+                                                    commentCardsDataDropdown
+                                                )
+                                            "
+                                            [innerHTML]="
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
+                                                    | taCommentHighlistComponentPipe
+                                                        : commentHighlight
+                                            "
+                                        ></span>
+                                    </ng-container>
+                                </ng-template>
                                 <!-- if owner of the card -->
 
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span class="card-user-me ta-font-bold"
                                         >(Me)</span
                                     >
@@ -235,14 +334,7 @@
                             </div>
 
                             <div class="user-icons d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span
                                         ngbTooltip
                                         mainTooltip="Edit"
@@ -362,9 +454,9 @@
                             commentCardsDataDropdown.isOpen ? 'true' : 'false'
                         "
                         [innerHTML]="
-                            higlitsPartOfCommentSearchValue(
-                                commentCardsDataDropdown.commentContent
-                            )
+                            commentCardsDataDropdown.commentContent
+                                | taCommentHighlistComponentPipe
+                                    : commentHighlight
                         "
                     ></span>
                 </ng-container>
@@ -422,9 +514,9 @@
                             <span
                                 class="title ta-font-semi-bold"
                                 [innerHTML]="
-                                    higlitsPartOfCommentSearchValue(
-                                        commentCardsDataDropdown.fullName
-                                    )
+                                    commentCardsDataDropdown.fullName
+                                        | taCommentHighlistComponentPipe
+                                            : commentHighlight
                                 "
                             ></span>
 

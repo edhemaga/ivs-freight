@@ -98,6 +98,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public isFormValid: boolean = false;
 
+    public isAllValuesSet: boolean = false;
+
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
 
@@ -932,7 +934,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
             if (pmItem.title) pmNames.push(pmItem.title);
         });
 
-        if (pmNames?.length) {
+        if (
+            !this.isAllValuesSet &&
+            pmNames?.length === this.newPMs.controls.length
+        )
+            this.isAllValuesSet = true;
+
+        if (pmNames?.length && this.isAllValuesSet) {
             this.newPMs.controls.map((newPm, index) => {
                 if (
                     !pmNames.includes(newPm.get(TableStringEnum.TITLE_2).value)

@@ -56,7 +56,7 @@ export class WebsiteAuthService {
         private router: Router,
         private accountService: AccountService,
         private websiteActionsService: WebsiteActionsService
-    ) {}
+    ) { }
 
     public registerCompany(data: SignUpCompanyCommand): Observable<object> {
         return this.accountService.apiAccountSignupcompanyPost(
@@ -198,9 +198,9 @@ export class WebsiteAuthService {
     }
 
     public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
-        return this.accountService.apiAccountAvatarCodeGet(data).pipe(
+        return this.accountService.apiAccountAvatarGet(data).pipe(
             tap((res: AvatarResponse) => {
-                this.websiteActionsService.setAvatarImageSubject(res.avatar);
+                this.websiteActionsService.setAvatarImageSubject(res.avatar?.url)
             })
         );
     }

@@ -19,20 +19,27 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             const infoText =
                 subType === DropActionsStringEnum.VOID_CDL
                     ? DropActionsStringEnum.VOID +
-                      ' ' +
+                      DropActionsStringEnum.EMPTY_SPACE_STRING +
                       ConfirmationModalStringEnum.SELECTED_DRIVER
                     : subType;
             textMiddle = infoText;
         } else if (type === TableStringEnum.ACTIVATE) {
             const activateText =
                 template === DropActionsStringEnum.CDL
-                    ? type + ' ' + ConfirmationModalStringEnum.SELECTED_DRIVER
-                    : type + ' ' + ConfirmationModalStringEnum.SELECTED;
+                    ? type +
+                      DropActionsStringEnum.EMPTY_SPACE_STRING +
+                      ConfirmationModalStringEnum.SELECTED_DRIVER
+                    : type +
+                      DropActionsStringEnum.EMPTY_SPACE_STRING +
+                      ConfirmationModalStringEnum.SELECTED;
             textMiddle = activateText;
         } else if (type === TableStringEnum.MULTIPLE_DELETE) {
             textMiddle = ConfirmationModalStringEnum.DELETE_SELECTED;
         } else {
-            textMiddle = type + ' ' + ConfirmationModalStringEnum.SELECTED;
+            textMiddle =
+                type +
+                DropActionsStringEnum.EMPTY_SPACE_STRING +
+                ConfirmationModalStringEnum.SELECTED;
         }
 
         if (template === TableStringEnum.REPAIR_2) {
@@ -40,7 +47,8 @@ export class ConfirmationModalTextPipe implements PipeTransform {
                 type === TableStringEnum.MULTIPLE_DELETE
                     ? ConfirmationModalStringEnum.REPAIRS_ORDERS
                     : ConfirmationModalStringEnum.REPAIR_ORDER;
-            textEnd = subType + ' ' + repairText;
+            textEnd =
+                subType + DropActionsStringEnum.EMPTY_SPACE_STRING + repairText;
         } else if (template === TableStringEnum.REPAIR_SHOP) {
             const repairText =
                 type === TableStringEnum.MULTIPLE_DELETE
@@ -57,6 +65,26 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             textEnd = ConfirmationModalStringEnum.REPAIR_SHOP_REVIEW;
         } else if (template === DropActionsStringEnum.CDL) {
             textEnd = DropActionsStringEnum.CDL_2;
+        } else if (template === TableStringEnum.LOAD) {
+            let loadText = TableStringEnum.EMPTY_STRING_PLACEHOLDER.toString();
+
+            if (subType === TableStringEnum.TEMPLATE) {
+                loadText =
+                    TableStringEnum.LOAD +
+                    DropActionsStringEnum.EMPTY_SPACE_STRING +
+                    (type === TableStringEnum.MULTIPLE_DELETE
+                        ? DropActionsStringEnum.TEMPLATES
+                        : DropActionsStringEnum.TEMPLATE);
+            } else {
+                loadText =
+                    subType +
+                    DropActionsStringEnum.EMPTY_SPACE_STRING +
+                    (type === TableStringEnum.MULTIPLE_DELETE
+                        ? TableStringEnum.LOADS
+                        : TableStringEnum.LOAD);
+            }
+
+            textEnd = loadText;
         } else if (type === TableStringEnum.MULTIPLE_DELETE) {
             textEnd = template + 's';
         } else {
@@ -65,7 +93,11 @@ export class ConfirmationModalTextPipe implements PipeTransform {
 
         textEnd += ConfirmationModalStringEnum.QUESTION_MARK;
 
-        textString += ' ' + textMiddle + ' ' + textEnd;
+        textString +=
+            DropActionsStringEnum.EMPTY_SPACE_STRING +
+            textMiddle +
+            DropActionsStringEnum.EMPTY_SPACE_STRING +
+            textEnd;
 
         return textString;
     }

@@ -58,6 +58,7 @@ export enum TableStringEnum {
     EDIT_2 = 'Edit',
 
     LOAD = 'load',
+    LOAD_2 = 'Load',
     LOADS = 'loads',
     VIEW_MODE = 'view-mode',
     REGULAR = 'regular',

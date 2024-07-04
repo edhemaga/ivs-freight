@@ -11,7 +11,6 @@ import {
 // services
 import { TodoService } from '@pages/to-do/services/to-do.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CommentsService } from '@shared/services/comments.service';
@@ -183,8 +182,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         private notificationService: NotificationService,
         private confirmationService: ConfirmationService,
         private DetailsDataService: DetailsDataService,
-        public imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -681,7 +679,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     ' ',
                     this.companyUser.lastName
                 ),
-                avatar: this.companyUser.avatar,
+                /*  avatar: this.companyUser.avatar, */
             },
             commentContent: null,
             createdAt: new Date().toISOString(),
@@ -707,7 +705,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                         this.currentChildIndex
                     ].comments.unshift(this.comments[0]);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 

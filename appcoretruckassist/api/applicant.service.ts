@@ -47,7 +47,7 @@ import { CreateAccidentRecordCommand } from '../model/createAccidentRecordComman
 // @ts-ignore
 import { CreateAccidentRecordReviewCommand } from '../model/createAccidentRecordReviewCommand';
 // @ts-ignore
-import { CreateApplicantCdlInformationCommand } from '../model/createApplicantCdlInformationCommand';
+import { CreateApplicantCdlCommand } from '../model/createApplicantCdlCommand';
 // @ts-ignore
 import { CreateApplicantCdlInformationReviewCommand } from '../model/createApplicantCdlInformationReviewCommand';
 // @ts-ignore
@@ -56,8 +56,6 @@ import { CreateApplicantCommand } from '../model/createApplicantCommand';
 import { CreateAuthorizationReviewCommand } from '../model/createAuthorizationReviewCommand';
 // @ts-ignore
 import { CreateCdlCardReviewCommand } from '../model/createCdlCardReviewCommand';
-// @ts-ignore
-import { CreateCompanyOwnerInfoCommand } from '../model/createCompanyOwnerInfoCommand';
 // @ts-ignore
 import { CreateCompanyOwnerInfoReviewCommand } from '../model/createCompanyOwnerInfoReviewCommand';
 // @ts-ignore
@@ -129,6 +127,8 @@ import { MoveToApplicantsCommand } from '../model/moveToApplicantsCommand';
 // @ts-ignore
 import { MvrAuthFeedbackResponse } from '../model/mvrAuthFeedbackResponse';
 // @ts-ignore
+import { OwnerType } from '../model/ownerType';
+// @ts-ignore
 import { PersonalInfoFeedbackResponse } from '../model/personalInfoFeedbackResponse';
 // @ts-ignore
 import { PreviousEmployerDocumentsResponse } from '../model/previousEmployerDocumentsResponse';
@@ -151,7 +151,7 @@ import { UpdateAccidentRecordCommand } from '../model/updateAccidentRecordComman
 // @ts-ignore
 import { UpdateAccidentRecordReviewCommand } from '../model/updateAccidentRecordReviewCommand';
 // @ts-ignore
-import { UpdateApplicantCdlInformationCommand } from '../model/updateApplicantCdlInformationCommand';
+import { UpdateApplicantCdlCommand } from '../model/updateApplicantCdlCommand';
 // @ts-ignore
 import { UpdateApplicantCdlInformationReviewCommand } from '../model/updateApplicantCdlInformationReviewCommand';
 // @ts-ignore
@@ -160,8 +160,6 @@ import { UpdateApplicantCommand } from '../model/updateApplicantCommand';
 import { UpdateAuthorizationCommand } from '../model/updateAuthorizationCommand';
 // @ts-ignore
 import { UpdateCdlCardReviewCommand } from '../model/updateCdlCardReviewCommand';
-// @ts-ignore
-import { UpdateCompanyOwnerInfoCommand } from '../model/updateCompanyOwnerInfoCommand';
 // @ts-ignore
 import { UpdateCompanyOwnerInfoReviewCommand } from '../model/updateCompanyOwnerInfoReviewCommand';
 // @ts-ignore
@@ -2305,14 +2303,17 @@ export class ApplicantService {
     }
 
     /**
-     * @param createApplicantCdlInformationCommand 
+     * @param cdlDenied 
+     * @param cdlDeniedExplanation 
+     * @param applicantId 
+     * @param licences 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantCdlPost(createApplicantCdlInformationCommand?: CreateApplicantCdlInformationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiApplicantCdlPost(createApplicantCdlInformationCommand?: CreateApplicantCdlInformationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantCdlPost(createApplicantCdlInformationCommand?: CreateApplicantCdlInformationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantCdlPost(createApplicantCdlInformationCommand?: CreateApplicantCdlInformationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantCdlPost(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<CreateApplicantCdlCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantCdlPost(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<CreateApplicantCdlCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantCdlPost(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<CreateApplicantCdlCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantCdlPost(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<CreateApplicantCdlCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -2350,16 +2351,38 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+
+        localVarUseForm = canConsumeForm;
+
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (cdlDenied !== undefined) {
+            localVarFormParams = localVarFormParams.append('CdlDenied', <any>cdlDenied) as any || localVarFormParams;
+        }
+        if (cdlDeniedExplanation !== undefined) {
+            localVarFormParams = localVarFormParams.append('CdlDeniedExplanation', <any>cdlDeniedExplanation) as any || localVarFormParams;
+        }
+        if (applicantId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
+        }
+        if (licences) {
+            licences.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Licences', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -2374,10 +2397,10 @@ export class ApplicantService {
         }
 
         let localVarPath = `/api/applicant/cdl`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createApplicantCdlInformationCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -2389,14 +2412,17 @@ export class ApplicantService {
     }
 
     /**
-     * @param updateApplicantCdlInformationCommand 
+     * @param cdlDenied 
+     * @param cdlDeniedExplanation 
+     * @param applicantId 
+     * @param licences 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantCdlPut(updateApplicantCdlInformationCommand?: UpdateApplicantCdlInformationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiApplicantCdlPut(updateApplicantCdlInformationCommand?: UpdateApplicantCdlInformationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiApplicantCdlPut(updateApplicantCdlInformationCommand?: UpdateApplicantCdlInformationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiApplicantCdlPut(updateApplicantCdlInformationCommand?: UpdateApplicantCdlInformationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantCdlPut(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<UpdateApplicantCdlCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantCdlPut(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<UpdateApplicantCdlCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantCdlPut(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<UpdateApplicantCdlCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantCdlPut(cdlDenied?: boolean, cdlDeniedExplanation?: string, applicantId?: number, licences?: Array<UpdateApplicantCdlCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -2434,16 +2460,38 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+
+        localVarUseForm = canConsumeForm;
+
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (cdlDenied !== undefined) {
+            localVarFormParams = localVarFormParams.append('CdlDenied', <any>cdlDenied) as any || localVarFormParams;
+        }
+        if (cdlDeniedExplanation !== undefined) {
+            localVarFormParams = localVarFormParams.append('CdlDeniedExplanation', <any>cdlDeniedExplanation) as any || localVarFormParams;
+        }
+        if (applicantId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
+        }
+        if (licences) {
+            licences.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Licences', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -2458,10 +2506,10 @@ export class ApplicantService {
         }
 
         let localVarPath = `/api/applicant/cdl`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateApplicantCdlInformationCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -5791,14 +5839,50 @@ export class ApplicantService {
     }
 
     /**
-     * @param createCompanyOwnerInfoCommand 
+     * @param ownerType 
+     * @param businessName 
+     * @param ein 
+     * @param phone 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param truckTypeId 
+     * @param truckVin 
+     * @param truckMakeId 
+     * @param truckModel 
+     * @param truckYear 
+     * @param truckColorId 
+     * @param truckLicenceFiles 
+     * @param truckFHWAFiles 
+     * @param hasTrailer 
+     * @param trailerTypeId 
+     * @param trailerLengthId 
+     * @param trailerVin 
+     * @param trailerMakeId 
+     * @param trailerModel 
+     * @param trailerYear 
+     * @param trailerColorId 
+     * @param trailerLicenceFiles 
+     * @param trailerFHWAFiles 
+     * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantOwnerinfoCompanyPost(createCompanyOwnerInfoCommand?: CreateCompanyOwnerInfoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiApplicantOwnerinfoCompanyPost(createCompanyOwnerInfoCommand?: CreateCompanyOwnerInfoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantOwnerinfoCompanyPost(createCompanyOwnerInfoCommand?: CreateCompanyOwnerInfoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantOwnerinfoCompanyPost(createCompanyOwnerInfoCommand?: CreateCompanyOwnerInfoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantOwnerinfoCompanyPost(ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckFHWAFiles?: Array<Blob>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerFHWAFiles?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiApplicantOwnerinfoCompanyPost(ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckFHWAFiles?: Array<Blob>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerFHWAFiles?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantOwnerinfoCompanyPost(ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckFHWAFiles?: Array<Blob>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerFHWAFiles?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantOwnerinfoCompanyPost(ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckFHWAFiles?: Array<Blob>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerFHWAFiles?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -5836,16 +5920,152 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (ownerType !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
+        }
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (ein !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (accountNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('AccountNumber', <any>accountNumber) as any || localVarFormParams;
+        }
+        if (routingNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('RoutingNumber', <any>routingNumber) as any || localVarFormParams;
+        }
+        if (truckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckTypeId', <any>truckTypeId) as any || localVarFormParams;
+        }
+        if (truckVin !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckVin', <any>truckVin) as any || localVarFormParams;
+        }
+        if (truckMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckMakeId', <any>truckMakeId) as any || localVarFormParams;
+        }
+        if (truckModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckModel', <any>truckModel) as any || localVarFormParams;
+        }
+        if (truckYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckYear', <any>truckYear) as any || localVarFormParams;
+        }
+        if (truckColorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckColorId', <any>truckColorId) as any || localVarFormParams;
+        }
+        if (truckLicenceFiles) {
+            truckLicenceFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckLicenceFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (truckFHWAFiles) {
+            truckFHWAFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckFHWAFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (hasTrailer !== undefined) {
+            localVarFormParams = localVarFormParams.append('HasTrailer', <any>hasTrailer) as any || localVarFormParams;
+        }
+        if (trailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerTypeId', <any>trailerTypeId) as any || localVarFormParams;
+        }
+        if (trailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerLengthId', <any>trailerLengthId) as any || localVarFormParams;
+        }
+        if (trailerVin !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerVin', <any>trailerVin) as any || localVarFormParams;
+        }
+        if (trailerMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerMakeId', <any>trailerMakeId) as any || localVarFormParams;
+        }
+        if (trailerModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerModel', <any>trailerModel) as any || localVarFormParams;
+        }
+        if (trailerYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerYear', <any>trailerYear) as any || localVarFormParams;
+        }
+        if (trailerColorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerColorId', <any>trailerColorId) as any || localVarFormParams;
+        }
+        if (trailerLicenceFiles) {
+            trailerLicenceFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerLicenceFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (trailerFHWAFiles) {
+            trailerFHWAFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerFHWAFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (applicantId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -5863,7 +6083,7 @@ export class ApplicantService {
         return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createCompanyOwnerInfoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -5875,14 +6095,55 @@ export class ApplicantService {
     }
 
     /**
-     * @param updateCompanyOwnerInfoCommand 
+     * @param id 
+     * @param ownerType 
+     * @param businessName 
+     * @param ein 
+     * @param phone 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param truckTypeId 
+     * @param truckVin 
+     * @param truckMakeId 
+     * @param truckModel 
+     * @param truckYear 
+     * @param truckColorId 
+     * @param truckLicenceFiles 
+     * @param truckLicenceFilesForDeleteIds 
+     * @param truckFHWAFiles 
+     * @param truckFHWAFilesForDeleteIds 
+     * @param hasTrailer 
+     * @param trailerTypeId 
+     * @param trailerLengthId 
+     * @param trailerVin 
+     * @param trailerMakeId 
+     * @param trailerModel 
+     * @param trailerYear 
+     * @param trailerColorId 
+     * @param trailerLicenceFiles 
+     * @param trailerLicenceFilesForDeleteIds 
+     * @param trailerFHWAFiles 
+     * @param trailerFHWAFilesForDeleteIds 
+     * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantOwnerinfoCompanyPut(updateCompanyOwnerInfoCommand?: UpdateCompanyOwnerInfoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiApplicantOwnerinfoCompanyPut(updateCompanyOwnerInfoCommand?: UpdateCompanyOwnerInfoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiApplicantOwnerinfoCompanyPut(updateCompanyOwnerInfoCommand?: UpdateCompanyOwnerInfoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiApplicantOwnerinfoCompanyPut(updateCompanyOwnerInfoCommand?: UpdateCompanyOwnerInfoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantOwnerinfoCompanyPut(id?: number, ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckLicenceFilesForDeleteIds?: Array<number>, truckFHWAFiles?: Array<Blob>, truckFHWAFilesForDeleteIds?: Array<number>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerLicenceFilesForDeleteIds?: Array<number>, trailerFHWAFiles?: Array<Blob>, trailerFHWAFilesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiApplicantOwnerinfoCompanyPut(id?: number, ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckLicenceFilesForDeleteIds?: Array<number>, truckFHWAFiles?: Array<Blob>, truckFHWAFilesForDeleteIds?: Array<number>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerLicenceFilesForDeleteIds?: Array<number>, trailerFHWAFiles?: Array<Blob>, trailerFHWAFilesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiApplicantOwnerinfoCompanyPut(id?: number, ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckLicenceFilesForDeleteIds?: Array<number>, truckFHWAFiles?: Array<Blob>, truckFHWAFilesForDeleteIds?: Array<number>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerLicenceFilesForDeleteIds?: Array<number>, trailerFHWAFiles?: Array<Blob>, trailerFHWAFilesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiApplicantOwnerinfoCompanyPut(id?: number, ownerType?: OwnerType, businessName?: string, ein?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, bankId?: number, accountNumber?: string, routingNumber?: string, truckTypeId?: number, truckVin?: string, truckMakeId?: number, truckModel?: string, truckYear?: number, truckColorId?: number, truckLicenceFiles?: Array<Blob>, truckLicenceFilesForDeleteIds?: Array<number>, truckFHWAFiles?: Array<Blob>, truckFHWAFilesForDeleteIds?: Array<number>, hasTrailer?: boolean, trailerTypeId?: number, trailerLengthId?: number, trailerVin?: string, trailerMakeId?: number, trailerModel?: string, trailerYear?: number, trailerColorId?: number, trailerLicenceFiles?: Array<Blob>, trailerLicenceFilesForDeleteIds?: Array<number>, trailerFHWAFiles?: Array<Blob>, trailerFHWAFilesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -5920,16 +6181,175 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (ownerType !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
+        }
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (ein !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (accountNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('AccountNumber', <any>accountNumber) as any || localVarFormParams;
+        }
+        if (routingNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('RoutingNumber', <any>routingNumber) as any || localVarFormParams;
+        }
+        if (truckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckTypeId', <any>truckTypeId) as any || localVarFormParams;
+        }
+        if (truckVin !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckVin', <any>truckVin) as any || localVarFormParams;
+        }
+        if (truckMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckMakeId', <any>truckMakeId) as any || localVarFormParams;
+        }
+        if (truckModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckModel', <any>truckModel) as any || localVarFormParams;
+        }
+        if (truckYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckYear', <any>truckYear) as any || localVarFormParams;
+        }
+        if (truckColorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckColorId', <any>truckColorId) as any || localVarFormParams;
+        }
+        if (truckLicenceFiles) {
+            truckLicenceFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckLicenceFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (truckLicenceFilesForDeleteIds) {
+            truckLicenceFilesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckLicenceFilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (truckFHWAFiles) {
+            truckFHWAFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckFHWAFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (truckFHWAFilesForDeleteIds) {
+            truckFHWAFilesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TruckFHWAFilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (hasTrailer !== undefined) {
+            localVarFormParams = localVarFormParams.append('HasTrailer', <any>hasTrailer) as any || localVarFormParams;
+        }
+        if (trailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerTypeId', <any>trailerTypeId) as any || localVarFormParams;
+        }
+        if (trailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerLengthId', <any>trailerLengthId) as any || localVarFormParams;
+        }
+        if (trailerVin !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerVin', <any>trailerVin) as any || localVarFormParams;
+        }
+        if (trailerMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerMakeId', <any>trailerMakeId) as any || localVarFormParams;
+        }
+        if (trailerModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerModel', <any>trailerModel) as any || localVarFormParams;
+        }
+        if (trailerYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerYear', <any>trailerYear) as any || localVarFormParams;
+        }
+        if (trailerColorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerColorId', <any>trailerColorId) as any || localVarFormParams;
+        }
+        if (trailerLicenceFiles) {
+            trailerLicenceFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerLicenceFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (trailerLicenceFilesForDeleteIds) {
+            trailerLicenceFilesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerLicenceFilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (trailerFHWAFiles) {
+            trailerFHWAFiles.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerFHWAFiles', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (trailerFHWAFilesForDeleteIds) {
+            trailerFHWAFilesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('TrailerFHWAFilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (applicantId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -5947,7 +6367,7 @@ export class ApplicantService {
         return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateCompanyOwnerInfoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -6471,9 +6891,9 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -6655,7 +7075,7 @@ export class ApplicantService {
         }
 
         let localVarPath = `/api/applicant/personal`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,

@@ -21,6 +21,9 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// Models
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
@@ -50,7 +53,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaPayrollStatusesComponent,
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
-        TaAppTooltipV2Component
+        TaAppTooltipV2Component,
     ],
 })
 export class TaCustomCardComponent implements OnInit {
@@ -68,6 +71,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() hasHeaderSvg: string = null;
     @Input() hasActionSvg: string = null;
     @Input() subText: string = null;
+    @Input() subTextClass: string = null;
     @Input() hasDivider: boolean = true;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
@@ -99,11 +103,13 @@ export class TaCustomCardComponent implements OnInit {
     @Input() has24Hours: boolean = false;
     @Input() is24Hours: boolean = false;
     @Input() disableAnimation: boolean = false;
+    @Input() reorderingSaveError: boolean = false;
     @Input() set isCardOpen(value: boolean) {
         this.noActive = value ? 'active' : 'innactive';
         this._isCardOpen = value;
     }
-
+    @Input() hasHistoryButton: boolean = false;
+    @Input() showFinishReordering: boolean = false;
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
@@ -179,6 +185,13 @@ export class TaCustomCardComponent implements OnInit {
                 this.onActionEvent.emit({
                     check: this.is24Hours,
                     action: 'hours-24',
+                });
+
+                break;
+            case LoadModalStringEnum.REORDERING:
+                this.onActionEvent.emit({
+                    check: true,
+                    action,
                 });
 
                 break;

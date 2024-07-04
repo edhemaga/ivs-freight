@@ -4,21 +4,32 @@
         [ngClass]="{
             'first-or-last': firstOrLast && isCardOpen,
             'not-first-or-last': !firstOrLast,
-            'origin-destination-no-filled': !shipper || !state,
-            'not-active-stop': !isCardOpen
+            'not-active-stop': !isCardOpen,
+            'destination-disabled': isDestinationTab && disabledCard,
+            'stop-finished': stopFinished
         }"
         (click)="toggleStop($event)"
     >
         <div
             class="d-flex align-items-center justify-content-center load-stop-header-badge"
             [ngClass]="{
-                'delivery-mode': isDelivery
+                'delivery-mode': isDelivery,
+                'finished-mode': stopFinished
             }"
         >
             <div
                 class="d-flex align-items-center justify-content-center load-stop-counter-container"
             >
-                <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
+                <ng-container *ngIf="!stopFinished">
+                    <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
+                </ng-container>
+
+                <ng-container *ngIf="stopFinished">
+                    <svg-icon
+                        [src]="loadModalSvgRoutes.checkmark"
+                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
+                </ng-container>
             </div>
 
             <ng-container *ngIf="!firstOrLast">
@@ -31,7 +42,14 @@
                     (click)="deleteStop()"
                 >
                     <svg-icon
-                        [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+                        class="load-stop-drag-icon"
+                        [src]="loadModalSvgRoutes.draging"
+                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
+
+                    <svg-icon
+                        class="load-delete-drag-icon"
+                        [src]="loadModalSvgRoutes.delete"
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
                 </div>
@@ -45,7 +63,7 @@
                 <div
                     class="origin-destination-no-filled-container first-container-required"
                 >
-                    <p class="m-0 ta-font-semi-bold">
+                    <p class="m-0 ta-font-semi-bold load-stop-header-bar-title">
                         {{
                             firstOrLast
                                 ? isDelivery

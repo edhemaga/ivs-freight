@@ -1,0 +1,54 @@
+@import 'src/theme/variables.scss';
+
+.biling-container {
+    padding: 2px 2px 0 4px;
+
+    .biling-main-container {
+        &-box {
+            margin-bottom: 8px;
+
+            p,
+            span {
+                font-size: 14px;
+                line-height: 18px;
+
+                &.tonu-rate {
+                    color: $bw5 !important;
+                    text-decoration: line-through;
+                }
+            }
+
+            p {
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+
+            span {
+                color: $ta-black-2;
+
+                &::-moz-selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

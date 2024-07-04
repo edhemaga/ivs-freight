@@ -19,4 +19,5 @@ export interface EditData {
     isFinishOrder?: number;
     file_id?: number;
     renewData?: any;
+    selectedTab: string;
 }

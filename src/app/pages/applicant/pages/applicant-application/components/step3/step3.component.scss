@@ -32,12 +32,12 @@
     }
 
     .top-section {
-        margin-top: 12px;
+        margin-top: 22px;
         width: 616px;
 
         p {
             font-size: 14px;
-            line-height: 22px;
+            line-height: 18px;
 
             &::-moz-selection {
                 color: $ta-black-2;
@@ -72,8 +72,8 @@
             margin-bottom: 4px;
             padding-left: 10px;
             display: grid;
-            grid-template-columns: 160px 160px 184px;
-            grid-gap: 22px;
+            grid-template-columns: 26px 180px 180px 202px;
+            grid-column-gap: 8px;
 
             .licence-details-box,
             .state-date-box,
@@ -106,8 +106,24 @@
                 width: 100%;
                 cursor: pointer;
                 display: grid;
-                grid-template-columns: 160px 160px 184px;
-                grid-column-gap: 22px;
+                grid-template-columns: 26px 180px 180px 202px;
+                grid-column-gap: 8px;
+
+                .index-box {
+                    p {
+                        color: $ta-blue-13;
+                        line-height: 18px;
+                        font-size: 14px;
+                    }
+                }
+
+                &.restrictions-text {
+                    padding-right: 20.17px;
+                }
+    
+                &.endorsments-text {
+                    padding-right: 12px;
+                }
 
                 .licence-box,
                 .class-box,
@@ -127,34 +143,28 @@
                         margin-bottom: 2px;
 
                         p {
-                            color: $ta-black-2;
+                            color: $ta-black;
 
                             &::-moz-selection {
-                                color: $ta-black-2;
+                                color: $ta-black;
                                 background: rgb(47, 47, 47, 0.2);
                             }
 
                             &::selection {
-                                color: $ta-black-2;
+                                color: $ta-black;
                                 background: rgb(47, 47, 47, 0.2);
                             }
 
                             span {
                                 &::-moz-selection {
-                                    color: $ta-black-2;
+                                    color: $ta-black;
                                     background: rgb(47, 47, 47, 0.2);
                                 }
 
                                 &::selection {
-                                    color: $ta-black-2;
+                                    color:$ta-black;
                                     background: rgb(47, 47, 47, 0.2);
                                 }
-                            }
-                        }
-
-                        &.state-box {
-                            p {
-                                text-transform: uppercase;
                             }
                         }
 
@@ -300,6 +310,50 @@
             }
         }
     }
+
+    .license-btn-container {
+        margin: 0 auto 32px auto;
+        width: 616px;
+
+        p {
+            line-height: 18px;
+            font-size: 14px;
+        }
+
+        .add-license-title {
+            color: $bw6-2;
+            font-size: 14px;
+            height: 18px;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+}
+
+.restrictions-text {
+    padding-right: 20.17px;
+}
+
+.endorsments-text {
+    padding-right: 12px;
+}
+
+.none-text {
+    color: $bw5 !important;
+    font-size: 11px;
+    line-height: 14px;
+}
+
+.details-text {
+    color: $ta-blue-13 !important;
 }
 
 .next-btn-container {

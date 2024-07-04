@@ -1,0 +1,92 @@
+@import 'src/theme/variables.scss';
+
+.load-title-card-container {
+    padding: 12px 12px 4px 12px;
+
+    .reference-number-container {
+        margin-bottom: 10px;
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+
+    .main-container {
+        &-inner {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            grid-gap: 12px;
+
+            &:first-child {
+                margin-bottom: 12px;
+            }
+
+            &-box {
+                .repair-box {
+                    width: 12px;
+                    height: 12px;
+                    margin-right: 4px;
+                    padding: 0 2px;
+                    border-radius: 2px;
+                    background: $ta-orange-1;
+
+                    p {
+                        font-size: 11px;
+                        line-height: 12px;
+                        color: $white;
+
+                        &::-moz-selection {
+                            color: $white;
+                            background: rgb(255, 255, 255, 0.2);
+                        }
+
+                        &::selection {
+                            color: $white;
+                            background: rgb(255, 255, 255, 0.2);
+                        }
+                    }
+                }
+
+                p,
+                span {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $ta-black;
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+
+                .icon {
+                    margin-right: 4px;
+                    line-height: 18px;
+
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

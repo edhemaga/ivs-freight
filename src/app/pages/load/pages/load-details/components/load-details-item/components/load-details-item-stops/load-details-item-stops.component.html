@@ -1,0 +1,506 @@
+<div class="d-flex flex-column justify-content-center stops-container">
+    <!-- Header -->
+
+    <div class="d-flex flex-column justify-content-center stops-header">
+        <div
+            class="d-flex align-items-center justify-content-between stops-header-top"
+        >
+            <ng-container
+                *ngIf="
+                    load?.statusType?.name === 'Pending' ||
+                    load?.statusType?.name === 'Closed'
+                "
+            >
+                <div class="d-flex align-items-center">
+                    <p
+                        class="m-0 ta-font-semi-bold"
+                        [ngStyle]="{
+                            color:
+                                load?.firstPickupTime?.days < 0
+                                    ? '#DF3C3C'
+                                    : '#6c6c6c'
+                        }"
+                    >
+                        {{
+                            load?.firstPickupTime?.days < 0
+                                ? 'Missed First Pickup'
+                                : 'First Pickup'
+                        }}
+                    </p>
+
+                    <ng-container *ngIf="load?.firstPickupTime?.days < 0">
+                        <svg-icon
+                            class="icon"
+                            [src]="loadDetailsItemSvgRoutes.dangerMarkRoute"
+                        ></svg-icon>
+                    </ng-container>
+                </div>
+
+                <p class="m-0 ta-font-semi-bold">
+                    ETC ≈
+                    {{
+                        load?.totalTimeDays
+                            ? load?.totalTimeDays +
+                              (load?.totalTimeDays === 1 ? ' day' : ' days')
+                            : ''
+                    }}
+                    {{
+                        load?.totalTimeHours
+                            ? load?.totalTimeHours +
+                              (load?.totalTimeHours === 1 ? ' hour' : ' hours')
+                            : ''
+                    }}
+                </p>
+            </ng-container>
+        </div>
+
+        <div
+            class="d-flex flex-column justify-content-between stops-header-progress-bar"
+        >
+            <div
+                class="d-flex align-items-center justify-content-between stops-header-progress-bar-top"
+            >
+                <ng-container
+                    *ngIf="
+                        load?.firstPickupTime?.days >= 0;
+                        else missedFirstPickup
+                    "
+                >
+                    <p class="m-0 ta-font-medium">
+                        In
+                        {{
+                            load?.firstPickupTime?.days
+                                ? load?.firstPickupTime?.days +
+                                  (load?.firstPickupTime?.days === 1
+                                      ? ' day'
+                                      : ' days')
+                                : ''
+                        }}
+                        {{
+                            load?.firstPickupTime?.hours
+                                ? load?.firstPickupTime?.hours +
+                                  (load?.firstPickupTime?.hours === 1
+                                      ? ' hour'
+                                      : ' hours')
+                                : ''
+                        }}
+                    </p>
+                </ng-container>
+
+                <ng-template #missedFirstPickup>
+                    <p class="m-0 ta-font-medium">
+                        Missed date and time - w8 for back
+                    </p>
+                </ng-template>
+
+                <p class="m-0 ta-font-medium">{{ load?.totalMiles }} mi</p>
+            </div>
+
+            <div
+                class="progress-bar"
+                [ngStyle]="{
+                    background:
+                        load?.progressBar[0]?.progressBarPercentage <= 50
+                            ? '#91919133'
+                            : load?.progressBar[0]?.progressBarPercentage >
+                                  50 &&
+                              load?.progressBar[0]?.progressBarPercentage <= 80
+                            ? '#FAB15C33'
+                            : '#E6676733'
+                }"
+            >
+                <div
+                    class="progress-bar-inner"
+                    [ngStyle]="{
+                        background:
+                            load?.progressBar[0]?.progressBarPercentage <= 50
+                                ? '#919191'
+                                : load?.progressBar[0]?.progressBarPercentage >
+                                      50 &&
+                                  load?.progressBar[0]?.progressBarPercentage <=
+                                      80
+                                ? '#FAB15C'
+                                : '#E66767',
+                        width: load?.progressBar[0]?.progressBarPercentage + '%'
+                    }"
+                ></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stops Main  -->
+
+    <div class="d-flex flex-column justify-content-center stops-main">
+        <!-- Header -->
+
+        <div
+            class="align-items-center stops-main-header"
+            [ngClass]="{
+                'includes-check-in-grid': load?.statusType?.name !== 'Pending'
+            }"
+        >
+            <ng-container
+                *ngFor="
+                    let headerItem of stopHeaderItems;
+                    let first = first;
+                    let last = last;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="d-flex align-items-center"
+                    [ngClass]="{
+                        'justify-content-center': first,
+                        'justify-content-end': last
+                    }"
+                >
+                    <p class="m-0 ta-font-bold">{{ headerItem }}</p>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Main -->
+
+        <ng-container
+            *ngFor="
+                let stop of load?.stops;
+                let i = index;
+                let first = first;
+                let last = last;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="align-items-center stops-main-item"
+                [ngClass]="{
+                    'includes-check-in-grid':
+                        load?.statusType?.name !== 'Pending',
+                    active: i === stopItemDropdownIndex
+                }"
+                (click)="handleStopDropdownClick(i, stop?.items?.length)"
+            >
+                <!-- [ngStyle]="{
+                    cursor: stop?.items?.length ? 'pointer' : 'unset'
+                }" -->
+
+                <!-- Stop Order -->
+
+                <div
+                    class="d-flex align-items-center justify-content-center stop-order-box"
+                    [ngStyle]="{
+                        background:
+                            stop?.milesType?.name === 'DeadHead'
+                                ? '#919191'
+                                : stop?.stopType?.name === 'Pickup'
+                                ? '#56B4AC'
+                                : '#E66767'
+                    }"
+                >
+                    <p class="m-0 ta-font-bold">{{ stop?.stopOrder }}</p>
+                </div>
+
+                <!-- Location, Type -->
+
+                <div class="d-flex flex-column justify-content-center stop-box">
+                    <p class="m-0 ta-font-semi-bold">
+                        {{
+                            stop?.shipper?.address?.city +
+                                ', ' +
+                                stop?.shipper?.address?.stateShortName +
+                                ' ' +
+                                stop?.shipper?.address?.zipCode.split('-')[0]
+                        }}
+                    </p>
+
+                    <span class="ta-font-medium">{{
+                        first
+                            ? stop?.milesType?.name === 'DeadHead'
+                                ? 'Deadhead'
+                                : 'Origin'
+                            : last
+                            ? 'Destination'
+                            : load?.stops[0]?.milesType?.name === 'DeadHead' &&
+                              i === 1
+                            ? 'Origin'
+                            : 'Extra ' + stop?.stopType?.name
+                    }}</span>
+                </div>
+
+                <!-- Shipper, Address -->
+
+                <div class="d-flex flex-column justify-content-center stop-box">
+                    <p class="m-0">
+                        {{ stop?.shipper?.businessName }}
+                    </p>
+
+                    <span>
+                        {{ stop?.shipper?.address?.streetNumber }}
+                        {{ stop?.shipper?.address?.street }}
+                    </span>
+                </div>
+
+                <ng-container *ngIf="stop?.milesType?.name !== 'DeadHead'">
+                    <!-- Contact, Phone -->
+
+                    <div
+                        class="d-flex flex-column justify-content-center stop-box"
+                    >
+                        <p
+                            class="m-0"
+                            [ngStyle]="{
+                                color: stop?.shipperContact?.fullName
+                                    ? '#2f2f2f'
+                                    : '#919191'
+                            }"
+                        >
+                            {{
+                                stop?.shipperContact
+                                    ? stop?.shipperContact?.fullName ??
+                                      'Shipper Contact'
+                                    : 'No Contact'
+                            }}
+                        </p>
+
+                        <span>
+                            {{ stop?.shipperContact?.phone ?? '123' }}
+                            {{
+                                stop?.shipperContact?.phoneExt
+                                    ? 'x' + stop?.shipperContact?.phoneExt
+                                    : ''
+                            }}
+                        </span>
+                    </div>
+
+                    <!-- Date, Time -->
+
+                    <div
+                        class="d-flex flex-column justify-content-center stop-box"
+                    >
+                        <p class="m-0">
+                            {{ stop?.dateFrom | formatDateP }}
+                            {{
+                                stop?.dateTo
+                                    ? ' - ' + (stop?.dateTo | formatDateP)
+                                    : ''
+                            }}
+                        </p>
+
+                        <div class="d-flex align-items-center">
+                            <span>
+                                {{ stop?.timeFrom }}
+                                {{
+                                    stop?.timeFrom?.substring(
+                                        0,
+                                        stop?.timeFrom?.indexOf(':')
+                                    ) < 12
+                                        ? 'AM - '
+                                        : 'PM - '
+                                }}
+
+                                <span
+                                    [ngStyle]="{
+                                        color:
+                                            stop?.timeType?.name ===
+                                            'Appointment'
+                                                ? '#F89B2E'
+                                                : '#919191'
+                                    }"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            stop?.timeType?.name ===
+                                                'Appointment';
+                                            else timeTo
+                                        "
+                                    >
+                                        {{ stop?.timeType?.name }}
+                                    </ng-container>
+
+                                    <ng-template #timeTo>
+                                        {{ stop?.timeTo }}
+                                        {{
+                                            stop?.timeTo?.substring(
+                                                0,
+                                                stop?.timeTo?.indexOf(':')
+                                            ) < 12
+                                                ? 'AM'
+                                                : 'PM'
+                                        }}
+                                    </ng-template>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Check In -->
+
+                    <ng-container *ngIf="load?.statusType?.name !== 'Pending'">
+                        <div
+                            class="d-flex flex-column justify-content-center stop-box"
+                        >
+                            <p
+                                class="m-0"
+                                [ngClass]="{ 'ta-font-bold': true }"
+                                [ngStyle]="{
+                                    color: true ? '#56B4AC' : '#2F2F2F'
+                                }"
+                            >
+                                STOP STATUS
+                            </p>
+
+                            <span> Check in date/time </span>
+                        </div>
+                    </ng-container>
+
+                    <!-- Leg -->
+
+                    <div
+                        class="d-flex flex-column justify-content-center align-items-end stop-box"
+                    >
+                        <p class="m-0 ta-font-medium">
+                            {{ stop?.legMiles }} mi
+                        </p>
+
+                        <span class="ta-font-medium">
+                            ≈ {{ stop?.legHours ? stop?.legHours + 'h' : '' }}
+                            {{ stop?.legMinutes }}m
+                        </span>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Dropdown -->
+
+            <div
+                class="d-flex flex-column justify-content-center stops-main-item-dropdown"
+                [ngClass]="{
+                    expanded: i === stopItemDropdownIndex
+                }"
+            >
+                <div
+                    class="d-flex flex-column justify-content-center stops-main-item-dropdown-inner"
+                >
+                    <div class="align-items-center stop-items-header">
+                        <div class="align-items-center first-box">
+                            <ng-container
+                                *ngFor="
+                                    let stopItemsHeaderItem of stopItemsHeaderItems
+                                        | slice : 0 : 2;
+                                    let first = first;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex align-items-center box header-box"
+                                    [ngClass]="{
+                                        'justify-content-center': first
+                                    }"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{ stopItemsHeaderItem.title }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <ng-container
+                            *ngFor="
+                                let stopItemsHeaderItem of stopItemsHeaderItems
+                                    | slice : 2;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center box header-box"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            stopItemsHeaderItem.iconMargin
+                                    }"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                    [src]="stopItemsHeaderItem.icon"
+                                ></svg-icon>
+
+                                <p
+                                    class="m-0"
+                                    [ngClass]="
+                                        stopItemsHeaderItem.title?.length > 3
+                                            ? 'ta-font-bold'
+                                            : 'ta-font-medium'
+                                    "
+                                >
+                                    {{ stopItemsHeaderItem.title }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <ng-container
+                        *ngFor="
+                            let item of dummyItems;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div class="align-items-center stop-items-item">
+                            <div class="align-items-center first-box">
+                                <div
+                                    class="d-flex align-items-center justify-content-center box header-box"
+                                >
+                                    <p class="m-0 ta-font-medium">
+                                        {{ i + 1 }}
+                                    </p>
+                                </div>
+
+                                <div class="d-flex align-items-center box">
+                                    <p class="m-0 ta-font-medium">
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <ng-container
+                                *ngFor="
+                                    let property of item
+                                        | keyvalue
+                                            : loadDetailsItemHelper.keepItemsOriginalOrder;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        property.key !== 'id' &&
+                                        property.key !== 'description'
+                                    "
+                                >
+                                    <div class="d-flex align-items-center box">
+                                        <p class="m-0">
+                                            {{ property.value }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Map -->
+
+        <ng-container *ngIf="isMapDisplayed">
+            <div class="stops-map">
+                <app-ta-maps
+                    [mapType]="'routing'"
+                    [routes]="loadStopRoutes"
+                    [ngStyle]="{ width: '100%', height: '100%' }"
+                ></app-ta-maps>
+            </div>
+        </ng-container>
+    </div>
+</div>

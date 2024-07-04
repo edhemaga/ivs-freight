@@ -1,0 +1,81 @@
+<div class="payment-container">
+    <app-ta-custom-card
+        [cardName]="'Payment'"
+        [subText]="
+            !isPaymentCardOpen
+                ? (cardData.totalDue ? '-' : '') +
+                  (cardData.totalDue ? '$' : '') +
+                  (cardData.totalDue ?? 'PAID IN FULL')
+                : ''
+        "
+        [subTextClass]="cardData.totalDue ? 'red' : 'green'"
+        [hasCounter]="paymentCount"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+        (onOpenCard)="handlePaymentCardOpen($event)"
+    >
+        <div
+            class="d-flex flex-column jutify-content-center payment-main-container"
+        >
+            <ng-container
+                *ngFor="
+                    let paymentData of paymentDataArray;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div class="align-items-center payment-main-container-box">
+                    <p
+                        class="m-0 ta-font-medium"
+                        [ngClass]="{
+                            'ta-font-semi-bold':
+                                paymentData.title.includes('DUE') ||
+                                paymentData.title.includes('PAID')
+                        }"
+                    >
+                        {{ paymentData.title }} {{ paymentData.subtitle }}
+                    </p>
+
+                    <p class="m-0 ta-font-medium">
+                        {{ paymentData.date }}
+                    </p>
+
+                    <div
+                        class="d-flex align-items-center justify-content-end last-box"
+                    >
+                        <span
+                            class="m-0"
+                            [ngStyle]="{
+                                color:
+                                    paymentData.title === 'DUE' &&
+                                    cardData.totalDue
+                                        ? '#DF3C3C'
+                                        : paymentData.title ===
+                                              'PAID IN FULL' &&
+                                          cardData.totalPaid
+                                        ? '#259F94'
+                                        : '#2f2f2f'
+                            }"
+                            [ngClass]="{
+                                'ta-font-semi-bold':
+                                    paymentData.title.includes('DUE') ||
+                                    paymentData.title.includes('PAID')
+                            }"
+                        >
+                            {{
+                                cardData.totalDue &&
+                                paymentData.title.includes('DUE')
+                                    ? '-'
+                                    : ''
+                            }}${{ paymentData.value }}
+                        </span>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </app-ta-custom-card>
+</div>
