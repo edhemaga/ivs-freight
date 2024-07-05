@@ -135,7 +135,7 @@
                                                     class="m-0 ta-font-medium"
                                                     [ngStyle]="{
                                                         'color':
-                                                            accident.injuries ? '#2F2F2F' : '#919191'
+                                                            accident.injuries*1 ? '#2F2F2F' : '#919191'
                                                     }"
                                                 >
                                                     {{ accident.injuries }}
@@ -154,7 +154,7 @@
                                                     class="m-0 ta-font-medium"
                                                     [ngStyle]="{
                                                         'color':
-                                                            accident.fatalities ? '#2F2F2F' : '#919191'
+                                                            accident.fatalities*1 ? '#2F2F2F' : '#919191'
                                                     }"
                                                 >
                                                     {{ accident.fatalities }}
@@ -178,7 +178,7 @@
                                                     class="m-0 ta-font-medium"
                                                     [ngStyle]="{
                                                         'color':
-                                                            accident.collisions ? '#2F2F2F' : '#919191'
+                                                            accident.collisions*1 ? '#2F2F2F' : '#919191'
                                                     }"
                                                 >
                                                     {{ accident.collisions }}

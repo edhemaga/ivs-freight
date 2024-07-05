@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, tap } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -218,6 +218,53 @@ export class LoadService {
         );
     }
 
+    public deleteLoadList(
+        loadIds: number[],
+        loadStatus: string
+    ): Observable<any> {
+        const requestsArray = loadIds.map((loadId) => {
+            return this.loadService.apiLoadIdDelete(loadId);
+        });
+
+        return forkJoin([...requestsArray]).pipe(
+            tap(([res]) => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                loadIds.forEach((loadId) => {
+                    this.loadDetailsListStore.remove(({ id }) => id === loadId);
+                    this.loadItemStore.remove(({ id }) => id === loadId);
+                    this.loadMinimalListStore.remove(({ id }) => id === loadId);
+
+                    if (loadStatus === TableStringEnum.ACTIVE) {
+                        this.loadActiveStore.remove(({ id }) => id === loadId);
+
+                        loadCount.activeCount--;
+                    } else if (loadStatus === TableStringEnum.CLOSED) {
+                        this.loadClosedStore.remove(({ id }) => id === loadId);
+
+                        loadCount.closedCount--;
+                    } else if (loadStatus === TableStringEnum.PENDING) {
+                        this.loadPendingStore.remove(({ id }) => id === loadId);
+
+                        loadCount.pendingCount--;
+                    }
+                });
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
+    }
+
     public getLoadById(id: number): Observable<LoadResponse> {
         return this.loadService.apiLoadIdGet(id);
     }
@@ -284,6 +331,60 @@ export class LoadService {
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
         return this.loadService.apiLoadTemplateIdGet(id);
+    }
+
+    public deleteLoadTemplateById(loadId: number): Observable<void> {
+        return this.loadService.apiLoadTemplateIdDelete(loadId).pipe(
+            tap(() => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                this.loadTemplateStore.remove(({ id }) => id === loadId);
+
+                loadCount.templateCount--;
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
+    }
+
+    public deleteLoadTemplateList(loadIds: number[]): Observable<any> {
+        const requestsArray = loadIds.map((loadId) => {
+            return this.loadService.apiLoadTemplateIdDelete(loadId);
+        });
+
+        return forkJoin([...requestsArray]).pipe(
+            tap(([res]) => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                loadIds.forEach((loadId) => {
+                    this.loadTemplateStore.remove(({ id }) => id === loadId);
+
+                    loadCount.templateCount--;
+                });
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
     }
 
     private getLoadStatus(statusString: string): {

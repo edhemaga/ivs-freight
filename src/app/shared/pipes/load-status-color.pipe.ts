@@ -9,11 +9,12 @@ export class LoadStatusColorPipe implements PipeTransform {
         status: string,
         isBadge?: boolean
     ): { color: string; backgroundColor?: string } {
-        status = status.replace(/\s+/g, '');
-        const statusGreyColorCondition = status === 'Booked';
-        const statusDarkGreyColorCondition = status === 'Unassigned';
+        const adjustedStatus = status.replace(/\s+/g, '');
+
+        const statusGreyColorCondition = adjustedStatus === 'Booked';
+        const statusDarkGreyColorCondition = adjustedStatus === 'Unassigned';
         const statusDarkGrey2ColorCondition = ['Hold', 'Revised'].includes(
-            status
+            adjustedStatus
         );
         const statusGreenColorCondition = status === 'Assigned';
         const statusBlueColorCondition = [
@@ -25,8 +26,8 @@ export class LoadStatusColorPipe implements PipeTransform {
             'ArrivedPickup',
             'CheckedInPickup',
             'Loading',
-        ].includes(status);
-        const statusDarkTurquoiseColorCondition = status === 'Loaded';
+        ].includes(adjustedStatus);
+        const statusDarkTurquoiseColorCondition = adjustedStatus === 'Loaded';
         const statusRedColorCondition = [
             'ArrivedDelivery',
             'CheckedInDelivery',
@@ -34,20 +35,19 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Checked-In',
         ].includes(status);
         const statusDarkRedColorCondition = status === 'Offloaded';
-        const statusDarkRed2ColorCondition = [
-            'Cancelled',
-            'Split',
-        ].includes(status);
+        const statusDarkRed2ColorCondition = ['Cancelled', 'Split'].includes(
+            status
+        );
         const statusDarkRed3ColorCondition = status === 'Tonu';
         const statusOrangeColorCondition = status === 'Delivered';
         const statusYellowColorCondition = ['Invoiced', 'Paid'].includes(
-            status
+            adjustedStatus
         );
         const statusDarkYellowColorCondition = [
             'Claim',
             'Unpaid',
             'ShortPaid',
-        ].includes(status);
+        ].includes(adjustedStatus);
 
         if (statusGreyColorCondition) {
             return isBadge

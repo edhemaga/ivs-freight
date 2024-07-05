@@ -619,7 +619,7 @@
         [mode]="selectedMode"
         [filledCorrectly]="
             personalInfoForm.valid &&
-            helperIndex === 2 &&
+            isEachPreviousAddressesRowValid &&
             (selectedMode === 'APPLICANT_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
         "

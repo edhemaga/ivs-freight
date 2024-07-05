@@ -93,6 +93,7 @@ export class ApplicantTrailerConfig {
             type: 'text',
             label: 'Model',
             textTransform: 'uppercase',
+            isRequired: options.isAddTrailerSelected,
             minLength: 1,
             maxLength: 50,
             isDisabled:

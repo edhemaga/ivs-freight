@@ -1,0 +1,141 @@
+@import 'src/theme/variables';
+
+.stops-progress {
+    &-top {
+        p,
+        span {
+            font-size: 11px;
+            line-height: 14px;
+            color: $bw6-2;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+
+        .pipe {
+            margin: 0 2px;
+            color: $bw6-2;
+        }
+
+        .icon {
+            margin-left: 4px;
+            position: relative;
+            bottom: 1px;
+
+            svg {
+                path {
+                    fill: $ta-red-10;
+                }
+            }
+        }
+    }
+
+    &-top-big {
+        margin-bottom: 5px;
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+
+    &-progress-bar {
+        position: relative;
+
+        .progress-bar,
+        .progress-bar-inner {
+            height: 8px;
+            border-radius: 2px 0 0 2px;
+        }
+
+        .progress-bar.active {
+            background: $dark-2;
+        }
+
+        .progress-bar-inner.active {
+            background: $bw5;
+        }
+
+        .progress-pipe-position {
+            position: absolute;
+            top: 1px;
+            width: 2px;
+            height: 6px;
+            border-radius: 8px;
+            background: $white;
+        }
+
+        .progress-dot {
+            position: absolute;
+            top: 15px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in;
+
+            &:hover {
+                transform: scale(1.8);
+            }
+        }
+
+        .icon {
+            position: absolute;
+            top: -9px;
+        }
+    }
+
+    &-bottom {
+        margin-top: 14px;
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        span {
+            font-size: 11px;
+            line-height: 14px;
+            color: $bw6-2;
+            text-align: right;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+}

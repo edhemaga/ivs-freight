@@ -51,6 +51,7 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // validations
 import {
+    addressValidation,
     descriptionValidation,
     phoneExtension,
     phoneFaxRegex,
@@ -311,6 +312,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         if (address.valid) {
             this.selectedAddress[index] = address.address;
+            this.getModalTableDataValue();
         }
     }
 
@@ -598,7 +600,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             );
         }
 
-        if (this.isOffDutyLocationTable || this.isPreviousAddressesTable) {
+        if (this.isOffDutyLocationTable) {
             modalTableDataValue = modalTableDataValue.map(
                 (
                     itemRow: DriverDetailsOffDutyLocationResponse,
@@ -609,6 +611,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         address:
                             this.selectedAddress[index]?.address &&
                             this.selectedAddress[index],
+                    };
+                }
+            );
+        }
+
+        if (this.isPreviousAddressesTable) {
+            modalTableDataValue = modalTableDataValue.map(
+                (item, index: number) => {
+                    return {
+                        unit: item.unit,
+                        address: this.selectedAddress[index],
                     };
                 }
             );
@@ -769,7 +782,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 newFormArrayRow = this.formBuilder.group({
                     address: [
                         null,
-                        [Validators.required, Validators.maxLength(256)],
+                        [Validators.required, ...addressValidation],
                     ],
                     unit: [null, Validators.maxLength(50)],
                 });
@@ -916,15 +929,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                     break;
                 case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
-                    const addressData = data as AddressEntity;
+                    let addressData = data as {
+                        addressUnit: string;
+                        address: AddressEntity;
+                    };
                     const formGroup = this.getFormArray().at(i);
 
                     formGroup.patchValue({
                         unit: addressData?.addressUnit,
-                        address: addressData?.address,
+                        address: addressData?.address?.address,
                     });
-            
-                    this.selectedAddress[i] = addressData;
+                    
+                    this.selectedAddress[i] = addressData.address;
                     break;
                 default:
                     break;
@@ -944,16 +960,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             }, 300);
     }
     handleContactData(contact: RepairShopContactResponse, i: number) {
-        const formGroup = this.getFormArray().at(i); 
+        const formGroup = this.getFormArray().at(i);
         formGroup.patchValue({
             phone: contact.phone,
             phoneExt: contact.phoneExt,
             department: contact.department?.name,
             fullName: contact.fullName,
-            email: contact.email
+            email: contact.email,
         });
 
-        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL 
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
         this.modalTableValueEmitter.emit(this.getFormArray().value);
     }
 

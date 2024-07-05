@@ -594,11 +594,17 @@
                 !focusInput &&
                 !_inputConfig.isDisabled
         }"
+
+
         [style.left]="
-            focusInput &&
+            _inputConfig.placeholderText?.toLowerCase() === 'persons' ||
+            _inputConfig.placeholderText?.toLowerCase() === 'vehicles'
+                ? 30 + ((getSuperControl.value?.toString()?.length + 1) * 9) + 'px'
+                :
+            (focusInput &&
             _inputConfig.placeholderText?.toLowerCase() !== 'months'
                 ? 'auto'
-                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px'
+                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px')
         "
         [style.right]="
             focusInput &&
