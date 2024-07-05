@@ -53,6 +53,8 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { FilesActions } from '@pages/applicant/enums/files-actions.enum';
 import { OwnerInfoTabEnum } from '@pages/applicant/pages/applicant-owner-info/enums/owner-info-tab.enum';
+import { OwnerInfoFileType } from '@pages/applicant/pages/applicant-owner-info/enums/owner-info-file-type.enum';
+import { OwnerInfoStringEnum } from '@pages/applicant/pages/applicant-owner-info/enums/owner-info-string.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
@@ -68,10 +70,12 @@ import {
     ApplicantModalResponse,
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
+    OwnerType,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { FileEvent } from '@shared/models/file-event.model';
 
 // components
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -122,7 +126,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public selectedMode: string = SelectedMode.APPLICANT;
 
     public subscription: Subscription;
-    public soleSubscription: Subscription;
 
     public isValidLoad: boolean;
 
@@ -131,7 +134,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public ownerInfoCompanyId: number;
 
     public ownerInfoForm: UntypedFormGroup;
-    public ownerInfoSoleForm: UntypedFormGroup;
 
     public stepValues: any;
     public stepHasValues: boolean = false;
@@ -147,14 +149,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public selectedTrailerMake: any = null;
     public selectedTrailerColor: any = null;
     public selectedTrailerLength: TrailerLengthResponse = null;
-
-    public selectedSoleTruckType: TruckTypeResponse = null;
-    public selectedSoleTruckMake: any = null;
-    public selectedSoleTruckColor: any = null;
-    public selectedSoleTrailerType: TrailerTypeResponse = null;
-    public selectedSoleTrailerMake: any = null;
-    public selectedSoleTrailerColor: any = null;
-    public selectedSoleTrailerLength: TrailerLengthResponse = null;
 
     public banksDropdownList: BankResponse[] = [];
     public truckType: TruckTypeResponse[] = [];
@@ -176,7 +170,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public isBankSelected: boolean = false;
     public isAddTrailerSelected: boolean = false;
-    public isSoleAddTrailerSelected: boolean = false;
 
     public previousTruckValuesOnTabChange: any = {
         companyTruckValues: null,
@@ -198,6 +191,22 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public documentsForDeleteIds: number[] = [];
     public displayDocumentsRequiredNote: boolean = false;
+
+    public truckLicenceDocuments: any[] = [];
+    public truckLicenceDocumentsForDeleteIds: number[] = [];
+    public truckLicenceDisplayDocumentsRequiredNote: boolean = false;
+
+    public truckFHWADocuments: any[] = [];
+    public truckFHWADocumentsForDeleteIds: number[] = [];
+    public truckFHWADisplayDocumentsRequiredNote: boolean = false;
+
+    public trailerLicenceDocuments: any[] = [];
+    public trailerLicenceDocumentsForDeleteIds: number[] = [];
+    public trailerLicenceDisplayDocumentsRequiredNote: boolean = false;
+
+    public trailerFHWADocuments: any[] = [];
+    public trailerFHWADocumentsForDeleteIds: number[] = [];
+    public trailerFHWADisplayDocumentsRequiredNote: boolean = false;
 
     public ownerInfoTabs: TabOptions[] = [
         {
@@ -404,10 +413,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.vinDecoder();
-
-        this.onTabChange({ id: 2, name: 'Company', checked: true });
-
-        this.onAddTrailerSelected();
     }
 
     public createForm(): void {
@@ -442,27 +447,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             trailerColor: [null],
             trailerLength: [null],
 
-            soleTruckType: [null, Validators.required],
-            soleTruckVin: [null, [Validators.required, ...vinNumberValidation]],
-            soleTruckMake: [null, Validators.required],
-            soleTruckModel: [
-                null,
-                [Validators.required, ...truckTrailerModelValidation],
-            ],
-            soleTruckYear: [
-                null,
-                [Validators.required, ...yearValidation, yearValidRegex],
-            ],
-            soleTruckColor: [null],
-            soleAddTrailer: [false],
-            soleTrailerType: [null],
-            soleTrailerVin: [null],
-            soleTrailerMake: [null],
-            soleTrailerModel: [null, truckTrailerModelValidation],
-            soleTrailerYear: [null],
-            soleTrailerColor: [null],
-            soleTrailerLength: [null],
-
             firstRowReview: [null],
             secondRowReview: [null],
             thirdRowReview: [null],
@@ -479,30 +463,10 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             soleFourthRowReview: [null],
             soleFifthRowReview: [null],
 
-            files: [null, Validators.required],
-        });
-
-        this.ownerInfoSoleForm = this.formBuilder.group({
-            truckType: [null, Validators.required],
-            truckVin: [null, [Validators.required, ...vinNumberValidation]],
-            truckMake: [null, Validators.required],
-            truckModel: [
-                null,
-                [Validators.required, ...truckTrailerModelValidation],
-            ],
-            truckYear: [
-                null,
-                [Validators.required, ...yearValidation, yearValidRegex],
-            ],
-            truckColor: [null],
-            addTrailer: [false],
-            trailerType: [null],
-            trailerVin: [null],
-            trailerMake: [null],
-            trailerModel: [null, truckTrailerModelValidation],
-            trailerYear: [null],
-            trailerColor: [null],
-            trailerLength: [null],
+            truckLicenceFiles: [null, Validators.required],
+            truckFHWAFiles: [null, Validators.required],
+            trailerLicenceFiles: [null],
+            trailerFHWAFiles: [null],
         });
 
         this.inputService.customInputValidator(
@@ -542,6 +506,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public patchStepValues(stepValues: CompanyOwnerInfoFeedbackResponse): void {
         const {
+            id,
             businessName,
             ein,
             phone,
@@ -565,7 +530,33 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             trailerColor,
             trailerLength,
             review,
+            truckLicenceFiles,
+            truckFHWAFiles,
+            trailerLicenceFiles,
+            trailerFHWAFiles,
+            ownerType,
         } = stepValues;
+
+        this.ownerInfoCompanyId = id;
+        this.selectedTab = ownerType.id;
+
+        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+            this.ownerInfoTabs = [
+                {
+                    id: 2,
+                    name: 'Sole Proprietor',
+                    checked: false,
+                },
+                {
+                    id: 1,
+                    name: 'Company',
+                    checked: true,
+                },
+            ];
+            this.onTabChange({ id: 1, name: 'Company', checked: true });
+        } else {
+            this.onTabChange({ id: 2, name: 'Sole Proprietor', checked: true });
+        }
 
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (stepValues.review) {
@@ -727,7 +718,22 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             truckYear,
             truckColor: truckColor.name,
             addTrailer: hasTrailer,
+            truckLicenceFiles: JSON.stringify(truckLicenceFiles),
+            truckFHWAFiles: JSON.stringify(truckFHWAFiles),
+
+            ...(hasTrailer && {
+                trailerType: trailerType.name,
+                trailerVin,
+                trailerMake: trailerMake.name,
+                trailerModel,
+                trailerYear,
+                trailerColor: trailerColor.name,
+                trailerLength: trailerLength.name,
+            }),
         });
+
+        this.truckLicenceDocuments = truckLicenceFiles;
+        this.truckFHWADocuments = truckFHWAFiles;
 
         this.selectedBank = bank;
         this.selectedAddress = address;
@@ -748,7 +754,12 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 trailerYear,
                 trailerColor: trailerColor.name,
                 trailerLength: trailerLength.name,
+                trailerLicenceFiles: JSON.stringify(trailerLicenceFiles),
+                trailerFHWAFiles: JSON.stringify(trailerFHWAFiles),
             });
+
+            this.trailerLicenceDocuments = trailerLicenceFiles;
+            this.trailerFHWADocuments = trailerFHWAFiles;
 
             this.selectedTrailerType = trailerType;
             this.selectedTrailerMake = trailerMake;
@@ -773,6 +784,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public onTabChange(event: any): void {
         this.selectedTab = event.id;
+        this.addRemoveCompanySpecificValidators();
 
         const inputsToValidate = [
             'truckType',
@@ -789,153 +801,147 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             'soleTruckYear',
         ];
 
-        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+        const {
+            soleTruckType,
+            soleTruckVin,
+            soleTruckMake,
+            soleTruckModel,
+            soleTruckYear,
+            soleTruckColor,
+        } = this.ownerInfoForm.value;
+
+        this.previousTruckValuesOnTabChange.soleTruckValues = {
+            soleTruckType,
+            soleTruckVin,
+            soleTruckMake,
+            soleTruckModel,
+            soleTruckYear,
+            soleTruckColor,
+        };
+
+        if (this.previousTruckValuesOnTabChange?.companyTruckValues) {
             const {
-                soleTruckType,
-                soleTruckVin,
-                soleTruckMake,
-                soleTruckModel,
-                soleTruckYear,
-                soleTruckColor,
-            } = this.ownerInfoForm.value;
+                truckType,
+                truckVin,
+                truckMake,
+                truckModel,
+                truckYear,
+                truckColor,
+            } = this.previousTruckValuesOnTabChange.companyTruckValues;
 
-            this.previousTruckValuesOnTabChange.soleTruckValues = {
-                soleTruckType,
-                soleTruckVin,
-                soleTruckMake,
-                soleTruckModel,
-                soleTruckYear,
-                soleTruckColor,
-            };
-
-            if (this.previousTruckValuesOnTabChange?.companyTruckValues) {
-                const {
-                    truckType,
-                    truckVin,
-                    truckMake,
-                    truckModel,
-                    truckYear,
-                    truckColor,
-                } = this.previousTruckValuesOnTabChange.companyTruckValues;
-
-                this.ownerInfoForm.patchValue({
-                    truckType,
-                    truckVin,
-                    truckMake,
-                    truckModel,
-                    truckYear,
-                    truckColor,
-                });
-            }
-
-            for (let i = 0; i < inputsToValidate.length; i++) {
-                if (i === 1) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsToValidate[i]),
-                        true,
-                        [...vinNumberValidation]
-                    );
-                } else if (i === 3) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsToValidate[i]),
-                        true,
-                        [...truckTrailerModelValidation]
-                    );
-                } else if (i === 4) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsToValidate[i]),
-                        true,
-                        [yearValidRegex, ...yearValidation]
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsToValidate[i])
-                    );
-                }
-            }
-
-            for (let i = 0; i < inputsSoleToValidate.length; i++) {
-                this.inputService.changeValidators(
-                    this.ownerInfoForm.get(inputsSoleToValidate[i]),
-                    false
-                );
-            }
+            this.ownerInfoForm.patchValue({
+                truckType,
+                truckVin,
+                truckMake,
+                truckModel,
+                truckYear,
+                truckColor,
+            });
         }
 
-        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
-            const {
-                truckType,
-                truckVin,
-                truckMake,
-                truckModel,
-                truckYear,
-                truckColor,
-            } = this.ownerInfoForm.value;
-
-            this.previousTruckValuesOnTabChange.companyTruckValues = {
-                truckType,
-                truckVin,
-                truckMake,
-                truckModel,
-                truckYear,
-                truckColor,
-            };
-
-            if (this.previousTruckValuesOnTabChange?.soleTruckValues) {
-                const {
-                    soleTruckType,
-                    soleTruckVin,
-                    soleTruckMake,
-                    soleTruckModel,
-                    soleTruckYear,
-                    soleTruckColor,
-                } = this.previousTruckValuesOnTabChange.soleTruckValues;
-
-                this.ownerInfoForm.patchValue({
-                    soleTruckType,
-                    soleTruckVin,
-                    soleTruckMake,
-                    soleTruckModel,
-                    soleTruckYear,
-                    soleTruckColor,
-                });
-            }
-
-            for (let i = 0; i < inputsSoleToValidate.length; i++) {
-                if (i === 1) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsSoleToValidate[i]),
-                        true,
-                        [...vinNumberValidation]
-                    );
-                } else if (i === 3) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsSoleToValidate[i]),
-                        true,
-                        [...truckTrailerModelValidation]
-                    );
-                } else if (i === 4) {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsSoleToValidate[i]),
-                        true,
-                        [yearValidRegex, ...yearValidation]
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.ownerInfoForm.get(inputsSoleToValidate[i])
-                    );
-                }
-            }
-
-            for (let i = 0; i < inputsToValidate.length; i++) {
+        for (let i = 0; i < inputsToValidate.length; i++) {
+            if (i === 1) {
                 this.inputService.changeValidators(
                     this.ownerInfoForm.get(inputsToValidate[i]),
-                    false
+                    true,
+                    [...vinNumberValidation]
+                );
+            } else if (i === 3) {
+                this.inputService.changeValidators(
+                    this.ownerInfoForm.get(inputsToValidate[i]),
+                    true,
+                    [...truckTrailerModelValidation]
+                );
+            } else if (i === 4) {
+                this.inputService.changeValidators(
+                    this.ownerInfoForm.get(inputsToValidate[i]),
+                    true,
+                    [yearValidRegex, ...yearValidation]
+                );
+            } else {
+                this.inputService.changeValidators(
+                    this.ownerInfoForm.get(inputsToValidate[i])
                 );
             }
         }
 
-        this.onAddTrailerSelected();
+        for (let i = 0; i < inputsSoleToValidate.length; i++) {
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get(inputsSoleToValidate[i]),
+                false
+            );
+        }
+    }
+
+    public addRemoveCompanySpecificValidators(): void {
+        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
+            const inputsToValidate = [
+                'businessName',
+                'ein',
+                'phone',
+                'email',
+                'address',
+                'addressUnit',
+                'bank',
+                'accountNumber',
+                'routingNumber',
+            ];
+
+            inputsToValidate.forEach((input) => {
+                this.inputService.changeValidators(
+                    this.ownerInfoForm.get(input),
+                    false,
+                    [],
+                    false
+                );
+            });
+        } else {
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('businessName')
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('ein'),
+                true,
+                [einNumberRegex]
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('phone'),
+                true,
+                [phoneFaxRegex]
+            );
+
+            this.inputService.changeValidators(this.ownerInfoForm.get('email'));
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('address'),
+                true,
+                [...addressValidation]
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('addressUnit'),
+                true,
+                [...addressUnitValidation]
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('bank'),
+                true,
+                [...bankValidation]
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('accountNumber'),
+                true,
+                [...accountBankValidation]
+            );
+
+            this.inputService.changeValidators(
+                this.ownerInfoForm.get('routingNumber')
+            );
+        }
     }
 
     public handleInputSelect(event: any, action: string): void {
@@ -977,62 +983,33 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         action: string;
     }): void {
         const { inputSelectEvent, action } = event;
-
         switch (action) {
             case InputSwitchActions.TRUCK_TYPE:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTruckType = inputSelectEvent;
-                } else {
-                    this.selectedSoleTruckType = inputSelectEvent;
-                }
+                this.selectedTruckType = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRUCK_MAKE:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTruckMake = inputSelectEvent;
-                } else {
-                    this.selectedSoleTruckMake = inputSelectEvent;
-                }
+                this.selectedTruckMake = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRUCK_COLOR:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTruckColor = inputSelectEvent;
-                } else {
-                    this.selectedSoleTruckColor = inputSelectEvent;
-                }
+                this.selectedTruckColor = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRAILER_TYPE:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTrailerType = inputSelectEvent;
-                } else {
-                    this.selectedSoleTrailerType = inputSelectEvent;
-                }
+                this.selectedTrailerType = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRAILER_MAKE:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTrailerMake = inputSelectEvent;
-                } else {
-                    this.selectedSoleTrailerMake = inputSelectEvent;
-                }
+                this.selectedTrailerMake = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRAILER_COLOR:
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTrailerColor = inputSelectEvent;
-                } else {
-                    this.selectedSoleTrailerColor = inputSelectEvent;
-                }
+                this.selectedTrailerColor = inputSelectEvent;
 
                 break;
             case InputSwitchActions.TRAILER_LENGTH: {
-                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-                    this.selectedTrailerLength = inputSelectEvent;
-                } else {
-                    this.selectedSoleTrailerLength = inputSelectEvent;
-                }
+                this.selectedTrailerLength = inputSelectEvent;
 
                 break;
             }
@@ -1073,430 +1050,211 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     private vinDecoder(): void {
-        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-            this.ownerInfoForm
-                .get('truckVin')
-                .valueChanges.pipe(
-                    takeUntil(this.destroy$),
-                    this.skipTruckVinDecocerEdit ? skip(1) : tap()
-                )
-                .subscribe((value) => {
-                    this.skipTruckVinDecocerEdit = false;
+        this.ownerInfoForm
+            .get('truckVin')
+            .valueChanges.pipe(
+                takeUntil(this.destroy$),
+                this.skipTruckVinDecocerEdit ? skip(1) : tap()
+            )
+            .subscribe((value) => {
+                this.skipTruckVinDecocerEdit = false;
 
-                    if (!(value?.length === 13 || value?.length === 17)) {
-                        this.ownerInfoForm
-                            .get('truckVin')
-                            .setErrors({ invalid: true });
-                    }
+                if (!(value?.length === 13 || value?.length === 17)) {
+                    this.ownerInfoForm
+                        .get('truckVin')
+                        .setErrors({ invalid: true });
+                }
 
-                    if (value?.length === 17) {
-                        this.loadingTruckVinDecoder = true;
+                if (value?.length === 17) {
+                    this.loadingTruckVinDecoder = true;
 
-                        this.vinDecoderService
-                            .getVINDecoderData(value.toString(), 1)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: (res: VinDecodeResponse) => {
-                                    this.ownerInfoForm.patchValue({
-                                        truckModel: res?.model
-                                            ? res.model
-                                            : null,
-                                        truckYear: res?.year
-                                            ? res.year.toString()
-                                            : null,
-                                        truckMake: res.truckMake
-                                            ? res.truckMake.name
-                                            : null,
-                                    });
+                    this.vinDecoderService
+                        .getVINDecoderData(value.toString(), 1)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (res: VinDecodeResponse) => {
+                                this.ownerInfoForm.patchValue({
+                                    truckModel: res?.model ? res.model : null,
+                                    truckYear: res?.year
+                                        ? res.year.toString()
+                                        : null,
+                                    truckMake: res.truckMake
+                                        ? res.truckMake.name
+                                        : null,
+                                });
 
-                                    this.loadingTruckVinDecoder = false;
+                                this.loadingTruckVinDecoder = false;
 
-                                    this.selectedTruckMake = res.truckMake;
-                                },
-                            });
-                    }
-                });
+                                this.selectedTruckMake = res.truckMake;
+                            },
+                        });
+                }
+            });
 
-            this.ownerInfoForm
-                .get('trailerVin')
-                .valueChanges.pipe(
-                    takeUntil(this.destroy$),
-                    this.skipTrailerVinDecocerEdit ? skip(1) : tap()
-                )
-                .subscribe((value) => {
-                    this.skipTrailerVinDecocerEdit = false;
+        this.ownerInfoForm
+            .get('trailerVin')
+            .valueChanges.pipe(
+                takeUntil(this.destroy$),
+                this.skipTrailerVinDecocerEdit ? skip(1) : tap()
+            )
+            .subscribe((value) => {
+                this.skipTrailerVinDecocerEdit = false;
 
-                    if (value?.length > 13 && value?.length < 17) {
-                        this.ownerInfoForm
-                            .get('trailerVin')
-                            .setErrors({ invalid: true });
-                    }
+                if (value?.length > 13 && value?.length < 17) {
+                    this.ownerInfoForm
+                        .get('trailerVin')
+                        .setErrors({ invalid: true });
+                }
 
-                    if (value?.length === 17) {
-                        this.loadingTrailerVinDecoder = true;
+                if (value?.length === 17) {
+                    this.loadingTrailerVinDecoder = true;
 
-                        this.vinDecoderService
-                            .getVINDecoderData(value.toString(), 2)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: (res: VinDecodeResponse) => {
-                                    this.ownerInfoForm.patchValue({
-                                        trailerModel: res?.model
-                                            ? res.model
-                                            : null,
-                                        trailerYear: res?.year
-                                            ? res.year.toString()
-                                            : null,
-                                        trailerMake: res.trailerMake?.name
-                                            ? res.trailerMake.name
-                                            : null,
-                                    });
+                    this.vinDecoderService
+                        .getVINDecoderData(value.toString(), 2)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (res: VinDecodeResponse) => {
+                                this.ownerInfoForm.patchValue({
+                                    trailerModel: res?.model ? res.model : null,
+                                    trailerYear: res?.year
+                                        ? res.year.toString()
+                                        : null,
+                                    trailerMake: res.trailerMake?.name
+                                        ? res.trailerMake.name
+                                        : null,
+                                });
 
-                                    this.loadingTrailerVinDecoder = false;
+                                this.loadingTrailerVinDecoder = false;
 
-                                    this.selectedTrailerMake = res.trailerMake;
-                                },
-                            });
-                    }
-                });
-        }
-
-        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
-            this.ownerInfoForm
-                .get('soleTruckVin')
-                .valueChanges.pipe(
-                    takeUntil(this.destroy$),
-                    this.skipSoleTruckVinDecocerEdit ? skip(1) : tap()
-                )
-                .subscribe((value) => {
-                    this.skipSoleTruckVinDecocerEdit = false;
-
-                    if (value?.length > 13 && value?.length < 17) {
-                        this.ownerInfoForm
-                            .get('soleTruckVin')
-                            .setErrors({ invalid: true });
-                    }
-
-                    if (value?.length === 17) {
-                        this.loadingSoleTruckVinDecoder = true;
-
-                        this.vinDecoderService
-                            .getVINDecoderData(value.toString(), 1)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: (res: VinDecodeResponse) => {
-                                    this.ownerInfoForm.patchValue({
-                                        soleTruckModel: res?.model
-                                            ? res.model
-                                            : null,
-                                        soleTruckYear: res?.year
-                                            ? res.year.toString()
-                                            : null,
-                                        soleTruckMake: res.truckMake
-                                            ? res.truckMake.name
-                                            : null,
-                                    });
-
-                                    this.loadingSoleTruckVinDecoder = false;
-
-                                    this.selectedSoleTruckMake = res.truckMake;
-                                },
-                            });
-                    }
-                });
-
-            this.ownerInfoForm
-                .get('soleTrailerVin')
-                .valueChanges.pipe(
-                    takeUntil(this.destroy$),
-                    this.skipSoleTrailerVinDecocerEdit ? skip(1) : tap()
-                )
-                .subscribe((value) => {
-                    this.skipSoleTrailerVinDecocerEdit = false;
-
-                    if (value?.length > 13 && value?.length < 17) {
-                        this.ownerInfoForm
-                            .get('soleTrailerVin')
-                            .setErrors({ invalid: true });
-                    }
-
-                    if (value?.length === 17) {
-                        this.loadingSoleTrailerVinDecoder = true;
-
-                        this.vinDecoderService
-                            .getVINDecoderData(value.toString(), 2)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: (res: VinDecodeResponse) => {
-                                    this.ownerInfoForm.patchValue({
-                                        soleTrailerModel: res?.model
-                                            ? res.model
-                                            : null,
-                                        soleTrailerYear: res?.year
-                                            ? res.year.toString()
-                                            : null,
-                                        soleTrailerMake: res.trailerMake?.name
-                                            ? res.trailerMake.name
-                                            : null,
-                                    });
-
-                                    this.loadingSoleTrailerVinDecoder = false;
-
-                                    this.selectedSoleTrailerMake =
-                                        res.trailerMake;
-                                },
-                            });
-                    }
-                });
-        }
+                                this.selectedTrailerMake = res.trailerMake;
+                            },
+                        });
+                }
+            });
     }
 
     private onAddTrailerSelected(): void {
-        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
-            this.ownerInfoForm
-                .get('addTrailer')
-                .valueChanges.pipe(takeUntil(this.destroy$))
-                .subscribe((value) => {
-                    const inputsToValidate = [
-                        'trailerType',
-                        'trailerVin',
-                        'trailerMake',
-                        'trailerYear',
-                        'trailerLength',
-                    ];
+        const inputsToValidate = [
+            'trailerType',
+            'trailerVin',
+            'trailerMake',
+            'trailerYear',
+            'trailerLength',
+            'trailerModel',
+            'trailerLicenceFiles',
+            'trailerFHWAFiles',
+        ];
 
-                    if (value) {
-                        this.isAddTrailerSelected = true;
+        if (this.isAddTrailerSelected) {
+            if (this.previousTrailerValues) {
+                const {
+                    trailerType,
+                    trailerVin,
+                    trailerMake,
+                    trailerModel,
+                    trailerYear,
+                    trailerColor,
+                    trailerLength,
+                    trailerLicenceFiles,
+                    trailerFHWAFiles,
+                } = this.previousTrailerValues;
 
-                        if (this.previousTrailerValues) {
-                            const {
-                                trailerType,
-                                trailerVin,
-                                trailerMake,
-                                trailerModel,
-                                trailerYear,
-                                trailerColor,
-                                trailerLength,
-                            } = this.previousTrailerValues;
-
-                            this.ownerInfoForm.patchValue({
-                                trailerType,
-                                trailerVin,
-                                trailerMake,
-                                trailerModel,
-                                trailerYear,
-                                trailerColor,
-                                trailerLength,
-                            });
-
-                            this.selectedTrailerType = this.trailerType.find(
-                                (item) => item.name === trailerType
-                            );
-
-                            this.selectedTrailerMake =
-                                this.trailerMakeType.find(
-                                    (item) => item.name === trailerMake
-                                );
-
-                            this.selectedTrailerColor = this.colorType.find(
-                                (item) => item.name === trailerColor
-                            );
-
-                            this.selectedTrailerLength =
-                                this.trailerLengthType.find(
-                                    (item) => item.name === trailerLength
-                                );
-                        }
-
-                        for (let i = 0; i < inputsToValidate.length; i++) {
-                            if (i === 1) {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i]),
-                                    true,
-                                    [...vinNumberValidation]
-                                );
-                            } else if (i === 3) {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i]),
-                                    true,
-                                    [yearValidRegex, ...yearValidation]
-                                );
-                            } else {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i])
-                                );
-                            }
-                        }
-                    } else {
-                        this.isAddTrailerSelected = false;
-
-                        const {
-                            trailerType,
-                            trailerVin,
-                            trailerMake,
-                            trailerModel,
-                            trailerYear,
-                            trailerColor,
-                            trailerLength,
-                        } = this.ownerInfoForm.value;
-
-                        this.previousTrailerValues = {
-                            trailerType,
-                            trailerVin,
-                            trailerMake,
-                            trailerModel,
-                            trailerYear,
-                            trailerColor,
-                            trailerLength,
-                        };
-
-                        this.ownerInfoForm.patchValue({
-                            trailerType: null,
-                            trailerVin: null,
-                            trailerMake: null,
-                            trailerModel: null,
-                            trailerYear: null,
-                            trailerColor: null,
-                            trailerLength: null,
-                        });
-
-                        this.selectedTrailerType = null;
-                        this.selectedTrailerMake = null;
-                        this.selectedTrailerColor = null;
-                        this.selectedTrailerLength = null;
-
-                        for (let i = 0; i < inputsToValidate.length; i++) {
-                            this.inputService.changeValidators(
-                                this.ownerInfoForm.get(inputsToValidate[i]),
-                                false
-                            );
-                        }
-                    }
+                this.ownerInfoForm.patchValue({
+                    trailerType,
+                    trailerVin,
+                    trailerMake,
+                    trailerModel,
+                    trailerYear,
+                    trailerColor,
+                    trailerLength,
+                    trailerLicenceFiles,
+                    trailerFHWAFiles,
                 });
-        }
 
-        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
-            this.ownerInfoForm
-                .get('soleAddTrailer')
-                .valueChanges.pipe(takeUntil(this.destroy$))
-                .subscribe((value) => {
-                    const inputsToValidate = [
-                        'soleTrailerType',
-                        'soleTrailerVin',
-                        'soleTrailerMake',
-                        'soleTrailerYear',
-                        'soleTrailerLength',
-                    ];
+                this.selectedTrailerType = this.trailerType.find(
+                    (item) => item.name === trailerType
+                );
 
-                    if (value) {
-                        this.isSoleAddTrailerSelected = true;
+                this.selectedTrailerMake = this.trailerMakeType.find(
+                    (item) => item.name === trailerMake
+                );
 
-                        if (this.previousSoleTrailerValues) {
-                            const {
-                                soleTrailerType,
-                                soleTrailerVin,
-                                soleTrailerMake,
-                                soleTrailerModel,
-                                soleTrailerYear,
-                                soleTrailerColor,
-                                soleTrailerLength,
-                            } = this.previousSoleTrailerValues;
+                this.selectedTrailerColor = this.colorType.find(
+                    (item) => item.name === trailerColor
+                );
 
-                            this.ownerInfoForm.patchValue({
-                                soleTrailerType,
-                                soleTrailerVin,
-                                soleTrailerMake,
-                                soleTrailerModel,
-                                soleTrailerYear,
-                                soleTrailerColor,
-                                soleTrailerLength,
-                            });
+                this.selectedTrailerLength = this.trailerLengthType.find(
+                    (item) => item.name === trailerLength
+                );
+            }
 
-                            this.selectedSoleTrailerType =
-                                this.trailerType.find(
-                                    (item) => item.name === soleTrailerType
-                                );
+            for (let i = 0; i < inputsToValidate.length; i++) {
+                if (i === 1) {
+                    this.inputService.changeValidators(
+                        this.ownerInfoForm.get(inputsToValidate[i]),
+                        true,
+                        [...vinNumberValidation]
+                    );
+                } else if (i === 3) {
+                    this.inputService.changeValidators(
+                        this.ownerInfoForm.get(inputsToValidate[i]),
+                        true,
+                        [yearValidRegex, ...yearValidation]
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.ownerInfoForm.get(inputsToValidate[i])
+                    );
+                }
+            }
+        } else {
+            const {
+                trailerType,
+                trailerVin,
+                trailerMake,
+                trailerModel,
+                trailerYear,
+                trailerColor,
+                trailerLength,
+                trailerLicenceFiles,
+                trailerFHWAFiles,
+            } = this.ownerInfoForm.value;
 
-                            this.selectedSoleTrailerMake =
-                                this.trailerMakeType.find(
-                                    (item) => item.name === soleTrailerMake
-                                );
+            this.previousTrailerValues = {
+                trailerType,
+                trailerVin,
+                trailerMake,
+                trailerModel,
+                trailerYear,
+                trailerColor,
+                trailerLength,
+                trailerLicenceFiles,
+                trailerFHWAFiles,
+            };
 
-                            this.selectedSoleTrailerColor = this.colorType.find(
-                                (item) => item.name === soleTrailerColor
-                            );
+            this.ownerInfoForm.patchValue({
+                trailerType: null,
+                trailerVin: null,
+                trailerMake: null,
+                trailerModel: null,
+                trailerYear: null,
+                trailerColor: null,
+                trailerLength: null,
+                trailerLicenceFiles: null,
+                trailerFHWAFiles: null,
+            });
 
-                            this.selectedSoleTrailerLength =
-                                this.trailerLengthType.find(
-                                    (item) => item.name === soleTrailerLength
-                                );
-                        }
+            this.selectedTrailerType = null;
+            this.selectedTrailerMake = null;
+            this.selectedTrailerColor = null;
+            this.selectedTrailerLength = null;
 
-                        for (let i = 0; i < inputsToValidate.length; i++) {
-                            if (i === 1) {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i]),
-                                    true,
-                                    [...vinNumberValidation]
-                                );
-                            } else if (i === 3) {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i]),
-                                    true,
-                                    [yearValidRegex, ...yearValidation]
-                                );
-                            } else {
-                                this.inputService.changeValidators(
-                                    this.ownerInfoForm.get(inputsToValidate[i])
-                                );
-                            }
-                        }
-                    } else {
-                        this.isSoleAddTrailerSelected = false;
-
-                        const {
-                            soleTrailerType,
-                            soleTrailerVin,
-                            soleTrailerMake,
-                            soleTrailerModel,
-                            soleTrailerYear,
-                            soleTrailerColor,
-                            soleTrailerLength,
-                        } = this.ownerInfoForm.value;
-
-                        this.previousSoleTrailerValues = {
-                            soleTrailerType,
-                            soleTrailerVin,
-                            soleTrailerMake,
-                            soleTrailerModel,
-                            soleTrailerYear,
-                            soleTrailerColor,
-                            soleTrailerLength,
-                        };
-
-                        this.ownerInfoForm.patchValue({
-                            soleTrailerType: null,
-                            soleTrailerVin: null,
-                            soleTrailerMake: null,
-                            soleTrailerModel: null,
-                            soleTrailerYear: null,
-                            soleTrailerColor: null,
-                            soleTrailerLength: null,
-                        });
-
-                        this.selectedSoleTrailerType = null;
-                        this.selectedSoleTrailerMake = null;
-                        this.selectedSoleTrailerColor = null;
-                        this.selectedSoleTrailerLength = null;
-
-                        for (let i = 0; i < inputsToValidate.length; i++) {
-                            this.inputService.changeValidators(
-                                this.ownerInfoForm.get(inputsToValidate[i]),
-                                false
-                            );
-                        }
-                    }
-                });
+            for (let i = 0; i < inputsToValidate.length; i++) {
+                this.inputService.changeValidators(
+                    this.ownerInfoForm.get(inputsToValidate[i]),
+                    false
+                );
+            }
         }
     }
 
@@ -1896,6 +1654,22 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public onSubmit(): void {
         if (this.ownerInfoForm.invalid) {
             this.inputService.markInvalid(this.ownerInfoForm);
+
+            if (!this.truckLicenceDocuments.length) {
+                this.truckLicenceDisplayDocumentsRequiredNote = true;
+            }
+
+            if (!this.truckFHWADocuments.length) {
+                this.truckFHWADisplayDocumentsRequiredNote = true;
+            }
+
+            if (!this.trailerLicenceDocuments.length) {
+                this.trailerLicenceDisplayDocumentsRequiredNote = true;
+            }
+
+            if (!this.trailerFHWADocuments.length) {
+                this.trailerFHWADisplayDocumentsRequiredNote = true;
+            }
             return;
         }
 
@@ -1903,6 +1677,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             address,
             addressUnit,
             bank,
+            businessName,
             truckType,
             truckMake,
             truckYear,
@@ -1923,20 +1698,63 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             sixthRowReview,
             seventhRowReview,
             eightRowReview,
+            ein,
+            phone,
+            email,
+            accountNumber,
+            routingNumber,
             ...ownerInfoForm
         } = this.ownerInfoForm.value;
 
         const selectedAddress = {
             ...this.selectedAddress,
             addressUnit,
-            county: '',
         };
 
+        let truckLicenceDocuments = [];
+        this.truckLicenceDocuments.map((item) => {
+            if (item.realFile) {
+                truckLicenceDocuments.push(item.realFile);
+            }
+        });
+
+        let truckFHWADocuments = [];
+        this.truckFHWADocuments.map((item) => {
+            if (item.realFile) {
+                truckFHWADocuments.push(item.realFile);
+            }
+        });
+
+        let trailerLicenceDocuments = [];
+        this.trailerLicenceDocuments.map((item) => {
+            if (item.realFile) {
+                trailerLicenceDocuments.push(item.realFile);
+            }
+        });
+
+        let trailerFHWADocuments = [];
+        this.trailerFHWADocuments.map((item) => {
+            if (item.realFile) {
+                trailerFHWADocuments.push(item.realFile);
+            }
+        });
         const saveData = {
             ...ownerInfoForm,
+            ...(this.selectedTab === OwnerInfoTabEnum.COMPANY && {
+                businessName,
+                address: selectedAddress,
+                ein,
+                phone,
+                email,
+                bankId: this.selectedBank ? this.selectedBank.id : null,
+                accountNumber,
+                routingNumber,
+            }),
+            ownerType:
+                this.selectedTab === OwnerInfoTabEnum.COMPANY
+                    ? OwnerType.Company
+                    : OwnerType.Proprietor,
             applicantId: this.applicantId,
-            address: selectedAddress,
-            bankId: this.selectedBank ? this.selectedBank.id : null,
             truckTypeId: this.truckType.find((item) => item.name === truckType)
                 .id,
             truckMakeId: this.truckMakeType.find(
@@ -1946,25 +1764,44 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             truckColorId: truckColor
                 ? this.colorType.find((item) => item.name === truckColor).id
                 : null,
-            hasTrailer: addTrailer,
-            trailerTypeId: addTrailer
+            hasTrailer: this.isAddTrailerSelected,
+            trailerTypeId: this.isAddTrailerSelected
                 ? this.trailerType.find((item) => item.name === trailerType).id
                 : null,
-            trailerLengthId: addTrailer
+            trailerLengthId: this.isAddTrailerSelected
                 ? this.trailerLengthType.find(
                       (item) => item.name === trailerLength
                   ).id
                 : null,
-            trailerVin: addTrailer ? trailerVin : null,
-            trailerMakeId: addTrailer
+            trailerVin: this.isAddTrailerSelected ? trailerVin : null,
+            trailerMakeId: this.isAddTrailerSelected
                 ? this.trailerMakeType.find((item) => item.name === trailerMake)
                       .id
                 : null,
-            trailerModel: addTrailer ? trailerModel : null,
-            trailerYear: addTrailer ? +trailerYear : null,
-            trailerColorId: addTrailer
+            trailerModel: this.isAddTrailerSelected ? trailerModel : null,
+            trailerYear: this.isAddTrailerSelected ? +trailerYear : null,
+            trailerColorId: this.isAddTrailerSelected
                 ? this.colorType.find((item) => item.name === trailerColor).id
                 : null,
+            truckLicenceFiles: truckLicenceDocuments,
+            truckFHWAFiles: truckFHWADocuments,
+            trailerLicenceFiles: this.isAddTrailerSelected
+                ? trailerLicenceDocuments
+                : null,
+            trailerFHWAFiles: this.isAddTrailerSelected
+                ? trailerFHWADocuments
+                : null,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.ownerInfoCompanyId,
+                truckLicenceFilesForDeleteIds:
+                    this.truckLicenceDocumentsForDeleteIds,
+                truckFHWAFilesForDeleteIds: this.truckFHWADocumentsForDeleteIds,
+                trailerLicenceFilesForDeleteIds:
+                    this.trailerLicenceDocumentsForDeleteIds,
+                trailerFHWAFilesForDeleteIds:
+                    this.trailerFHWADocumentsForDeleteIds,
+            }),
         };
 
         const storeOwnerInfoCompanyItems = {
@@ -2132,40 +1969,114 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onFilesAction(event: any): void {
-        this.documents = event.files;
+    public onFilesAction(fileActionEvent: FileEvent & { type: string }): void {
+        switch (fileActionEvent.type) {
+            case OwnerInfoFileType.TRUCK_LICENCE:
+                this.onFileActionControl(
+                    fileActionEvent,
+                    OwnerInfoStringEnum.TRUCK_LICENCE_FILES
+                );
 
-        this.displayDocumentsRequiredNote = false;
+                this.truckLicenceDocuments = fileActionEvent.files;
 
-        switch (event.action) {
+                this.truckLicenceDisplayDocumentsRequiredNote = false;
+                break;
+            case OwnerInfoFileType.TRUCK_FHWA:
+                this.onFileActionControl(
+                    fileActionEvent,
+                    OwnerInfoStringEnum.TRUCK_FHWA_FILES
+                );
+
+                this.truckFHWADocuments = fileActionEvent.files;
+
+                this.truckFHWADisplayDocumentsRequiredNote = false;
+                break;
+            case OwnerInfoFileType.TRAILER_LICENCE:
+                this.onFileActionControl(
+                    fileActionEvent,
+                    OwnerInfoStringEnum.TRAILER_LICENCE_FILES
+                );
+
+                this.trailerLicenceDocuments = fileActionEvent.files;
+
+                this.trailerLicenceDisplayDocumentsRequiredNote = false;
+                break;
+            case OwnerInfoFileType.TRAILER_FHWA:
+                this.onFileActionControl(
+                    fileActionEvent,
+                    OwnerInfoStringEnum.TRAILER_FHWA_FILES
+                );
+
+                this.trailerFHWADocuments = fileActionEvent.files;
+
+                this.trailerFHWADisplayDocumentsRequiredNote = false;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public onFileActionControl(
+        fileActionEvent: FileEvent,
+        formControlName: string
+    ): void {
+        switch (fileActionEvent.action) {
             case FilesActions.ADD:
                 this.ownerInfoForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
+                    .get(formControlName)
+                    .patchValue(JSON.stringify(fileActionEvent.files));
 
                 break;
             case FilesActions.DELETE:
                 this.ownerInfoForm
-                    .get('files')
+                    .get(formControlName)
                     .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
+                        fileActionEvent.files.length
+                            ? JSON.stringify(fileActionEvent.files)
+                            : null
                     );
 
-                this.documentsForDeleteIds = [
-                    ...this.documentsForDeleteIds,
-                    event.deleteId,
-                ];
+                switch (fileActionEvent.type) {
+                    case OwnerInfoFileType.TRUCK_LICENCE:
+                        this.truckLicenceDocumentsForDeleteIds = [
+                            ...this.truckLicenceDocumentsForDeleteIds,
+                            fileActionEvent.deleteId,
+                        ];
+                        break;
+                    case OwnerInfoFileType.TRUCK_FHWA:
+                        this.truckFHWADocumentsForDeleteIds = [
+                            ...this.truckFHWADocumentsForDeleteIds,
+                            fileActionEvent.deleteId,
+                        ];
+                        break;
+                    case OwnerInfoFileType.TRAILER_LICENCE:
+                        this.trailerLicenceDocumentsForDeleteIds = [
+                            ...this.trailerLicenceDocumentsForDeleteIds,
+                            fileActionEvent.deleteId,
+                        ];
+                        break;
+                    case OwnerInfoFileType.TRAILER_FHWA:
+                        this.trailerFHWADocumentsForDeleteIds = [
+                            ...this.trailerFHWADocumentsForDeleteIds,
+                            fileActionEvent.deleteId,
+                        ];
+                        break;
+
+                    default:
+                        break;
+                }
 
                 break;
             case FilesActions.MARK_INCORRECT:
                 if (this.selectedMode === SelectedMode.REVIEW) {
-                    this.incorrectInput(true, event.index, 1);
+                    this.incorrectInput(true, fileActionEvent.index, 1);
                 }
 
                 break;
             case FilesActions.MARK_CORRECT:
                 if (this.selectedMode === SelectedMode.REVIEW) {
-                    this.incorrectInput(false, event.index, 1);
+                    this.incorrectInput(false, fileActionEvent.index, 1);
                 }
 
                 break;
@@ -2177,10 +2088,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public toggleAddTrailer(): void {
         this.isAddTrailerSelected = !this.isAddTrailerSelected;
-    }
-
-    public toggleSoleAddTrailer(): void {
-        this.isSoleAddTrailerSelected = !this.isSoleAddTrailerSelected;
+        this.onAddTrailerSelected();
     }
 
     ngOnDestroy(): void {

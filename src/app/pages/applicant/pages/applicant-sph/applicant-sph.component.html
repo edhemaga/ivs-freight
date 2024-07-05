@@ -42,32 +42,20 @@
                         <app-ta-checkbox
                             formControlName="isTested"
                             [name]="'isTested'"
-                            [customClass]="'bold-14'"
+                            [label]="'I hereby authorize my previous employer to release and forward information requested below concerning my Alcohol and Controlled Substance Testing records within the previous 3 years from the date of my employment application.'"
+                            [customClass]="'bold-14 text-align-center line-height-18'"
                             [disabledStillCheckMark]="
                                 selectedMode !== 'APPLICANT_MODE'
                             "
                         >
                         </app-ta-checkbox>
+                    </div>
 
-                        <p
-                            class="m-0 text-center ta-font-bold"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    sphForm.get('isTested').value
-                                        ? '#2f2f2f'
-                                        : '#6c6c6c',
-                                cursor:
-                                    selectedMode === 'REVIEW_MODE'
-                                        ? 'auto'
-                                        : 'pointer'
-                            }"
-                            (click)="handleCheckboxParagraphClick('isTested')"
+                    <div class="work-experience-table">
+                        <app-applicant-work-experience-table
+                            [workExperienceArray]="workExperienceArray"
                         >
-                            I hereby authorize my previous employer to release and forward information
-                            requested below concerning my Alcohol and Controlled Substance Testing records 
-                            within the previous 3 years from the date of my employment application. 
-                        </p>
+                        </app-applicant-work-experience-table>
                     </div>
 
                     <!-- REVIEW BTN -->

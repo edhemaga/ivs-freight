@@ -221,6 +221,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             signature,
             files,
             id,
+            issueDate
             /*          filesReviewMessage, */
         } = stepValues;
 
@@ -232,6 +233,8 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             isInformationCorrect,
             licenseCheck: onlyLicense,
             files: files ? JSON.stringify(files) : null,
+            issueDate:
+                MethodsCalculationsHelper.convertDateFromBackend(issueDate)
         });
 
         this.signatureImgSrc = signature;
@@ -326,41 +329,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     );
                 }
             });
-    }
-
-    public handleCheckboxParagraphClick(type: string): void {
-        if (this.selectedMode !== SelectedMode.APPLICANT) {
-            return;
-        }
-
-        switch (type) {
-            case InputSwitchActions.CONSENT_RELEASE:
-                this.mvrAuthorizationForm.patchValue({
-                    isConsentRelease:
-                        !this.mvrAuthorizationForm.get('isConsentRelease')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.PERIODICALLY_OBTAINED:
-                this.mvrAuthorizationForm.patchValue({
-                    isPeriodicallyObtained: !this.mvrAuthorizationForm.get(
-                        'isPeriodicallyObtained'
-                    ).value,
-                });
-
-                break;
-            case InputSwitchActions.INFORMATION_CORRECT:
-                this.mvrAuthorizationForm.patchValue({
-                    isInformationCorrect: !this.mvrAuthorizationForm.get(
-                        'isInformationCorrect'
-                    ).value,
-                });
-
-                break;
-            default:
-                break;
-        }
     }
 
     public onSignatureAction(event: any): void {
@@ -522,6 +490,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             isPeriodicallyObtained,
             isInformationCorrect,
             licenseCheck,
+            issueDate,
         } = this.mvrAuthorizationForm.value;
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
@@ -535,6 +504,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const saveData: any = {
             applicantId: this.applicantId,
+            issueDate: MethodsCalculationsHelper.convertDateToBackend(issueDate),
             isEmployee: isConsentRelease,
             isPeriodicallyObtained,
             isInformationCorrect,
@@ -597,6 +567,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                                     onlyLicense: saveData.onlyLicense,
                                     signature: saveData.signature,
                                     files: saveData.files,
+                                    issueDate: saveData.issueDate,
                                 },
                             },
                         };

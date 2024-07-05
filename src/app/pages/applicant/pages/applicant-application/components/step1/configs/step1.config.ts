@@ -97,6 +97,7 @@ export class Step1Config {
             minLength: 5,
             maxLength: 64,
             textTransform: 'lowercase',
+            isDisabled: true,
         };
     }
 

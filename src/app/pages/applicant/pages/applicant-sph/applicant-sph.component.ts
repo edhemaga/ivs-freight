@@ -11,10 +11,12 @@ import { Subject, takeUntil } from 'rxjs';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ApplicantMapper } from '@pages/applicant/utils/helpers/applicant.mapper';
 
 // components
 import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantWorkExperienceTableComponent } from '@pages/applicant/components/applicant-work-experience-table/applicant-work-experience-table/applicant-work-experience-table.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -27,7 +29,6 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
@@ -39,6 +40,7 @@ import {
     SphFeedbackResponse,
     UpdateSphCommand,
 } from 'appcoretruckassist';
+import { WorkExperienceItemMapped } from '@pages/applicant/models/work-experience-mapped.model';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -60,6 +62,7 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
         TaCheckboxComponent,
         ApplicantSphModalComponent,
         ApplicantCardComponent,
+        ApplicantWorkExperienceTableComponent
     ],
 })
 export class ApplicantSphComponent implements OnInit, OnDestroy {
@@ -80,6 +83,8 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
 
     public applicantCardInfo: PersonalInfoFeedbackResponse;
     public companyName: string;
+
+    public workExperienceArray: WorkExperienceItemMapped[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -136,6 +141,13 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                     if (res.sph) {
                         this.patchStepValues(res.sph);
                     }
+
+                    if (res.workExperience) {
+                        this.workExperienceArray =
+                            ApplicantMapper.mapWorkExperienceItems(
+                                res.workExperience.workExperienceItems
+                            );
+                    }
                 } else {
                     this.isValidLoad = false;
 
@@ -154,23 +166,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
 
         this.signatureImgSrc = signature;
         this.signature = signature;
-    }
-
-    public handleCheckboxParagraphClick(type: string): void {
-        if (this.selectedMode !== SelectedMode.APPLICANT) {
-            return;
-        }
-
-        switch (type) {
-            case InputSwitchActions.IS_TESTED:
-                this.sphForm.patchValue({
-                    isTested: !this.sphForm.get('isTested').value,
-                });
-
-                break;
-            default:
-                break;
-        }
     }
 
     public onSignatureAction(event: any): void {

@@ -112,11 +112,21 @@
                         [inputConfig]="collisionInputConfig"
                     ></app-ta-input>
                 </div>
+
                 <div 
-                    class="d-flex align-items-center fatalities-group"
+                    class="d-flex align-items-center injuries-group"
                     [ngStyle]="{
                         'margin-right': isEditing ? '8px' : '12px'
                     }"
+                >
+                    <app-ta-input
+                        formControlName="injuries"
+                        [inputConfig]="injuriesInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div 
+                    class="d-flex align-items-center fatalities-group"
                 >
                     <app-ta-input
                         formControlName="fatalities"
@@ -124,12 +134,7 @@
                     ></app-ta-input>
                 </div>
 
-                <div class="d-flex align-items-center injuries-group">
-                    <app-ta-input
-                        formControlName="injuries"
-                        [inputConfig]="injuriesInputConfig"
-                    ></app-ta-input>
-                </div>
+
             </div>
 
             <div
