@@ -2966,7 +2966,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 pickuplegMiles
             );
             stops.push({
-                id: null,
+                id: this.stops?.[0]?.id ?? null,
                 stopType: pickupStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: pickupStopOrder,
@@ -3008,7 +3008,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: null,
+                    id: this.stops?.[index]?.id ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3047,7 +3047,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: null,
+                id: this.stops?.[this.stops.length - 1]?.id ?? null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: deliveryStopOrder,
@@ -3550,6 +3550,34 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getLoadDropdowns(): void {
+        if(this.editData?.data.id) {
+            this.loadService.getLoadStatusDropdownOptions(this.editData?.data.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const status = (this.editData?.data as LoadResponse).status;
+                if (status) {
+                    this.selectedStatus = {
+                        name: status.statusString,
+                        id: status.statusValue.id,
+                        valueForRequest: status.statusValue.name,
+                    };
+                    this.statusDropDownList = [
+                        this.selectedStatus,
+                        ...res.possibleStatuses.map((status) => {
+                            return {
+                                name: status.statusString,
+                                id: status.statusValue.id,
+                                valueForRequest: status.statusValue.name,
+                            };
+                        }),
+                    ];
+                }
+
+                this.originalStatus = (
+                    this.editData?.data as LoadResponse
+                ).status.statusString;
+            });
+        }
         this.loadService
             .getLoadDropdowns(this.editData?.data?.id)
             .pipe(takeUntil(this.destroy$))
@@ -3570,28 +3598,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.paymentMethodsDropdownList = res.paymentMethods;
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
-                    const status = (this.editData?.data as LoadResponse).status;
-                    if (status) {
-                        this.selectedStatus = {
-                            name: status.statusString,
-                            id: status.statusValue.id,
-                            valueForRequest: status.statusValue.name,
-                        };
-                        this.statusDropDownList = [
-                            this.selectedStatus,
-                            ...res.loadPossibleNextStatuses.map((r) => {
-                                return {
-                                    name: r.statusString,
-                                    id: r.statusValue.id,
-                                    valueForRequest: r.statusValue.name,
-                                };
-                            }),
-                        ];
-                    }
-
-                    this.originalStatus = (
-                        this.editData?.data as LoadResponse
-                    ).status.statusString;
 
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
@@ -4131,11 +4137,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // After statuse change we get times for stops that needs to send to backend
                         // together with status history
                         newData.stops.forEach((stop) => {
-                            const _stop = this.stops.find(
+                            const _stop = response.stops.find(
                                 (initialStop) =>
-                                    initialStop.stopOrder === stop.stopOrder
+                                    initialStop.id === stop.id
                             );
-
                             if (_stop) {
                                 stop.arrive = _stop.arrive;
                                 stop.depart = _stop.depart;
