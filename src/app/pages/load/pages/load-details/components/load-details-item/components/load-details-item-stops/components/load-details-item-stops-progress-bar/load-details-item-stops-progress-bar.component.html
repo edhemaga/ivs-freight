@@ -39,7 +39,12 @@
             </div>
 
             <p class="m-0 ta-font-semi-bold">
-                {{ closedData ? '' : ' ETC ≈' }}
+                {{
+                    pendingData?.totalTimeToDeliverLoad?.days ||
+                    pendingData?.totalTimeToDeliverLoad?.hours
+                        ? ' ETC ≈'
+                        : ''
+                }}
                 {{
                     pendingData?.totalTimeToDeliverLoad?.days ||
                     closedData?.totalLoadDeliveryTime?.days
@@ -65,13 +70,9 @@
                         : ''
                 }}
                 {{
-                    pendingData?.totalTimeToDeliverLoad?.minutes ||
                     closedData?.totalLoadDeliveryTime?.minutes
-                        ? (pendingData?.totalTimeToDeliverLoad?.minutes ??
-                              closedData?.totalLoadDeliveryTime?.minutes) +
-                          ((pendingData?.totalTimeToDeliverLoad?.minutes ??
-                              closedData?.totalLoadDeliveryTime?.minutes) ===
-                          1
+                        ? closedData?.totalLoadDeliveryTime?.minutes +
+                          (closedData?.totalLoadDeliveryTime?.minutes === 1
                               ? ' minute'
                               : ' minutes')
                         : ''
