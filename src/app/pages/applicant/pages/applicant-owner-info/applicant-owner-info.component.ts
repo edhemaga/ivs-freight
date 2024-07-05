@@ -873,7 +873,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         }
     }
 
-    addRemoveCompanySpecificValidators(): void {
+    public addRemoveCompanySpecificValidators(): void {
         if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
             const inputsToValidate = [
                 'businessName',
@@ -1709,7 +1709,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         const selectedAddress = {
             ...this.selectedAddress,
             addressUnit,
-            // county: '',
         };
 
         let truckLicenceDocuments = [];
