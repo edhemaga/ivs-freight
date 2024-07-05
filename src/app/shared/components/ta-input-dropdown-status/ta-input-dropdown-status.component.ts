@@ -7,7 +7,7 @@ import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Models
 import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
-import { ITaInput } from '../ta-input/config/ta-input.config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Consts
 import { InputDropdownStatusSvgRoutes } from '@shared/components/ta-input-dropdown-status/utils/svg-routes/input-dropdown-status-svg-routes';
