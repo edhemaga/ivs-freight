@@ -204,20 +204,21 @@
                   }"
               >
                   <app-ta-upload-files
-                      [files]="documents"
+                      [files]="truckLicenceDocuments"
                       [size]="'small'"
                       [showDropzone]="
                           selectedMode === selectedModeEnum.APPLICANT
                       "
-                      [isRequired]="!documents.length"
-                      [showRequired]="displayDocumentsRequiredNote"
+                      [isRequired]="!truckLicenceDocuments.length"
+                      [showRequired]="truckLicenceDisplayDocumentsRequiredNote"
                       [isReview]="selectedMode === selectedModeEnum.REVIEW"
                       [reviewMode]="
                           selectedMode === selectedModeEnum.REVIEW &&
                           selectedModeEnum.REVIEW
                       "
                       [dropzoneColumn]="true"
-                      (onFileEvent)="emitOnFilesAction($event)"
+                      [dropZoneIndex]="1"
+                      (onFileEvent)="emitOnFilesAction($event, ownerInfoFileType.TRUCK_LICENCE)"
                   ></app-ta-upload-files>
 
                   <!-- REVIEW AND FEEDBACK -->
@@ -247,20 +248,21 @@
                   }"
               >
                   <app-ta-upload-files
-                      [files]="documents"
+                      [files]="truckFHWADocuments"
                       [size]="'small'"
                       [showDropzone]="
                           selectedMode === selectedModeEnum.APPLICANT
                       "
-                      [isRequired]="!documents.length"
-                      [showRequired]="displayDocumentsRequiredNote"
+                      [isRequired]="!truckFHWADocuments.length"
+                      [showRequired]="truckFHWADisplayDocumentsRequiredNote"
                       [isReview]="selectedMode === selectedModeEnum.REVIEW"
                       [reviewMode]="
                           selectedMode === selectedModeEnum.REVIEW &&
                           selectedModeEnum.REVIEW
                       "
                       [dropzoneColumn]="true"
-                      (onFileEvent)="emitOnFilesAction($event)"
+                      [dropZoneIndex]="2"
+                      (onFileEvent)="emitOnFilesAction($event, ownerInfoFileType.TRUCK_FHWA)"
                   ></app-ta-upload-files>
 
                   <!-- REVIEW AND FEEDBACK -->

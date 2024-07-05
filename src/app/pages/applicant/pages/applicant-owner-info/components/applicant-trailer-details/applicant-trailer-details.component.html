@@ -219,20 +219,21 @@
                     }"
                 >
                     <app-ta-upload-files
-                        [files]="documents"
+                        [files]="trailerLicenceDocuments"
                         [size]="'small'"
                         [showDropzone]="
                             selectedMode === 'APPLICANT_MODE'
                         "
-                        [isRequired]="!documents.length"
-                        [showRequired]="displayDocumentsRequiredNote"
+                        [isRequired]="!trailerLicenceDocuments.length"
+                        [showRequired]="trailerLicenceDisplayDocumentsRequiredNote"
                         [isReview]="selectedMode === 'REVIEW_MODE'"
                         [reviewMode]="
                             selectedMode === 'REVIEW_MODE' &&
                             'REVIEW_MODE'
                         "
                         [dropzoneColumn]="true"
-                        (onFileEvent)="emitOnFilesAction($event)"
+                        [dropZoneIndex]="3"
+                        (onFileEvent)="emitOnFilesAction($event, ownerInfoFileType.TRAILER_LICENCE)"
                     ></app-ta-upload-files>
 
                     <!-- REVIEW AND FEEDBACK -->
@@ -262,20 +263,21 @@
                     }"
                 >
                     <app-ta-upload-files
-                        [files]="documents"
+                        [files]="trailerFHWADocuments"
                         [size]="'small'"
                         [showDropzone]="
                             selectedMode === 'APPLICANT_MODE'
                         "
-                        [isRequired]="!documents.length"
-                        [showRequired]="displayDocumentsRequiredNote"
+                        [isRequired]="!trailerFHWADocuments.length"
+                        [showRequired]="trailerFHWADisplayDocumentsRequiredNote"
                         [isReview]="selectedMode === 'REVIEW_MODE'"
                         [reviewMode]="
                             selectedMode === 'REVIEW_MODE' &&
                             'REVIEW_MODE'
                         "
                         [dropzoneColumn]="true"
-                        (onFileEvent)="emitOnFilesAction($event)"
+                        [dropZoneIndex]="4"
+                        (onFileEvent)="emitOnFilesAction($event, ownerInfoFileType.TRAILER_FHWA)"
                     ></app-ta-upload-files>
                 </div>
             </div>

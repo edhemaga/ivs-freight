@@ -9,6 +9,7 @@ import {
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { OwnerInfoFileType } from '@pages/applicant/pages/applicant-owner-info/enums/owner-info-file-type.enum';
 
 // components
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -59,8 +60,10 @@ export class ApplicantTrailerDetailsComponent {
     @Input() stepFeedbackValues;
     @Input() loadingTrailerVinDecoder: boolean;
     @Input() dropdownOptions: ApplicantDropdownOptions;
-    @Input() documents: any[] = [];
-    @Input() displayDocumentsRequiredNote: boolean = false;
+    @Input() trailerLicenceDocuments: any[] = [];
+    @Input() trailerLicenceDisplayDocumentsRequiredNote: boolean = false;
+    @Input() trailerFHWADocuments: any[] = [];
+    @Input() trailerFHWADisplayDocumentsRequiredNote: boolean = false;
     @Input() isAddTrailerSelected: boolean;
 
     @Output() onFilesAction: EventEmitter<FileEvent> = new EventEmitter();
@@ -71,6 +74,7 @@ export class ApplicantTrailerDetailsComponent {
 
     public inputSwitchActions = InputSwitchActions;
     public selectedModeEnum = SelectedMode;
+    public ownerInfoFileType = OwnerInfoFileType;
 
     constructor() {}
 
@@ -141,7 +145,9 @@ export class ApplicantTrailerDetailsComponent {
         });
     }
 
-    public emitOnFilesAction(event: FileEvent): void {
-        this.onFilesAction.emit(event);
+    public emitOnFilesAction(event: FileEvent, type?: string): void {
+        const extendedEvent = { ...event, type };
+        
+        this.onFilesAction.emit(extendedEvent);
     }
 }
