@@ -89,7 +89,6 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
     }
 
     private getStopsData(load: LoadResponse): void {
-        console.log('load', load);
         this.loadStopData = load.stops.map((stop) => {
             return {
                 ...stop,
