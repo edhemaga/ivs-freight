@@ -15,18 +15,24 @@ import { LoadDetailsItemHelper } from '@pages/load/pages/load-details/components
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
 import { KeyValuePairsPipe } from '@shared/pipes/key-value-pairs.pipe';
 
 // enums
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 
 // models
-import { LoadResponse, LoadStopResponse } from 'appcoretruckassist';
+import {
+    LoadResponse,
+    LoadStatusHistoryResponse,
+    LoadStopResponse,
+} from 'appcoretruckassist';
 import { StopItemsHeaderItem } from '@pages/load/pages/load-details/components/load-details-item/models/stop-items-header-item.model';
 import { MapRoute } from '@shared/models/map-route.model';
 import { LoadStop } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop.model';
 import { LoadStopItem } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-item.model';
 import { StopRoutes } from '@shared/models/stop-routes.model';
+import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-last-status.model';
 
 @Component({
     selector: 'app-load-deatils-item-stops-main',
@@ -43,6 +49,7 @@ import { StopRoutes } from '@shared/models/stop-routes.model';
 
         // pipes
         FormatDatePipe,
+        FormatTimePipe,
         KeyValuePairsPipe,
     ],
 })
@@ -89,9 +96,17 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
     }
 
     private getStopsData(stops: LoadStopResponse[]): void {
+        console.log('stops', stops);
         this.loadStopData = stops.map((stop) => {
+            const lastStatus = this.getLoadStopLastStatus(
+                !!stop?.depart,
+                stop?.statusHistory,
+                stop?.stopType?.name
+            );
+
             return {
                 ...stop,
+                ...lastStatus,
                 items: this.getLoadStopItemsData(stop),
             };
         });
@@ -143,6 +158,59 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
         }
 
         return filteredItems;
+    }
+
+    private getLoadStopLastStatus(
+        isCompletedStop: boolean,
+        stopStatusHistory: LoadStatusHistoryResponse[],
+        stopType: string
+    ): LoadStopLastStatus {
+        let lastStatus: string;
+        let lastStatusTime: string;
+
+        if (stopStatusHistory?.length) {
+            const latestHistory = stopStatusHistory.find(
+                (history) => history.dateTimeFrom && history.dateTimeTo
+            );
+
+            if (isCompletedStop) {
+                const { statusString, dateTimeFrom, dateTimeTo } =
+                    latestHistory;
+
+                const createdLastCompletedStatus =
+                    LoadDetailsItemHelper.createStopLastStatus(
+                        stopType,
+                        statusString,
+                        dateTimeFrom,
+                        dateTimeTo,
+                        new FormatDatePipe(),
+                        new FormatTimePipe()
+                    );
+
+                lastStatus = createdLastCompletedStatus.lastStatus;
+                lastStatusTime = createdLastCompletedStatus.lastStatusTime;
+            } else {
+                const latestHistory =
+                    stopStatusHistory[stopStatusHistory.length - 1];
+
+                const { statusString, dateTimeFrom } = latestHistory;
+
+                const createdLastStatus =
+                    LoadDetailsItemHelper.createStopLastStatus(
+                        stopType,
+                        statusString,
+                        dateTimeFrom
+                    );
+
+                lastStatus = createdLastStatus.lastStatus;
+                lastStatusTime = createdLastStatus.lastStatusTime;
+            }
+        }
+
+        return {
+            lastStatus,
+            lastStatusTime,
+        };
     }
 
     private getLoadStopRoutes(stops: LoadStopResponse[]): void {

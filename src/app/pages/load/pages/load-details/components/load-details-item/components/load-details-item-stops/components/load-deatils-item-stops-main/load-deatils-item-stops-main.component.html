@@ -123,7 +123,8 @@
                     class="m-0 ta-font-semi-bold text-truncate"
                     [ngStyle]="{
                         'max-width':
-                            stopsData?.statusType?.name === 'Active'
+                            stopsData?.statusType?.name === 'Active' ||
+                            stopsData?.statusType?.name === 'Closed'
                                 ? '170px'
                                 : 'unset'
                     }"
@@ -164,7 +165,8 @@
                     class="m-0 text-truncate"
                     [ngStyle]="{
                         'max-width':
-                            stopsData?.statusType?.name === 'Active'
+                            stopsData?.statusType?.name === 'Active' ||
+                            stopsData?.statusType?.name === 'Closed'
                                 ? '170px'
                                 : 'unset'
                     }"
@@ -276,17 +278,39 @@
 
             <ng-container *ngIf="stopsData?.statusType?.name !== 'Pending'">
                 <div class="d-flex flex-column justify-content-center stop-box">
-                    <p
-                        class="m-0"
-                        [ngClass]="{ 'ta-font-bold': true }"
-                        [ngStyle]="{
-                            color: true ? '#56B4AC' : '#2F2F2F'
-                        }"
+                    <ng-container
+                        *ngIf="stop?.stopType?.id === 0; else notDeadheadStatus"
                     >
-                        STOP STATUS
-                    </p>
+                        <p class="m-0">{{ stop?.dateFrom | formatDateP }}</p>
 
-                    <span> Check in date/time </span>
+                        <span> {{ stop?.dateFrom | formatTime }}</span>
+                    </ng-container>
+
+                    <ng-template #notDeadheadStatus>
+                        <ng-container
+                            *ngIf="!!stop?.depart; else notCompletedStopStatus"
+                        >
+                            <p class="m-0">{{ stop.lastStatus }}</p>
+
+                            <span> {{ stop.lastStatusTime }}</span>
+                        </ng-container>
+
+                        <ng-template #notCompletedStopStatus>
+                            <p
+                                class="m-0 ta-font-bold"
+                                [ngStyle]="{
+                                    color:
+                                        stop?.stopType?.id === 1
+                                            ? '#56B4AC'
+                                            : '#E66767'
+                                }"
+                            >
+                                {{ stop.lastStatus }}
+                            </p>
+
+                            <span> {{ stop.lastStatusTime }} </span>
+                        </ng-template>
+                    </ng-template>
                 </div>
             </ng-container>
 
