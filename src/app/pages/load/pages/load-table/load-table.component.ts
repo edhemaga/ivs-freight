@@ -84,6 +84,7 @@ import {
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
 
 @Component({
     selector: 'app-load-table',
@@ -175,6 +176,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getLoadDispatcherFilter();
 
         this.confirmationDataSubscribe();
+
+        this.currentSelectedRowsSubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -1083,27 +1086,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownLoadContent(),
+                content: this.getDropdownLoadContent(data),
             },
         };
     }
 
-    private getDropdownLoadContent(): DropdownItem[] {
-        const dropdownData = [...TableDropdownComponentConstants.DROPDOWN_DATA];
-
-        const disableDelete =
-            this.selectedTab !== TableStringEnum.PENDING &&
-            this.selectedTab !== TableStringEnum.TEMPLATE;
-
-        dropdownData.map((item) => {
-            if (item.name === TableStringEnum.DELETE) {
-                item.mutedStyle = disableDelete;
-            }
-
-            return item;
-        });
-
-        return dropdownData;
+    private getDropdownLoadContent(data: LoadModel): DropdownItem[] {
+        return DropdownContentHelper.getDropdownLoadContent(
+            data,
+            this.selectedTab
+        );
     }
 
     private getTabData(dataType: string): LoadActiveState {
@@ -1436,6 +1428,30 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    private currentSelectedRowsSubscribe(): void {
+        this.tableService.currentRowsSelected
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    let isDeleteHidden = false;
+
+                    res.map((item) => {
+                        if (
+                            (this.selectedTab !== TableStringEnum.TEMPLATE &&
+                                this.selectedTab !== TableStringEnum.PENDING) ||
+                            item?.tableData?.status?.statusValue?.name !==
+                                TableStringEnum.UNASSIGNED
+                        ) {
+                            isDeleteHidden = true;
+                        }
+                    });
+
+                    this.tableOptions.toolbarActions.hideDeleteButton =
+                        isDeleteHidden;
+                }
             });
     }
 

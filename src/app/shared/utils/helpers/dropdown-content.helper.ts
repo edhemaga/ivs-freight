@@ -3,6 +3,7 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 
 export class DropdownContentHelper {
     static getDropdownShipperContent(data): DropdownItem[] {
@@ -61,10 +62,9 @@ export class DropdownContentHelper {
             //     hasBorder: true,
             // this is not going into first sprint },
             {
-                title:
-                    data.status
-                        ? TableStringEnum.CLOSE_BUSINESS_2
-                        : TableStringEnum.OPEN_BUSINESS,
+                title: data.status
+                    ? TableStringEnum.CLOSE_BUSINESS_2
+                    : TableStringEnum.OPEN_BUSINESS,
                 name: TableStringEnum.CLOSE_BUSINESS,
                 svgUrl:
                     data.status == 1
@@ -224,15 +224,13 @@ export class DropdownContentHelper {
             },
 
             {
-                title:
-                    data.status
-                        ? TableStringEnum.CLOSE_BUSINESS_2
-                        : TableStringEnum.OPEN_BUSINESS,
+                title: data.status
+                    ? TableStringEnum.CLOSE_BUSINESS_2
+                    : TableStringEnum.OPEN_BUSINESS,
                 name: TableStringEnum.CLOSE_BUSINESS,
-                svgUrl:
-                    data.status
-                        ? 'assets/svg/common/ic_closed_broker.svg'
-                        : 'assets/svg/common/ic_open_bussiness.svg',
+                svgUrl: data.status
+                    ? 'assets/svg/common/ic_closed_broker.svg'
+                    : 'assets/svg/common/ic_open_bussiness.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -240,10 +238,9 @@ export class DropdownContentHelper {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass:
-                    data.status
-                        ? TableStringEnum.DELETE
-                        : TableStringEnum.OPEN_BUSINESS_2,
+                svgClass: data.status
+                    ? TableStringEnum.DELETE
+                    : TableStringEnum.OPEN_BUSINESS_2,
             },
 
             {
@@ -258,6 +255,84 @@ export class DropdownContentHelper {
                     'margin-bottom.px': 4,
                 },
                 svgClass: TableStringEnum.DELETE,
+            },
+        ];
+    }
+
+    static getDropdownLoadContent(
+        data: LoadModel,
+        tab: string
+    ): DropdownItem[] {
+        return [
+            {
+                title: 'Edit',
+                name: 'edit',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+
+            {
+                title: 'View Details',
+                name: 'view-details',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+
+            {
+                title: 'Share',
+                name: 'share',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+
+            {
+                title: 'Print',
+                name: 'print',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'regular',
+                hasBorder: true,
+            },
+
+            {
+                title: 'Delete',
+                name: 'delete',
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
+                svgClass: 'delete',
+                mutedStyle:
+                    (tab !== TableStringEnum.TEMPLATE &&
+                        tab !== TableStringEnum.PENDING) ||
+                    data.status?.statusValue?.name !==
+                        TableStringEnum.UNASSIGNED
+                        ? true
+                        : false,
             },
         ];
     }
