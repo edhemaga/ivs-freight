@@ -3882,10 +3882,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             revisedRate,
         } = this.loadForm.value;
 
-        const adjustedRate =
-            this.additionalBillings().value.find(
-                (billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY
-            )?.billingValue ?? null;
+        const adjustedRate = this.adjustedRate;
 
         let documents: Blob[] = [];
         let tagsArray: Tags[] = [];
