@@ -329,10 +329,12 @@ export class DropdownContentHelper {
                 mutedStyle:
                     (tab !== TableStringEnum.TEMPLATE &&
                         tab !== TableStringEnum.PENDING) ||
-                    data.status?.statusValue?.name !==
-                        TableStringEnum.UNASSIGNED
-                        ? true
-                        : false,
+                    ![
+                        TableStringEnum.UNASSIGNED,
+                        TableStringEnum.BOOKED,
+                    ].includes(
+                        data.status?.statusValue?.name as TableStringEnum
+                    ),
             },
         ];
     }
