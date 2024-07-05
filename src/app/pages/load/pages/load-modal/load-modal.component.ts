@@ -3563,11 +3563,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     };
                     this.statusDropDownList = [
                         this.selectedStatus,
-                        ...res.possibleStatuses.map((r) => {
+                        ...res.possibleStatuses.map((status) => {
                             return {
-                                name: r.statusString,
-                                id: r.statusValue.id,
-                                valueForRequest: r.statusValue.name,
+                                name: status.statusString,
+                                id: status.statusValue.id,
+                                valueForRequest: status.statusValue.name,
                             };
                         }),
                     ];
