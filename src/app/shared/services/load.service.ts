@@ -36,6 +36,7 @@ import {
     LoadStatusType,
     DispatcherFilterResponse,
     LoadStatus,
+    LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -493,5 +494,9 @@ export class LoadService {
         loadStatusType?: LoadStatusType
     ): Observable<DispatcherFilterResponse[]> {
         return this.loadService.apiLoadDispatcherFilterGet(loadStatusType);
+    }
+
+    public getLoadStatusDropdownOptions(id: number): Observable<LoadPossibleStatusesResponse>   {
+        return this.loadService.apiLoadListStatusIdGet(id);
     }
 }
