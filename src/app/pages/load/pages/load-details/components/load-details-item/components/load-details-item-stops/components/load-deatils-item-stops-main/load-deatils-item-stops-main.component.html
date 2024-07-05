@@ -1,0 +1,443 @@
+<div class="d-flex flex-column justify-content-center stops-main">
+    <!-- Header -->
+
+    <div
+        class="align-items-center stops-main-header"
+        [ngClass]="{
+            'includes-check-in-grid': stopsData?.statusType?.name !== 'Pending'
+        }"
+    >
+        <ng-container
+            *ngFor="
+                let headerItem of stopHeaderItems;
+                let first = first;
+                let last = last;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex align-items-center"
+                [ngClass]="{
+                    'justify-content-center': first,
+                    'justify-content-end': last
+                }"
+            >
+                <p class="m-0 ta-font-bold">{{ headerItem }}</p>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Main -->
+
+    <ng-container
+        *ngFor="
+            let stop of loadStopData;
+            let i = index;
+            let first = first;
+            let last = last;
+            trackBy: trackByIdentity
+        "
+    >
+        <div
+            class="align-items-center stops-main-item"
+            [ngClass]="{
+                'includes-check-in-grid':
+                    stopsData?.statusType?.name !== 'Pending',
+                active: i === stopItemDropdownIndex
+            }"
+            [ngStyle]="{
+                cursor: stop?.items?.length ? 'pointer' : 'unset'
+            }"
+            (click)="handleStopDropdownClick(i, stop?.items?.length)"
+            (mouseenter)="itemHoveringIndex = i"
+            (mouseleave)="itemHoveringIndex = -1"
+        >
+            <!-- Stop Order -->
+
+            <div
+                class="d-flex align-items-center justify-content-center stop-order-box"
+                [ngClass]="{
+                    completed: !!stop?.depart,
+                    pickup: stop?.stopType?.id === 1,
+                    delivery: stop?.stopType?.id === 2
+                }"
+                [ngStyle]="{
+                    background: !stop?.stopType?.id
+                        ? '#91919133'
+                        : stop?.stopType?.id === 1
+                        ? '#56B4AC'
+                        : stop?.stopType?.id === 2
+                        ? '#E66767'
+                        : ''
+                }"
+            >
+                <ng-container *ngIf="stop?.stopType.id === 0; else notDeadhead">
+                    <svg-icon
+                        class="icon deadhead"
+                        [svgStyle]="{
+                            'width.px': 12,
+                            'height.px': 12
+                        }"
+                        [src]="loadDetailsItemSvgRoutes.checkMarkRoute"
+                    ></svg-icon>
+                </ng-container>
+
+                <ng-template #notDeadhead>
+                    <ng-container *ngIf="!stop?.depart; else completedStop">
+                        <p class="m-0 ta-font-bold">
+                            {{ stop?.stopOrder }}
+                        </p>
+                    </ng-container>
+
+                    <ng-template #completedStop>
+                        <ng-container
+                            *ngIf="itemHoveringIndex === i; else notHovering"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                {{ stop?.stopOrder }}
+                            </p>
+                        </ng-container>
+
+                        <ng-template #notHovering>
+                            <svg-icon
+                                class="icon"
+                                [ngClass]="{
+                                    pickup: stop?.stopType?.id === 1,
+                                    delivery: stop?.stopType?.id === 2
+                                }"
+                                [svgStyle]="{
+                                    'width.px': 12,
+                                    'height.px': 12
+                                }"
+                                [src]="loadDetailsItemSvgRoutes.checkMarkRoute"
+                            ></svg-icon>
+                        </ng-template>
+                    </ng-template>
+                </ng-template>
+            </div>
+
+            <!-- Location, Type -->
+
+            <div class="d-flex flex-column justify-content-center stop-box">
+                <p
+                    class="m-0 ta-font-semi-bold text-truncate"
+                    [ngStyle]="{
+                        'max-width':
+                            stopsData?.statusType?.name === 'Active'
+                                ? '170px'
+                                : 'unset'
+                    }"
+                >
+                    {{
+                        stop?.shipper?.address?.city +
+                            ', ' +
+                            stop?.shipper?.address?.stateShortName +
+                            ' ' +
+                            stop?.shipper?.address?.zipCode.split('-')[0]
+                    }}
+                </p>
+
+                <span class="ta-font-medium">
+                    {{
+                        first
+                            ? stop?.stopType?.id === 0
+                                ? 'Deadhead'
+                                : 'Origin'
+                            : last
+                            ? 'Destination'
+                            : load?.stops[0]?.stopType?.id === 0 && i === 1
+                            ? 'Origin'
+                            : 'Extra ' + stop?.stopType?.name
+                    }}
+                </span>
+            </div>
+
+            <!-- Shipper, Address -->
+
+            <div
+                class="d-flex flex-column justify-content-center stop-box"
+                [ngStyle]="{
+                    visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
+                }"
+            >
+                <p
+                    class="m-0 text-truncate"
+                    [ngStyle]="{
+                        'max-width':
+                            stopsData?.statusType?.name === 'Active'
+                                ? '170px'
+                                : 'unset'
+                    }"
+                >
+                    {{ stop?.shipper?.businessName }}
+                </p>
+
+                <span>
+                    {{ stop?.shipper?.address?.streetNumber }}
+                    {{ stop?.shipper?.address?.street }}
+                </span>
+            </div>
+
+            <!-- Contact, Phone -->
+
+            <div
+                class="d-flex flex-column justify-content-center stop-box"
+                [ngStyle]="{
+                    visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
+                }"
+            >
+                <p
+                    class="m-0"
+                    [ngStyle]="{
+                        color: stop?.shipperContact?.fullName
+                            ? '#2f2f2f'
+                            : '#919191'
+                    }"
+                >
+                    {{
+                        stop?.shipperContact
+                            ? stop?.shipperContact?.fullName ??
+                              'Shipper Contact'
+                            : 'No Contact'
+                    }}
+                </p>
+
+                <span>
+                    {{ stop?.shipperContact?.phone ?? '' }}
+                    {{
+                        stop?.shipperContact?.phoneExt
+                            ? 'x' + stop?.shipperContact?.phoneExt
+                            : ''
+                    }}
+                </span>
+            </div>
+
+            <!-- Date, Time -->
+
+            <div
+                class="d-flex flex-column justify-content-center stop-box"
+                [ngStyle]="{
+                    visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
+                }"
+            >
+                <p class="m-0">
+                    {{ stop?.dateFrom | formatDateP }}
+                    {{
+                        stop?.dateTo ? ' - ' + (stop?.dateTo | formatDateP) : ''
+                    }}
+                </p>
+
+                <div class="d-flex align-items-center">
+                    <span>
+                        {{ stop?.timeFrom }}
+                        {{
+                            stop?.timeFrom?.substring(
+                                0,
+                                stop?.timeFrom?.indexOf(':')
+                            ) < 12
+                                ? 'AM - '
+                                : 'PM - '
+                        }}
+
+                        <span
+                            [ngStyle]="{
+                                color:
+                                    stop?.timeType?.name === 'Appointment'
+                                        ? '#F89B2E'
+                                        : '#919191'
+                            }"
+                        >
+                            <ng-container
+                                *ngIf="
+                                    stop?.timeType?.name === 'Appointment';
+                                    else timeTo
+                                "
+                            >
+                                {{ stop?.timeType?.name }}
+                            </ng-container>
+
+                            <ng-template #timeTo>
+                                {{ stop?.timeTo }}
+                                {{
+                                    stop?.timeTo?.substring(
+                                        0,
+                                        stop?.timeTo?.indexOf(':')
+                                    ) < 12
+                                        ? 'AM'
+                                        : 'PM'
+                                }}
+                            </ng-template>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Check In -->
+
+            <ng-container *ngIf="stopsData?.statusType?.name !== 'Pending'">
+                <div class="d-flex flex-column justify-content-center stop-box">
+                    <p
+                        class="m-0"
+                        [ngClass]="{ 'ta-font-bold': true }"
+                        [ngStyle]="{
+                            color: true ? '#56B4AC' : '#2F2F2F'
+                        }"
+                    >
+                        STOP STATUS
+                    </p>
+
+                    <span> Check in date/time </span>
+                </div>
+            </ng-container>
+
+            <!-- Leg -->
+
+            <div
+                class="d-flex flex-column justify-content-center align-items-end stop-box"
+            >
+                <p class="m-0 ta-font-medium">
+                    {{ stop?.legMiles ? stop?.legMiles + 'mi' : '' }}
+                </p>
+
+                <span class="ta-font-medium">
+                    {{ stop?.legHours || stop?.legMinutes ? '≈' : '' }}
+                    {{ stop?.legHours ? stop?.legHours + 'h' : '' }}
+                    {{ stop?.legMinutes ? stop?.legMinutes + 'm' : '' }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Dropdown -->
+
+        <ng-container *ngIf="stop?.items?.length">
+            <div
+                class="d-flex flex-column justify-content-center stops-main-item-dropdown"
+                [ngClass]="{
+                    expanded: i === stopItemDropdownIndex
+                }"
+            >
+                <div
+                    class="d-flex flex-column justify-content-center stops-main-item-dropdown-inner"
+                >
+                    <div class="align-items-center stop-items-header">
+                        <div class="align-items-center first-box">
+                            <ng-container
+                                *ngFor="
+                                    let stopItemsHeaderItem of stopItemsHeaderItems
+                                        | slice : 0 : 2;
+                                    let first = first;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex align-items-center box header-box"
+                                    [ngClass]="{
+                                        'justify-content-center': first
+                                    }"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{ stopItemsHeaderItem.title }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <ng-container
+                            *ngFor="
+                                let stopItemsHeaderItem of stopItemsHeaderItems
+                                    | slice : 2;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center box header-box"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            stopItemsHeaderItem.iconMargin
+                                    }"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                    [src]="stopItemsHeaderItem.icon"
+                                ></svg-icon>
+
+                                <p
+                                    class="m-0"
+                                    [ngClass]="
+                                        stopItemsHeaderItem.title?.length > 3
+                                            ? 'ta-font-bold'
+                                            : 'ta-font-medium'
+                                    "
+                                >
+                                    {{ stopItemsHeaderItem.title }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <ng-container
+                        *ngFor="
+                            let item of stop.items;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div class="align-items-center stop-items-item">
+                            <div class="align-items-center first-box">
+                                <div
+                                    class="d-flex align-items-center justify-content-center box header-box"
+                                >
+                                    <p class="m-0 ta-font-medium">
+                                        {{ i + 1 }}
+                                    </p>
+                                </div>
+
+                                <div class="d-flex align-items-center box">
+                                    <p class="m-0 ta-font-medium">
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <ng-container
+                                *ngFor="
+                                    let property of item | keyValuePairs;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        property.key !== 'id' &&
+                                        property.key !== 'description'
+                                    "
+                                >
+                                    <div class="d-flex align-items-center box">
+                                        <p class="m-0">
+                                            {{ property.value }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <!-- Map -->
+
+    <ng-container *ngIf="isMapDisplayed">
+        <div class="stops-map">
+            <app-ta-maps
+                [mapType]="'routing'"
+                [routes]="loadStopRoutes"
+                [ngStyle]="{ width: '100%', height: '100%' }"
+            ></app-ta-maps>
+        </div>
+    </ng-container>
+</div>

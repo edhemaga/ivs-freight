@@ -69,7 +69,7 @@ export class LoadDetailsHelper {
         load: LoadResponse,
         dropdownItemId: number = 0
     ): DetailsConfig[] {
-        console.log('load', load);
+        console.log('stops', load.stops);
         return [
             {
                 id: 0,
