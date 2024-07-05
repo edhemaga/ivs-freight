@@ -96,7 +96,6 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
     }
 
     private getStopsData(stops: LoadStopResponse[]): void {
-        console.log('stops', stops);
         this.loadStopData = stops.map((stop) => {
             const lastStatus = this.getLoadStopLastStatus(
                 !!stop?.depart,

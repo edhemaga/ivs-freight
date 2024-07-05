@@ -26,9 +26,5 @@ export class LoadDetailsItemStopsComponent {
     @Input() load: LoadResponse;
     @Input() isMapDisplayed: boolean;
 
-    ngOnInit() {
-        console.log('load', this.load);
-    }
-
     constructor() {}
 }

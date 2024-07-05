@@ -58,8 +58,10 @@
                         : ''
                 }}
                 {{
-                    pendingData?.totalTimeToDeliverLoad?.hours ||
-                    closedData?.totalLoadDeliveryTime?.hours
+                    (pendingData?.totalTimeToDeliverLoad?.hours &&
+                        !pendingData?.totalTimeToDeliverLoad?.days) ||
+                    (closedData?.totalLoadDeliveryTime?.hours &&
+                        !closedData?.totalLoadDeliveryTime?.days)
                         ? (pendingData?.totalTimeToDeliverLoad?.hours ??
                               closedData?.totalLoadDeliveryTime?.hours) +
                           ((pendingData?.totalTimeToDeliverLoad?.hours ??
@@ -70,7 +72,8 @@
                         : ''
                 }}
                 {{
-                    closedData?.totalLoadDeliveryTime?.minutes
+                    closedData?.totalLoadDeliveryTime?.minutes &&
+                    !closedData?.totalLoadDeliveryTime?.hours
                         ? closedData?.totalLoadDeliveryTime?.minutes +
                           (closedData?.totalLoadDeliveryTime?.minutes === 1
                               ? ' minute'
@@ -220,8 +223,10 @@
                                 : ''
                         }}
                         {{
-                            pendingData?.timeToNextStop?.hours ||
-                            closedData?.lastDeliveryTime?.hours
+                            (pendingData?.timeToNextStop?.hours &&
+                                !pendingData?.timeToNextStop?.days) ||
+                            (closedData?.lastDeliveryTime?.hours &&
+                                !closedData?.lastDeliveryTime?.days)
                                 ? (pendingData?.timeToNextStop?.hours ??
                                       closedData?.lastDeliveryTime?.hours) +
                                   ((pendingData?.timeToNextStop?.hours ??
@@ -232,8 +237,10 @@
                                 : ''
                         }}
                         {{
-                            pendingData?.timeToNextStop?.minutes ||
-                            closedData?.lastDeliveryTime?.minutes
+                            (pendingData?.timeToNextStop?.minutes &&
+                                !pendingData?.timeToNextStop?.hours) ||
+                            (closedData?.lastDeliveryTime?.minutes &&
+                                !closedData?.lastDeliveryTime?.hours)
                                 ? (pendingData?.timeToNextStop?.minutes ??
                                       closedData?.lastDeliveryTime?.minutes) +
                                   ((pendingData?.timeToNextStop?.minutes ??
