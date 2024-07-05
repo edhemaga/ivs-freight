@@ -69,15 +69,17 @@ export class ShipperService implements OnDestroy {
                                 )
                             );
 
-                            brokerShipperCount.shipper++;
+                            if (brokerShipperCount) {
+                                brokerShipperCount.shipper++;
 
-                            localStorage.setItem(
-                                TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
-                                JSON.stringify({
-                                    broker: brokerShipperCount.broker,
-                                    shipper: brokerShipperCount.shipper,
-                                })
-                            );
+                                localStorage.setItem(
+                                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
+                                    JSON.stringify({
+                                        broker: brokerShipperCount.broker,
+                                        shipper: brokerShipperCount.shipper,
+                                    })
+                                );
+                            }
 
                             this.tableService.sendActionAnimation({
                                 animation: 'add',

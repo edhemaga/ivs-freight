@@ -550,7 +550,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get getLoadStatus(): string {
-        return (this.editData?.data as LoadResponse).status.statusString;
+        return (this.editData?.data as LoadResponse)?.status.statusString;
     }
 
     public get isInvoicedStatus(): boolean {
@@ -725,8 +725,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
 
         // configurations
-        this.loadDispatchesTTDInputConfig =
-            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG;
+        this.loadDispatchesTTDInputConfig = {...
+            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG, isDisabled: this.labelsDispatches.length === 0}
         this.loadBrokerInputConfig = LoadModalConfig.LOAD_BROKER_INPUT_CONFIG;
         this.loadBrokerContactsInputConfig =
             LoadModalConfig.LOAD_BROKER_CONTACTS_INPUT_CONFIG;
@@ -1083,7 +1083,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 if (this.isConvertedToTemplate) {
                     this.saveLoadTemplate();
                 } else {
-                    this.editData ? this.updateLoad() : this.createNewLoad();
+                    this.editData?.data ? this.updateLoad() : this.createNewLoad();
                 }
 
                 if (data.action === LoadModalStringEnum.SAVE_AND_ADD_NEW)
@@ -3550,7 +3550,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getLoadDropdowns(): void {
-        if(this.editData?.data.id) {
+        if(this.editData?.data?.id) {
             this.loadService.getLoadStatusDropdownOptions(this.editData?.data.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -3852,7 +3852,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalAdditionalBillingTypes =
                         this.additionalBillingTypes;
 
-                    if (this.editData) {
+                    if (this.editData?.data) {
                         this.populateLoadModalData(
                             this.editData.data as LoadResponse
                         );
@@ -4013,8 +4013,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private updateLoad(): void {
-        const { id, dateCreated, status, loadRequirements } = this.editData
-            .data as LoadResponse;
+        // use case when user comes from another modal, example if he creates new shipper or broker
+        const data = this.editData.data || this.editData;
+        const { id, dateCreated, status, loadRequirements } = data as LoadResponse;
 
         const {
             referenceNumber,
