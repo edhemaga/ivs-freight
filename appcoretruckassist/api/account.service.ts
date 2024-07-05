@@ -33,6 +33,8 @@ import { LoginMobileCommand } from '../model/loginMobileCommand';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
+import { RefreshMobileTokenCommand } from '../model/refreshMobileTokenCommand';
+// @ts-ignore
 import { RefreshTokenCommand } from '../model/refreshTokenCommand';
 // @ts-ignore
 import { ResendSignUpCompanyOrUserCommand } from '../model/resendSignUpCompanyOrUserCommand';
@@ -712,14 +714,14 @@ export class AccountService {
     }
 
     /**
-     * @param refreshTokenCommand 
+     * @param refreshMobileTokenCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiAccountMobileRefreshPost(refreshMobileTokenCommand?: RefreshMobileTokenCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiAccountMobileRefreshPost(refreshMobileTokenCommand?: RefreshMobileTokenCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiAccountMobileRefreshPost(refreshMobileTokenCommand?: RefreshMobileTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiAccountMobileRefreshPost(refreshMobileTokenCommand?: RefreshMobileTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -784,7 +786,7 @@ export class AccountService {
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: refreshTokenCommand,
+                body: refreshMobileTokenCommand,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

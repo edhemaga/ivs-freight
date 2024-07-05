@@ -783,6 +783,7 @@ model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
 model/ratingReviewResponse.ts
 model/ratingSetResponse.ts
+model/refreshMobileTokenCommand.ts
 model/refreshTokenCommand.ts
 model/registrationModalResponse.ts
 model/registrationResponse.ts
