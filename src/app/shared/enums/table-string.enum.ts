@@ -125,6 +125,8 @@ export enum TableStringEnum {
 
     UNASSIGNED = 'Unassigned',
 
+    BOOKED = 'Booked',
+
     LOADED = 'Loaded',
     LOADED_COLOR = 'color:#259F94;',
 

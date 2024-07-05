@@ -27,7 +27,10 @@ export class LoadStatusColorPipe implements PipeTransform {
             'CheckedInPickup',
             'Loading',
         ].includes(adjustedStatus);
-        const statusDarkTurquoiseColorCondition = adjustedStatus === 'Loaded';
+        const statusDarkTurquoiseColorCondition = [
+            'Loaded',
+            'RepairLoaded',
+        ].includes(adjustedStatus);
         const statusRedColorCondition = [
             'ArrivedDelivery',
             'CheckedInDelivery',
@@ -40,7 +43,7 @@ export class LoadStatusColorPipe implements PipeTransform {
         );
         const statusDarkRed3ColorCondition = status === 'Tonu';
         const statusOrangeColorCondition = status === 'Delivered';
-        const statusYellowColorCondition = ['Invoiced', 'Paid'].includes(
+        const statusYellowColorCondition = ['Invoiced', 'Paid', 'InvoicedFactoring'].includes(
             adjustedStatus
         );
         const statusDarkYellowColorCondition = [
@@ -87,7 +90,7 @@ export class LoadStatusColorPipe implements PipeTransform {
                 : { color: '#F89B2E' };
         } else if (statusYellowColorCondition) {
             return isBadge
-                ? { color: '#fff', backgroundColor: '#DFC66C' }
+                ? { color: '#fff', backgroundColor: '#b370f0' }
                 : { color: '#DFC66C' };
         } else if (statusDarkYellowColorCondition) {
             return isBadge

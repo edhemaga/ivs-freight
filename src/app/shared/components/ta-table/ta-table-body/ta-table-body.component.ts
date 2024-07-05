@@ -261,7 +261,10 @@ export class TaTableBodyComponent
                             data.isSelected = isSelect;
 
                             if (data.isSelected) {
-                                this.mySelection.push({ id: data.id });
+                                this.mySelection.push({
+                                    id: data.id,
+                                    tableData: data,
+                                });
                             }
                         }
                         return data;
