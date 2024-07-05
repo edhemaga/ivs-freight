@@ -55,14 +55,12 @@
                     </ng-container>
 
                     <ng-template #editLoad>
-                        <app-ta-input-dropdown
-                            [template]="'svgtext-template'"
-                            formControlName="status"
-                            [inputConfig]="getStatusInputConfig"
+                        <ta-input-dropdown-status
                             [options]="statusDropDownList"
-                            [activeItem]="selectedStatus"
+                            [selectedStatus]="selectedStatus"
+                            [inputConfig]="getStatusInputConfig"
                             (selectedItem)="onSelectDropdown($event, 'status')"
-                        ></app-ta-input-dropdown>
+                        ></ta-input-dropdown-status>
                     </ng-template>
                 </div>
 

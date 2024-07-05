@@ -61,6 +61,7 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 import { LoadDetailsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-comments/load-details-item-comments.component';
+import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -167,6 +168,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
+        TaInputDropdownStatusComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -696,7 +698,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe((isFormChange: boolean) => {
                     this.isFormDirty = isFormChange;
                 });
-        }, 1000);
+        }, 500);
     }
 
     private getCompanyUser(): void {
@@ -1106,6 +1108,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
             case LoadModalStringEnum.STATUS:
+                this.loadForm.get(LoadModalStringEnum.STATUS).patchValue(event);
                 this.selectedStatus = event;
                 this.handleRevisedRateVisiblity();
                 this.handleTonuRateVisiblity();
@@ -3414,7 +3417,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public createComment(): void {
         this.areCommentsVisible = true;
         this.isCommenting = true;
-        setTimeout(() => this.isCommenting = false, 400);
+        setTimeout(() => (this.isCommenting = false), 400);
     }
 
     public commentsCountChanged(): void {
@@ -4132,7 +4135,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         // together with status history
                         newData.stops.forEach((stop) => {
                             const _stop = this.stops.find(
-                                (initialStop) => initialStop.stopOrder === stop.stopOrder
+                                (initialStop) =>
+                                    initialStop.stopOrder === stop.stopOrder
                             );
 
                             if (_stop) {
@@ -4640,74 +4644,38 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isStepFinished(extraStop: UntypedFormArray): boolean {
         return extraStop.value.arrive !== null;
     }
+    
     public drop(event: CdkDragDrop<string[]>): void {
-        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        if (event.previousIndex === event.currentIndex) {
+            return;
+        }
+    
         this.reorderingStarted = true;
-
-        moveItemInArray(
+    
+        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        const itemsToReorder = [
             this.loadExtraStops().controls,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.selectExtraStopType,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.selectedExtraStopShipper,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.selectedExtraStopShipperContact,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.typeOfExtraStops,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.loadExtraStopsShipperInputConfig,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.stopTimeTabsExtraStops,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.loadExtraStopsShipperContactsInputConfig,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.selectedExtraStopTime,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.extraStopItems,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
             this.extraStopStatusHistory,
-            event.previousIndex,
-            event.currentIndex
-        );
-        moveItemInArray(
-            this.loadExtraStopsDateRange as [],
-            event.previousIndex,
-            event.currentIndex
-        );
-
+            this.loadExtraStopsDateRange as []
+        ];
+    
+        itemsToReorder.forEach(item => {
+            moveItemInArray(item, event.previousIndex, event.currentIndex);
+        });
+    
         // Prevent opening or closing tab
         setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
+    
 
     public dragStarted(): void {
         this.isDragAndDropActive = true;
