@@ -78,6 +78,40 @@
                 height: 18px;
                 border-radius: 1px;
 
+                &.completed {
+                    &.pickup {
+                        background: $ta-green-7 !important;
+
+                        p {
+                            color: $ta-green !important;
+                        }
+
+                        .icon {
+                            svg {
+                                path {
+                                    fill: $ta-green !important;
+                                }
+                            }
+                        }
+                    }
+
+                    &.delivery {
+                        background: $ta-red-16 !important;
+
+                        p {
+                            color: $ta-red-10 !important;
+                        }
+
+                        .icon {
+                            svg {
+                                path {
+                                    fill: $ta-red-10 !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 p {
                     font-size: 11px;
                     line-height: 14px;
@@ -91,6 +125,18 @@
                     &::selection {
                         color: $white;
                         background: rgb(255, 255, 255, 0.2);
+                    }
+                }
+
+                .icon {
+                    line-height: 14px;
+
+                    &.deadhead {
+                        svg {
+                            path {
+                                fill: $bw5;
+                            }
+                        }
                     }
                 }
             }

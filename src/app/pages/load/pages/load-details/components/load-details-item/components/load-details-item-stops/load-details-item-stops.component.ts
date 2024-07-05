@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// svg routes
+import { LoadDetailsItemSvgRoutes } from '@pages/load/pages/load-details/components/load-details-item/utils/svg-routes/load-details-item-svg.routes';
+
 // helpers
 import { LoadDetailsItemHelper } from '@pages/load/pages/load-details/components/load-details-item/utils/helpers/load-details-item.helper';
 
@@ -52,6 +55,9 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
     public loadStopRoutes: MapRoute[] = [];
 
     public loadDetailsItemHelper = LoadDetailsItemHelper;
+    public loadDetailsItemSvgRoutes = LoadDetailsItemSvgRoutes;
+
+    public itemHoveringIndex: number = -1;
 
     // items
     public stopItemsHeaderItems: StopItemsHeaderItem[] = [];
@@ -83,6 +89,7 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
     }
 
     private getStopsData(load: LoadResponse): void {
+        console.log('load', load);
         this.loadStopData = load.stops.map((stop) => {
             return {
                 ...stop,
