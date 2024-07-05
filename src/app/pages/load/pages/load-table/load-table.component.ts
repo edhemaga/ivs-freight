@@ -1436,7 +1436,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    let hideDelete = false;
+                    let isDeleteHidden = false;
 
                     res.map((item) => {
                         if (
@@ -1445,12 +1445,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             item?.tableData?.status?.statusValue?.name !==
                                 TableStringEnum.UNASSIGNED
                         ) {
-                            hideDelete = true;
+                            isDeleteHidden = true;
                         }
                     });
 
                     this.tableOptions.toolbarActions.hideDeleteButton =
-                        hideDelete;
+                        isDeleteHidden;
                 }
             });
     }
