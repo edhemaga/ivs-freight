@@ -1,44 +1,51 @@
 <div class="relative">
-    <label class="status__dropdown-label ta-font-semi-bold "> <span>Status </span></label>
-<div
-    class="status__dropdown d-flex justify-content-between align-items-center"
-    #t2="ngbPopover"
-    [ngbPopover]="taInputStatusPopover"
-    popoverClass="ta-input-dropdown"
-    [autoClose]="'outside'"
-    [container]="'body'"
-    [placement]="['bottom-left']"
->
-    <ng-container *ngIf="selectedStatus">
-        <div class="status__dropdown-selected">
-            <app-load-status-string
-                [status]="selectedStatus"
-            ></app-load-status-string>
-        </div>
+    <label class="status__dropdown-label ta-font-semi-bold">
+        <span>Status </span></label
+    >
+    <div
+        class="status__dropdown ta-font-regular d-flex justify-content-between align-items-center"
+        #t2="ngbPopover"
+        [ngbPopover]="taInputStatusPopover"
+        popoverClass="ta-input-dropdown"
+        [autoClose]="'outside'"
+        [container]="'body'"
+        [placement]="['bottom-left']"
+    >
+        <ng-container *ngIf="selectedStatus">
+            <div class="status__dropdown-selected">
+                <app-load-status-string
+                    [status]="selectedStatus"
+                ></app-load-status-string>
+            </div>
 
-        <svg-icon [src]="inputDropdownStatusSvgRoutes.arrowIcon"></svg-icon>
-    </ng-container>
-</div>
+            <svg-icon [src]="inputDropdownStatusSvgRoutes.arrowIcon"></svg-icon>
+        </ng-container>
+    </div>
 </div>
 
 <ng-template #taInputStatusPopover>
     <div class="status__dropdown-body">
-        <div
+        <ng-container
             *ngFor="
                 let option of options;
                 let index = index;
                 trackBy: trackByIdentity
             "
-            class="status__dropdown-option d-flex justify-content-between align-items-center"
-            (click)="changeStatus(option)"
         >
-            <app-load-status-string [status]="option"></app-load-status-string>
+            <div
+                class="status__dropdown-option d-flex justify-content-between align-items-center"
+                (click)="changeStatus(option)"
+            >
+                <app-load-status-string
+                    [status]="option"
+                ></app-load-status-string>
 
-            <ng-container *ngIf="selectedStatus.id === option.id">
-                <svg-icon
-                    [src]="inputDropdownStatusSvgRoutes.confirmIcon"
-                ></svg-icon>
-            </ng-container>
-        </div>
+                <ng-container *ngIf="selectedStatus.id === option.id">
+                    <svg-icon
+                        [src]="inputDropdownStatusSvgRoutes.confirmIcon"
+                    ></svg-icon>
+                </ng-container>
+            </div>
+        </ng-container>
     </div>
 </ng-template>

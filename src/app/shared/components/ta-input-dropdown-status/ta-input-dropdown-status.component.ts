@@ -31,7 +31,6 @@ import { LoadStatusStringComponent } from '@pages/load/components/load-status-st
     ],
 })
 export class TaInputDropdownStatusComponent implements OnInit {
-    public inputDropdownStatusSvgRoutes = InputDropdownStatusSvgRoutes;
     @ViewChild('t2', { static: true }) public popover: NgbPopover;
 
     // Inputs
@@ -44,6 +43,7 @@ export class TaInputDropdownStatusComponent implements OnInit {
         new EventEmitter<SelectedStatus>();
 
     public isDropdownVisible: boolean = false;
+    public inputDropdownStatusSvgRoutes = InputDropdownStatusSvgRoutes;
     
     constructor() {}
 

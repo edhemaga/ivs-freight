@@ -61,6 +61,7 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 import { LoadDetailsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-comments/load-details-item-comments.component';
+import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -134,7 +135,6 @@ import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-s
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
 
 @Component({
     selector: 'app-load-modal',
@@ -4644,75 +4644,38 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isStepFinished(extraStop: UntypedFormArray): boolean {
         return extraStop.value.arrive !== null;
     }
+    
     public drop(event: CdkDragDrop<string[]>): void {
-        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
-        if (event.previousIndex !== event.currentIndex) {
-            this.reorderingStarted = true;
-
-            moveItemInArray(
-                this.loadExtraStops().controls,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.selectExtraStopType,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.selectedExtraStopShipper,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.selectedExtraStopShipperContact,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.typeOfExtraStops,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.loadExtraStopsShipperInputConfig,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.stopTimeTabsExtraStops,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.loadExtraStopsShipperContactsInputConfig,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.selectedExtraStopTime,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.extraStopItems,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.extraStopStatusHistory,
-                event.previousIndex,
-                event.currentIndex
-            );
-            moveItemInArray(
-                this.loadExtraStopsDateRange as [],
-                event.previousIndex,
-                event.currentIndex
-            );
+        if (event.previousIndex === event.currentIndex) {
+            return;
         }
+    
+        this.reorderingStarted = true;
+    
+        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        const itemsToReorder = [
+            this.loadExtraStops().controls,
+            this.selectExtraStopType,
+            this.selectedExtraStopShipper,
+            this.selectedExtraStopShipperContact,
+            this.typeOfExtraStops,
+            this.loadExtraStopsShipperInputConfig,
+            this.stopTimeTabsExtraStops,
+            this.loadExtraStopsShipperContactsInputConfig,
+            this.selectedExtraStopTime,
+            this.extraStopItems,
+            this.extraStopStatusHistory,
+            this.loadExtraStopsDateRange as []
+        ];
+    
+        itemsToReorder.forEach(item => {
+            moveItemInArray(item, event.previousIndex, event.currentIndex);
+        });
+    
         // Prevent opening or closing tab
         setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
+    
 
     public dragStarted(): void {
         this.isDragAndDropActive = true;

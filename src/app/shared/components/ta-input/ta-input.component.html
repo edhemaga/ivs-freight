@@ -531,7 +531,7 @@
         (shown)="onPopoverShown()"
         (hidden)="onPopoverHidden()"
         (click)="onPlaceholderIconEvent($event)"
-        [ngStyle]="{opacity: _inputConfig.hideIcon ? '0' : {}}"
+        [ngStyle]="{opacity: _inputConfig.isIconHidden ? '0' : {}}"
     >
         <svg-icon
             appHoverSvg
