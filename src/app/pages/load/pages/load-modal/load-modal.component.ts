@@ -111,6 +111,7 @@ import {
     LoadStatusHistoryResponse,
     LoadStopResponse,
     CommentResponse,
+    FileResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -135,6 +136,7 @@ import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-s
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-load-modal',
@@ -345,7 +347,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public showPaymentArray: boolean = false;
 
     // documents
-    public documents: any[] = [];
+    public documents: UploadFile[] | FileResponse[] = [];
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
@@ -396,7 +398,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private loadService: LoadService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
-        private financialCalculationPipe: FinancialCalculationPipe,
+        public financialCalculationPipe: FinancialCalculationPipe,
         private cdRef: ChangeDetectorRef
     ) {}
 
@@ -435,7 +437,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public get showDriverRate(): boolean {
         return (
             this.selectedDispatches &&
-            this.selectedDispatches.payType === 'Flat Rate'
+            this.selectedDispatches.payType === LoadModalStringEnum.FLAT_RATE
         );
     }
 
@@ -532,7 +534,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get adjustedRate(): string | null {
-        return this.loadForm.get('adjustedRate').value;
+        return this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE).value;
     }
 
     public get modalTitle(): string {
@@ -1438,9 +1440,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             // draw stop on map
             this.drawStopOnMap();
-
             this.loadDispatchesTTDInputConfig = {
                 ...this.loadDispatchesTTDInputConfig,
+                isDisabled: this.labelsDispatches.length === 0,
                 multipleLabel: {
                     labels: [
                         LoadModalStringEnum.TRUCK,
@@ -3872,6 +3874,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
+    private mapDocumentsAndTags( ) {
+        let documents: Blob[] = [];
+        let tagsArray = [];
+    
+        this.documents?.forEach((item) => {
+            if (item.tagId?.length) {
+                tagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+            }
+    
+            if (item.realFile) documents.push(item.realFile);
+        });
+    
+        if (!tagsArray.length) {
+            tagsArray = null;
+        }
+    
+        return { documents, tagsArray };
+    }
+
     public createNewLoad(): void {
         const {
             referenceNumber,
@@ -3883,27 +3907,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate,
             advancePay,
             pickuplegMiles,
-            invoicedDate,
             tonuRate,
             revisedRate,
         } = this.loadForm.value;
 
         const adjustedRate = this.adjustedRate;
-
-        let documents: Blob[] = [];
-        let tagsArray: Tags[] = [];
-
-        this.documents?.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
-
-            if (item.realFile) documents.push(item.realFile);
-        });
-
-        if (!tagsArray.length) tagsArray = null;
+        const {documents, tagsArray} = this.mapDocumentsAndTags(); 
 
         const newData: Load = {
             type: this.tabs.find((tab) => tab.id === this.selectedTab)
@@ -4025,9 +4034,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             note,
             baseRate,
             driverRate,
-            // eslint-disable-next-line no-unused-vars
             advancePay,
-            // eslint-disable-next-line no-unused-vars
             pickuplegMiles,
             paymentDate,
             invoicedDate,
@@ -4036,21 +4043,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = this.loadForm.value;
 
         const adjustedRate = this.adjustedRate;
-
-        let documents: Blob[] = [];
-        let tagsArray: Tags[] = [];
-
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
-
-            if (item.realFile) documents.push(item.realFile);
-        });
-
-        if (!tagsArray.length) tagsArray = null;
+        const {documents, tagsArray} = this.mapDocumentsAndTags(); 
 
         const newData: Load = {
             id,
