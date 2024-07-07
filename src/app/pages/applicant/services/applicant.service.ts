@@ -138,6 +138,8 @@ export class ApplicantService {
     public createOwnerInfoCompany(
         data: any
     ): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
         return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
     }
 
@@ -160,6 +162,8 @@ export class ApplicantService {
     /* BACKEND PUT ACTION FUNCTIONS - APPLICANT & FEEDBACK MODE */
 
     public updatePersonalInfo(data): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+
         return this.applicantService.apiApplicantPersonalPut(data);
     }
 
@@ -226,6 +230,8 @@ export class ApplicantService {
     public updateOwnerInfoCompany(
         data: any
     ): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+        
         return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }
 

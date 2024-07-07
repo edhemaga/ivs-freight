@@ -1,12 +1,13 @@
-<ng-container *ngIf="load?.comments?.length">
-    <div class="d-flex flex-column justify-content-center comments-container">
-        <app-ta-comments-search
-            [commentsData]="comments"
-            [isCommented]="isCommented"
-            [isDisplaySearch]="isSearchComment"
-            (btnActionEmitter)="handleCommentActionEmit($event)"
-            (btnSortEmitter)="handleSortActionEmit($event)"
-            (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"
-        ></app-ta-comments-search>
-    </div>
-</ng-container>
+<div
+    class="d-flex flex-column justify-content-center comments-container"
+    [ngStyle]="{ background: isHeaderHidden ? 'transparent' : '#fff' }"
+>
+    <app-ta-comments-search
+        [commentsData]="comments"
+        [isDisplaySearch]="isSearchComment"
+        [isHeaderHidden]="isHeaderHidden"
+        (btnActionEmitter)="handleCommentActionEmit($event)"
+        (btnSortEmitter)="handleSortActionEmit($event)"
+        (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"
+    ></app-ta-comments-search>
+</div>

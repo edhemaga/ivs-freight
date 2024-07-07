@@ -100,4 +100,6 @@ export class LoadModalConstants {
         marginTop: '12px',
         marginBottom: '4px',
     };
+    static ADVANCE_PAY = 3;
+    static PAID_IN_FULL = 1;
 }

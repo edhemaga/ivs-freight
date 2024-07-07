@@ -570,7 +570,8 @@
                                 type="button"
                                 [ngStyle]="{
                                     'pointer-events':
-                                        enableClickWhileFormInvalid
+                                        enableClickWhileFormInvalid ||
+                                        isModalValid
                                             ? 'all'
                                             : 'none'
                                 }"

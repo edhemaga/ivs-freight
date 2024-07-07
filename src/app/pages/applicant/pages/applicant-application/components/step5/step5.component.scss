@@ -350,7 +350,7 @@
                             font-size: 11px;
                         }
 
-                        &.date-box,
+                        &.location-box,
                         &.vehicle-box {
                             margin-bottom: 2px;
 
@@ -382,6 +382,7 @@
                             }
                         }
 
+                        &.date-box,
                         &.description-box {
                             p {
                                 color: $bw5;

@@ -5,4 +5,5 @@ export interface FileEvent {
     action: string;
     deleteId?: number;
     index?: number;
+    type?: string
 }

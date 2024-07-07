@@ -13,6 +13,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { LoadStatusHistoryResponse } from 'appcoretruckassist';
 import { LoadModalWaitTime } from '@pages/load/pages/load-modal/models/load-modal-wait-time';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 
 // Pipes
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
@@ -24,6 +25,7 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-mod
 // Components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 
 @Component({
     selector: 'app-load-modal-wait-time',
@@ -39,6 +41,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
         // Components
         TaCustomCardComponent,
         TaInputComponent,
+        LoadStatusStringComponent,
 
         // Pipes
         LoadStatusColorPipe,
@@ -60,6 +63,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
     public show: boolean;
     public timeDifferences: Array<LoadModalWaitTime> = [];
     public totalWaitTime: LoadModalWaitTime;
+    public statusHistoryDisplayStrings: SelectedStatus[] = [];
 
     constructor(private formBuilder: UntypedFormBuilder) {}
 
@@ -75,29 +79,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
 
         this.createFormFields();
     }
-
-    public getStatusName(index: number): string {
-        return this.statusHistoryForm()
-            .at(index)
-            .get(LoadModalStringEnum.WAIT_TIME_STATUS_NAME).value;
-    }
-
-    public getStatus(index: number): string {
-        return this.statusHistoryForm()
-            .at(index)
-            .get(LoadModalStringEnum.WAIT_TIME_STATUS).value;
-    }
-
-    public getStatusNumber(index: number): string {
-        return this.statusHistoryForm()
-            .at(index)
-            .get(LoadModalStringEnum.WAIT_TIME_STATUS_NUMBER).value;
-    }
-
-    public isStatusNumberAvailable(index: number): boolean {
-        return !!this.getStatusNumber(index);
-    }
-
+ 
     private generateForm() {
         this.waitTimeForm = this.formBuilder.group({
             statusHistory: this.formBuilder.array([]),
@@ -150,6 +132,11 @@ export class LoadModalWaitTimeComponent implements OnInit {
         );
         this.timeDifferences[index] = timeDifference;
         const statusString = status.statusString.split(' ');
+        this.statusHistoryDisplayStrings.push({
+            name: status.statusString,
+            id: status.id,
+            valueForRequest: status.status.name
+        })
 
         return this.formBuilder.group({
             statusName: [status.status.name],

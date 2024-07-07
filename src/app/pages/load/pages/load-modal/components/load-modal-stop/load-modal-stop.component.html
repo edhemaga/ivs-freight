@@ -122,12 +122,10 @@
             <!-- Date, Time -->
 
             <div class="load-stop-inner-content second-container">
-                <!-- Required Message -->
-
+                <!-- Required Message --> 
                 <ng-container
                     *ngIf="
-                        (!dateRange || !timeRange) &&
-                        state &&
+                        (!!shipper && !!shipperAddress) &&
                         state === 'invalid'
                     "
                 >
@@ -143,7 +141,7 @@
 
                 <!-- Data -->
 
-                <ng-container *ngIf="dateRange && timeRange">
+                <ng-container *ngIf="dateRange && timeRange && state !== 'invalid'">
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
                     >

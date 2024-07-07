@@ -27,4 +27,6 @@ export enum ApplicantApplicationStringEnum {
     Address = 'address',
     AddressUnit = 'addressunit',
     AccountForPeriodBetween = 'accountforperiodbetween',
+    Email = 'email',
+    Files = 'files',
 }
