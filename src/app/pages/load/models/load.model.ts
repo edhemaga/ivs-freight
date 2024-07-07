@@ -15,7 +15,7 @@ export interface Load {
     dispatcherId: number;
     companyId?: number;
     dispatchId: number;
-    dateCreated: string;
+    dateCreated?: string;
     status?: string;
     brokerId: number;
     brokerContactId: number;
@@ -23,13 +23,13 @@ export interface Load {
     generalCommodity: number;
     weight: number;
     loadRequirements: {
-        id: number;
+        id?: number;
         truckTypeId: number;
         trailerTypeId: number;
         doorType: number;
         suspension: number;
         trailerLengthId: number;
-        year: number | string;
+        year: number;
         liftgate: boolean;
         driverMessage: string;
     };
