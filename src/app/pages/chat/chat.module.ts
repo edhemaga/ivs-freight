@@ -13,6 +13,8 @@ import { ChatMessageComponent } from "@pages/chat/components/chat-message/chat-m
 import { ChatMessagesComponent } from "@pages/chat/components/chat-messages/chat-messages.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
+import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-badge/user-status-badge.component";
 
 // Services
 import { UserChatService } from "@pages/chat/services/chat.service";
@@ -23,7 +25,7 @@ import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
 
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
-import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 
 @NgModule({
     declarations: [
@@ -40,6 +42,7 @@ import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/t
         // AUXILLARY COMPONENTS
         ChatToolbarComponent,
         ChatNoDataComponent,
+        UserStatusBadgeComponent
     ],
     imports: [
         // Modules
@@ -49,6 +52,7 @@ import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/t
 
         // Pipes
         NameInitialsPipe,
+        FormatTimePipe,
 
         // Components
         TaProfileImagesComponent

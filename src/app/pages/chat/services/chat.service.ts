@@ -1,8 +1,8 @@
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { inject } from "@angular/core";
 
 // Models
-import { CompanyUserForChatListResponse, UserType } from "appcoretruckassist";
+import { CompanyUserForChatListResponse, CreateConversationCommand, CreateResponse, UserType } from "appcoretruckassist";
 
 // Services
 import { ChatService } from "appcoretruckassist/api/chat.service";
@@ -24,6 +24,20 @@ export class UserChatService {
             null,
             null
         );
-
     }
+
+    getConversation(): Observable<any> {
+        return of([]);
+    }
+
+    createConversation(participants: number[]): Observable<CreateResponse> {
+        const conversationParticipants: CreateConversationCommand = {
+            participantIds: participants
+        };
+
+        return this.chatService.apiChatConversationPost(
+            conversationParticipants
+        );
+    }
+
 }

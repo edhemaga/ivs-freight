@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 //Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
+import { ChatMessagesComponent } from "@pages/chat/components/chat-messages/chat-messages.component";
 
 //Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
@@ -18,6 +19,15 @@ const routes: Routes = [
             users: UserResolver,
             drivers: DriverResolver
         },
+        children: [
+            {
+                path: 'conversation/:id',
+                component: ChatMessagesComponent,
+                // resolve: {
+                // }
+            }
+        ]
+
     }
 ];
 

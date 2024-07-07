@@ -8,7 +8,6 @@ import { CompanyUserChatResponsePagination } from "appcoretruckassist";
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 
-//TODO change any
 export class DriverResolver implements Resolve<CompanyUserChatResponsePagination> {
 
     private userChatService = inject(UserChatService);
@@ -20,5 +19,4 @@ export class DriverResolver implements Resolve<CompanyUserChatResponsePagination
             })
         );
     }
-
 }
