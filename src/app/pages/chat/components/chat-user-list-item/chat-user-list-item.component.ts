@@ -12,10 +12,11 @@ export class ChatUserListItemComponent implements OnInit {
 
   @Input() contact: CompanyUserChatResponse;
 
+  //TODO define status type
+  status: string = 'typing';
+
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.contact);
-  }
+  ngOnInit(): void { }
 
 }

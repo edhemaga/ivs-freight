@@ -12,6 +12,21 @@
         padding: 0 4px;
         margin-bottom: 4px;
         border-bottom: 1px solid $bw-9;
+
+        .border-container {
+            height: 34px;
+            padding: 0 4px;
+
+            .border {
+                width: 2px;
+                height: 18px;
+                border-radius: 1px;
+                background: $ta-light-grey-4;
+            }
+        }
+        .department-icon {
+            padding: 0 4px;
+        }
         &-type {
             color: $ta-black;
         }
@@ -24,7 +39,7 @@
             border-radius: 50px;
             background: $bw5;
             color: $white;
-            padding: 0px 5px;
+            padding: 0px 6px;
             margin: auto 5px;
         }
 

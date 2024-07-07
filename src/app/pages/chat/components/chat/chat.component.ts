@@ -1,39 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 //Models
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user.model';
 
+// Service
+import { UserChatService } from "@pages/chat/services/chat.service";
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 //TODO move to models
 type ChatTab = {
   name: string;
   count: number;
+  isActive: boolean;
 }
 
+//TODO add clean up mechanism
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+  private destroy$ = new Subject<void>();
+
   title: string = "";
 
   companyUsers!: CompanyUserChatResponsePaginationReduced;
   drivers!: CompanyUserChatResponsePaginationReduced;
+  archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
+  archivedDrivers!: CompanyUserChatResponsePaginationReduced;
+
+  selectedConversation: number;
 
   //TODO move to separate file and maybe make it static class
   // Tab and header ribbon configuration
   tabs: ChatTab[] = [
     {
       name: 'Conversation',
-      count: 5
+      count: 0,
+      isActive: true,
     },
     {
       name: 'Archive',
-      count: 1
+      count: 0,
+      isActive: false
     }
   ];
-  selectedTab!: string;
+
+  private userChatService = inject(UserChatService);
 
   constructor(private activatedRoute: ActivatedRoute) { }
 
@@ -48,17 +64,44 @@ export class ChatComponent implements OnInit {
         this.title = res.title;
         this.drivers = res.drivers;
         this.companyUsers = res.users;
+        this.tabs[0].count = this.drivers.count + this.companyUsers.count;
 
       },
-      error: () => { }
+      error: () => { },
     })
   }
 
   public onSelectTab(item: ChatTab): void {
-    this.selectedTab = item.name;
+    this.tabs.forEach(arg => {
+      if (arg.name != item.name) {
+        arg.isActive = false;
+      }
+      else {
+        arg.isActive = true;
+      }
+
+    })
     //TODO Set in localstorage 
+  }
+
+  createUserConversation(selectedUser: number): void {
+
+    if (selectedUser == 0) return;
+
+    this.userChatService
+      .createConversation([selectedUser])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.selectedConversation = res.id;
+        }
+      });
   }
 
   onToolBarAction(action: string): void { }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -12,8 +12,8 @@
                 <div
                     class="tab-container d-flex"
                     [ngClass]="{
-                        'tab-inactive': selectedTab !== tab.name,
-                        'tab-active': selectedTab === tab.name
+                        'tab-inactive': !tab.isActive,
+                        'tab-active': tab.isActive
                     }"
                     (click)="onSelectTab(tab)"
                 >
@@ -84,16 +84,26 @@
         <!-- USER TYPES LIST -->
         <div class="chat-lists">
             <!-- COMPANY USERS -->
-            <app-chat-user-list [type]="'Company'" [contact]="companyUsers">
+            <app-chat-user-list
+                (selectedUser)="createUserConversation($event)"
+                [type]="'Company'"
+                [contact]="companyUsers"
+            >
             </app-chat-user-list>
             <div class="divider"></div>
             <!-- DRIVERS -->
-            <app-chat-user-list [type]="'Driver'" [contact]="drivers">
+            <app-chat-user-list
+                (selectedUser)="createUserConversation($event)"
+                [type]="'Driver'"
+                [contact]="drivers"
+            >
             </app-chat-user-list>
         </div>
         <!-- MESSAGES -->
         <div class="conversation-wrapper">
-            <app-chat-messages></app-chat-messages>
+            <app-chat-messages
+                [conversationId]="selectedConversation"
+            ></app-chat-messages>
         </div>
         <div>Department</div>
     </div>
