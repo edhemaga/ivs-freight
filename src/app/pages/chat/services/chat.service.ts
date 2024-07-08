@@ -2,7 +2,7 @@ import { Observable, of } from "rxjs";
 import { inject } from "@angular/core";
 
 // Models
-import { CompanyUserForChatListResponse, CreateConversationCommand, CreateResponse, UserType } from "appcoretruckassist";
+import { CompanyUserForChatListResponse, ConversationResponse, CreateConversationCommand, CreateResponse, MessageResponse, UserType } from "appcoretruckassist";
 
 // Services
 import { ChatService } from "appcoretruckassist/api/chat.service";
@@ -10,8 +10,6 @@ import { ChatService } from "appcoretruckassist/api/chat.service";
 export class UserChatService {
 
     chatService = inject(ChatService);
-
-    constructor() { }
 
     getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
@@ -26,8 +24,12 @@ export class UserChatService {
         );
     }
 
-    getConversation(): Observable<any> {
-        return of([]);
+    getConversation(id: number): Observable<ConversationResponse> {
+        return this.chatService.apiChatConversationIdGet(id);
+    }
+
+    getMessages(id: number): Observable<MessageResponse[]> {
+        return this.chatService.apiChatMessageListGet(id);
     }
 
     createConversation(participants: number[]): Observable<CreateResponse> {

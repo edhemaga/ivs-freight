@@ -23,5 +23,4 @@ export class ChatUserListComponent implements OnInit {
   selectUser(userId: number) {
     this.selectedUser.emit(userId);
   }
-
 }

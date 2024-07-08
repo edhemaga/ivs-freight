@@ -1,1 +1,16 @@
-<div class="messages-container">Conversation</div>
+<div class="messages-container d-flex">
+    <!-- TODO remove later when you get the full model -->
+    <div class="messages-header ta-font-extra-bold">
+        <ng-container *ngIf="conversationId; else conversationInfo">
+            Conversation
+        </ng-container>
+        <ng-template #conversationInfo>
+            <div></div>
+        </ng-template>
+    </div>
+    <div
+        class="border-container d-flex justify-content-center align-items-center"
+    >
+        <div class="border"></div>
+    </div>
+</div>

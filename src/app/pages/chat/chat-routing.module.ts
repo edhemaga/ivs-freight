@@ -8,6 +8,7 @@ import { ChatMessagesComponent } from "@pages/chat/components/chat-messages/chat
 //Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
+import { ConversationResolver } from "@pages/chat/resolvers/conversation.resolver";
 
 //Services
 
@@ -21,10 +22,11 @@ const routes: Routes = [
         },
         children: [
             {
-                path: 'conversation/:id',
+                path: 'conversation/:conversationId',
                 component: ChatMessagesComponent,
-                // resolve: {
-                // }
+                resolve: {
+                    messages: ConversationResolver
+                }
             }
         ]
 

@@ -6,4 +6,22 @@
     background: $white;
     border-radius: 3px;
     padding: 6px;
+    .messages-header {
+        width: 100%;
+        height: 32px;
+        padding: 0 4px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid $bw-9;
+    }
+    .border-container {
+        height: 34px;
+        padding: 0 4px;
+
+        .border {
+            width: 2px;
+            height: 18px;
+            border-radius: 1px;
+            background: $ta-light-grey-4;
+        }
+    }
 }

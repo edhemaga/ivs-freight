@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 //Models
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user.model';
@@ -51,7 +51,10 @@ export class ChatComponent implements OnInit {
 
   private userChatService = inject(UserChatService);
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.getData();
@@ -93,7 +96,10 @@ export class ChatComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          this.selectedConversation = res.id;
+          if (res && res?.id != 0) {
+            this.selectedConversation = res.id;
+            this.router.navigate(['chat/conversation', res.id]);
+          }
         }
       });
   }

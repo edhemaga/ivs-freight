@@ -1,18 +1,22 @@
 import { inject } from "@angular/core";
-import { Resolve } from "@angular/router";
-import { map, Observable, of } from "rxjs";
+import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
+import { Observable } from "rxjs";
 
 // Models
-import { CreateResponse } from "appcoretruckassist";
+import { MessageResponse } from "appcoretruckassist";
 
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 
-export class ConversationResolver implements Resolve<CreateResponse> {
+export class ConversationResolver implements Resolve<MessageResponse[]> {
 
     private userChatService = inject(UserChatService);
 
-    resolve(): Observable<CreateResponse> {
-        return of();
+    resolve(route: ActivatedRouteSnapshot): Observable<MessageResponse[]> {
+
+        const conversationId: number = route.params['conversationId'] ?? 0;
+        if (conversationId === 0) return;
+
+        return this.userChatService.getMessages(conversationId);
     }
 }

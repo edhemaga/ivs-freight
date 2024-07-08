@@ -22,10 +22,13 @@ import { UserChatService } from "@pages/chat/services/chat.service";
 // Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user.resolver";
 import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
+// import { ConversationResolver } from "@pages/chat/resolvers/conversation.resolver";
 
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
+import { ConversationResolver } from "./resolvers/conversation.resolver";
+import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -58,12 +61,13 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         TaProfileImagesComponent
     ],
     providers: [
+        // Services
+        UserChatService,
+
         // Resolvers
         UserResolver,
         DriverResolver,
-
-        // Services
-        UserChatService,
+        ConversationResolver,
 
         // Pipes
         NameInitialsPipe
