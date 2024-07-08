@@ -3574,7 +3574,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.previousStatus = res.previousStatus ? {
                             name: res.previousStatus.statusString,
                             id: res.previousStatus.statusValue.id,
-                            valueForRequest: res.previousStatus?.statusValue.name,
+                            valueForRequest: res.previousStatus.statusValue.name,
                         } : null
                     }
 
