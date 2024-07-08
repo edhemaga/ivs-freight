@@ -36,6 +36,7 @@ import {
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 //modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -56,6 +57,7 @@ import { SharedModule } from '@shared/shared.module';
         TaInputComponent,
         TaUploadFilesComponent,
         TaCounterComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {

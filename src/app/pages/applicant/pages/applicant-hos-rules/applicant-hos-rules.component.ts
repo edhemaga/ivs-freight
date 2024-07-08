@@ -35,7 +35,7 @@ import { ApplicantModule } from '@pages/applicant/applicant.module';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 @Component({
     selector: 'app-hos-rules',
@@ -50,6 +50,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 
         // components
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantHosRulesComponent implements OnInit, OnDestroy {

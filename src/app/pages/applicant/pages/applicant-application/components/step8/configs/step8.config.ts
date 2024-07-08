@@ -42,7 +42,7 @@ export class Step8Config {
             isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-481',
+            dropdownWidthClass: 'w-col-494',
             minLength: 6,
             maxLength: 256,
             isDisabled:
@@ -109,7 +109,7 @@ export class Step8Config {
             isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-481',
+            dropdownWidthClass: 'w-col-494',
             minLength: 6,
             maxLength: 256,
             isDisabled:
