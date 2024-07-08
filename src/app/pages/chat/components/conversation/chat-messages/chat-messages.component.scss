@@ -6,6 +6,38 @@
     background: $white;
     border-radius: 3px;
     padding: 6px;
+    .no-data-wrapper {
+        height: 100%;
+        width: 100%;
+        .content-not-selected-wrapper {
+            height: 100%;
+            display: flex;
+            .content-not-selected {
+                margin: auto;
+                img {
+                    height: 250px;
+                }
+
+                .upper-text {
+                    line-height: 24px;
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: $bw5;
+                    text-align: center;
+                    margin-top: 22px;
+                    margin-bottom: 4px;
+                }
+
+                .lower-text {
+                    line-height: 14px;
+                    font-size: 11px;
+                    font-weight: 500;
+                    color: $bw5;
+                    text-align: center;
+                }
+            }
+        }
+    }
     .messages-header {
         width: 100%;
         height: 32px;

@@ -101,7 +101,10 @@
         </div>
         <!-- MESSAGES -->
         <div class="conversation-wrapper">
-            <router-outlet></router-outlet>
+            <ng-container *ngIf="selectedConversation; else noConversation">
+                <router-outlet></router-outlet>
+            </ng-container>
+            <ng-template #noConversation></ng-template>
         </div>
         <div>Department</div>
     </div>

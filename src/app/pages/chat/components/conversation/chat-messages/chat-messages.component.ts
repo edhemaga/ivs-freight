@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
+// Models
+import { ConversationResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-chat-messages',
@@ -7,16 +10,15 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./chat-messages.component.scss']
 })
 export class ChatMessagesComponent implements OnInit {
+  title: string = "test";
+  conversation!: ConversationResponse;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-  ) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe({
-      next: (arg) => {
-        console.log(arg);
+      next: (res) => {
+        this.conversation = res.conversationInformation;
       }
     })
   }

@@ -1,13 +1,27 @@
 <div class="messages-container d-flex">
     <!-- TODO remove later when you get the full model -->
-    <div class="messages-header ta-font-extra-bold">
-        <ng-container *ngIf="conversationId; else conversationInfo">
-            Conversation
-        </ng-container>
-        <ng-template #conversationInfo>
-            <div></div>
-        </ng-template>
+    <div
+        class="no-data-wrapper"
+        *ngIf="!conversation?.id; else conversationInfo"
+    >
+        <div class="messages-header">
+            <div class="ta-font-extra-bold">Conversation</div>
+        </div>
+        <div class="content-not-selected-wrapper">
+            <div class="content-not-selected">
+                <img
+                    class="artboard"
+                    [src]="'src/assets/png/chat/artboard-not-selected.png'"
+                    alt="nothing-selected"
+                />
+                <div class="upper-text">Select an item to read</div>
+                <div class="lower-text">Nothing is selected</div>
+            </div>
+        </div>
     </div>
+    <ng-template #conversationInfo>
+        <div></div>
+    </ng-template>
     <div
         class="border-container d-flex justify-content-center align-items-center"
     >
