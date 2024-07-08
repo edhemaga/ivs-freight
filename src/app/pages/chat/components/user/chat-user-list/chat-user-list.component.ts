@@ -10,7 +10,6 @@ import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/com
 })
 export class ChatUserListComponent implements OnInit {
 
-  //TODO change any type
   @Input() contact: CompanyUserChatResponsePaginationReduced;
   @Input() type: string;
 

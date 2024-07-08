@@ -1,8 +1,15 @@
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { inject } from "@angular/core";
 
 // Models
-import { CompanyUserForChatListResponse, ConversationResponse, CreateConversationCommand, CreateResponse, MessageResponse, UserType } from "appcoretruckassist";
+import {
+    CompanyUserForChatListResponse,
+    ConversationResponse,
+    CreateConversationCommand,
+    CreateResponse,
+    MessageResponse,
+    UserType
+} from "appcoretruckassist";
 
 // Services
 import { ChatService } from "appcoretruckassist/api/chat.service";

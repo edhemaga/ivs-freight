@@ -7,10 +7,10 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
-import { ChatUserListComponent } from "@pages/chat/components/chat-user-list/chat-user-list.component";
-import { ChatUserListItemComponent } from "@pages/chat/components/chat-user-list-item/chat-user-list-item.component";
-import { ChatMessageComponent } from "@pages/chat/components/chat-message/chat-message.component";
-import { ChatMessagesComponent } from "@pages/chat/components/chat-messages/chat-messages.component";
+import { ChatUserListComponent } from "@pages/chat/components/user/chat-user-list/chat-user-list.component";
+import { ChatUserListItemComponent } from "@pages/chat/components/user/chat-user-list-item/chat-user-list-item.component";
+import { ChatMessageComponent } from "@pages/chat/components/conversation/chat-message/chat-message.component";
+import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
@@ -20,15 +20,14 @@ import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-bad
 import { UserChatService } from "@pages/chat/services/chat.service";
 
 // Resolvers
-import { UserResolver } from "@pages/chat/resolvers/user.resolver";
-import { DriverResolver } from "@pages/chat/resolvers/driver.resolver";
-// import { ConversationResolver } from "@pages/chat/resolvers/conversation.resolver";
+import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
+import { DriverResolver } from "@pages/chat/resolvers/driver/driver.resolver";
+import { ConversationInformationResolver } from "@pages/chat/resolvers/conversation/conversation-information.resolver";
+import { ConversationResolver } from "@pages/chat/resolvers/conversation/conversation.resolver";
 
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
-import { ConversationResolver } from "./resolvers/conversation.resolver";
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -67,6 +66,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/r
         // Resolvers
         UserResolver,
         DriverResolver,
+        ConversationInformationResolver,
         ConversationResolver,
 
         // Pipes
