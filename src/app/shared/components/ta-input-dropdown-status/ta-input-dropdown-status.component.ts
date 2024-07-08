@@ -36,6 +36,7 @@ export class TaInputDropdownStatusComponent implements OnInit {
     // Inputs
     @Input() selectedStatus: SelectedStatus = null;
     @Input() options: SelectedStatus[];
+    @Input() previousStatus: SelectedStatus[];
     @Input() inputConfig: ITaInput;
 
     // Outputs

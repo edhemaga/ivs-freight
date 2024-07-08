@@ -57,6 +57,7 @@
                     <ng-template #editLoad>
                         <ta-input-dropdown-status
                             [options]="statusDropDownList"
+                            [previousStatus]="previousStatus"
                             [selectedStatus]="selectedStatus"
                             [inputConfig]="getStatusInputConfig"
                             (selectedItem)="onSelectDropdown($event, 'status')"
