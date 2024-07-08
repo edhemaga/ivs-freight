@@ -10,3 +10,8 @@ export const setPendingTabCards = createAction(
     '[Load Card Modal] Set Pending Tab Cards',
     props<LoadCardTypes>()
 );
+
+export const setTemplateTabCards = createAction(
+    '[Load Card Modal] Set Template Tab Cards',
+    props<LoadCardTypes>()
+);

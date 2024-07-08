@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import {
     setActiveTabCards,
     setPendingTabCards,
+    setTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
 
 //Enums
@@ -30,6 +31,7 @@ export class LoadCardModalService {
     public updateTab(tab: string): void {
         this.tabSubject.next(tab);
     }
+
     public updateStore(data: CardsModalData, tab: string): void {
         const sendToStore = {
             checked: data.checked,
@@ -54,9 +56,11 @@ export class LoadCardModalService {
             case TableStringEnum.ACTIVE:
                 this.store.dispatch(setActiveTabCards(sendToStore));
                 break;
-
             case TableStringEnum.PENDING:
                 this.store.dispatch(setPendingTabCards(sendToStore));
+                break;
+            case TableStringEnum.TEMPLATE:
+                this.store.dispatch(setTemplateTabCards(sendToStore));
                 break;
             default:
                 break;
