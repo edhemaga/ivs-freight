@@ -4446,7 +4446,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isStepFinished(extraStop: UntypedFormArray): boolean {
-        return extraStop.value.arrive !== null;
+        return extraStop.value.arrive !== null && extraStop.value.depart !== null;
     }
 
     public drop(event: CdkDragDrop<string[]>): void {
