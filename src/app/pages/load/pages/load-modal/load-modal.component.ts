@@ -121,7 +121,6 @@ import { MapRoute } from '@shared/models/map-route.model';
 import { LoadStopRoutes } from '@pages/load/pages/load-modal/models/load-stop-routes.model';
 import { LoadModalTab } from '@pages/load/pages/load-modal/models/load-modal-tab.model';
 import { Load } from '@pages/load/models/load.model';
-import { Tags } from '@shared/models/tags.model';
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
 import { EditData } from '@shared/models/edit-data.model';
@@ -133,10 +132,10 @@ import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-
 import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
 import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
 import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-load-modal',
@@ -726,9 +725,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
 
         // configurations
-        this.loadDispatchesTTDInputConfig = {
-            ...LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG,
-        };
+        this.loadDispatchesTTDInputConfig =
+            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG;
         this.loadBrokerInputConfig = LoadModalConfig.LOAD_BROKER_INPUT_CONFIG;
         this.loadBrokerContactsInputConfig =
             LoadModalConfig.LOAD_BROKER_CONTACTS_INPUT_CONFIG;
@@ -1444,7 +1442,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.drawStopOnMap();
             this.loadDispatchesTTDInputConfig = {
                 ...this.loadDispatchesTTDInputConfig,
-                // isDisabled: this.labelsDispatches.length === 0,
                 multipleLabel: {
                     labels: [
                         LoadModalStringEnum.TRUCK,
