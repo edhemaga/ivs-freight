@@ -727,7 +727,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // configurations
         this.loadDispatchesTTDInputConfig = {
-            ...LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
+            ...LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG,
         };
         this.loadBrokerInputConfig = LoadModalConfig.LOAD_BROKER_INPUT_CONFIG;
         this.loadBrokerContactsInputConfig =
@@ -2447,10 +2447,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                value
-                            ),
+                        baseRate: this.convertNumbers(value),
                     };
                 }
             });
@@ -3012,7 +3009,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: this.stops?.[index]?.id ?? null,
+                    id: this.stops?.[index + 1]?.id ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3857,7 +3854,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalAdditionalBillingTypes =
                         this.additionalBillingTypes;
 
-                    if (this.editData?.data) {
+                    if (this.editData) {
                         this.populateLoadModalData(
                             this.editData.data as LoadResponse
                         );
@@ -3926,7 +3923,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             brokerContactId: this.getIdOrNull(this.selectedBrokerContact),
             referenceNumber,
             generalCommodity: this.getIdOrNull(this.selectedGeneralCommodity),
-            weight: MethodsCalculationsHelper.convertThousanSepInNumber(weight),
+            weight: this.convertNumbers(weight),
             loadRequirements: {
                 truckTypeId: this.getIdOrNull(this.selectedTruckReq),
                 trailerTypeId: this.getIdOrNull(this.selectedTrailerReq),
@@ -3940,14 +3937,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 driverMessage,
             },
             stops: this.premmapedStops(),
-            baseRate: MethodsCalculationsHelper.convertThousanSepInNumber(baseRate),
-            adjustedRate: adjustedRate
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(adjustedRate)
-                : null,
-            driverRate: driverRate
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(driverRate)
-                : null,
-            advancePay: MethodsCalculationsHelper.convertThousanSepInNumber(advancePay),
+            baseRate: this.convertNumbers(baseRate),
+            adjustedRate: this.convertNumbers(adjustedRate),
+            driverRate: this.convertNumbers(driverRate),
+            advancePay: this.convertNumbers(advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 LoadModalStringEnum.CREATE
             ),
@@ -3961,7 +3954,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
         };
-        
     }
 
     private generateLoadModel(newLoad: boolean): Load {
@@ -4106,6 +4098,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ),
             });
     }
+    private convertNumbers(value: string): number {
+        return value
+            ? MethodsCalculationsHelper.convertThousanSepInNumber(value)
+            : null;
+    }
+
+    private convertDate(date: string | null): string {
+        return date
+            ? MethodsCalculationsHelper.convertDateFromBackend(date)
+            : date;
+    }
 
     private populateLoadModalData(loadModalData: LoadResponse): void {
         const {
@@ -4206,14 +4209,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverMessage: loadRequirements?.driverMessage,
             note: note,
             // pickup
-            pickupDateFrom: MethodsCalculationsHelper.convertDateFromBackend(
-                pickupStop.dateFrom
-            ),
-            pickupDateTo: pickupStop.dateTo
-                ? MethodsCalculationsHelper.convertDateFromBackend(
-                      pickupStop.dateTo
-                  )
-                : pickupStop.dateTo,
+            pickupDateFrom: this.convertDate(pickupStop.dateFrom),
+            pickupDateTo: this.convertDate(pickupStop.dateTo),
             pickupTimeFrom: pickupStop.timeFrom,
             pickupTimeTo: pickupStop.timeTo,
             pickuplegMiles: pickupStop.legMiles,
@@ -4221,14 +4218,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegMinutes: pickupStop.legMinutes,
 
             // delivery
-            deliveryDateFrom: MethodsCalculationsHelper.convertDateFromBackend(
-                deliveryStop.dateFrom
-            ),
-            deliveryDateTo: deliveryStop.dateTo
-                ? MethodsCalculationsHelper.convertDateFromBackend(
-                      deliveryStop.dateTo
-                  )
-                : deliveryStop.dateTo,
+            deliveryDateFrom: this.convertDate(deliveryStop.dateFrom),
+            deliveryDateTo: this.convertDate(deliveryStop.dateTo),
             deliveryTimeFrom: deliveryStop.timeFrom,
             deliveryTimeTo: deliveryStop.timeTo,
             deliverylegMiles: deliveryStop.legMiles,
@@ -4317,15 +4308,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stopLoadOrder: extraStop.stopLoadOrder,
                         shipperId: extraStop.shipper.id,
                         shipperContactId: extraStop.shipperContact?.id,
-                        dateFrom:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                extraStop.dateFrom
-                            ),
-                        dateTo: extraStop.dateTo
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  extraStop.dateTo
-                              )
-                            : extraStop.dateTo,
+                        dateFrom: this.convertDate(extraStop.dateFrom),
+                        dateTo: this.convertDate(extraStop.dateTo),
                         timeType: extraStop.timeType.name.toUpperCase(),
                         timeFrom: extraStop.timeFrom,
                         timeTo: extraStop.timeTo,
