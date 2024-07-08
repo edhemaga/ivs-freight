@@ -134,6 +134,7 @@ export class LoadDetailsItemHelper {
 
             const days = duration.days();
             const hours = duration.hours();
+            4;
             const minutes = duration.minutes();
 
             lastStatus = statusString
@@ -146,13 +147,9 @@ export class LoadDetailsItemHelper {
 
             lastStatusTime = `${days ? days + ' d' : ''} 
                               ${hours ? hours + ' h' : ''} 
-                              ${minutes ? minutes + ' min ago' : ''}`;
-
-            if (
-                stopType === 'Delivery' &&
-                (lastStatus === 'LOADED' || lastStatus === 'LOADING')
-            )
-                lastStatus = 'OFF' + lastStatus;
+                              ${minutes ? minutes + 'm' : ''}
+                              ${days || hours || minutes ? ' ago' : ''}
+                            `;
         }
 
         return {
