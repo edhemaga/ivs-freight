@@ -601,6 +601,7 @@ export class LoadModalConfig {
             label: 'Start Date',
             labelInInput: true,
             isDisabled: isDisabled,
+            isIconHidden: true
         };
     }
 
@@ -614,6 +615,7 @@ export class LoadModalConfig {
             isRequired: true,
             labelInInput: true,
             isDisabled: isDisabled,
+            isIconHidden: true
         };
     }
 
@@ -625,6 +627,7 @@ export class LoadModalConfig {
             label: 'End Date',
             labelInInput: true,
             isDisabled: isDisabled,
+            isIconHidden: true
         };
     }
 
@@ -638,6 +641,7 @@ export class LoadModalConfig {
             isRequired: true,
             labelInInput: true,
             isDisabled: isDisabled,
+            isIconHidden: true
         };
     }
 }

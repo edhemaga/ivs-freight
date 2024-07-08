@@ -114,6 +114,10 @@
 
                     <ng-container *ngIf="isVisibleMap">
                         <div
+                            ngbTooltip
+                            mainTooltip="Open Map"
+                            tooltipBackground="#424242"
+                            position="bottom"
                             class="d-flex align-items-center justify-content-center modal-header-load-map-button"
                             [ngClass]="{ active: mapVisibility }"
                             (click)="toggleAdditionalPart('map')"
@@ -564,6 +568,13 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        enableClickWhileFormInvalid ||
+                                        isModalValid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     profileUpdateText

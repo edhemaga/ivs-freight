@@ -69,6 +69,7 @@ export class LoadDetailsHelper {
         load: LoadResponse,
         dropdownItemId: number = 0
     ): DetailsConfig[] {
+        console.log('stops', load.stops);
         return [
             {
                 id: 0,
@@ -87,12 +88,15 @@ export class LoadDetailsHelper {
                 isMapDisplayed: true,
                 isMapBtn: true,
                 capsulaText:
-                    load.stops?.length === 2
+                    load.stops[0].stopType.id === 0 && load.stops?.length === 3
                         ? false
-                        : load.stops?.length - 2 + ' EXTRA',
+                        : load.stops?.length - 3 + ' EXTRA',
                 hasMultipleDetailsSelectDropdown: false,
                 data: load,
-                length: load.stops?.length,
+                length:
+                    load.stops[0].stopType.id === 0
+                        ? load.stops?.length - 1
+                        : load.stops?.length,
             },
             {
                 id: 2,

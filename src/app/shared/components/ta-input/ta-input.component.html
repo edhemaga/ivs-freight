@@ -450,8 +450,9 @@
                             _inputConfig.commands.thirdCommand.name
                         )
                     "
-                ></svg-icon></div
-        ></ng-container>
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 
     <!-- Input Placeholder Icon -->
@@ -530,6 +531,7 @@
         (shown)="onPopoverShown()"
         (hidden)="onPopoverHidden()"
         (click)="onPlaceholderIconEvent($event)"
+        [ngStyle]="{opacity: _inputConfig.isIconHidden ? '0' : {}}"
     >
         <svg-icon
             appHoverSvg
@@ -902,9 +904,7 @@
             !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
         "
         class="dropdown-selected-image name-initials-instead-url"
-        [src]="
-            imageBase64Service.sanitizer(_inputConfig?.dropdownImageInput?.url)
-        "
+        [src]="_inputConfig?.dropdownImageInput?.url"
         [alt]="'Input Image'"
     />
     <div

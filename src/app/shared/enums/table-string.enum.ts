@@ -123,6 +123,10 @@ export enum TableStringEnum {
     ASSIGNED = 'Assigned',
     ASSIGNED_COLOR = 'color:#50AC25;',
 
+    UNASSIGNED = 'Unassigned',
+
+    BOOKED = 'Booked',
+
     LOADED = 'Loaded',
     LOADED_COLOR = 'color:#259F94;',
 

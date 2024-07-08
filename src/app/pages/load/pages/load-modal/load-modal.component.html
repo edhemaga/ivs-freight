@@ -3,7 +3,12 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
+    [isModalValid]="
+        loadForm.valid &&
+        isFormDirty &&
+        isEachStopItemsRowValid &&
+        !reorderingStarted
+    "
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -14,6 +19,8 @@
     [saveAndAddNew]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
+    [enableClickWhileFormInvalid]="true"
+    (runFormValidation)="runFormValidation()"
 >
     <!-- Origin Tab -->
 
@@ -48,14 +55,12 @@
                     </ng-container>
 
                     <ng-template #editLoad>
-                        <app-ta-input-dropdown
-                            [template]="'svgtext-template'"
-                            formControlName="status"
-                            [inputConfig]="getStatusInputConfig"
+                        <ta-input-dropdown-status
                             [options]="statusDropDownList"
-                            [activeItem]="selectedStatus"
+                            [selectedStatus]="selectedStatus"
+                            [inputConfig]="getStatusInputConfig"
                             (selectedItem)="onSelectDropdown($event, 'status')"
-                        ></app-ta-input-dropdown>
+                        ></ta-input-dropdown-status>
                     </ng-template>
                 </div>
 
@@ -331,6 +336,7 @@
                             >
                                 <app-ta-checkbox
                                     formControlName="liftgate"
+                                    name="liftgate"
                                     [customClass]="'medium'"
                                     [label]="'Lifgate'"
                                 ></app-ta-checkbox>
@@ -382,7 +388,9 @@
                         marginTop: '10px',
                         marginBottom: '12px'
                     }"
-                    (onActionEvent)="createNewExtraStop()"
+                    (onActionEvent)="onExtraStopAction($event)"
+                    [showFinishReordering]="reorderingStarted"
+                    [reorderingSaveError]="reorderingSaveError"
                 >
                     <!-- Stops Header -->
 
@@ -422,27 +430,7 @@
                         [shipperContact]="{
                             fullName: selectedPickupShipperContact?.name
                         }"
-                        [state]="
-                            loadForm.get('pickupShipper').valid &&
-                            loadForm.get('pickupDateFrom').valid &&
-                            loadForm.get('pickupTimeFrom').valid &&
-                            (selectedStopTimePickup === 6
-                                ? !loadForm.get('pickupTimeTo').errors
-                                : loadForm.get('pickupTimeTo').valid)
-                                ? 'valid'
-                                : (loadForm.get('pickupShipper').errors &&
-                                      loadForm.get('pickupShipper').touched) ||
-                                  (loadForm.get('pickupDateFrom').errors &&
-                                      loadForm.get('pickupDateFrom').touched) ||
-                                  (loadForm.get('pickupDateTo').errors &&
-                                      loadForm.get('pickupDateTo').touched) ||
-                                  (loadForm.get('pickupTimeFrom').errors &&
-                                      loadForm.get('pickupTimeFrom').touched) ||
-                                  (loadForm.get('pickupTimeTo').errors &&
-                                      loadForm.get('pickupTimeTo').touched)
-                                ? 'invalid'
-                                : null
-                        "
+                        [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
                     >
@@ -513,9 +501,10 @@
                                 formControlName="pickupDateFrom"
                                 [inputConfig]="getPickupDateFromInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('pickupDateFrom')
-                                        .markAsTouched()
+                                    markInputAsTouched('pickupDateFrom')
+                                "
+                                (clear)="
+                                    markInputAsTouched('pickupDateFrom', true)
                                 "
                             ></app-ta-input>
 
@@ -542,8 +531,9 @@
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
                                 [inputConfig]="loadPickupEndDateInputConfig"
-                                (blurInput)="
-                                    loadForm.get('pickupDateTo').markAsTouched()
+                                (blurInput)="markInputAsTouched('pickupDateTo')"
+                                (clear)="
+                                    markInputAsTouched('pickupDateTo', true)
                                 "
                             ></app-ta-input>
 
@@ -551,17 +541,19 @@
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="getPickupTimeFromInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('pickupTimeFrom')
-                                        .markAsTouched()
+                                    markInputAsTouched('pickupTimeFrom')
+                                "
+                                (clear)="
+                                    markInputAsTouched('pickupTimeFrom', true)
                                 "
                             ></app-ta-input>
 
                             <app-ta-input
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="getPickupTimeToInputConfig"
-                                (blurInput)="
-                                    loadForm.get('pickupTimeTo').markAsTouched()
+                                (blurInput)="markInputAsTouched('pickupTimeTo')"
+                                (clear)="
+                                    markInputAsTouched('pickupTimeTo', true)
                                 "
                             ></app-ta-input>
                         </div>
@@ -571,6 +563,7 @@
                                 formControlName="pickupInvolveDriver"
                                 [customClass]="'medium'"
                                 [label]="'Involve driver in loading the cargo'"
+                                name="pickupInvolveDriver"
                             ></app-ta-checkbox>
                         </div>
 
@@ -626,417 +619,407 @@
                     </app-load-modal-stop>
 
                     <!-- Extra Stops -->
-
-                    <div formArrayName="extraStops">
-                        <ng-container
-                            *ngFor="
-                                let extraStop of loadExtraStops().controls;
-                                let indx = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div [formGroupName]="indx">
-                                <app-load-modal-stop
-                                    *ngIf="loadExtraStops().controls.length"
-                                    [firstOrLast]="false"
-                                    [stopNumber]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('stopOrder').value
-                                    "
-                                    [isDelivery]="
-                                        selectExtraStopType[indx]
-                                            ?.toString()
-                                            ?.startsWith('4')
-                                            ? true
-                                            : false
-                                    "
-                                    [shipper]="
-                                        selectedExtraStopShipper[indx]?.name
-                                    "
-                                    [shipperAddress]="
-                                        selectedExtraStopShipper[indx]?.address
-                                    "
-                                    [dateRange]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('dateFrom').value
-                                            | loadDatetimeRange
-                                                : loadExtraStops()
-                                                      .at(indx)
-                                                      .get('dateTo').value
-                                    "
-                                    [timeRange]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('timeFrom').value
-                                            | loadTimeType
-                                            | loadDatetimeRange
-                                                : (loadExtraStops()
-                                                      .at(indx)
-                                                      .get('timeTo').value
-                                                      | loadTimeType)
-                                    "
-                                    [legMile]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('legMiles').value
-                                    "
-                                    [isEmptyLoad]="false"
-                                    [shipperContact]="{
-                                        fullName:
-                                            selectedExtraStopShipperContact[
+                    <div cdkDropList (cdkDropListDropped)="drop($event)">
+                        <div formArrayName="extraStops">
+                            <div
+                                *ngFor="
+                                    let extraStop of loadExtraStops().controls;
+                                    let indx = index;
+                                    trackBy: trackByIdentity
+                                "
+                                cdkDrag
+                                [cdkDragDisabled]="shouldDisableDrag(extraStop)"
+                            >
+                                <div
+                                    class="dragdrop-custom-placeholder"
+                                    *cdkDragPlaceholder
+                                ></div>
+                                <div [formGroupName]="indx">
+                                    <app-load-modal-stop
+                                        *ngIf="loadExtraStops().controls.length"
+                                        [stopFinished]="
+                                            isStepFinished(extraStop)
+                                        "
+                                        [firstOrLast]="false"
+                                        [stopNumber]="indx + 2"
+                                        [isDelivery]="
+                                            selectExtraStopType[indx]
+                                                ?.toString()
+                                                ?.startsWith('4')
+                                                ? true
+                                                : false
+                                        "
+                                        [isDragAndDropActive]="
+                                            isDragAndDropActive
+                                        "
+                                        [shipper]="
+                                            selectedExtraStopShipper[indx]?.name
+                                        "
+                                        [shipperAddress]="
+                                            selectedExtraStopShipper[indx]
+                                                ?.address
+                                        "
+                                        [dateRange]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('dateFrom').value
+                                                | loadDatetimeRange
+                                                    : loadExtraStops()
+                                                          .at(indx)
+                                                          .get('dateTo').value
+                                        "
+                                        [timeRange]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('timeFrom').value
+                                                | loadTimeType
+                                                | loadDatetimeRange
+                                                    : (loadExtraStops()
+                                                          .at(indx)
+                                                          .get('timeTo').value
+                                                          | loadTimeType)
+                                        "
+                                        [legMile]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('legMiles').value
+                                        "
+                                        [isEmptyLoad]="false"
+                                        [shipperContact]="{
+                                            fullName:
+                                                selectedExtraStopShipperContact[
+                                                    indx
+                                                ]?.name
+                                        }"
+                                        [isCardOpen]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('openClose').value &&
+                                            !isDragAndDropActive
+                                        "
+                                        [state]="
+                                            validateExtraStops(
+                                                loadExtraStops(),
                                                 indx
-                                            ]?.name
-                                    }"
-                                    [isCardOpen]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('openClose').value
-                                    "
-                                    [state]="
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('shipperId').valid &&
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('dateFrom').valid &&
-                                        loadExtraStops()
-                                            .at(indx)
-                                            .get('timeFrom').valid &&
-                                        loadExtraStops().at(indx).get('timeTo')
-                                            .valid
-                                            ? 'valid'
-                                            : (loadExtraStops()
-                                                  .at(indx)
-                                                  .get('shipperId').errors &&
-                                                  loadExtraStops()
-                                                      .at(indx)
-                                                      .get('shipperId')
-                                                      .touched) ||
-                                              (loadExtraStops()
-                                                  .at(indx)
-                                                  .get('dateFrom').errors &&
-                                                  loadExtraStops()
-                                                      .at(indx)
-                                                      .get('dateFrom')
-                                                      .touched) ||
-                                              (loadExtraStops()
-                                                  .at(indx)
-                                                  .get('dateTo').errors &&
-                                                  loadExtraStops()
-                                                      .at(indx)
-                                                      .get('dateTo').touched) ||
-                                              (loadExtraStops()
-                                                  .at(indx)
-                                                  .get('timeFrom').errors &&
-                                                  loadExtraStops()
-                                                      .at(indx)
-                                                      .get('timeFrom')
-                                                      .touched) ||
-                                              (loadExtraStops()
-                                                  .at(indx)
-                                                  .get('timeTo').errors &&
-                                                  loadExtraStops()
-                                                      .at(indx)
-                                                      .get('timeTo').touched)
-                                            ? 'invalid'
-                                            : null
-                                    "
-                                    (delete)="removeLoadExtraStop(indx)"
-                                    (toggle)="
-                                        toggleStopActivity(
-                                            $event,
-                                            'extra-stops',
-                                            indx
-                                        )
-                                    "
-                                >
-                                    <!-- Tabs  -->
+                                            )
+                                        "
+                                        (delete)="removeLoadExtraStop(indx)"
+                                        (toggle)="
+                                            toggleStopActivity(
+                                                $event,
+                                                'extra-stops',
+                                                indx
+                                            )
+                                        "
+                                    >
+                                        <!-- Tabs  -->
 
-                                    <div class="row">
-                                        <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <app-ta-tab-switch
+                                                    [tabs]="
+                                                        typeOfExtraStops[indx]
+                                                    "
+                                                    (switchClicked)="
+                                                        onTabChange(
+                                                            $event,
+                                                            'stop-tab',
+                                                            indx
+                                                        )
+                                                    "
+                                                    [type]="'type2-modal-popup'"
+                                                ></app-ta-tab-switch>
+                                            </div>
+                                        </div>
+
+                                        <!-- Shipper -->
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <app-ta-input-dropdown
+                                                    formControlName="shipperId"
+                                                    [template]="'load-shipper'"
+                                                    [inputConfig]="
+                                                        loadExtraStopsShipperInputConfig[
+                                                            indx
+                                                        ]
+                                                    "
+                                                    [canAddNew]="true"
+                                                    [canOpenModal]="true"
+                                                    [options]="labelsShippers"
+                                                    [activeItem]="
+                                                        selectedExtraStopShipper[
+                                                            indx
+                                                        ]
+                                                    "
+                                                    (selectedItem)="
+                                                        onSelectDropdown(
+                                                            $event,
+                                                            'shipper-extra-stops',
+                                                            indx
+                                                        )
+                                                    "
+                                                    (closeDropdown)="
+                                                        loadExtraStops()
+                                                            .at(indx)
+                                                            .get('shipperId')
+                                                            .markAsTouched()
+                                                    "
+                                                ></app-ta-input-dropdown>
+                                            </div>
+                                        </div>
+
+                                        <!--  Work Hours, Appointment, Contact -->
+
+                                        <div class="load-shipper-contact-row">
                                             <app-ta-tab-switch
-                                                [tabs]="typeOfExtraStops[indx]"
+                                                [tabs]="
+                                                    stopTimeTabsExtraStops[indx]
+                                                "
                                                 (switchClicked)="
                                                     onTabChange(
                                                         $event,
-                                                        'stop-tab',
+                                                        'extra-stops-time',
                                                         indx
                                                     )
                                                 "
                                                 [type]="'type2-modal-popup'"
                                             ></app-ta-tab-switch>
-                                        </div>
-                                    </div>
 
-                                    <!-- Shipper -->
-
-                                    <div class="row">
-                                        <div class="col-12">
                                             <app-ta-input-dropdown
-                                                formControlName="shipperId"
-                                                [template]="'load-shipper'"
+                                                formControlName="shipperContactId"
+                                                [template]="
+                                                    'load-broker-contact'
+                                                "
                                                 [inputConfig]="
-                                                    loadExtraStopsShipperInputConfig[
+                                                    loadExtraStopsShipperContactsInputConfig[
                                                         indx
                                                     ]
                                                 "
                                                 [canAddNew]="true"
                                                 [canOpenModal]="true"
-                                                [options]="labelsShippers"
+                                                [options]="
+                                                    labelsShipperContacts
+                                                "
                                                 [activeItem]="
-                                                    selectedExtraStopShipper[
+                                                    selectedExtraStopShipperContact[
                                                         indx
                                                     ]
                                                 "
                                                 (selectedItem)="
                                                     onSelectDropdown(
                                                         $event,
-                                                        'shipper-extra-stops',
+                                                        'shipper-contact-extra-stops',
                                                         indx
                                                     )
                                                 "
-                                                (closeDropdown)="
-                                                    loadExtraStops()
-                                                        .at(indx)
-                                                        .get('shipperId')
-                                                        .markAsTouched()
-                                                "
                                             ></app-ta-input-dropdown>
                                         </div>
-                                    </div>
 
-                                    <!--  Work Hours, Appointment, Contact -->
+                                        <!--  Date Pickers & Time Pickers -->
 
-                                    <div class="load-shipper-contact-row">
-                                        <app-ta-tab-switch
-                                            [tabs]="
-                                                stopTimeTabsExtraStops[indx]
-                                            "
-                                            (switchClicked)="
-                                                onTabChange(
-                                                    $event,
-                                                    'extra-stops-time',
-                                                    indx
-                                                )
-                                            "
-                                            [type]="'type2-modal-popup'"
-                                        ></app-ta-tab-switch>
-
-                                        <app-ta-input-dropdown
-                                            formControlName="shipperContactId"
-                                            [template]="'load-broker-contact'"
-                                            [inputConfig]="
-                                                loadExtraStopsShipperContactsInputConfig[
-                                                    indx
-                                                ]
-                                            "
-                                            [canAddNew]="true"
-                                            [canOpenModal]="true"
-                                            [options]="labelsShipperContacts"
-                                            [activeItem]="
-                                                selectedExtraStopShipperContact[
-                                                    indx
-                                                ]
-                                            "
-                                            (selectedItem)="
-                                                onSelectDropdown(
-                                                    $event,
-                                                    'shipper-contact-extra-stops',
-                                                    indx
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-
-                                    <!--  Date Pickers & Time Pickers -->
-
-                                    <div
-                                        class="stop-load-date-time"
-                                        [ngClass]="{
-                                            'date-range-active':
-                                                loadExtraStopsDateRange[indx]
-                                        }"
-                                    >
-                                        <app-ta-input
-                                            formControlName="dateFrom"
-                                            [inputConfig]="
-                                                getExtraStopsDateFromInputConfig(
+                                        <div
+                                            class="stop-load-date-time"
+                                            [ngClass]="{
+                                                'date-range-active':
                                                     loadExtraStopsDateRange[
                                                         indx
                                                     ]
-                                                )
-                                            "
-                                            (blurInput)="
-                                                loadExtraStops()
-                                                    .at(indx)
-                                                    .get('dateFrom')
-                                                    .markAsTouched()
-                                            "
-                                        ></app-ta-input>
-
-                                        <ng-container
-                                            *ngIf="
-                                                !loadExtraStopsDateRange[indx]
-                                            "
+                                            }"
                                         >
-                                            <div
-                                                class="d-flex align-items-center justify-content-center load-plus-button"
-                                                [ngClass]="{
-                                                    disabled:
+                                            <app-ta-input
+                                                formControlName="dateFrom"
+                                                [inputConfig]="
+                                                    getExtraStopsDateFromInputConfig(
+                                                        loadExtraStopsDateRange[
+                                                            indx
+                                                        ]
+                                                    )
+                                                "
+                                                (blurInput)="
+                                                    loadExtraStops()
+                                                        .at(indx)
+                                                        .get('dateFrom')
+                                                        .markAsTouched()
+                                                "
+                                            ></app-ta-input>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    !loadExtraStopsDateRange[
+                                                        indx
+                                                    ]
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center justify-content-center load-plus-button"
+                                                    [ngClass]="{
+                                                        disabled:
+                                                            selectedExtraStopTime[
+                                                                indx
+                                                            ]
+                                                                ?.toString()
+                                                                ?.startsWith(
+                                                                    '9'
+                                                                )
+                                                    }"
+                                                    (click)="
+                                                        loadExtraStopsDateRange[
+                                                            indx
+                                                        ] = true
+                                                    "
+                                                >
+                                                    <svg-icon
+                                                        class="plus-icon"
+                                                        [src]="
+                                                            loadModalSvgRoutes.plus
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px': '14',
+                                                            'height.px': '14'
+                                                        }"
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
+
+                                            <app-ta-input
+                                                *ngIf="
+                                                    loadExtraStopsDateRange[
+                                                        indx
+                                                    ]
+                                                "
+                                                formControlName="dateTo"
+                                                [inputConfig]="
+                                                    loadExtraStopsToDateInputConfig
+                                                "
+                                                (blurInput)="
+                                                    loadExtraStops()
+                                                        .at(indx)
+                                                        .get('dateTo')
+                                                        .markAsTouched()
+                                                "
+                                            ></app-ta-input>
+
+                                            <app-ta-input
+                                                formControlName="timeFrom"
+                                                [inputConfig]="
+                                                    getExtraStopsDateFromTimeFromInputConfig(
                                                         selectedExtraStopTime[
                                                             indx
                                                         ]
-                                                            ?.toString()
-                                                            ?.startsWith('9')
+                                                    )
+                                                "
+                                                (blurInput)="
+                                                    loadExtraStops()
+                                                        .at(indx)
+                                                        .get('timeFrom')
+                                                        .markAsTouched()
+                                                "
+                                            ></app-ta-input>
+
+                                            <app-ta-input
+                                                formControlName="timeTo"
+                                                [inputConfig]="
+                                                    getExtraStopsDateToTimeToInputConfig(
+                                                        selectedExtraStopTime[
+                                                            indx
+                                                        ]
+                                                    )
+                                                "
+                                                (blurInput)="
+                                                    loadExtraStops()
+                                                        .at(indx)
+                                                        .get('timeTo')
+                                                        .markAsTouched()
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+
+                                        <!-- Stop Items -->
+
+                                        <div class="stop-items-wrapper">
+                                            <app-ta-custom-card
+                                                [cardName]="'Item'"
+                                                [isCardOpen]="
+                                                    extraStopItems[indx].length
+                                                "
+                                                [hasCounter]="
+                                                    extraStopItems[indx].length
+                                                "
+                                                [hasActionSvg]="true"
+                                                [hasBodyData]="true"
+                                                [hasArrow]="true"
+                                                [animationMarginParams]="{
+                                                    marginTop: '10px',
+                                                    marginBottom: '12px'
                                                 }"
-                                                (click)="
-                                                    loadExtraStopsDateRange[
+                                                [hasScrollBodyXAxis]="
+                                                    extraStopItems[indx].length
+                                                "
+                                                (onActionEvent)="
+                                                    createNewStopItemsRow(
+                                                        'extra-stop',
                                                         indx
-                                                    ] = true
+                                                    )
                                                 "
                                             >
-                                                <svg-icon
-                                                    class="plus-icon"
-                                                    src="assets/svg/common/ic_plus.svg"
-                                                    [svgStyle]="{
-                                                        'width.px': '14',
-                                                        'height.px': '14'
-                                                    }"
-                                                ></svg-icon>
-                                            </div>
-                                        </ng-container>
-
-                                        <app-ta-input
+                                                <app-load-modal-stop-items
+                                                    [createNewStopItemsRow]="
+                                                        isCreatedNewStopItemsRow
+                                                            .extraStops[indx]
+                                                    "
+                                                    [stopItemDropdownLists]="
+                                                        stopItemDropdownLists
+                                                    "
+                                                    (stopItemsDataValueEmitter)="
+                                                        handleStopItemsDataValueEmit(
+                                                            $event,
+                                                            'extra-stop',
+                                                            indx
+                                                        )
+                                                    "
+                                                    (stopItemsValidStatusEmitter)="
+                                                        handleStopItemsValidStatusEmit(
+                                                            $event
+                                                        )
+                                                    "
+                                                ></app-load-modal-stop-items>
+                                            </app-ta-custom-card>
+                                        </div>
+                                        <ng-container
                                             *ngIf="
-                                                loadExtraStopsDateRange[indx]
-                                            "
-                                            formControlName="dateTo"
-                                            [inputConfig]="
-                                                loadExtraStopsToDateInputConfig
-                                            "
-                                            (blurInput)="
-                                                loadExtraStops()
-                                                    .at(indx)
-                                                    .get('dateTo')
-                                                    .markAsTouched()
-                                            "
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            formControlName="timeFrom"
-                                            [inputConfig]="
-                                                getExtraStopsDateFromTimeFromInputConfig(
-                                                    selectedExtraStopTime[indx]
-                                                )
-                                            "
-                                            (blurInput)="
-                                                loadExtraStops()
-                                                    .at(indx)
-                                                    .get('timeFrom')
-                                                    .markAsTouched()
-                                            "
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            formControlName="timeTo"
-                                            [inputConfig]="
-                                                getExtraStopsDateToTimeToInputConfig(
-                                                    selectedExtraStopTime[indx]
-                                                )
-                                            "
-                                            (blurInput)="
-                                                loadExtraStops()
-                                                    .at(indx)
-                                                    .get('timeTo')
-                                                    .markAsTouched()
-                                            "
-                                        ></app-ta-input>
-                                    </div>
-
-                                    <!-- Stop Items -->
-
-                                    <div class="stop-items-wrapper">
-                                        <app-ta-custom-card
-                                            [cardName]="'Item'"
-                                            [isCardOpen]="
-                                                extraStopItems[indx].length
-                                            "
-                                            [hasCounter]="
-                                                extraStopItems[indx].length
-                                            "
-                                            [hasActionSvg]="true"
-                                            [hasBodyData]="true"
-                                            [hasArrow]="true"
-                                            [animationMarginParams]="{
-                                                marginTop: '10px',
-                                                marginBottom: '12px'
-                                            }"
-                                            [hasScrollBodyXAxis]="
-                                                extraStopItems[indx].length
-                                            "
-                                            (onActionEvent)="
-                                                createNewStopItemsRow(
-                                                    'extra-stop',
-                                                    indx
-                                                )
+                                                extraStopStatusHistory[indx] &&
+                                                extraStopStatusHistory[indx]
+                                                    .length
                                             "
                                         >
-                                            <app-load-modal-stop-items
-                                                [createNewStopItemsRow]="
-                                                    isCreatedNewStopItemsRow
-                                                        .extraStops[indx]
+                                            <app-load-modal-wait-time
+                                                [areFieldsDisabled]="
+                                                    isLoadClosed
                                                 "
-                                                [stopItemDropdownLists]="
-                                                    stopItemDropdownLists
+                                                [statusHistory]="
+                                                    extraStopStatusHistory[indx]
                                                 "
-                                                (stopItemsDataValueEmitter)="
-                                                    handleStopItemsDataValueEmit(
+                                                (formChanged)="
+                                                    pickupStatusHistoryChange(
                                                         $event,
                                                         'extra-stop',
                                                         indx
                                                     )
                                                 "
-                                                (stopItemsValidStatusEmitter)="
-                                                    handleStopItemsValidStatusEmit(
-                                                        $event
-                                                    )
-                                                "
-                                            ></app-load-modal-stop-items>
-                                        </app-ta-custom-card>
-                                    </div>
-                                    <ng-container
-                                        *ngIf="
-                                            extraStopStatusHistory[indx] &&
-                                            extraStopStatusHistory[indx].length
-                                        "
-                                    >
-                                        <app-load-modal-wait-time
-                                            [areFieldsDisabled]="isLoadClosed"
-                                            [statusHistory]="
-                                                extraStopStatusHistory[indx]
-                                            "
-                                            (formChanged)="
-                                                pickupStatusHistoryChange(
-                                                    $event,
-                                                    'extra-stop',
-                                                    indx
-                                                )
-                                            "
-                                        ></app-load-modal-wait-time>
-                                    </ng-container>
-                                </app-load-modal-stop>
+                                            ></app-load-modal-wait-time>
+                                        </ng-container>
+                                    </app-load-modal-stop>
+                                </div>
                             </div>
-                        </ng-container>
+                        </div>
                     </div>
-
                     <!-- Delivery Stop -->
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('deliveryStopOrder').value"
-                        [isDelivery]="true"
+                        [stopFinished]="false"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1062,30 +1045,8 @@
                         [isDestinationTab]="true"
                         [disabledCard]="!selectedPickupShipper"
                         [isCardOpen]="isActiveDeliveryStop"
-                        [state]="
-                            loadForm.get('deliveryShipper').valid &&
-                            loadForm.get('deliveryDateFrom').valid &&
-                            loadForm.get('deliveryTimeFrom').valid &&
-                            (selectedStopTimeDelivery === 6
-                                ? !loadForm.get('deliveryTimeTo').errors
-                                : loadForm.get('deliveryTimeTo').valid)
-                                ? 'valid'
-                                : (loadForm.get('deliveryShipper').errors &&
-                                      loadForm.get('deliveryShipper')
-                                          .touched) ||
-                                  (loadForm.get('deliveryDateFrom').errors &&
-                                      loadForm.get('deliveryDateFrom')
-                                          .touched) ||
-                                  (loadForm.get('deliveryDateTo').errors &&
-                                      loadForm.get('deliveryDateTo').touched) ||
-                                  (loadForm.get('deliveryTimeFrom').errors &&
-                                      loadForm.get('deliveryTimeFrom')
-                                          .touched) ||
-                                  (loadForm.get('deliveryTimeTo').errors &&
-                                      loadForm.get('deliveryTimeTo').touched)
-                                ? 'invalid'
-                                : null
-                        "
+                        [isDelivery]="true"
+                        [state]="validateDeliveryStops(loadForm)"
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
                     >
                         <!-- Shipper -->
@@ -1189,9 +1150,10 @@
                                 formControlName="deliveryDateTo"
                                 [inputConfig]="loadDeliveryDateTo"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryDateTo')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryDateTo')
+                                "
+                                (clear)="
+                                    markInputAsTouched('deliveryDateTo', true)
                                 "
                             ></app-ta-input>
 
@@ -1199,9 +1161,10 @@
                                 formControlName="deliveryTimeFrom"
                                 [inputConfig]="getDeliveryTimeFromInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryTimeFrom')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryTimeFrom')
+                                "
+                                (clear)="
+                                    markInputAsTouched('deliveryTimeFrom', true)
                                 "
                             ></app-ta-input>
 
@@ -1209,9 +1172,10 @@
                                 formControlName="deliveryTimeTo"
                                 [inputConfig]="getDeliveryTimeToInputConfig"
                                 (blurInput)="
-                                    loadForm
-                                        .get('deliveryTimeTo')
-                                        .markAsTouched()
+                                    markInputAsTouched('deliveryTimeTo')
+                                "
+                                (clear)="
+                                    markInputAsTouched('deliveryTimeTo', true)
                                 "
                             ></app-ta-input>
                         </div>
@@ -1356,6 +1320,7 @@
                         marginBottom: '22px'
                     }"
                     (action)="onFinancialAction($event)"
+                    [disablePaymentAction]="!paymentTypesDropdownList.length"
                 >
                     <div class="load-financial-container">
                         <div class="load-financial-billing">
@@ -1510,7 +1475,12 @@
                                 </div>
                             </div>
 
-                            <ng-container *ngIf="showPaymentArray">
+                            <ng-container
+                                *ngIf="
+                                    showPaymentArray &&
+                                    paymentTypesDropdownList.length
+                                "
+                            >
                                 <app-ta-input-dropdown
                                     formControlName="paymentDropdown"
                                     [inputConfig]="
@@ -1551,11 +1521,9 @@
             >
                 <app-ta-custom-card
                     [cardName]="'Comment'"
-                    [isCardOpen]="comments.length"
+                    [isCardOpen]="comments.length || areCommentsVisible"
                     [hasCounter]="comments.length"
-                    [hasActionSvg]="
-                        editData && !isCommented && !isCommentEdited
-                    "
+                    [hasActionSvg]="editData"
                     [hasScrollBody]="comments.length"
                     [hasBodyData]="true"
                     [animationMarginParams]="{
@@ -1565,21 +1533,14 @@
                     [disabledCard]="!editData"
                     (onActionEvent)="createComment()"
                 >
-                    <ng-container
-                        *ngFor="let comment of comments; let i = index"
+                    <app-load-details-item-comments
+                        [load]="editData?.data"
+                        [isAddNewComment]="isCommenting"
+                        [isSearchComment]="false"
+                        [isHeaderHidden]="true"
+                        (commentsCountChanged)="commentsCountChanged()"
                     >
-                        <app-ta-comment
-                            [commentData]="comment"
-                            [commentIndex]="i"
-                            [isMe]="
-                                comment.companyUser.id === companyUser.userId
-                            "
-                            [isEditButtonDisabled]="
-                                isCommented || isCommentEdited
-                            "
-                            (btnActionEmitter)="handleCommentActionEmit($event)"
-                        ></app-ta-comment>
-                    </ng-container>
+                    </app-load-details-item-comments>
                 </app-ta-custom-card>
             </div>
 
