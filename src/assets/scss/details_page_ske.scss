@@ -52,6 +52,10 @@ p {
     row-gap: 12px;
 
     padding-bottom: 12px;
+
+    &.load {
+        grid-template-columns: 440px 1056px 300px !important;
+    }
 }
 // Common Class
 .details-component {
@@ -59,6 +63,10 @@ p {
     grid-auto-flow: column;
     column-gap: 12px;
     row-gap: 12px;
+
+    &.load {
+        grid-template-columns: 440px 1056px 300px !important;
+    }
 
     // BODY
     .truck-wrapper {

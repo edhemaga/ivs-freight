@@ -70,14 +70,17 @@ export class TaDetailsHeaderCardComponent {
     @Input() public deactivate?: string;
     @Input() public owner?: string;
     @Input() public ownerName?: string;
+    @Input() public dateChecked: string;
+    @Input() public lastEdit: string = '';
+    @Input() public haveDropSVG: boolean;
+    @Input() public repairHeader: boolean;
+    @Input() public dateClosed: string;
+
     @Output() public dropActions = new EventEmitter<any>();
     @Output() selectValue = new EventEmitter<string>();
     @Output() selectValueStore = new EventEmitter<string>();
     @Output() changeEvent = new EventEmitter<string>();
-    @Input() public dateChecked: string = '';
-    @Input() public lastEdit: string = '';
-    @Input() public haveDropSVG: boolean;
-    @Input() public repairHeader: boolean;
+
     public inputFormControl: UntypedFormControl = new UntypedFormControl();
     public driversList: any[] = this.driverMinimalQuery.getAll();
     public selectedDropdown: boolean = false;
@@ -85,6 +88,7 @@ export class TaDetailsHeaderCardComponent {
     public hideLeftArrow: boolean;
     public hideRightArrow: boolean;
     public driverId: number = this.driverItemStore.getValue().ids[0];
+
     showDropdownTooltip: boolean = true;
 
     public activeItem: any;

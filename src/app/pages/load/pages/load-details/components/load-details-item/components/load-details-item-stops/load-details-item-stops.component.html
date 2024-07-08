@@ -11,5 +11,14 @@
         </app-load-details-item-stops-progress-bar>
     </div>
 
-    <!-- Stops Main  -->
+    <!-- Main  -->
+
+    <app-load-deatils-item-stops-main
+        [stopsData]="{
+            statusType: load?.statusType,
+            stops: load?.stops
+        }"
+        [isMapDisplayed]="isMapDisplayed"
+    >
+    </app-load-deatils-item-stops-main>
 </div>

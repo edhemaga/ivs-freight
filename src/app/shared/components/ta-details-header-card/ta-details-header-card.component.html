@@ -262,20 +262,20 @@
                 </span>
             </ng-container>
 
-            <ng-container *ngIf="dateChecked">
+            <ng-container *ngIf="dateChecked || dateClosed">
                 <span style="margin-left: 130px">
                     <div
                         class="details-header-wrapper-data-item bottom"
                         tooltipBackground="#6C6C6C"
                         ngbTooltip
-                        mainTooltip="Last Used"
+                        [mainTooltip]="dateChecked ? 'Last Used' : 'Closed'"
                         position="bottom"
                     >
                         <svg-icon
                             class="date-terminated"
                             src="assets/svg/common/ic_date_checked.svg"
                         ></svg-icon>
-                        <p class="vin-text">{{ dateChecked }}</p>
+                        <p class="vin-text">{{ dateChecked || dateClosed }}</p>
                     </div>
                 </span>
             </ng-container>

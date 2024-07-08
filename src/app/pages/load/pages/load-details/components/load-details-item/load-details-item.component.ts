@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // components
@@ -20,7 +14,6 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     selector: 'app-load-details-item',
     templateUrl: './load-details-item.component.html',
     styleUrls: ['./load-details-item.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         // modules
