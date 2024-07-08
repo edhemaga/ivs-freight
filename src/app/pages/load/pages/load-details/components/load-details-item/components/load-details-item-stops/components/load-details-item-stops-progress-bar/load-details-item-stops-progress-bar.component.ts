@@ -52,6 +52,8 @@ export class LoadDetailsItemStopsProgressBarComponent implements OnChanges {
     public checkedInActiveData: LoadStopProgressBarResponse;
     public nextStopActiveData: LoadStopProgressBarResponse;
 
+    public statusType: string;
+
     public dotHoveringIndex: number = -1;
 
     public isToday: boolean = false;
@@ -78,6 +80,15 @@ export class LoadDetailsItemStopsProgressBarComponent implements OnChanges {
 
     private getPositionToDisplayData(progressData: LoadResponse): void {
         const { statusType, loadProgress } = progressData;
+
+        this.statusType = statusType?.name;
+
+        this.pendingData = null;
+        this.activeData = null;
+        this.closedData = null;
+
+        this.checkedInActiveData = null;
+        this.nextStopActiveData = null;
 
         switch (statusType?.name) {
             case LoadDetailsItemStringEnum.PENDING:

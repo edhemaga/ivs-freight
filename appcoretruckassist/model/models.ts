@@ -710,6 +710,7 @@ export * from './problemDetails';
 export * from './pspAuthFeedbackResponse';
 export * from './ratingReviewResponse';
 export * from './ratingSetResponse';
+export * from './refreshMobileTokenCommand';
 export * from './refreshTokenCommand';
 export * from './registrationModalResponse';
 export * from './registrationResponse';

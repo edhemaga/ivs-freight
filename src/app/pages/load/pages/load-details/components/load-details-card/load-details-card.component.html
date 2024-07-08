@@ -11,7 +11,11 @@
                 status: load?.status,
                 company: load?.company,
                 lastStatusPassed: load?.lastStatusPassed,
-                dispatch: load?.dispatch
+                dispatch: load?.dispatch,
+                stops: load?.stops,
+                lastStatus: {
+                    stopOrder: load?.statusHistory[0]?.stopOrder
+                }
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-load-details-title-card>

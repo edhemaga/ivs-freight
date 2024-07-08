@@ -1442,8 +1442,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         if (
                             (this.selectedTab !== TableStringEnum.TEMPLATE &&
                                 this.selectedTab !== TableStringEnum.PENDING) ||
-                            item?.tableData?.status?.statusValue?.name !==
-                                TableStringEnum.UNASSIGNED
+                            ![
+                                TableStringEnum.UNASSIGNED,
+                                TableStringEnum.BOOKED,
+                            ].includes(
+                                item?.tableData?.status?.statusValue
+                                    ?.name as TableStringEnum
+                            )
                         ) {
                             isDeleteHidden = true;
                         }
