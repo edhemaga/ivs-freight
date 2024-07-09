@@ -155,24 +155,34 @@
 
             <!-- Shipper, Address -->
 
-            <div
-                class="d-flex flex-column justify-content-center stop-box"
-                [ngStyle]="{
-                    visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
-                }"
-            >
-                <p
-                    class="m-0 text-truncate"
-                    [ngStyle]="{
-                        'max-width':
-                            stopsData?.statusType?.name === 'Active' ||
-                            stopsData?.statusType?.name === 'Closed'
-                                ? '170px'
-                                : 'unset'
-                    }"
-                >
-                    {{ stop?.shipper?.businessName }}
-                </p>
+            <div class="d-flex flex-column justify-content-center stop-box">
+                <div class="d-flex align-items-center">
+                    <p
+                        class="m-0 text-truncate"
+                        [ngStyle]="{
+                            'max-width':
+                                stopsData?.statusType?.name === 'Active' ||
+                                stopsData?.statusType?.name === 'Closed'
+                                    ? '170px'
+                                    : 'unset'
+                        }"
+                    >
+                        {{ stop?.shipper?.businessName }}
+                    </p>
+
+                    <ng-container
+                        *ngIf="stopsData?.milesType?.name === 'Parking'"
+                    >
+                        <svg-icon
+                            class="icon"
+                            [src]="loadDetailsItemSvgRoutes.parkingRoute"
+                            [svgStyle]="{
+                                'width.px': 14,
+                                'height.px': 14
+                            }"
+                        ></svg-icon>
+                    </ng-container>
+                </div>
 
                 <span>
                     {{ stop?.shipper?.address?.streetNumber }}

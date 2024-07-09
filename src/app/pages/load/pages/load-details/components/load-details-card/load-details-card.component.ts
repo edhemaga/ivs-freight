@@ -93,6 +93,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('load', changes?.load?.currentValue);
         if (!changes?.load?.firstChange && changes?.load.currentValue)
             this.getLoadsDropdown();
     }

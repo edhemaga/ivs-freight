@@ -173,8 +173,6 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
                     (history) => history.dateTimeFrom && history.dateTimeTo
                 );
 
-                console.log('latestHistory completed', latestHistory);
-
                 const { statusString, dateTimeFrom, dateTimeTo } =
                     latestHistory;
 
@@ -193,8 +191,6 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
             } else {
                 const latestHistory =
                     stopStatusHistory[stopStatusHistory.length - 1];
-
-                console.log('latestHistory NOT completed', latestHistory);
 
                 const { statusString, dateTimeFrom } = latestHistory;
 

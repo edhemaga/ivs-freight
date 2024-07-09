@@ -15,7 +15,8 @@
                 stops: load?.stops,
                 lastStatus: {
                     stopOrder: load?.statusHistory[0]?.stopOrder
-                }
+                },
+                loadDeliveryTime: load?.loadDeliveryTime
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-load-details-title-card>

@@ -8,6 +8,11 @@
     "
     [tooltipPrevious]="[0, -1].includes(loadCurrentIndex) ? '' : 'Previous'"
     [cardDetailsDate]="cardData.dateCreated | formatDateP"
+    [dateClosed]="
+        cardData.loadDeliveryTime
+            ? (cardData.loadDeliveryTime | formatDateP)
+            : null
+    "
     [searchInputName]="'Search Load'"
     [options]="loadsDropdownList"
     [currentName]="'Load ' + cardData.loadNumber"
