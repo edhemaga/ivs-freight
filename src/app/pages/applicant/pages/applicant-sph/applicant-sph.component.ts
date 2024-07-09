@@ -113,7 +113,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     public createForm(): void {
         this.sphForm = this.formBuilder.group({
             isTested: [false, Validators.requiredTrue],
-            hasReadAndUnderstood: [false, Validators.requiredTrue],
         });
     }
 
@@ -222,6 +221,7 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        debugger;
         if (this.sphForm.invalid || !this.signature) {
             if (this.sphForm.invalid) {
                 this.inputService.markInvalid(this.sphForm);
