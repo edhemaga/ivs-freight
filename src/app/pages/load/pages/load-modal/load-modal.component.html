@@ -434,10 +434,10 @@
                         [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
-                        [stopFinished]="
-                            isPickupStopFinished()
-                        "
+                        [stopFinished]="isPickupStopFinished()"
                         [appointment]="isPickupAppointment()"
+                        [legHours]="loadForm.get('pickuplegHours').value"
+                        [legMinutes]="loadForm.get('pickuplegMinutes').value"
                     >
                         <!--  Shipper-->
 
@@ -664,6 +664,16 @@
                                             selectedExtraStopShipper[indx]
                                                 ?.address
                                         "
+                                        [legHours]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('legHours').value
+                                        "
+                                        [legMinutes]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('legMinutes').value
+                                        "
                                         [dateRange]="
                                             loadExtraStops()
                                                 .at(indx)
@@ -716,7 +726,9 @@
                                                 indx
                                             )
                                         "
-                                        [appointment]="isExtraStopAppointment(indx)"
+                                        [appointment]="
+                                            isExtraStopAppointment(indx)
+                                        "
                                     >
                                         <!-- Tabs  -->
 
@@ -1039,9 +1051,7 @@
                                     : (loadForm.get('deliveryTimeTo').value
                                           | loadTimeType)
                         "
-                                        [stopFinished]="
-                                            isDeliveryStopFinished()
-                                        "
+                        [stopFinished]="isDeliveryStopFinished()"
                         [legMile]="
                             selectedDeliveryShipper &&
                             loadForm.get('deliverylegMiles').value
@@ -1057,6 +1067,8 @@
                         [state]="validateDeliveryStops(loadForm)"
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
                         [appointment]="isDeliveryAppointment()"
+                        [legHours]="loadForm.get('deliverylegHours').value"
+                        [legMinutes]="loadForm.get('deliverylegMinutes').value"
                     >
                         <!-- Shipper -->
 

@@ -64,6 +64,8 @@ export class LoadModalStopComponent {
     @Input() isDragAndDropActive = false;
     @Input() stopFinished = false;
     @Input() appointment = false;
+    @Input() legHours: string;
+    @Input() legMinutes: string;
     public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
@@ -84,5 +86,15 @@ export class LoadModalStopComponent {
 
     public deleteStop(): void {
         this.deleteEvent.emit();
+    }
+
+    public get legTime(): string {
+        // if(this.stopFinished) 
+        const prefix = !this.stopFinished ? '≈' : '';
+        if(!this.legHours) {
+            return ` | ${prefix} ${this.legMinutes}m`
+        }
+
+        return ` | ${prefix} ${this.legHours}h ${this.legMinutes}m`
     }
 }

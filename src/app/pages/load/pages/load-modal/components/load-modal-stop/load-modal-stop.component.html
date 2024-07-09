@@ -167,8 +167,9 @@
                     [ngStyle]="{ visibility: legMile ? 'visible' : 'hidden' }"
                 >
                     <p>
-                        {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
+                        <!-- {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }} -->
                         <span>{{ legMile | number : '1.2-2' }} mi</span>
+                        <span>{{legTime}}</span>
                     </p>
                 </div>
 
