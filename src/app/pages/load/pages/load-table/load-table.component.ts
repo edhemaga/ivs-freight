@@ -26,6 +26,7 @@ import {
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
 import {
+    CardDetails,
     DeleteComment,
     DropdownItem,
 } from '@shared/models/card-models/card-table-data.model';
@@ -79,6 +80,7 @@ import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
     selectPendingTabCards,
+    selectTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
 // Utils
@@ -1331,6 +1333,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     select(selectPendingTabCards)
                 );
                 break;
+            case TableStringEnum.TEMPLATE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectTemplateTabCards)
+                );
+                break;
             default:
                 break;
         }
@@ -1458,6 +1465,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         isDeleteHidden;
                 }
             });
+    }
+
+    public saveValueNote(event: { value: string; id: number }): void {
+        this.viewData.map((item: CardDetails) => {
+            if (item.id === event.id) {
+                item.note = event.value;
+            }
+        });
+
+        const noteData = {
+            value: event.value,
+            id: event.id,
+            selectedTab: this.selectedTab,
+        };
+
+        this.loadServices.updateNote(noteData);
     }
 
     public ngOnDestroy(): void {

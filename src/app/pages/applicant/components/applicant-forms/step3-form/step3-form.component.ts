@@ -199,6 +199,7 @@ export class Step3FormComponent
     get countryInputConfig(): ITaInput {
         return Step3Config.getCountryInputConfig({
             selectedMode: this.selectedMode,
+            isEditing: this.isEditing,
         });
     }
 

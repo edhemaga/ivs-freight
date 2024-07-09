@@ -48,6 +48,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { Step4FormComponent } from '@pages/applicant/components/applicant-forms/step4-form/step4-form.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -70,6 +71,7 @@ import { SharedModule } from '@shared/shared.module';
         Step4FormComponent,
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
