@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -10,10 +11,15 @@ import {
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 @Component({
     selector: 'app-applicant-next-back-btn',
     templateUrl: './applicant-next-back-btn.component.html',
     styleUrls: ['./applicant-next-back-btn.component.scss'],
+    standalone: true,
+    imports: [CommonModule, AngularSvgIconModule],
 })
 export class ApplicantNextBackBtnComponent implements OnChanges {
     @Input() mode?: string;

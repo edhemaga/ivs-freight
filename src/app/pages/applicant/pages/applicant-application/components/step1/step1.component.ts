@@ -91,6 +91,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
@@ -120,6 +121,7 @@ import { Step1Config } from '@pages/applicant/pages/applicant-application/compon
         TaCustomCardComponent,
         TaModalTableComponent,
         TaInputRadiobuttonsComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step1Component implements OnInit, OnDestroy, AfterViewInit {

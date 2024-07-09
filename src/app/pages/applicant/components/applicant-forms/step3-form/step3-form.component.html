@@ -180,7 +180,17 @@
                     formControlName="restrictions"
                     [template]="'multiselect'"
                     [multiselectTemplate]="'multiselect-3-columns'"
-                    [inputConfig]="restrictionsInputConfig"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Restrictions',
+                        isDropdown: true,
+                        multiselectDropdown: true,
+                        dropdownWidthClass: isEditing
+                            ? 'w-col-606'
+                            : 'w-col-616',
+                        isDisabled: selectedMode !== 'APPLICANT_MODE'
+                    }"
                     [options]="restrictionsList"
                     [preloadMultiselectItems]="selectedRestrictions"
                     (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
@@ -200,7 +210,17 @@
                     formControlName="endorsments"
                     [template]="'multiselect'"
                     [multiselectTemplate]="'multiselect-3-columns'"
-                    [inputConfig]="endorsmentsInputConfig"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Endorsments',
+                        isDropdown: true,
+                        multiselectDropdown: true,
+                        dropdownWidthClass: isEditing
+                            ? 'w-col-606'
+                            : 'w-col-616',
+                        isDisabled: selectedMode !== 'APPLICANT_MODE'
+                    }"
                     [options]="endorsmentsList"
                     [preloadMultiselectItems]="selectedEndorsments"
                     (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"

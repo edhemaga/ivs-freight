@@ -59,7 +59,11 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    {{ card.loadNumber }}
+                                    {{
+                                        selectedTab === 'template'
+                                            ? card.name
+                                            : card.loadNumber
+                                    }}
                                 </span>
                             </span>
                         </div>
@@ -112,7 +116,7 @@
                                             *ngIf="
                                                 (cardRow.type === 'miles' ||
                                                     cardRow.type === 'phone') &&
-                                                card[cardRow.key][
+                                                card[cardRow.key]?.[
                                                     cardRow.secondKey
                                                 ]
                                             "
@@ -165,40 +169,45 @@
                                     >
                                         <ng-container
                                             *ngIf="
-                                                !card.loadRequirements;
+                                                !card.loadRequirements ||
+                                                    (card.loadRequirements &&
+                                                        cardRow.title ===
+                                                            'Requirement • Trailer Type' &&
+                                                        !card.loadRequirements
+                                                            .trailerType
+                                                            ?.name) ||
+                                                    (card.loadRequirements &&
+                                                        cardRow.title ===
+                                                            'Requirement • Truck Type' &&
+                                                        !card.loadRequirements
+                                                            .truckType?.name);
                                                 else requirements
                                             "
                                             >/</ng-container
                                         >
                                         <ng-template #requirements>
-                                            <div
-                                                class="card-separate-container d-flex justify-content-center align-items-center"
-                                            >
-                                                <svg-icon
-                                                    [src]="
-                                                        cardRow.title ===
-                                                        'Requirement • Trailer Type'
-                                                            ? loadImageRoutes.trailerImages +
-                                                              card
-                                                                  .loadRequirements
-                                                                  .trailerType
-                                                                  .logoName
-                                                            : loadImageRoutes.truckImages +
-                                                              card
-                                                                  .loadRequirements
-                                                                  .truckType
-                                                                  .logoName
-                                                    "
-                                                ></svg-icon>
-                                                {{
+                                            <svg-icon
+                                                [src]="
                                                     cardRow.title ===
                                                     'Requirement • Trailer Type'
-                                                        ? card.loadRequirements
-                                                              .trailerType.name
-                                                        : card.loadRequirements
-                                                              .truckType.name
-                                                }}
-                                            </div>
+                                                        ? loadImageRoutes.trailerImages +
+                                                          card.loadRequirements
+                                                              .trailerType
+                                                              .logoName
+                                                        : loadImageRoutes.truckImages +
+                                                          card.loadRequirements
+                                                              .truckType
+                                                              .logoName
+                                                "
+                                            ></svg-icon>
+                                            {{
+                                                cardRow.title ===
+                                                'Requirement • Trailer Type'
+                                                    ? card.loadRequirements
+                                                          .trailerType.name
+                                                    : card.loadRequirements
+                                                          .truckType.name
+                                            }}
                                         </ng-template>
                                     </ng-container>
 
@@ -294,12 +303,13 @@
                                         *ngIf="cardRow.type === 'money'"
                                     >
                                         {{
-                                            card[cardRow.key][cardRow.secondKey]
-                                                | formatCurrency
-                                        }}<ng-container
+                                            card?.[cardRow.key]?.[cardRow.secondKey] | formatCurrency
+                                        }}
+                                        <ng-container
                                             *ngIf="
                                                 cardRow.title ===
-                                                'Billing • Rate'
+                                                    'Billing • Rate' &&
+                                                card.totalAdjustedRate
                                             "
                                         >
                                             •
@@ -317,15 +327,15 @@
                                         <span
                                             class="status"
                                             [ngStyle]="
-                                                card[cardRow.key][
+                                                card[cardRow.key]?.[
                                                     cardRow.secondKey
                                                 ] | loadStatusColor
                                             "
                                         >
                                             {{
-                                                card[cardRow.key][
+                                                card[cardRow.key]?.[
                                                     cardRow.secondKey
-                                                ]
+                                                ] ?? '/'
                                             }}
                                         </span>
                                     </ng-container>
@@ -406,7 +416,12 @@
                                 [entityId]="card.id"
                                 [openedAll]="false"
                                 [parking]="false"
-                                [entityType]="'Load'"
+                                [entityType]="
+                                    selectedTab === 'template'
+                                        ? 'LoadTemplate'
+                                        : 'Load'
+                                "
+                                (saveNoteValue)="saveNoteValue($event, card.id)"
                             >
                             </app-ta-note>
                         </div>

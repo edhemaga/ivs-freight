@@ -17,6 +17,7 @@ import { ApplicantMapper } from '@pages/applicant/utils/helpers/applicant.mapper
 import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { ApplicantWorkExperienceTableComponent } from '@pages/applicant/components/applicant-work-experience-table/applicant-work-experience-table/applicant-work-experience-table.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -62,7 +63,8 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
         TaCheckboxComponent,
         ApplicantSphModalComponent,
         ApplicantCardComponent,
-        ApplicantWorkExperienceTableComponent
+        ApplicantWorkExperienceTableComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantSphComponent implements OnInit, OnDestroy {

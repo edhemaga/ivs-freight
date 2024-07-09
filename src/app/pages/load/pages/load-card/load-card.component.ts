@@ -46,6 +46,8 @@ import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/
 })
 export class LoadCardComponent implements OnInit, OnDestroy {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
 
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
@@ -125,6 +127,13 @@ export class LoadCardComponent implements OnInit, OnDestroy {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    public saveNoteValue(note: string, id: number): void {
+        this.saveValueNote.emit({
+            value: note,
+            id: id,
+        });
     }
 
     ngOnDestroy() {

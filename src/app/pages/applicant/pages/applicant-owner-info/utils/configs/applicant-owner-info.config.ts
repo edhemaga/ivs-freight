@@ -119,7 +119,7 @@ export class BusinessDetailsConfig {
             maxLength: 64,
             textTransform: 'uppercase',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-202',
+            dropdownWidthClass: 'w-col-212',
             isDisabled: config.selectedMode !== SelectedMode.APPLICANT,
         };
     }

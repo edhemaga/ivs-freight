@@ -2,18 +2,21 @@
 
 .end-container {
     padding: 0 !important;
-    background: $white;
+    background-color: $white;
     min-height: 100vh;
 
     .top-header {
         height: 30px;
-        background: $ta-blue;
+        background: $ta-blue-5;
         padding: 6px;
 
         &-title {
             color: $white;
-            font-size: 14px;
+            font-size: 11px;
             height: 18px;
+            text-transform: uppercase;
+            position: relative;
+            top: 3px;
 
             &::-moz-selection {
                 color: $white;
@@ -42,28 +45,27 @@
     }
 
     .mid-header {
-        background-color: $ta-light-grey-5;
-        height: 95px;
+        margin-top: 60px;
 
         .company-container {
             .company-name {
                 text-transform: uppercase;
                 height: 27px;
-                margin-right: 13px;
+                margin-bottom: 12px;
 
                 span {
-                    font-size: 22px;
-                    line-height: 22px;
-                    color: $bw6-2;
+                    font-size: 20px;
+                    line-height: 24.38px;
+                    color: $ta-black;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
                     }
                 }
             }
@@ -71,34 +73,47 @@
             .company-usdot,
             .company-phone {
                 height: 22px;
+                gap: 6px;
 
                 span {
-                    font-size: 18px;
-                    line-height: 22px;
-                    color: $bw6-2;
+                    font-size: 16px;
+                    line-height: 19.5px;
+                    color: $ta-black;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+                }
+
+                .usdot-title {
+                    color: $bw5;
+
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
                     }
                 }
 
                 &.company-usdot {
-                    margin-right: 22px;
+                    margin-right: 16px;
                 }
 
                 &.company-phone {
                     .phone-icon {
-                        margin-right: 8px;
-
                         svg {
                             path {
-                                fill: $bw6-2;
+                                fill: $bw5;
                             }
                         }
                     }
@@ -107,38 +122,39 @@
         }
 
         .company-address-container {
-            margin-top: 6px;
+            margin-top: 12px;
 
             .company-street,
             .company-city,
+            .company-state,
             .company-postalcode,
             .company-country {
                 height: 22px;
                 margin-right: 6px;
 
                 span {
-                    font-size: 18px;
-                    line-height: 22px;
-                    color: $bw6-2;
+                    font-size: 16px;
+                    line-height: 19.5px;
+                    color: $ta-black;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(47, 47, 47, 0.2);
                     }
                 }
 
                 &.company-street {
                     .location-icon {
-                        margin-right: 7.9px;
+                        margin-right: 6px;
 
                         svg {
                             path {
-                                fill: $bw6-2;
+                                fill: $bw5;
                             }
                         }
                     }
@@ -147,92 +163,89 @@
         }
     }
 
-    .welcome-icon {
-        margin: 80px auto 40px auto;
+    .end-icon {
+        margin: 60px auto 40px auto;
     }
 
     .end-title {
+        padding: 10px 6px 10px 6px;
         font-size: 32px;
-        height: 39px;
-        color: $ta-blue;
+        color: $ta-blue-5;
+        line-height: 40px;
         margin-bottom: 12px !important;
 
         &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
 
         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
     }
 
-    .end-text {
+    .end-text,
+    .date-of-invatation-text {
+        padding: 4px 6px 4px 6px;
         font-size: 14px;
-        line-height: 22px;
-        height: 40px;
-        color: $bw6-2;
+        line-height: 18px;
+        color: $ta-black-2;
         text-align: center;
-        margin-bottom: 22px !important;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
         }
 
-        a {
-            text-decoration: none;
+        &.date-of-invatation-text {
             color: $bw6-2;
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
         }
     }
 
     .end-btn {
-        margin: 0 auto 22px auto;
-        width: 204px;
-        height: 34px;
+        margin: 32px auto;
+        width: 260px;
+        height: 42px;
         border: none;
         outline: none;
         font-size: 14px;
-        border-radius: 3px;
+        border-radius: 2px;
+        padding: 6px;
         color: $white;
-        background: $ta-light-blue;
+        background: $ta-blue-14;
         transition: background 0.3s ease-in-out;
+        text-transform: uppercase;
 
         &:hover {
-            background: $ta-blue;
+            background: $ta-blue-9;
+        }
+
+        p {
+            line-height: 20px;
+            font-size: 14px;
         }
     }
 
-    .welcome-info {
-        height: 18px;
+    .end-info {
+        padding: 4px 6px 4px 6px;
         font-size: 14px;
-        color: $bw5;
+        color: $ta-black;
         text-align: center;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
         }
     }
 
@@ -245,19 +258,14 @@
         border-top: 0.1rem solid $ta-gray-02;
 
         p {
-            color: $ta-blue-2;
+            color: $ta-blue-5;
             font-weight: 400;
             font-size: 14px;
 
-            &::-moz-selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
-
-            &::selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
         }
     }
 }
