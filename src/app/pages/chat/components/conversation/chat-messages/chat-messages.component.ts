@@ -1,9 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+// Services
+import { UserChatService } from '@pages/chat/services/chat.service';
 import { HubService } from '@pages/chat/services/hub.service';
 
 // Models
-import { CompanyUserShortResponse, ConversationResponse } from 'appcoretruckassist';
+import { CompanyUserShortResponse, ConversationResponse, MessageResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-chat-messages',
@@ -19,6 +22,11 @@ export class ChatMessagesComponent implements OnInit {
   conversation!: ConversationResponse;
   remainingParticipants: CompanyUserShortResponse[];
 
+  // Messages
+  messageToSend: string = "";
+  messages: MessageResponse[] = [];
+
+  chatService = inject(UserChatService);
   chatHub = inject(HubService);
 
   constructor(private activatedRoute: ActivatedRoute) { }
@@ -29,11 +37,32 @@ export class ChatMessagesComponent implements OnInit {
         this.remainingParticipants = this.conversation
           ?.participants
           .filter(participant => participant.id !== this.currentUserId)
+        this.chatHub.connect().subscribe({
+          next: () => {
+            this.chatHub.receiveMessage().subscribe({
+              next: (message) => {
+                if (message) {
+                  this.messages = [...this.messages, message]
+                }
+              }
+            });
+          }
+        });
       }
     });
-    this.chatHub.connect().subscribe((arg) => {
-      console.log(arg);
-    })
+  }
+
+  getMessage(event): void {
+    this.messageToSend = event.target.value;
+  }
+
+  sendMessage(): any {
+    if (!this.conversation?.id || !this.messageToSend) return;
+    this.chatService.sendMessage(this.conversation.id, this.messageToSend).subscribe({
+      next: () => {
+        this.messageToSend = "";
+      }
+    });
   }
 
 }

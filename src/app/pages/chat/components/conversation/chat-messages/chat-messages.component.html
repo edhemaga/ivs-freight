@@ -1,4 +1,4 @@
-<div class="messages-container d-flex">
+<div class="messages-container">
     <div
         class="messages-header d-flex align-items-center"
         [ngSwitch]="remainingParticipants?.length"
@@ -35,5 +35,20 @@
                 ></svg-icon>
             </div>
         </ng-container>
+    </div>
+    <div class="messages-content">
+        <div *ngIf="messages.length > 0">
+            <ng-container *ngFor="let messages of messages">
+                <div>
+                    {{ message.content }}
+                </div>
+            </ng-container>
+        </div>
+
+        <input
+            (change)="getMessage($event)"
+            aria-label="Chat Message Input Field"
+        />
+        <button (click)="sendMessage()">Send message</button>
     </div>
 </div>

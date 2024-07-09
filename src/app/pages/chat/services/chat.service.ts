@@ -6,6 +6,7 @@ import {
     CompanyUserForChatListResponse,
     ConversationResponse,
     CreateConversationCommand,
+    CreateMessageCommand,
     CreateResponse,
     MessageResponse,
     UserType
@@ -47,6 +48,14 @@ export class UserChatService {
         return this.chatService.apiChatConversationPost(
             conversationParticipants
         );
+    }
+
+    sendMessage(conversationId: number, content: string): Observable<any> {
+        const messageToSend: CreateMessageCommand = {
+            conversationId,
+            content
+        }
+        return this.chatService.apiChatMessagePost(messageToSend);
     }
 
 }
