@@ -1,0 +1,12 @@
+.load-details-container {
+    display: grid;
+    grid-template-columns: minmax(330px, 440px) minmax(600px, 1056px) minmax(
+            138px,
+            312px
+        );
+    grid-gap: 12px;
+    padding-bottom: 12px;
+
+    app-ta-details-header {
+    }
+}

@@ -14,7 +14,7 @@
                 dispatch: load?.dispatch,
                 stops: load?.stops,
                 lastStatus: {
-                    stopOrder: load?.statusHistory[0]?.stopOrder
+                    stopOrder: +load?.status?.statusCheckInNumber
                 },
                 loadDeliveryTime: load?.loadDeliveryTime
             }"

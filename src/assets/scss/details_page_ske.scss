@@ -50,12 +50,7 @@ p {
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
-
     padding-bottom: 12px;
-
-    &.load {
-        grid-template-columns: 440px 1056px 300px !important;
-    }
 }
 // Common Class
 .details-component {
@@ -1933,7 +1928,7 @@ p {
     }
 }
 
-@media (max-width: 1540px) {
+@media (max-width: 1440px) {
     .details-container-items {
         display: grid;
         grid-template-columns: 360px repeat(4, 250px);
