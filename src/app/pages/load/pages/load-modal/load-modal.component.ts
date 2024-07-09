@@ -390,6 +390,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private originalStatus: string;
     private stops: LoadStopResponse[];
     public areCommentsVisible: boolean = false;
+    private lastCallTimeout: any;
+    private debounceDelay: number = 1000;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -3316,9 +3318,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegHours = res.totalHours;
                             this.totalLegMinutes = res.totalMinutes;
                             this.totalLegCost = res.totalCost;
-
-                            this.watchFormChanges();
                         }
+
+                        clearTimeout(this.lastCallTimeout);
+
+                        this.lastCallTimeout = setTimeout(() => {
+                            this.watchFormChanges();
+                        }, this.debounceDelay);
                     },
                     error: () => {},
                 });
