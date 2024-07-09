@@ -3,4 +3,5 @@ import { LoadCardTypes } from "@pages/load/pages/load-card-modal/models/load-car
 export interface LoadCardData {
     active: LoadCardTypes;
     pending: LoadCardTypes;
+    template: LoadCardTypes;
 }

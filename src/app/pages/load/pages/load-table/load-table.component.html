@@ -23,6 +23,7 @@
             [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
+            (saveValueNote)="saveValueNote($event)"
         ></app-ta-table-body>
     </ng-container>
     <!-- Cards -->
@@ -39,6 +40,7 @@
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
                 [selectedTab]="selectedTab"
+                (saveValueNote)="saveValueNote($event)"
             ></app-load-card>
 
             <!-- Show More -->
