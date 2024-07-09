@@ -21,6 +21,7 @@ import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-bad
 
 // Services
 import { UserChatService } from "@pages/chat/services/chat.service";
+import { HubService } from "@pages/chat/services/hub.service";
 
 // Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
@@ -68,6 +69,7 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
     providers: [
         // Services
         UserChatService,
+        HubService,
 
         // Resolvers
         UserResolver,

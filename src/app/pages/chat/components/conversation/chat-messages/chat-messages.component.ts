@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HubService } from '@pages/chat/services/hub.service';
 
 // Models
 import { CompanyUserShortResponse, ConversationResponse } from 'appcoretruckassist';
@@ -18,6 +19,8 @@ export class ChatMessagesComponent implements OnInit {
   conversation!: ConversationResponse;
   remainingParticipants: CompanyUserShortResponse[];
 
+  chatHub = inject(HubService);
+
   constructor(private activatedRoute: ActivatedRoute) { }
   ngOnInit(): void {
     this.activatedRoute.data.subscribe({
@@ -28,6 +31,9 @@ export class ChatMessagesComponent implements OnInit {
           .filter(participant => participant.id !== this.currentUserId)
       }
     });
+    this.chatHub.connect().subscribe((arg) => {
+      console.log(arg);
+    })
   }
 
 }
