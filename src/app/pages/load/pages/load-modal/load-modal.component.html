@@ -437,7 +437,7 @@
                         [stopFinished]="
                             isPickupStopFinished()
                         "
-                        [appointment]="isPickupAppoitment()"
+                        [appointment]="isPickupAppointment()"
                     >
                         <!--  Shipper-->
 
@@ -716,7 +716,7 @@
                                                 indx
                                             )
                                         "
-                                        [appointment]="isExtraStopAppoitment(indx)"
+                                        [appointment]="isExtraStopAppointment(indx)"
                                     >
                                         <!-- Tabs  -->
 
@@ -1056,7 +1056,7 @@
                         [isDelivery]="true"
                         [state]="validateDeliveryStops(loadForm)"
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
-                        [appointment]="isDeliveryAppoitment()"
+                        [appointment]="isDeliveryAppointment()"
                     >
                         <!-- Shipper -->
 

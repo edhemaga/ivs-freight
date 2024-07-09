@@ -4476,18 +4476,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return false;
     }
 
-    public isExtraStopAppoitment(index: number): boolean {
+    public isExtraStopAppointment(index: number): boolean {
         return this.selectedExtraStopTime[index] === 2 || this.selectedExtraStopTime[index]> 8999;
     }
 
-    public isPickupAppoitment(): boolean {
+    public isPickupAppointment(): boolean {
         return (
             this.selectedStopTimePickup === 6 ||
             this.selectedStopTimePickup === 2
         );
     }
 
-    public isDeliveryAppoitment(): boolean {
+    public isDeliveryAppointment(): boolean {
         return (
             this.selectedStopTimeDelivery === 8 ||
             this.selectedStopTimeDelivery === 2
