@@ -15,6 +15,8 @@ import { CompanyUserShortResponse } from './companyUserShortResponse';
 export interface ConversationResponse { 
     id?: number;
     participants?: Array<CompanyUserShortResponse> | null;
+    name?: string | null;
+    description?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }

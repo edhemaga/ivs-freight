@@ -20,5 +20,6 @@ export interface DriverDispatchResponse {
     status?: number;
     vacation?: boolean;
     avatarFile?: FileResponse;
+    endorsements?: Array<string> | null;
 }
 
