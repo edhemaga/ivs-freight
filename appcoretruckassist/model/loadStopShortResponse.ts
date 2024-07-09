@@ -18,5 +18,6 @@ export interface LoadStopShortResponse {
     stopType?: EnumValue;
     stopOrder?: number;
     shipper?: ShipperShortResponse;
+    dateFrom?: string | null;
 }
 

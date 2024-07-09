@@ -75,6 +75,7 @@ export interface LoadResponse {
     totalTimeHours?: number;
     paidDate?: string | null;
     invoicedDate?: string | null;
+    loadDeliveryTime?: string | null;
     shortPaid?: number | null;
     ageUnpaid?: number | null;
     agePaid?: number | null;
