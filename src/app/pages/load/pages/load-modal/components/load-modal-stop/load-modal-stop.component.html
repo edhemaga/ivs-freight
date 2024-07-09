@@ -14,7 +14,9 @@
             class="d-flex align-items-center justify-content-center load-stop-header-badge"
             [ngClass]="{
                 'delivery-mode': isDelivery,
-                'finished-mode': stopFinished
+                'finished-mode': stopFinished,
+                'first-or-last-badge': firstOrLast,
+                'enable-hover': !stopFinished
             }"
         >
             <div
@@ -32,7 +34,7 @@
                 </ng-container>
             </div>
 
-            <ng-container *ngIf="!firstOrLast">
+            <ng-container *ngIf="!firstOrLast && !stopFinished">
                 <div
                     class="load-stop-header-remove-btn"
                     ngbTooltip

@@ -13,9 +13,13 @@ export class LoadStatusColorPipe implements PipeTransform {
 
         const statusGreyColorCondition = adjustedStatus === 'Booked';
         const statusDarkGreyColorCondition = adjustedStatus === 'Unassigned';
-        const statusDarkGrey2ColorCondition = ['Hold', 'Revised'].includes(
-            adjustedStatus
-        );
+        const statusDarkGrey2ColorCondition = [
+            'InvoicedHold',
+            'Hold',
+            'HoldFactoring',
+            'Revised',
+            'RevisedFactoring',
+        ].includes(adjustedStatus);
         const statusGreenColorCondition = status === 'Assigned';
         const statusBlueColorCondition = [
             'RepairDispatched',
@@ -25,6 +29,7 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Arrived',
             'ArrivedPickup',
             'CheckedInPickup',
+            'CheckedIn',
             'Loading',
         ].includes(adjustedStatus);
         const statusDarkTurquoiseColorCondition = [
@@ -37,19 +42,49 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Offloading',
             'Checked-In',
         ].includes(status);
-        const statusDarkRedColorCondition = status === 'Offloaded';
-        const statusDarkRed2ColorCondition = ['Cancelled', 'Split'].includes(
+        const statusDarkRedColorCondition = [
+            'Tonu',
+            'Offloaded',
+            'RepairOffloaded',
+        ].includes(status);
+        const statusDarkRed2ColorCondition = ['Cancelled', 'Split', 'LoadCancelled'].includes(
             status
         );
         const statusDarkRed3ColorCondition = status === 'Tonu';
         const statusOrangeColorCondition = status === 'Delivered';
-        const statusYellowColorCondition = ['Invoiced', 'Paid', 'InvoicedFactoring'].includes(
-            adjustedStatus
-        );
+        const statusYellowColorCondition = [
+            'Invoiced',
+            'Paid',
+            'InvoicedFactoring',
+            'TonuInvoiced',
+            'TonuInvoicedFactoring',
+        ].includes(adjustedStatus);
         const statusDarkYellowColorCondition = [
             'Claim',
             'Unpaid',
             'ShortPaid',
+            'TonuUnpaid',
+            'TonuClaim',
+            'TonuClaimFactoring',
+            'ClaimFactoring',
+            'UnpaidFactoring',
+            'RevisedUnpaid',
+            'RevisedUnpaidFactoring',
+            'RevisedClaim',
+            'RevisedClaimFactoring',
+            'TonuUnpaidFactoring',
+        ].includes(adjustedStatus);
+        const statusMildDarkYellowColorCondition = [
+            'ShortPaidFactoring',
+            'RevisedPaid',
+            'RevisedShortPaidFactoring',
+            'RevisedShortPaid',
+            'TonuShortPaid',
+            'TonuShortPaidFactoring',
+            'TonuPaid',
+            'TonuPaidFactoring',
+            'RevisedPaidFactoring',
+            'PaidFactoring',
         ].includes(adjustedStatus);
 
         if (statusGreyColorCondition) {
@@ -108,6 +143,10 @@ export class LoadStatusColorPipe implements PipeTransform {
             return isBadge
                 ? { color: '#fff', backgroundColor: '#C20C0C' }
                 : { color: '#C20C0C' };
+        } else if (statusMildDarkYellowColorCondition) {
+            return isBadge
+                ? { color: '#fff', backgroundColor: '#CDB255' }
+                : { color: '##CDB255' };
         }
     }
 }

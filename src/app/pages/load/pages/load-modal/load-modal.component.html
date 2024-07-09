@@ -434,6 +434,9 @@
                         [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
+                        [stopFinished]="
+                            isPickupStopFinished()
+                        "
                     >
                         <!--  Shipper-->
 
@@ -1020,7 +1023,6 @@
                     <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('deliveryStopOrder').value"
-                        [stopFinished]="false"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1035,6 +1037,9 @@
                                     : (loadForm.get('deliveryTimeTo').value
                                           | loadTimeType)
                         "
+                                        [stopFinished]="
+                                            isDeliveryStopFinished()
+                                        "
                         [legMile]="
                             selectedDeliveryShipper &&
                             loadForm.get('deliverylegMiles').value

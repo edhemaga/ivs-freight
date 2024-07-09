@@ -3571,11 +3571,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             }),
                         ];
-                        this.previousStatus = res.previousStatus ? {
-                            name: res.previousStatus.statusString,
-                            id: res.previousStatus.statusValue.id,
-                            valueForRequest: res.previousStatus.statusValue.name,
-                        } : null
+                        this.previousStatus = res.previousStatus
+                            ? {
+                                  name: res.previousStatus.statusString,
+                                  id: res.previousStatus.statusValue.id,
+                                  valueForRequest:
+                                      res.previousStatus.statusValue.name,
+                              }
+                            : null;
                     }
 
                     this.originalStatus = (
@@ -4446,7 +4449,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isStepFinished(extraStop: UntypedFormArray): boolean {
-        return extraStop.value.arrive !== null && extraStop.value.depart !== null;
+        return (
+            extraStop.value.arrive !== null && extraStop.value.depart !== null
+        );
+    }
+
+    public isPickupStopFinished(): boolean {
+        const pickupStop = this.stops?.filter((stop) => stop.id !== 0);
+        return (
+            pickupStop?.length &&
+            !!(pickupStop[0].arrive && pickupStop[0].depart)
+        );
+    }
+
+    public isDeliveryStopFinished(): boolean {
+        if (this.stops) {
+            const deliveryStop = this.stops[this.stops.length - 1];
+            return !!(deliveryStop.arrive && deliveryStop.depart);
+        }
+        return false;
     }
 
     public drop(event: CdkDragDrop<string[]>): void {
@@ -4456,7 +4477,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.reorderingStarted = true;
 
-        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        // Reorder values from extra stops
         const itemsToReorder = [
             this.loadExtraStops().controls,
             this.selectExtraStopType,
