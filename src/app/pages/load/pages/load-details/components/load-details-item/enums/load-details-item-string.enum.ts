@@ -19,4 +19,11 @@ export enum LoadDetailsItemStringEnum {
 
     PENDING = 'Pending',
     ACTIVE = 'Active',
+
+    PICKUP = 'Pickup',
+    DELIVERY = 'Delivery',
+
+    COLOR_1 = '#919191',
+    COLOR_2 = '#26A690',
+    COLOR_3 = '#EF5350',
 }

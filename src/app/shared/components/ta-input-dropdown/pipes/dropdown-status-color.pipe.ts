@@ -15,6 +15,7 @@ export class DropdownStatusPipe implements PipeTransform {
         const statusTurquoiseColorCondition = status === 'Assigned';
         const statusBlueColorCondition = status === 'Dispatched';
         const statusGreenColorCondition = status === 'Loaded';
+        const statusYellowColorCondition = status === 'Delivered';
 
         if (isTextColor)
             return {
@@ -36,6 +37,10 @@ export class DropdownStatusPipe implements PipeTransform {
         } else if (statusGreenColorCondition) {
             return {
                 background: '#26A69099',
+            };
+        } else if (statusYellowColorCondition) {
+            return {
+                background: '#FF980099',
             };
         }
     }

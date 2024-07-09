@@ -1,10 +1,18 @@
 <div
     [className]="
-        justifyStart ? 'justify-content-start' : 'justify-content-center'
+        (justifyStart ? 'justify-content-start' : 'justify-content-center') +
+        ' ' +
+        className +
+        ' d-flex align-items-center'
     "
-    [className]="className + ' d-flex align-items-center'"
 >
-    <ng-container *ngFor="let value of displayString; let index = index; trackBy: trackByIdentity">
+    <ng-container
+        *ngFor="
+            let value of displayString;
+            let index = index;
+            trackBy: trackByIdentity
+        "
+    >
         <span
             [ngStyle]="
                 value.length > 1
@@ -20,12 +28,27 @@
                 value.toLowerCase()
             "
             [ngClass]="{
-                'load-status-badge d-flex': value.length === 1,
+                'd-flex justify-content-center align-items-center load-status-badge':
+                    value.length === 1,
                 'mr-1': value.length === 1 && index === 0,
-                'ml-1': value.length === 1 && index === displayString.length - 1
+                'ml-1':
+                    value.length === 1 && index === displayString.length - 1,
+                'details-layout': isDetailsLayout
             }"
         >
             {{ value }}
         </span>
+    </ng-container>
+
+    <ng-container *ngIf="statusOrder?.stopOrder">
+        <div
+            class="d-flex justify-content-center align-items-center load-status-badge"
+            [ngClass]="{
+                pickup: statusOrder?.type === 'Pickup',
+                delivery: statusOrder?.type === 'Delivery'
+            }"
+        >
+            {{ statusOrder.stopOrder }}
+        </div>
     </ng-container>
 </div>
