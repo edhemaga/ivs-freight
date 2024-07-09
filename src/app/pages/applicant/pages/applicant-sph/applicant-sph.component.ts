@@ -70,7 +70,7 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
 export class ApplicantSphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -101,6 +101,8 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -113,6 +115,14 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
             isTested: [false, Validators.requiredTrue],
             hasReadAndUnderstood: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

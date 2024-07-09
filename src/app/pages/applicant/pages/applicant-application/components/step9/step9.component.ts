@@ -59,7 +59,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 export class Step9Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -78,6 +78,8 @@ export class Step9Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -87,6 +89,14 @@ export class Step9Component implements OnInit, OnDestroy {
         this.driverRightsForm = this.formBuilder.group({
             understandYourRights: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

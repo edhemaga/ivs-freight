@@ -110,7 +110,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public drugTestRadios: any;
 
@@ -212,6 +212,8 @@ export class Step8Component implements OnInit, OnDestroy {
       }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -246,6 +248,14 @@ export class Step8Component implements OnInit, OnDestroy {
 
             if (drugTestValue) this.drugTestRadios[0].checked = true;
         }, 100);
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

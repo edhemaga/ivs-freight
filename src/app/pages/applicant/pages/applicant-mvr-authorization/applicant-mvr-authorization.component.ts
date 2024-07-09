@@ -69,7 +69,7 @@ import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/appli
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -136,6 +136,8 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -161,6 +163,14 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         this.dontHaveMvrForm = this.formBuilder.group({
             dontHaveMvr: [false, Validators.required],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {
