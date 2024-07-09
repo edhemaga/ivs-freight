@@ -108,6 +108,13 @@
                     &-datetime {
                         p {
                             font-weight: 600;
+                            &.color-blue {
+                                color: $ta-blue-13;
+                            }
+
+                            .color-black {
+                                color: $ta-black;
+                            }
                         }
                     }
 
@@ -142,6 +149,10 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        
+                        .color-orange {
+                            color: $ta-yellow-5;
+                        }
                     }
 
                     &-deadhead {
@@ -336,6 +347,12 @@
 
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
 
+        
+        .color-black,
+        .color-orange{
+            color: #fff !important;
+        }
+
         .load-stop-header-bar {
             padding: 4px 8px;
             background: $ta-black-2;
@@ -528,14 +545,5 @@
                 }
             }
         }
-    }
-}
-
-.color {
-    &-blue{
-        color: $ta-blue-13 !important;
-    }
-    &-orange{
-        color: $ta-yellow-5 !important;
     }
 }

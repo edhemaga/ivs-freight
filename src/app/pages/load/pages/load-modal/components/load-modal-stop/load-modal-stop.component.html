@@ -147,7 +147,12 @@
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
                     >
-                        <p [ngClass]="{'color-blue': stopFinished}">{{ dateRange }}</p>
+                        <p [ngClass]="{'color-blue': stopFinished}">{{ dateRange }}
+
+                            <ng-container *ngIf="stopFinished && waitTime">
+                                <span class="color-black">• {{waitTime}}</span>
+                            </ng-container>
+                        </p>
                     </div>
                     <div class="load-stop-content-down">
                         <p>{{ timeRange }} 

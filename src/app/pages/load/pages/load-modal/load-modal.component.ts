@@ -644,6 +644,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegCost: [null],
             pickupInvolveDriver: [null],
             pickupStatusHistory: [null],
+            pickupWaitTime: [null],
 
             // delivery stop
             deliveryStop: [LoadModalStringEnum.DELIVERY_2],
@@ -658,6 +659,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegHours: [null],
             deliverylegMinutes: [null],
             deliverylegCost: [null],
+            deliverWaitTime: [null],
 
             // extra stops
             extraStops: this.formBuilder.array([]),
@@ -1047,25 +1049,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     };
                 });
 
-                if (
-                    this.selectedExtraStopTime[indx]
-                        .toString()
-                        .startsWith(LoadModalStringEnum.NUMBER_9) ||
-                    this.selectedExtraStopTime[indx] === 2
-                ) {
-                    this.inputService.changeValidators(
+                    if (
+                        this.selectedExtraStopTime[indx]
+                            .toString()
+                            .startsWith(LoadModalStringEnum.NUMBER_9) ||
+                        this.selectedExtraStopTime[indx] === 2
+                    ) {
+                            this.loadExtraStops()
+                                .at(indx)
+                                .get(LoadModalStringEnum.TIME_TO).setValidators(Validators.required);
+                    } else {
                         this.loadExtraStops()
                             .at(indx)
-                            .get(LoadModalStringEnum.TIME_TO),
-                        false
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.loadExtraStops()
-                            .at(indx)
-                            .get(LoadModalStringEnum.TIME_TO)
-                    );
-                }
+                            .get(LoadModalStringEnum.TIME_TO).removeValidators(Validators.required);
+                    }
 
                 break;
             default:
@@ -2732,6 +2729,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             legMinutes: [null],
             legCost: [null],
             openClose: [true],
+            waitTime: [null]
         });
     }
 
@@ -4122,6 +4120,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             : date;
     }
 
+    private formatTimeDifference(timeObject): string {
+        const { days, hours, minutes } = timeObject;
+        let formattedString = '';
+    
+        if (days) {
+            formattedString += `${days}d `;
+        }
+        if (hours) {
+            formattedString += `${hours}h `;
+        }
+        if (minutes) {
+            formattedString += `${minutes}m`;
+        }
+    
+        return formattedString.trim();
+    }
+
     private populateLoadModalData(loadModalData: LoadResponse): void {
         const {
             loadNumber,
@@ -4213,6 +4228,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             (_, index) => index !== 0 && index !== stops.length - 1
         );
 
+        this.formatStopTimes(pickupStop);
+        this.formatStopTimes(deliveryStop);
+
         // form
         this.loadForm.patchValue({
             referenceNumber: referenceNumber,
@@ -4227,7 +4245,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupTimeTo: pickupStop.timeTo,
             pickuplegMiles: pickupStop.legMiles,
             pickuplegHours: pickupStop.legHours,
-            pickuplegMinutes: pickupStop.legMinutes,
+            pickuplegMinutes: pickupStop.legMinutes, 
+            pickupWaitTime: this.formatTimeDifference(pickupStop.wait),
 
             // delivery
             deliveryDateFrom: this.convertDate(deliveryStop.dateFrom),
@@ -4238,6 +4257,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegHours: deliveryStop.legHours,
             deliverylegMinutes: deliveryStop.legMinutes,
             deliveryStopOrder: deliveryStop.stopLoadOrder,
+            deliverWaitTime: this.formatTimeDifference(deliveryStop.wait),
 
             // billing & payment
             baseRate: baseRate,
@@ -4311,6 +4331,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     name: extraStop.shipper.businessName,
                 };
 
+                this.formatStopTimes(extraStop);
+
                 this.loadExtraStops()
                     .at(index)
                     .patchValue({
@@ -4333,6 +4355,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         items: extraStop.items,
                         openClose: false,
                         statusHistory: extraStop.statusHistory,
+                        waitTime: this.formatTimeDifference(extraStop.wait)
                     });
 
                 this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
@@ -4446,6 +4469,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    private  formatStopTimes(stop: LoadStopResponse): void {
+        //  If step is finished we need to show different tiems
+        if (stop.arrive && stop.depart) {
+            stop.dateFrom = stop.arrive;
+            stop.dateTo = '';
+            stop.timeFrom = MethodsCalculationsHelper.convertDateToTimeFromBackend(stop.arrive);
+            stop.timeTo = MethodsCalculationsHelper.convertDateToTimeFromBackend(stop.depart);
+        }
+    }
+
     public shouldDisableDrag(extraStop: UntypedFormArray): boolean {
         return (
             this.isStepFinished(extraStop) ||
@@ -4454,7 +4487,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
     }
 
-    public isStepFinished(extraStop: UntypedFormArray): boolean {
+    public isStepFinished(extraStop: UntypedFormArray | AbstractControl): boolean {
         return (
             extraStop.value.arrive !== null && extraStop.value.depart !== null
         );
@@ -4477,21 +4510,36 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isExtraStopAppointment(index: number): boolean {
-        return this.selectedExtraStopTime[index] === 2 || this.selectedExtraStopTime[index]> 8999;
+        const isAppointment =  this.selectedExtraStopTime[index] === 2 || this.selectedExtraStopTime[index]> 8999;
+        if(this.isStepFinished(this.loadExtraStops().at(index))) {
+            return false;
+        }
+
+        return isAppointment;
     }
 
     public isPickupAppointment(): boolean {
-        return (
-            this.selectedStopTimePickup === 6 ||
-            this.selectedStopTimePickup === 2
-        );
+        const isAppointment = this.selectedStopTimePickup === 6 ||
+        this.selectedStopTimePickup === 2;
+
+        if(this.isPickupStopFinished()) {
+            return false;
+        }
+
+        return isAppointment;
     }
 
     public isDeliveryAppointment(): boolean {
-        return (
+        const isAppointment =  (
             this.selectedStopTimeDelivery === 8 ||
             this.selectedStopTimeDelivery === 2
         );
+
+        if(this.isDeliveryStopFinished()) {
+            return false;
+        }
+
+        return isAppointment;
     }
 
     public drop(event: CdkDragDrop<string[]>): void {

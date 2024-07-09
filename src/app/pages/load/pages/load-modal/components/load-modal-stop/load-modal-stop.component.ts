@@ -66,6 +66,7 @@ export class LoadModalStopComponent {
     @Input() appointment = false;
     @Input() legHours: string;
     @Input() legMinutes: string;
+    @Input() waitTime: string;
     public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();

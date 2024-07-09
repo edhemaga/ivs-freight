@@ -436,6 +436,7 @@
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
                         [stopFinished]="isPickupStopFinished()"
                         [appointment]="isPickupAppointment()"
+                        [waitTime]="loadForm.get('pickupWaitTime').value"
                         [legHours]="loadForm.get('pickuplegHours').value"
                         [legMinutes]="loadForm.get('pickuplegMinutes').value"
                     >
@@ -664,6 +665,11 @@
                                             selectedExtraStopShipper[indx]
                                                 ?.address
                                         "
+                                        [waitTime]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('waitTime').value
+                                        "
                                         [legHours]="
                                             loadExtraStops()
                                                 .at(indx)
@@ -731,7 +737,6 @@
                                         "
                                     >
                                         <!-- Tabs  -->
-
                                         <div class="row">
                                             <div class="col-12">
                                                 <app-ta-tab-switch
@@ -1299,7 +1304,7 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ 0m</span
+                                    >≈ {{totalLegHours}}h {{totalLegMinutes}}m</span
                                 >
                             </div>
                         </div>
