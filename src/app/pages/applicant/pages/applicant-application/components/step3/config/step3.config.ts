@@ -27,7 +27,7 @@ export class Step3Config {
             label: 'Country',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-234',
+            dropdownWidthClass: config.isEditing ? 'w-col-238' : 'w-col-240',
             isDisabled: config.selectedMode !== 'APPLICANT_MODE',
         };
     }
@@ -43,7 +43,7 @@ export class Step3Config {
                     !config.licenseForm.get('country').value) ||
                 config.selectedMode !== 'APPLICANT_MODE',
             isDropdown: true,
-            dropdownWidthClass: config.isEditing ? 'w-col-238' : 'w-col-246',
+            dropdownWidthClass: 'w-col-140',
         };
     }
 
@@ -54,7 +54,7 @@ export class Step3Config {
             label: 'Class',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-174',
+            dropdownWidthClass: 'w-col-124',
             isDisabled: config.selectedMode !== 'APPLICANT_MODE',
         };
     }
@@ -100,7 +100,8 @@ export class Step3Config {
             label: 'Restrictions',
             isDropdown: true,
             multiselectDropdown: true,
-            dropdownWidthClass: config.isEditing ? 'w-col-600' : 'w-col-616',
+            multiSelectItemRange: true,
+            dropdownWidthClass: config.isEditing ? 'w-col-606' : 'w-col-616',
             isDisabled: config.selectedMode !== 'APPLICANT_MODE',
         };
     }
@@ -112,7 +113,7 @@ export class Step3Config {
             label: 'Endorsments',
             isDropdown: true,
             multiselectDropdown: true,
-            dropdownWidthClass: config.isEditing ? 'w-col-600' : 'w-col-616',
+            dropdownWidthClass: config.isEditing ? 'w-col-606' : 'w-col-616',
             isDisabled: config.selectedMode !== 'APPLICANT_MODE',
         };
     }

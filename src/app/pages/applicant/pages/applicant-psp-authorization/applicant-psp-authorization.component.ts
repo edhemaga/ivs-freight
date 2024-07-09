@@ -43,6 +43,7 @@ import { ApplicantModule } from '@pages/applicant/applicant.module';
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 @Component({
     selector: 'app-psp-authorization',
@@ -58,6 +59,7 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
         // components
         TaCheckboxComponent,
         ApplicantCardComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {

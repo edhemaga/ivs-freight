@@ -17,7 +17,6 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
@@ -36,6 +35,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
@@ -53,6 +53,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 
         // components
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step10Component implements OnInit, OnDestroy {

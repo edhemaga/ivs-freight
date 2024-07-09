@@ -49,13 +49,15 @@
                     class="d-flex align-items-center ta-font-bold"
                     [routerLink]="[menuItem.route, applicantId]"
                 >
-                    <svg-icon
-                        class="nav-icon"
-                        src="{{ menuItem.iconSrc }}"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    ></svg-icon>
-
-                    {{ menuItem.title }}
+                    <div class="d-flex flex-column align-items-center tab-item">
+                        <svg-icon
+                            class="nav-icon"
+                            src="{{ menuItem.iconSrc }}"
+                            [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
+                        ></svg-icon>
+    
+                        <p class="ta-font-semi-bold">{{ menuItem.title }}</p>
+                    </div>
                 </a>
             </li>
         </ul>
