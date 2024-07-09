@@ -16,9 +16,14 @@
         <span
             [ngStyle]="
                 value.length > 1
-                    ? (status.valueForRequest | loadStatusColor)
+                    ? isDropdownColor
+                        ? (status.valueForRequest | dropdownLoadStatusColor)
+                        : (status.valueForRequest | loadStatusColor)
                     : value.length === 1 && index === displayString.length - 1
-                    ? (status.valueForRequest | loadStatusColor : true)
+                    ? isDropdownColor
+                        ? (status.valueForRequest
+                          | dropdownLoadStatusColor : true)
+                        : (status.valueForRequest | loadStatusColor : true)
                     : {}
             "
             [class]="

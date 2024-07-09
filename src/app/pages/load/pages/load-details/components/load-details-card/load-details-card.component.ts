@@ -120,6 +120,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                     statusId: status.id,
                 };
             });
+
+        console.log('this.loadsDropdownList', this.loadsDropdownList);
     }
 
     private getCurrentIndex(): void {

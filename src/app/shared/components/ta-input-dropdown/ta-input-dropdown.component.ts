@@ -53,7 +53,6 @@ import { FormControlPipe } from '@shared/components/ta-input/pipes/form-control.
 import { DropdownCountPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-count.pipe';
 import { HighlightSearchPipe } from '@shared/pipes/highlight-search.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
-import { DropdownStatusPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-status-color.pipe';
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // modules
@@ -88,13 +87,12 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         TaProfileImagesComponent,
         LoadModalProgressBarComponent,
         LoadStatusStringComponent,
-        
+
         // Pipe
         TaSvgPipe,
         FormControlPipe,
         DropdownCountPipe,
         HighlightSearchPipe,
-        DropdownStatusPipe,
         LoadStatusColorPipe,
 
         // Directive
