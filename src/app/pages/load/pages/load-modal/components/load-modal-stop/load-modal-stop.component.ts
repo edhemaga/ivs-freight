@@ -90,7 +90,6 @@ export class LoadModalStopComponent {
     }
 
     public get legTime(): string {
-        // if(this.stopFinished) 
         const prefix = !this.stopFinished ? '≈' : '';
         if(!this.legHours) {
             return ` | ${prefix} ${this.legMinutes}m`

@@ -433,12 +433,12 @@
                         }"
                         [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
-                        (toggle)="toggleStopActivity($event, 'first-pickup')"
                         [stopFinished]="isPickupStopFinished()"
                         [appointment]="isPickupAppointment()"
                         [waitTime]="loadForm.get('pickupWaitTime').value"
                         [legHours]="loadForm.get('pickuplegHours').value"
                         [legMinutes]="loadForm.get('pickuplegMinutes').value"
+                        (toggle)="toggleStopActivity($event, 'first-pickup')"
                     >
                         <!--  Shipper-->
 
@@ -1070,10 +1070,10 @@
                         [isCardOpen]="isActiveDeliveryStop"
                         [isDelivery]="true"
                         [state]="validateDeliveryStops(loadForm)"
-                        (toggle)="toggleStopActivity($event, 'first-delivery')"
                         [appointment]="isDeliveryAppointment()"
                         [legHours]="loadForm.get('deliverylegHours').value"
                         [legMinutes]="loadForm.get('deliverylegMinutes').value"
+                        (toggle)="toggleStopActivity($event, 'first-delivery')"
                     >
                         <!-- Shipper -->
 

@@ -4470,7 +4470,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private  formatStopTimes(stop: LoadStopResponse): void {
-        //  If step is finished we need to show different tiems
+        //  If step is finished we need to show different times
         if (stop.arrive && stop.depart) {
             stop.dateFrom = stop.arrive;
             stop.dateTo = '';
