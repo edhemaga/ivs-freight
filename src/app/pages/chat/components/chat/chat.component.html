@@ -104,8 +104,11 @@
             <ng-container *ngIf="selectedConversation; else noConversation">
                 <router-outlet></router-outlet>
             </ng-container>
-            <ng-template #noConversation></ng-template>
+            <ng-template #noConversation>
+                <app-messages-not-selected></app-messages-not-selected>
+            </ng-template>
         </div>
-        <div>Department</div>
+        <!-- TODO Department -->
+        <div></div>
     </div>
 </div>

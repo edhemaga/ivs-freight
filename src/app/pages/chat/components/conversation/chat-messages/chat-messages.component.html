@@ -1,30 +1,40 @@
 <div class="messages-container d-flex">
-    <!-- TODO remove later when you get the full model -->
     <div
-        class="no-data-wrapper"
-        *ngIf="!conversation?.id; else conversationInfo"
+        class="messages-header d-flex align-items-center"
+        [ngSwitch]="remainingParticipants?.length"
     >
-        <div class="messages-header">
-            <div class="ta-font-extra-bold">Conversation</div>
-        </div>
-        <div class="content-not-selected-wrapper">
-            <div class="content-not-selected">
-                <img
-                    class="artboard"
-                    [src]="'src/assets/png/chat/artboard-not-selected.png'"
-                    alt="nothing-selected"
-                />
-                <div class="upper-text">Select an item to read</div>
-                <div class="lower-text">Nothing is selected</div>
+        <ng-container *ngSwitchCase="1">
+            <div class="name ta-font-extra-bold">
+                {{ remainingParticipants[0].fullName }}
             </div>
-        </div>
-    </div>
-    <ng-template #conversationInfo>
-        <div></div>
-    </ng-template>
-    <div
-        class="border-container d-flex justify-content-center align-items-center"
-    >
-        <div class="border"></div>
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                [src]="'assets/svg/chat/search-icon.svg'"
+            ></svg-icon>
+            <div class="right-icons d-flex">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="'assets/svg/chat/information-icon.svg'"
+                ></svg-icon>
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="'assets/svg/chat/list-options-icon.svg'"
+                ></svg-icon>
+            </div>
+        </ng-container>
+        <app-ta-input></app-ta-input>
     </div>
 </div>

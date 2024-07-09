@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ChatRoutingModule } from "./chat-routing.module";
 import { AngularSvgIconModule } from "angular-svg-icon";
+import { SharedModule } from '@shared/shared.module';
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
@@ -11,9 +12,11 @@ import { ChatUserListComponent } from "@pages/chat/components/user/chat-user-lis
 import { ChatUserListItemComponent } from "@pages/chat/components/user/chat-user-list-item/chat-user-list-item.component";
 import { ChatMessageComponent } from "@pages/chat/components/conversation/chat-message/chat-message.component";
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
+import { MessagesNotSelectedComponent } from "@pages/chat/components/conversation/messages-not-selected/messages-not-selected.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-badge/user-status-badge.component";
 
 // Services
@@ -40,6 +43,7 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         // CONVERSATIONS
         ChatMessagesComponent,
         ChatMessageComponent,
+        MessagesNotSelectedComponent,
 
         // AUXILLARY COMPONENTS
         ChatToolbarComponent,
@@ -51,13 +55,15 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         CommonModule,
         ChatRoutingModule,
         AngularSvgIconModule,
+        SharedModule,
 
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
 
         // Components
-        TaProfileImagesComponent
+        TaProfileImagesComponent,
+        TaInputComponent
     ],
     providers: [
         // Services
