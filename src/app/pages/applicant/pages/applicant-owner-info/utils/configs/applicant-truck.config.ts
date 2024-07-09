@@ -25,7 +25,7 @@ export class ApplicantTruckConfig {
                     .replace(' ', '')
                     .toLowerCase(),
             },
-            dropdownWidthClass: 'w-col-364',
+            dropdownWidthClass: 'w-col-220',
             customClass: 'truck-Truck-dropdown',
         };
     }
@@ -82,7 +82,7 @@ export class ApplicantTruckConfig {
                 image: false,
                 url: options.selectedTruckMake?.logoName,
             },
-            dropdownWidthClass: 'w-col-210',
+            dropdownWidthClass: 'w-col-156',
         };
     }
 
@@ -118,7 +118,7 @@ export class ApplicantTruckConfig {
                 template: 'color',
                 color: options.selectedTruckColor?.code,
             },
-            dropdownWidthClass: 'w-col-116',
+            dropdownWidthClass: 'w-col-156',
         };
     }
 }

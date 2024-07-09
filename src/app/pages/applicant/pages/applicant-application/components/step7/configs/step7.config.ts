@@ -38,7 +38,7 @@ export class Step7Config {
         isRequired: true,
         placeholderIcon: 'address',
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-431',
+        dropdownWidthClass: 'w-col-434',
         minLength: 6,
         maxLength: 256,
         isDisabled: config.selectedMode === 'REVIEW_MODE' ||

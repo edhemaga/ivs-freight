@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
     setPendingTabCards,
+    setTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
 
 //Constants
@@ -24,6 +25,12 @@ export const loadState: LoadCardData = {
         front_side: LoadCardModalConfig.displayRowsFrontPending,
         back_side: LoadCardModalConfig.displayRowsBackPending,
     },
+    template: {
+        numberOfRows: 4,
+        checked: true,
+        front_side: LoadCardModalConfig.displayRowsFrontTemplate,
+        back_side: LoadCardModalConfig.displayRowsBackTemplate,
+    },
 };
 
 export const loadCardModalReducer = createReducer(
@@ -35,5 +42,9 @@ export const loadCardModalReducer = createReducer(
     on(setPendingTabCards, (state, pending) => ({
         ...state,
         pending,
+    })),
+    on(setTemplateTabCards, (state, template) => ({
+        ...state,
+        template,
     }))
 );
