@@ -35,6 +35,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
@@ -52,6 +53,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 
         // components
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step9Component implements OnInit, OnDestroy {

@@ -23,7 +23,6 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
@@ -45,6 +44,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { ApplicantLicensesTableComponent } from '@pages/applicant/components/applicant-licenses-table/applicant-licenses-table.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -63,6 +63,7 @@ import { ApplicantLicensesTableComponent } from '@pages/applicant/components/app
         TaCheckboxComponent,
         TaCounterComponent,
         ApplicantLicensesTableComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {

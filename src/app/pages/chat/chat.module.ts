@@ -16,7 +16,6 @@ import { MessagesNotSelectedComponent } from "@pages/chat/components/conversatio
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-badge/user-status-badge.component";
 
 // Services
@@ -64,7 +63,6 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 
         // Components
         TaProfileImagesComponent,
-        TaInputComponent
     ],
     providers: [
         // Services

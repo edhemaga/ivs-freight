@@ -84,7 +84,7 @@ export class Step2FormConfig {
             isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-481',
+            dropdownWidthClass: config.isEditing ? 'w-col-498' : 'w-col-504',
             minLength: 12,
             maxLength: 256,
             isDisabled:
@@ -176,7 +176,7 @@ export class Step2FormConfig {
             label: 'Reason for leaving',
             isRequired: !config.currentEmploymentFormControl.value,
             isDropdown: true,
-            dropdownWidthClass: config.isEditing ? 'w-col-284' : 'w-col-292',
+            dropdownWidthClass: config.isEditing ? 'w-col-290' : 'w-col-292',
             isDisabled:
                 config.selectedMode !== 'APPLICANT_MODE' ||
                 config.currentEmploymentFormControl.value,

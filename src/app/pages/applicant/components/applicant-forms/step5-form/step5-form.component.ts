@@ -62,7 +62,7 @@ import {
     AddressEntity,
     ApplicantModalResponse,
     TruckTypeResponse,
-    } from 'appcoretruckassist/model/models';
+} from 'appcoretruckassist/model/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // components
@@ -181,6 +181,7 @@ export class Step5FormComponent
         return Step5FormConfig.getAddressInputConfig({
             selectedMode: this.selectedMode,
             stepFeedbackValues: this.stepFeedbackValues,
+            isEditing: this.isEditing,
         });
     }
 
@@ -228,7 +229,7 @@ export class Step5FormComponent
                 .subscribe((res) => {
                     this.lastFormValuesEmitter.emit({
                         ...res,
-                        location: this.selectedAddress
+                        location: this.selectedAddress,
                     });
                 });
         }

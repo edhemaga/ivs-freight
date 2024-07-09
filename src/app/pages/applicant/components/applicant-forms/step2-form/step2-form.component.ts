@@ -364,6 +364,7 @@ export class Step2FormComponent
         return Step2FormConfig.getEmployerAddressInputConfig({
             selectedMode: this.selectedMode,
             stepFeedbackValues: this.stepFeedbackValues,
+            isEditing: this.isEditing,
         });
     }
 
