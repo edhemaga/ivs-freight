@@ -146,7 +146,7 @@ export class LoadStatusColorPipe implements PipeTransform {
         } else if (statusMildDarkYellowColorCondition) {
             return isBadge
                 ? { color: '#fff', backgroundColor: '#CDB255' }
-                : { color: '##CDB255' };
+                : { color: '#CDB255' };
         }
     }
 }
