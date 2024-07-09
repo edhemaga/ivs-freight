@@ -491,7 +491,7 @@
                         'add-new': option.name === 'ADD NEW',
                         'all-assigned':
                             option?.name?.toLowerCase() === 'all assigned',
-                        'load-details-template': option?.statusString
+                        'load-details-template': option?.status?.statusString
                     }"
                     class="dropdown-option details-template"
                 >
@@ -523,7 +523,7 @@
                         ></svg-icon>
                     </ng-container>
 
-                    <ng-container *ngIf="option?.statusString">
+                    <ng-container *ngIf="option?.status?.statusString">
                         <p class="m-0 additional-text">
                             <ng-container
                                 *ngIf="
@@ -543,7 +543,10 @@
                     <!-- Driver & Load Details Template -->
 
                     <ng-container
-                        *ngIf="option?.address?.address || option?.statusString"
+                        *ngIf="
+                            option?.address?.address ||
+                            option?.status?.statusString
+                        "
                     >
                         <div
                             class="d-flex align-items-center driver-details-template-container"
@@ -610,20 +613,21 @@
 
                                         <ng-template #statusString>
                                             <app-load-status-string
-                                                [status]="{
-                                                    name: option?.statusString,
-                                                    valueForRequest:
-                                                        loadStatusEnum[
-                                                            option?.statusId
-                                                        ]
-                                                }"
                                                 [isDropdownColor]="true"
+                                                [status]="{
+                                                    name: option?.status
+                                                        ?.statusString,
+                                                    valueForRequest:
+                                                        option?.status
+                                                            ?.statusValue?.name
+                                                }"
+                                                [statusOrder]="{
+                                                    type: option?.stopType,
+                                                    stopOrder:
+                                                        option?.status
+                                                            ?.statusCheckInNumber
+                                                }"
                                             ></app-load-status-string>
-                                            <!-- 
-                                            [statusOrder]="{
-                                                type: statusOrder?.type,
-                                                stopOrder: statusOrder?.stopOrder
-                                            }" -->
                                         </ng-template>
                                     </ng-template>
                                 </p>

@@ -58,9 +58,6 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// enums
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
-
 // directives
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 
@@ -299,8 +296,6 @@ export class TaInputDropdownComponent
 
     // Destroy
     private destroy$ = new Subject<void>();
-
-    public loadStatusEnum = LoadStatusEnum;
 
     constructor(
         @Self() public superControl: NgControl,

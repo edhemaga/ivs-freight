@@ -79,6 +79,7 @@ export class LoadDetailsItemStopsProgressBarComponent implements OnChanges {
     }
 
     private getPositionToDisplayData(progressData: LoadResponse): void {
+        console.log('progressData', progressData);
         const { statusType, loadProgress } = progressData;
 
         this.statusType = statusType?.name;
