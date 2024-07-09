@@ -1,49 +1,52 @@
-<div class="container-fluid">
+<div *ngIf="companyInfo" class="container-fluid">
     <div class="row">
         <div
-            class="container-fluid d-flex flex-column justify-content-between end-container"
+            class="end-container container-fluid d-flex flex-column justify-content-between"
         >
             <div class="d-flex flex-column align-items-center">
-                <!--TOP HEADER-->
-
                 <div
-                    class="d-flex justify-content-center align-items-center w-100 top-header"
-                >
-                    <h3 class="m-0 top-header-title ta-font-semi-bold">
-                        Date of Invitation:<span>{{ currentDate }}</span>
-                    </h3>
-                </div>
-
-                <!-- MID HEADER -->
-
-                <div
-                    class="d-flex justify-content-center flex-column align-items-center w-100 mid-header"
+                    class="d-flex flex-column align-items-center w-100 mid-header"
                 >
                     <div
-                        class="d-flex align-items-center justify-content-center company-container"
+                        class="d-flex flex-column align-items-center justify-content-center company-container"
                     >
                         <div class="d-flex align-items-center company-name">
-                            <span class="ta-font-black">{{
-                                company?.name
+                            <span class="m-0 ta-font-bold">{{
+                                companyInfo?.name
                             }}</span>
                         </div>
 
-                        <div class="d-flex align-items-center company-usdot">
-                            <span class="ta-font-regular"
-                                >USDOT # {{ company?.usdot }}</span
+                        <div class="d-flex align-items-center">
+                            <div
+                                class="d-flex align-items-center company-usdot"
                             >
-                        </div>
+                                <span
+                                    class="m-0 ta-font-bold usdot-title"
+                                >
+                                    USDOT
+                                </span>
 
-                        <div class="d-flex align-items-center company-phone">
-                            <svg-icon
-                                class="phone-icon"
-                                src="assets/svg/common/ic_phone.svg"
-                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                            ></svg-icon>
+                                <span class="m-0 ta-font-regular">
+                                    {{ companyInfo?.usDot }}</span
+                                >
+                            </div>
 
-                            <span class="ta-font-regular">{{
-                                company?.phoneContact
-                            }}</span>
+                            <div
+                                class="d-flex align-items-center company-phone"
+                            >
+                                <svg-icon
+                                    class="phone-icon"
+                                    src="assets/svg/common/ic_phone.svg"
+                                    [svgStyle]="{
+                                        'width.px': 20,
+                                        'height.px': 20
+                                    }"
+                                ></svg-icon>
+
+                                <span class="ta-font-regular">{{
+                                    companyInfo?.phone
+                                }}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -55,32 +58,56 @@
                                 class="location-icon"
                                 src="assets/svg/truckassist-table/location-icon.svg"
                                 [svgStyle]="{
-                                    'width.px': '16.39',
+                                    'width.px': 20,
                                     'height.px': 20
                                 }"
                             ></svg-icon>
                             <span class="ta-font-regular"
-                                >{{ company?.location?.street }},</span
+                                >{{ companyInfo?.address?.streetNumber }}
+                                {{ companyInfo?.address?.street
+                                }}<ng-container
+                                    *ngIf="companyInfo?.address?.addressUnit"
+                                >
+                                    <span>
+                                        {{
+                                            companyInfo?.address?.addressUnit
+                                        }}</span
+                                    ></ng-container
+                                >,</span
                             >
                         </div>
 
                         <div class="d-flex align-items-center company-city">
                             <span class="ta-font-regular"
-                                >{{ company?.location?.city }},</span
+                                >{{ companyInfo?.address?.city }},</span
                             >
                         </div>
 
-                        <div
-                            class="d-flex align-items-center company-postalcode"
-                        >
-                            <span class="ta-font-regular"
-                                >{{ company?.location?.postalCode }},</span
+                        <div class="d-flex align-items-center company-state">
+                            <span class="ta-font-regular">{{
+                                companyInfo?.address?.stateShortName
+                            }}</span>
+
+                            <ng-container
+                                *ngIf="!companyInfo?.address?.zipCode"
                             >
+                                <span class="ta-font-regular">,</span>
+                            </ng-container>
                         </div>
+
+                        <ng-container *ngIf="companyInfo?.address?.zipCode">
+                            <div
+                                class="d-flex align-items-center company-postalcode"
+                            >
+                                <span class="ta-font-regular"
+                                    >{{ companyInfo?.address?.zipCode }},</span
+                                >
+                            </div>
+                        </ng-container>
 
                         <div class="d-flex align-items-center company-country">
                             <span class="ta-font-regular">{{
-                                company?.location?.country
+                                companyInfo?.address?.country
                             }}</span>
                         </div>
                     </div>
@@ -89,37 +116,27 @@
                 <!-- ICON -->
 
                 <svg-icon
-                    class="welcome-icon"
+                    class="end-icon"
                     src="assets/svg/applicant/end.svg"
-                    [svgStyle]="{ 'width.px': '437.6', 'height.px': '402.34' }"
+                    [svgStyle]="{ 'width.px': 480, 'height.px': 385 }"
                 ></svg-icon>
 
-                <!-- FINISHED -->
+                <!-- END -->
 
                 <div
                     class="d-flex flex-column justify-content-center align-items-center"
                 >
                     <h2 class="m-0 ta-font-bold end-title">
-                        Application has been successfully finished
+                        Application has been <br>
+                        successfully finished
                     </h2>
 
                     <p class="m-0 ta-font-regular end-text">
-                        You have been successfully completed your application
-                        process.<br />Your account will be automatically created
-                        at
-                        <a class="ta-font-bold" href="#">www.hireassist.io</a>
+                        Application has been sent to prospective employer
                     </p>
 
-                    <button
-                        type="button"
-                        class="d-flex justify-content-center align-items-center ta-font-bold end-btn"
-                    >
-                        Enter HireAssist
-                    </button>
-
-                    <p class="m-0 ta-font-regular welcome-info">
-                        Please click the button above, to start application
-                        process.
+                    <p class="m-0 ta-font-extra-bold date-of-invatation-text">
+                        Date of Completion: {{ currentDate }}
                     </p>
                 </div>
             </div>

@@ -53,6 +53,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { Step2FormComponent } from '@pages/applicant/components/applicant-forms/step2-form/step2-form.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -74,6 +75,7 @@ import { SharedModule } from '@shared/shared.module';
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {

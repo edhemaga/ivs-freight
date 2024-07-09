@@ -17,6 +17,10 @@ import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active
 import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
 import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
+import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
+import { LoadPendingQuery } from '@pages/load/state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '@pages/load/state/load-template-state/load-template.query';
+import { LoadClosedQuery } from '@pages/load/state/load-closed-state/load-closed.query';
 
 // models
 import {
@@ -70,7 +74,11 @@ export class LoadService {
         private loadActiveStore: LoadActiveStore,
         private loadPendingStore: LoadPendingStore,
         private loadClosedStore: LoadClosedStore,
-        private loadTemplateStore: LoadTemplateStore
+        private loadTemplateStore: LoadTemplateStore,
+        private loadActiveQuery: LoadActiveQuery,
+        private loadPendingQuery: LoadPendingQuery,
+        private loadTemplateQuery: LoadTemplateQuery,
+        private loadClosedQuery: LoadClosedQuery
     ) {}
 
     public addData(data: Comment): void {
@@ -496,7 +504,67 @@ export class LoadService {
         return this.loadService.apiLoadDispatcherFilterGet(loadStatusType);
     }
 
-    public getLoadStatusDropdownOptions(id: number): Observable<LoadPossibleStatusesResponse>   {
+    public getLoadStatusDropdownOptions(
+        id: number
+    ): Observable<LoadPossibleStatusesResponse> {
         return this.loadService.apiLoadListStatusIdGet(id);
     }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        let storeLoads;
+    
+        switch (data.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                storeLoads = this.loadActiveQuery.getAll();
+                break;
+            case TableStringEnum.PENDING:
+                storeLoads = this.loadPendingQuery.getAll();
+                break;
+            case TableStringEnum.TEMPLATE:
+                storeLoads = this.loadTemplateQuery.getAll();
+                break;
+            case TableStringEnum.CLOSED:
+                storeLoads = this.loadClosedQuery.getAll();
+                break;
+            default:
+                storeLoads = [];
+                break;
+        }
+    
+        storeLoads.map((load: LoadResponse) => {
+            if (data.id === load.id) {
+                switch (data.selectedTab) {
+                    case TableStringEnum.ACTIVE:
+                        this.loadActiveStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.PENDING:
+                        this.loadPendingStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.TEMPLATE:
+                        this.loadTemplateStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.CLOSED:
+                        this.loadClosedStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                }
+            }
+        });
+    }
+    
 }

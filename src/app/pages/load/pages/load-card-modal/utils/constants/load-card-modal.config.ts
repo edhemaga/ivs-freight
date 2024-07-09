@@ -112,4 +112,63 @@ export class LoadCardModalConfig {
         null,
         null,
     ];
+
+    static displayRowsFrontTemplate: CardRows[] = [
+        {
+            title: 'Commodity',
+            key: 'loadDetails',
+            secondKey: 'generalCommodityName',
+        },
+        {
+            title: 'Broker Detail • Business Name',
+            secondTitle: 'Business Name',
+            key: 'broker',
+            secondKey: 'businessName',
+        },
+        {
+            title: 'Broker Detail • Contact',
+            secondTitle: 'Contact',
+            key: 'broker',
+            secondKey: 'contact',
+        },
+        {
+            title: 'Broker Detail • Phone',
+            secondTitle: 'Phone',
+            key: 'broker',
+            secondKey: 'phone',
+            type: 'phone',
+        },
+        null,
+        null,
+    ];
+
+    static displayRowsBackTemplate: CardRows[] = [
+        {
+            title: 'Pickup',
+            key: 'pickup',
+            secondKey: 'count',
+            thirdKey: 'location',
+        },
+        {
+            title: 'Delivery',
+            key: 'delivery',
+            secondKey: 'count',
+            thirdKey: 'location',
+        },
+        {
+            title: 'Miles • Total',
+            key: 'miles',
+            secondKey: 'total',
+            type: 'miles',
+        },
+        {
+            title: 'Billing • Rate',
+            secondTitle: 'Rate',
+            key: 'billing',
+            secondKey: 'rate',
+            type: 'money',
+        },
+        null,
+        null,
+    ];
 }

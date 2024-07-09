@@ -21,7 +21,6 @@ import { ApplicantFooterComponent } from '@pages/applicant/components/applicant-
 import { ApplicantSignaturePadComponent } from '@pages/applicant/components/applicant-signature-pad/applicant-signature-pad.component';
 import { ApplicantWelcomeScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
-import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 import { ApplicantReviewFeedbackComponent } from '@pages/applicant/components/applicant-review-feedback/applicant-review-feedback.component';
 
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -42,7 +41,6 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,
-        ApplicantNextBackBtnComponent,
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
@@ -78,7 +76,6 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         SumArraysPipe,
     ],
     exports: [
-        ApplicantNextBackBtnComponent,
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,

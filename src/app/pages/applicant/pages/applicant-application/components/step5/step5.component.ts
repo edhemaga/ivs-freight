@@ -59,6 +59,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { Step5FormComponent } from '@pages/applicant/components/applicant-forms/step5-form/step5-form.component';
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -87,6 +88,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
         Step5FormComponent,
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
