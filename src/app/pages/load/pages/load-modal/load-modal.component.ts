@@ -4476,6 +4476,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return false;
     }
 
+    public isExtraStopAppoitment(index: number): boolean {
+        return this.selectedExtraStopTime[index] === 2 || this.selectedExtraStopTime[index]> 8999;
+    }
+
+    public isPickupAppoitment(): boolean {
+        return (
+            this.selectedStopTimePickup === 6 ||
+            this.selectedStopTimePickup === 2
+        );
+    }
+
+    public isDeliveryAppoitment(): boolean {
+        return (
+            this.selectedStopTimeDelivery === 8 ||
+            this.selectedStopTimeDelivery === 2
+        );
+    }
+
     public drop(event: CdkDragDrop<string[]>): void {
         if (event.previousIndex === event.currentIndex) {
             return;

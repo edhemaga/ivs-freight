@@ -147,10 +147,14 @@
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
                     >
-                        <p>{{ dateRange }}</p>
+                        <p [ngClass]="{'color-blue': stopFinished}">{{ dateRange }}</p>
                     </div>
                     <div class="load-stop-content-down">
-                        <p>{{ timeRange }}</p>
+                        <p>{{ timeRange }} 
+                            <ng-container *ngIf="appointment">
+                                • <span class="color-orange">Appt.</span>
+                            </ng-container>
+                        </p>
                     </div>
                 </ng-container>
             </div>

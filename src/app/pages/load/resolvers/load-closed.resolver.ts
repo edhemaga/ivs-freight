@@ -19,25 +19,32 @@ import {
 export class LoadClosedResolver implements Resolve<LoadClosedState> {
     constructor(
         private loadService: LoadService,
-        private loadClosedStore: LoadClosedStore,
-        private tableService: TruckassistTableService
+        private loadClosedStore: LoadClosedStore
     ) {}
     resolve(): Observable<any> {
         return this.loadService
             .getLoadList(
                 null,
                 3,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 1,
                 25,
                 null,

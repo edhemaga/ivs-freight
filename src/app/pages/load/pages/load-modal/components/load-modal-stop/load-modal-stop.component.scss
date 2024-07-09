@@ -530,3 +530,12 @@
         }
     }
 }
+
+.color {
+    &-blue{
+        color: $ta-blue-13 !important;
+    }
+    &-orange{
+        color: $ta-yellow-5 !important;
+    }
+}

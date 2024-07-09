@@ -63,6 +63,7 @@ export class LoadModalStopComponent {
     @Input() isDestinationTab = false;
     @Input() isDragAndDropActive = false;
     @Input() stopFinished = false;
+    @Input() appointment = false;
     public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
