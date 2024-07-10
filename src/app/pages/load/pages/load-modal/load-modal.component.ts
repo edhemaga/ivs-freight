@@ -393,6 +393,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private lastCallTimeout: any;
     private debounceDelay: number = 1000;
     private isPreviousStatus: boolean = false;
+    private statusHistory: LoadStatusHistoryResponse[];
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -516,7 +517,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public loadInvoiceDateInputConfig(): ITaInput {
-        return LoadModalConfig.getInvoiceDate(!this.isInvoicedStatus);
+        const wasLoadInvoiced = !!this.statusHistory?.find(
+            (status) => status.id === 8
+        );
+        return LoadModalConfig.getInvoiceDate(!wasLoadInvoiced);
     }
 
     public get invoicePercent(): LoadModalInvoiceProgress {
@@ -3934,6 +3938,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay,
             tonuRate,
             revisedRate,
+            invoicedDate,
         } = this.loadForm.value;
 
         const adjustedRate = this.adjustedRate;
@@ -3975,6 +3980,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pays: this.additionalPayments().value,
             tonuRate,
             revisedRate,
+            invoicedDate,
         };
     }
 
@@ -4178,6 +4184,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate,
             tonuRate,
             revisedRate,
+            statusHistory,
         } = loadModalData;
 
         // Remove deadhead
@@ -4196,6 +4203,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         });
 
         this.stops = stops;
+        this.statusHistory = statusHistory;
 
         const loadRequirements = {
             truckType: loadModalData.loadRequirements?.truckType,
@@ -4282,7 +4290,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadMiles: loadedMiles,
             totalMiles: totalMiles,
             totalHours: totalTimeHours,
-            // invoicedDate,
+            invoicedDate,
             ageUnpaid: ageUnpaid,
             daysToPay,
             tonuRate,
