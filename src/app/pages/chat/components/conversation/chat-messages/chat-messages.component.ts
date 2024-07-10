@@ -1,5 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+
+// Routes
+import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -7,7 +11,6 @@ import { HubService } from '@pages/chat/services/hub.service';
 
 // Models
 import { CompanyUserShortResponse, ConversationResponse, MessageResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-chat-messages',
@@ -25,6 +28,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   conversation!: ConversationResponse;
   remainingParticipants: CompanyUserShortResponse[];
 
+  // Icons
+  public ChatSvgRoutes = ChatSvgRoutes;
+
   // Messages
   messageToSend: string = "";
   messages: MessageResponse[] = [];
@@ -35,17 +41,28 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe({
-      next: (res) => {
-        this.messages = res.messages;
+    this.getResolvedData();
+    this.connectToHub();
+  }
 
-        // Conversation participants
-        this.conversation = res.information;
-        this.remainingParticipants = this.conversation
-          ?.participants
-          .filter(participant => participant.id !== this.currentUserId);
-      }
-    });
+  // Get Data --------------------------------
+  private getResolvedData(): void {
+    this.activatedRoute.data
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.messages = res.messages;
+
+          // Conversation participants
+          this.conversation = res.information;
+          this.remainingParticipants = this.conversation
+            ?.participants
+            .filter(participant => participant.id !== this.currentUserId);
+        }
+      });
+  }
+
+  private connectToHub(): void {
     this.chatHub
       .connect()
       .pipe(takeUntil(this.destroy$))
@@ -71,12 +88,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         }
       });
   }
+  // -----------------------------------------
 
-  getMessage(event): void {
-    this.messageToSend = event.target.value;
-  }
-
-  sendMessage(): any {
+  // Messages --------------------------------
+  public sendMessage(): void {
     if (!this.conversation?.id || !this.messageToSend) return;
     this.chatService
       .sendMessage(this.conversation.id, this.messageToSend)
@@ -87,6 +102,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         }
       });
   }
+  // ------------------------------------------
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -1,4 +1,4 @@
-<div class="messages-container d-flex">
+<div class="messages-container">
     <ng-container [ngSwitch]="remainingParticipants?.length">
         <div class="messages-header d-flex align-items-center">
             <ng-container *ngSwitchCase="1">
@@ -43,4 +43,20 @@
             </ng-container>
         </div>
     </ng-container>
+
+    <div class="messages-content">
+        <div *ngIf="messages.length">
+            <ng-container *ngFor="let message of messages">
+                <div>
+                    {{ message.content }}
+                </div>
+            </ng-container>
+        </div>
+
+        <input
+            [(ngModel)]="messageToSend"
+            aria-label="Chat Message Input Field"
+        />
+        <button (click)="sendMessage()">Send message</button>
+    </div>
 </div>
