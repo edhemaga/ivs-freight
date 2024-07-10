@@ -86,6 +86,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ApplicantTruckDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-truck-details/applicant-truck-details.component';
 import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-trailer-details/applicant-trailer-details.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -118,12 +119,13 @@ import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-in
         TaUploadFilesComponent,
         ApplicantTruckDetailsComponent,
         ApplicantTrailerDetailsComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public subscription: Subscription;
 
@@ -404,6 +406,8 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -474,6 +478,14 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

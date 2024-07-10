@@ -124,8 +124,6 @@ export class ApplicantRoutes {
             path: 'applicant/end',
             component: ApplicantEndScreenComponent,
             data: { title: 'End Screen' },
-            canActivate: [ApplicantGuard],
-            resolve: { applicant: ApplicantResolver },
         },
     ];
 }

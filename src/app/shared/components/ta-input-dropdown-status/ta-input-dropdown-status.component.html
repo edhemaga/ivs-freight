@@ -47,5 +47,21 @@
                 </ng-container>
             </div>
         </ng-container>
+
+        <ng-container *ngIf="previousStatus">
+            <div class="status__dropdown-back ta-font-bold">Or back to</div>
+            <div
+                class="status__dropdown-option d-flex justify-content-between align-items-center"
+                (click)="changeStatus(previousStatus)"
+            >
+                <app-load-status-string
+                    [status]="previousStatus"
+                ></app-load-status-string>
+                <svg-icon
+                    [src]="inputDropdownStatusSvgRoutes.reply"
+                    [className]="'d-flex'"
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 </ng-template>

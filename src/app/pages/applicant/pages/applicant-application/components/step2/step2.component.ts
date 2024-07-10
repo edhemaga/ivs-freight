@@ -53,6 +53,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { Step2FormComponent } from '@pages/applicant/components/applicant-forms/step2-form/step2-form.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -74,12 +75,13 @@ import { SharedModule } from '@shared/shared.module';
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -148,6 +150,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -171,6 +175,14 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             formControls[`cardReview${i}`] = [null];
         }
         this.workExperienceForm = this.formBuilder.group(formControls);
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

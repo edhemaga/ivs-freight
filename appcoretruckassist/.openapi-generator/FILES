@@ -302,6 +302,7 @@ model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
 model/conversationResponse.ts
+model/conversationType.ts
 model/counterResponse.ts
 model/countryType.ts
 model/createAccidentItemCommand.ts
@@ -783,6 +784,7 @@ model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
 model/ratingReviewResponse.ts
 model/ratingSetResponse.ts
+model/refreshMobileTokenCommand.ts
 model/refreshTokenCommand.ts
 model/registrationModalResponse.ts
 model/registrationResponse.ts
@@ -841,6 +843,7 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
+model/revertDispatchStatusCommand.ts
 model/revertLoadStatusCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts

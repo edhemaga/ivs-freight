@@ -38,6 +38,11 @@ export interface AccidentResponse {
     driver_LicenceNo?: string | null;
     driver_State?: string | null;
     driver_DateOfBirth?: string | null;
+    coDriver?: DriverAccidentResponse;
+    coDriver_FullName?: string | null;
+    coDriver_LicenceNo?: string | null;
+    coDriver_State?: string | null;
+    coDriver_DateOfBirth?: string | null;
     truck?: TruckAccidentResponse;
     truck_Unit?: string | null;
     truck_Type?: string | null;

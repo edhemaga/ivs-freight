@@ -74,6 +74,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { ApplicantDeleteBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-delete-btn/applicant-delete-btn.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -105,6 +106,7 @@ import { Step6Config } from '@pages/applicant/pages/applicant-application/compon
         ApplicantAddSaveBtnComponent,
         ApplicantDeleteBtnComponent,
         TaAppTooltipV2Component,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
@@ -136,7 +138,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public subscription: Subscription;
 
@@ -263,6 +265,8 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -309,6 +313,14 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             cardReview9: [null],
             cardReview10: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

@@ -17,6 +17,7 @@ import { ApplicantMapper } from '@pages/applicant/utils/helpers/applicant.mapper
 import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { ApplicantWorkExperienceTableComponent } from '@pages/applicant/components/applicant-work-experience-table/applicant-work-experience-table/applicant-work-experience-table.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -62,13 +63,14 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
         TaCheckboxComponent,
         ApplicantSphModalComponent,
         ApplicantCardComponent,
-        ApplicantWorkExperienceTableComponent
+        ApplicantWorkExperienceTableComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantSphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -99,6 +101,8 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -109,8 +113,15 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     public createForm(): void {
         this.sphForm = this.formBuilder.group({
             isTested: [false, Validators.requiredTrue],
-            hasReadAndUnderstood: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {
@@ -210,6 +221,7 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        debugger;
         if (this.sphForm.invalid || !this.signature) {
             if (this.sphForm.invalid) {
                 this.inputService.markInvalid(this.sphForm);

@@ -66,15 +66,18 @@ export class BrokerService implements OnDestroy {
                             localStorage.getItem('brokerShipperTableCount')
                         );
 
-                        brokerShipperCount.broker++;
+                        // use case for new company when user don't have broker and trys to create new load
+                        if (brokerShipperCount) {
+                            brokerShipperCount.broker++;
 
-                        localStorage.setItem(
-                            'brokerShipperTableCount',
-                            JSON.stringify({
-                                broker: brokerShipperCount.broker,
-                                shipper: brokerShipperCount.shipper,
-                            })
-                        );
+                            localStorage.setItem(
+                                'brokerShipperTableCount',
+                                JSON.stringify({
+                                    broker: brokerShipperCount.broker,
+                                    shipper: brokerShipperCount.shipper,
+                                })
+                            );
+                        }
 
                         this.tableService.sendActionAnimation({
                             animation: 'add',

@@ -91,6 +91,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
@@ -120,6 +121,7 @@ import { Step1Config } from '@pages/applicant/pages/applicant-application/compon
         TaCustomCardComponent,
         TaModalTableComponent,
         TaInputRadiobuttonsComponent,
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
@@ -127,7 +129,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public personalInfoRadios: any;
     public displayRadioRequiredNoteArray =
@@ -205,6 +207,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -327,6 +331,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview6: [null],
             questionReview7: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -505,21 +517,24 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         address: AddressEntity,
         personalInfoReview: ApplicantPersonalInfoReviewResponse
     ): void {
-        const mappedPreviousAddresses = previousAddresses.map((item) => item.address);
+        const mappedPreviousAddresses = previousAddresses.map(
+            (item) => item.address
+        );
         this.updatedPreviousAddressesItems[0] = address;
-        this.updatedPreviousAddressesItems = this.updatedPreviousAddressesItems.concat(mappedPreviousAddresses);
-        this.updatedPreviousAddressesItems = this.updatedPreviousAddressesItems.map(item => {
-            return {
-                address: item,
-                addressUnit: item.addressUnit,
-            }
-        })
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.concat(mappedPreviousAddresses);
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.map((item) => {
+                return {
+                    address: item,
+                    addressUnit: item.addressUnit,
+                };
+            });
         if (!previousAddresses) return;
 
         this.previousAddressesId = previousAddresses.map((item) => item.id);
         const addresses = [...previousAddresses.map((p) => p.address), address];
         this.selectedAddresses = addresses;
-
     }
 
     private getReviewMessage(
@@ -1296,7 +1311,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             isAgreed: isAgreement,
             doB: MethodsCalculationsHelper.convertDateToBackend(dateOfBirth),
             address: lastActiveAddress
-            ? {
+                ? {
                       ...lastActiveAddress,
                       addressUnit: lastActiveAddress.addressUnit,
                       addressCity: lastActiveAddress.city,
@@ -1332,9 +1347,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.selectedMode === SelectedMode.FEEDBACK) && {
                 id: this.applicantId,
                 filesForDeleteIds: this.documentsForDeleteIds,
-                }),
+            }),
         };
-        
+
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&

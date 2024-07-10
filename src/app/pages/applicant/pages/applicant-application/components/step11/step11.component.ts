@@ -18,7 +18,6 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
@@ -39,6 +38,7 @@ import { SharedModule } from '@shared/shared.module';
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -60,12 +60,13 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
         // components
         TaCheckboxComponent,
         ApplicantCardComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step11Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public authorizationForm: UntypedFormGroup;
 
@@ -90,6 +91,8 @@ export class Step11Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -102,6 +105,14 @@ export class Step11Component implements OnInit, OnDestroy {
             isThirdAuthorization: [false, Validators.requiredTrue],
             isFourthAuthorization: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -209,7 +220,7 @@ export class Step11Component implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([
-                        `/medical-certificate/${this.applicantId}`,
+                        `/owner-info/${this.applicantId}`,
                     ]);
 
                     this.applicantStore.update((store) => {
@@ -250,7 +261,7 @@ export class Step11Component implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([
-                        `/medical-certificate/${this.applicantId}`,
+                        `/owner-info/${this.applicantId}`,
                     ]);
 
                     this.applicantStore.update((store) => {
