@@ -59,7 +59,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 export class Step10Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public disclosureReleaseForm: UntypedFormGroup;
 
@@ -79,6 +79,8 @@ export class Step10Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -95,6 +97,14 @@ export class Step10Component implements OnInit, OnDestroy {
             isFifthDisclosure: [false, Validators.requiredTrue],
             isSixthDisclosure: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public initStringConstants() {

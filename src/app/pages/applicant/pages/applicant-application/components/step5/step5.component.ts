@@ -94,7 +94,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -157,6 +157,8 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.hasNoTrafficViolations();
@@ -201,6 +203,14 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
             cardReview9: [null],
             cardReview10: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

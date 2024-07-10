@@ -423,6 +423,14 @@
 
                 <ng-container *ngIf="selectedMode !== 'REVIEW_MODE'">
                     <div class="d-flex align-items-center">
+                        <p
+                            class="m-0 ta-font-bold"
+                            [ngClass]="{ 'display-box': displayInfoBox }"
+                            (click)="onDisplayOrHidePopupBox('INFO-BOX')"
+                        >
+                            Company Info
+                        </p>
+
                         <svg-icon
                             class="info-icon"
                             [ngClass]="{ 'display-box': displayInfoBox }"
@@ -430,14 +438,6 @@
                             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                             (click)="onDisplayOrHidePopupBox('INFO-BOX')"
                         ></svg-icon>
-
-                        <p
-                            class="m-0 ta-font-medium"
-                            [ngClass]="{ 'display-box': displayInfoBox }"
-                            (click)="onDisplayOrHidePopupBox('INFO-BOX')"
-                        >
-                            Company Info
-                        </p>
                     </div>
                 </ng-container>
 

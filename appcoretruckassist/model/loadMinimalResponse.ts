@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadStatusResponse } from './loadStatusResponse';
 import { EnumValue } from './enumValue';
 
 
@@ -17,7 +18,7 @@ export interface LoadMinimalResponse {
     loadNumber?: string | null;
     type?: EnumValue;
     statusType?: EnumValue;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     referenceNumber?: string | null;
     totalBill?: number | null;
     brokerName?: string | null;

@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ConversationType } from './conversationType';
 
 
-export interface CreateConversationCommand { 
-    participantIds?: Array<number> | null;
-    conversationType?: ConversationType;
+export interface RevertDispatchStatusCommand { 
+    id?: number;
 }
 
