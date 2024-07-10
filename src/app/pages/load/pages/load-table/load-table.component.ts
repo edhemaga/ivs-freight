@@ -4,6 +4,7 @@ import {
     OnInit,
     AfterViewInit,
     ChangeDetectorRef,
+    ViewChild,
 } from '@angular/core';
 import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
 
@@ -73,6 +74,7 @@ import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-fi
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
@@ -95,6 +97,8 @@ import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.he
     providers: [ThousandSeparatorPipe, NameInitialsPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('toolbarComponent') toolbarComponent: TaTableToolbarComponent;
+    
     private destroy$ = new Subject<void>();
     public loadTableData: any[] = [];
     public tableOptions;
@@ -1179,6 +1183,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
+            this.toolbarComponent?.flipCards(false);
             this.getLoadStatusFilter();
             this.getLoadDispatcherFilter();
 
