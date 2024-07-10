@@ -107,7 +107,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public subscription: Subscription;
 
@@ -183,6 +183,8 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -215,6 +217,14 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             permitExplain: [null],
             fifthRowReview: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -1263,8 +1273,8 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             cdlDenied: permit,
             cdlDeniedExplanation: permitExplain,
             licences: !this.licenseArray.length
-                ? [filteredLastLicenseCard]
-                : [...filteredLicenseArray],
+            ? [filteredLastLicenseCard]
+            : [...filteredLicenseArray],
         };
 
         const storeLicenceItems = saveData.licences.map((item) => {

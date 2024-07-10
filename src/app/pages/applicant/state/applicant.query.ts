@@ -15,6 +15,8 @@ export class ApplicantQuery extends QueryEntity<ApplicantState> {
 
     public applicantSphForm$ = this.select('applicantSphForm');
 
+    public selectedMode$ = this.select('selectedMode');
+
     constructor(protected applicantStore: ApplicantStore) {
         super(applicantStore);
     }

@@ -13,13 +13,19 @@ import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { StateResponse } from './stateResponse';
 import { InsuranceTypeResponse } from './insuranceTypeResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
+import { BrokerShortResponse } from './brokerShortResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface AccidentShortResponse { 
     id?: number;
     reported?: boolean;
     report?: string | null;
+    addressAccident?: AddressEntity;
+    state?: StateResponse;
+    date?: string | null;
+    time?: string | null;
     federallyRecordable?: boolean;
     stateRecordable?: boolean;
     injury?: number | null;
@@ -27,11 +33,14 @@ export interface AccidentShortResponse {
     towing?: boolean;
     hazMat?: boolean;
     vehicloNo?: number;
-    date?: string | null;
-    time?: string | null;
-    state?: StateResponse;
     driver?: DriverMinimalResponse;
     driver_FullName?: string | null;
+    driver_DateOfBirth?: string | null;
+    driver_LicenceNo?: string | null;
+    coDriver?: DriverMinimalResponse;
+    coDriver_FullName?: string | null;
+    coDriver_DateOfBirth?: string | null;
+    coDriver_LicenceNo?: string | null;
     truck?: TruckAccidentResponse;
     truck_PlateNo?: string | null;
     trailerChecked?: boolean;
@@ -42,6 +51,23 @@ export interface AccidentShortResponse {
     hmPlacards?: boolean;
     description?: string | null;
     insuranceType?: Array<InsuranceTypeResponse> | null;
+    roadwayTrafficway?: string | null;
+    weatherCondition?: string | null;
+    roadAccessControl?: string | null;
+    roadSurfaceCondition?: string | null;
+    lightCondition?: string | null;
+    reportingAgency?: string | null;
+    policeOfficer?: string | null;
+    bagdeNo?: string | null;
+    addressAuthority?: AddressEntity;
+    phoneOfficer?: string | null;
+    fax?: string | null;
+    origin?: AddressEntity;
+    destination?: AddressEntity;
+    brokerId?: number | null;
+    broker?: BrokerShortResponse;
+    boL?: string | null;
+    cargo?: string | null;
     timeWeight?: number | null;
     totalWeight?: number | null;
 }

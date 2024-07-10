@@ -15,6 +15,7 @@ import { DriverDispatchResponse } from './driverDispatchResponse';
 import { ParkingSlotShortResponse } from './parkingSlotShortResponse';
 import { EnumValue } from './enumValue';
 import { DispatchHosResponse } from './dispatchHosResponse';
+import { LoadProgressResponse } from './loadProgressResponse';
 import { LoadShortResponse } from './loadShortResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
@@ -41,5 +42,6 @@ export interface DispatchResponse {
     note?: string | null;
     activeLoad?: LoadShortResponse;
     parkingSlot?: ParkingSlotShortResponse;
+    loadProgress?: LoadProgressResponse;
 }
 

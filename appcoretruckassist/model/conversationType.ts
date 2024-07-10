@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ConversationType } from './conversationType';
 
 
-export interface CreateConversationCommand { 
-    participantIds?: Array<number> | null;
-    conversationType?: ConversationType;
-}
+export type ConversationType = 'SingleChat' | 'Channel';
+
+export const ConversationType = {
+    SingleChat: 'SingleChat' as ConversationType,
+    Channel: 'Channel' as ConversationType
+};
 

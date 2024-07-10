@@ -81,7 +81,7 @@ import { SharedModule } from '@shared/shared.module';
 export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -150,6 +150,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -173,6 +175,14 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             formControls[`cardReview${i}`] = [null];
         }
         this.workExperienceForm = this.formBuilder.group(formControls);
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

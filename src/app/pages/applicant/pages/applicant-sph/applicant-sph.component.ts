@@ -70,7 +70,7 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
 export class ApplicantSphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -101,6 +101,8 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -111,8 +113,15 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     public createForm(): void {
         this.sphForm = this.formBuilder.group({
             isTested: [false, Validators.requiredTrue],
-            hasReadAndUnderstood: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {
@@ -212,6 +221,7 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        debugger;
         if (this.sphForm.invalid || !this.signature) {
             if (this.sphForm.invalid) {
                 this.inputService.markInvalid(this.sphForm);

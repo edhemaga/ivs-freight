@@ -121,7 +121,7 @@ import { Step1Config } from '@pages/applicant/pages/applicant-application/compon
         TaCustomCardComponent,
         TaModalTableComponent,
         TaInputRadiobuttonsComponent,
-        ApplicantNextBackBtnComponent
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
@@ -129,7 +129,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public personalInfoRadios: any;
     public displayRadioRequiredNoteArray =
@@ -207,6 +207,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -329,6 +331,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview6: [null],
             questionReview7: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -507,21 +517,24 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         address: AddressEntity,
         personalInfoReview: ApplicantPersonalInfoReviewResponse
     ): void {
-        const mappedPreviousAddresses = previousAddresses.map((item) => item.address);
+        const mappedPreviousAddresses = previousAddresses.map(
+            (item) => item.address
+        );
         this.updatedPreviousAddressesItems[0] = address;
-        this.updatedPreviousAddressesItems = this.updatedPreviousAddressesItems.concat(mappedPreviousAddresses);
-        this.updatedPreviousAddressesItems = this.updatedPreviousAddressesItems.map(item => {
-            return {
-                address: item,
-                addressUnit: item.addressUnit,
-            }
-        })
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.concat(mappedPreviousAddresses);
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.map((item) => {
+                return {
+                    address: item,
+                    addressUnit: item.addressUnit,
+                };
+            });
         if (!previousAddresses) return;
 
         this.previousAddressesId = previousAddresses.map((item) => item.id);
         const addresses = [...previousAddresses.map((p) => p.address), address];
         this.selectedAddresses = addresses;
-
     }
 
     private getReviewMessage(
@@ -1298,7 +1311,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             isAgreed: isAgreement,
             doB: MethodsCalculationsHelper.convertDateToBackend(dateOfBirth),
             address: lastActiveAddress
-            ? {
+                ? {
                       ...lastActiveAddress,
                       addressUnit: lastActiveAddress.addressUnit,
                       addressCity: lastActiveAddress.city,
@@ -1334,9 +1347,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.selectedMode === SelectedMode.FEEDBACK) && {
                 id: this.applicantId,
                 filesForDeleteIds: this.documentsForDeleteIds,
-                }),
+            }),
         };
-        
+
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&
