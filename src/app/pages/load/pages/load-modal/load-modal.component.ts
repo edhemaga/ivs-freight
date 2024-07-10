@@ -574,7 +574,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public handleTonuRateVisiblity(): void {
         const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CANCELLED;
+            this.selectedStatus.name === LoadModalStringEnum.STATUS_CANCELLED ||
+            this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU;
+
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.TONU),
             show
@@ -1049,20 +1051,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     };
                 });
 
-                    if (
-                        this.selectedExtraStopTime[indx]
-                            .toString()
-                            .startsWith(LoadModalStringEnum.NUMBER_9) ||
-                        this.selectedExtraStopTime[indx] === 2
-                    ) {
-                            this.loadExtraStops()
-                                .at(indx)
-                                .get(LoadModalStringEnum.TIME_TO).setValidators(Validators.required);
-                    } else {
+                if (
+                    this.selectedExtraStopTime[indx]
+                        .toString()
+                        .startsWith(LoadModalStringEnum.NUMBER_9) ||
+                    this.selectedExtraStopTime[indx] === 2
+                ) {
+                    this.inputService.changeValidators(
                         this.loadExtraStops()
                             .at(indx)
-                            .get(LoadModalStringEnum.TIME_TO).removeValidators(Validators.required);
-                    }
+                            .get(LoadModalStringEnum.TIME_TO),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadExtraStops()
+                            .at(indx)
+                            .get(LoadModalStringEnum.TIME_TO)
+                    );
+                }
 
                 break;
             default:
@@ -2729,7 +2736,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             legMinutes: [null],
             legCost: [null],
             openClose: [true],
-            waitTime: [null]
+            waitTime: [null],
         });
     }
 
@@ -3588,6 +3595,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
                     ).status.statusString;
+
+                    this.handleTonuRateVisiblity();
                 });
         }
         this.loadService
@@ -4123,7 +4132,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private formatTimeDifference(timeObject): string {
         const { days, hours, minutes } = timeObject;
         let formattedString = '';
-    
+
         if (days) {
             formattedString += `${days}d `;
         }
@@ -4133,7 +4142,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (minutes) {
             formattedString += `${minutes}m`;
         }
-    
+
         return formattedString.trim();
     }
 
@@ -4195,8 +4204,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             suspension: loadModalData.loadRequirements?.suspension,
         };
 
-        const pickupStop = stops[0];
-        const deliveryStop = stops[stops.length - 1];
+        let pickupStop = stops[0];
+        let deliveryStop = stops[stops.length - 1];
 
         const editedBroker = {
             ...this.labelsBroker.find((b) => b.id === broker.id),
@@ -4228,8 +4237,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             (_, index) => index !== 0 && index !== stops.length - 1
         );
 
-        this.formatStopTimes(pickupStop);
-        this.formatStopTimes(deliveryStop);
+        pickupStop = this.formatStopTimes(pickupStop);
+        deliveryStop = this.formatStopTimes(deliveryStop);
 
         // form
         this.loadForm.patchValue({
@@ -4245,7 +4254,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupTimeTo: pickupStop.timeTo,
             pickuplegMiles: pickupStop.legMiles,
             pickuplegHours: pickupStop.legHours,
-            pickuplegMinutes: pickupStop.legMinutes, 
+            pickuplegMinutes: pickupStop.legMinutes,
             pickupWaitTime: this.formatTimeDifference(pickupStop.wait),
 
             // delivery
@@ -4331,7 +4340,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     name: extraStop.shipper.businessName,
                 };
 
-                this.formatStopTimes(extraStop);
+                extraStop = this.formatStopTimes(extraStop);
 
                 this.loadExtraStops()
                     .at(index)
@@ -4355,7 +4364,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         items: extraStop.items,
                         openClose: false,
                         statusHistory: extraStop.statusHistory,
-                        waitTime: this.formatTimeDifference(extraStop.wait)
+                        waitTime: this.formatTimeDifference(extraStop.wait),
                     });
 
                 this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
@@ -4469,14 +4478,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private  formatStopTimes(stop: LoadStopResponse): void {
+    private formatStopTimes(stop: LoadStopResponse): LoadStopResponse {
         //  If step is finished we need to show different times
         if (stop.arrive && stop.depart) {
-            stop.dateFrom = stop.arrive;
-            stop.dateTo = '';
-            stop.timeFrom = MethodsCalculationsHelper.convertDateToTimeFromBackend(stop.arrive);
-            stop.timeTo = MethodsCalculationsHelper.convertDateToTimeFromBackend(stop.depart);
+            return {
+                ...stop,
+                dateFrom: stop.arrive,
+                dateTo: '',
+                timeFrom:
+                    MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                        stop.arrive
+                    ),
+                timeTo: MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                    stop.depart
+                ),
+            };
         }
+        return { ...stop };
     }
 
     public shouldDisableDrag(extraStop: UntypedFormArray): boolean {
@@ -4487,7 +4505,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
     }
 
-    public isStepFinished(extraStop: UntypedFormArray | AbstractControl): boolean {
+    public isStepFinished(
+        extraStop: UntypedFormArray | AbstractControl
+    ): boolean {
         return (
             extraStop.value.arrive !== null && extraStop.value.depart !== null
         );
@@ -4510,8 +4530,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isExtraStopAppointment(index: number): boolean {
-        const isAppointment =  this.selectedExtraStopTime[index] === 2 || this.selectedExtraStopTime[index]> 8999;
-        if(this.isStepFinished(this.loadExtraStops().at(index))) {
+        const isAppointment =
+            this.selectedExtraStopTime[index] === 2 ||
+            this.selectedExtraStopTime[index] > 8999;
+        if (this.isStepFinished(this.loadExtraStops().at(index))) {
             return false;
         }
 
@@ -4519,10 +4541,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isPickupAppointment(): boolean {
-        const isAppointment = this.selectedStopTimePickup === 6 ||
-        this.selectedStopTimePickup === 2;
+        const isAppointment =
+            this.selectedStopTimePickup === 6 ||
+            this.selectedStopTimePickup === 2;
 
-        if(this.isPickupStopFinished()) {
+        if (this.isPickupStopFinished()) {
             return false;
         }
 
@@ -4530,18 +4553,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isDeliveryAppointment(): boolean {
-        const isAppointment =  (
+        const isAppointment =
             this.selectedStopTimeDelivery === 8 ||
-            this.selectedStopTimeDelivery === 2
-        );
+            this.selectedStopTimeDelivery === 2;
 
-        if(this.isDeliveryStopFinished()) {
+        if (this.isDeliveryStopFinished()) {
             return false;
         }
 
         return isAppointment;
     }
-
     public drop(event: CdkDragDrop<string[]>): void {
         if (event.previousIndex === event.currentIndex) {
             return;
@@ -4573,8 +4594,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
 
-    public dragStarted(): void {
+    public onDragStart(): void {
         this.isDragAndDropActive = true;
+    }
+    public onDragEnd(): void {
+        setTimeout(() => {
+            this.isDragAndDropActive = false;
+        }, 250);
     }
 
     public runFormValidation(): void {

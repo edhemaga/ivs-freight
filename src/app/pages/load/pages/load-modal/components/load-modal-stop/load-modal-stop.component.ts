@@ -67,6 +67,7 @@ export class LoadModalStopComponent {
     @Input() legHours: string;
     @Input() legMinutes: string;
     @Input() waitTime: string;
+    @Input() preventOpening: boolean;
     public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
@@ -75,7 +76,7 @@ export class LoadModalStopComponent {
         new EventEmitter<void>();
 
     public toggleStop(event: Event): void {
-        if (!this.disabledCard) {
+        if (!this.disabledCard && !this.preventOpening) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -91,10 +92,10 @@ export class LoadModalStopComponent {
 
     public get legTime(): string {
         const prefix = !this.stopFinished ? '≈' : '';
-        if(!this.legHours) {
-            return ` | ${prefix} ${this.legMinutes}m`
+        if (!this.legHours) {
+            return ` | ${prefix} ${this.legMinutes}m`;
         }
 
-        return ` | ${prefix} ${this.legHours}h ${this.legMinutes}m`
+        return ` | ${prefix} ${this.legHours}h ${this.legMinutes}m`;
     }
 }

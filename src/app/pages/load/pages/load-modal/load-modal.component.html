@@ -635,6 +635,8 @@
                                 "
                                 cdkDrag
                                 [cdkDragDisabled]="shouldDisableDrag(extraStop)"
+                                (cdkDragStarted)="onDragStart()"
+                                (cdkDragEnded)="onDragEnd()"
                             >
                                 <div
                                     class="dragdrop-custom-placeholder"
@@ -646,6 +648,7 @@
                                         [stopFinished]="
                                             isStepFinished(extraStop)
                                         "
+                                        [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
                                         [stopNumber]="indx + 2"
                                         [isDelivery]="
@@ -715,8 +718,7 @@
                                         [isCardOpen]="
                                             loadExtraStops()
                                                 .at(indx)
-                                                .get('openClose').value &&
-                                            !isDragAndDropActive
+                                                .get('openClose').value
                                         "
                                         [state]="
                                             validateExtraStops(
@@ -1304,7 +1306,8 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ {{totalLegHours}}h {{totalLegMinutes}}m</span
+                                    >≈ {{ totalLegHours }}h
+                                    {{ totalLegMinutes }}m</span
                                 >
                             </div>
                         </div>
