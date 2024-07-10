@@ -82,7 +82,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
         // store
         private loadMinimalListQuery: LoadMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -115,8 +115,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                     id,
                     name: loadNumber,
                     active: id === this.load.id,
-                    statusString: status.name,
-                    statusId: status.id,
+                    // statusString: status.name,
+                    // statusId: status.id,
                 };
             });
     }
