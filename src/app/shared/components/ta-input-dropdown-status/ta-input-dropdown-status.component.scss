@@ -12,6 +12,26 @@
     text-overflow: ellipsis;
     cursor: pointer;
 
+    &-back {
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-light-grey-2;
+        padding: 12px 6px 0;
+        position: relative;
+        margin: 5px 0;
+
+        &:before {
+            position: absolute;
+            border-radius: 2px;
+            height: 2px;
+            top: 0;
+            background-color: $ta-black;
+            content: '';
+            right: 2px;
+            left: 2px;
+        }
+    }
+
     &-label {
         position: absolute;
         top: -17px;
@@ -33,7 +53,6 @@
         top: 0px;
         left: 0px;
         z-index: 1000;
-        max-height: 190px;
         width: 100%;
         background-color: $ta-black-2;
         border-radius: 3px;
@@ -43,8 +62,15 @@
     }
 
     &-option {
-        padding: 4px 2px;
+        transition: .3s;
         cursor: pointer;
+        border-radius: 2px;
+        padding: 4px;
+
+        svg {
+            width: 12px;
+            height: 10px;
+        }
 
         &:hover {
             background-color: $ta-black;
