@@ -9,6 +9,11 @@
         column-gap: 5px;
         text-align: center;
         padding: 0 4px;
+        
+        app-load-status-string {
+            display: flex;
+            align-items: center;
+        }
 
         span {
             color: $ta-red-11;
