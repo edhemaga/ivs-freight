@@ -46,10 +46,14 @@
 
     <div class="messages-content">
         <div *ngIf="messages.length">
+            <!-- TODO Add trackBy -->
             <ng-container *ngFor="let message of messages">
-                <div>
-                    {{ message.content }}
-                </div>
+                <ng-container *ngIf="message">
+                    <app-chat-message
+                        [currentUserId]="currentUserId"
+                        [message]="message"
+                    ></app-chat-message>
+                </ng-container>
             </ng-container>
         </div>
 
