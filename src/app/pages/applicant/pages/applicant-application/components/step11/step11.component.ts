@@ -66,7 +66,7 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 export class Step11Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public authorizationForm: UntypedFormGroup;
 
@@ -91,6 +91,8 @@ export class Step11Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -103,6 +105,14 @@ export class Step11Component implements OnInit, OnDestroy {
             isThirdAuthorization: [false, Validators.requiredTrue],
             isFourthAuthorization: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

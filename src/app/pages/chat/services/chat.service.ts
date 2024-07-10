@@ -17,9 +17,9 @@ import { ChatService } from "appcoretruckassist/api/chat.service";
 
 export class UserChatService {
 
-    chatService = inject(ChatService);
+    private chatService = inject(ChatService);
 
-    getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
+    public getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
@@ -32,15 +32,15 @@ export class UserChatService {
         );
     }
 
-    getConversation(id: number): Observable<ConversationResponse> {
+    public getConversation(id: number): Observable<ConversationResponse> {
         return this.chatService.apiChatConversationIdGet(id);
     }
 
-    getMessages(id: number): Observable<MessageResponse[]> {
+    public getMessages(id: number): Observable<MessageResponse[]> {
         return this.chatService.apiChatMessageListGet(id);
     }
 
-    createConversation(participants: number[]): Observable<CreateResponse> {
+    public createConversation(participants: number[]): Observable<CreateResponse> {
         const conversationParticipants: CreateConversationCommand = {
             participantIds: participants
         };

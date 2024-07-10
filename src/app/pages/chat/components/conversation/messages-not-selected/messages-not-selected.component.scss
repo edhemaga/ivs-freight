@@ -10,7 +10,6 @@
     .messages-header {
         width: 100%;
         height: 32px;
-        display: flex;
         padding-bottom: 4px;
         margin-bottom: 4px;
         border-bottom: 1px solid $bw-9;
@@ -31,7 +30,6 @@
 
     .content-not-selected-wrapper {
         height: 100%;
-        display: flex;
 
         .content-not-selected {
             margin: auto;
@@ -43,7 +41,6 @@
             .upper-text {
                 line-height: 24px;
                 font-size: 20px;
-                font-weight: 700;
                 color: $bw5;
                 text-align: center;
                 margin-top: 22px;
@@ -53,7 +50,6 @@
             .lower-text {
                 line-height: 14px;
                 font-size: 11px;
-                font-weight: 500;
                 color: $bw5;
                 text-align: center;
             }

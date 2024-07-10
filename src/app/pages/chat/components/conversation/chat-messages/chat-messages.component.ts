@@ -18,7 +18,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public currentUserId: any = localStorage.getItem('user')
+  public currentUserId: number = localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user')).companyUserId
     : 0;
 
@@ -33,6 +33,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   chatHub = inject(HubService);
 
   constructor(private activatedRoute: ActivatedRoute) { }
+
   ngOnInit(): void {
     this.activatedRoute.data.subscribe({
       next: (res) => {

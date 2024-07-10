@@ -1,54 +1,46 @@
-<div class="messages-container">
-    <div
-        class="messages-header d-flex align-items-center"
-        [ngSwitch]="remainingParticipants?.length"
-    >
-        <ng-container *ngSwitchCase="1">
-            <div class="name ta-font-extra-bold">
-                {{ remainingParticipants[0].fullName }}
-            </div>
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="'assets/svg/chat/search-icon.svg'"
-            ></svg-icon>
-            <div class="right-icons d-flex">
-                <svg-icon
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/chat/information-icon.svg'"
-                ></svg-icon>
+<div class="messages-container d-flex">
+    <ng-container [ngSwitch]="remainingParticipants?.length">
+        <div class="messages-header d-flex align-items-center">
+            <ng-container *ngSwitchCase="1">
+                <div class="name ta-font-extra-bold">
+                    {{ remainingParticipants[0].fullName }}
+                </div>
+
                 <div
                     class="border-container d-flex justify-content-center align-items-center"
                 >
                     <div class="border"></div>
                 </div>
+
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/chat/list-options-icon.svg'"
-                ></svg-icon>
-            </div>
-        </ng-container>
-    </div>
-    <div class="messages-content">
-        <div *ngIf="messages.length > 0">
-            <ng-container *ngFor="let message of messages">
-                <div>
-                    {{ message.content }}
+                    [src]="ChatSvgRoutes.searchIcon"
+                >
+                </svg-icon>
+
+                <div class="right-icons d-flex">
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.informationIcon"
+                    >
+                    </svg-icon>
+
+                    <div
+                        class="border-container d-flex justify-content-center align-items-center"
+                    >
+                        <div class="border"></div>
+                    </div>
+
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.listOptionsIcon"
+                    >
+                    </svg-icon>
                 </div>
             </ng-container>
         </div>
-
-        <input
-            [(ngModel)]="messageToSend"
-            aria-label="Chat Message Input Field"
-        />
-        <button (click)="sendMessage()">Send message</button>
-    </div>
+    </ng-container>
 </div>

@@ -65,7 +65,7 @@ import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/appli
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -118,6 +118,8 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -133,6 +135,14 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
             isPspReport: [false, Validators.requiredTrue],
             isDisclosureRegardingReport: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

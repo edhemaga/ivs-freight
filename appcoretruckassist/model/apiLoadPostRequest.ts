@@ -72,9 +72,6 @@ export interface ApiLoadPostRequest {
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
     FilesForDeleteIds?: Array<number>;
-    Comment_Id?: number;
-    Comment_CommentContent?: string;
-    DeleteComment_Id?: number;
     StatusHistory?: Array<LoadStatusHistoryCommand>;
 }
 

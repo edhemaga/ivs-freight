@@ -6,6 +6,7 @@
             [alt]="contact.companyUser?.fullName"
         />
     </ng-container>
+
     <ng-template #noAvatar>
         <app-ta-profile-images
             [indx]="contact.companyUser?.id"
@@ -17,40 +18,51 @@
         >
         </app-ta-profile-images>
     </ng-template>
+
     <div class="chat-list-item-text-wrapper">
         <!-- TODO Change into lastMessage -->
-        <ng-container *ngIf="contact.companyUser.userId; else messageData">
+        <ng-container *ngIf="contact?.companyUser; else messageData">
             <div class="chat-list-item-name-no-data">
                 {{ contact.companyUser.fullName }}
             </div>
         </ng-container>
+
         <ng-template #messageData>
-            <div class="chat-list-item-top">
-                <div class="chat-list-item-name">
+            <div class="chat-list-item-top d-flex">
+                <div class="chat-list-item-name ta-font-medium">
                     {{ contact.companyUser.fullName }}
                 </div>
-                <div
-                    *ngIf="contact.unreadCount"
-                    class="chat-list-item-text-count"
-                >
-                    {{ contact.unreadCount }}
-                </div>
-            </div>
-            <div class="chat-list-item-text-content">
-                <ng-container [ngSwitch]="status">
-                    <div
-                        *ngSwitchCase="'typing'"
-                        class="chat-list-item-message"
-                    >
-                        Typing...
+                <ng-container *ngIf="contact?.unreadCount">
+                    <div class="chat-list-item-text-count ta-font-semi-bold">
+                        {{ contact.unreadCount }}
                     </div>
-                    <div *ngSwitchCase="'unread'">Unread message</div>
-                    <div *ngSwitchCase="'read'">Some message</div>
-                    <div *ngSwitchDefault></div>
                 </ng-container>
-                <!-- TODO Add real time with response -->
-                <div class="chat-list-item-text-time">
-                    {{ '' | formatTime }}
+            </div>
+            <div class="chat-list-item-text-content d-flex">
+                <ng-container [ngSwitch]="status">
+                    <ng-container *ngSwitchCase="ConversationStatus.TYPING">
+                        <div class="chat-list-item-message ta-font-bold">
+                            Typing...
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="ConversationStatus.UNREAD">
+                        {{
+                            contact.companyUser.lastMessage?.content
+                        }}</ng-container
+                    >
+                    <ng-container *ngSwitchCase="ConversationStatus.READ">
+                        {{
+                            contact.companyUser.lastMessage?.content
+                        }}</ng-container
+                    >
+                    <ng-container *ngSwitchDefault> </ng-container>
+                </ng-container>
+
+                <div class="chat-list-item-text-time ta-font-regular">
+                    {{
+                        contact.companyUser.lastMessage?.createdAt | formatTime
+                    }}
                 </div>
             </div>
         </ng-template>

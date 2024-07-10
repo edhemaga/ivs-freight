@@ -266,7 +266,7 @@ export class NavigationDataConstants {
             route: 'chat',
             isRouteActive: true,
             messages: 5,
-            construction: false,
+            construction: true,
         },
         {
             id: 11,

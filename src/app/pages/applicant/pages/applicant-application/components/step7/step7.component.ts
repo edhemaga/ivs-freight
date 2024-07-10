@@ -123,7 +123,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public subscription: Subscription;
 
@@ -216,6 +216,8 @@ export class Step7Component implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.createSevenDaysHos();
@@ -245,6 +247,14 @@ export class Step7Component implements OnInit, OnDestroy {
 
             firstRowReview: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

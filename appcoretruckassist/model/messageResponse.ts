@@ -17,6 +17,8 @@ export interface MessageResponse {
     sender?: CompanyUserShortResponse;
     conversationId?: number;
     content?: string | null;
+    parentMessageId?: number | null;
+    parentMessageContent?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }

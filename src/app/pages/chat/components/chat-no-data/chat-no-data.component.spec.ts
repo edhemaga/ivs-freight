@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatNoDataComponent } from './chat-no-data.component';
+import { ChatNoDataComponent } from '@pages/chat/components/chat-no-data/chat-no-data.component';
 
 describe('ChatNoDataComponent', () => {
   let component: ChatNoDataComponent;
@@ -8,9 +8,9 @@ describe('ChatNoDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatNoDataComponent ]
+      declarations: [ChatNoDataComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ChatNoDataComponent);
     component = fixture.componentInstance;

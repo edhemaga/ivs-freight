@@ -4,6 +4,7 @@
     width: 318px;
     min-height: 46px;
     padding: 4px;
+
     &-avatar {
         height: 32px;
         width: 32px;
@@ -13,48 +14,49 @@
 
 .chat-list-item {
     &-top {
-        display: flex;
         width: 100%;
     }
+
     &-name-no-data {
         margin: auto 0;
     }
+
     &-text-wrapper {
         width: 100%;
         padding: 6px;
     }
+
     &-name {
         line-height: 18px;
         font-size: 14px;
-        font-weight: 500;
     }
+
     &-message {
         line-height: 14px;
         font-size: 11px;
-        font-weight: 700;
     }
+
     &-text {
         &-content {
-            display: flex;
             color: $bw5;
         }
+
         &-count {
             margin: auto 0 auto auto;
             width: 14px;
             height: 14px;
             line-height: 14px;
             font-size: 9px;
-            font-weight: 600;
-            background-color: #6692f1;
+            background-color: $ta-blue-13;
             color: $white;
             text-align: center;
             border-radius: 2px;
         }
+
         &-time {
             margin: auto 0 auto auto;
             line-height: 14px;
             font-size: 11px;
-            font-weight: 400;
         }
     }
 }

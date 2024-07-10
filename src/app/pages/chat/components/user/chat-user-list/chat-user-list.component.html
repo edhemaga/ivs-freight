@@ -3,43 +3,54 @@
         <div class="chat-header-type ta-font-extra-bold">
             {{ type }}
         </div>
+
         <div class="chat-header-message-count ta-font-extra-bold">
             {{ contact?.count }}
         </div>
+
         <div
             class="border-container d-flex justify-content-center align-items-center"
         >
             <div class="border"></div>
         </div>
+
         <svg-icon
             class="d-flex justify-content-center align-items-center"
             [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-            [src]="'assets/svg/chat/search-icon.svg'"
+            [src]="ChatSvgRoutes.searchIcon"
         ></svg-icon>
+
         <div
             class="border-container d-flex justify-content-center align-items-center"
         >
             <div class="border"></div>
         </div>
+
         <div class="status-icon">
             <svg-icon
                 class="d-flex justify-content-center align-items-center"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="'assets/svg/chat/contact-status-icon.svg'"
+                [src]="ChatSvgRoutes.contactStatusIcon"
             ></svg-icon>
         </div>
+
         <div class="department-icon">
             <svg-icon
                 class="d-flex justify-content-center align-items-center"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="'assets/svg/chat/department-icon.svg'"
+                [src]="ChatSvgRoutes.departmentIcon"
             ></svg-icon>
         </div>
     </div>
+
     <ng-container *ngIf="contact?.count > 0; else noData">
         <div
             class="contact-wrapper"
-            *ngFor="let chat of contact?.data; let ind = index"
+            *ngFor="
+                let chat of contact?.data;
+                let ind = index;
+                trackBy: trackById
+            "
         >
             <app-chat-user-list-item
                 (click)="selectUser(chat.companyUser.id)"
@@ -47,6 +58,7 @@
             ></app-chat-user-list-item>
         </div>
     </ng-container>
+
     <ng-template #noData>
         <app-chat-no-data
             [message]="
