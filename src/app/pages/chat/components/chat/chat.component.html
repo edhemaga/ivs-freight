@@ -6,14 +6,17 @@
         >
             {{ title | uppercase }}
         </div>
+
         <!-- TABS -->
         <div class="tab-wrapper d-flex align-items-center">
-            <ng-container *ngFor="let tab of tabs; let ind = index">
+            <ng-container
+                *ngFor="let tab of tabs; let ind = index; trackBy: trackById"
+            >
                 <div
                     class="tab-container d-flex"
                     [ngClass]="{
-                        'tab-inactive': !tab.isActive,
-                        'tab-active': tab.isActive
+                        'tab-inactive': !tab.checked,
+                        'tab-active': tab.checked
                     }"
                     (click)="onSelectTab(tab)"
                 >
@@ -32,11 +35,13 @@
                 </div>
             </ng-container>
         </div>
+
         <div
             class="border-container d-flex justify-content-center align-items-center"
         >
             <div class="border"></div>
         </div>
+
         <div
             class="table-actions d-flex justify-content-end align-items-center"
         >
@@ -50,14 +55,17 @@
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/chat/burger-menu-icon.svg'"
-                ></svg-icon>
+                    [src]="ChatSvgRoutes.burgerMenuIcon"
+                >
+                </svg-icon>
             </div>
+
             <div
                 class="border-container d-flex justify-content-center align-items-center"
             >
                 <div class="border"></div>
             </div>
+
             <div
                 class="settings-icon action-div active-options d-flex align-items-center"
                 mainTooltip="Tooltip"
@@ -66,14 +74,15 @@
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="'assets/svg/chat/settings-icon.svg'"
-                ></svg-icon>
+                    [src]="ChatSvgRoutes.settingsIcon"
+                >
+                </svg-icon>
             </div>
+
             <div class="d-flex justify-content-center align-items-center">
-                <div class="new-chat">
-                    <svg-icon
-                        [src]="'assets/svg/chat/plus-icon.svg'"
-                    ></svg-icon>
+                <div class="new-chat d-flex">
+                    <svg-icon class="d-flex" [src]="ChatSvgRoutes.plusIcon">
+                    </svg-icon>
                 </div>
             </div>
         </div>
@@ -90,7 +99,9 @@
                 [contact]="companyUsers"
             >
             </app-chat-user-list>
+
             <div class="divider"></div>
+
             <!-- DRIVERS -->
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
@@ -99,15 +110,18 @@
             >
             </app-chat-user-list>
         </div>
+
         <!-- MESSAGES -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
                 <router-outlet></router-outlet>
             </ng-container>
+
             <ng-template #noConversation>
                 <app-messages-not-selected></app-messages-not-selected>
             </ng-template>
         </div>
+
         <!-- TODO Department -->
         <div></div>
     </div>

@@ -1,5 +1,5 @@
 <div class="no-data-wrapper">
-    <div class="messages-header">
+    <div class="messages-header d-flex">
         <div class="ta-font-extra-bold">Conversation</div>
         <div
             class="border-container d-flex justify-content-center align-items-center"
@@ -7,15 +7,15 @@
             <div class="border"></div>
         </div>
     </div>
-    <div class="content-not-selected-wrapper">
+    <div class="content-not-selected-wrapper d-flex">
         <div class="content-not-selected">
             <img
                 class="artboard"
-                [src]="'./assets/png/chat/artboard-not-selected.png'"
+                [src]="ChatPngRoutes.artboardNotSelected"
                 alt="nothing-selected"
             />
-            <div class="upper-text">Select an item to read</div>
-            <div class="lower-text">Nothing is selected</div>
+            <div class="upper-text ta-font-bold">Select an item to read</div>
+            <div class="lower-text ta-font-medium">Nothing is selected</div>
         </div>
     </div>
 </div>

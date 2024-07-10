@@ -1,22 +1,24 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-//Models
-import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user.model';
-
-// Service
-import { UserChatService } from "@pages/chat/services/chat.service";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-//TODO move to models
-type ChatTab = {
-  name: string;
-  count: number;
-  isActive: boolean;
-}
+// Models
+import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
 
-//TODO add clean up mechanism
+// Enums
+import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
+
+// Constants
+import { ChatToolbarData } from '@pages/chat/util/constants/chat-toolbar-data.constants';
+
+// Routes
+import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+
+// Service
+import { UserChatService } from "@pages/chat/services/chat.service";
+import { ChatTab } from '@pages/chat/models/chat-tab.model';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -25,7 +27,7 @@ type ChatTab = {
 export class ChatComponent implements OnInit {
   private destroy$ = new Subject<void>();
 
-  title: string = "";
+  public title!: string;
 
   companyUsers!: CompanyUserChatResponsePaginationReduced;
   drivers!: CompanyUserChatResponsePaginationReduced;
@@ -34,20 +36,10 @@ export class ChatComponent implements OnInit {
 
   selectedConversation: number;
 
-  //TODO move to separate file and maybe make it static class
   // Tab and header ribbon configuration
-  tabs: ChatTab[] = [
-    {
-      name: 'Conversation',
-      count: 0,
-      isActive: true,
-    },
-    {
-      name: 'Archive',
-      count: 0,
-      isActive: false
-    }
-  ];
+  public tabs: ChatTab[] = ChatToolbarData.tabs;
+
+  public ChatSvgRoutes = ChatSvgRoutes;
 
   private userChatService = inject(UserChatService);
 
@@ -57,54 +49,47 @@ export class ChatComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.getResolvedData();
   }
 
-  private getData(): void {
+  private getResolvedData(): void {
     this.activatedRoute.data.subscribe({
       next: res => {
-
         this.title = res.title;
         this.drivers = res.drivers;
         this.companyUsers = res.users;
         this.tabs[0].count = this.drivers.count + this.companyUsers.count;
+      }
+    });
+  }
 
-      },
-      error: () => { },
-    })
+  public trackById(index: number, tab: ChatTab): number {
+    return tab.id;
   }
 
   public onSelectTab(item: ChatTab): void {
     this.tabs.forEach(arg => {
-      if (arg.name != item.name) {
-        arg.isActive = false;
-      }
-      else {
-        arg.isActive = true;
-      }
-
+      arg.checked = arg.name === item.name
     })
-    //TODO Set in localstorage 
+    //TODO Create store and set value there
   }
 
-  createUserConversation(selectedUser: number): void {
+  public createUserConversation(selectedUser: number): void {
 
-    if (selectedUser == 0) return;
+    if (selectedUser === 0) return;
 
     this.userChatService
       .createConversation([selectedUser])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          if (res && res?.id != 0) {
+          if (res?.id !== 0) {
             this.selectedConversation = res.id;
-            this.router.navigate(['chat/conversation', res.id]);
+            this.router.navigate([ChatRoutesEnum.CONVERSATION, res.id]);
           }
         }
       });
   }
-
-  onToolBarAction(action: string): void { }
 
   ngOnDestroy(): void {
     this.destroy$.next();

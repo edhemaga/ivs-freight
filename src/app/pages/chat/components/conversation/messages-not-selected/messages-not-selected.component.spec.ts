@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessagesNotSelectedComponent } from './messages-not-selected.component';
+import { MessagesNotSelectedComponent } from '@pages/chat/components/conversation/messages-not-selected/messages-not-selected.component';
 
 describe('MessagesNotSelectedComponent', () => {
   let component: MessagesNotSelectedComponent;
@@ -8,9 +8,9 @@ describe('MessagesNotSelectedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MessagesNotSelectedComponent ]
+      declarations: [MessagesNotSelectedComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MessagesNotSelectedComponent);
     component = fixture.componentInstance;

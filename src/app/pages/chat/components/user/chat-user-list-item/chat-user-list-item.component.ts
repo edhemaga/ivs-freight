@@ -3,6 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 // Models
 import { CompanyUserChatResponse } from 'appcoretruckassist';
 
+// Enums
+import { ConversationStatus } from '@pages/chat/enums/conversation/conversation-status.enum';
+
 @Component({
   selector: 'app-chat-user-list-item',
   templateUrl: './chat-user-list-item.component.html',
@@ -12,8 +15,8 @@ export class ChatUserListItemComponent implements OnInit {
 
   @Input() contact: CompanyUserChatResponse;
 
-  //TODO define status type
-  status: string = 'typing';
+  // TODO populate with hub response; waiting for BE implementation
+  public status: ConversationStatus = ConversationStatus.TYPING;
 
   constructor() { }
 

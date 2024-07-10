@@ -4,7 +4,13 @@
     width: calc(100% - 92px);
     position: absolute;
     top: 0;
+
     .toolbar-container {
+        width: 100%;
+        height: 36px;
+        margin-top: 16px;
+        user-select: none;
+
         // BORDER
         .border-container {
             height: 34px;
@@ -18,10 +24,7 @@
                 background: $ta-light-grey-4;
             }
         }
-        width: 100%;
-        height: 36px;
-        margin-top: 16px;
-        user-select: none;
+
         // LIST NAME
         .list-name {
             width: -moz-fit-content;
@@ -31,6 +34,7 @@
             font-size: 26px;
             margin-right: 12px;
         }
+
         // ONE TAB
         .one-tab-container {
             color: $ta-black;
@@ -38,39 +42,47 @@
             margin-right: 12px;
             line-height: 24px;
         }
+
         // TABS
         .tab-wrapper {
             width: fit-content;
             height: 34px;
             background: $white;
             border-radius: 3px 0 0 3px;
+
             .tab-container {
                 cursor: pointer;
                 width: fit-content;
+
                 &.disabled {
                     pointer-events: none;
                     opacity: 0.3;
                 }
+
                 .tab {
                     height: 26px;
                     width: fit-content;
                     border-radius: 3px;
                     padding: 3px 4px;
                     gap: 4px;
+
                     &:hover {
                         .tab-title {
                             color: $ta-black;
                         }
+
                         .data-count {
                             color: $white;
                             background: $bw6-2;
                         }
                     }
+
                     .tab-title {
                         font-size: 16px;
                         justify-content: center;
                         color: $bw6-2;
                     }
+
                     .data-count {
                         font-size: 11px;
                         line-height: 18px;
@@ -84,6 +96,7 @@
                 }
             }
         }
+
         .table-actions {
             height: 34px;
             background: $white;
@@ -99,7 +112,6 @@
             width: 36px;
             height: 36px;
             background-color: $ta-blue-5;
-            display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 3px;
@@ -107,7 +119,6 @@
             cursor: pointer;
 
             svg-icon {
-                display: flex;
                 svg {
                     path {
                         fill: $white;
@@ -119,6 +130,7 @@
 
     .tab-inactive {
         padding: 4px;
+
         &:hover {
             .tab {
                 .data-count,
@@ -137,6 +149,7 @@
         border-radius: 3px;
         padding: 5px 4px;
         align-items: center;
+
         svg-icon {
             svg {
                 path {
@@ -144,26 +157,31 @@
                 }
             }
         }
+
         .tab-title {
             color: $white !important;
             transition: color 0.25s;
         }
+
         .data-count {
             background: $white !important;
             color: $ta-black !important;
             transition: 0.25s;
         }
     }
+
     .chat-main-content {
         display: grid;
         grid-template-columns: auto 1150px auto;
         grid-column-gap: 12px;
         margin-top: 11px;
+
         .chat-lists {
             .divider {
                 height: 8px;
             }
         }
+
         .conversation-wrapper {
             width: 100%;
             height: 100%;
