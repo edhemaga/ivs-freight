@@ -25,18 +25,18 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     ? JSON.parse(localStorage.getItem('user')).companyUserId
     : 0;
 
-  conversation!: ConversationResponse;
-  remainingParticipants: CompanyUserShortResponse[];
+  public remainingParticipants: CompanyUserShortResponse[];
+  private conversation!: ConversationResponse;
 
   // Icons
   public ChatSvgRoutes = ChatSvgRoutes;
 
   // Messages
-  messageToSend: string = "";
-  messages: MessageResponse[] = [];
+  public messageToSend: string = "";
+  public messages: MessageResponse[] = [];
 
-  chatService = inject(UserChatService);
-  chatHub = inject(HubService);
+  private chatService = inject(UserChatService);
+  private chatHub = inject(HubService);
 
   constructor(private activatedRoute: ActivatedRoute) { }
 
