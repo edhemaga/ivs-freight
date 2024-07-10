@@ -1816,7 +1816,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             }),
         };
 
-        console.log('saveData: ', saveData);
         const storeOwnerInfoCompanyItems = {
             ...saveData,
             bank: this.banksDropdownList.find(

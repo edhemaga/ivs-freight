@@ -1276,7 +1276,6 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             ? [filteredLastLicenseCard]
             : [...filteredLicenseArray],
         };
-        console.log('saveData: ', saveData);
 
         const storeLicenceItems = saveData.licences.map((item) => {
             const filteredUsStateType = this.usStates.find(
