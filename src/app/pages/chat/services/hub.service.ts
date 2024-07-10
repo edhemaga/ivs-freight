@@ -11,14 +11,15 @@ export class HubService {
     token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;
-    hubConnection: signalR.HubConnection;
+    hubConnection!: signalR.HubConnection;
 
     constructor() {
         this.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
-                accessTokenFactory: () => this.token
+                accessTokenFactory: () => this.token,
+                transport: 4 // 4 - Long polling, web socket not working at the moment
             })
             .configureLogging(signalR.LogLevel.Information)
             .build();
@@ -50,7 +51,7 @@ export class HubService {
                     content: string
                 ) => {
                     const newMessage: MessageResponse = {
-                        id: messageId, // Generate unique ID or use server-provided ID
+                        id: messageId,
                         sender: {
                             id: senderId,
                             fullName: senderName
@@ -58,8 +59,9 @@ export class HubService {
                         conversationId: conversationId,
                         content: content,
                     }
-                    return newMessage;
-                });
+                    observer.next(newMessage);
+                }
+            );
         });
     }
 }

@@ -38,7 +38,7 @@
     </div>
     <div class="messages-content">
         <div *ngIf="messages.length > 0">
-            <ng-container *ngFor="let messages of messages">
+            <ng-container *ngFor="let message of messages">
                 <div>
                     {{ message.content }}
                 </div>
@@ -46,7 +46,7 @@
         </div>
 
         <input
-            (change)="getMessage($event)"
+            [(ngModel)]="messageToSend"
             aria-label="Chat Message Input Field"
         />
         <button (click)="sendMessage()">Send message</button>
