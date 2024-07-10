@@ -77,7 +77,7 @@ import { SharedModule } from '@shared/shared.module';
 export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public accidentForm: UntypedFormGroup;
 
@@ -135,6 +135,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -165,6 +167,14 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
             cardReview9: [null],
             cardReview10: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
