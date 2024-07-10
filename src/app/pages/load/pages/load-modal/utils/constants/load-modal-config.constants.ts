@@ -260,14 +260,14 @@ export class LoadModalConfig {
         readOnly: true,
     };
 
-    static getInvoiceDate(isDisabled: boolean): ITaInput {
+    static getInvoiceDate(isRequired: boolean, isDisabled: boolean): ITaInput {
         return {
             name: 'datepicker',
             type: 'text',
             isDropdown: true,
             label: 'Invoiced',
             placeholderIcon: 'date',
-            isRequired: !isDisabled,
+            isRequired: isRequired,
             isDisabled: isDisabled,
             customClass: 'datetimeclass',
         };
