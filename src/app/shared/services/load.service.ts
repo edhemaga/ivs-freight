@@ -323,12 +323,20 @@ export class LoadService {
 
     public updateLoadStatus(
         loadId: number,
-        loadStatus: LoadStatus
+        loadStatus: LoadStatus,
+        isRevert: boolean
     ): Observable<CreateResponse> {
-        return this.loadService.apiLoadStatusPut({
-            id: loadId,
-            status: loadStatus,
-        });
+        if (isRevert) {
+            return this.loadService.apiLoadStatusRevertPut({
+                id: loadId,
+                status: loadStatus,
+            });
+        } else {
+            return this.loadService.apiLoadStatusPut({
+                id: loadId,
+                status: loadStatus,
+            });
+        }
     }
 
     // modal operations - template
@@ -516,7 +524,7 @@ export class LoadService {
         value: string;
     }): void {
         let storeLoads;
-    
+
         switch (data.selectedTab) {
             case TableStringEnum.ACTIVE:
                 storeLoads = this.loadActiveQuery.getAll();
@@ -534,7 +542,7 @@ export class LoadService {
                 storeLoads = [];
                 break;
         }
-    
+
         storeLoads.map((load: LoadResponse) => {
             if (data.id === load.id) {
                 switch (data.selectedTab) {
@@ -566,5 +574,4 @@ export class LoadService {
             }
         });
     }
-    
 }

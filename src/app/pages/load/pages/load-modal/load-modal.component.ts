@@ -392,6 +392,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public areCommentsVisible: boolean = false;
     private lastCallTimeout: any;
     private debounceDelay: number = 1000;
+    private isPreviousStatus: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -1117,8 +1118,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
             case LoadModalStringEnum.STATUS:
-                this.loadForm.get(LoadModalStringEnum.STATUS).patchValue(event);
-                this.selectedStatus = event;
+                this.loadForm
+                    .get(LoadModalStringEnum.STATUS)
+                    .patchValue(event.status);
+                this.isPreviousStatus = event.isPreviousStatus;
+                this.selectedStatus = event.status;
                 this.handleRevisedRateVisiblity();
                 this.handleTonuRateVisiblity();
                 break;
@@ -3318,7 +3322,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.loadForm
                                 .get(LoadModalStringEnum.TOTAL_MILES)
                                 .patchValue(res?.totalMiles);
-
                             this.totalLegMiles = res.totalMiles;
                             this.totalLegHours = res.totalHours;
                             this.totalLegMinutes = res.totalMinutes;
@@ -4050,7 +4053,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadService
             .updateLoadStatus(
                 this.editData.data.id,
-                this.selectedStatus.valueForRequest as LoadStatus
+                this.selectedStatus.valueForRequest as LoadStatus,
+                this.isPreviousStatus
             )
             .subscribe((res) => {
                 this.loadService
