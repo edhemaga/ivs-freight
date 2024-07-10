@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 // services
 import { ApplicantService as ApplicantBackendService } from 'appcoretruckassist';
 import { FormDataService } from '@shared/services/form-data.service';
+import { environment } from 'src/environments/environment';
 
 // models
 import {
@@ -63,6 +64,7 @@ import {
     CreateCompanyOwnerInfoReviewCommand,
     UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -70,7 +72,8 @@ import {
 export class ApplicantService {
     constructor(
         private applicantService: ApplicantBackendService,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private httpClient: HttpClient
     ) {}
 
     /* BACKEND POST ACTION FUNCTIONS -  APPLICANT MODE */
@@ -99,12 +102,10 @@ export class ApplicantService {
         return this.applicantService.apiApplicantWorkexperiencePost(data);
     }
 
-    public createCdlInformation(
-        data: any
-    ): Observable<object> {
+    public createCdlInformation(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.applicantService.apiApplicantCdlPost(data);
+        return this.apiApplicantCdlPost();
     }
 
     public createAccidentRecord(
@@ -135,9 +136,7 @@ export class ApplicantService {
         return this.applicantService.apiApplicantDrugandalcoholPost(data);
     }
 
-    public createOwnerInfoCompany(
-        data: any
-    ): Observable<CreateResponse> {
+    public createOwnerInfoCompany(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
@@ -173,12 +172,10 @@ export class ApplicantService {
         return this.applicantService.apiApplicantWorkexperiencePut(data);
     }
 
-    public updateCdlInformation(
-        data: any
-    ): Observable<any> {
+    public updateCdlInformation(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.applicantService.apiApplicantCdlPut(data);
+        return this.apiApplicantCdlPut();
     }
 
     public updateAccidentRecord(
@@ -227,11 +224,9 @@ export class ApplicantService {
         return this.applicantService.apiApplicantAuthorizationPut(data);
     }
 
-    public updateOwnerInfoCompany(
-        data: any
-    ): Observable<object> {
+    public updateOwnerInfoCompany(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
-        
+
         return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }
 
@@ -465,5 +460,21 @@ export class ApplicantService {
 
     public getDropdownLists(): Observable<ApplicantModalResponse> {
         return this.applicantService.apiApplicantModalGet();
+    }
+
+    public apiApplicantCdlPost(): Observable<any> {
+        let localVarFormParams = new FormData();
+
+        let localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
+
+        return this.httpClient.post(localVarPath, localVarFormParams);
+    }
+
+    public apiApplicantCdlPut(): Observable<any> {
+        let localVarFormParams = new FormData();
+
+        let localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
+
+        return this.httpClient.put(localVarPath, localVarFormParams);
     }
 }
