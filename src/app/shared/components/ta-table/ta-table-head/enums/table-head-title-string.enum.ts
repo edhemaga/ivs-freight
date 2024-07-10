@@ -28,6 +28,7 @@ export enum TableHeadTitleStringEnum {
     GROSS = 'GROSS',
     TERM = 'TERM',
     TERM_2 = 'TERM ',
+    TERM_3 = ' TERM',
     NUMBER_3 = 'NUMBER  ',
     NUMBER_4 = ' NUMBER',
     PRICE = 'PRICE',
@@ -73,6 +74,7 @@ export enum TableHeadTitleStringEnum {
     BILLING = 'BILLING',
     PAY = 'PAY',
     BROKER = 'Broker',
+    BROKER_2 = 'BROKER',
     REQUIREM = 'REQUIREM',
     MILES = 'MILES',
 }

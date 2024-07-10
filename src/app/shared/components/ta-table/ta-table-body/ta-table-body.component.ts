@@ -37,6 +37,7 @@ import { TableStrategy } from '@shared/components/ta-table/ta-table-body/strateg
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FilesService } from '@shared/services/files.service';
+import { LoadService } from '@shared/services/load.service';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -52,6 +53,8 @@ import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropd
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
+import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -81,6 +84,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import {
     CompanyAccountLabelResponse,
     SignInResponse,
+    LoadListLoadStopResponse,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
@@ -90,7 +94,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
-import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/constants/load-table-stops.constants';
+import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 @Titles()
 @Component({
@@ -121,7 +125,8 @@ import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/cons
         TaInputDropdownContactsComponent,
         TaStateImageTextComponent,
         TaPasswordAccountHiddenCharactersComponent,
-
+        LoadStatusStringComponent,
+        TaStatusComponentComponent,
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
@@ -130,6 +135,7 @@ import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/cons
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
         LoadStatusColorPipe,
+        TableLoadStatusPipe,
     ],
     providers: [
         {
@@ -204,18 +210,16 @@ export class TaTableBodyComponent
     public endorsement: boolean = false;
     public restriction: boolean = false;
     public companyUser: SignInResponse;
-    public statusDetails: { previous: string | null; next: string[] } = {
-        previous: null,
-        next: [],
-    };
-    public stops = LoadTableStopsConstants.stops;
+    public statusDetails: any;
+    public stops: LoadListLoadStopResponse;
+    public isLoading = false;
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
     // Scroll Lines
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
-
+    public LoadId: number;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -223,7 +227,8 @@ export class TaTableBodyComponent
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
         private sanitizer: DomSanitizer,
-        private statusService: LoadTableStatusConstants
+        private statusService: LoadTableStatusConstants,
+        private loadService: LoadService
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -309,9 +314,7 @@ export class TaTableBodyComponent
 
         this.getCompanyUser();
     }
-    public getStopKeys() {
-        return Object.keys(this.stops);
-    }
+
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
@@ -553,7 +556,9 @@ export class TaTableBodyComponent
             this.changeDetectorRef.detectChanges();
         }
     }
-
+    test(a) {
+        console.log(a, 'test');
+    }
     // Get Table Sections
     getTableSections() {
         this.pinedColumns = [];
@@ -629,7 +634,7 @@ export class TaTableBodyComponent
             const tableContainer = document.querySelector('.table-container');
 
             this.notPinedMaxWidth =
-                tableContainer.clientWidth -
+                tableContainer?.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
                 14;
 
@@ -824,28 +829,30 @@ export class TaTableBodyComponent
     }
 
     // Toggle Status Dropdown
-    public toggleStatusDropdown(
-        tooltip: NgbTooltip,
-        row: any,
-        status: string,
-        statusTab: string
-    ): void {
-        this.statusTooltip = tooltip;
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
-        this.statusDetails = this.statusService.getStatusDetails(
-            statusTab,
-            status
-        );
-
+    public toggleStatusDropdown(tooltip: NgbTooltip, row: any): void {
+        this.LoadId = row.id;
+        this.loadService
+            .getLoadStatusDropdownOptions(row.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.statusTooltip = tooltip;
+                if (tooltip.isOpen()) {
+                    tooltip.close();
+                } else {
+                    tooltip.open();
+                }
+                this.statusDetails = res;
+            });
         this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.statusDropdownData = row;
     }
 
-    public toggleStopsDropdown(tooltip: NgbTooltip, width: number): void {
+    public toggleStopsDropdown(
+        tooltip: NgbTooltip,
+        width: number,
+        row: any
+    ): void {
+        this.isLoading = true;
         this.statusTooltip = tooltip;
         if (tooltip.isOpen()) {
             tooltip.close();
@@ -853,6 +860,20 @@ export class TaTableBodyComponent
             tooltip.open();
         }
         this.widthPopover = width;
+
+        if (row.stops?.length) {
+            const totalLegMiles = row.stops.reduce(
+                (total, leg) => total + leg.legMiles,
+                0
+            );
+            this.stops = { loadStops: row.stops, totalMiles: totalLegMiles };
+            this.isLoading = false;
+        } else {
+            this.loadService.getLoadListLoadstop(row.id).subscribe((e) => {
+                this.stops = e;
+                this.isLoading = false;
+            });
+        }
     }
 
     // Show Description Dropdown

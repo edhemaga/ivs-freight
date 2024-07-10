@@ -201,20 +201,22 @@
                                             (click)="
                                                 toggleStatusDropdown(
                                                     ngbStatus,
-                                                    row,
-                                                    row[column.field].status,
-                                                    row[column.field].tab
+                                                    row
                                                 )
                                             "
                                         >
-                                            <div
-                                                class="status"
-                                                [ngStyle]="
-                                                    row[column.field].status
-                                                        | loadStatusColor
-                                                "
-                                            >
-                                                {{ row[column.field].status }}
+                                            <div class="status">
+                                                <app-load-status-string
+                                                    [status]="{
+                                                        name: row.status
+                                                            .statusString,
+                                                        valueForRequest:
+                                                            row.status
+                                                                .statusValue
+                                                                .name
+                                                    }"
+                                                    [justifyStart]="true"
+                                                ></app-load-status-string>
                                             </div>
                                             <div class="status-time">
                                                 {{ row[column.field].time }}
@@ -690,24 +692,30 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <img
-                                            [src]="
-                                                row[column.field]?.avatar
-                                                    ? row[column.field].avatar
-                                                    : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                                            "
-                                            alt=""
-                                            class="dispecher-img"
-                                        />
-
-                                        <div
-                                            class="dispatcher-name"
-                                            [ngStyle]="{
-                                                width: column.width - 24 + 'px'
-                                            }"
+                                        <ng-container
+                                            *ngIf="row[column.field].name"
                                         >
-                                            {{ row[column.field].name }}
-                                        </div>
+                                            <img
+                                                [src]="
+                                                    row[column.field]?.avatar
+                                                        ? row[column.field]
+                                                              .avatar
+                                                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                                                "
+                                                alt=""
+                                                class="dispecher-img"
+                                            />
+
+                                            <div
+                                                class="dispatcher-name"
+                                                [ngStyle]="{
+                                                    width:
+                                                        column.width - 24 + 'px'
+                                                }"
+                                            >
+                                                {{ row[column.field].name }}
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- AVATAR COLUMN -->
@@ -1889,6 +1897,21 @@
                                                 : 'unset'
                                         }"
                                     >
+                                        <ng-container
+                                            *ngIf="
+                                                row[column.field] ===
+                                                'Hazardous'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="d-flex align-items-center"
+                                                [ngStyle]="{
+                                                    'margin-right': '4px'
+                                                }"
+                                                src="assets/svg/common/ic_hazardous.svg"
+                                            >
+                                            </svg-icon>
+                                        </ng-container>
                                         <svg-icon
                                             *ngIf="
                                                 tableData[0].title ===
@@ -2601,24 +2624,30 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <img
-                                            [src]="
-                                                row[column.field]?.avatar
-                                                    ? row[column.field].avatar
-                                                    : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                                            "
-                                            alt=""
-                                            class="dispecher-img"
-                                        />
-
-                                        <div
-                                            class="dispatcher-name"
-                                            [ngStyle]="{
-                                                width: column.width - 24 + 'px'
-                                            }"
+                                        <ng-container
+                                            *ngIf="row[column.field].name"
                                         >
-                                            {{ row[column.field].name }}
-                                        </div>
+                                            <img
+                                                [src]="
+                                                    row[column.field]?.avatar
+                                                        ? row[column.field]
+                                                              .avatar
+                                                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                                                "
+                                                alt=""
+                                                class="dispecher-img"
+                                            />
+
+                                            <div
+                                                class="dispatcher-name"
+                                                [ngStyle]="{
+                                                    width:
+                                                        column.width - 24 + 'px'
+                                                }"
+                                            >
+                                                {{ row[column.field].name }}
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- STATUS COLUMN -->
@@ -2656,20 +2685,22 @@
                                             (click)="
                                                 toggleStatusDropdown(
                                                     ngbStatus,
-                                                    row,
-                                                    row[column.field].status,
-                                                    row[column.field].tab
+                                                    row
                                                 )
                                             "
                                         >
-                                            <div
-                                                class="status"
-                                                [ngStyle]="
-                                                    row[column.field].status
-                                                        | loadStatusColor
-                                                "
-                                            >
-                                                {{ row[column.field].status }}
+                                            <div class="status">
+                                                <app-load-status-string
+                                                    [status]="{
+                                                        name: row.status
+                                                            .statusString,
+                                                        valueForRequest:
+                                                            row.status
+                                                                .statusValue
+                                                                .name
+                                                    }"
+                                                    [justifyStart]="true"
+                                                ></app-load-status-string>
                                             </div>
                                             <div class="status-time">
                                                 {{ row[column.field].time }}
@@ -2748,7 +2779,8 @@
                                         (click)="
                                             toggleStopsDropdown(
                                                 ngbStatus,
-                                                column.width
+                                                column.width,
+                                                row
                                             )
                                         "
                                     >
@@ -2799,23 +2831,34 @@
                                                     >
                                                         {{ rowField.location }}
                                                     </div>
-                                                    <div
-                                                        class="date-time-container"
-                                                        [ngStyle]="{
-                                                            width:
-                                                                column.width /
-                                                                    2 -
-                                                                30 +
-                                                                'px'
-                                                        }"
+                                                    <ng-container
+                                                        *ngIf="
+                                                            rowField.date ||
+                                                            rowField.time
+                                                        "
                                                     >
-                                                        <div class="date">
-                                                            {{ rowField.date }}
+                                                        <div
+                                                            class="date-time-container"
+                                                            [ngStyle]="{
+                                                                width:
+                                                                    column.width /
+                                                                        2 -
+                                                                    30 +
+                                                                    'px'
+                                                            }"
+                                                        >
+                                                            <div class="date">
+                                                                {{
+                                                                    rowField.date
+                                                                }}
+                                                            </div>
+                                                            <div class="time">
+                                                                {{
+                                                                    rowField.time
+                                                                }}
+                                                            </div>
                                                         </div>
-                                                        <div class="time">
-                                                            {{ rowField.time }}
-                                                        </div>
-                                                    </div>
+                                                    </ng-container>
                                                 </div>
                                             </ng-container>
                                         </div>
@@ -2994,34 +3037,33 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <ng-container *ngIf="row.avatarImg">
-                                            <div
-                                                class="avatar-assign-container d-flex justify-content-center align-items-center"
-                                            >
+                                        <div
+                                            class="avatar-assign-container d-flex justify-content-center align-items-center"
+                                        >
+                                            <ng-container *ngIf="row.avatarImg">
                                                 <div class="avatar-assign-img">
                                                     <img
                                                         alt="avatar"
                                                         [src]="row.avatarImg"
                                                     />
                                                 </div>
+                                            </ng-container>
 
-                                                <div
-                                                    class="avatar-assign-text"
-                                                    [ngStyle]="{
-                                                        'background-color':
-                                                            row.avatarColor
-                                                                ?.background ??
-                                                            'unset',
-                                                        color:
-                                                            row.avatarColor
-                                                                ?.color ??
-                                                            'unset'
-                                                    }"
-                                                >
-                                                    {{ row.tableDriver }}
-                                                </div>
+                                            <div
+                                                class="avatar-assign-text"
+                                                [ngStyle]="{
+                                                    'background-color':
+                                                        row.avatarColor
+                                                            ?.background ??
+                                                        'unset',
+                                                    color:
+                                                        row.avatarColor
+                                                            ?.color ?? 'unset'
+                                                }"
+                                            >
+                                                {{ row.tableDriver }}
                                             </div>
-                                        </ng-container>
+                                        </div>
                                     </div>
 
                                     <!-- USER STATUS COLUMN -->
@@ -4037,6 +4079,21 @@
                                                 : 'unset'
                                         }"
                                     >
+                                        <ng-container
+                                            *ngIf="
+                                                row[column.field] ===
+                                                'Hazardous'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="d-flex align-items-center"
+                                                [ngStyle]="{
+                                                    'margin-right': '4px'
+                                                }"
+                                                src="assets/svg/common/ic_hazardous.svg"
+                                            >
+                                            </svg-icon>
+                                        </ng-container>
                                         <svg-icon
                                             *ngIf="
                                                 tableData[0].title ===
@@ -4067,7 +4124,72 @@
                                             "
                                         ></span>
                                     </div>
-
+                                    <div
+                                        class="d-flex flex-column td-content"
+                                        *ngIf="
+                                            column.ngTemplate === 'text-paid'
+                                        "
+                                        [ngStyle]="{
+                                            padding: 0,
+                                            width: column.width + 'px',
+                                            'min-width.px': column?.minWidth
+                                                ? column.minWidth
+                                                : 'unset'
+                                        }"
+                                    >
+                                        <span
+                                            class="table-text-rate"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset',
+                                                color:
+                                                    row[column.field].status
+                                                    | tableLoadStatusPipe
+                                                        : 'title'
+                                            }"
+                                            [innerHtml]="
+                                                row[column.field].paid
+                                                    ? (row[column.field].paid
+                                                      | tableHighlightSearchText
+                                                          : this
+                                                                .chipsForHighlight)
+                                                    : ''
+                                            "
+                                        ></span>
+                                        <ng-container
+                                            *ngIf="row[column.field].paidDue"
+                                        >
+                                            <span
+                                                class="table-text-subtitle"
+                                                [ngStyle]="{
+                                                    width: column.width + 'px',
+                                                    'min-width.px':
+                                                        column?.minWidth
+                                                            ? column.minWidth
+                                                            : 'unset',
+                                                    color:
+                                                        row[column.field].status
+                                                        | tableLoadStatusPipe
+                                                            : 'subtitle',
+                                                    'text-decoration':
+                                                        row[column.field].status
+                                                        | tableLoadStatusPipe
+                                                            : 'decoration'
+                                                }"
+                                                [innerHtml]="
+                                                    row[column.field].paidDue
+                                                        ? (row[column.field]
+                                                              .paidDue
+                                                          | tableHighlightSearchText
+                                                              : this
+                                                                    .chipsForHighlight)
+                                                        : ''
+                                                "
+                                            ></span>
+                                        </ng-container>
+                                    </div>
                                     <!-- ENDORSEMENT & RESTRICTIONS COLUMN -->
                                     <!-- <ng-container
                                         *ngIf="
@@ -5674,44 +5796,7 @@
 
 <!-- STATUS -->
 <ng-template #statusPopover>
-    <div class="status-node">
-        <ng-container *ngIf="statusDetails.next.length">
-            <div class="status-next">
-                <ng-container
-                    *ngFor="
-                        let item of statusDetails.next;
-                        trackBy: trackStatusDetails
-                    "
-                >
-                    <p
-                        [ngClass]="item"
-                        class="status-next-item"
-                        [ngStyle]="item | loadStatusColor"
-                    >
-                        {{ item.toUpperCase() }}
-                    </p>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="statusDetails.previous">
-            <div *ngIf="statusDetails.previous" class="status-previous">
-                <p>Or back to</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <p
-                        class="status-previous-item"
-                        [ngStyle]="statusDetails.previous | loadStatusColor"
-                    >
-                        {{ statusDetails.previous.toUpperCase() }}
-                    </p>
-                    <img
-                        alt="status-previous-icon"
-                        src="/assets/svg/truckassist-table/back_status.svg"
-                    />
-                </div>
-            </div>
-        </ng-container>
-    </div>
+    <app-ta-status-component [statusId]="LoadId"> </app-ta-status-component>
 </ng-template>
 <ng-template #stopsPopover>
     <div
@@ -5730,65 +5815,97 @@
             width: widthPopover + 'px'
         }"
     >
-        <div class="items-container">
-            <ng-container
-                *ngFor="
-                    let key of getStopKeys();
-                    let i = index;
-                    trackBy: trackStops
-                "
-            >
-                <div
-                    class="item d-flex justify-content-center align-items-center"
-                    [ngClass]="{ 'wait-time': i === 1 }"
+        <ng-container *ngIf="isLoading; else stopsList">
+            <div class="spinner"></div>
+        </ng-container>
+        <ng-template #stopsList>
+            <div class="items-container scrolling">
+                <ng-container
+                    *ngFor="
+                        let stop of stops.loadStops;
+                        let i = index;
+                        trackBy: trackStops
+                    "
                 >
-                    <div class="number-container d-flex align-items-center">
-                        <div
-                            class="number"
-                            [class.delivery]="
-                                stops[key].stopType.name === 'Delivery'
-                            "
-                        >
-                            {{ stops[key].stopOrder }}
+                    <div
+                        class="item d-flex justify-content-center align-items-center"
+                        [ngClass]="{ 'wait-time': i === 1 }"
+                    >
+                        <div class="number-container d-flex align-items-center">
+                            <div
+                                class="number"
+                                [class.delivery]="
+                                    stop.stopType.name === 'Delivery'
+                                "
+                                [class.deadhead-number]="
+                                    stop.stopType.name === 'DeadHead'
+                                "
+                            >
+                                {{ stop.stopOrder }}
+                            </div>
+                            <ng-container
+                                *ngIf="i < stops.loadStops.length - 1"
+                            >
+                                <div class="line"></div>
+                            </ng-container>
                         </div>
-                        <ng-container *ngIf="i < getStopKeys().length - 1">
-                            <div class="line"></div>
+                        <div class="details">
+                            <div
+                                class="location"
+                                [class.delivery]="
+                                    stop.stopType.name === 'Delivery'
+                                "
+                                [class.deadhead]="
+                                    stop.stopType.name === 'DeadHead'
+                                "
+                            >
+                                {{ stop.shipper.address.city }},
+                                {{ stop.shipper.address.stateShortName }}
+                            </div>
+                            <ng-container
+                                *ngIf="
+                                    stop.stopType.name === 'DeadHead';
+                                    else noDeadhead
+                                "
+                            >
+                                <div>Deadhead</div>
+                            </ng-container>
+                            <ng-template #noDeadhead>
+                                <div class="time">
+                                    {{ stop.dateFrom | date : 'dd/MM/yy' }} |
+                                    {{ stop.timeFrom }} -
+                                    {{ stop.timeTo || 'Open' }}
+                                </div>
+                                <div>{{ stop.shipper.businessName }}</div>
+                            </ng-template>
+                        </div>
+                        <ng-container *ngIf="stop.legMiles">
+                            <div class="mileage">+{{ stop.legMiles }}</div>
                         </ng-container>
                     </div>
-                    <div class="details">
-                        <div
-                            class="location"
-                            [class.delivery]="
-                                stops[key].stopType.name === 'Delivery'
-                            "
-                        >
-                            {{ stops[key].shipper.address.city }},
-                            {{ stops[key].shipper.address.stateShortName }}
-                        </div>
-                        <div class="time">
-                            {{ stops[key].dateFrom | date : 'dd/MM/yy' }} |
-                            {{ stops[key].timeFrom }} -
-                            {{ stops[key].timeTo || 'Open' }}
-                        </div>
-                        <div>{{ stops[key].shipper.businessName }}</div>
-                    </div>
-                    <div class="mileage">+{{ stops[key].legMiles }}</div>
-                </div>
-            </ng-container>
-        </div>
+                </ng-container>
+            </div>
 
-        <div class="total d-flex justify-content-between align-items-center">
-            <div class="d-flex flex-column">
-                <span>First pickup in</span>
-                <span><strong>3 days 15 hours</strong></span>
+            <div
+                class="total d-flex justify-content-between align-items-center"
+            >
+                <div class="pick-up d-flex flex-column">
+                    <span>First pickup in</span>
+                    <span
+                        ><strong>{{ stops.firstPickup }}</strong></span
+                    >
+                </div>
+                <div class="total-miles d-flex flex-column">
+                    <span>Total</span>
+                    <span
+                        ><strong>{{ stops.totalMiles }} mi</strong></span
+                    >
+                </div>
             </div>
-            <div class="d-flex flex-column">
-                <span>Total</span>
-                <span><strong>2,037.1 mi</strong></span>
-            </div>
-        </div>
+        </ng-template>
     </div>
 </ng-template>
+
 <!-- INVOICE AGING POPOVER -->
 <ng-template #invoiceAgingPopover let-data="data">
     <div class="invoice-aging-dropdown">

@@ -8,10 +8,9 @@
             ? horizontalScrollHeight + 'px'
             : 100 + 'vh',
         'overflow-y': scrollBarOptions.showHorizontalScrollBar
-            ? 'hidden'
+            ? 'visible'
             : 'auto'
     }"
-    [ngClass]="{ 'overflow-unset': isOverflowUnset }"
 >
     <ng-content></ng-content>
     <!-- Vertical Scroll Bar -->

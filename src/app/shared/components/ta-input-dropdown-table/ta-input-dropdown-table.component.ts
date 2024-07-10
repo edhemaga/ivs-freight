@@ -55,6 +55,7 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { TaNewCommentComponent } from '@shared/components/ta-input-dropdown-table/components/ta-new-comment/ta-new-comment.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
 
 // models
 import { DepartmentResponse } from 'appcoretruckassist';
@@ -76,6 +77,7 @@ import { ContactsData } from '@shared/components/ta-input-dropdown-table/models/
 
         // Components
         TaCommentComponent,
+        TaAppTooltipComponent,
         TaNewCommentComponent,
         TaTabSwitchComponent,
         TaCustomCardComponent,

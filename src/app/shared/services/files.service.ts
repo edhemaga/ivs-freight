@@ -11,6 +11,7 @@ import {
     RepairService,
     TrailerService,
     TruckService,
+    LoadService,
 } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
@@ -24,7 +25,8 @@ export class FilesService implements OnDestroy {
         private ownerService: OwnerService,
         private repairService: RepairService,
         private trailerService: TrailerService,
-        private truckService: TruckService
+        private truckService: TruckService,
+        private loadService: LoadService
     ) {}
 
     ngOnDestroy(): void {
@@ -36,6 +38,8 @@ export class FilesService implements OnDestroy {
         switch (entity) {
             case 'driver':
                 return this.getDriverFiles(id);
+            case 'load':
+                return this.getLoadFiles(id);
             case 'repair':
                 return this.getRepairFiles(id);
             case 'repair-shop':
@@ -53,6 +57,9 @@ export class FilesService implements OnDestroy {
 
     public getDriverFiles(id: number) {
         return this.driverService.apiDriverFilesIdGet(id);
+    }
+    public getLoadFiles(id: number) {
+        return this.loadService.apiLoadFilesIdGet(id);
     }
 
     public getRepairShopFiles(id: number) {

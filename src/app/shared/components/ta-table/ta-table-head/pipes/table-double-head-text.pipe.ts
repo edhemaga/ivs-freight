@@ -72,12 +72,14 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             : gridNameTitle === TableHeadTitleStringEnum.DRIVER && index === 12
             ? TableHeadTitleStringEnum.PAY
             : tableHeadTitle === TableHeadTitleStringEnum.BUSSINESS_NAME
-            ? TableHeadTitleStringEnum.BROKER
+            ? TableHeadTitleStringEnum.BROKER_2
             : tableHeadTitle === TableHeadTitleStringEnum.TRUCK_3
             ? TableHeadTitleStringEnum.REQUIREM
             : tableHeadTitle === TableHeadTitleStringEnum.LOADED
             ? TableHeadTitleStringEnum.MILES
             : tableHeadTitle === TableHeadTitleStringEnum.RATE
+            ? TableHeadTitleStringEnum.BILLING
+            : tableHeadTitle === TableHeadTitleStringEnum.TERM_3
             ? TableHeadTitleStringEnum.BILLING
             : TableHeadTitleStringEnum.MVR;
     }

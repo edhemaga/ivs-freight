@@ -40,6 +40,7 @@ import {
     LoadStatusType,
     DispatcherFilterResponse,
     LoadStatus,
+    LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import {
@@ -56,6 +57,11 @@ export class LoadService {
     public data$: Observable<Comment> = this.newComment.asObservable();
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
+
+    private statusAction: Subject<{ data: LoadStatus; id: number }> =
+        new Subject<null>();
+    public statusAction$: Observable<{ data: LoadStatus; id: number }> =
+        this.statusAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
         new Subject<DeleteComment>();
@@ -87,6 +93,9 @@ export class LoadService {
 
     public removeComment(comment: DeleteComment): void {
         this.deleteComment.next(comment);
+    }
+    public updateStatus(data: { data: LoadStatus; id: number }) {
+        this.statusAction.next(data);
     }
 
     // table operations
@@ -307,6 +316,12 @@ export class LoadService {
         return this.loadService.apiLoadModalGet(loadEditId);
     }
 
+    public getLoadListLoadstop(
+        loadId: number
+    ): Observable<LoadListLoadStopResponse> {
+        return this.loadService.apiLoadListLoadstopIdGet(loadId);
+    }
+
     public getRouting(location: string): Observable<RoutingResponse> {
         return this.routingService.apiRoutingGet(location);
     }
@@ -341,7 +356,6 @@ export class LoadService {
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
-
     public deleteLoadTemplateById(loadId: number): Observable<void> {
         return this.loadService.apiLoadTemplateIdDelete(loadId).pipe(
             tap(() => {

@@ -180,6 +180,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationDataSubscribe();
 
         this.currentSelectedRowsSubscribe();
+
+        this.upadateStatus();
     }
 
     ngAfterViewInit(): void {
@@ -191,6 +193,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private watchForLoadChanges(): void {
         this.loadServices.modalAction$.subscribe((action) => {
             this.sendLoadData();
+        });
+    }
+
+    private upadateStatus(): void {
+        this.loadServices.statusAction$.subscribe((status) => {
+            this.loadServices
+                .updateLoadStatus(status.id, status.data)
+                .subscribe((e) => {});
         });
     }
 
@@ -584,7 +594,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab !== TableStringEnum.TEMPLATE,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                //showLtlFilter: true, - hide for now
+                showLtlFilter: true,
                 showMoneyFilter: true,
                 loadMoneyFilter: true,
                 hideDeleteButton:
@@ -783,7 +793,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = td.data;
 
             this.viewData = this.viewData.map((data) => {
-                return this.mapLoadData(data);
+                if (this.selectedTab !== TableStringEnum.TEMPLATE) {
+                    return this.mapLoadData(data);
+                } else {
+                    return this.mapTemplateData(data);
+                }
             });
         } else {
             this.viewData = [];
@@ -842,6 +856,199 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    private mapTemplateData(data: any) /* : LoadModel */ {
+        const {
+            id,
+            billing,
+            broker,
+            createdAt,
+            dispatcher,
+            dispatch,
+            brokerContact,
+            totalDue,
+            weight,
+            referenceNumber,
+            loadRequirements,
+            baseRate,
+            additionalBillingRatesTotal,
+            generalCommodity,
+            stops,
+            totalPaid,
+            advancePay,
+            totalRate,
+            updatedAt,
+        } = data;
+        let paid = totalDue - totalPaid;
+        return {
+            ...data,
+            id,
+            isSelected: false,
+            loadTemplateName: data.name,
+            loadDispatcher: {
+                name: dispatcher?.fullName
+                    ? dispatcher.fullName
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                avatar:
+                    dispatcher?.avatarFile?.url ??
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            },
+            avatarImg:
+                dispatch.driver?.avatarFile?.url ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriver: dispatch.driver?.firstName
+                ? dispatch.driver?.firstName + ' ' + dispatch.driver?.lastName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruck: dispatch.truck?.truckNumber,
+            tableTrailer: dispatch.trailer?.trailerNumber,
+            loadTotal: {
+                total: totalRate
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(totalRate)
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                subTotal: data?.totalAdjustedRate
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(data.totalAdjustedRate)
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            },
+            loadBroker: {
+                hasBanDnu: broker?.ban || broker?.dnu,
+                isDnu: broker?.dnu,
+                name: broker?.businessName
+                    ? broker.businessName
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            },
+            contact: brokerContact?.contactName,
+            phone: brokerContact?.phone
+                ? brokerContact.phone +
+                  (brokerContact.phoneExt ? ' x ' + brokerContact.phoneExt : '')
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+
+            referenceNumber: referenceNumber,
+            textCommodity: generalCommodity?.name,
+            textWeight: weight,
+            tableTrailerColor: this.setTrailerTooltipColor(
+                loadRequirements?.trailerType?.name
+            ),
+            tableTrailerName: loadRequirements?.trailerType?.name,
+            tableTruckColor: this.setTruckTooltipColor(
+                loadRequirements?.truckType?.name
+            ),
+            truckTypeClass: loadRequirements?.truckType?.logoName
+                ? loadRequirements?.truckType?.logoName.replace(
+                      TableStringEnum.SVG,
+                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTrailerTypeClass: loadRequirements?.trailerType?.logoName
+                ? loadRequirements?.trailerType?.logoName.replace(
+                      TableStringEnum.SVG,
+                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruckName: loadRequirements?.truckType?.name,
+            loadTrailerNumber: loadRequirements?.trailerType?.logoName,
+            loadTruckNumber:
+                loadRequirements?.truckType?.logoName ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+
+            loadPickup: [
+                {
+                    count: stops[0]?.count ?? null,
+                    location: stops[0]?.shipper?.address?.city,
+
+                    delivery: false,
+                },
+                {
+                    count: stops[1]?.count ?? null,
+                    location: stops[1]?.shipper?.address?.city,
+
+                    delivery: true,
+                },
+            ],
+
+            total: data?.totalMiles,
+            empty: data?.emptyMiles,
+            loaded: data?.loaded,
+            tableDoorType: loadRequirements?.doorType?.name,
+            tableSuspension: loadRequirements?.suspension?.name,
+            year: loadRequirements?.year,
+            liftgate: loadRequirements?.liftgate
+                ? LoadModalStopItemsStringEnum.YES
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAssignedUnitTruck: {
+                text: dispatch.truck?.truckNumber,
+                type: dispatch.truck?.model,
+                color: this.setTruckTooltipColor(dispatch.truck?.model),
+                hover: false,
+            },
+            tableAssignedUnitTrailer: {
+                text: dispatch.trailer?.trailerNumber,
+                type: dispatch.trailer?.model,
+                color: this.setTrailerTooltipColor(dispatch.trailer?.model),
+                hover: false,
+            },
+            tabelLength: loadRequirements?.trailerLength?.name
+                ? DataFilterHelper.getLengthNumber(
+                      loadRequirements?.trailerLength?.name
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textBase: baseRate
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(baseRate)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAdditional: additionalBillingRatesTotal
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(additionalBillingRatesTotal)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAdvance: advancePay
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(advancePay)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textPayTerms: billing?.payTermName
+                ? billing.payTermName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textDriver:
+                data?.dispatch?.driver?.firstName &&
+                data?.dispatch?.driver?.lastName
+                    ? data?.dispatch?.driver?.firstName.charAt(0) +
+                      TableStringEnum.DOT +
+                      data?.dispatch?.driver?.lastName
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            rate: {
+                paid:
+                    TableStringEnum.DOLLAR_SIGN +
+                    ' ' +
+                    this.thousandSeparator.transform(totalRate),
+                paidDue:
+                    paid !== 0
+                        ? TableStringEnum.DOLLAR_SIGN +
+                          this.thousandSeparator.transform(paid)
+                        : TableStringEnum.DOLLAR_SIGN + '0.00',
+            },
+            paid:
+                totalPaid !== 0
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(totalPaid)
+                    : TableStringEnum.DOLLAR_SIGN + '0.00',
+
+            tableAdded: createdAt
+                ? this.datePipe.transform(
+                      createdAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableEdited: updatedAt
+                ? this.datePipe.transform(
+                      updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getDropdownLoadContent(data),
+            },
+        };
+    }
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
         let commentsWithAvatarColor;
         if (data.comments) {
@@ -883,6 +1090,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             advancePay,
             totalRate,
             updatedAt,
+            paidDate,
+            invoicedDate,
+            totalAdjustedRate,
         } = data;
 
         return {
@@ -901,7 +1111,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: dispatcher?.fullName
                     ? dispatcher.fullName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                avatar: dispatcher?.avatarFile?.url,
+                avatar:
+                    dispatcher?.avatarFile?.url ??
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             avatarImg: driver?.avatarFile?.url,
             tableDriver: driver?.firstName
@@ -927,7 +1139,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             contact: broker?.contact,
-            phone: broker?.phone,
+            phone: broker?.phone
+                ? broker.phone +
+                  (broker.phoneExt ? ' x ' + broker.phoneExt : '')
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             referenceNumber: loadDetails?.referenceNumber,
             textCommodity: loadDetails?.generalCommodityName,
             textWeight: loadDetails?.weight,
@@ -1061,16 +1276,47 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       data?.dispatch?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             comments: commentsWithAvatarColor,
-            rate:
-                TableStringEnum.DOLLAR_SIGN +
-                ' ' +
-                this.thousandSeparator.transform(billing?.rate),
+            rate: {
+                paid:
+                    TableStringEnum.DOLLAR_SIGN +
+                    ' ' +
+                    this.thousandSeparator.transform(billing.rate),
+                paidDue:
+                    totalAdjustedRate !== 0
+                        ? TableStringEnum.DOLLAR_SIGN +
+                          this.thousandSeparator.transform(totalAdjustedRate)
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                status: status?.statusValue?.name,
+            },
+            tableInvoice: invoicedDate
+                ? this.datePipe.transform(
+                      invoicedDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePaid: paidDate
+                ? this.datePipe.transform(paidDate, TableStringEnum.DATE_FORMAT)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             paid:
                 billing?.paid !== 0
                     ? TableStringEnum.DOLLAR_SIGN +
                       this.thousandSeparator.transform(billing?.paid)
                     : TableStringEnum.DOLLAR_SIGN + '0.00',
+            payTerm: billing.payTermName
+                ? TableStringEnum.DOLLAR_SIGN +
+                  ' ' +
+                  this.thousandSeparator.transform(billing.payTermName)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            ageUnpaid:
+                billing.ageUnpaid ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            agePaid:
+                billing.agePaid ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            due: billing.due
+                ? TableStringEnum.DOLLAR_SIGN +
+                  ' ' +
+                  this.thousandSeparator.transform(billing.due)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAdded: createdAt
                 ? this.datePipe.transform(
