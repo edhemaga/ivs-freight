@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { MessageResponse } from './messageResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
@@ -18,5 +19,7 @@ export interface CompanyUserChatResponse {
     unreadCount?: number;
     isFavourite?: boolean;
     userType?: EnumValue;
+    conversationId?: number | null;
+    lastMessage?: MessageResponse;
 }
 

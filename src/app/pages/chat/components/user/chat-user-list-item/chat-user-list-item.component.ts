@@ -16,6 +16,7 @@ export class ChatUserListItemComponent implements OnInit {
   @Input() contact: CompanyUserChatResponse;
 
   // TODO populate with hub response; waiting for BE implementation
+  public ConversationStatus = ConversationStatus;
   public status: ConversationStatus = ConversationStatus.TYPING;
 
   constructor() { }

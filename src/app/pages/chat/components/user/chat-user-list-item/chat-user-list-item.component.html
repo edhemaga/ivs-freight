@@ -47,17 +47,22 @@
                     </ng-container>
 
                     <ng-container *ngSwitchCase="ConversationStatus.UNREAD">
-                        Unread message</ng-container
+                        {{
+                            contact.companyUser.lastMessage?.content
+                        }}</ng-container
                     >
                     <ng-container *ngSwitchCase="ConversationStatus.READ">
-                        Some message</ng-container
+                        {{
+                            contact.companyUser.lastMessage?.content
+                        }}</ng-container
                     >
                     <ng-container *ngSwitchDefault> </ng-container>
                 </ng-container>
 
-                <!-- TODO Add real time with response -->
                 <div class="chat-list-item-text-time ta-font-regular">
-                    {{ '' | formatTime }}
+                    {{
+                        contact.companyUser.lastMessage?.createdAt | formatTime
+                    }}
                 </div>
             </div>
         </ng-template>
