@@ -33,6 +33,7 @@ import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/compo
 import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-off-duty-location/ta-modal-table-off-duty-location.component';
 import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
 import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
+import { TaModalTableLoadItemsComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-load-items/ta-modal-table-load-items.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -107,7 +108,8 @@ import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
         TaModalTableOffDutyLocationComponent,
         TaModalTableFuelCardComponent,
         TaModalTablePreviousAddressesComponent,
-
+        TaModalTableLoadItemsComponent,
+        
         // pipes
         HeaderRequiredStarPipe,
         TrackByPropertyPipe,
@@ -278,6 +280,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     get isPreviousAddressesTable() {
         return this.tableType === ModalTableTypeEnum.PREVIOUS_ADDRESSES;
+    }
+
+    get isLoadItemTable() {
+        return this.tableType === ModalTableTypeEnum.LOAD_ITEMS;
     }
 
     public trackByIdentity = (_: number, item: string): string => item;
@@ -569,6 +575,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.PREVIOUS_ADDRESSES_TABLE_HEADER_ITEMS;
 
                 break;
+                case ModalTableTypeEnum.LOAD_ITEMS:
+                    this.modalTableHeaders =
+                        ModalTableConstants.LOAD_ITEM_TABLE_HEADER_ITEMS;
+    
+                    break;
             default:
                 break;
         }

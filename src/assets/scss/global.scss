@@ -129,11 +129,6 @@ body {
     text-align: right !important;
 }
 
-// Need to override to get scroll
-html body .content-holder .stop-items-wrapper app-load-modal-stop-items {
-    scrollbar-width: thin !important;
-}
-
 html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     overflow-x: scroll !important;
     scrollbar-width: thin !important;

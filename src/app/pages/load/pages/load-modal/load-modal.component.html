@@ -592,23 +592,22 @@
                                 "
                                 [customClass]="'scrollable'"
                             >
-                                <app-load-modal-stop-items
-                                    [createNewStopItemsRow]="
+                                <app-ta-modal-table
+                                    [tableType]="modalTableTypeEnum.LOAD_ITEMS"
+                                    [isNewRowCreated]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
-                                    [stopItemDropdownLists]="
-                                        stopItemDropdownLists
-                                    "
-                                    (stopItemsDataValueEmitter)="
+                                    [modalTableData]="stopItemDropdownLists"
+                                    (modalTableValueEmitter)="
                                         handleStopItemsDataValueEmit(
                                             $event,
                                             'pickup'
                                         )
                                     "
-                                    (stopItemsValidStatusEmitter)="
+                                    (modalTableValidStatusEmitter)="
                                         handleStopItemsValidStatusEmit($event)
                                     "
-                                ></app-load-modal-stop-items>
+                                ></app-ta-modal-table>
                             </app-ta-custom-card>
                         </div>
 
@@ -986,27 +985,30 @@
                                                     )
                                                 "
                                             >
-                                                <app-load-modal-stop-items
-                                                    [createNewStopItemsRow]="
+                                                <app-ta-modal-table
+                                                    [tableType]="
+                                                        modalTableTypeEnum.LOAD_ITEMS
+                                                    "
+                                                    [isNewRowCreated]="
                                                         isCreatedNewStopItemsRow
                                                             .extraStops[indx]
                                                     "
-                                                    [stopItemDropdownLists]="
+                                                    [modalTableData]="
                                                         stopItemDropdownLists
                                                     "
-                                                    (stopItemsDataValueEmitter)="
+                                                    (modalTableValueEmitter)="
                                                         handleStopItemsDataValueEmit(
                                                             $event,
                                                             'extra-stop',
                                                             indx
                                                         )
                                                     "
-                                                    (stopItemsValidStatusEmitter)="
+                                                    (modalTableValidStatusEmitter)="
                                                         handleStopItemsValidStatusEmit(
                                                             $event
                                                         )
                                                     "
-                                                ></app-load-modal-stop-items>
+                                                ></app-ta-modal-table>
                                             </app-ta-custom-card>
                                         </div>
                                         <ng-container
@@ -1221,23 +1223,22 @@
                                     createNewStopItemsRow('delivery')
                                 "
                             >
-                                <app-load-modal-stop-items
-                                    [createNewStopItemsRow]="
-                                        isCreatedNewStopItemsRow.delivery
+                                <app-ta-modal-table
+                                    [tableType]="modalTableTypeEnum.LOAD_ITEMS"
+                                    [isNewRowCreated]="
+                                    isCreatedNewStopItemsRow.delivery
                                     "
-                                    [stopItemDropdownLists]="
-                                        stopItemDropdownLists
+                                    [modalTableData]="stopItemDropdownLists"
+                                    (modalTableValueEmitter)="
+                                    handleStopItemsDataValueEmit(
+                                        $event,
+                                        'delivery'
+                                    )
                                     "
-                                    (stopItemsDataValueEmitter)="
-                                        handleStopItemsDataValueEmit(
-                                            $event,
-                                            'delivery'
-                                        )
+                                    (modalTableValidStatusEmitter)="
+                                    handleStopItemsValidStatusEmit($event)
                                     "
-                                    (stopItemsValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event)
-                                    "
-                                ></app-load-modal-stop-items>
+                                ></app-ta-modal-table>
                             </app-ta-custom-card>
                         </div>
 

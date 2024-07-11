@@ -12,7 +12,8 @@
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
-            'previous-adresses-table-header': isPreviousAddressesTable
+            'previous-adresses-table-header': isPreviousAddressesTable,
+            'load-items-table': isLoadItemTable
         }"
     >
         <ng-container
@@ -28,7 +29,7 @@
                     'justify-content-center': i === 0,
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
-                    'justify-content-end subtotal': i === 5 && !isContactTable,
+                    'justify-content-end subtotal': i === 5 && !isContactTable && !isLoadItemTable,
                     'first-item': i === 0 && isContactTable
                 }"
             >
@@ -197,5 +198,10 @@
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-previous-addresses>
+
+        <app-ta-modal-table-load-items
+        *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
+    >
+    </app-ta-modal-table-load-items>
     </ng-container>
 </div>

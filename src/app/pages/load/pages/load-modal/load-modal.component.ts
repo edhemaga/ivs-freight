@@ -44,7 +44,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { LoadModalFinancialComponent } from '@pages/load/pages/load-modal/components/load-modal-financial/load-modal-financial.component';
 import { LoadModalStopComponent } from '@pages/load/pages/load-modal/components/load-modal-stop/load-modal-stop.component';
-import { LoadModalStopItemsComponent } from '@pages/load/pages/load-modal/components/load-modal-stop-items/load-modal-stop-items.component';
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -89,6 +88,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // models
 import {
@@ -133,6 +133,7 @@ import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/lo
 import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
 import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
@@ -164,12 +165,12 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         TaInputNoteComponent,
         TaMapsComponent,
         TaCommentComponent,
-        LoadModalStopItemsComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
+        TaModalTableComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -395,6 +396,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private isPreviousStatus: boolean = false;
     private statusHistory: LoadStatusHistoryResponse[];
     private initialinvoicedDate: string;
+    public modalTableTypeEnum = ModalTableTypeEnum;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
