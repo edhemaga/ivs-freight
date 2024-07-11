@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
 // services
 import { ApplicantService as ApplicantBackendService } from 'appcoretruckassist';
 import { FormDataService } from '@shared/services/form-data.service';
+
+// environments
 import { environment } from 'src/environments/environment';
 
 // models
@@ -64,7 +67,6 @@ import {
     CreateCompanyOwnerInfoReviewCommand,
     UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -105,7 +107,11 @@ export class ApplicantService {
     public createCdlInformation(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.apiApplicantCdlPost();
+        const localVarFormParams = new FormData();
+
+        const localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
+
+        return this.httpClient.post(localVarPath, localVarFormParams);
     }
 
     public createAccidentRecord(
@@ -175,7 +181,11 @@ export class ApplicantService {
     public updateCdlInformation(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.apiApplicantCdlPut();
+        const localVarFormParams = new FormData();
+
+        const localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
+
+        return this.httpClient.put(localVarPath, localVarFormParams);
     }
 
     public updateAccidentRecord(
@@ -460,21 +470,5 @@ export class ApplicantService {
 
     public getDropdownLists(): Observable<ApplicantModalResponse> {
         return this.applicantService.apiApplicantModalGet();
-    }
-
-    public apiApplicantCdlPost(): Observable<any> {
-        let localVarFormParams = new FormData();
-
-        let localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
-
-        return this.httpClient.post(localVarPath, localVarFormParams);
-    }
-
-    public apiApplicantCdlPut(): Observable<any> {
-        let localVarFormParams = new FormData();
-
-        let localVarPath = `${environment.API_ENDPOINT}/api/applicant/cdl`;
-
-        return this.httpClient.put(localVarPath, localVarFormParams);
     }
 }
