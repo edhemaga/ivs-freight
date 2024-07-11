@@ -1,0 +1,64 @@
+@import 'src/theme/variables';
+
+.user-list-container {
+    width: fit-content;
+    background: $white;
+    border-radius: 3px;
+    padding: 6px;
+
+    .chat-header {
+        width: 318px;
+        height: 32px;
+        padding: 0 4px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid $bw-9;
+
+        .border-container {
+            height: 34px;
+            padding: 0 4px;
+
+            .border {
+                width: 2px;
+                height: 18px;
+                border-radius: 1px;
+                background: $ta-light-grey-4;
+            }
+        }
+        .department-icon {
+            padding: 0 4px;
+        }
+        &-type {
+            color: $ta-black;
+        }
+
+        &-message-count {
+            font-size: 11px;
+            line-height: 18px;
+            height: 18px;
+            min-width: 18px;
+            border-radius: 50px;
+            background: $bw5;
+            color: $white;
+            padding: 0px 6px;
+            margin: auto 5px;
+        }
+
+        .contact-wrapper {
+            margin: 1px 0;
+        }
+    }
+    .no-data-button-wrapper {
+        width: 100%;
+    }
+    .no-data-button {
+        width: 150px;
+        height: 32px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 700;
+        font-size: 14px;
+        background-color: $ta-blue-14;
+        border-radius: 2px;
+        color: $white;
+        border: none;
+    }
+}

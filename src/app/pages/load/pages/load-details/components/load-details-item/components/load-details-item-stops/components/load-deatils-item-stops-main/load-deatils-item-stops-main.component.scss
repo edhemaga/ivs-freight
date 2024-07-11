@@ -7,14 +7,14 @@
 
     &-header {
         display: grid;
-        grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 76px;
+        grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 76px;
         grid-gap: 12px;
         margin-bottom: 6px;
         padding: 6px 8px 12px 8px;
         border-bottom: 1px $bw-9 solid;
 
         &.includes-check-in-grid {
-            grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 1fr 76px;
+            grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 1fr 76px;
         }
 
         p {
@@ -36,14 +36,14 @@
 
     &-item {
         display: grid;
-        grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 76px;
+        grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 76px;
         grid-gap: 12px;
         padding: 2px 8px;
         margin-bottom: 2px;
         transition: background 0.2s ease-in;
 
         &.includes-check-in-grid {
-            grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 1fr 76px;
+            grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 1fr 76px;
         }
 
         &.active {
@@ -296,30 +296,62 @@
 
 /* Responsive */
 
+@media (max-width: 1800px) {
+    .text-truncate {
+        max-width: 166px !important;
+    }
+}
+
+@media (max-width: 1650px) {
+    .stops-main {
+        .contact-box.hide-responsive {
+            display: none !important;
+        }
+
+        &-header {
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 76px;
+            }
+        }
+
+        &-item {
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1.5fr 1.5fr 1fr 1fr 76px;
+            }
+        }
+    }
+}
+
 @media (max-width: 1600px) {
     .text-truncate {
-        max-width: 186px !important;
+        max-width: 150px !important;
     }
 }
 
 @media (max-width: 1500px) {
-    .text-truncate {
-        max-width: 169px !important;
-    }
-}
-
-@media (max-width: 1440px) {
     .stops-main {
+        .text-truncate {
+            max-width: unset !important;
+        }
+
         .hide-responsive {
             display: none !important;
         }
 
         &-header {
-            grid-template-columns: 18px 1fr 1fr 1fr 76px !important;
+            grid-template-columns: 18px 1.5fr 1.5fr 1fr 76px;
+
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1.5fr 1fr 1fr 76px;
+            }
         }
 
         &-item {
-            grid-template-columns: 18px 1fr 1fr 1fr 76px !important;
+            grid-template-columns: 18px 1.5fr 1.5fr 1fr 76px;
+
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1.5fr 1fr 1fr 76px;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
+    setClosedTabCards,
     setPendingTabCards,
     setTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
@@ -31,6 +32,12 @@ export const loadState: LoadCardData = {
         front_side: LoadCardModalConfig.displayRowsFrontTemplate,
         back_side: LoadCardModalConfig.displayRowsBackTemplate,
     },
+    closed: {
+        numberOfRows: 4,
+        checked: true,
+        front_side: LoadCardModalConfig.displayRowsFrontClosed,
+        back_side: LoadCardModalConfig.displayRowsBackClosed,
+    },
 };
 
 export const loadCardModalReducer = createReducer(
@@ -46,5 +53,9 @@ export const loadCardModalReducer = createReducer(
     on(setTemplateTabCards, (state, template) => ({
         ...state,
         template,
+    })),
+    on(setClosedTabCards, (state, closed) => ({
+        ...state,
+        closed,
     }))
 );

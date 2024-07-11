@@ -83,7 +83,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
         // store
         private loadMinimalListQuery: LoadMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -134,8 +134,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                     stopType = pickupStatus.includes(status.statusValue.name)
                         ? LoadDetailsCardStringEnum.PICKUP
                         : deliveryStatus.includes(status.statusValue.name)
-                        ? LoadDetailsCardStringEnum.DELIVERY
-                        : LoadDetailsCardStringEnum.EMPTY_STRING;
+                            ? LoadDetailsCardStringEnum.DELIVERY
+                            : LoadDetailsCardStringEnum.EMPTY_STRING;
                 }
 
                 return {

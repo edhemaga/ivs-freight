@@ -1,0 +1,46 @@
+<div class="messages-container d-flex">
+    <ng-container [ngSwitch]="remainingParticipants?.length">
+        <div class="messages-header d-flex align-items-center">
+            <ng-container *ngSwitchCase="1">
+                <div class="name ta-font-extra-bold">
+                    {{ remainingParticipants[0].fullName }}
+                </div>
+
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="ChatSvgRoutes.searchIcon"
+                >
+                </svg-icon>
+
+                <div class="right-icons d-flex">
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.informationIcon"
+                    >
+                    </svg-icon>
+
+                    <div
+                        class="border-container d-flex justify-content-center align-items-center"
+                    >
+                        <div class="border"></div>
+                    </div>
+
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.listOptionsIcon"
+                    >
+                    </svg-icon>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>
