@@ -1,5 +1,6 @@
 <div class="table-container">
     <app-ta-table-toolbar
+        #toolbarComponent
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"

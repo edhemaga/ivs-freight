@@ -8,6 +8,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 import { Store } from '@ngrx/store';
 import {
     setActiveTabCards,
+    setClosedTabCards,
     setPendingTabCards,
     setTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
@@ -61,6 +62,9 @@ export class LoadCardModalService {
                 break;
             case TableStringEnum.TEMPLATE:
                 this.store.dispatch(setTemplateTabCards(sendToStore));
+                break;
+            case TableStringEnum.CLOSED:
+                this.store.dispatch(setClosedTabCards(sendToStore));
                 break;
             default:
                 break;

@@ -4,4 +4,5 @@ export interface LoadCardData {
     active: LoadCardTypes;
     pending: LoadCardTypes;
     template: LoadCardTypes;
+    closed: LoadCardTypes;
 }
