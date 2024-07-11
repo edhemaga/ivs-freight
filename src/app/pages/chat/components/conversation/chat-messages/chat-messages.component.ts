@@ -41,7 +41,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
 
   // Input toggle
-  public isChatTypingActived: boolean = false;
+  public isChatTypingActivated: boolean = false;
 
   // Services
   private chatService = inject(UserChatService);
@@ -59,6 +59,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     this.connectToHub();
 
+    this.scrollToBottom();
+
   }
 
   // Get Data --------------------------------
@@ -68,7 +70,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.messages = res.messages;
-          this.scrollToBottom();
+          this.scrollToBottom(32);
 
           // Conversation participants
           this.conversation = res.information;
@@ -100,6 +102,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                 console.error(err)
               },
               complete: () => {
+                this.scrollToBottom(32);
                 console.log("Message received!")
               }
             });
@@ -111,7 +114,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Messages --------------------------------
   public sendMessage(): void {
 
-    if (!this.canSendMessage || !this.conversation?.id || !this.messageToSend) return;
+    if (!this.messageToSend || !this.conversation?.id || !this.canSendMessage) return;
+
+    this.canSendMessage = false;
 
     this.chatService
       .sendMessage(this.conversation.id, this.messageToSend)
@@ -120,8 +125,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         next: () => {
           this.messageToSend = "";
           this.canSendMessage = true;
+          this.scrollToBottom(32);
         }
       });
+
   }
   // ------------------------------------------
 
@@ -134,14 +141,18 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public enableChatInput(): void {
-    this.isChatTypingActived = true;
+    this.isChatTypingActivated = true;
   }
 
   private scrollToBottom(additionalScrollInPixel?: number): void {
     if (!this.messagesContent?.nativeElement) return;
 
     const container = this.messagesContent.nativeElement;
-    container.scrollTop = container.scrollHeight + additionalScrollInPixel ?? 0;
+    container.scrollTop = 99999 + additionalScrollInPixel ?? 0;
+  }
+
+  public trackById(index: number, item: MessageResponse): number {
+    return item.id;
   }
   // ------------------------------------------
 

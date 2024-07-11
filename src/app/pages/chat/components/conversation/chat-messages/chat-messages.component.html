@@ -44,10 +44,20 @@
         </div>
     </ng-container>
 
-    <div class="messages-content" #messagesContent>
+    <div
+        class="messages-content"
+        #messagesContent
+        [scrollTop]="messagesContent.scrollHeight"
+    >
         <div *ngIf="messages.length">
             <!-- TODO Add trackBy -->
-            <ng-container *ngFor="let message of messages">
+            <ng-container
+                *ngFor="
+                    let message of messages;
+                    let ind = index;
+                    trackBy: trackById
+                "
+            >
                 <ng-container *ngIf="message">
                     <app-chat-message
                         [currentUserId]="currentUserId"
@@ -59,7 +69,7 @@
     </div>
     <div class="chat-footer d-flex">
         <div class="left-side d-flex">
-            <ng-container *ngIf="!isChatTypingActived; else chatInputField">
+            <ng-container *ngIf="!isChatTypingActivated; else chatInputField">
                 <div
                     (click)="enableChatInput()"
                     class="input-placeholder-not-touched ta-font-regular"
@@ -70,7 +80,6 @@
             <ng-template #chatInputField>
                 <div class="form-wrapper" [formGroup]="messageForm">
                     <app-ta-input
-                        style="width: 100%"
                         formControlName="message"
                         [(ngModel)]="messageToSend"
                         [inputConfig]="{
