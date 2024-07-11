@@ -2190,7 +2190,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_PICKUP:
                 this.isActivePickupStop = event;
 
-                this.isActiveDeliveryStop = false;
+                this.isActivePickupStop = !this.isActivePickupStop;
 
                 this.loadExtraStops().controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
@@ -2200,7 +2200,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_DELIVERY:
                 if (!this.selectedPickupShipper) return;
 
-                this.isActiveDeliveryStop = event;
+                this.isActiveDeliveryStop = !this.isActiveDeliveryStop;
 
                 this.isActivePickupStop = false;
 
