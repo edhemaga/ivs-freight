@@ -597,7 +597,8 @@
                                     [isNewRowCreated]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
-                                    [modalTableData]="stopItemDropdownLists"
+                                    [stopItemDropdownLists]="stopItemDropdownLists"
+                                    [modalTableData]="pickupStopItems"
                                     (modalTableValueEmitter)="
                                         handleStopItemsDataValueEmit(
                                             $event,
@@ -985,7 +986,7 @@
                                                     )
                                                 "
                                             >
-                                                <app-ta-modal-table
+                                                <!-- <app-ta-modal-table
                                                     [tableType]="
                                                         modalTableTypeEnum.LOAD_ITEMS
                                                     "
@@ -994,7 +995,7 @@
                                                             .extraStops[indx]
                                                     "
                                                     [modalTableData]="
-                                                        stopItemDropdownLists
+                                                    extraStopItems[indx]
                                                     "
                                                     (modalTableValueEmitter)="
                                                         handleStopItemsDataValueEmit(
@@ -1008,7 +1009,7 @@
                                                             $event
                                                         )
                                                     "
-                                                ></app-ta-modal-table>
+                                                ></app-ta-modal-table> -->
                                             </app-ta-custom-card>
                                         </div>
                                         <ng-container
@@ -1223,12 +1224,12 @@
                                     createNewStopItemsRow('delivery')
                                 "
                             >
-                                <app-ta-modal-table
+                                <!-- <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
                                     [isNewRowCreated]="
                                     isCreatedNewStopItemsRow.delivery
                                     "
-                                    [modalTableData]="stopItemDropdownLists"
+                                    [modalTableData]="deliveryStopItems"
                                     (modalTableValueEmitter)="
                                     handleStopItemsDataValueEmit(
                                         $event,
@@ -1238,7 +1239,7 @@
                                     (modalTableValidStatusEmitter)="
                                     handleStopItemsValidStatusEmit($event)
                                     "
-                                ></app-ta-modal-table>
+                                ></app-ta-modal-table> -->
                             </app-ta-custom-card>
                         </div>
 

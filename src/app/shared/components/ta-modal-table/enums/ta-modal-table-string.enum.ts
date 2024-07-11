@@ -8,6 +8,7 @@ export enum TaModalTableStringEnum {
     OFF_DUTY_LOCATION_TABLE_ITEMS = 'offDutyLocationTableItems',
     FUEL_CARD_TABLE_ITEMS = 'fuelCardTableItems',
     PREVIOUS_ADDRESSES_TABLE_ITEMS = 'previousAddressesTableItems',
+    LOAD_MODAL_TABLE_ITEMS = 'loadModalTableItems',
 
     PRICE = 'price',
 

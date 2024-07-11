@@ -29,8 +29,11 @@
                     'justify-content-center': i === 0,
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
-                    'justify-content-end subtotal': i === 5 && !isContactTable && !isLoadItemTable,
-                    'first-item': i === 0 && isContactTable
+                    'justify-content-end subtotal':
+                        i === 5 && !isContactTable && !isLoadItemTable,
+                    'first-item': i === 0 && isContactTable,
+                    'stop-items-number': isLoadItemTable && i === 0,
+                    'stop-items-desc': isLoadItemTable && i === 1
                 }"
             >
                 <ng-container
@@ -200,8 +203,11 @@
         </app-ta-modal-table-previous-addresses>
 
         <app-ta-modal-table-load-items
-        *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
-    >
-    </app-ta-modal-table-load-items>
+            *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
+            [modalTableForm]="modalTableForm"
+            [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
+            [stopItemDropdownLists]="stopItemDropdownLists"
+        >
+        </app-ta-modal-table-load-items>
     </ng-container>
 </div>

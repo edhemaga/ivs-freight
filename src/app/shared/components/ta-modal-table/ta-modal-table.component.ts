@@ -86,6 +86,7 @@ import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-ta
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -109,7 +110,7 @@ import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
         TaModalTableFuelCardComponent,
         TaModalTablePreviousAddressesComponent,
         TaModalTableLoadItemsComponent,
-        
+
         // pipes
         HeaderRequiredStarPipe,
         TrackByPropertyPipe,
@@ -130,7 +131,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | DriverDetailsOffDutyLocationResponse[]
         | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
-
+    @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
+    
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
@@ -299,6 +301,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             offDutyLocationTableItems: this.formBuilder.array([]),
             fuelCardTableItems: this.formBuilder.array([]),
             previousAddressesTableItems: this.formBuilder.array([]),
+            loadModalTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -575,11 +578,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.PREVIOUS_ADDRESSES_TABLE_HEADER_ITEMS;
 
                 break;
-                case ModalTableTypeEnum.LOAD_ITEMS:
-                    this.modalTableHeaders =
-                        ModalTableConstants.LOAD_ITEM_TABLE_HEADER_ITEMS;
-    
-                    break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                this.modalTableHeaders =
+                    ModalTableConstants.LOAD_ITEM_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -680,6 +683,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS
                 ) as UntypedFormArray;
             default:
                 break;
@@ -799,6 +806,27 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                newFormArrayRow = this.formBuilder.group({
+                    description: [
+                        null,
+                        [...descriptionValidation, Validators.required],
+                    ],
+                    quantity: [null],
+                    tmp: [null],
+                    weight: [null],
+                    length: [null],
+                    height: [null],
+                    tarp: [null],
+                    stack: [null],
+                    secure: [null],
+                    bolNo: [null],
+                    pickupNo: [null],
+                    sealNo: [null],
+                    code: [null],
+                });
+
+                break;
             default:
                 break;
         }
@@ -906,6 +934,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | DriverDetailsOffDutyLocationResponse
         )[]
     ): void {
+        if(modalTableData.length > 1) return;
         modalTableData.forEach((data, i) => {
             this.createFormArrayRow();
 
@@ -950,7 +979,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         unit: addressData?.addressUnit,
                         address: addressData?.address?.address,
                     });
-                    
+
                     this.selectedAddress[i] = addressData.address;
                     break;
                 default:

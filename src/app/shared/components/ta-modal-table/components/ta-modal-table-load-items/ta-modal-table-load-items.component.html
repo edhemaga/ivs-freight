@@ -1,0 +1,296 @@
+<form [formGroup]="modalTableForm" class="table-body load-modal-table-items-container">
+    <div class="d-flex flex-column">
+        <ng-container
+            [formArrayName]="arrayName"
+            *ngFor="
+                let loadModalItemStop of formArray.controls;
+                let i = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <div
+                class="align-items-center table-item"
+                [ngClass]="{ valid: loadModalItemStop.valid }"
+                [formGroupName]="i"
+            >
+                <!-- Number & Delete -->
+                <div
+                    class="d-flex justify-content-center align-items-center table-item-number stop-items-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                    <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    ></svg-icon>
+                </div>
+
+                <div
+                    class="gradient-border-container stop-items-desc"
+                    (mouseenter)="handleInputHover(true, i, 0)"
+                    (mouseleave)="handleInputHover(false, i, 0)"
+                >
+                    <app-ta-input
+                        formControlName="description"
+                        [inputConfig]="{
+                            name: 'Description',
+                            type: 'text',
+                            label: 'Description',
+                            placeholderInsteadOfLabel: true,
+                            isRequired: true,
+                            hideErrorMessage: true,
+                            blackInput:
+                                formArray.at(i).get('description').value &&
+                                !isInputHoverRows[i][0]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 1)"
+                    (mouseleave)="handleInputHover(false, i, 1)"
+                >
+                    <!-- <app-ta-input-dropdown
+                        formControlName="quantity"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            label: 'Quantity',
+                            placeholderInsteadOfLabel: true,
+                            dropdownWidthClass: 'w-col-130',
+                            hideColorValidations: !isInputHoverRows[i][1],
+                            blackInput:
+                                formArray.at(i).get('quantity').value &&
+                                !isInputHoverRows[i][1]
+                        }"
+                        [options]="stopItemDropdownLists?.quantityDropdownList"
+                        [activeItem]="selectedQuantity[i]"
+                        (selectedItem)="
+                            handleInputSelect($event, 'Quantity', i)
+                        "
+                    ></app-ta-input-dropdown> -->
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 2)"
+                    (mouseleave)="handleInputHover(false, i, 2)"
+                >
+                    <app-ta-input
+                        formControlName="tmp"
+                        [inputConfig]="{
+                            name: 'BOL NO',
+                            type: 'text',
+                            label: 'BOL NO',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('tmp').value &&
+                                !isInputHoverRows[i][2]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 3)"
+                    (mouseleave)="handleInputHover(false, i, 3)"
+                >
+                    <app-ta-input
+                        formControlName="weight"
+                        [inputConfig]="{
+                            name: 'Weight',
+                            type: 'text',
+                            label: 'Weight',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('weight').value &&
+                                !isInputHoverRows[i][3],
+                            fixedPlacholder: 'lbs'
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    class="gradient-border-container"
+                    (mouseenter)="handleInputHover(true, i, 4)"
+                    (mouseleave)="handleInputHover(false, i, 4)"
+                >
+                    <app-ta-input
+                        formControlName="length"
+                        [inputConfig]="{
+                            name: 'Length',
+                            type: 'text',
+                            label: 'Length',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('length').value &&
+                                !isInputHoverRows[i][4],
+                            fixedPlacholder: 'ft'
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 5)"
+                    (mouseleave)="handleInputHover(false, i, 5)"
+                >
+                    <app-ta-input
+                        formControlName="height"
+                        [inputConfig]="{
+                            name: 'Height',
+                            type: 'text',
+                            label: 'Height',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('height').value &&
+                                !isInputHoverRows[i][5],
+                            fixedPlacholder: 'ft'
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 6)"
+                    (mouseleave)="handleInputHover(false, i, 6)"
+                >
+                    <app-ta-input
+                        formControlName="tarp"
+                        [inputConfig]="{
+                            name: 'Tarp',
+                            type: 'text',
+                            label: 'Tarp',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('tarp').value &&
+                                !isInputHoverRows[i][6]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 7)"
+                    (mouseleave)="handleInputHover(false, i, 7)"
+                >
+                    <!-- <app-ta-input-dropdown
+                        formControlName="stack"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            label: 'Stack',
+                            placeholderInsteadOfLabel: true,
+                            dropdownWidthClass: 'w-col-80',
+                            hideColorValidations: !isInputHoverRows[i][7],
+                            blackInput:
+                                formArray.at(i).get('stack').value &&
+                                !isInputHoverRows[i][7]
+                        }"
+                        [options]="stopItemDropdownLists?.stackDropdownList"
+                        [activeItem]="selectedStack[i]"
+                        (selectedItem)="handleInputSelect($event, 'Stack', i)"
+                    ></app-ta-input-dropdown> -->
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 8)"
+                    (mouseleave)="handleInputHover(false, i, 8)"
+                >
+                    <!-- <app-ta-input-dropdown
+                        formControlName="secure"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            isDropdown: true,
+                            label: 'Secure',
+                            placeholderInsteadOfLabel: true,
+                            dropdownWidthClass: 'w-col-100',
+                            hideColorValidations: !isInputHoverRows[i][8],
+                            blackInput:
+                                formArray.at(i).get('secure').value &&
+                                !isInputHoverRows[i][8]
+                        }"
+                        [options]="stopItemDropdownLists?.secureDropdownList"
+                        [activeItem]="selectedSecure[i]"
+                        (selectedItem)="handleInputSelect($event, 'Secure', i)"
+                    ></app-ta-input-dropdown> -->
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 9)"
+                    (mouseleave)="handleInputHover(false, i, 9)"
+                >
+                    <app-ta-input
+                        formControlName="bolNo"
+                        [inputConfig]="{
+                            name: 'BOL No.',
+                            type: 'text',
+                            label: 'BOL No.',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('bolNo').value &&
+                                !isInputHoverRows[i][9]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 10)"
+                    (mouseleave)="handleInputHover(false, i, 10)"
+                >
+                    <app-ta-input
+                        formControlName="pickupNo"
+                        [inputConfig]="{
+                            name: 'Pickup No.',
+                            type: 'text',
+                            label: 'Pickup No.',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('pickupNo').value &&
+                                !isInputHoverRows[i][10]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 11)"
+                    (mouseleave)="handleInputHover(false, i, 11)"
+                >
+                    <app-ta-input
+                        formControlName="sealNo"
+                        [inputConfig]="{
+                            name: 'Seal No.',
+                            type: 'text',
+                            label: 'Seal No.',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('sealNo').value &&
+                                !isInputHoverRows[i][11]
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <div
+                    (mouseenter)="handleInputHover(true, i, 12)"
+                    (mouseleave)="handleInputHover(false, i, 12)"
+                >
+                    <app-ta-input
+                        formControlName="code"
+                        [inputConfig]="{
+                            name: 'Code',
+                            type: 'text',
+                            label: 'Code',
+                            placeholderInsteadOfLabel: true,
+                            blackInput:
+                                formArray.at(i).get('sealNo').value &&
+                                !isInputHoverRows[i][12]
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</form>
