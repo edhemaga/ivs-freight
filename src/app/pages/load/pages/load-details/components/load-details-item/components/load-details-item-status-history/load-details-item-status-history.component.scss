@@ -69,3 +69,13 @@
         }
     }
 }
+
+/* Responsive */
+
+@media (max-width: 1440px) {
+    .status-history-container {
+        .hide-responsive {
+            display: none !important;
+        }
+    }
+}

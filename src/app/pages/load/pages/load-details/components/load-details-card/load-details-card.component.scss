@@ -1,7 +1,18 @@
+@import 'src/theme/variables';
+
 .load-details-card {
     .driver-message-container,
     .documents-container,
     .note-container {
         padding: 2px 4px 0 4px;
+    }
+
+    .additional-cards-container {
+        .load-details-cards {
+            border-radius: 3px;
+            overflow: hidden;
+            padding: 1px 8px 0px 8px;
+            background: $white;
+        }
     }
 }
