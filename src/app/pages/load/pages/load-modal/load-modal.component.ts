@@ -523,8 +523,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.selectedStatus?.id === 8;
         return LoadModalConfig.getInvoiceDate(
             loadWasInvoiced,
-            loadWasInvoiced &&
-                this.loadForm.get(LoadModalStringEnum.INVOICED_DATE).value
+            !loadWasInvoiced &&
+                !this.loadForm.get(LoadModalStringEnum.INVOICED_DATE).value
         );
     }
 
@@ -4534,12 +4534,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 dateFrom: stop.arrive,
                 dateTo: '',
                 timeFrom:
-                    MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                    MethodsCalculationsHelper.convertTimeFromBackend(
                         stop.arrive
-                    ),
-                timeTo: MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                    ) as any,
+                timeTo: MethodsCalculationsHelper.convertTimeFromBackend(
                     stop.depart
-                ),
+                ) as any,
             };
         }
         return { ...stop };

@@ -267,8 +267,8 @@ export class LoadModalConfig {
             isDropdown: true,
             label: 'Invoiced',
             placeholderIcon: 'date',
-            isRequired: isRequired,
-            isDisabled: isDisabled,
+            isRequired,
+            isDisabled,
             customClass: 'datetimeclass',
         };
     }

@@ -55,7 +55,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
     public endTimeInputConfig: ITaInput = null;
 
     @Input() statusHistory: Array<LoadStatusHistoryResponse> | null;
-    @Input() areFieldsDisabled: boolean;
+    private areFieldsDisabled = true;
     @Output() formChanged = new EventEmitter<
         Array<LoadStatusHistoryResponse>
     >();

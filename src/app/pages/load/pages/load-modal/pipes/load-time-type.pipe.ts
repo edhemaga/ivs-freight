@@ -1,16 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import moment from 'moment';
 
 @Pipe({
     name: 'loadTimeType',
     standalone: true
 })
 export class LoadTimeTypePipe implements PipeTransform {
-    transform(value: string): any {
+    transform(value: string): string {
         if (value) {
-            const type = parseInt(value.split(':')[0]);
-            return `${value} ${
-                type ? (type >= 12 && type <= 23 ? 'PM' : 'AM') : ''
-            }`;
+            const formattedTime = moment(value, 'HH:mm').format('hh:mm A');
+            return formattedTime;
         }
 
         return '';
