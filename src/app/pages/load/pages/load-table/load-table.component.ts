@@ -1017,11 +1017,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.DOLLAR_SIGN +
                     ' ' +
                     this.thousandSeparator.transform(totalRate),
-                paidDue:
-                    totalAdjustedRate !== 0
-                        ? TableStringEnum.DOLLAR_SIGN +
-                          this.thousandSeparator.transform(totalAdjustedRate)
-                        : null,
+                paidDue: totalAdjustedRate
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(totalAdjustedRate)
+                    : null,
             },
             paid:
                 totalPaid !== 0
@@ -1279,11 +1278,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.DOLLAR_SIGN +
                     ' ' +
                     this.thousandSeparator.transform(billing.rate),
-                paidDue:
-                    totalAdjustedRate !== 0
-                        ? TableStringEnum.DOLLAR_SIGN +
-                          this.thousandSeparator.transform(totalAdjustedRate)
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                paidDue: totalAdjustedRate
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(totalAdjustedRate)
+                    : null,
                 status: status?.statusValue?.name,
             },
             tableInvoice: invoicedDate

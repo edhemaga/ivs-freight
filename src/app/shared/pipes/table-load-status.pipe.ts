@@ -23,9 +23,9 @@ export class TableLoadStatusPipe implements PipeTransform {
                 text === LoadStatusStringEnum.SHORT_PAID ||
                 text === LoadStatusStringEnum.PAID
             ) {
-                return '#9E47EC';
-            } else {
                 return '#919191';
+            } else {
+                return '#9E47EC';
             }
         } else if (search === LoadStatusStringEnum.DECORATION) {
             if (
