@@ -59,7 +59,7 @@ export class HubService {
                         conversationId: conversationId,
                         content: content,
                     }
-                    observer.next(newMessage);
+                    return observer.next(newMessage);
                 }
             );
         });

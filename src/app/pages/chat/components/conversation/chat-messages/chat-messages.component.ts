@@ -34,6 +34,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Messages
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
+  private canSendMessage: boolean = true;
 
   private chatService = inject(UserChatService);
   private chatHub = inject(HubService);
@@ -92,13 +93,17 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   // Messages --------------------------------
   public sendMessage(): void {
-    if (!this.conversation?.id || !this.messageToSend) return;
+
+    // TODO create a helper function
+    if (!this.canSendMessage || !this.conversation?.id || !this.messageToSend) return;
+
     this.chatService
       .sendMessage(this.conversation.id, this.messageToSend)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.messageToSend = "";
+          this.canSendMessage = true;
         }
       });
   }

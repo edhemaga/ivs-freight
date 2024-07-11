@@ -8,6 +8,7 @@
         <div class="message-time d-flex">
             {{ message.createdAt | formatTime }}
         </div>
+
         <div
             [ngClass]="
                 currentUserId === message.sender?.id ? 'current-user' : 'other'
