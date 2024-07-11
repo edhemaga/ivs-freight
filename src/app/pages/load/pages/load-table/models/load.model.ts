@@ -78,7 +78,7 @@ export interface LoadModel extends LoadListDto {
     loadStatus: LoadStatus;
     textCommodity: string;
     textMiles: string;
-    textWeight: string;
+    textWeight: number;
     textBase: string;
     textAdditional: string;
     textAdvance: string;
@@ -91,6 +91,115 @@ export interface LoadModel extends LoadListDto {
     loaded?: string;
 }
 
+export interface LoadTemplateModel extends LoadListDto {
+    isSelected: boolean;
+    id: number;
+    type: Type;
+    loadNumber: string;
+    loadInvoice: LoadInvoice;
+    name?: string;
+    statusType: StatusType;
+    status?: LoadStatusResponse;
+    lastStatusPassed?: { [key: string]: number } | null;
+    dispatcher: Dispatcher;
+    company: Company;
+    dateCreated: string;
+    dispatch: Dispatch;
+    broker: LoadBrokerInfo;
+    brokerContact: BrokerContact;
+    referenceNumber: string;
+    generalCommodity: GeneralCommodity;
+    weight: number;
+    loadRequirements: LoadRequirements;
+    loadDispatcher: LoadDispatcher;
+    stops: Stop[];
+    splitLoad: SplitLoad;
+    note: string;
+    baseRate: number;
+    adjustedRate: number;
+    revisedRate: number;
+    tonuRate: number;
+    driverRate: number;
+    additionalBillingRatesTotal: number;
+    additionalBillingRates: AdditionalBillingRate[];
+    totalRate: number;
+    totalAdjustedRate: number;
+    advancePay: number;
+    pays: Pay[];
+    statusHistory: StatusHistory[];
+    totalPaid: number;
+    totalDue: number;
+    loadedMiles: number;
+    totalMiles: number;
+    totalTimeDays: number;
+    totalTimeHours: number;
+    paidDate: string;
+    invoicedDate: string;
+    shortPaid: number;
+    age: number;
+    daysToPay: number;
+    totalLoadTime: TotalLoadTime;
+    firstPickupTime: FirstPickupTime;
+    lastDeliveryTime: LastDeliveryTime;
+    currentLocation: CurrentLocation;
+    nextStop: NextStop;
+    completedPercentage: number;
+    pendingPercentage: number;
+    closedPercentage: number;
+    progressBar: ProgressBar[];
+    createdAt: string;
+    updatedAt: string;
+    files: File[];
+    fileCount: number;
+    loadTotal: LoadTotal;
+    isFlipped: boolean;
+    loadBroker: LoadBroker;
+    loadTruckNumber: string;
+    loadTrailerNumber: string;
+    loadPickup: LoadPickup[];
+    loadDelivery: LoadDelivery;
+    loadStatus: LoadStatus;
+    textCommodity: string;
+    textMiles: string;
+    textWeight: number;
+    textBase: string;
+    textAdditional: string;
+    textAdvance: string;
+    textPayTerms: string;
+    textDriver: string;
+    comments?: Comment[];
+    tableAttachments: File[];
+    tableDropdownContent: TableDropdownContent;
+    emptyMiles?: string;
+    loaded?: string;
+    loadTemplateName?: string;
+    avatarImg?: string;
+    tableDriver?: string;
+    tableTruck?: string;
+    empty?: string;
+    tableTrailer?: string;
+    contact?: string;
+    phone?: string;
+    tableTrailerColor?: string;
+    tableTrailerName?: string;
+    tableTruckColor?: string;
+    truckTypeClass?: string;
+    tableTrailerTypeClass?: string;
+    tableTruckName?: string;
+    total?: number;
+    tableDoorType?: string;
+    tableSuspension?: string;
+    year?: number;
+    liftgate?: string;
+    tableAssignedUnitTruck?: assignData;
+    tableAssignedUnitTrailer?: assignData;
+    tabelLength?: string;
+    rate?: rateData;
+    paid?: string;
+    tableAdded?: string;
+    tableEdited?: string;
+}
+
 interface TableDropdownContent {
     hasContent: boolean;
     content: DropdownItem[];
@@ -100,6 +209,19 @@ interface LoadStatus {
     color: string;
     time: string;
 }
+
+interface assignData {
+    text: string;
+    type: string;
+    color: string;
+    hover: boolean;
+}
+
+interface rateData {
+    paid: string;
+    paidDue: string;
+}
+
 interface LoadTotal {
     total: string;
     subTotal: string;
@@ -120,8 +242,9 @@ interface LoadDelivery {
 interface LoadPickup {
     count: number;
     location: string;
-    date: string;
-    time: string;
+    date?: string;
+    time?: string;
+    delivery?: boolean;
 }
 
 interface LoadTruckTrailerNumber {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, forkJoin, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, tap, BehaviorSubject } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -58,8 +58,8 @@ export class LoadService {
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
-    private statusAction: Subject<{ data: LoadStatus; id: number }> =
-        new Subject<null>();
+    private statusAction: BehaviorSubject<{ data: LoadStatus; id: number }> =
+        new BehaviorSubject<{ data: LoadStatus; id: number }>(null);
     public statusAction$: Observable<{ data: LoadStatus; id: number }> =
         this.statusAction.asObservable();
 

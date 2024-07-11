@@ -18,6 +18,9 @@ import { LoadService } from '@shared/services/load.service';
 //models
 import { LoadPossibleStatusesResponse, LoadStatus } from 'appcoretruckassist';
 
+// Utils
+import { StatusComponentSvgRoutes } from './utils/status-component-svg-routes';
+
 @Component({
     encapsulation: ViewEncapsulation.None,
     standalone: true,
@@ -35,7 +38,7 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
     @Input() statusId: number;
     public statusDetails: LoadPossibleStatusesResponse;
     private destroy$ = new Subject<void>();
-    public backStatus = '/assets/svg/truckassist-table/back_status.svg';
+    public backStatus = StatusComponentSvgRoutes.backStatusImg;
 
     constructor(private loadService: LoadService) {}
 

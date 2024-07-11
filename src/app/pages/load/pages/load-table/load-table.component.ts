@@ -5,7 +5,14 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
+import {
+    filter,
+    Observable,
+    Subject,
+    Subscription,
+    takeUntil,
+    tap,
+} from 'rxjs';
 
 // Modals
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
@@ -36,7 +43,10 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { LoadListResponse } from 'appcoretruckassist';
-import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
+import {
+    LoadModel,
+    LoadTemplateModel,
+} from '@pages/load/pages/load-table/models/load.model';
 
 // Queries
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
@@ -197,12 +207,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private upadateStatus(): void {
-        this.loadServices.statusAction$.subscribe((status) => {
-            this.loadServices
-                .updateLoadStatus(status.id, status.data)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        });
+        this.loadServices.statusAction$
+            .pipe(filter((statusAction) => statusAction !== null))
+            .subscribe((status) => {
+                this.loadServices
+                    .updateLoadStatus(status.id, status.data)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+            });
     }
 
     private confirmationDataSubscribe(): void {
@@ -856,7 +868,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTemplateData(data: LoadModel) /* : LoadModel */ {
+    private mapTemplateData(data: LoadModel): LoadTemplateModel {
         const {
             id,
             billing,
@@ -865,7 +877,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             dispatcher,
             dispatch,
             brokerContact,
-            totalDue,
             weight,
             referenceNumber,
             loadRequirements,
