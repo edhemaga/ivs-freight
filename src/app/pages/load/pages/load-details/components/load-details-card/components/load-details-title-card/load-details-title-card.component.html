@@ -8,6 +8,11 @@
     "
     [tooltipPrevious]="[0, -1].includes(loadCurrentIndex) ? '' : 'Previous'"
     [cardDetailsDate]="cardData.dateCreated | formatDateP"
+    [dateClosed]="
+        cardData.loadDeliveryTime
+            ? (cardData.loadDeliveryTime | formatDateP)
+            : null
+    "
     [searchInputName]="'Search Load'"
     [options]="loadsDropdownList"
     [currentName]="'Load ' + cardData.loadNumber"
@@ -51,7 +56,7 @@
                         [src]="loadDetailsCardSvgRoutes.companyRoute"
                     ></svg-icon>
 
-                    <p class="m-0">
+                    <p class="m-0 text-truncate">
                         {{ cardData.company.companyName }}
                     </p>
                 </div>

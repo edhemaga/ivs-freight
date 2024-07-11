@@ -7,6 +7,7 @@ import { StatusOrder } from '@pages/load/models/status-order.model';
 
 // Pipes
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
+import { DropdownLoadStatusColorPipe } from '@shared/pipes/dropdown-load-status-color.pipe';
 
 @Component({
     selector: 'app-load-status-string',
@@ -18,12 +19,14 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
         // Pipes
         LoadStatusColorPipe,
+        DropdownLoadStatusColorPipe,
     ],
 })
 export class LoadStatusStringComponent implements OnInit, OnChanges {
     @Input() status: SelectedStatus;
     @Input() justifyStart: boolean;
     @Input() isDetailsLayout?: boolean;
+    @Input() isDropdownColor?: boolean;
     @Input() statusOrder?: StatusOrder;
 
     public displayString: string[] = [];

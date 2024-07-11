@@ -95,7 +95,6 @@ export class LoadDetailsTitleCardComponent implements OnChanges {
         stops: LoadStopResponse[],
         lastStatus: LoadStatusHistoryResponse
     ): void {
-        console.log('stops', stops);
         this.statusOrder = null;
 
         const selectedStopType = stops?.find(
