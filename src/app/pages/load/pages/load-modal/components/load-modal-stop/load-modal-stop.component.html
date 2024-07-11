@@ -198,10 +198,10 @@
 
     <div class="load-stop-body">
         <div
-            [ngStyle]="animationMarginParams"
+            [ngStyle]="{animationMarginParams, 'display': isCardOpen ? 'block' : 'none'} "
             [@collapse]="{
                 value: isCardOpen,
-                params: animationMarginParams
+                params:animationMarginParams
             }"
             class="content-holder"
         >

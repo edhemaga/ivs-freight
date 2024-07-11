@@ -2892,7 +2892,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.STOP_ORDER).value ===
                     loadStop.get(LoadModalStringEnum.STOP_ORDER).value
                 ) {
-                    item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(true);
+                    const isCardOpen = item.get(
+                        LoadModalStringEnum.OPEN_CLOSE
+                    ).value;
+
+                    item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(
+                        !isCardOpen
+                    );
                 } else {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
                 }
@@ -4533,10 +4539,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ...stop,
                 dateFrom: stop.arrive,
                 dateTo: '',
-                timeFrom:
-                    MethodsCalculationsHelper.convertTimeFromBackend(
-                        stop.arrive
-                    ) as any,
+                timeFrom: MethodsCalculationsHelper.convertTimeFromBackend(
+                    stop.arrive
+                ) as any,
                 timeTo: MethodsCalculationsHelper.convertTimeFromBackend(
                     stop.depart
                 ) as any,

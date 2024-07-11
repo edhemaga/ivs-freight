@@ -79,9 +79,6 @@ export class LoadModalStopComponent {
         if (!this.disabledCard && !this.preventOpening) {
             event.preventDefault();
             event.stopPropagation();
-
-            this.isCardOpen = !this.isCardOpen;
-
             this.toggleEvent.emit(this.isCardOpen);
         }
     }
