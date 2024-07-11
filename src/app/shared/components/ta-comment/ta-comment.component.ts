@@ -38,10 +38,12 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { TaCommentHighlistComponentPipe } from '@shared/components/ta-comment/pipes/ta-comment-higlits-comment.pipe';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -50,11 +52,11 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // helpers
 import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
+
 // models
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
-import { TaCommentHighlistComponentPipe } from './pipes/ta-comment-higlits-comment.pipe';
 
 @Component({
     selector: 'app-ta-comment',
@@ -210,8 +212,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public deleteComment(commentId: number): void {
         this.closeDropdown.emit(true);
-
         const comment = {
+            commentContent: this.commentCardsDataDropdown.commentContent,
             entityTypeId: this.commentsCardId,
             commentId: commentId,
         };
@@ -223,6 +225,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             {
                 type: CommentStringEnum.DELETE_SMALL,
+                data: { ...comment },
+                template: TableStringEnum.COMMENT,
             }
         );
 

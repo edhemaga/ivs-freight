@@ -297,7 +297,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             );
 
             this.notPinedMaxWidth =
-                tableContainer.clientWidth -
+                tableContainer?.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
                 15;
 

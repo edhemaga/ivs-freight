@@ -391,7 +391,8 @@
                         <div
                             class="status-circle"
                             [ngStyle]="
-                                loadStatusEnum[item.id] | filterLoadStatusColor
+                                loadStatusEnum[item.id]
+                                    | dropdownLoadStatusColor : true
                             "
                         ></div>
                     </div>
@@ -738,7 +739,8 @@
                                             class="status-circle"
                                             [ngStyle]="
                                                 loadStatusEnum[item.id]
-                                                    | filterLoadStatusColor
+                                                    | dropdownLoadStatusColor
+                                                        : true
                                             "
                                         ></div>
                                     </div>
@@ -1726,7 +1728,7 @@
                                     formControlName="multiFromFirstFrom"
                                     [inputConfig]="{
                                         name: 'multiFromFirstFrom',
-                                        type: 'number',
+                                        type: 'string',
                                         label: 'From',
                                         placeholderIcon: 'dollar'
                                     }"
@@ -1741,7 +1743,7 @@
                                     formControlName="multiFromFirstTo"
                                     [inputConfig]="{
                                         name: 'multiFromFirstTo',
-                                        type: 'number',
+                                        type: 'string',
                                         label: 'To',
                                         placeholderIcon: 'dollar'
                                     }"
