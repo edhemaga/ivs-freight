@@ -43,7 +43,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // pipes
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { TaCommentHighlistComponentPipe } from './pipes/ta-comment-higlits-comment.pipe';
+import { TaCommentHighlistComponentPipe } from '@shared/components/ta-comment/pipes/ta-comment-higlits-comment.pipe';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
