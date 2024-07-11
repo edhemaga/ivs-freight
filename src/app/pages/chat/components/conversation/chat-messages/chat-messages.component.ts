@@ -1,4 +1,5 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -19,6 +20,8 @@ import { CompanyUserShortResponse, ConversationResponse, MessageResponse } from 
 })
 export class ChatMessagesComponent implements OnInit, OnDestroy {
 
+  @ViewChild('messagesContent') messagesContent: ElementRef;
+
   private destroy$ = new Subject<void>();
 
   public currentUserId: number = localStorage.getItem('user')
@@ -36,14 +39,26 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messages: MessageResponse[] = [];
   private canSendMessage: boolean = true;
 
+
+  // Input toggle
+  public isChatTypingActived: boolean = false;
+
+  // Services
   private chatService = inject(UserChatService);
   private chatHub = inject(HubService);
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  // Form
+  public messageForm!: FormGroup;
+  constructor(private activatedRoute: ActivatedRoute) {
+    this.initForm();
+  }
 
   ngOnInit(): void {
+
     this.getResolvedData();
+
     this.connectToHub();
+
   }
 
   // Get Data --------------------------------
@@ -53,6 +68,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.messages = res.messages;
+          this.scrollToBottom();
 
           // Conversation participants
           this.conversation = res.information;
@@ -77,6 +93,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                 if (message) {
                   this.messages = [...this.messages, message];
                   this.messageToSend = "";
+                  this.scrollToBottom(32);
                 }
               },
               error: (err) => {
@@ -94,7 +111,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Messages --------------------------------
   public sendMessage(): void {
 
-    // TODO create a helper function
     if (!this.canSendMessage || !this.conversation?.id || !this.messageToSend) return;
 
     this.chatService
@@ -108,6 +124,27 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       });
   }
   // ------------------------------------------
+
+
+  // Util -------------------------------------
+  private initForm(): void {
+    this.messageForm = new FormGroup({
+      message: new FormControl()
+    });
+  }
+
+  public enableChatInput(): void {
+    this.isChatTypingActived = true;
+  }
+
+  private scrollToBottom(additionalScrollInPixel?: number): void {
+    if (!this.messagesContent?.nativeElement) return;
+
+    const container = this.messagesContent.nativeElement;
+    container.scrollTop = container.scrollHeight + additionalScrollInPixel ?? 0;
+  }
+  // ------------------------------------------
+
 
   ngOnDestroy(): void {
     this.remainingParticipants = [];

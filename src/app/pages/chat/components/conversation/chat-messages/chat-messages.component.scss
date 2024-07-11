@@ -50,14 +50,31 @@
 
         .left-side {
             margin: auto auto auto 0;
+
+            .input-placeholder-not-touched {
+                padding-left: 12px;
+                line-height: 18px;
+                font-size: 14px;
+            }
+
+            .form-wrapper {
+                width: 100%;
+            }
         }
 
         .right-side {
-            margin: auto 0 auto auto;
         }
 
         svg-icon {
             padding: 0 12px;
+        }
+
+        .blue-icon {
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
         }
     }
 }
