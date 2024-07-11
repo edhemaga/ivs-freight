@@ -57,6 +57,7 @@
                     <ng-template #editLoad>
                         <ta-input-dropdown-status
                             [options]="statusDropDownList"
+                            [previousStatus]="previousStatus"
                             [selectedStatus]="selectedStatus"
                             [inputConfig]="getStatusInputConfig"
                             (selectedItem)="onSelectDropdown($event, 'status')"
@@ -432,6 +433,11 @@
                         }"
                         [state]="validatePickupStops(loadForm)"
                         [isCardOpen]="isActivePickupStop"
+                        [stopFinished]="isPickupStopFinished()"
+                        [appointment]="isPickupAppointment()"
+                        [waitTime]="loadForm.get('pickupWaitTime').value"
+                        [legHours]="loadForm.get('pickuplegHours').value"
+                        [legMinutes]="loadForm.get('pickuplegMinutes').value"
                         (toggle)="toggleStopActivity($event, 'first-pickup')"
                     >
                         <!--  Shipper-->
@@ -629,6 +635,8 @@
                                 "
                                 cdkDrag
                                 [cdkDragDisabled]="shouldDisableDrag(extraStop)"
+                                (cdkDragStarted)="onDragStart()"
+                                (cdkDragEnded)="onDragEnd()"
                             >
                                 <div
                                     class="dragdrop-custom-placeholder"
@@ -640,6 +648,7 @@
                                         [stopFinished]="
                                             isStepFinished(extraStop)
                                         "
+                                        [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
                                         [stopNumber]="indx + 2"
                                         [isDelivery]="
@@ -658,6 +667,21 @@
                                         [shipperAddress]="
                                             selectedExtraStopShipper[indx]
                                                 ?.address
+                                        "
+                                        [waitTime]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('waitTime').value
+                                        "
+                                        [legHours]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('legHours').value
+                                        "
+                                        [legMinutes]="
+                                            loadExtraStops()
+                                                .at(indx)
+                                                .get('legMinutes').value
                                         "
                                         [dateRange]="
                                             loadExtraStops()
@@ -694,8 +718,7 @@
                                         [isCardOpen]="
                                             loadExtraStops()
                                                 .at(indx)
-                                                .get('openClose').value &&
-                                            !isDragAndDropActive
+                                                .get('openClose').value
                                         "
                                         [state]="
                                             validateExtraStops(
@@ -711,9 +734,11 @@
                                                 indx
                                             )
                                         "
+                                        [appointment]="
+                                            isExtraStopAppointment(indx)
+                                        "
                                     >
                                         <!-- Tabs  -->
-
                                         <div class="row">
                                             <div class="col-12">
                                                 <app-ta-tab-switch
@@ -1019,7 +1044,6 @@
                     <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('deliveryStopOrder').value"
-                        [stopFinished]="false"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1034,6 +1058,7 @@
                                     : (loadForm.get('deliveryTimeTo').value
                                           | loadTimeType)
                         "
+                        [stopFinished]="isDeliveryStopFinished()"
                         [legMile]="
                             selectedDeliveryShipper &&
                             loadForm.get('deliverylegMiles').value
@@ -1047,6 +1072,9 @@
                         [isCardOpen]="isActiveDeliveryStop"
                         [isDelivery]="true"
                         [state]="validateDeliveryStops(loadForm)"
+                        [appointment]="isDeliveryAppointment()"
+                        [legHours]="loadForm.get('deliverylegHours').value"
+                        [legMinutes]="loadForm.get('deliverylegMinutes').value"
                         (toggle)="toggleStopActivity($event, 'first-delivery')"
                     >
                         <!-- Shipper -->
@@ -1278,7 +1306,8 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ 0m</span
+                                    >≈ {{ totalLegHours }}h
+                                    {{ totalLegMinutes }}m</span
                                 >
                             </div>
                         </div>

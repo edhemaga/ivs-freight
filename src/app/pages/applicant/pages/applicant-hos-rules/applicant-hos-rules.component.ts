@@ -56,7 +56,7 @@ import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/appli
 export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -76,6 +76,8 @@ export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -87,6 +89,14 @@ export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
         this.hosRulesForm = this.formBuilder.group({
             isReadingConfirmed: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

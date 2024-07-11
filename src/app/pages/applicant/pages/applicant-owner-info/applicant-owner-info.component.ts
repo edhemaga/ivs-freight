@@ -125,7 +125,7 @@ import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-in
 export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public subscription: Subscription;
 
@@ -406,6 +406,8 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -476,6 +478,14 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

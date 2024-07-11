@@ -13,6 +13,7 @@
             trackBy: trackByIdentity
         "
     >
+        <!-- ' load-status-' + value.toLowerCase() is use for one letters, R,T,F -->
         <span
             [ngStyle]="
                 value.length > 1
@@ -30,6 +31,8 @@
                 'text-uppercase ta-font-bold load-status load-status-' +
                 className +
                 '-' +
+                value.toLowerCase() +
+                ' load-status-' +
                 value.toLowerCase()
             "
             [ngClass]="{
@@ -41,7 +44,7 @@
                 'details-layout': isDetailsLayout
             }"
         >
-            {{ value }}
+        {{ value }}
         </span>
     </ng-container>
 
