@@ -14,6 +14,7 @@ export interface LoadModel extends LoadListDto {
     type: Type;
     loadNumber: string;
     loadInvoice: LoadInvoice;
+    name?: string;
     statusType: StatusType;
     status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number } | null;
@@ -86,6 +87,8 @@ export interface LoadModel extends LoadListDto {
     comments?: Comment[];
     tableAttachments: File[];
     tableDropdownContent: TableDropdownContent;
+    emptyMiles?: string;
+    loaded?: string;
 }
 
 interface TableDropdownContent {
@@ -163,6 +166,7 @@ interface Dispatcher {
     fullName: string;
     avatarFile: FileResponse;
     departmentId: number;
+    driver?: Driver;
 }
 
 interface Company {
@@ -180,7 +184,7 @@ interface Dispatch {
     dispatcherId: number;
     truck: Truck;
     trailer: Trailer;
-    driver: Driver;
+    driver?: Driver;
     coDriver: CoDriver;
 }
 
@@ -188,6 +192,7 @@ interface Truck {
     id: number;
     truckNumber: string;
     status: number;
+    model?: string;
     owner: string;
     color: Color;
     truckType: TruckType;
@@ -212,6 +217,7 @@ interface Trailer {
     trailerNumber: string;
     status: number;
     owner: string;
+    model?: string;
     trailerType: TrailerType;
 }
 
@@ -230,6 +236,7 @@ interface Driver {
     owner: number;
     status: number;
     avatar: string;
+    avatarFile?: FileResponse;
 }
 
 interface CoDriver {
@@ -269,6 +276,7 @@ interface BrokerContact {
     contactName: string;
     department: Department;
     extensionPhone: string;
+    phoneExt?: string;
 }
 
 interface Department {
@@ -345,6 +353,7 @@ interface Stop {
     legHours: number;
     legMinutes: number;
     shape: string;
+    count?: number;
 }
 
 interface StopType {

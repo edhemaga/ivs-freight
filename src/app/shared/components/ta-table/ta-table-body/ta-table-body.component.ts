@@ -76,6 +76,7 @@ import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-b
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
+import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -85,6 +86,7 @@ import {
     CompanyAccountLabelResponse,
     SignInResponse,
     LoadListLoadStopResponse,
+    LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
@@ -94,7 +96,6 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
-import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 @Titles()
 @Component({
@@ -210,7 +211,7 @@ export class TaTableBodyComponent
     public endorsement: boolean = false;
     public restriction: boolean = false;
     public companyUser: SignInResponse;
-    public statusDetails: any;
+    public statusDetails: LoadPossibleStatusesResponse;
     public stops: LoadListLoadStopResponse;
     public isLoading = false;
     public popoverDescriptionItems: { title: string; className: string }[] =
@@ -219,7 +220,7 @@ export class TaTableBodyComponent
     // Scroll Lines
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
-    public LoadId: number;
+    public loadId: number;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -556,9 +557,7 @@ export class TaTableBodyComponent
             this.changeDetectorRef.detectChanges();
         }
     }
-    test(a) {
-        console.log(a, 'test');
-    }
+
     // Get Table Sections
     getTableSections() {
         this.pinedColumns = [];
@@ -830,7 +829,7 @@ export class TaTableBodyComponent
 
     // Toggle Status Dropdown
     public toggleStatusDropdown(tooltip: NgbTooltip, row: any): void {
-        this.LoadId = row.id;
+        this.loadId = row.id;
         this.loadService
             .getLoadStatusDropdownOptions(row.id)
             .pipe(takeUntil(this.destroy$))
@@ -869,10 +868,13 @@ export class TaTableBodyComponent
             this.stops = { loadStops: row.stops, totalMiles: totalLegMiles };
             this.isLoading = false;
         } else {
-            this.loadService.getLoadListLoadstop(row.id).subscribe((e) => {
-                this.stops = e;
-                this.isLoading = false;
-            });
+            this.loadService
+                .getLoadListLoadstop(row.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((stops) => {
+                    this.stops = stops;
+                    this.isLoading = false;
+                });
         }
     }
 

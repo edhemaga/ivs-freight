@@ -530,7 +530,7 @@ export class LoadService {
         value: string;
     }): void {
         let storeLoads;
-    
+
         switch (data.selectedTab) {
             case TableStringEnum.ACTIVE:
                 storeLoads = this.loadActiveQuery.getAll();
@@ -548,7 +548,7 @@ export class LoadService {
                 storeLoads = [];
                 break;
         }
-    
+
         storeLoads.map((load: LoadResponse) => {
             if (data.id === load.id) {
                 switch (data.selectedTab) {
@@ -580,5 +580,4 @@ export class LoadService {
             }
         });
     }
-    
 }

@@ -200,7 +200,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadServices.statusAction$.subscribe((status) => {
             this.loadServices
                 .updateLoadStatus(status.id, status.data)
-                .subscribe((e) => {});
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
         });
     }
 
@@ -855,7 +856,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTemplateData(data: any) /* : LoadModel */ {
+    private mapTemplateData(data: LoadModel) /* : LoadModel */ {
         const {
             id,
             billing,
@@ -875,25 +876,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             totalPaid,
             advancePay,
             totalRate,
+            totalAdjustedRate,
             updatedAt,
         } = data;
-        let paid = totalDue - totalPaid;
+
         return {
             ...data,
             id,
             isSelected: false,
             loadTemplateName: data.name,
             loadDispatcher: {
-                name: dispatcher?.fullName
-                    ? dispatcher.fullName
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                avatar:
-                    dispatcher?.avatarFile?.url ??
-                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                name: dispatcher?.fullName,
+                avatar: dispatcher?.avatarFile?.url,
             },
-            avatarImg:
-                dispatch.driver?.avatarFile?.url ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            avatarImg: dispatch.driver?.avatarFile?.url,
             tableDriver: dispatch.driver?.firstName
                 ? dispatch.driver?.firstName + ' ' + dispatch.driver?.lastName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -903,24 +899,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 total: totalRate
                     ? TableStringEnum.DOLLAR_SIGN +
                       this.thousandSeparator.transform(totalRate)
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
                 subTotal: data?.totalAdjustedRate
                     ? TableStringEnum.DOLLAR_SIGN +
                       this.thousandSeparator.transform(data.totalAdjustedRate)
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
             },
             loadBroker: {
                 hasBanDnu: broker?.ban || broker?.dnu,
                 isDnu: broker?.dnu,
-                name: broker?.businessName
-                    ? broker.businessName
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                name: broker?.businessName,
             },
             contact: brokerContact?.contactName,
             phone: brokerContact?.phone
                 ? brokerContact.phone +
                   (brokerContact.phoneExt ? ' x ' + brokerContact.phoneExt : '')
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
 
             referenceNumber: referenceNumber,
             textCommodity: generalCommodity?.name,
@@ -943,12 +937,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       TableStringEnum.SVG,
                       TableStringEnum.EMPTY_STRING_PLACEHOLDER
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableTruckName: loadRequirements?.truckType?.name,
             loadTrailerNumber: loadRequirements?.trailerType?.logoName,
-            loadTruckNumber:
-                loadRequirements?.truckType?.logoName ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            loadTruckNumber: loadRequirements?.truckType?.logoName,
 
             loadPickup: [
                 {
@@ -973,7 +965,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             year: loadRequirements?.year,
             liftgate: loadRequirements?.liftgate
                 ? LoadModalStopItemsStringEnum.YES
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableAssignedUnitTruck: {
                 text: dispatch.truck?.truckNumber,
                 type: dispatch.truck?.model,
@@ -990,39 +982,37 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? DataFilterHelper.getLengthNumber(
                       loadRequirements?.trailerLength?.name
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             textBase: baseRate
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(baseRate)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             textAdditional: additionalBillingRatesTotal
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(additionalBillingRatesTotal)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             textAdvance: advancePay
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(advancePay)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textPayTerms: billing?.payTermName
-                ? billing.payTermName
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
+            textPayTerms: billing?.payTermName ? billing.payTermName : null,
             textDriver:
                 data?.dispatch?.driver?.firstName &&
                 data?.dispatch?.driver?.lastName
                     ? data?.dispatch?.driver?.firstName.charAt(0) +
                       TableStringEnum.DOT +
                       data?.dispatch?.driver?.lastName
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    : null,
             rate: {
                 paid:
                     TableStringEnum.DOLLAR_SIGN +
                     ' ' +
                     this.thousandSeparator.transform(totalRate),
                 paidDue:
-                    paid !== 0
+                    totalAdjustedRate !== 0
                         ? TableStringEnum.DOLLAR_SIGN +
-                          this.thousandSeparator.transform(paid)
-                        : TableStringEnum.DOLLAR_SIGN + '0.00',
+                          this.thousandSeparator.transform(totalAdjustedRate)
+                        : null,
             },
             paid:
                 totalPaid !== 0
@@ -1035,13 +1025,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       createdAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableEdited: updatedAt
                 ? this.datePipe.transform(
                       updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownLoadContent(data),

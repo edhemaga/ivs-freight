@@ -9,7 +9,7 @@
                     "
                 >
                     <div
-                        class="status-next-item"
+                        class="status-next-item ta-font-bold"
                         (click)="sendStatus(item.statusValue.name)"
                     >
                         <app-load-status-string
@@ -25,14 +25,11 @@
         </ng-container>
 
         <ng-container *ngIf="statusDetails.previousStatus?.statusString">
-            <div
-                *ngIf="statusDetails.previousStatus.statusString"
-                class="status-previous"
-            >
-                <p class="status-previous-back">Or back to</p>
+            <div class="status-previous">
+                <p class="status-previous-back ta-font-bold">Or back to</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div
-                        class="status-previous-item"
+                        class="status-previous-item ta-font-bold"
                         (click)="
                             sendStatus(
                                 statusDetails.previousStatus.statusValue.name
@@ -49,7 +46,7 @@
                             [justifyStart]="true"
                         ></app-load-status-string>
                     </div>
-                    <img src="/assets/svg/truckassist-table/back_status.svg" />
+                    <img [src]="backStatus" />
                 </div>
             </div>
         </ng-container>

@@ -1,9 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    ViewEncapsulation,
+    OnDestroy,
+} from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
+
+// components
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
+
+//services
 import { LoadService } from '@shared/services/load.service';
-import type { LoadStatus } from 'appcoretruckassist';
+
+//models
+import { LoadPossibleStatusesResponse, LoadStatus } from 'appcoretruckassist';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -18,24 +31,37 @@ import type { LoadStatus } from 'appcoretruckassist';
         LoadStatusStringComponent,
     ],
 })
-export class TaStatusComponentComponent implements OnInit {
+export class TaStatusComponentComponent implements OnInit, OnDestroy {
     @Input() statusId: number;
-    public statusDetails: any = null;
+    public statusDetails: LoadPossibleStatusesResponse;
+    private destroy$ = new Subject<void>();
+    public backStatus = '/assets/svg/truckassist-table/back_status.svg';
+
     constructor(private loadService: LoadService) {}
 
     ngOnInit(): void {
+        this.getLoadStatus();
+    }
+
+    public getLoadStatus(): void {
+        this.getLoadStatus;
         this.loadService
             .getLoadStatusDropdownOptions(this.statusId)
-            .pipe()
+            .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.statusDetails = res;
             });
     }
 
-    sendStatus(item: any) {
+    public sendStatus(item: LoadStatus): void {
         this.loadService.updateStatus({
             id: this.statusId,
             data: item as LoadStatus,
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

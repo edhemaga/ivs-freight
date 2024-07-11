@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { LoadStatusStringEnum } from '@pages/load/pages/load-table/enums/load-status-string.enum';
 
 @Pipe({
     standalone: true,
@@ -6,36 +7,35 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TableLoadStatusPipe implements PipeTransform {
     transform(text: string, search: string): string {
-        if (search === 'main') {
+        if (search === LoadStatusStringEnum.TITLE) {
             if (
-                text === 'Tonu' ||
-                text === 'TonuShortPaid' ||
-                text === 'TonuPaid'
+                text === LoadStatusStringEnum.TONU ||
+                text === LoadStatusStringEnum.TONU_SHORT_PAID ||
+                text === LoadStatusStringEnum.TONU_PAID
             ) {
-                console.log(text);
                 return '#DF3C3C';
             } else {
                 return '#424242';
             }
-        } else if (search === 'main') {
+        } else if (search === LoadStatusStringEnum.SUBTITLE) {
             if (
-                text === 'Invoiced' ||
-                text === 'ShortPaid' ||
-                text === 'Paid'
+                text === LoadStatusStringEnum.INVOICED ||
+                text === LoadStatusStringEnum.SHORT_PAID ||
+                text === LoadStatusStringEnum.PAID
             ) {
                 return '#9E47EC';
             } else {
                 return '#919191';
             }
-        } else if (search === 'decoration') {
+        } else if (search === LoadStatusStringEnum.DECORATION) {
             if (
-                text === 'Tonu' ||
-                text === 'TonuShortPaid' ||
-                text === 'TonuPaid'
+                text === LoadStatusStringEnum.TONU ||
+                text === LoadStatusStringEnum.TONU_SHORT_PAID ||
+                text === LoadStatusStringEnum.TONU_PAID
             ) {
-                return 'line through';
+                return LoadStatusStringEnum.LINE_THROUGHT;
             } else {
-                return 'default';
+                return LoadStatusStringEnum.DEFAULT;
             }
         }
     }
