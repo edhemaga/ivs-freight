@@ -391,7 +391,8 @@
                         <div
                             class="status-circle"
                             [ngStyle]="
-                                loadStatusEnum[item.id] | filterLoadStatusColor
+                                loadStatusEnum[item.id]
+                                    | dropdownLoadStatusColor : true
                             "
                         ></div>
                     </div>
@@ -738,7 +739,8 @@
                                             class="status-circle"
                                             [ngStyle]="
                                                 loadStatusEnum[item.id]
-                                                    | filterLoadStatusColor
+                                                    | dropdownLoadStatusColor
+                                                        : true
                                             "
                                         ></div>
                                     </div>
