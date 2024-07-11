@@ -19,7 +19,7 @@ import { LoadService } from '@shared/services/load.service';
 import { LoadPossibleStatusesResponse, LoadStatus } from 'appcoretruckassist';
 
 // Utils
-import { StatusComponentSvgRoutes } from './utils/status-component-svg-routes';
+import { StatusComponentSvgRoutes } from '@shared/components/ta-status-component/utils/status-component-svg-routes';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
