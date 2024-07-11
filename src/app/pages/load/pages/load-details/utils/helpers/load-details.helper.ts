@@ -87,7 +87,9 @@ export class LoadDetailsHelper {
                 isMapDisplayed: true,
                 isMapBtn: true,
                 capsulaText:
-                    load.stops[0].stopType.id === 0 && load.stops?.length === 3
+                    (load.stops[0].stopType.id === 0 &&
+                        load.stops?.length === 3) ||
+                    load.stops?.length === 2
                         ? false
                         : load.stops?.length - 3 + ' EXTRA',
                 hasMultipleDetailsSelectDropdown: false,
