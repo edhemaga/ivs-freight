@@ -60,5 +60,5 @@ export interface Load {
     tonuRate: number;
     revisedRate: number;
     statusHistory?: LoadStatusHistoryCommand[];
-    // invoicedDate: string;
+    invoicedDate?: string;
 }
