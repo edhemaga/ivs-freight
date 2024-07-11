@@ -7,7 +7,12 @@
                 trackBy: trackByIdentity
             "
         >
-            <p class="m-0 ta-font-bold">{{ headerItem }}</p>
+            <p
+                class="m-0 ta-font-bold"
+                [ngClass]="{ 'hide-responsive': i === 2 }"
+            >
+                {{ headerItem }}
+            </p>
         </ng-container>
     </div>
 
@@ -48,7 +53,7 @@
 
                 <p class="m-0">{{ statusData.statusDate }}</p>
 
-                <p class="m-0">{{ statusData.statusTime }}</p>
+                <p class="m-0 hide-responsive">{{ statusData.statusTime }}</p>
 
                 <p class="m-0 ta-font-medium">{{ statusData.statusLength }}</p>
             </div>

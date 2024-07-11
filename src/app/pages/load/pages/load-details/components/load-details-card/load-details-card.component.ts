@@ -36,6 +36,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 // enums
 import { LoadDetailsCardStringEnum } from '@pages/load/pages/load-details/components/load-details-card/enums/load-details-card-string.enum';
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
@@ -93,6 +94,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('load', changes?.load?.currentValue);
         if (!changes?.load?.firstChange && changes?.load.currentValue)
             this.getLoadsDropdown();
     }
@@ -110,13 +112,38 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
             .map((load) => {
                 const { id, loadNumber, status, ...loadData } = load;
 
+                let stopType: string;
+
+                if (load?.status?.statusCheckInNumber) {
+                    const pickupStatus = [
+                        LoadStatusEnum[4],
+                        LoadStatusEnum[46],
+                        LoadStatusEnum[48],
+                        LoadStatusEnum[50],
+                        LoadStatusEnum[53],
+                    ];
+                    const deliveryStatus = [
+                        LoadStatusEnum[5],
+                        LoadStatusEnum[47],
+                        LoadStatusEnum[49],
+                        LoadStatusEnum[51],
+                        LoadStatusEnum[54],
+                    ];
+
+                    stopType = pickupStatus.includes(status.statusValue.name)
+                        ? LoadDetailsCardStringEnum.PICKUP
+                        : deliveryStatus.includes(status.statusValue.name)
+                        ? LoadDetailsCardStringEnum.DELIVERY
+                        : LoadDetailsCardStringEnum.EMPTY_STRING;
+                }
+
                 return {
                     ...loadData,
                     id,
                     name: loadNumber,
                     active: id === this.load.id,
-                    statusString: status.name,
-                    statusId: status.id,
+                    status,
+                    stopType,
                 };
             });
     }

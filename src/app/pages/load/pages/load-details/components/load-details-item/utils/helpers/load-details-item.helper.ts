@@ -120,7 +120,7 @@ export class LoadDetailsItemHelper {
                                         ${days || hours || minutes ? ' • ' : ''}
                     	                ${days ? days + ' d' : ''} 
                                         ${hours ? hours + ' h' : ''} 
-                                        ${minutes ? minutes + 'm' : ''}`;
+                                        ${minutes ? minutes + ' m' : ''}`;
             lastStatusTime = `${formatedTimeFrom} - ${formatedTimeTo}`;
         } else {
             const firstSpaceIndex = statusString.indexOf(' ');
@@ -146,13 +146,9 @@ export class LoadDetailsItemHelper {
 
             lastStatusTime = `${days ? days + ' d' : ''} 
                               ${hours ? hours + ' h' : ''} 
-                              ${minutes ? minutes + ' min ago' : ''}`;
-
-            if (
-                stopType === 'Delivery' &&
-                (lastStatus === 'LOADED' || lastStatus === 'LOADING')
-            )
-                lastStatus = 'OFF' + lastStatus;
+                              ${minutes ? minutes + ' m' : ''}
+                              ${days || hours || minutes ? ' ago' : ''}
+                            `;
         }
 
         return {
