@@ -1,0 +1,51 @@
+@import '/src/theme/variables';
+
+.status-node {
+    background-color: $ta-black-2;
+    text-align: center;
+    width: 120px;
+    padding: 4px;
+    gap: 4px;
+    border-radius: 3px 0px 0px 0px;
+    position: relative;
+}
+
+.status-next-item {
+    font-size: 11px;
+    line-height: 14px;
+    text-align: left;
+    height: 26px;
+    padding: 6px;
+    gap: 4px;
+    border-radius: 2px 0px 0px 0px;
+
+    &:hover {
+        background: $ta-black;
+        cursor: pointer;
+    }
+}
+
+.status-previous {
+    border-top: 1px solid $ta-black;
+}
+
+.status-previous-back {
+    font-size: 11px;
+    line-height: 14px;
+    text-align: left;
+    color: $ta-light-grey-2;
+    padding: 6px;
+}
+
+.status-previous-item {
+    font-size: 11px;
+    line-height: 14px;
+    text-align: left;
+    padding: 6px;
+    height: 26px;
+
+    &:hover {
+        background: $ta-black;
+        cursor: pointer;
+    }
+}
