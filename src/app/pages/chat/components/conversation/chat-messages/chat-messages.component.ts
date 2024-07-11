@@ -94,7 +94,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
               next: (message) => {
                 if (message) {
                   this.messages = [...this.messages, message];
-                  this.messageToSend = "";
                   this.scrollToBottom(32);
                 }
               },
