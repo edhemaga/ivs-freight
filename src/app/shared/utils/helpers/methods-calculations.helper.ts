@@ -115,6 +115,9 @@ export class MethodsCalculationsHelper {
         date: string,
         show_am_ap?: boolean
     ) => {
+        if(!date) {
+            return null;
+        }
         return moment
             .utc(date)
             .local()

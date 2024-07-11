@@ -212,7 +212,7 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
 
 .cdk-drag-preview {
     background-color: $white !important;
-    
+
     .load-stop-counter-container {
         display: none !important;
     }
@@ -246,6 +246,16 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
 
 app-load-modal .note-container .note-header .note-arrow {
     right: 0 !important;
+}
+
+app-load-modal {
+    .comments-container {
+        padding: 6px 0 !important;
+    }
+
+    .comment-container {
+        margin-bottom: 6px;
+    }
 }
 
 .status__dropdown-body .load-status {

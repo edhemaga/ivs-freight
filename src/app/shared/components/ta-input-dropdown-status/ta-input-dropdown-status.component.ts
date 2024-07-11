@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,15 +47,20 @@ export class TaInputDropdownStatusComponent implements OnInit {
     @Input() inputConfig: ITaInput;
 
     // Outputs
-    @Output() selectedItem: EventEmitter<SelectedStatus> =
-        new EventEmitter<SelectedStatus>();
+    @Output() selectedItem: EventEmitter<{
+        status: SelectedStatus;
+        isPreviousStatus: boolean;
+    }> = new EventEmitter<{
+        status: SelectedStatus;
+        isPreviousStatus: boolean;
+    }>();
 
     public isDropdownVisible: boolean = false;
     public inputDropdownStatusSvgRoutes = InputDropdownStatusSvgRoutes;
-    
+
     constructor() {}
 
-    ngOnInit(): void { }
+    ngOnInit(): void {}
 
     public openDropdown(): void {
         this.isDropdownVisible = true;
@@ -56,8 +68,11 @@ export class TaInputDropdownStatusComponent implements OnInit {
 
     public trackByIdentity = (index: number): number => index;
 
-    public changeStatus(status: SelectedStatus): void {
-        this.selectedItem.emit(status);
+    public changeStatus(
+        status: SelectedStatus,
+        isPreviousStatus: boolean
+    ): void {
+        this.selectedItem.emit({ status, isPreviousStatus });
         this.popover.close();
     }
 }

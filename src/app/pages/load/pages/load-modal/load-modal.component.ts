@@ -392,6 +392,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public areCommentsVisible: boolean = false;
     private lastCallTimeout: any;
     private debounceDelay: number = 1000;
+    private isPreviousStatus: boolean = false;
+    private statusHistory: LoadStatusHistoryResponse[];
+    private initialinvoicedDate: string;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -515,7 +518,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public loadInvoiceDateInputConfig(): ITaInput {
-        return LoadModalConfig.getInvoiceDate(!this.isInvoicedStatus);
+        const loadWasInvoiced =
+            !!this.statusHistory?.find((status) => status.status.id === 8) ||
+            this.selectedStatus?.id === 8;
+        return LoadModalConfig.getInvoiceDate(
+            loadWasInvoiced,
+            !loadWasInvoiced &&
+                !this.loadForm.get(LoadModalStringEnum.INVOICED_DATE).value
+        );
     }
 
     public get invoicePercent(): LoadModalInvoiceProgress {
@@ -647,7 +657,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupInvolveDriver: [null],
             pickupStatusHistory: [null],
             pickupWaitTime: [null],
-
+            pickupShape: [null],
             // delivery stop
             deliveryStop: [LoadModalStringEnum.DELIVERY_2],
             deliveryStopOrder: [1],
@@ -662,6 +672,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegMinutes: [null],
             deliverylegCost: [null],
             deliverWaitTime: [null],
+            deliveryShape: [null],
 
             // extra stops
             extraStops: this.formBuilder.array([]),
@@ -1117,8 +1128,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
             case LoadModalStringEnum.STATUS:
-                this.loadForm.get(LoadModalStringEnum.STATUS).patchValue(event);
-                this.selectedStatus = event;
+                this.loadForm
+                    .get(LoadModalStringEnum.STATUS)
+                    .patchValue(event.status);
+                this.isPreviousStatus = event.isPreviousStatus;
+                this.selectedStatus = event.status;
                 this.handleRevisedRateVisiblity();
                 this.handleTonuRateVisiblity();
                 break;
@@ -2176,7 +2190,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_PICKUP:
                 this.isActivePickupStop = event;
 
-                this.isActiveDeliveryStop = false;
+                this.isActivePickupStop = !this.isActivePickupStop;
 
                 this.loadExtraStops().controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
@@ -2186,7 +2200,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.FIRST_DELIVERY:
                 if (!this.selectedPickupShipper) return;
 
-                this.isActiveDeliveryStop = event;
+                this.isActiveDeliveryStop = !this.isActiveDeliveryStop;
 
                 this.isActivePickupStop = false;
 
@@ -2737,6 +2751,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             legCost: [null],
             openClose: [true],
             waitTime: [null],
+            shape: [null],
         });
     }
 
@@ -2877,7 +2892,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.STOP_ORDER).value ===
                     loadStop.get(LoadModalStringEnum.STOP_ORDER).value
                 ) {
-                    item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(true);
+                    const isCardOpen = item.get(
+                        LoadModalStringEnum.OPEN_CLOSE
+                    ).value;
+
+                    item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(
+                        !isCardOpen
+                    );
                 } else {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
                 }
@@ -2938,6 +2959,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
+    private formatStopDateTime(dateFrom: string, timeFrom: string): string {
+        let dateTime = moment(dateFrom);
+
+        if (timeFrom) {
+            const [hours, minutes] = timeFrom.split(':');
+            dateTime = dateTime
+                .hours(parseInt(hours))
+                .minutes(parseInt(minutes))
+                .seconds(0);
+        }
+
+        return dateTime.toISOString();
+    }
+
     private premmapedStops(): LoadStopCommand[] {
         const stops: LoadStopCommand[] = [];
 
@@ -2980,15 +3015,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 shipperContactId: this.selectedPickupShipperContact?.id
                     ? this.selectedPickupShipperContact.id
                     : null,
-                dateFrom:
-                    MethodsCalculationsHelper.convertDateToBackend(
-                        pickupDateFrom
-                    ),
-                dateTo: pickupDateTo
-                    ? MethodsCalculationsHelper.convertDateToBackend(
-                          pickupDateTo
-                      )
-                    : null,
+                dateFrom: this.formatStopDateTime(
+                    pickupDateFrom,
+                    pickupTimeFrom
+                ),
+                dateTo: this.formatStopDateTime(pickupDateTo, pickupTimeTo),
                 timeType:
                     this.stopTimeTabsPickup.find((item) => item.checked)
                         .name === LoadModalStringEnum.APPOINTMENT
@@ -3002,6 +3033,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legHours,
                 legMinutes,
                 items: this.remapStopItems(this.pickupStopItems),
+                shape: this.stops?.[0]?.shape,
             });
         }
 
@@ -3020,14 +3052,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
                         .value,
                     shipperId: this.selectedExtraStopShipper[index].id,
-                    dateFrom: MethodsCalculationsHelper.convertDateToBackend(
-                        item.get(LoadModalStringEnum.DATE_FROM).value
+                    dateFrom: this.formatStopDateTime(
+                        item.get(LoadModalStringEnum.DATE_FROM).value,
+                        item.get(LoadModalStringEnum.TIME_FROM).value
                     ),
-                    dateTo: item.get(LoadModalStringEnum.DATE_TO).value
-                        ? MethodsCalculationsHelper.convertDateToBackend(
-                              item.get(LoadModalStringEnum.DATE_TO).value
-                          )
-                        : null,
+                    dateTo: this.formatStopDateTime(
+                        item.get(LoadModalStringEnum.DATE_TO).value,
+                        item.get(LoadModalStringEnum.TIME_TO).value
+                    ),
                     timeType:
                         this.stopTimeTabsPickup.find((item) => item.checked)
                             .name === LoadModalStringEnum.APPOINTMENT
@@ -3041,6 +3073,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legHours,
                     legMinutes,
                     items: this.remapStopItems(this.extraStopItems[index]),
+                    shape: item.get(LoadModalStringEnum.SHAPE).value,
                 });
             });
         }
@@ -3061,15 +3094,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 shipperContactId: this.selectedDeliveryShipperContact?.id
                     ? this.selectedDeliveryShipperContact.id
                     : null,
-                dateFrom:
-                    MethodsCalculationsHelper.convertDateToBackend(
-                        deliveryDateFrom
-                    ),
-                dateTo: deliveryDateTo
-                    ? MethodsCalculationsHelper.convertDateToBackend(
-                          deliveryDateTo
-                      )
-                    : null,
+                dateFrom: this.formatStopDateTime(
+                    deliveryDateFrom,
+                    deliveryTimeFrom
+                ),
+                dateTo: this.formatStopDateTime(deliveryDateTo, deliveryTimeTo),
                 timeType:
                     this.stopTimeTabsDelivery.find((item) => item.checked)
                         .name === LoadModalStringEnum.APPOINTMENT
@@ -3083,6 +3112,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legHours,
                 legMinutes,
                 items: this.remapStopItems(this.deliveryStopItems),
+                shape: this.stops?.[this.stops.length - 1]?.shape,
             });
         }
 
@@ -3227,6 +3257,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     if (this.selectedDispatches) {
                                         this.loadForm
                                             .get(
+                                                LoadModalStringEnum.PICKUP_SHAPE
+                                            )
+                                            .patchValue(item.shape);
+                                        this.loadForm
+                                            .get(
                                                 LoadModalStringEnum.PICKUP_LEG_MILES
                                             )
                                             .patchValue(item.miles);
@@ -3259,6 +3294,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         .patchValue(item.miles);
                                     this.loadExtraStops()
                                         .at(index - 1)
+                                        .get(LoadModalStringEnum.SHAPE)
+                                        .patchValue(item.shape);
+                                    this.loadExtraStops()
+                                        .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_HOURS)
                                         .patchValue(item.hours);
                                     this.loadExtraStops()
@@ -3288,6 +3327,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                                 LoadModalStringEnum.DELIVERY_LEG_MINUTES
                                             )
                                             .patchValue(res?.legs[0].minutes);
+                                        this.loadForm
+                                            .get(
+                                                LoadModalStringEnum.DELIVERY_SHAPE
+                                            )
+                                            .patchValue(res?.legs[0].minutes);
                                     } else {
                                         this.loadForm
                                             .get(
@@ -3311,6 +3355,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                                 LoadModalStringEnum.DELIVERY_LEG_COST
                                             )
                                             .patchValue(res?.legs[index].cost);
+                                        this.loadForm
+                                            .get(
+                                                LoadModalStringEnum.DELIVERY_SHAPE
+                                            )
+                                            .patchValue(res?.legs[index].shape);
                                     }
                                 }
                             });
@@ -3318,7 +3367,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.loadForm
                                 .get(LoadModalStringEnum.TOTAL_MILES)
                                 .patchValue(res?.totalMiles);
-
                             this.totalLegMiles = res.totalMiles;
                             this.totalLegHours = res.totalHours;
                             this.totalLegMinutes = res.totalMinutes;
@@ -3931,6 +3979,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay,
             tonuRate,
             revisedRate,
+            invoicedDate,
         } = this.loadForm.value;
 
         const adjustedRate = this.adjustedRate;
@@ -3972,6 +4021,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pays: this.additionalPayments().value,
             tonuRate,
             revisedRate,
+            invoicedDate: this.initialinvoicedDate ?? invoicedDate,
         };
     }
 
@@ -4050,7 +4100,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadService
             .updateLoadStatus(
                 this.editData.data.id,
-                this.selectedStatus.valueForRequest as LoadStatus
+                this.selectedStatus.valueForRequest as LoadStatus,
+                this.isPreviousStatus
             )
             .subscribe((res) => {
                 this.loadService
@@ -4174,6 +4225,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate,
             tonuRate,
             revisedRate,
+            statusHistory,
         } = loadModalData;
 
         // Remove deadhead
@@ -4192,6 +4244,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         });
 
         this.stops = stops;
+        this.statusHistory = statusHistory;
 
         const loadRequirements = {
             truckType: loadModalData.loadRequirements?.truckType,
@@ -4278,7 +4331,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadMiles: loadedMiles,
             totalMiles: totalMiles,
             totalHours: totalTimeHours,
-            // invoicedDate,
+            invoicedDate,
             ageUnpaid: ageUnpaid,
             daysToPay,
             tonuRate,
@@ -4287,6 +4340,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // load number
         this.loadNumber = loadNumber ?? this.loadNumber;
+        this.initialinvoicedDate = invoicedDate;
 
         // documents
         this.documents = files || [];
@@ -4485,13 +4539,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ...stop,
                 dateFrom: stop.arrive,
                 dateTo: '',
-                timeFrom:
-                    MethodsCalculationsHelper.convertDateToTimeFromBackend(
-                        stop.arrive
-                    ),
-                timeTo: MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                timeFrom: MethodsCalculationsHelper.convertTimeFromBackend(
+                    stop.arrive
+                ) as any,
+                timeTo: MethodsCalculationsHelper.convertTimeFromBackend(
                     stop.depart
-                ),
+                ) as any,
             };
         }
         return { ...stop };
