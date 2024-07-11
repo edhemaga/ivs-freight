@@ -53,18 +53,16 @@ export class LoadModalWaitTimeComponent implements OnInit {
     public startTimeInputConfig: ITaInput = null;
     public endDateInputConfig: ITaInput = null;
     public endTimeInputConfig: ITaInput = null;
-
-    @Input() statusHistory: Array<LoadStatusHistoryResponse> | null;
-    private areFieldsDisabled = true;
-    @Output() formChanged = new EventEmitter<
-        Array<LoadStatusHistoryResponse>
-    >();
-
     public show: boolean;
     public timeDifferences: Array<LoadModalWaitTime> = [];
     public totalWaitTime: LoadModalWaitTime;
     public statusHistoryDisplayStrings: SelectedStatus[] = [];
+    private isFormDisabled = true;
 
+    @Input() statusHistory: Array<LoadStatusHistoryResponse> | null;
+    @Output() formChanged = new EventEmitter<
+        Array<LoadStatusHistoryResponse>
+    >();
     constructor(private formBuilder: UntypedFormBuilder) {}
 
     ngOnInit(): void {
@@ -79,7 +77,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
 
         this.createFormFields();
     }
- 
+
     private generateForm() {
         this.waitTimeForm = this.formBuilder.group({
             statusHistory: this.formBuilder.array([]),
@@ -105,16 +103,16 @@ export class LoadModalWaitTimeComponent implements OnInit {
 
     private createFormFields() {
         this.startDateInputConfig = LoadModalConfig.getWaitTimeStartDateConfig(
-            this.areFieldsDisabled
+            this.isFormDisabled
         );
         this.startTimeInputConfig = LoadModalConfig.getWaitTimeStartTimeConfig(
-            this.areFieldsDisabled
+            this.isFormDisabled
         );
         this.endDateInputConfig = LoadModalConfig.getWaitTimeEndDateConfig(
-            this.areFieldsDisabled
+            this.isFormDisabled
         );
         this.endTimeInputConfig = LoadModalConfig.getWaitTimeEndTimeConfig(
-            this.areFieldsDisabled
+            this.isFormDisabled
         );
 
         this.show = true;
@@ -135,8 +133,8 @@ export class LoadModalWaitTimeComponent implements OnInit {
         this.statusHistoryDisplayStrings.push({
             name: status.statusString,
             id: status.id,
-            valueForRequest: status.status.name
-        })
+            valueForRequest: status.status.name,
+        });
 
         return this.formBuilder.group({
             statusName: [status.status.name],

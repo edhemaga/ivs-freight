@@ -2074,11 +2074,13 @@ export class TaInputComponent
             this.span1.nativeElement.innerHTML = dateFormat[0];
         }
 
-        if (this._inputConfig.name !== 'datepickerBankCard') {
-            this.span2.nativeElement.innerHTML = dateFormat[1];
-            this.span3.nativeElement.innerHTML = dateFormat[2];
-        } else {
-            this.span2.nativeElement.innerHTML = dateFormat[2];
+        if(this.span2) {
+            if (this._inputConfig.name !== 'datepickerBankCard') {
+                this.span2.nativeElement.innerHTML = dateFormat[1];
+                this.span3.nativeElement.innerHTML = dateFormat[2];
+            } else {
+                this.span2.nativeElement.innerHTML = dateFormat[2];
+            }
         }
 
         this.dateTimeInputDate = new Date(date);
