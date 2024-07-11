@@ -23,22 +23,19 @@ $border-radius: 3px;
         margin: 0px;
     }
     .details-header-wrapper-switcher {
-        padding: 6px 8px 0px 8px;
-        //padding-left: 8px;
-        //padding-top: 6px;
-        //padding-right: 8px;
+        padding: 8px 8px 0px 8px;
         display: grid;
-        grid-template-columns: 366px 53px;
+        grid-template-columns: minmax(286px, 366px) auto;
+
         .arrows {
             display: flex;
             align-items: center;
-            width: 100%;
             justify-content: flex-end;
-            margin-left: 9px;
-            margin-top: 2px;
+            margin-bottom: 4px;
+
             span {
-                height: 100%;
-                width: 100%;
+                height: 26px;
+                width: 26px;
                 &:hover {
                     background: $ta-light-grey-4;
                     border-radius: 2px;
@@ -154,6 +151,9 @@ $border-radius: 3px;
     width: 366px;
 }
 .date-add {
+    position: relative;
+    top: 1px;
+
     svg {
         &:hover {
             path {
@@ -164,6 +164,9 @@ $border-radius: 3px;
 }
 .date-terminated,
 .date-closed {
+    position: relative;
+    top: 1px;
+
     svg {
         &:hover {
             path {

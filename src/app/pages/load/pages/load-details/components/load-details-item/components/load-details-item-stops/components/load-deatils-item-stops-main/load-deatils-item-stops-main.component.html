@@ -12,6 +12,7 @@
                 let headerItem of stopHeaderItems;
                 let first = first;
                 let last = last;
+                let i = index;
                 trackBy: trackByIdentity
             "
         >
@@ -19,7 +20,8 @@
                 class="d-flex align-items-center"
                 [ngClass]="{
                     'justify-content-center': first,
-                    'justify-content-end': last
+                    'justify-content-end': last,
+                    'hide-responsive': i === 2 || i === 3
                 }"
             >
                 <p class="m-0 ta-font-bold">{{ headerItem }}</p>
@@ -119,16 +121,7 @@
             <!-- Location, Type -->
 
             <div class="d-flex flex-column justify-content-center stop-box">
-                <p
-                    class="m-0 ta-font-semi-bold text-truncate"
-                    [ngStyle]="{
-                        'max-width':
-                            stopsData?.statusType?.name === 'Active' ||
-                            stopsData?.statusType?.name === 'Closed'
-                                ? '170px'
-                                : 'unset'
-                    }"
-                >
+                <p class="m-0 ta-font-semi-bold text-truncate">
                     {{
                         stop?.shipper?.address?.city +
                             ', ' +
@@ -155,18 +148,11 @@
 
             <!-- Shipper, Address -->
 
-            <div class="d-flex flex-column justify-content-center stop-box">
+            <div
+                class="d-flex flex-column justify-content-center hide-responsive stop-box"
+            >
                 <div class="d-flex align-items-center">
-                    <p
-                        class="m-0 text-truncate"
-                        [ngStyle]="{
-                            'max-width':
-                                stopsData?.statusType?.name === 'Active' ||
-                                stopsData?.statusType?.name === 'Closed'
-                                    ? '170px'
-                                    : 'unset'
-                        }"
-                    >
+                    <p class="m-0 text-truncate">
                         {{ stop?.shipper?.businessName }}
                     </p>
 
@@ -193,7 +179,7 @@
             <!-- Contact, Phone -->
 
             <div
-                class="d-flex flex-column justify-content-center stop-box"
+                class="d-flex flex-column justify-content-center hide-responsive stop-box"
                 [ngStyle]="{
                     visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
                 }"
@@ -466,7 +452,7 @@
     <!-- Map -->
 
     <ng-container *ngIf="isMapDisplayed">
-        <div class="stops-map">
+        <div class="d-flex justify-content-center align-items-center stops-map">
             <app-ta-maps
                 [mapType]="'routing'"
                 [routes]="loadStopRoutes"

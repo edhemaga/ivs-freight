@@ -120,7 +120,7 @@ export class LoadDetailsItemHelper {
                                         ${days || hours || minutes ? ' • ' : ''}
                     	                ${days ? days + ' d' : ''} 
                                         ${hours ? hours + ' h' : ''} 
-                                        ${minutes ? minutes + 'm' : ''}`;
+                                        ${minutes ? minutes + ' m' : ''}`;
             lastStatusTime = `${formatedTimeFrom} - ${formatedTimeTo}`;
         } else {
             const firstSpaceIndex = statusString.indexOf(' ');
@@ -134,7 +134,6 @@ export class LoadDetailsItemHelper {
 
             const days = duration.days();
             const hours = duration.hours();
-            4;
             const minutes = duration.minutes();
 
             lastStatus = statusString
@@ -147,7 +146,7 @@ export class LoadDetailsItemHelper {
 
             lastStatusTime = `${days ? days + ' d' : ''} 
                               ${hours ? hours + ' h' : ''} 
-                              ${minutes ? minutes + 'm' : ''}
+                              ${minutes ? minutes + ' m' : ''}
                               ${days || hours || minutes ? ' ago' : ''}
                             `;
         }

@@ -1,9 +1,11 @@
-<div class="details-component load-details-item-container load">
+<div class="load-details-item-container">
     <ng-container
         *ngFor="let loadItem of detailsConfig; trackBy: trackByIdentity"
     >
         <ng-container [ngSwitch]="loadItem.template">
             <!-- General -->
+
+            <!--  <div>a</div> -->
 
             <ng-container *ngSwitchCase="'general'">
                 <app-load-details-card
@@ -12,7 +14,7 @@
             </ng-container>
 
             <!-- Stops -->
-
+            <!--    <div>b</div> -->
             <ng-container *ngSwitchCase="'stop'">
                 <app-load-details-item-stops
                     [load]="loadItem?.data"
@@ -22,6 +24,8 @@
             </ng-container>
 
             <!-- Comment & Status History -->
+
+            <!--   <div>c</div> -->
 
             <ng-container *ngSwitchCase="'comment'">
                 <ng-container

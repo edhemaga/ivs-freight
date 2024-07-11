@@ -110,7 +110,6 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
         this.loadsDropdownList = this.loadMinimalListQuery
             .getAll()
             .map((load) => {
-                console.log('load', load);
                 const { id, loadNumber, status, ...loadData } = load;
 
                 let stopType: string;
