@@ -34,7 +34,7 @@
         >
             <div
                 class="status__dropdown-option d-flex justify-content-between align-items-center"
-                (click)="changeStatus(option)"
+                (click)="changeStatus(option, false)"
             >
                 <app-load-status-string
                     [status]="option"
@@ -52,7 +52,7 @@
             <div class="status__dropdown-back ta-font-bold">Or back to</div>
             <div
                 class="status__dropdown-option d-flex justify-content-between align-items-center"
-                (click)="changeStatus(previousStatus)"
+                (click)="changeStatus(previousStatus, true)"
             >
                 <app-load-status-string
                     [status]="previousStatus"

@@ -407,7 +407,6 @@
                     </div>
 
                     <!-- Pickup Stop  -->
-
                     <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
@@ -615,7 +614,6 @@
 
                         <ng-container *ngIf="pickupStatusHistory.length">
                             <app-load-modal-wait-time
-                                [areFieldsDisabled]="isLoadClosed"
                                 [statusHistory]="pickupStatusHistory"
                                 (formChanged)="
                                     pickupStatusHistoryChange($event, 'pickup')
@@ -1019,9 +1017,6 @@
                                             "
                                         >
                                             <app-load-modal-wait-time
-                                                [areFieldsDisabled]="
-                                                    isLoadClosed
-                                                "
                                                 [statusHistory]="
                                                     extraStopStatusHistory[indx]
                                                 "
@@ -1248,7 +1243,6 @@
 
                         <ng-container *ngIf="deliveryStatusHistory.length">
                             <app-load-modal-wait-time
-                                [areFieldsDisabled]="isLoadClosed"
                                 [statusHistory]="deliveryStatusHistory"
                                 (formChanged)="
                                     pickupStatusHistoryChange(
