@@ -43,10 +43,8 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { LoadListResponse } from 'appcoretruckassist';
-import {
-    LoadModel,
-    LoadTemplateModel,
-} from '@pages/load/pages/load-table/models/load.model';
+import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
+import { LoadTemplate } from '@pages/load/pages/load-table/models/load-template.model';
 
 // Queries
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
@@ -868,7 +866,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTemplateData(data: LoadModel): LoadTemplateModel {
+    private mapTemplateData(data: LoadModel): LoadTemplate {
         const {
             id,
             billing,
