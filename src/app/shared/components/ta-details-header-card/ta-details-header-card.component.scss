@@ -162,7 +162,8 @@ $border-radius: 3px;
         }
     }
 }
-.date-terminated {
+.date-terminated,
+.date-closed {
     svg {
         &:hover {
             path {

@@ -35,7 +35,7 @@ import { ApplicantModule } from '@pages/applicant/applicant.module';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 @Component({
     selector: 'app-hos-rules',
@@ -50,12 +50,13 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 
         // components
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -75,6 +76,8 @@ export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -86,6 +89,14 @@ export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
         this.hosRulesForm = this.formBuilder.group({
             isReadingConfirmed: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

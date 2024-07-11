@@ -14,8 +14,6 @@ export class ApplicantRoutes {
         {
             path: 'applicant/welcome',
             component: ApplicantWelcomeScreenComponent,
-            canActivate: [ApplicantGuard],
-            resolve: { applicant: ApplicantResolver },
             data: { title: 'Welcome Screen' },
         },
         {
@@ -126,8 +124,6 @@ export class ApplicantRoutes {
             path: 'applicant/end',
             component: ApplicantEndScreenComponent,
             data: { title: 'End Screen' },
-            canActivate: [ApplicantGuard],
-            resolve: { applicant: ApplicantResolver },
         },
     ];
 }

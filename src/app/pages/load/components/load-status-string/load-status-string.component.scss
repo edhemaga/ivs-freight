@@ -1,0 +1,71 @@
+@import '/src/theme/variables.scss';
+
+.load-status {
+    &.details-layout {
+        font-size: 14px;
+
+        &.load-status-badge {
+            font-size: 11px;
+        }
+    }
+
+    &-r {
+        background-color: $bw6-2;
+        color: $white;
+    }
+
+    &-repairloaded,
+    &-repairdispatched {
+        &-r {
+            background-color: $ta-orange-1;
+            color: $white;
+        }
+    }
+ 
+    &-f {
+        background-color: $ta-purple-1;
+        color: $white;
+    }
+
+    &-t {
+        background-color: $ta-red-10;
+        color: $white;
+    }
+
+    &-i {
+        background-color: $ta-yellow-8;
+        color: $white;
+    }
+
+    &-badge {
+        position: relative;
+        font-size: 11px;
+        height: 14px;
+        width: 14px;
+        font-weight: 600;
+        padding-top: 1px;
+        border-radius: 2px;
+
+        &.pickup {
+            background: $ta-green;
+        }
+
+        &.delivery {
+            background: $ta-red-10;
+        }
+
+        &.pickup,
+        &.delivery {
+            margin-left: 4px;
+            color: $white;
+        }
+    }
+}
+
+.mr-1 {
+    margin-right: 0.25rem;
+}
+
+.ml-1 {
+    margin-left: 0.25rem;
+}

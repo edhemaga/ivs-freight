@@ -13,6 +13,7 @@
         cursor: pointer;
         transition: background 0.3s ease-in-out;
         border-radius: 3px;
+        background-color: $ta-light-grey-5;
 
         .load-stop-header-badge {
             width: 26px;
@@ -107,6 +108,13 @@
                     &-datetime {
                         p {
                             font-weight: 600;
+                            &.color-blue {
+                                color: $ta-blue-13;
+                            }
+
+                            .color-black {
+                                color: $ta-black;
+                            }
                         }
                     }
 
@@ -141,6 +149,10 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        
+                        .color-orange {
+                            color: $ta-yellow-5;
+                        }
                     }
 
                     &-deadhead {
@@ -219,18 +231,19 @@
         &.not-first-or-last:hover {
             .load-stop-header-badge {
                 background: transparent;
+                &.enable-hover {
+                    .load-stop-counter-container {
+                        display: none !important;
+                    }
 
-                .load-stop-counter-container {
-                    display: none !important;
-                }
+                    .load-stop-header-remove-btn {
+                        display: inline-block;
 
-                .load-stop-header-remove-btn {
-                    display: inline-block;
-
-                    &:hover {
-                        svg {
-                            path {
-                                fill: $white;
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $white;
+                                }
                             }
                         }
                     }
@@ -248,6 +261,10 @@
             .load-stop-header-badge {
                 background-color: $ta-red-20;
             }
+        }
+
+        &.stop-finished {
+            background-color: $bw2 !important;
         }
     }
 
@@ -329,6 +346,12 @@
         margin-bottom: 4px;
 
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
+
+        
+        .color-black,
+        .color-orange{
+            color: #fff !important;
+        }
 
         .load-stop-header-bar {
             padding: 4px 8px;

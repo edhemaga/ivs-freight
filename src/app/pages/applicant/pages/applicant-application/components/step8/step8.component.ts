@@ -69,6 +69,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
@@ -93,6 +94,7 @@ import { Step8Config } from '@pages/applicant/pages/applicant-application/compon
         TaInputRadiobuttonsComponent,
         TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step8Component implements OnInit, OnDestroy {
@@ -108,7 +110,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public drugTestRadios: any;
 
@@ -210,6 +212,8 @@ export class Step8Component implements OnInit, OnDestroy {
       }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -244,6 +248,14 @@ export class Step8Component implements OnInit, OnDestroy {
 
             if (drugTestValue) this.drugTestRadios[0].checked = true;
         }, 100);
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

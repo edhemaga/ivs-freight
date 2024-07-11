@@ -91,6 +91,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
@@ -120,6 +121,7 @@ import { Step1Config } from '@pages/applicant/pages/applicant-application/compon
         TaCustomCardComponent,
         TaModalTableComponent,
         TaInputRadiobuttonsComponent,
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
@@ -127,7 +129,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public personalInfoRadios: any;
     public displayRadioRequiredNoteArray =
@@ -205,6 +207,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -293,11 +297,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             ssn: [null, [Validators.required, ssnNumberRegex]],
             phone: [null, [Validators.required, phoneFaxRegex]],
             email: [null, Validators.required],
-            previousAddresses: [null],
+            previousAddresses: [null, Validators.required],
 
             bankId: [null, [...bankValidation]],
             accountNumber: [null, accountBankValidation],
-            routingNumber: [null],
+            routingNumber: [null, routingBankValidation],
             usCitizen: [null, Validators.required],
             usCitizenExplain: [null],
             legalWork: [null, Validators.required],
@@ -327,6 +331,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview6: [null],
             questionReview7: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -372,12 +384,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             previousAddresses,
             address,
             personalInfoReview,
+            email,
+            files,
         } = stepValues;
 
         this.personalInfoForm.patchValue({
             [ApplicantApplicationStringEnum.IsAgreement]: isAgreed,
             [ApplicantApplicationStringEnum.FirstName]: firstName,
             [ApplicantApplicationStringEnum.LastName]: lastName,
+            [ApplicantApplicationStringEnum.Email]: email,
             [ApplicantApplicationStringEnum.DateOfBirth]: doB
                 ? MethodsCalculationsHelper.convertDateFromBackend(doB)
                 : null,
@@ -402,10 +417,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 misdemeanorDescription,
             [ApplicantApplicationStringEnum.DrunkDrivingExplain]:
                 drunkDrivingDescription,
+            [ApplicantApplicationStringEnum.Files]: JSON.stringify(files),
         });
 
         this.stepValues = stepValues;
         this.stepHasValues = !!ssn;
+
+        this.documents = files;
 
         if (ssn) {
             this.selectedBank = this.banksDropdownList.find(
@@ -499,37 +517,24 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         address: AddressEntity,
         personalInfoReview: ApplicantPersonalInfoReviewResponse
     ): void {
+        const mappedPreviousAddresses = previousAddresses.map(
+            (item) => item.address
+        );
         this.updatedPreviousAddressesItems[0] = address;
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.concat(mappedPreviousAddresses);
+        this.updatedPreviousAddressesItems =
+            this.updatedPreviousAddressesItems.map((item) => {
+                return {
+                    address: item,
+                    addressUnit: item.addressUnit,
+                };
+            });
         if (!previousAddresses) return;
 
-        this.previousAddresses.clear();
         this.previousAddressesId = previousAddresses.map((item) => item.id);
         const addresses = [...previousAddresses.map((p) => p.address), address];
         this.selectedAddresses = addresses;
-
-        addresses.forEach((item, i) => {
-            const newAddressFormGroup = this.createNewAddress();
-            const isLastAddress = i === addresses.length - 1;
-
-            this.previousAddresses.push(newAddressFormGroup);
-            this.isEditingArray.push({
-                id: i,
-                isEditing: isLastAddress,
-                isEditingAddress: false,
-                isFirstAddress: false,
-            });
-
-            newAddressFormGroup.patchValue({
-                address: isLastAddress ? address.address : item.address,
-                addressUnit: isLastAddress
-                    ? address.addressUnit
-                    : item.addressUnit,
-                [`cardReview${i + 1}`]: this.getReviewMessage(
-                    i,
-                    personalInfoReview
-                ),
-            });
-        });
     }
 
     private getReviewMessage(
@@ -771,6 +776,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public onFilesAction(fileActionEvent: {
         files: File[];
         action: 'add' | 'delete';
+        deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
 
@@ -790,209 +796,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             ? JSON.stringify(fileActionEvent.files)
                             : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    fileActionEvent.deleteId,
+                ];
                 break;
 
             default:
                 break;
-        }
-    }
-
-    private createNewAddress(): UntypedFormGroup {
-        this.cardReviewIndex++;
-
-        return this.formBuilder.group({
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            [`cardReview${this.cardReviewIndex}`]: [null],
-        });
-    }
-
-    public onAddNewAddress(): void {
-        if (
-            this.previousAddresses.controls.length &&
-            !this.isLastAddedPreviousAddressValid &&
-            !this.isLastInputDeleted
-        ) {
-            return;
-        }
-
-        this.isEditingMiddlePositionAddress = false;
-
-        this.helperIndex = 2;
-
-        this.isLastInputDeleted = false;
-
-        this.previousAddresses.push(this.createNewAddress());
-
-        this.isEditingId++;
-
-        this.isEditingArray = [
-            ...this.isEditingArray,
-            {
-                id: this.isEditingId,
-                isEditing: true,
-                isEditingAddress: false,
-                isFirstAddress: false,
-            },
-        ];
-
-        if (this.previousAddresses.controls.length > 1) {
-            this.isEditingArray = this.isEditingArray.map((item, index) => {
-                if (index === this.isEditingArray.length - 1) {
-                    return { ...item, isEditing: true };
-                }
-
-                return { ...item, isEditing: false };
-            });
-        }
-
-        this.isLastAddedPreviousAddressValid = false;
-
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
-
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
-
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        };
-    }
-
-    public onRemoveNewAddress(index: number): void {
-        if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.shouldAbortAddressRemoval(index)
-        ) {
-            return;
-        }
-
-        this.updateEditingState(index);
-
-        this.removeAddressFromLists(index);
-    }
-
-    private shouldAbortAddressRemoval(index: number): boolean {
-        const isEditingAnyAddress = this.isEditingArray.some(
-            (item) => item.isEditing && item.isEditingAddress
-        );
-
-        return (
-            isEditingAnyAddress || this.previousAddresses.controls.length === 1
-        );
-    }
-
-    private updateEditingState(index: number): void {
-        this.isLastInputDeleted =
-            index !== this.previousAddresses.controls.length - 1;
-        this.isEditingMiddlePositionAddress = false;
-    }
-
-    private removeAddressFromLists(index: number): void {
-        this.previousAddresses.removeAt(index);
-        this.selectedAddresses.splice(index, 1);
-        this.isEditingArray.splice(index, 1);
-
-        if (this.previousAddresses.controls.length === 1) {
-            this.isEditingArray[0].isEditing = true;
-            this.isEditingArray[0].isEditingAddress = false;
-        }
-    }
-
-    public onEditNewAddress(index: number): void {
-        if (!this.hasAddressToEdit(index)) {
-            return;
-        }
-
-        this.setHelperIndex(index);
-        this.setEditingState(index);
-    }
-
-    private hasAddressToEdit(index: number): boolean {
-        const addressControl =
-            this.previousAddresses.controls[index].get('address');
-        return addressControl && !!addressControl.value;
-    }
-
-    private setHelperIndex(index: number): void {
-        this.helperIndex = index;
-    }
-
-    private setEditingState(index: number): void {
-        const addressExists =
-            this.previousAddresses.controls[index].value.address;
-
-        if (addressExists) {
-            this.isEditingArray = this.isEditingArray.map(
-                (item, itemIndex) => ({
-                    ...item,
-                    isEditing:
-                        index === 0 &&
-                        this.previousAddresses.controls.length === 1
-                            ? true
-                            : itemIndex === index,
-                    isEditingAddress: index === itemIndex,
-                })
-            );
-
-            this.isEditingMiddlePositionAddress = true;
-
-            if (index !== 0 || this.previousAddresses.controls.length !== 1) {
-                this.previousAddressOnEdit =
-                    this.previousAddresses.controls[index].value.address;
-                this.previousAddressUnitOnEdit =
-                    this.previousAddresses.controls[index].value.addressUnit;
-            }
-        }
-    }
-
-    public onConfirmEditedNewAddress(index: number): void {
-        if (
-            this.previousAddresses.controls[index].value.address &&
-            this.previousAddresses.controls[index].valid
-        ) {
-            this.isEditingArray[index].isEditing = false;
-            this.isEditingArray[index].isEditingAddress = false;
-
-            this.helperIndex = 2;
-        }
-
-        const lastAddressIndex = this.previousAddresses.controls.length - 1;
-
-        this.isEditingMiddlePositionAddress = false;
-
-        this.isEditingArray[lastAddressIndex].isEditing = true;
-    }
-
-    public onCancelEditingNewAddress(index: number): void {
-        this.previousAddresses.controls[index].patchValue({
-            address: this.previousAddressOnEdit,
-            addressUnit: this.previousAddressUnitOnEdit,
-        });
-
-        this.isEditingArray[index].isEditing = false;
-        this.isEditingArray[index].isEditingAddress = false;
-
-        this.previousAddressOnEdit = null;
-        this.previousAddressUnitOnEdit = null;
-
-        this.helperIndex = 2;
-
-        const lastAddressIndex = this.previousAddresses.controls.length - 1;
-
-        this.isEditingMiddlePositionAddress = false;
-
-        this.isEditingArray[lastAddressIndex].isEditing = true;
-    }
-
-    public onGetBtnClickValue(event: any): void {
-        if (event.notDisabledClick) {
-            this.onAddNewAddress();
         }
     }
 
@@ -1531,6 +1343,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             drunkDriving,
             drunkDrivingDescription: personalInfoForm.value.drunkDrivingExplain,
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.applicantId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
 
         const selectMatchingBackendMethod = () => {
@@ -1752,7 +1569,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public addPreviousAddress(): void {
         if (
             !this.isEachPreviousAddressesRowValid ||
-            this.previousAddressesItems?.length === 8
+            this.previousAddressesItems?.length === 3
         )
             return;
 

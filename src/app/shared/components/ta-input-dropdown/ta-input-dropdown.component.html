@@ -287,8 +287,12 @@
                     </div>
 
                     <!-- Text -->
-
-                    <div
+                     <ng-container *ngIf="inputConfig.statusStyle">
+                        <app-load-status-string [status]="option"></app-load-status-string>
+                     </ng-container>
+                    
+                    <ng-container *ngIf="!inputConfig.statusStyle">
+                        <div
                         [innerHtml]="
                             option?.number
                                 ? (option.number
@@ -312,8 +316,10 @@
                             'truck-text': option?.subFolder === 'trucks',
                             'flex-1': option?.additionalText
                         }"
+                        [ngStyle]="true ? (option.name | loadStatusColor) : {}"
                         class="svgtext-template-text"
-                    ></div>
+                    ></div> 
+                    </ng-container>
 
                     <!-- Additional Text -->
 
@@ -1101,8 +1107,7 @@
                     <!-- Percentage is not driver owner -->
                     <span
                         *ngIf="
-                            _options[0].name !== 'No Results' &&
-                            !option.driver?.owner &&
+                            _options[0].name !== 'No Results' && 
                             option?.payType
                         "
                         [ngClass]="{

@@ -1,0 +1,6 @@
+export enum OwnerInfoFileType {
+    TRUCK_LICENCE = 'TRUCK_LICENCE',
+    TRUCK_FHWA = 'TRUCK_FHWA',
+    TRAILER_LICENCE = 'TRAILER_LICENCE',
+    TRAILER_FHWA = 'TRAILER_FHWA',
+}

@@ -109,13 +109,13 @@
                         </div>
                     </div>
 
-                   <!-- <app-ta-tab-switch
+                    <app-ta-tab-switch
                         [tabs]="physicalAddressTabs"
                         (switchClicked)="tabPhysicalAddressChange($event)"
                         [type]="'type2-modal-popup'"
-                    ></app-ta-tab-switch> leave this commented beacause api is missings -->
+                    ></app-ta-tab-switch>
 
-                    <div class="row last-row">
+                    <div class="row first-row last-row">
                         <ng-container
                             *ngIf="
                                 selectedPhysicalAddressTab === 1;
@@ -153,13 +153,11 @@
                                 ></app-ta-input>
                             </div>
                             <div class="col-6">
-                                <app-ta-input-address-dropdown
+                                <app-ta-input
                                     formControlName="countryStateAddress"
                                     [inputConfig]="getCountryStateInputConfig"
                                     [placeholderType]="'shortAddress'"
-                                    [activeAddress]="selectedAddress"
-                                    (selectedAddress)="onHandleAddress($event)"
-                                ></app-ta-input-address-dropdown>
+                                ></app-ta-input>
                             </div>
                         </ng-template>
                     </div>

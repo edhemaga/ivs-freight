@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // components
@@ -14,7 +14,6 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     selector: 'app-load-details-item',
     templateUrl: './load-details-item.component.html',
     styleUrls: ['./load-details-item.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         // modules
@@ -26,14 +25,33 @@ import { DetailsConfig } from '@shared/models/details-config.model';
         LoadDetailsItemStatusHistoryComponent,
     ],
 })
-export class LoadDetailsItemComponent {
+export class LoadDetailsItemComponent implements OnChanges {
     @Input() detailsConfig: DetailsConfig;
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
 
+    public isCommentsHeaderHidden: boolean = true;
+
     constructor() {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.detailsConfig?.currentValue)
+            this.setIsCommentsHeaderHidden(
+                changes?.detailsConfig?.currentValue
+            );
+    }
 
     public trackByIdentity(_: number, item: DetailsConfig): number {
         return item.id;
+    }
+
+    private setIsCommentsHeaderHidden(detailsConfig: DetailsConfig): void {
+        const comments = detailsConfig[2]?.data?.comments;
+
+        this.isCommentsHeaderHidden = !comments.length;
+    }
+
+    public handleIsCommentsHeaderHidden(isChanged: boolean): void {
+        this.isCommentsHeaderHidden = isChanged;
     }
 }

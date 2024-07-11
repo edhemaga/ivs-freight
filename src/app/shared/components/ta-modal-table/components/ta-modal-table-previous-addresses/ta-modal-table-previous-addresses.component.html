@@ -33,13 +33,15 @@
                         name: 'Address',
                         type: 'text',
                         label: 'Address, City, State Zip',
+                        isRequired: true,
+                        textTransform: 'capitalize',
                         placeholderInsteadOfLabel: true,
-                        minLength: 5,
+                        minLength: 6,
                         maxLength: 256,
                         isRequired: true,
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
-                        dropdownWidthClass: 'w-col-412',
+                        dropdownWidthClass: 'w-col-482',
                         isInputBackgroundRemoved: previousAddressRow.valid && !isInputHoverRows[i][0],
                         blackInput: formArray.at(i).get('address').value && !isInputHoverRows[i][0]
                     }" 

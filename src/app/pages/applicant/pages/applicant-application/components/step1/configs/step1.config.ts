@@ -97,6 +97,7 @@ export class Step1Config {
             minLength: 5,
             maxLength: 64,
             textTransform: 'lowercase',
+            isDisabled: true,
         };
     }
 
@@ -109,7 +110,7 @@ export class Step1Config {
             maxLength: 64,
             textTransform: 'uppercase',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-416',
+            dropdownWidthClass: 'w-col-198',
             isDisabled: config.selectedMode !== 'APPLICANT_MODE',
         };
     }

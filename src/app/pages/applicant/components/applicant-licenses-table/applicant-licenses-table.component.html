@@ -80,19 +80,31 @@
                     <p class="m-0 ta-font-bold restrictions-text text-ta-black">
                         Restrictions:
                     </p>
-                    <p class="m-0 ta-font-medium">
-                        {{ license?.restrictions }}
-                    </p>
+                    <ng-container *ngIf="license.restrictions.length else none">
+                        <p class="m-0 ta-font-medium">
+                            {{ license?.restrictions }}
+                        </p>
+                    </ng-container>
                 </div>
 
                 <div class="d-flex">
                     <p class="m-0 ta-font-bold endorsments-text text-ta-black">
                         Endorsments:
                     </p>
-                    <p class="m-0 ta-font-medium">
-                        {{ license?.endorsments }}
-                    </p>
+                    <ng-container *ngIf="license.endorsments.length else none">
+                        <p class="m-0 ta-font-medium">
+                            {{ license?.endorsments }}
+                        </p>
+                    </ng-container>
+
+
                 </div>
+
+                <ng-template #none>
+                    <p class="m-0 ta-font-medium none-text">
+                        None
+                    </p>
+                </ng-template>
             </div>
         </div>
     </ng-container>

@@ -43,6 +43,7 @@ import { ApplicantModule } from '@pages/applicant/applicant.module';
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 @Component({
     selector: 'app-psp-authorization',
@@ -58,12 +59,13 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
         // components
         TaCheckboxComponent,
         ApplicantCardComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -116,6 +118,8 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -131,6 +135,14 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
             isPspReport: [false, Validators.requiredTrue],
             isDisclosureRegardingReport: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {

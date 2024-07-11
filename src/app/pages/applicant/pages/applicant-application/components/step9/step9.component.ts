@@ -35,6 +35,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
@@ -52,12 +53,13 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
 
         // components
         TaCheckboxComponent,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step9Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -76,6 +78,8 @@ export class Step9Component implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -85,6 +89,14 @@ export class Step9Component implements OnInit, OnDestroy {
         this.driverRightsForm = this.formBuilder.group({
             understandYourRights: [false, Validators.requiredTrue],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

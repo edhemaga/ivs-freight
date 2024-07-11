@@ -1,8 +1,8 @@
+import { ApplicantConfigParams } from '@pages/applicant/models/applicant-input-config.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { Step5FormConfigParams } from '@pages/applicant/components/applicant-forms/step5-form/models/step5-config-params.model';
 
 export class Step5FormConfig {
-    static getAddressInputConfig(config: Step5FormConfigParams): ITaInput {
+    static getAddressInputConfig(config: ApplicantConfigParams): ITaInput {
         return {
             name: 'Address',
             type: 'text',
@@ -12,7 +12,7 @@ export class Step5FormConfig {
             isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-481',
+            dropdownWidthClass: config.isEditing ? 'w-col-424' : 'w-col-434',
             isDisabled:
                 config.selectedMode === 'REVIEW_MODE' ||
                 (config.selectedMode === 'FEEDBACK_MODE' &&
@@ -21,7 +21,7 @@ export class Step5FormConfig {
         };
     }
 
-    static getDateInputConfig(config: Step5FormConfigParams): ITaInput {
+    static getDateInputConfig(config: ApplicantConfigParams): ITaInput {
         return {
             name: 'datepicker',
             type: 'text',
@@ -38,7 +38,7 @@ export class Step5FormConfig {
         };
     }
 
-    static getVehicleTypeInputConfig(config: Step5FormConfigParams): ITaInput {
+    static getVehicleTypeInputConfig(config: ApplicantConfigParams): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -62,7 +62,7 @@ export class Step5FormConfig {
         };
     }
 
-    static getDescriptionInputConfig(config: Step5FormConfigParams): ITaInput {
+    static getDescriptionInputConfig(config: ApplicantConfigParams): ITaInput {
         return {
             name: 'Description',
             type: 'text',

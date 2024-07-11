@@ -8,4 +8,5 @@ export interface IApplicantStore {
     applicant: ApplicantResponse;
     applicantDropdownLists: ApplicantModalResponse;
     applicantSphForm: SphPreviousEmployerProspectResponse;
+    selectedMode: string;
 }

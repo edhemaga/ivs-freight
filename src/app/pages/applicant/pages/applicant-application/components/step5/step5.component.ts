@@ -59,6 +59,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { Step5FormComponent } from '@pages/applicant/components/applicant-forms/step5-form/step5-form.component';
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -87,12 +88,13 @@ import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-
         Step5FormComponent,
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public applicantId: number;
 
@@ -155,6 +157,8 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.hasNoTrafficViolations();
@@ -199,6 +203,14 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
             cardReview9: [null],
             cardReview10: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {

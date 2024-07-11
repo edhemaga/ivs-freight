@@ -1,4 +1,4 @@
-<div class="details-component load-details-item-container">
+<div class="details-component load load-details-item-container">
     <ng-container
         *ngFor="let loadItem of detailsConfig; trackBy: trackByIdentity"
     >
@@ -34,6 +34,10 @@
                         [load]="loadItem?.data"
                         [isAddNewComment]="isAddNewComment"
                         [isSearchComment]="isSearchComment"
+                        [isHeaderHidden]="isCommentsHeaderHidden"
+                        (commentsCountChanged)="
+                            handleIsCommentsHeaderHidden($event)
+                        "
                     >
                     </app-load-details-item-comments>
                 </ng-container>

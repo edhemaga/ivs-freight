@@ -36,7 +36,7 @@ export class ApplicantTrailerConfig {
                           ?.replace(' ', '')
                           ?.toLowerCase(),
             },
-            dropdownWidthClass: 'w-col-364',
+            dropdownWidthClass: 'w-col-220',
             customClass: 'truck-trailer-dropdown',
         };
     }
@@ -83,7 +83,7 @@ export class ApplicantTrailerConfig {
                 url: options.selectedTrailerMake?.logoName,
             },
             placeholder: options.selectedTrailerMake?.name,
-            dropdownWidthClass: 'w-col-302',
+            dropdownWidthClass: 'w-col-156',
         };
     }
 
@@ -93,6 +93,7 @@ export class ApplicantTrailerConfig {
             type: 'text',
             label: 'Model',
             textTransform: 'uppercase',
+            isRequired: options.isAddTrailerSelected,
             minLength: 1,
             maxLength: 50,
             isDisabled:
@@ -141,7 +142,7 @@ export class ApplicantTrailerConfig {
                 template: 'color',
                 color: options.selectedTrailerColor?.code,
             },
-            dropdownWidthClass: 'w-col-216',
+            dropdownWidthClass: 'w-col-156',
         };
     }
 
@@ -156,7 +157,7 @@ export class ApplicantTrailerConfig {
                 (options.selectedMode === SelectedMode.APPLICANT &&
                     !options.isAddTrailerSelected),
             isRequired: options.isAddTrailerSelected,
-            dropdownWidthClass: 'w-col-216',
+            dropdownWidthClass: 'w-col-90',
         };
     }
 }

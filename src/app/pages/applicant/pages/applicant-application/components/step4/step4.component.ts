@@ -48,6 +48,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { Step4FormComponent } from '@pages/applicant/components/applicant-forms/step4-form/step4-form.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -70,12 +71,13 @@ import { SharedModule } from '@shared/shared.module';
         Step4FormComponent,
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
+        ApplicantNextBackBtnComponent
     ],
 })
 export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public accidentForm: UntypedFormGroup;
 
@@ -133,6 +135,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.createForm();
 
         this.getStepValuesFromStore();
@@ -163,6 +167,14 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
             cardReview9: [null],
             cardReview10: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getStepValuesFromStore(): void {
@@ -204,9 +216,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                             item.date
                         ).replace(/-/g, '/'),
                         hazmatSpill: item.hazmatSpill,
-                        fatalities: item.fatalities,
-                        /*  collisions: item.collisions, */
-                        injuries: item.injuries,
+                        fatalities: item.fatalities.toString(),
+                        injuries: item.injuries.toString(),
+                        collisions: item.collisions.toString(),
                         vehicleType: item.vehicleType.name,
                         vehicleTypeLogoName: item.vehicleType.logoName,
                         description: item.description,
@@ -226,9 +238,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),
                 hazmatSpill: lastItemInAccidentArray.hazmatSpill,
-                fatalities: lastItemInAccidentArray.fatalities,
-                /*  collisions: lastItemInAccidentArray.collisions, */
-                injuries: lastItemInAccidentArray.injuries,
+                fatalities: lastItemInAccidentArray.fatalities.toString(),
+                collisions: lastItemInAccidentArray.collisions.toString(),
+                injuries: lastItemInAccidentArray.injuries.toString(),
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
                 vehicleTypeLogoName:
                     lastItemInAccidentArray.vehicleType.logoName,

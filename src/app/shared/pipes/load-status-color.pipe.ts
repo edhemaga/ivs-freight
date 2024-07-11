@@ -9,39 +9,83 @@ export class LoadStatusColorPipe implements PipeTransform {
         status: string,
         isBadge?: boolean
     ): { color: string; backgroundColor?: string } {
-        status = status.replace(/\s+/g, '');
-        const statusGreyColorCondition = status === 'Booked';
-        const statusDarkGreyColorCondition = status === 'Unassigned';
-        const statusDarkGrey2ColorCondition = ['Hold', 'Revised'].includes(
-            status
-        );
+        const adjustedStatus = status.replace(/\s+/g, '');
+
+        const statusGreyColorCondition = adjustedStatus === 'Booked';
+        const statusDarkGreyColorCondition = adjustedStatus === 'Unassigned';
+        const statusDarkGrey2ColorCondition = [
+            'InvoicedHold',
+            'Hold',
+            'HoldFactoring',
+            'Revised',
+            'RevisedFactoring',
+        ].includes(adjustedStatus);
         const statusGreenColorCondition = status === 'Assigned';
-        const statusBlueColorCondition = status === 'Dispatched';
+        const statusBlueColorCondition = [
+            'RepairDispatched',
+            'Dispatched',
+        ].includes(status);
         const statusTurquoiseColorCondition = [
             'Arrived',
             'ArrivedPickup',
             'CheckedInPickup',
+            'CheckedIn',
             'Loading',
-        ].includes(status);
-        const statusDarkTurquoiseColorCondition = status === 'Loaded';
+        ].includes(adjustedStatus);
+        const statusDarkTurquoiseColorCondition = [
+            'Loaded',
+            'RepairLoaded',
+        ].includes(adjustedStatus);
         const statusRedColorCondition = [
             'ArrivedDelivery',
             'CheckedInDelivery',
             'Offloading',
             'Checked-In',
         ].includes(status);
-        const statusDarkRedColorCondition = status === 'Offloaded';
-        const statusDarkRed2ColorCondition = status === 'Cancelled';
-        const statusDarkRed3ColorCondition = status === 'Tonu';
-        const statusOrangeColorCondition = status === 'Delivered';
-        const statusYellowColorCondition = ['Invoiced', 'Paid'].includes(
+        const statusDarkRedColorCondition = [
+            'Tonu',
+            'Offloaded',
+            'RepairOffloaded',
+        ].includes(status);
+        const statusDarkRed2ColorCondition = ['Cancelled', 'Split', 'LoadCancelled'].includes(
             status
         );
+        const statusDarkRed3ColorCondition = status === 'Tonu';
+        const statusOrangeColorCondition = status === 'Delivered';
+        const statusYellowColorCondition = [
+            'Invoiced',
+            'Paid',
+            'InvoicedFactoring',
+            'TonuInvoiced',
+            'TonuInvoicedFactoring',
+        ].includes(adjustedStatus);
         const statusDarkYellowColorCondition = [
             'Claim',
             'Unpaid',
             'ShortPaid',
-        ].includes(status);
+            'TonuUnpaid',
+            'TonuClaim',
+            'TonuClaimFactoring',
+            'ClaimFactoring',
+            'UnpaidFactoring',
+            'RevisedUnpaid',
+            'RevisedUnpaidFactoring',
+            'RevisedClaim',
+            'RevisedClaimFactoring',
+            'TonuUnpaidFactoring',
+        ].includes(adjustedStatus);
+        const statusMildDarkYellowColorCondition = [
+            'ShortPaidFactoring',
+            'RevisedPaid',
+            'RevisedShortPaidFactoring',
+            'RevisedShortPaid',
+            'TonuShortPaid',
+            'TonuShortPaidFactoring',
+            'TonuPaid',
+            'TonuPaidFactoring',
+            'RevisedPaidFactoring',
+            'PaidFactoring',
+        ].includes(adjustedStatus);
 
         if (statusGreyColorCondition) {
             return isBadge
@@ -81,7 +125,7 @@ export class LoadStatusColorPipe implements PipeTransform {
                 : { color: '#F89B2E' };
         } else if (statusYellowColorCondition) {
             return isBadge
-                ? { color: '#fff', backgroundColor: '#DFC66C' }
+                ? { color: '#fff', backgroundColor: '#b370f0' }
                 : { color: '#DFC66C' };
         } else if (statusDarkYellowColorCondition) {
             return isBadge
@@ -99,6 +143,10 @@ export class LoadStatusColorPipe implements PipeTransform {
             return isBadge
                 ? { color: '#fff', backgroundColor: '#C20C0C' }
                 : { color: '#C20C0C' };
+        } else if (statusMildDarkYellowColorCondition) {
+            return isBadge
+                ? { color: '#fff', backgroundColor: '#CDB255' }
+                : { color: '#CDB255' };
         }
     }
 }

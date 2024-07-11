@@ -389,8 +389,10 @@
                                         [selectedTruckColor]="selectedTruckColor"
                                         [stepFeedbackValues]="stepFeedbackValues"
                                         [dropdownOptions]="dropdownOptions"
-                                        [documents]="documents"
-                                        [displayDocumentsRequiredNote]="displayDocumentsRequiredNote"
+                                        [truckFHWADocuments]="truckFHWADocuments"
+                                        [truckFHWADisplayDocumentsRequiredNote]="truckFHWADisplayDocumentsRequiredNote"
+                                        [truckLicenceDocuments]="truckLicenceDocuments"
+                                        [truckLicenceDisplayDocumentsRequiredNote]="truckLicenceDisplayDocumentsRequiredNote"
                                         (onFilesAction)="onFilesAction($event)"
                                         (onInputSelect)="handleInputSelectTruckTrailer($event)"
                                     >
@@ -463,8 +465,10 @@
                                             [stepFeedbackValues]="stepFeedbackValues"
                                             [loadingTrailerVinDecoder]="loadingTrailerVinDecoder"
                                             [dropdownOptions]="dropdownOptions"
-                                            [documents]="documents"
-                                            [displayDocumentsRequiredNote]="displayDocumentsRequiredNote"
+                                            [trailerLicenceDocuments]="trailerLicenceDocuments"
+                                            [trailerLicenceDisplayDocumentsRequiredNote]="trailerLicenceDisplayDocumentsRequiredNote"
+                                            [trailerFHWADocuments]="trailerFHWADocuments"
+                                            [trailerFHWADisplayDocumentsRequiredNote]="trailerFHWADisplayDocumentsRequiredNote"
                                             [isAddTrailerSelected]="isAddTrailerSelected"
                                             (onFilesAction)="onFilesAction($event)"
                                             (onInputSelect)="handleInputSelectTruckTrailer($event)"
@@ -486,15 +490,17 @@
                                 <!-- ADD TRUCK -->
 
                                 <app-applicant-truck-details
-                                    [formGroup]="ownerInfoSoleForm"
+                                    [formGroup]="ownerInfoForm"
                                     [selectedMode]="selectedMode"
-                                    [selectedTruckType]="selectedSoleTruckType"
-                                    [selectedTruckMake]="selectedSoleTruckMake"
-                                    [selectedTruckColor]="selectedSoleTruckColor"
+                                    [selectedTruckType]="selectedTruckType"
+                                    [selectedTruckMake]="selectedTruckMake"
+                                    [selectedTruckColor]="selectedTruckColor"
                                     [stepFeedbackValues]="stepFeedbackValues"
                                     [dropdownOptions]="dropdownOptions"
-                                    [documents]="documents"
-                                    [displayDocumentsRequiredNote]="displayDocumentsRequiredNote"
+                                    [truckFHWADocuments]="truckFHWADocuments"
+                                    [truckFHWADisplayDocumentsRequiredNote]="truckFHWADisplayDocumentsRequiredNote"
+                                    [truckLicenceDocuments]="truckLicenceDocuments"
+                                    [truckLicenceDisplayDocumentsRequiredNote]="truckLicenceDisplayDocumentsRequiredNote"
                                     (onFilesAction)="onFilesAction($event)"
                                     (onInputSelect)="handleInputSelectTruckTrailer($event)"
                                 >
@@ -505,16 +511,16 @@
 
                                 <div
                                     class="d-flex w-100 justify-content-between add-trailer-row"
-                                    [ngClass]="{'flex-column': isSoleAddTrailerSelected}"
+                                    [ngClass]="{'flex-column': isAddTrailerSelected}"
                                 >
-                                    <ng-container *ngIf="!isSoleAddTrailerSelected else trailerDetail">
+                                    <ng-container *ngIf="!isAddTrailerSelected else trailerDetail">
                                         <p class="m-0 ta-font-extra-bold">
                                             Have trailer in your possession?
                                         </p>
 
                                         <button
                                             type="button"
-                                            (click)="toggleSoleAddTrailer()"
+                                            (click)="toggleAddTrailer()"
                                             class="d-flex justify-content-center align-items-center add-trailer-btn"
                                         >
                                             <p class="m-0 ta-font-bold">
@@ -543,7 +549,7 @@
                                                     mainTooltip="Clear"
                                                     tooltipBackground="#2F2F2F"
                                                     position="top"
-                                                    (click)="toggleSoleAddTrailer()"
+                                                    (click)="toggleAddTrailer()"
                                                 >
                                                     <svg-icon
                                                         class="delete-icon"
@@ -557,20 +563,22 @@
                                 </div>
 
                                 <!-- TRAILER SOLE GROUP -->
-                                <ng-container *ngIf="isSoleAddTrailerSelected">
+                                <ng-container *ngIf="isAddTrailerSelected">
                                     <app-applicant-trailer-details
-                                        [formGroup]="ownerInfoSoleForm"
+                                        [formGroup]="ownerInfoForm"
                                         [selectedMode]="selectedMode"
-                                        [selectedTrailerType]="selectedSoleTrailerType"
-                                        [selectedTrailerMake]="selectedSoleTrailerMake"
-                                        [selectedTrailerLength]="selectedSoleTrailerLength"
-                                        [selectedTrailerColor]="selectedSoleTrailerColor"
+                                        [selectedTrailerType]="selectedTrailerType"
+                                        [selectedTrailerMake]="selectedTrailerMake"
+                                        [selectedTrailerLength]="selectedTrailerLength"
+                                        [selectedTrailerColor]="selectedTrailerColor"
                                         [stepFeedbackValues]="stepFeedbackValues"
                                         [loadingTrailerVinDecoder]="loadingTrailerVinDecoder"
                                         [dropdownOptions]="dropdownOptions"
-                                        [documents]="documents"
-                                        [displayDocumentsRequiredNote]="displayDocumentsRequiredNote"
-                                        [isAddTrailerSelected]="isSoleAddTrailerSelected"
+                                        [trailerLicenceDocuments]="trailerLicenceDocuments"
+                                        [trailerLicenceDisplayDocumentsRequiredNote]="trailerLicenceDisplayDocumentsRequiredNote"
+                                        [trailerFHWADocuments]="trailerFHWADocuments"
+                                        [trailerFHWADisplayDocumentsRequiredNote]="trailerFHWADisplayDocumentsRequiredNote"
+                                        [isAddTrailerSelected]="isAddTrailerSelected"
                                         (onFilesAction)="onFilesAction($event)"
                                         (onInputSelect)="handleInputSelectTruckTrailer($event)"
                                     >
@@ -597,7 +605,6 @@
     >
         <app-applicant-next-back-btn
             [nextStep]="true"
-            [lastStep]="true"
             [filledCorrectly]="
                 ownerInfoForm.valid &&
                 (selectedMode === selectedModeEnum.APPLICANT ||

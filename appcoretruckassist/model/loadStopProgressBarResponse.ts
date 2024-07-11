@@ -10,12 +10,25 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { AddressEntity } from './addressEntity';
 
 
 export interface LoadStopProgressBarResponse { 
     loadStopId?: number;
+    title?: string | null;
     stopType?: EnumValue;
+    address?: AddressEntity;
     totalLegMiles?: number | null;
-    progressBarPercentage?: number;
+    cumulativeTotalLegMiles?: number | null;
+    progressBarPercentage?: number | null;
+    stopLoadOrder?: number;
+    isCheckedIn?: boolean | null;
+    isNextStop?: boolean | null;
+    departedFrom?: string | null;
+    isVisited?: boolean | null;
+    expectedAt?: string | null;
+    milesTo?: number | null;
+    estimatedWaitTime?: { [key: string]: number; } | null;
+    waitTimeInMin?: number | null;
 }
 

@@ -32,12 +32,13 @@ import {
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
 
-//components
+// components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
-//modules
+// modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 
@@ -55,14 +56,14 @@ import { SharedModule } from '@shared/shared.module';
         // components
         TaInputComponent,
         TaUploadFilesComponent,
-        TaCounterComponent
+        TaCounterComponent,
+        ApplicantNextBackBtnComponent
     ],
-
 })
 export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string;
 
     public isValidLoad: boolean;
 
@@ -111,6 +112,8 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.initMode();
+
         this.getQueryParams();
 
         this.createForm();
@@ -127,6 +130,14 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
             firstRowReview: [null],
             secondRowReview: [null],
         });
+    }
+
+    public initMode(): void {
+        this.applicantQuery.selectedMode$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedMode: string) => {
+                this.selectedMode = selectedMode;
+            });
     }
 
     public getQueryParams(): void {
@@ -205,7 +216,7 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         //                 !isFileValid,
         //             ];
         //         }
-        //         /*  
+        //         /*
         //         const filesLineInputItems =
         //             this.openAnnotationArray[1].lineInputs;
         //         const isAnyInputInLineIncorrect =
@@ -381,9 +392,7 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.medicalCertificateForm.invalid) {
-            if (this.medicalCertificateForm.invalid) {
-                this.inputService.markInvalid(this.medicalCertificateForm);
-            }
+            this.inputService.markInvalid(this.medicalCertificateForm);
 
             if (!this.documents.length) {
                 this.displayDocumentsRequiredNote = true;

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, tap } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
 
 // enum
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 // store
 import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
@@ -16,6 +17,10 @@ import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active
 import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
 import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
+import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
+import { LoadPendingQuery } from '@pages/load/state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '@pages/load/state/load-template-state/load-template.query';
+import { LoadClosedQuery } from '@pages/load/state/load-closed-state/load-closed.query';
 
 // models
 import {
@@ -35,6 +40,7 @@ import {
     LoadStatusType,
     DispatcherFilterResponse,
     LoadStatus,
+    LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -68,7 +74,11 @@ export class LoadService {
         private loadActiveStore: LoadActiveStore,
         private loadPendingStore: LoadPendingStore,
         private loadClosedStore: LoadClosedStore,
-        private loadTemplateStore: LoadTemplateStore
+        private loadTemplateStore: LoadTemplateStore,
+        private loadActiveQuery: LoadActiveQuery,
+        private loadPendingQuery: LoadPendingQuery,
+        private loadTemplateQuery: LoadTemplateQuery,
+        private loadClosedQuery: LoadClosedQuery
     ) {}
 
     public addData(data: Comment): void {
@@ -217,12 +227,69 @@ export class LoadService {
         );
     }
 
+    public deleteLoadList(
+        loadIds: number[],
+        loadStatus: string
+    ): Observable<any> {
+        const requestsArray = loadIds.map((loadId) => {
+            return this.loadService.apiLoadIdDelete(loadId);
+        });
+
+        return forkJoin([...requestsArray]).pipe(
+            tap(([res]) => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                loadIds.forEach((loadId) => {
+                    this.loadDetailsListStore.remove(({ id }) => id === loadId);
+                    this.loadItemStore.remove(({ id }) => id === loadId);
+                    this.loadMinimalListStore.remove(({ id }) => id === loadId);
+
+                    if (loadStatus === TableStringEnum.ACTIVE) {
+                        this.loadActiveStore.remove(({ id }) => id === loadId);
+
+                        loadCount.activeCount--;
+                    } else if (loadStatus === TableStringEnum.CLOSED) {
+                        this.loadClosedStore.remove(({ id }) => id === loadId);
+
+                        loadCount.closedCount--;
+                    } else if (loadStatus === TableStringEnum.PENDING) {
+                        this.loadPendingStore.remove(({ id }) => id === loadId);
+
+                        loadCount.pendingCount--;
+                    }
+                });
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
+    }
+
     public getLoadById(id: number): Observable<LoadResponse> {
         return this.loadService.apiLoadIdGet(id);
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
-        return this.loadService.apiLoadListGet(null, null, null, null, null, null, null, null, id);
+        return this.loadService.apiLoadListGet(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            id
+        );
     }
 
     public autocompleteLoadByDescription(
@@ -275,20 +342,124 @@ export class LoadService {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
-    public updateLoadPartily(loadResponse: LoadListResponse, loadStatus: string): void {
+    public deleteLoadTemplateById(loadId: number): Observable<void> {
+        return this.loadService.apiLoadTemplateIdDelete(loadId).pipe(
+            tap(() => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                this.loadTemplateStore.remove(({ id }) => id === loadId);
+
+                loadCount.templateCount--;
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
+    }
+
+    public deleteLoadTemplateList(loadIds: number[]): Observable<any> {
+        const requestsArray = loadIds.map((loadId) => {
+            return this.loadService.apiLoadTemplateIdDelete(loadId);
+        });
+
+        return forkJoin([...requestsArray]).pipe(
+            tap(([res]) => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                loadIds.forEach((loadId) => {
+                    this.loadTemplateStore.remove(({ id }) => id === loadId);
+
+                    loadCount.templateCount--;
+                });
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
+    }
+
+    private getLoadStatus(statusString: string): {
+        isPending: boolean;
+        isActive: boolean;
+        isClosed: boolean;
+    } {
+        const isPending =
+            statusString === LoadModalStringEnum.ASSIGNED ||
+            statusString === LoadModalStringEnum.UNASSIGNED;
+        const isClosed = statusString === LoadModalStringEnum.CLOSED;
+        const isActive = !isPending && !isClosed;
+
+        return {
+            isPending,
+            isActive,
+            isClosed,
+        };
+    }
+
+    public updateLoadPartily(
+        loadResponse: LoadListResponse,
+        previusStatus: string
+    ): void {
         const data = loadResponse.pagination.data[0];
         const loadId = data.id;
+        const { isActive, isPending, isClosed } = this.getLoadStatus(
+            data.status.statusString
+        );
 
-        if (loadStatus === TableStringEnum.ACTIVE) {
-            this.loadActiveStore.remove(({ id }) => id === loadId);
+        [
+            this.loadActiveStore,
+            this.loadClosedStore,
+            this.loadPendingStore,
+        ].forEach((store) => {
+            store.remove(({ id }) => id === loadId);
+        });
+
+        const loadCount = JSON.parse(
+            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+        );
+
+        if (isActive) {
             this.loadActiveStore.add(data);
-        } else if (loadStatus === TableStringEnum.CLOSED) {
-            this.loadClosedStore.remove(({ id }) => id === loadId);
+            loadCount.activeCount++;
+        } else if (isClosed) {
             this.loadClosedStore.add(data);
-        } else if (loadStatus === TableStringEnum.PENDING) {
-            this.loadPendingStore.remove(({ id }) => id === loadId);
+            loadCount.closedCount++;
+        } else if (isPending) {
             this.loadPendingStore.add(data);
+            loadCount.pendingCount++;
         }
+
+        const previusLoadStore = this.getLoadStatus(previusStatus);
+        if (previusLoadStore.isActive) {
+            loadCount.activeCount--;
+        } else if (previusLoadStore.isClosed) {
+            loadCount.closedCount--;
+        } else if (previusLoadStore.isPending) {
+            loadCount.pendingCount--;
+        }
+
+        localStorage.setItem(
+            TableStringEnum.LOAD_TABLE_COUNT,
+            JSON.stringify(loadCount)
+        );
 
         this.triggerModalAction();
     }
@@ -332,4 +503,68 @@ export class LoadService {
     ): Observable<DispatcherFilterResponse[]> {
         return this.loadService.apiLoadDispatcherFilterGet(loadStatusType);
     }
+
+    public getLoadStatusDropdownOptions(
+        id: number
+    ): Observable<LoadPossibleStatusesResponse> {
+        return this.loadService.apiLoadListStatusIdGet(id);
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        let storeLoads;
+    
+        switch (data.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                storeLoads = this.loadActiveQuery.getAll();
+                break;
+            case TableStringEnum.PENDING:
+                storeLoads = this.loadPendingQuery.getAll();
+                break;
+            case TableStringEnum.TEMPLATE:
+                storeLoads = this.loadTemplateQuery.getAll();
+                break;
+            case TableStringEnum.CLOSED:
+                storeLoads = this.loadClosedQuery.getAll();
+                break;
+            default:
+                storeLoads = [];
+                break;
+        }
+    
+        storeLoads.map((load: LoadResponse) => {
+            if (data.id === load.id) {
+                switch (data.selectedTab) {
+                    case TableStringEnum.ACTIVE:
+                        this.loadActiveStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.PENDING:
+                        this.loadPendingStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.TEMPLATE:
+                        this.loadTemplateStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                    case TableStringEnum.CLOSED:
+                        this.loadClosedStore.update(load.id, (entity) => ({
+                            ...entity,
+                            note: data.value,
+                        }));
+                        break;
+                }
+            }
+        });
+    }
+    
 }

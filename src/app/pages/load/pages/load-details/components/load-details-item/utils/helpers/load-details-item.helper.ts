@@ -1,6 +1,11 @@
-import { KeyValue } from '@angular/common';
+import moment from 'moment';
+
+// pipes
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
 
 // models
+import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-last-status.model';
 import { StopItemsHeaderItem } from '@pages/load/pages/load-details/components/load-details-item/models/stop-items-header-item.model';
 
 export class LoadDetailsItemHelper {
@@ -71,30 +76,6 @@ export class LoadDetailsItemHelper {
         ];
     }
 
-    static keepItemsOriginalOrder(
-        a: KeyValue<string, any>,
-        b: KeyValue<string, any>
-    ): number {
-        const keys = [
-            'id',
-            'description',
-            'quantity',
-            'tmp',
-            'weight',
-            'length',
-            'height',
-            'tarp',
-            'stack',
-            'secure',
-            'bolNo',
-            'pickupNo',
-            'sealNo',
-            'code',
-        ];
-
-        return keys.indexOf(a.key) - keys.indexOf(b.key);
-    }
-
     static removeNumbersFromStatusString(statusString: string) {
         const regex = /\d+/g;
 
@@ -110,5 +91,73 @@ export class LoadDetailsItemHelper {
         if (statusId === 47 || statusId === 49) return '#E66767';
 
         if (statusId === 5) return '#DF3C3C';
+    }
+
+    static createStopLastStatus(
+        stopType: string,
+        statusString: string,
+        dateTimeFrom: string,
+        dateTimeTo?: string,
+        formatDatePipe?: FormatDatePipe,
+        formatTimePipe?: FormatTimePipe
+    ): LoadStopLastStatus {
+        let lastStatus: string;
+        let lastStatusTime: string;
+
+        if (dateTimeTo) {
+            const formatedDateFrom = formatDatePipe.transform(dateTimeFrom);
+            const formatedTimeFrom = formatTimePipe.transform(dateTimeFrom);
+            const formatedTimeTo = formatTimePipe.transform(dateTimeTo);
+
+            const dateTo = moment(dateTimeTo);
+            const duration = moment.duration(dateTo.diff(dateTimeFrom));
+
+            const days = Math.floor(duration.asDays());
+            const hours = duration.hours();
+            const minutes = duration.minutes();
+
+            lastStatus = `${formatedDateFrom} 
+                                        ${days || hours || minutes ? ' • ' : ''}
+                    	                ${days ? days + ' d' : ''} 
+                                        ${hours ? hours + ' h' : ''} 
+                                        ${minutes ? minutes + 'm' : ''}`;
+            lastStatusTime = `${formatedTimeFrom} - ${formatedTimeTo}`;
+        } else {
+            const firstSpaceIndex = statusString.indexOf(' ');
+            const secondSpaceIndex = statusString.indexOf(
+                ' ',
+                firstSpaceIndex + 1
+            );
+
+            const now = moment();
+            const duration = moment.duration(now.diff(dateTimeFrom));
+
+            const days = duration.days();
+            const hours = duration.hours();
+            const minutes = duration.minutes();
+
+            lastStatus = statusString
+                .slice(
+                    0,
+                    stopType === 'Delivery' ? secondSpaceIndex : firstSpaceIndex
+                )
+                .trim()
+                .toUpperCase();
+
+            lastStatusTime = `${days ? days + ' d' : ''} 
+                              ${hours ? hours + ' h' : ''} 
+                              ${minutes ? minutes + ' min ago' : ''}`;
+
+            if (
+                stopType === 'Delivery' &&
+                (lastStatus === 'LOADED' || lastStatus === 'LOADING')
+            )
+                lastStatus = 'OFF' + lastStatus;
+        }
+
+        return {
+            lastStatus,
+            lastStatusTime,
+        };
     }
 }
