@@ -117,6 +117,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                 if (load?.status?.statusCheckInNumber) {
                     const pickupStatus = [
                         LoadStatusEnum[4],
+                        
                         LoadStatusEnum[46],
                         LoadStatusEnum[48],
                         LoadStatusEnum[50],
