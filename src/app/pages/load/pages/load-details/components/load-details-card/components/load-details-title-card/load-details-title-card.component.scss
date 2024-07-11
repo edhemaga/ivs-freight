@@ -26,7 +26,7 @@
     .main-container {
         &-inner {
             display: grid;
-            grid-template-columns: 180px 1fr;
+            grid-template-columns: 162px 1fr;
             grid-gap: 12px;
 
             &:first-child {
@@ -63,5 +63,13 @@
                 }
             }
         }
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 1440px) {
+    .text-truncate {
+        max-width: 140px !important;
     }
 }

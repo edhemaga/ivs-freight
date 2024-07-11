@@ -475,7 +475,9 @@
                                 ? '#ED9292'
                                 : ''
                         }"
-                        (mouseenter)="dotHoveringIndex = i"
+                        (mouseenter)="
+                            stop?.isCheckedIn ? -1 : (dotHoveringIndex = i)
+                        "
                         (mouseleave)="dotHoveringIndex = -1"
                     ></div>
                 </ng-container>
@@ -487,7 +489,7 @@
                     [ngStyle]="{
                         left:
                             activeData?.truckPositionPercentage < 1
-                                ? '-0.3%'
+                                ? 'calc(' + 5 + '% - 11px)'
                                 : activeData?.truckPositionPercentage === 100
                                 ? 'calc(' +
                                   activeData?.truckPositionPercentage +

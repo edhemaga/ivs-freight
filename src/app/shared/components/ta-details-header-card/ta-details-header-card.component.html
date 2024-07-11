@@ -98,7 +98,7 @@
                 [tooltipBackground]="
                     !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
                 "
-                class="previousArrow"
+                class="d-flex justify-content-center align-items-center previousArrow"
                 (click)="onAction('previous')"
             >
                 <svg-icon
@@ -112,7 +112,7 @@
                 [mainTooltip]="tooltipNext"
                 [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#424242'"
                 position="bottom"
-                class="nextArrow"
+                class="d-flex justify-content-center align-items-center nextArrow"
                 (click)="onAction('next')"
             >
                 <svg-icon
