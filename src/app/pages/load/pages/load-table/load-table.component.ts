@@ -214,7 +214,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(filter((statusAction) => statusAction !== null))
             .subscribe((status) => {
                 this.loadServices
-                    .updateLoadStatus(status.id, status.data)
+                    .updateLoadStatus(status.id, status.data, false)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe();
             });
@@ -240,66 +240,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private pendingTabCardsConfig(): void {
         this.loadQuery.pending$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private templateTabCardsConfig(): void {
-        this.loadQuery.template$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront = res.front_side.filter(
-                        (row) => row !== null
-                    );
-
-                    const filteredCardRowsBack = res.back_side.filter(
-                        (row) => row !== null
-                    );
-
-                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private activeTabCardsConfig(): void {
-        this.loadQuery.active$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private closedTabCardsConfig(): void {
-        this.loadQuery.closed$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
