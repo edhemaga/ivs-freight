@@ -53,14 +53,10 @@ import { FormControlPipe } from '@shared/components/ta-input/pipes/form-control.
 import { DropdownCountPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-count.pipe';
 import { HighlightSearchPipe } from '@shared/pipes/highlight-search.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
-import { DropdownStatusPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-status-color.pipe';
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
-// enums
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // directives
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
@@ -88,13 +84,12 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         TaProfileImagesComponent,
         LoadModalProgressBarComponent,
         LoadStatusStringComponent,
-        
+
         // Pipe
         TaSvgPipe,
         FormControlPipe,
         DropdownCountPipe,
         HighlightSearchPipe,
-        DropdownStatusPipe,
         LoadStatusColorPipe,
 
         // Directive
@@ -301,8 +296,6 @@ export class TaInputDropdownComponent
 
     // Destroy
     private destroy$ = new Subject<void>();
-
-    public loadStatusEnum = LoadStatusEnum;
 
     constructor(
         @Self() public superControl: NgControl,

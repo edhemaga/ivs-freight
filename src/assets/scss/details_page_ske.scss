@@ -50,12 +50,7 @@ p {
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
-
     padding-bottom: 12px;
-
-    &.load {
-        grid-template-columns: 440px 1056px 300px !important;
-    }
 }
 // Common Class
 .details-component {
@@ -63,10 +58,6 @@ p {
     grid-auto-flow: column;
     column-gap: 12px;
     row-gap: 12px;
-
-    &.load {
-        grid-template-columns: 440px 1056px 300px !important;
-    }
 
     // BODY
     .truck-wrapper {
@@ -991,7 +982,7 @@ p {
 
 /* responsive start */
 
-@media (max-width: 1910px) {
+/* @media (max-width: 1910px) {
     .details-container-items {
         display: grid;
         grid-template-columns: 440px repeat(4, 320px);
@@ -1156,10 +1147,6 @@ p {
     app-broker-details {
         .details-header-wrapper {
             width: 430px !important;
-
-            .details-header-wrapper-switcher {
-                grid-template-columns: 360px 53px !important;
-            }
         }
 
         .load {
@@ -1184,12 +1171,6 @@ p {
 
         .credit-perctange {
             width: 407px !important;
-        }
-    }
-
-    app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 360px 53px !important;
         }
     }
 }
@@ -1257,10 +1238,6 @@ p {
     app-broker-details {
         .details-header-wrapper {
             width: 420px !important;
-
-            .details-header-wrapper-switcher {
-                grid-template-columns: 348px 53px !important;
-            }
         }
 
         .load {
@@ -1285,12 +1262,6 @@ p {
 
         .credit-perctange {
             width: 396px !important;
-        }
-    }
-
-    app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 350px 53px !important;
         }
     }
 }
@@ -1406,9 +1377,6 @@ p {
         .details-header-wrapper {
             width: 475px !important;
             max-width: 475px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 403px 53px !important;
-            }
         }
 
         .load {
@@ -1433,12 +1401,6 @@ p {
 
         .credit-perctange {
             width: 450px !important;
-        }
-    }
-
-    app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 404px 53px !important;
         }
     }
 }
@@ -1515,9 +1477,6 @@ p {
         .details-header-wrapper {
             width: 455px !important;
             max-width: 455px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 382px 53px !important;
-            }
         }
 
         .load {
@@ -1546,9 +1505,6 @@ p {
     }
 
     app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 385px 53px !important;
-        }
     }
 }
 
@@ -1568,10 +1524,6 @@ p {
 
     .details-component .details-cards {
         width: 420px;
-    }
-
-    .details-header-wrapper-switcher {
-        grid-template-columns: 350px 53px !important;
     }
 
     .repair-details-container {
@@ -1616,9 +1568,6 @@ p {
     app-broker-details {
         .details-header-wrapper {
             width: 400px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 330px 53px !important;
-            }
         }
 
         .credit-perctange {
@@ -1639,18 +1588,8 @@ p {
         width: 400px;
     }
 
-    .details-header-wrapper-switcher {
-        grid-template-columns: 330px 53px !important;
-    }
-
     .assign-to {
         grid-template-columns: 185px 185px;
-    }
-
-    app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 330px 53px !important;
-        }
     }
 }
 
@@ -1727,10 +1666,6 @@ p {
         width: 380px;
     }
 
-    .details-header-wrapper-switcher {
-        grid-template-columns: 308px 53px !important;
-    }
-
     .assign-to {
         grid-template-columns: 175px 175px;
     }
@@ -1797,9 +1732,6 @@ p {
 
         .details-header-wrapper {
             width: 380px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 310px 53px !important;
-            }
         }
 
         .load {
@@ -1826,12 +1758,6 @@ p {
             width: 356px !important;
         }
     }
-
-    app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 309px 53px !important;
-        }
-    }
 }
 
 @media (max-width: 1590px) {
@@ -1854,10 +1780,6 @@ p {
 
     .reason-span {
         display: none;
-    }
-
-    .details-header-wrapper-switcher {
-        grid-template-columns: 290px 53px !important;
     }
 
     .assign-to {
@@ -1896,9 +1818,6 @@ p {
     app-broker-details {
         .details-header-wrapper {
             width: 360px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 290px 53px !important;
-            }
         }
 
         .load {
@@ -1927,13 +1846,10 @@ p {
     }
 
     app-repair-shop-details {
-        .details-header-wrapper-switcher {
-            grid-template-columns: 290px 53px !important;
-        }
     }
 }
 
-@media (max-width: 1540px) {
+@media (max-width: 1440px) {
     .details-container-items {
         display: grid;
         grid-template-columns: 360px repeat(4, 250px);
@@ -2001,9 +1917,6 @@ p {
     app-broker-details {
         .details-header-wrapper {
             width: 360px !important;
-            .details-header-wrapper-switcher {
-                grid-template-columns: 289px 53px !important;
-            }
         }
 
         .load {
@@ -2038,3 +1951,4 @@ p {
         width: 237px;
     }
 }
+ */

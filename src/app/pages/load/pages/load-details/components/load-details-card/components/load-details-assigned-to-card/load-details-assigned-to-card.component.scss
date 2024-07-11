@@ -8,7 +8,7 @@
 
         &-inner {
             display: grid;
-            grid-template-columns: repeat(2, 202px);
+            grid-template-columns: repeat(2, 1fr);
             grid-gap: 12px;
 
             &.vehicle-container {

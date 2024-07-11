@@ -168,11 +168,11 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
         let lastStatusTime: string;
 
         if (stopStatusHistory?.length) {
-            const latestHistory = stopStatusHistory.find(
-                (history) => history.dateTimeFrom && history.dateTimeTo
-            );
-
             if (isCompletedStop) {
+                const latestHistory = stopStatusHistory.find(
+                    (history) => history.dateTimeFrom && history.dateTimeTo
+                );
+
                 const { statusString, dateTimeFrom, dateTimeTo } =
                     latestHistory;
 

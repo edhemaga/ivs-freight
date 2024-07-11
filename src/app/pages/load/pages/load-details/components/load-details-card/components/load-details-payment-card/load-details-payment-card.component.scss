@@ -7,7 +7,7 @@
         &-box {
             margin-bottom: 8px;
             display: grid;
-            grid-template-columns: 202px 105px 97px;
+            grid-template-columns: 1fr 1fr 1fr;
             grid-gap: 12px;
 
             p,
@@ -46,10 +46,6 @@
 
             &:last-child {
                 margin-bottom: 0;
-            }
-
-            .last-box {
-                padding-right: 12px;
             }
         }
     }
