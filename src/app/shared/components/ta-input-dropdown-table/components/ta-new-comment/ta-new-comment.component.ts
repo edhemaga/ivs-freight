@@ -108,7 +108,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                                 ...comment,
                                 cardId: loadId,
                                 date: dateNow,
-                                createdAt: moment().format(),
+                                createdAt: dateNow,
                                 companyUser: {
                                     avatar: this.user.avatarFile?.url,
                                     fullName:

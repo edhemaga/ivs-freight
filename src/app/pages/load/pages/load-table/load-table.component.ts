@@ -953,13 +953,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             loadPickup: [
                 {
-                    count: stops[0]?.count ?? null,
+                    count: stops[0]?.stopOrder,
                     location: stops[0]?.shipper?.address?.city,
-
                     delivery: false,
                 },
                 {
-                    count: stops[1]?.count ?? null,
+                    count: stops[1]?.stopOrder,
                     location: stops[1]?.shipper?.address?.city,
 
                     delivery: true,
