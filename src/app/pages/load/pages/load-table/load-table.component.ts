@@ -81,6 +81,7 @@ import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state
 import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
+    selectClosedTabCards,
     selectPendingTabCards,
     selectTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
@@ -98,7 +99,7 @@ import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.he
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('toolbarComponent') toolbarComponent: TaTableToolbarComponent;
-    
+
     private destroy$ = new Subject<void>();
     public loadTableData: any[] = [];
     public tableOptions;
@@ -1341,6 +1342,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case TableStringEnum.TEMPLATE:
                 this.displayRows$ = this.store.pipe(
                     select(selectTemplateTabCards)
+                );
+                break;
+            case TableStringEnum.CLOSED:
+                this.displayRows$ = this.store.pipe(
+                    select(selectClosedTabCards)
                 );
                 break;
             default:
