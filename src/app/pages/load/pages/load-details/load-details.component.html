@@ -1,4 +1,4 @@
-<div class="details-container-items load">
+<div class="load-details-container">
     <ng-container
         *ngFor="
             let item of loadDetailsConfig;
@@ -34,12 +34,10 @@
         >
         </app-ta-details-header>
     </ng-container>
-
-    <div class="load-details-container">
-        <app-load-details-item
-            [detailsConfig]="loadDetailsConfig"
-            [isAddNewComment]="isAddNewComment"
-            [isSearchComment]="isSearchComment"
-        ></app-load-details-item>
-    </div>
 </div>
+
+<app-load-details-item
+    [detailsConfig]="loadDetailsConfig"
+    [isAddNewComment]="isAddNewComment"
+    [isSearchComment]="isSearchComment"
+></app-load-details-item>
