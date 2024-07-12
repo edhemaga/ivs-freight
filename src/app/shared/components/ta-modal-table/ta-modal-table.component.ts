@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -79,6 +80,7 @@ import {
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
     RepairShopContactResponse,
+    LoadStopItemCommand,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -132,11 +134,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
-    
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
         | RepairItemCommand[]
+        | LoadStopItemCommand[]
     >();
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
     @Output() totalCostValueEmitter = new EventEmitter<RepairSubtotal[]>();
@@ -178,9 +180,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedFuelCard: DriverModalFuelCardResponse[] = [];
     public fuelCardOptions: DriverModalFuelCardResponse[] = [];
 
+    public loadItems: any = [];
+
     // enums
     public taModalTableStringEnum = TaModalTableStringEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public selectedQuantity: EnumValue[] = [];
+    public selectedStack: EnumValue[] = [];
+    public selectedSecure: EnumValue[]= [];
+    public selectedTarps: EnumValue[]= [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -190,7 +198,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private contactService: ContactsService,
         private repairService: RepairService,
         private pmService: PmService,
-        private driverService: DriverService
+        private driverService: DriverService,
+        private cdRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -640,7 +649,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
             );
         }
-
         this.modalTableValueEmitter.emit(modalTableDataValue);
     }
 
@@ -813,16 +821,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         [...descriptionValidation, Validators.required],
                     ],
                     quantity: [null],
-                    tmp: [null],
+                    temperature: [null],
                     weight: [null],
                     length: [null],
                     height: [null],
                     tarp: [null],
-                    stack: [null],
+                    stackable: [null],
                     secure: [null],
-                    bolNo: [null],
-                    pickupNo: [null],
-                    sealNo: [null],
+                    bolNumber: [null],
+                    pickupNumber: [null],
+                    sealNumber: [null],
                     code: [null],
                 });
 
@@ -861,6 +869,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.FUEL_CARD:
                 this.selectedFuelCard.splice(index, 1);
 
+                break;
+
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                this.selectedQuantity.splice(index, 1);
+                this.selectedStack.splice(index, 1);
+                this.selectedSecure.splice(index, 1);
+                this.selectedTarps.splice(index, 1);
+                this.cdRef.detectChanges();
                 break;
             default:
                 break;
@@ -910,6 +926,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 isInputHoverRow =
                     ModalTableConstants.IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES;
                 break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_LOAD_ITEMS;
+                break;
         }
 
         return JSON.parse(JSON.stringify(isInputHoverRow));
@@ -932,11 +952,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | RepairItemResponse
             | PMTableData
             | DriverDetailsOffDutyLocationResponse
+            | LoadStopItemCommand
         )[]
     ): void {
-        if(modalTableData.length > 1) return;
         modalTableData.forEach((data, i) => {
             this.createFormArrayRow();
+            console.log(data);
 
             switch (this.tableType) {
                 case ModalTableTypeEnum.CONTACT:
@@ -981,6 +1002,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     });
 
                     this.selectedAddress[i] = addressData.address;
+                    break;
+                case ModalTableTypeEnum.LOAD_ITEMS:
+                    this.handleLoadModalItems(data, i);
+
                     break;
                 default:
                     break;
@@ -1126,6 +1151,36 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.selectedAddress[index] = offDutyLocationData?.address;
+    }
+
+    private handleLoadModalItems(
+        modalItem: LoadStopItemCommand,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+        formGroup.patchValue({
+            description: modalItem.description,
+            quantity: modalItem.quantity,
+            temperature: modalItem.temperature,
+            weight: modalItem.weight,
+            length: modalItem.length,
+            height: modalItem.height,
+            tarp: (modalItem.tarp as EnumValue).name,
+            stackable: (modalItem.stackable as EnumValue).name,
+            secure: (modalItem.secure as EnumValue).name,
+            bolNumber: modalItem.bolNumber,
+            pickupNumber: modalItem.pickupNumber,
+            sealNumber: modalItem.sealNumber,
+            code: modalItem.code,
+        });
+
+        this.selectedQuantity[index] =
+            this.stopItemDropdownLists.quantityDropdownList.find(
+                (quantity) => quantity.id === modalItem.quantity
+            );
+        this.selectedStack[index] = modalItem.stackable as EnumValue;
+        this.selectedSecure[index] = modalItem.secure as EnumValue;
+        this.selectedTarps[index] = modalItem.tarp as EnumValue;
     }
 
     private checkForInputChanges(): void {

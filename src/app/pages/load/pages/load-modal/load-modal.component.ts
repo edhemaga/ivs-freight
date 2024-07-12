@@ -397,6 +397,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private statusHistory: LoadStatusHistoryResponse[];
     private initialinvoicedDate: string;
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public savedPickupStopItems: LoadStopItemCommand[] = [];
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -2925,10 +2926,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             (q) => q.name === item.secure
                         ).id;
                 }
-                if (item.stack) {
-                    item.stack =
+                if (item.stackable) {
+                    item.stackable =
                         this.stopItemDropdownLists.stackDropdownList.find(
-                            (q) => q.name === item.stack
+                            (q) => q.name === item.stackable
+                        ).id;
+                }
+                if (item.tarp) {
+                    item.tarp =
+                        this.stopItemDropdownLists.tarpDropdownList.find(
+                            (q) => q.name === item.tarp
                         ).id;
                 }
 
@@ -3034,7 +3041,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles,
                 legHours,
                 legMinutes,
-                items: this.remapStopItems(this.pickupStopItems),
+                items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
             });
         }
@@ -3432,8 +3439,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ): void {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
-                this.pickupStopItems = stopItemsDataValue;
-
+                this.savedPickupStopItems = stopItemsDataValue;
                 break;
             case LoadModalStringEnum.DELIVERY:
                 this.deliveryStopItems = stopItemsDataValue;
@@ -3936,6 +3942,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         quantityDropdownList: res.loadItemUnits,
                         stackDropdownList: res.stackable,
                         secureDropdownList: res.secures,
+                        tarpDropdownList: res.tarps
                     };
                 },
 
@@ -4235,7 +4242,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         stops.forEach((stop, index) => {
             if (index === 0) {
                 this.pickupStatusHistory = stop.statusHistory;
-                this.pickupStopItems = [stop.items];
+                this.pickupStopItems = stop.items;
+                this.savedPickupStopItems = [stop.items];
             } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = [stop.items];
                 this.extraStopStatusHistory[index - 1] = stop.statusHistory;

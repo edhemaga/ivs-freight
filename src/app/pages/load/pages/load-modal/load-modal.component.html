@@ -577,8 +577,8 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="pickupStopItems.length"
-                                [hasCounter]="pickupStopItems.length"
+                                [isCardOpen]="savedPickupStopItems.length"
+                                [hasCounter]="savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
                                 [hasArrow]="false"
@@ -586,7 +586,7 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="pickupStopItems.length"
+                                [hasScrollBodyXAxis]="savedPickupStopItems.length"
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
@@ -597,14 +597,15 @@
                                     [isNewRowCreated]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
-                                    [stopItemDropdownLists]="stopItemDropdownLists"
+                                    [stopItemDropdownLists]="
+                                        stopItemDropdownLists
+                                    "
                                     [modalTableData]="pickupStopItems"
                                     (modalTableValueEmitter)="
-                                        handleStopItemsDataValueEmit(
-                                            $event,
-                                            'pickup'
-                                        )
-                                    "
+                                    handleStopItemsDataValueEmit(
+                                        $event,
+                                        'pickup'
+                                    )"
                                     (modalTableValidStatusEmitter)="
                                         handleStopItemsValidStatusEmit($event)
                                     "

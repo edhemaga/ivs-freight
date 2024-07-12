@@ -91,4 +91,5 @@ export class ModalTableConstants {
     static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_FUEL_CARD: boolean[] = [false];
     static IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_LOAD_ITEMS: boolean[] = [false, false,false, false,false, false,false, false,false, false,false, false,false];
 }

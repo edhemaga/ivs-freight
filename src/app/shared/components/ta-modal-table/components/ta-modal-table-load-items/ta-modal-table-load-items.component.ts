@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormGroup,
+} from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Enums
@@ -26,10 +30,10 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
         CommonModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        
+
         TaInputComponent,
         TaInputDropdownComponent,
-        
+
         //pipes
         TrackByPropertyPipe,
     ],
@@ -39,14 +43,22 @@ export class TaModalTableLoadItemsComponent implements OnInit {
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
     @Input() stopItemDropdownLists: LoadStopItemDropdownLists;
+    @Input()  selectedQuantity = [];
+    @Input()  selectedStack = [];
+    @Input()  selectedSecure = [];
+    @Input()  selectedTarps = [];
+    @Output() deleteFormArrayRowClick: EventEmitter<number> =
+        new EventEmitter();
 
     constructor() {}
 
     ngOnInit(): void {}
 
     get formArray() {
-        console.log(this.modalTableForm?.get(this.arrayName))
-      return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
-  }
+        return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
+    }
 
+    public emitDeleteFormArrayRowClick(index: number): void {
+        this.deleteFormArrayRowClick.emit(index);
+    }
 }

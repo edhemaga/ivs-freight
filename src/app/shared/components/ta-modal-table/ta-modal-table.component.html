@@ -206,7 +206,14 @@
             *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
+            [isInputHoverRows]="isInputHoverRows"
             [stopItemDropdownLists]="stopItemDropdownLists"
+            [selectedQuantity]="selectedQuantity"
+            [selectedStack]="selectedStack"
+            [selectedSecure]="selectedSecure"
+            [selectedTarps]="selectedTarps"
+            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-load-items>
     </ng-container>

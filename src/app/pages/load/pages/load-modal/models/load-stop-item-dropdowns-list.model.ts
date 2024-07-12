@@ -4,4 +4,5 @@ export interface LoadStopItemDropdownLists {
     quantityDropdownList: EnumValue[];
     stackDropdownList: EnumValue[];
     secureDropdownList: EnumValue[];
+    tarpDropdownList: EnumValue[];
 }
