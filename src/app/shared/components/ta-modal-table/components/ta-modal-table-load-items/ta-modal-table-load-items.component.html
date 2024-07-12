@@ -36,29 +36,14 @@
                 <div class="gradient-border-container stop-items-desc">
                     <app-ta-input
                         formControlName="description"
-                        [inputConfig]="{
-                            name: 'Description',
-                            type: 'text',
-                            label: 'Description',
-                            placeholderInsteadOfLabel: true,
-                            isRequired: true,
-                            hideErrorMessage: true
-                        }"
+                        [inputConfig]="descriptionInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input-dropdown
                         formControlName="quantity"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Quantity',
-                            placeholderInsteadOfLabel: true,
-                            dropdownWidthClass: 'w-col-130',
-                            hideColorValidations: !isInputHoverRows[i][1]
-                        }"
+                        [inputConfig]="quantityInputConfig"
                         [options]="stopItemDropdownLists?.quantityDropdownList"
                         [activeItem]="selectedQuantity[i]"
                     ></app-ta-input-dropdown>
@@ -67,66 +52,35 @@
                 <div>
                     <app-ta-input
                         formControlName="temperature"
-                        [inputConfig]="{
-                            name: 'BOL NO',
-                            type: 'text',
-                            label: 'BOL NO',
-                            placeholderInsteadOfLabel: true
-                        }"
+                        [inputConfig]="temperatureInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input
                         formControlName="weight"
-                        [inputConfig]="{
-                            name: 'Weight',
-                            type: 'text',
-                            label: 'Weight',
-                            placeholderInsteadOfLabel: true,
-                            fixedPlacholder: 'lbs'
-                        }"
+                        [inputConfig]="weightInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div class="gradient-border-container">
                     <app-ta-input
                         formControlName="length"
-                        [inputConfig]="{
-                            name: 'Length',
-                            type: 'text',
-                            label: 'Length',
-                            placeholderInsteadOfLabel: true,
-                            fixedPlacholder: 'ft'
-                        }"
+                        [inputConfig]="lengthInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input
                         formControlName="height"
-                        [inputConfig]="{
-                            name: 'Height',
-                            type: 'text',
-                            label: 'Height',
-                            placeholderInsteadOfLabel: true,
-                            fixedPlacholder: 'ft'
-                        }"
+                        [inputConfig]="heightInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input-dropdown
                         formControlName="tarp"
-                        [inputConfig]="{
-                            name: 'Tarp',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Tarp',
-                            placeholderInsteadOfLabel: true,
-                            dropdownWidthClass: 'w-col-130',
-                            hideColorValidations: !isInputHoverRows[i][1]
-                        }"
+                        [inputConfig]="tarpInputConfig"
                         [options]="stopItemDropdownLists?.tarpDropdownList"
                         [activeItem]="selectedTarps[i]"
                     ></app-ta-input-dropdown>
@@ -135,15 +89,7 @@
                 <div>
                     <app-ta-input-dropdown
                         formControlName="stackable"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Stack',
-                            placeholderInsteadOfLabel: true,
-                            dropdownWidthClass: 'w-col-80',
-                            hideColorValidations: !isInputHoverRows[i][7]
-                        }"
+                        [inputConfig]="stackableInputConfig"
                         [options]="stopItemDropdownLists?.stackDropdownList"
                         [activeItem]="selectedStack[i]"
                     ></app-ta-input-dropdown>
@@ -152,15 +98,7 @@
                 <div>
                     <app-ta-input-dropdown
                         formControlName="secure"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            isDropdown: true,
-                            label: 'Secure',
-                            placeholderInsteadOfLabel: true,
-                            dropdownWidthClass: 'w-col-100',
-                            hideColorValidations: !isInputHoverRows[i][8]
-                        }"
+                        [inputConfig]="secureInputConfig"
                         [options]="stopItemDropdownLists?.secureDropdownList"
                         [activeItem]="selectedSecure[i]"
                     ></app-ta-input-dropdown>
@@ -169,48 +107,28 @@
                 <div>
                     <app-ta-input
                         formControlName="bolNumber"
-                        [inputConfig]="{
-                            name: 'BOL No.',
-                            type: 'text',
-                            label: 'BOL No.',
-                            placeholderInsteadOfLabel: true
-                        }"
+                        [inputConfig]="bolInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input
                         formControlName="pickupNumber"
-                        [inputConfig]="{
-                            name: 'Pickup No.',
-                            type: 'text',
-                            label: 'Pickup No.',
-                            placeholderInsteadOfLabel: true
-                        }"
+                        [inputConfig]="pickupInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input
                         formControlName="sealNumber"
-                        [inputConfig]="{
-                            name: 'Seal No.',
-                            type: 'text',
-                            label: 'Seal No.',
-                            placeholderInsteadOfLabel: true
-                        }"
+                        [inputConfig]="sealNumberInputConfig"
                     ></app-ta-input>
                 </div>
 
                 <div>
                     <app-ta-input
                         formControlName="code"
-                        [inputConfig]="{
-                            name: 'Code',
-                            type: 'text',
-                            label: 'Code',
-                            placeholderInsteadOfLabel: true
-                        }"
+                        [inputConfig]="codeInputConfig"
                     ></app-ta-input>
                 </div>
             </div>
