@@ -229,10 +229,17 @@
             !_inputConfig.hideRequiredCheck &&
             !_inputConfig.incorrectInput &&
             !_inputConfig?.loadingSpinner?.isLoading &&
-            !_inputConfig.dropdownLabel
+            !_inputConfig.dropdownLabel &&
+            !_inputConfig.fixedPlacholder
         "
         src="assets/svg/common/ic_confirm.svg"
     ></svg-icon>
+
+    <ng-container *ngIf="_inputConfig.fixedPlacholder && !input.value">
+        <span class="input-fixed-placehoder-label">{{
+            _inputConfig.fixedPlacholder
+        }}</span>
+    </ng-container>
 
     <!-- Input Loading spinner -->
     <div
@@ -531,7 +538,7 @@
         (shown)="onPopoverShown()"
         (hidden)="onPopoverHidden()"
         (click)="onPlaceholderIconEvent($event)"
-        [ngStyle]="{opacity: _inputConfig.isIconHidden ? '0' : {}}"
+        [ngStyle]="{ opacity: _inputConfig.isIconHidden ? '0' : {} }"
     >
         <svg-icon
             appHoverSvg
@@ -594,17 +601,16 @@
                 !focusInput &&
                 !_inputConfig.isDisabled
         }"
-
-
         [style.left]="
             _inputConfig.placeholderText?.toLowerCase() === 'persons' ||
             _inputConfig.placeholderText?.toLowerCase() === 'vehicles'
-                ? 30 + ((getSuperControl.value?.toString()?.length + 1) * 9) + 'px'
-                :
-            (focusInput &&
-            _inputConfig.placeholderText?.toLowerCase() !== 'months'
+                ? 30 +
+                  (getSuperControl.value?.toString()?.length + 1) * 9 +
+                  'px'
+                : focusInput &&
+                  _inputConfig.placeholderText?.toLowerCase() !== 'months'
                 ? 'auto'
-                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px')
+                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px'
         "
         [style.right]="
             focusInput &&
@@ -1105,7 +1111,6 @@
             ></app-load-modal-progress-bar>
         </span>
     </div>
-
     <!-- Single Input Value -->
     <input
         #input
@@ -1318,7 +1323,11 @@
             _inputConfig.statusStyle ? (input.value | loadStatusColor) : ''
         "
     />
-
+    <ng-container *ngIf="_inputConfig.fixedPlacholder">
+        <span class="input-fixed-placehoder-label">{{
+            _inputConfig.fixedPlacholder
+        }}</span>
+    </ng-container>
     <!-- Input Label -->
     <label
         *ngIf="!_inputConfig.multiSelectDropdownActive"
@@ -1421,11 +1430,6 @@
     >
         {{ getSuperControl.errors | inputError : _inputConfig.name }}
     </span>
-    <!-- <span
-        *ngIf="_inputConfig.fixedPlacholder && input.value"
-        class="input-fixed-placehoder-label"
-        >{{ _inputConfig.fixedPlacholder }}</span 
-    >-->
 </div>
 
 <!-- Popover for DateTime Pickers -->

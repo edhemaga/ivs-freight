@@ -101,6 +101,7 @@ export class LoadStopItems {
         type: 'text',
         label: 'TMP',
         placeholderInsteadOfLabel: true,
+        fixedPlacholder: '°F'
     };
 
     static IS_CREATED_NEW_STOP_ITEMS_ROW: LoadItemStop = {

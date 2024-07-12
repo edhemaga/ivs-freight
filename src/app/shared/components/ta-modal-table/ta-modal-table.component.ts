@@ -42,6 +42,7 @@ import { ContactsService } from '@shared/services/contacts.service';
 import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { DriverService } from '@pages/driver/services/driver.service';
+import { FormService } from '@shared/services/form.service';
 
 // constants
 import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';
@@ -199,7 +200,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private repairService: RepairService,
         private pmService: PmService,
         private driverService: DriverService,
-        private cdRef: ChangeDetectorRef
+        private formService: FormService
     ) {}
 
     ngOnInit(): void {
@@ -821,7 +822,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         [...descriptionValidation, Validators.required],
                     ],
                     quantity: [null],
-                    temperature: [null],
+                    temperature: [null, this.formService.rangeValidator(-22, 99)],
                     weight: [null],
                     length: [null],
                     height: [null],
@@ -876,7 +877,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedStack.splice(index, 1);
                 this.selectedSecure.splice(index, 1);
                 this.selectedTarps.splice(index, 1);
-                this.cdRef.detectChanges();
                 break;
             default:
                 break;

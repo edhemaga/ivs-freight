@@ -385,7 +385,7 @@
     &-label {
         color: $default-placeholderIcon;
         position: absolute;
-        right: 0;
+        right: 8px;
         font-size: 14px;
         top: 3px;
     }
@@ -393,4 +393,8 @@
     &-input {
         padding-right: 25px !important;
     }
+}
+
+.invalid-filled-focus-out .input-fixed-placehoder-label{
+    right: 24px;
 }
