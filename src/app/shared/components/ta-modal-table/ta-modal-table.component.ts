@@ -1159,23 +1159,23 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     ): void {
         const formGroup = this.getFormArray().at(index);
         formGroup.patchValue({
-            description: modalItem.description,
-            quantity: modalItem.quantity,
-            temperature: modalItem.temperature,
-            weight: modalItem.weight,
-            length: modalItem.length,
-            height: modalItem.height,
-            tarp: (modalItem.tarp as EnumValue).name,
-            stackable: (modalItem.stackable as EnumValue).name,
-            secure: (modalItem.secure as EnumValue).name,
-            bolNumber: modalItem.bolNumber,
-            pickupNumber: modalItem.pickupNumber,
-            sealNumber: modalItem.sealNumber,
-            code: modalItem.code,
+            description: modalItem.description || null,
+            quantity: modalItem.quantity || null,
+            temperature: modalItem.temperature || null,
+            weight: modalItem.weight || null,
+            length: modalItem.length || null,
+            height: modalItem.height || null,
+            tarp: (modalItem.tarp as EnumValue)?.name|| null,
+            stackable: (modalItem.stackable as EnumValue)?.name || null,
+            secure: (modalItem.secure as EnumValue)?.name || null,
+            bolNumber: modalItem.bolNumber || null,
+            pickupNumber: modalItem.pickupNumber || null,
+            sealNumber: modalItem.sealNumber || null,
+            code: modalItem.code || null,
         });
 
         this.selectedQuantity[index] =
-            this.stopItemDropdownLists.quantityDropdownList.find(
+            this.stopItemDropdownLists?.quantityDropdownList?.find(
                 (quantity) => quantity.id === modalItem.quantity
             );
         this.selectedStack[index] = modalItem.stackable as EnumValue;

@@ -329,7 +329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // stop items
     public pickupStopItems: LoadStopItemResponse[] = [];
     public deliveryStopItems: LoadStopItemResponse[] = [];
-    public extraStopItems: LoadStopItemCommand[][] = [];
+    public extraStopItems: LoadStopItemCommand[] = [];
 
     public isCreatedNewStopItemsRow: LoadItemStop;
     public isEachStopItemsRowValid: boolean = true;
@@ -398,6 +398,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private initialinvoicedDate: string;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public savedPickupStopItems: LoadStopItemCommand[] = [];
+    public savedDeliveryStopItems: LoadStopItemCommand[] = [];
+    public savedExtraStopItems: LoadStopItemCommand[][] = [];
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -2912,36 +2915,40 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private remapStopItems(stopItems: LoadStopItemCommand[] | any) {
         let _pickupStopItems = stopItems;
 
-        if (this.pickupStopItems.length) {
-            _pickupStopItems = _pickupStopItems.map((item: any) => {
-                if (item.quantity) {
-                    item.quantity =
-                        this.stopItemDropdownLists.quantityDropdownList.find(
-                            (q) => q.name === item.quantity
-                        ).id;
-                }
-                if (item.secure) {
-                    item.secure =
-                        this.stopItemDropdownLists.secureDropdownList.find(
-                            (q) => q.name === item.secure
-                        ).id;
-                }
-                if (item.stackable) {
-                    item.stackable =
-                        this.stopItemDropdownLists.stackDropdownList.find(
-                            (q) => q.name === item.stackable
-                        ).id;
-                }
-                if (item.tarp) {
-                    item.tarp =
-                        this.stopItemDropdownLists.tarpDropdownList.find(
-                            (q) => q.name === item.tarp
-                        ).id;
-                }
+        _pickupStopItems = _pickupStopItems.map((item: any) => {
+            if (item.quantity) {
+                item.quantity =
+                    this.stopItemDropdownLists.quantityDropdownList.find(
+                        (q) => q.name === item.quantity || item.id === q.id
+                    ).id;
+            }
+            if (item.secure) {
+                item.secure =
+                    this.stopItemDropdownLists.secureDropdownList.find(
+                        (q) => q.name === item.secure || item.id === q.id
+                    ).id;
+            }
+            if (item.stackable) {
+                item.stackable =
+                    this.stopItemDropdownLists.stackDropdownList.find(
+                        (q) => q.name === item.stackable || item.id === q.id
+                    ).id;
+            }
+            if (item.tarp) {
+                item.tarp = this.stopItemDropdownLists.tarpDropdownList.find(
+                    (q) => q.name === item.tarp || item.id === q.id
+                ).id;
+            }
 
-                return item;
+            // Remove null properties from form data
+            Object.keys(item).forEach((key) => {
+                if (item[key] === null) {
+                    delete item[key];
+                }
             });
-        }
+
+            return item;
+        });
 
         return _pickupStopItems;
     }
@@ -3081,7 +3088,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMiles,
                     legHours,
                     legMinutes,
-                    items: this.remapStopItems(this.extraStopItems[index]),
+                    items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
                 });
             });
@@ -3120,7 +3127,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles,
                 legHours,
                 legMinutes,
-                items: this.remapStopItems(this.deliveryStopItems),
+                items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
             });
         }
@@ -3442,11 +3449,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.savedPickupStopItems = stopItemsDataValue;
                 break;
             case LoadModalStringEnum.DELIVERY:
-                this.deliveryStopItems = stopItemsDataValue;
+                this.savedDeliveryStopItems = stopItemsDataValue;
 
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                this.extraStopItems[extraStopIndex] = stopItemsDataValue;
+                this.savedExtraStopItems[extraStopIndex] = stopItemsDataValue;
 
                 break;
             default:
@@ -3942,7 +3949,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         quantityDropdownList: res.loadItemUnits,
                         stackDropdownList: res.stackable,
                         secureDropdownList: res.secures,
-                        tarpDropdownList: res.tarps
+                        tarpDropdownList: res.tarps,
                     };
                 },
 
@@ -4245,10 +4252,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.pickupStopItems = stop.items;
                 this.savedPickupStopItems = [stop.items];
             } else if (index !== stops.length - 1) {
-                this.extraStopItems[index - 1] = [stop.items];
+                this.extraStopItems[index - 1] = stop.items;
                 this.extraStopStatusHistory[index - 1] = stop.statusHistory;
+                this.savedExtraStopItems[index - 1] = [stop.items];
             } else {
-                this.deliveryStopItems = [stop.items];
+                this.deliveryStopItems = stop.items;
+                this.savedDeliveryStopItems = [stop.items];
                 this.deliveryStatusHistory = stop.statusHistory;
             }
         });

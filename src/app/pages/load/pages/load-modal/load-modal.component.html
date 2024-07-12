@@ -586,7 +586,9 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="savedPickupStopItems.length"
+                                [hasScrollBodyXAxis]="
+                                    savedPickupStopItems.length
+                                "
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
@@ -597,15 +599,16 @@
                                     [isNewRowCreated]="
                                         isCreatedNewStopItemsRow.pickup
                                     "
+                                    [modalTableData]="pickupStopItems"
                                     [stopItemDropdownLists]="
                                         stopItemDropdownLists
                                     "
-                                    [modalTableData]="pickupStopItems"
                                     (modalTableValueEmitter)="
-                                    handleStopItemsDataValueEmit(
-                                        $event,
-                                        'pickup'
-                                    )"
+                                        handleStopItemsDataValueEmit(
+                                            $event,
+                                            'pickup'
+                                        )
+                                    "
                                     (modalTableValidStatusEmitter)="
                                         handleStopItemsValidStatusEmit($event)
                                     "
@@ -964,12 +967,8 @@
                                         <div class="stop-items-wrapper">
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
-                                                [isCardOpen]="
-                                                    extraStopItems[indx].length
-                                                "
-                                                [hasCounter]="
-                                                    extraStopItems[indx].length
-                                                "
+                                                [isCardOpen]="true"
+                                                [hasCounter]="true "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
                                                 [hasArrow]="true"
@@ -977,9 +976,7 @@
                                                     marginTop: '10px',
                                                     marginBottom: '12px'
                                                 }"
-                                                [hasScrollBodyXAxis]="
-                                                    extraStopItems[indx].length
-                                                "
+                                                [hasScrollBodyXAxis]="true"
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
                                                         'extra-stop',
@@ -987,19 +984,21 @@
                                                     )
                                                 "
                                             >
-                                                <!-- <app-ta-modal-table
+                                                <app-ta-modal-table
                                                     [tableType]="
                                                         modalTableTypeEnum.LOAD_ITEMS
                                                     "
                                                     [isNewRowCreated]="
-                                                        isCreatedNewStopItemsRow
-                                                            .extraStops[indx]
+                                                        isCreatedNewStopItemsRow.extraStops[indx]
                                                     "
                                                     [modalTableData]="
-                                                    extraStopItems[indx]
+                                                        extraStopItems[indx]
+                                                    "
+                                                    [stopItemDropdownLists]="
+                                                        stopItemDropdownLists
                                                     "
                                                     (modalTableValueEmitter)="
-                                                        handleStopItemsDataValueEmit(
+                                                    handleStopItemsDataValueEmit(
                                                             $event,
                                                             'extra-stop',
                                                             indx
@@ -1010,7 +1009,7 @@
                                                             $event
                                                         )
                                                     "
-                                                ></app-ta-modal-table> -->
+                                                ></app-ta-modal-table>
                                             </app-ta-custom-card>
                                         </div>
                                         <ng-container
@@ -1211,8 +1210,8 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="deliveryStopItems.length"
-                                [hasCounter]="deliveryStopItems.length"
+                                [isCardOpen]="savedDeliveryStopItems.length"
+                                [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
                                 [hasArrow]="true"
@@ -1220,27 +1219,32 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="deliveryStopItems.length"
+                                [hasScrollBodyXAxis]="
+                                    savedDeliveryStopItems.length
+                                "
                                 (onActionEvent)="
                                     createNewStopItemsRow('delivery')
                                 "
                             >
-                                <!-- <app-ta-modal-table
+                                <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
                                     [isNewRowCreated]="
-                                    isCreatedNewStopItemsRow.delivery
+                                        isCreatedNewStopItemsRow.delivery
                                     "
                                     [modalTableData]="deliveryStopItems"
+                                    [stopItemDropdownLists]="
+                                        stopItemDropdownLists
+                                    "
                                     (modalTableValueEmitter)="
-                                    handleStopItemsDataValueEmit(
-                                        $event,
-                                        'delivery'
-                                    )
+                                        handleStopItemsDataValueEmit(
+                                            $event,
+                                            'delivery'
+                                        )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                    handleStopItemsValidStatusEmit($event)
+                                        handleStopItemsValidStatusEmit($event)
                                     "
-                                ></app-ta-modal-table> -->
+                                ></app-ta-modal-table>
                             </app-ta-custom-card>
                         </div>
 
