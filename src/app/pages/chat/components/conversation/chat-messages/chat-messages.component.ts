@@ -1,4 +1,13 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,6 +23,7 @@ import { HubService } from '@pages/chat/services/hub.service';
 import { CompanyUserShortResponse, ConversationResponse, MessageResponse } from 'appcoretruckassist';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-chat-messages',
   templateUrl: './chat-messages.component.html',
   styleUrls: ['./chat-messages.component.scss']
@@ -49,18 +59,21 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   // Form
   public messageForm!: FormGroup;
-  constructor(private activatedRoute: ActivatedRoute) {
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private cdref: ChangeDetectorRef
+  ) {
     this.initForm();
   }
 
   ngOnInit(): void {
-
     this.getResolvedData();
-
     this.connectToHub();
+  }
 
-    this.scrollToBottom();
-
+  ngAfterContentChecked(): void {
+    this.cdref.detectChanges();
   }
 
   // Get Data --------------------------------
@@ -70,7 +83,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.messages = res.messages;
-          this.scrollToBottom(32);
 
           // Conversation participants
           this.conversation = res.information;
@@ -94,14 +106,12 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
               next: (message) => {
                 if (message) {
                   this.messages = [...this.messages, message];
-                  this.scrollToBottom(32);
                 }
               },
               error: (err) => {
                 console.error(err)
               },
               complete: () => {
-                this.scrollToBottom(32);
                 console.log("Message received!")
               }
             });
@@ -124,7 +134,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         next: () => {
           this.messageToSend = "";
           this.canSendMessage = true;
-          this.scrollToBottom(32);
         }
       });
 
@@ -141,13 +150,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public enableChatInput(): void {
     this.isChatTypingActivated = true;
-  }
-
-  private scrollToBottom(additionalScrollInPixel?: number): void {
-    if (!this.messagesContent?.nativeElement) return;
-
-    const container = this.messagesContent.nativeElement;
-    container.scrollTop = 99999 + additionalScrollInPixel ?? 0;
   }
 
   public trackById(index: number, item: MessageResponse): number {

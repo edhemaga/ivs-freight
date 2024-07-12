@@ -47,9 +47,9 @@
     <div
         class="messages-content"
         #messagesContent
-        [scrollTop]="messagesContent.scrollHeight"
+        [scrollTop]="messagesContent?.scrollHeight"
     >
-        <div *ngIf="messages.length">
+        <div *ngIf="messages?.length">
             <!-- TODO Add trackBy -->
             <ng-container
                 *ngFor="
