@@ -967,8 +967,14 @@
                                         <div class="stop-items-wrapper">
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
-                                                [isCardOpen]="true"
-                                                [hasCounter]="true "
+                                                [isCardOpen]="
+                                                    savedExtraStopItems[indx]
+                                                        .length
+                                                "
+                                                [hasCounter]="
+                                                    savedExtraStopItems[indx]
+                                                        .length
+                                                "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
                                                 [hasArrow]="true"
@@ -976,7 +982,10 @@
                                                     marginTop: '10px',
                                                     marginBottom: '12px'
                                                 }"
-                                                [hasScrollBodyXAxis]="true"
+                                                [hasScrollBodyXAxis]="
+                                                    savedExtraStopItems[indx]
+                                                        .length
+                                                "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
                                                         'extra-stop',
@@ -989,7 +998,8 @@
                                                         modalTableTypeEnum.LOAD_ITEMS
                                                     "
                                                     [isNewRowCreated]="
-                                                        isCreatedNewStopItemsRow.extraStops[indx]
+                                                        isCreatedNewStopItemsRow
+                                                            .extraStops[indx]
                                                     "
                                                     [modalTableData]="
                                                         extraStopItems[indx]
@@ -998,7 +1008,7 @@
                                                         stopItemDropdownLists
                                                     "
                                                     (modalTableValueEmitter)="
-                                                    handleStopItemsDataValueEmit(
+                                                        handleStopItemsDataValueEmit(
                                                             $event,
                                                             'extra-stop',
                                                             indx

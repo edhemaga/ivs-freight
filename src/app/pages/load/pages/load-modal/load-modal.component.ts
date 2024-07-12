@@ -4250,14 +4250,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             if (index === 0) {
                 this.pickupStatusHistory = stop.statusHistory;
                 this.pickupStopItems = stop.items;
-                this.savedPickupStopItems = [stop.items];
+                this.savedPickupStopItems = stop.items.length ? [stop.items] : [];
             } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = stop.items;
                 this.extraStopStatusHistory[index - 1] = stop.statusHistory;
-                this.savedExtraStopItems[index - 1] = [stop.items];
+                this.savedExtraStopItems[index - 1] = stop.items.length ? [stop.items] : [];
             } else {
                 this.deliveryStopItems = stop.items;
-                this.savedDeliveryStopItems = [stop.items];
+                this.savedDeliveryStopItems = stop.items.length ? [stop.items] : [];
                 this.deliveryStatusHistory = stop.statusHistory;
             }
         });
