@@ -22,6 +22,7 @@ export class HubService {
                 transport: 4 // 4 - Long polling, web socket not working at the moment
             })
             .configureLogging(signalR.LogLevel.Information)
+            .withAutomaticReconnect()
             .build();
     }
 
@@ -32,12 +33,17 @@ export class HubService {
                 .start()
                 .then(() => {
                     observer.next();
-                    observer.complete();
                 })
                 .catch((error) => {
                     observer.error(error);
                 });
         });
+    }
+
+    disconnect(): void {
+        this.hubConnection
+            .stop()
+            .then();
     }
 
     receiveMessage(): Observable<MessageResponse> {
@@ -64,4 +70,5 @@ export class HubService {
             );
         });
     }
+
 }
