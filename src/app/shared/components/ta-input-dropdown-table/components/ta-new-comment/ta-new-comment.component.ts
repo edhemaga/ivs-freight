@@ -22,6 +22,7 @@ import moment from 'moment';
 
 // enums
 import { TaInputDropdownTableStringEnum } from '@shared/components/ta-input-dropdown-table/enums/ta-input-dropdown-table-string.enum';
+import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-string.enum';
 
 // services
 import { CommentsService } from '@shared/services/comments.service';
@@ -57,7 +58,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
         private commentService: CommentsService,
         private taInputDropdownTableService: TaInputDropdownTableService,
         private cdr: ChangeDetectorRef
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.checkIfNewCommentOpen();
@@ -99,10 +100,15 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (res) => {
+                            const dateNow = moment().format(
+                                CommentStringEnum.COMMENT_DATE_FORMAT
+                            );
+
                             this.loadService.addData({
                                 ...comment,
                                 cardId: loadId,
-                                createdAt: moment().format(),
+                                date: dateNow,
+                                createdAt: dateNow,
                                 companyUser: {
                                     avatar: this.user.avatarFile?.url,
                                     fullName:
@@ -158,9 +164,9 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
             return (this.isDisabled =
                 divContent ===
-                TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER ||
+                    TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER ||
                 divContent ===
-                TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER);
+                    TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER);
         }
 
         return (this.isDisabled = false);

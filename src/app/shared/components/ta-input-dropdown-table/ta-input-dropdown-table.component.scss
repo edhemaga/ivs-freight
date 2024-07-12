@@ -79,6 +79,18 @@
 
 // -------------------------COMMENTS COMPONENT -----------------------
 .comment-button {
+    &:hover {
+        background: $dark-2;
+
+        svg {
+            path {
+                fill: $ta-black;
+            }
+        }
+        .comments-popover {
+            background: $dark-2;
+        }
+    }
     .comments-popover {
         position: relative;
 
@@ -115,13 +127,13 @@
 }
 
 .comments-dropdown-opened {
-    background: $ta-black;
+    background: $ta-black !important;
     border-radius: 2px;
     transition: background 0.3s;
 
     svg {
         path {
-            fill: $ta-white-3;
+            fill: $ta-white-3 !important;
             transition: fill 0.3s;
         }
     }
