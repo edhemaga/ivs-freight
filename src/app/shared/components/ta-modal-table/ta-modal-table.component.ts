@@ -822,7 +822,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         [...descriptionValidation, Validators.required],
                     ],
                     quantity: [null],
-                    temperature: [null, this.formService.rangeValidator(-22, 99)],
+                    temperature: [null, this.formService.rangeValidator(-20, 99)],
                     weight: [null],
                     length: [null],
                     height: [null],

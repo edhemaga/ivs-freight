@@ -2438,6 +2438,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             list = this.orginalPaymentTypesDropdownList.filter(
                 (payments) => payments.id !== LoadModalConstants.ADVANCE_PAY
             );
+        } else {
+            list = this.orginalPaymentTypesDropdownList;
         }
 
         this.paymentTypesDropdownList = list;

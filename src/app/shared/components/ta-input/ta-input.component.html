@@ -235,7 +235,7 @@
         src="assets/svg/common/ic_confirm.svg"
     ></svg-icon>
 
-    <ng-container *ngIf="_inputConfig.fixedPlacholder && !input.value">
+    <ng-container *ngIf="_inputConfig.fixedPlacholder && input.value">
         <span class="input-fixed-placehoder-label">{{
             _inputConfig.fixedPlacholder
         }}</span>
@@ -1323,7 +1323,7 @@
             _inputConfig.statusStyle ? (input.value | loadStatusColor) : ''
         "
     />
-    <ng-container *ngIf="_inputConfig.fixedPlacholder">
+    <ng-container *ngIf="_inputConfig.fixedPlacholder && input.value">
         <span class="input-fixed-placehoder-label">{{
             _inputConfig.fixedPlacholder
         }}</span>
