@@ -34,9 +34,6 @@ import { EnumValue, TrailerTypeResponse } from 'appcoretruckassist';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
-// services
-import { TaInputService } from '@shared/services/ta-input.service';
-
 @Component({
     selector: 'app-ta-modal-table-load-items',
     templateUrl: './ta-modal-table-load-items.component.html',
@@ -72,6 +69,8 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     @Output() deleteFormArrayRowClick: EventEmitter<number> =
         new EventEmitter();
 
+    @Output() onFieldReset: EventEmitter<number> = new EventEmitter();
+
     // input configurations
     public descriptionInputConfig: ITaInput =
         LoadStopItems.DESCRIPTION_INPUT_CONFIG;
@@ -91,10 +90,11 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     public temperatureInputConfig: ITaInput =
         LoadStopItems.TEMPERATURE_INPUT_CONFIG;
 
-    constructor(private inputService: TaInputService) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.createDynamicFields();
+        setTimeout(() =>this.fieldValidators(), 1);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -104,31 +104,34 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         ) {
             this.createDynamicFields();
         }
-
-        this.fieldValidators();
+        if (
+            changes.isHazardous?.previousValue !==
+            changes.isHazardous?.currentValue
+        ) {
+            this.fieldValidators();
+        }
     }
 
     private fieldValidators(): void {
-        this.formArray.controls.forEach((control) => {
-            const isHazardous = this.isHazardous;
-            const descriptionControl = control.get(TaModalTableStringEnum.DESCRIPTION);
-            const hazardousControl = control.get(TaModalTableStringEnum.HAZARDOUS);
-        
-            this.inputService.changeValidators(
-                descriptionControl,
-                !isHazardous,
-                [Validators.required],
-                true
+        this.formArray.controls.forEach((control, index) => { 
+            const descriptionControl = control.get(
+                TaModalTableStringEnum.DESCRIPTION
             );
-            this.inputService.changeValidators(
-                hazardousControl,
-                isHazardous,
-                [Validators.required],
-                true
+            const hazardousControl = control.get(
+                TaModalTableStringEnum.HAZARDOUS
             );
-        
+
+            if(this.isHazardous) {
+                descriptionControl.removeValidators(Validators.required);
+                hazardousControl.addValidators(Validators.required);
+            } else {
+                descriptionControl.addValidators(Validators.required);
+                hazardousControl.removeValidators(Validators.required);
+            }
+
             hazardousControl.patchValue(null);
             descriptionControl.patchValue(null);
+            this.onFieldReset.emit(index);
         });
     }
 

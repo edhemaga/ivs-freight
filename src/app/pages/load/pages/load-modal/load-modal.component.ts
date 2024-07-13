@@ -362,7 +362,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadStopRoutes: MapRoute[] = [];
 
     // hazardous dropdown
-    public isHazardousPicked: boolean = false;
+    public isHazardousPicked: boolean = undefined;
     public isHazardousVisible: boolean = false;
 
     // stops date range
@@ -400,8 +400,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public savedPickupStopItems: LoadStopItemCommand[] = [];
     public savedDeliveryStopItems: LoadStopItemCommand[] = [];
     public savedExtraStopItems: LoadStopItemCommand[][] = [];
-    public pickupStopValid: boolean;
-    public deliveryStopValid: boolean;
+    public pickupStopValid: boolean = true;
+    public deliveryStopValid: boolean = true;
     public stopItemsValid: boolean[] = [];
 
     constructor(
@@ -3493,7 +3493,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public handleStopItemsValidStatusEmit(validStatus: boolean,
         type: string,
         extraStopIndex?: number): void {
-
+            // Flag to trigger form change on items change
+            this.isFormDirty = true;
             switch (type) {
                 case LoadModalStringEnum.PICKUP:
                     this.pickupStopValid = validStatus;
@@ -3508,7 +3509,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     break;
             }
 
-        this.isEachStopItemsRowValid = validStatus;
+        this.isEachStopItemsRowValid = this.pickupStopValid && this.deliveryStopValid && this.stopItemsValid.every(stop => stop);
     }
 
     public additionalPartVisibility(event: {

@@ -892,6 +892,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.getModalTableDataValue();
     }
 
+    public deleteHazardous(index: number) {
+        this.selectedHazardous.splice(index, 1);
+    }
+
     private createIsHoverRow(): boolean[] {
         let isInputHoverRow = null;
 

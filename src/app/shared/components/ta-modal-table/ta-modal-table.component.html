@@ -202,22 +202,25 @@
         >
         </app-ta-modal-table-previous-addresses>
 
-        <app-ta-modal-table-load-items
-            *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [stopItemDropdownLists]="stopItemDropdownLists"
-            [selectedQuantity]="selectedQuantity"
-            [selectedHazardous]="selectedHazardous"
-            [selectedStack]="selectedStack"
-            [selectedSecure]="selectedSecure"
-            [selectedTarps]="selectedTarps"
-            [selectedTrailer]="selectedTrailer"
-            [isHazardous]="isHazardous"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-load-items>
+        <ng-container *ngIf="isHazardous !== undefined">
+            <app-ta-modal-table-load-items
+                *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [stopItemDropdownLists]="stopItemDropdownLists"
+                [selectedQuantity]="selectedQuantity"
+                [selectedHazardous]="selectedHazardous"
+                [selectedStack]="selectedStack"
+                [selectedSecure]="selectedSecure"
+                [selectedTarps]="selectedTarps"
+                [selectedTrailer]="selectedTrailer"
+                [isHazardous]="isHazardous"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+                (onFieldReset)="deleteHazardous($event)"
+            >
+            </app-ta-modal-table-load-items>
+        </ng-container>
     </ng-container>
 </div>
