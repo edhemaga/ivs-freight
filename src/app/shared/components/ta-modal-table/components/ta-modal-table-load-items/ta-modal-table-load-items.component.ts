@@ -60,6 +60,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     @Input() selectedStack: EnumValue[] = [];
     @Input() selectedSecure: EnumValue[] = [];
     @Input() selectedTarps: EnumValue[] = [];
+    @Input() selectedHazardous: EnumValue[] = [];
     @Input() isHazardous: boolean;
     @Input() selectedTrailer: TrailerTypeResponse;
 
@@ -97,6 +98,17 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
             changes.selectedTrailer?.currentValue
         ) {
             this.createDynamicFields();
+        }
+
+        if(changes.isHazardous?.previousValue !== changes.isHazardous?.currentValue) {
+            this.formArray.controls.forEach((control) => {
+                if(this.isHazardous) {
+                    control.get(TaModalTableStringEnum.DESCRIPTION).patchValue(null)
+                } else if(!this.isHazardous) {
+                    control.get(TaModalTableStringEnum.HAZARDOUS).patchValue(null)
+
+                }
+            })
         }
     }
 

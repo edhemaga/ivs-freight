@@ -34,10 +34,21 @@
                 </div>
 
                 <div class="gradient-border-container stop-items-desc">
-                    <app-ta-input
-                        formControlName="description"
-                        [inputConfig]="descriptionInputConfig"
-                    ></app-ta-input>
+                    <ng-container *ngIf="!isHazardous">
+                        <app-ta-input
+                            formControlName="description"
+                            [inputConfig]="descriptionInputConfig"
+                        ></app-ta-input>
+                    </ng-container>
+                    <ng-container *ngIf="isHazardous">
+                        <app-ta-input-dropdown
+                        formControlName="hazardousMaterialId"
+                        [template]="'svgtext-template'"
+                            [inputConfig]="descriptionInputConfig"
+                            [options]="stopItemDropdownLists?.hazardousDropdownList"
+                            [activeItem]="selectedHazardous[i]"
+                        ></app-ta-input-dropdown>
+                    </ng-container>
                 </div>
 
                 <div>

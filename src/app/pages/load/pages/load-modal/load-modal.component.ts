@@ -2941,6 +2941,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     (q) => q.name === item.tarp || item.id === q.id
                 ).id;
             }
+            if(item.hazardousMaterialId) {
+                item.description = null;
+                item.hazardousMaterialId = this.stopItemDropdownLists.hazardousDropdownList.find(
+                    (q) => q.description === item.hazardousMaterialId || item.id === q.id)?.id;
+            } else {
+                item.hazardousMaterialId = null;
+            }
 
             // Remove null properties from form data
             Object.keys(item).forEach((key) => {
@@ -3952,6 +3959,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stackDropdownList: res.stackable,
                         secureDropdownList: res.secures,
                         tarpDropdownList: res.tarps,
+                        hazardousDropdownList:  res.hazardousMaterials.map((item) => {
+                            return {
+                                ...item,
+                                name: item.description,
+                                folder: LoadModalStringEnum.COMMON,
+                                subFolder: LoadModalStringEnum.LOAD,
+                            };
+                        })
                     };
                 },
 

@@ -193,7 +193,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedStack: EnumValue[] = [];
     public selectedSecure: EnumValue[]= [];
     public selectedTarps: EnumValue[]= [];
-
+    public selectedHazardous: EnumValue[]= [];
+    
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -836,6 +837,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     pickupNumber: [null],
                     sealNumber: [null],
                     code: [null],
+                    hazardousMaterialId: [null]
                 });
 
                 break;
@@ -880,6 +882,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedStack.splice(index, 1);
                 this.selectedSecure.splice(index, 1);
                 this.selectedTarps.splice(index, 1);
+                this.selectedHazardous.splice(index, 1);
+                
                 break;
             default:
                 break;
@@ -1175,6 +1179,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             pickupNumber: modalItem.pickupNumber || null,
             sealNumber: modalItem.sealNumber || null,
             code: modalItem.code || null,
+            hazardousMaterialId: modalItem.hazardousMaterialId
         });
 
         this.selectedQuantity[index] =
@@ -1184,6 +1189,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.selectedStack[index] = modalItem.stackable as EnumValue;
         this.selectedSecure[index] = modalItem.secure as EnumValue;
         this.selectedTarps[index] = modalItem.tarp as EnumValue;
+        // if we get items from backend field is called hazardousMaterial not hazardousMaterialId
+        this.selectedHazardous[index] = this.stopItemDropdownLists?.hazardousDropdownList.find(hazard => hazard.id 
+            === (modalItem as any).hazardousMaterial?.id
+        )
     }
 
     private checkForInputChanges(): void {
