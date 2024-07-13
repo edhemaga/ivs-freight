@@ -49,23 +49,30 @@ export class LoadStopItems {
         placeholderInsteadOfLabel: true,
         fixedPlacholder: 'ft',
     };
-    static TARP_INPUT_CONFIG: ITaInput = {
-        name: 'Tarp',
-        type: 'text',
-        isDropdown: true,
-        label: 'Tarp',
-        placeholderInsteadOfLabel: true,
-        dropdownWidthClass: 'w-col-130',
-    };
 
-    static SECURE_INPUT_CONFIG: ITaInput = {
-        name: 'Input Dropdown',
-        type: 'text',
-        isDropdown: true,
-        label: 'Secure',
-        placeholderInsteadOfLabel: true,
-        dropdownWidthClass: 'w-col-100',
-    };
+    static getTarpInputConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'Tarp',
+            type: 'text',
+            isDropdown: true,
+            label: 'Tarp',
+            placeholderInsteadOfLabel: true,
+            dropdownWidthClass: 'w-col-130',
+            isDisabled
+        };
+    }
+
+    static getSecureInputConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Secure',
+            placeholderInsteadOfLabel: true,
+            dropdownWidthClass: 'w-col-100',
+            isDisabled
+        };
+    }
 
     static PICKUP_INPUT_CONFIG: ITaInput = {
         name: 'Pickup No.',

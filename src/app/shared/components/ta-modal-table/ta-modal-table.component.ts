@@ -82,6 +82,7 @@ import {
     DriverDetailsOffDutyLocationResponse,
     RepairShopContactResponse,
     LoadStopItemCommand,
+    TrailerTypeResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -135,6 +136,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
+    @Input() isHazardous: boolean;
+    @Input() selectedTrailer: TrailerTypeResponse;
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
