@@ -612,7 +612,7 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event)
+                                        handleStopItemsValidStatusEmit($event, 'pickup')
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>
@@ -1020,7 +1020,9 @@
                                                     "
                                                     (modalTableValidStatusEmitter)="
                                                         handleStopItemsValidStatusEmit(
-                                                            $event
+                                                            $event,
+                                                            'extra-stop',
+                                                            indx
                                                         )
                                                     "
                                                 ></app-ta-modal-table>
@@ -1258,7 +1260,7 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event)
+                                        handleStopItemsValidStatusEmit($event, 'delivery')
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>

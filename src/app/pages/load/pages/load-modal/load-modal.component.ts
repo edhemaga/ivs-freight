@@ -400,6 +400,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public savedPickupStopItems: LoadStopItemCommand[] = [];
     public savedDeliveryStopItems: LoadStopItemCommand[] = [];
     public savedExtraStopItems: LoadStopItemCommand[][] = [];
+    public pickupStopValid: boolean;
+    public deliveryStopValid: boolean;
+    public stopItemsValid: boolean[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -776,8 +779,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadForm: UntypedFormGroup
     ):
         | LoadModalStringEnum.INVALID_STATUS
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
+            
+        if(this.pickupStopItems.length && !this.pickupStopValid) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         const pickupShipperControl = loadForm.get(
             LoadModalStringEnum.PICKUP_SHIPPER
         );
@@ -828,10 +837,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadFormArray: UntypedFormArray,
         indx: number
     ):
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | LoadModalStringEnum.INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
         const stopForm = loadFormArray.at(indx);
+        if(this.savedExtraStopItems[indx].length && !this.stopItemsValid[indx]) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         if (stopForm.dirty && !stopForm.valid) {
             return LoadModalStringEnum.INVALID_STATUS;
         }
@@ -846,8 +860,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadForm: UntypedFormGroup
     ):
         | LoadModalStringEnum.INVALID_STATUS
+        |  LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
+            
+        if(this.deliveryStopItems.length && !this.deliveryStopValid) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         const deliveryShipperControl = loadForm.get(
             LoadModalStringEnum.DELIVERY_SHIPPER
         );
@@ -3470,7 +3490,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public handleStopItemsValidStatusEmit(validStatus: boolean): void {
+    public handleStopItemsValidStatusEmit(validStatus: boolean,
+        type: string,
+        extraStopIndex?: number): void {
+
+            switch (type) {
+                case LoadModalStringEnum.PICKUP:
+                    this.pickupStopValid = validStatus;
+                    break;
+                case LoadModalStringEnum.DELIVERY:
+                    this.deliveryStopValid = validStatus;
+                    break;
+                case LoadModalStringEnum.EXTRA_STOP:
+                    this.stopItemsValid[extraStopIndex] = validStatus;
+                    break;
+                default:
+                    break;
+            }
+
         this.isEachStopItemsRowValid = validStatus;
     }
 

@@ -12,6 +12,7 @@ import {
     ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormGroup,
+    Validators,
 } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -33,6 +34,9 @@ import { EnumValue, TrailerTypeResponse } from 'appcoretruckassist';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
+// services
+import { TaInputService } from '@shared/services/ta-input.service';
+
 @Component({
     selector: 'app-ta-modal-table-load-items',
     templateUrl: './ta-modal-table-load-items.component.html',
@@ -44,6 +48,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
         ReactiveFormsModule,
         AngularSvgIconModule,
 
+        // Components
         TaInputComponent,
         TaInputDropdownComponent,
 
@@ -86,7 +91,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     public temperatureInputConfig: ITaInput =
         LoadStopItems.TEMPERATURE_INPUT_CONFIG;
 
-    constructor() {}
+    constructor(private inputService: TaInputService) {}
 
     ngOnInit(): void {
         this.createDynamicFields();
@@ -100,16 +105,31 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
             this.createDynamicFields();
         }
 
-        if(changes.isHazardous?.previousValue !== changes.isHazardous?.currentValue) {
-            this.formArray.controls.forEach((control) => {
-                if(this.isHazardous) {
-                    control.get(TaModalTableStringEnum.DESCRIPTION).patchValue(null)
-                } else if(!this.isHazardous) {
-                    control.get(TaModalTableStringEnum.HAZARDOUS).patchValue(null)
+        this.fieldValidators();
+    }
 
-                }
-            })
-        }
+    private fieldValidators(): void {
+        this.formArray.controls.forEach((control) => {
+            const isHazardous = this.isHazardous;
+            const descriptionControl = control.get(TaModalTableStringEnum.DESCRIPTION);
+            const hazardousControl = control.get(TaModalTableStringEnum.HAZARDOUS);
+        
+            this.inputService.changeValidators(
+                descriptionControl,
+                !isHazardous,
+                [Validators.required],
+                true
+            );
+            this.inputService.changeValidators(
+                hazardousControl,
+                isHazardous,
+                [Validators.required],
+                true
+            );
+        
+            hazardousControl.patchValue(null);
+            descriptionControl.patchValue(null);
+        });
     }
 
     public get formArray(): UntypedFormArray {
@@ -123,11 +143,12 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         this.secureInputConfig = LoadStopItems.getSecureInputConfig(
             this.isStrapChainDisabled
         );
-        
+
         // Reset values if field is disabled
         if (this.isTarpDisabled || this.isStrapChainDisabled) {
             this.formArray.controls.forEach((control) => {
-                if (this.isTarpDisabled) control.get(TaModalTableStringEnum.TARP).patchValue(null);
+                if (this.isTarpDisabled)
+                    control.get(TaModalTableStringEnum.TARP).patchValue(null);
                 if (this.isStrapChainDisabled)
                     control.get(TaModalTableStringEnum.SECURE).patchValue(null);
             });
