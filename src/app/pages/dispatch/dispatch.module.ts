@@ -20,6 +20,7 @@ import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
+import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 
 // Pipes
 import { ColorFinderPipe } from '@pages/dispatch/pipes/color-finder.pipe';
@@ -64,6 +65,8 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
+
+        DispatchTableTruckTrailerComponent,
     ],
 })
 export class DispatchModule {}
