@@ -89,7 +89,16 @@
                 object-fit: fill;
                 margin-right: 6px;
             }
-
+            .truck-location {
+                app-ta-input-address-dropdown {
+                    width: 264px;
+                }
+            }
+            .status-title {
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black;
+            }
             .no-avatar {
                 width: 28px;
                 height: 32px;

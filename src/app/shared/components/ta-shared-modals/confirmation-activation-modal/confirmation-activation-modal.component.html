@@ -3,13 +3,20 @@
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [headerSvg]="
-        editData?.type.includes('deactivate')
+        editData?.type.includes('deactivate') ||
+        editData?.type.includes('status')
             ? 'info2'
             : editData?.type.includes('activate')
             ? 'hire'
             : editData?.type
     "
     [isCloseIconRemoved]="true"
+    [isModalValid]="
+        editData?.type.includes('status') &&
+        editData?.data?.nameFront !== 'Unassigned'
+            ? locationForm.valid && isFormDirty
+            : true
+    "
     [showCounter]="editData?.array"
     [confirmationData]="editData"
     (confirmationAction)="onModalAction($event)"
@@ -28,6 +35,8 @@
                         ? 'assets/svg/common/confirmation/ic_confirmation_modal_button_' +
                           editData?.type +
                           '.svg'
+                        : editData?.type.includes('status')
+                        ? 'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
                         : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
                           editData?.type +
                           '.svg'
@@ -47,104 +56,95 @@
                     class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
                 >
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
-                        <ng-container
-                            *ngIf="
-                                editData?.template === 'Driver';
-                                else regularTemplate
-                            "
-                        >
-                            <div class="d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="
-                                        editData?.data?.avatarFile?.url;
-                                        else noImage
-                                    "
-                                >
-                                    <img
-                                        class="avatar"
-                                        [src]="editData?.data?.avatarFile?.url"
-                                    />
-                                </ng-container>
-
-                                <ng-template #noImage>
-                                    <div
-                                        class="d-flex align-items-center justify-content-center no-avatar"
-                                        [ngStyle]="{
-                                            background:
-                                                editData?.data?.avatarColor
-                                                    ?.background
-                                        }"
+                        <ng-container [ngSwitch]="editData?.template">
+                            <ng-container *ngSwitchCase="'Driver'">
+                                <div class="d-flex align-items-center">
+                                    <ng-container
+                                        *ngIf="
+                                            editData?.data?.avatarFile?.url;
+                                            else noImage
+                                        "
                                     >
-                                        <p
-                                            class="m-0 ta-font-extra-bold"
+                                        <img
+                                            class="avatar"
+                                            [src]="
+                                                editData?.data?.avatarFile?.url
+                                            "
+                                        />
+                                    </ng-container>
+
+                                    <ng-template #noImage>
+                                        <div
+                                            class="d-flex align-items-center justify-content-center no-avatar"
                                             [ngStyle]="{
-                                                color: editData?.data
-                                                    ?.avatarColor?.color
+                                                background:
+                                                    editData?.data?.avatarColor
+                                                        ?.background
                                             }"
                                         >
-                                            {{ editData?.data?.textShortName }}
-                                        </p>
-                                    </div>
-                                </ng-template>
+                                            <p
+                                                class="m-0 ta-font-extra-bold"
+                                                [ngStyle]="{
+                                                    color: editData?.data
+                                                        ?.avatarColor?.color
+                                                }"
+                                            >
+                                                {{
+                                                    editData?.data
+                                                        ?.textShortName
+                                                }}
+                                            </p>
+                                        </div>
+                                    </ng-template>
 
-                                <div class="d-flex flex-column title-container">
-                                    <div class="d-flex align-items-center">
-                                        <p class="title-text m-0 ta-font-bold">
-                                            {{ editData?.data?.name }}
-                                        </p>
-                                        <ng-container
-                                            *ngIf="
-                                                editData?.type === 'activate'
-                                            "
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
-                                                    confirmationImageRoutes.confirmationDeactivationSvg
-                                                "
-                                            ></svg-icon>
-                                        </ng-container>
-                                    </div>
-
-                                    <p
-                                        class="second-title-text m-0 ta-font-medium"
+                                    <div
+                                        class="d-flex flex-column title-container"
                                     >
-                                        {{
-                                            editData?.data?.dateOfBirth
-                                                | formatDateP
-                                        }}
-                                    </p>
-                                </div>
-                            </div>
-                        </ng-container>
+                                        <div class="d-flex align-items-center">
+                                            <p
+                                                class="title-text m-0 ta-font-bold"
+                                            >
+                                                {{ editData?.data?.name }}
+                                            </p>
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.type ===
+                                                    'activate'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="d-flex ms-1"
+                                                    [src]="
+                                                        confirmationImageRoutes.confirmationDeactivationSvg
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </div>
 
-                        <ng-template #regularTemplate>
-                            <div class="d-flex align-items-center w-100 gap-1">
-                                <ng-container
-                                    *ngIf="
-                                        editData?.svg &&
-                                        editData?.data?.avatarFile?.url
-                                    "
-                                >
-                                    <svg-icon
-                                        class="confirmation-svg"
-                                        [src]="editData?.data?.avatarFile?.url"
-                                    ></svg-icon>
-                                </ng-container>
+                                        <p
+                                            class="second-title-text m-0 ta-font-medium"
+                                        >
+                                            {{
+                                                editData?.data?.dateOfBirth
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="'Status'">
+                                <div class="d-flex w-100 gap-1">
+                                    <div class="m-0 status-title ta-font-bold">
+                                        This status change requires manual truck
+                                        location entry.
+                                    </div>
+                                </div>
 
                                 <div class="d-flex flex-column">
-                                    <div class="d-flex align-items-center">
-                                        <div
-                                            class="m-0 ta-font-bold"
-                                            [class.limit-text]="
-                                                editData.template !== 'truck' &&
-                                                editData.template !== 'trailer'
-                                            "
-                                            [class.shorter-text]="
-                                                editData?.type === 'open'
-                                            "
-                                        >
-                                            {{ editData.modalTitle }}
+                                    <div class="d-flex">
+                                        <div class="m-0 ta-font-bold">
+                                            Load {{ editData.modalTitle }}
                                         </div>
 
                                         <ng-container
@@ -159,18 +159,121 @@
                                         </ng-container>
                                     </div>
 
-                                    <div
-                                        class="m-0 text-2"
-                                        [class.limit-text]="
-                                            editData.template !== 'truck' &&
-                                            editData.template !== 'trailer'
-                                        "
-                                    >
-                                        {{ editData.modalSecondTitle }}
+                                    <div class="m-0 text-2">
+                                        Unit {{ editData.modalSecondTitle }}
                                     </div>
                                 </div>
-                            </div>
-                        </ng-template>
+
+                                <div
+                                    class="d-flex align-items-center flex-row gap-1"
+                                >
+                                    <p class="ta-font-extra-bold status-title">
+                                        to
+                                    </p>
+                                    <app-load-status-string
+                                        [status]="{
+                                            name: editData.data.nameFront,
+                                            valueForRequest:
+                                                editData.data.nameBack
+                                        }"
+                                        [isDetailsLayout]="true"
+                                    ></app-load-status-string>
+                                </div>
+                                <ng-container
+                                    *ngIf="
+                                        editData.data.nameFront !== 'Unassigned'
+                                    "
+                                >
+                                    <div
+                                        class="truck-location d-flex align-items-center flex-row gap-1"
+                                        [formGroup]="locationForm"
+                                    >
+                                        <app-ta-input-address-dropdown
+                                            formControlName="origin"
+                                            [inputConfig]="{
+                                                name: 'Address',
+                                                type: 'text',
+                                                textAlign: left,
+                                                isIconInput: false,
+                                                label: 'Origin',
+                                                isIconHidden: true,
+                                                placeholder: 'Truck location',
+                                                dropdownWidthClass: 'w-col-264',
+                                                minLength: 6,
+                                                maxLength: 256,
+                                                placeholderInsteadOfLabel: true
+                                            }"
+                                            [placeholderType]="'city'"
+                                            (selectedAddress)="
+                                                handleLocationSelect($event)
+                                            "
+                                        ></app-ta-input-address-dropdown>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+
+                            <ng-container *ngSwitchDefault>
+                                <div
+                                    class="d-flex align-items-center w-100 gap-1"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            editData?.svg &&
+                                            editData?.data?.avatarFile?.url
+                                        "
+                                    >
+                                        <svg-icon
+                                            class="confirmation-svg"
+                                            [src]="
+                                                editData?.data?.avatarFile?.url
+                                            "
+                                        ></svg-icon>
+                                    </ng-container>
+
+                                    <div class="d-flex flex-column">
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="m-0 ta-font-bold"
+                                                [class.limit-text]="
+                                                    editData.template !==
+                                                        'truck' &&
+                                                    editData.template !==
+                                                        'trailer'
+                                                "
+                                                [class.shorter-text]="
+                                                    editData?.type === 'open'
+                                                "
+                                            >
+                                                {{ editData.modalTitle }}
+                                            </div>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.type === 'open'
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="d-flex ms-1"
+                                                    [src]="
+                                                        confirmationImageRoutes.confirmationCloseBrokerSvg
+                                                    "
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </div>
+
+                                        <div
+                                            class="m-0 text-2"
+                                            [class.limit-text]="
+                                                editData.template !== 'truck' &&
+                                                editData.template !== 'trailer'
+                                            "
+                                        >
+                                            {{ editData.modalSecondTitle }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
                     </ng-container>
                 </div>
 
@@ -305,19 +408,30 @@
             <div
                 class="d-flex align-items-center confirmation-activation-body-subtitle"
             >
-                <p class="m-0 ta-font-medium">
-                    Are you sure you want to
-                    {{
-                        editData?.type === 'deactivate' ||
-                        editData?.type === 'deactivate-multiple'
-                            ? 'deactivate'
-                            : editData?.type === 'activate' ||
-                              editData?.type === 'activate-multiple'
-                            ? 'activate'
-                            : editData?.type
-                    }}
-                    selected {{ editData.tableType }}?
-                </p>
+                <ng-container
+                    *ngIf="editData?.template === 'Status'; else subtitle"
+                >
+                    <p class="m-0 ta-font-medium">
+                        This action can be undone by reverting to previous
+                        status, or canceling this change.
+                    </p>
+                </ng-container>
+
+                <ng-template #subtitle>
+                    <p class="m-0 ta-font-medium">
+                        Are you sure you want to
+                        {{
+                            editData?.type === 'deactivate' ||
+                            editData?.type === 'deactivate-multiple'
+                                ? 'deactivate'
+                                : editData?.type === 'activate' ||
+                                  editData?.type === 'activate-multiple'
+                                ? 'activate'
+                                : editData?.type
+                        }}
+                        selected {{ editData.tableType }}?
+                    </p>
+                </ng-template>
             </div>
         </div>
     </div>
