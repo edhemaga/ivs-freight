@@ -1,11 +1,12 @@
 import { Observable } from "rxjs";
-import { inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 
 // Models
 import {
     CompanyUserForChatListResponse,
     ConversationResponse,
     CreateConversationCommand,
+    CreateMessageCommand,
     CreateResponse,
     MessageResponse,
     UserType
@@ -14,9 +15,12 @@ import {
 // Services
 import { ChatService } from "appcoretruckassist/api/chat.service";
 
+@Injectable({
+    providedIn: 'root'
+})
 export class UserChatService {
 
-    private chatService = inject(ChatService);
+    constructor(private chatService: ChatService) { }
 
     public getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
@@ -47,6 +51,14 @@ export class UserChatService {
         return this.chatService.apiChatConversationPost(
             conversationParticipants
         );
+    }
+
+    public sendMessage(conversationId: number, content: string): Observable<CreateResponse> {
+        const messageToSend: CreateMessageCommand = {
+            conversationId,
+            content
+        }
+        return this.chatService.apiChatMessagePost(messageToSend);
     }
 
 }

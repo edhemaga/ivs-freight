@@ -1,0 +1,37 @@
+@import 'src/theme/variables';
+
+.message-container {
+    margin: auto 6px;
+
+    .content-wrapper {
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+
+        .message-time {
+            height: 100%;
+            line-height: 14px;
+            color: $bw5;
+            font-size: 11px;
+            margin-right: 8px;
+            margin-left: 8px;
+        }
+
+        .content {
+            width: fit-content;
+            max-width: 750px;
+            padding: 8px 10px 8px 10px;
+            color: $ta-black-2;
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        .current-user {
+            background-color: $ta-blue-16;
+        }
+
+        .other {
+            background-color: $ta-white-5;
+        }
+    }
+}

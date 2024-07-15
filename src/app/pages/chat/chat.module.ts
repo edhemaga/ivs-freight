@@ -1,4 +1,8 @@
 import { NgModule } from "@angular/core";
+import {
+    FormsModule,
+    ReactiveFormsModule
+} from "@angular/forms";
 
 // Modules
 import { CommonModule } from "@angular/common";
@@ -15,11 +19,14 @@ import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-
 import { MessagesNotSelectedComponent } from "@pages/chat/components/conversation/messages-not-selected/messages-not-selected.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
-import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
 import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-badge/user-status-badge.component";
 
+//Shared components
+import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
+
 // Services
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { HubService } from "@pages/chat/services/hub.service";
 
 // Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
@@ -55,17 +62,20 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         ChatRoutingModule,
         AngularSvgIconModule,
         SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
 
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
 
-        // Components
+        // Shared Components
         TaProfileImagesComponent,
+        TaInputComponent
     ],
     providers: [
         // Services
-        UserChatService,
+        HubService,
 
         // Resolvers
         UserResolver,

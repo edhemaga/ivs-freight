@@ -44,18 +44,21 @@
     </div>
 
     <ng-container *ngIf="contact?.count > 0; else noData">
-        <div
-            class="contact-wrapper"
-            *ngFor="
-                let chat of contact?.data;
-                let ind = index;
-                trackBy: trackById
-            "
-        >
-            <app-chat-user-list-item
-                (click)="selectUser(chat.companyUser.id)"
-                [contact]="chat"
-            ></app-chat-user-list-item>
+        <div class="contact-wrapper">
+            <ng-container
+                *ngFor="
+                    let chat of contact?.data;
+                    let ind = index;
+                    trackBy: trackById
+                "
+            >
+                <div class="contact">
+                    <app-chat-user-list-item
+                        [contact]="chat"
+                        (click)="selectUser(chat.companyUser.id)"
+                    ></app-chat-user-list-item>
+                </div>
+            </ng-container>
         </div>
     </ng-container>
 

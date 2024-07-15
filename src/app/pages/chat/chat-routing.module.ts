@@ -19,6 +19,9 @@ const routes: Routes = [
             users: UserResolver,
             drivers: DriverResolver
         },
+        data: {
+            title: 'Chat'
+        },
         children: [
             {
                 path: 'conversation/:conversationId',
@@ -26,7 +29,10 @@ const routes: Routes = [
                 resolve: {
                     information: ConversationInformationResolver,
                     messages: ConversationResolver
-                }
+                },
+                data: {
+                    title: 'Conversation'
+                },
             }
         ]
 
