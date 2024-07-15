@@ -809,66 +809,10 @@
                     </div>
                 </td>
                 <td class="parking-field">
-                    <div
-                        class="main_inside parking-field-new {{
-                            item.parkingSlot ? 'filled' : 'addNew'
-                        }} "
-                        [class.unassigned]="!item.parkingSlot"
-                    >
-                        <div
-                            class="padding-inside"
-                            *ngIf="openParkingDropdown != rowIndex"
-                        >
-                            <!-- <div class="info-item">
-                                <div class="parking-field d-flex">
-                                    <svg-icon
-                                        src="assets/svg/dispatchboard/parking.svg"
-                                    >
-                                    </svg-icon>
-                                    <div class="parking-number">8650</div>
-                                </div>
-                            </div> -->
-                            <div
-                                *ngIf="item.truck || item.trailer"
-                                class="add_new"
-                                (click)="showParkingDropdown(rowIndex)"
-                            >
-                                <svg-icon
-                                    *ngIf="!isDrag"
-                                    src="assets/svg/dispatchboard/parking.svg"
-                                >
-                                </svg-icon>
-                                <div class="text">Assign</div>
-                            </div>
+                    <div class="main_inside filled">
+                        <div class="padding-inside">
+                            <app-dispatch-table-parking [parkingList]="parkingList" [parkingFormControl]="parkingFormControl"></app-dispatch-table-parking>
                         </div>
-
-                        <app-ta-input-dropdown
-                            *ngIf="openParkingDropdown == rowIndex"
-                            [formControl]="truckFormControll"
-                            [template]="'double-text-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                isDropdown: true,
-                                label: 'Unit No.',
-                                placeholder: 'Unit No.',
-                                placeholderInsteadOfLabel: true,
-                                autoFocus: true,
-                                blackInput: true,
-                                hideDropdownArrow: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                hideErrorMessage: true,
-                                mergeDropdownBodyWithInput: true,
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-118'
-                            }"
-                            [canAddNew]="true"
-                            [canOpenModal]="true"
-                            [options]="parking"
-                            [activeItem]="selectedLabel"
-                            (selectedItem)="addParking($event)"
-                        ></app-ta-input-dropdown>
                     </div>
                 </td>
                 <td class="box-item">

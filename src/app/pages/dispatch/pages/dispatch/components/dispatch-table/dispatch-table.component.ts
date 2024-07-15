@@ -56,9 +56,11 @@ export class DispatchTableComponent implements OnInit {
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: UntypedFormControl = new UntypedFormControl();
     truckAddress: UntypedFormControl = new UntypedFormControl(null);
+    parkingFormControl: UntypedFormControl = new UntypedFormControl(null);
     truckList: any[];
     trailerList: any[];
     driverList: any[];
+    parkingList: any[];
     copyIndex: number = -1;
     testTimeout: any;
     startIndexTrailer: number;
@@ -95,6 +97,9 @@ export class DispatchTableComponent implements OnInit {
             item.folder = 'common';
             return item;
         });
+
+        const parkingList = JSON.parse(JSON.stringify(value.parkings));
+        this.parkingList = parkingList;
     }
 
     @Input() set _dData(value) {
@@ -122,7 +127,6 @@ export class DispatchTableComponent implements OnInit {
     public selectedColor: any = {};
 
     openedTruckDropdown: number = -1;
-    openParkingDropdown: number = -1;
     openedTrailerDropdown: number = -1;
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
@@ -150,17 +154,6 @@ export class DispatchTableComponent implements OnInit {
     openedHosData = [];
 
     tooltip: any;
-
-    parking: any[] = [
-        {
-            id: 1,
-            name: '2334',
-        },
-        {
-            id: 2,
-            name: '5555',
-        },
-    ];
 
     options: Options = {
         floor: 0,
@@ -206,10 +199,6 @@ export class DispatchTableComponent implements OnInit {
 
     showTruckDropdown(ind: number) {
         this.openedTruckDropdown = ind;
-    }
-
-    showParkingDropdown(ind: number) {
-        this.openParkingDropdown = ind;
     }
 
     showTrailerDropdown(ind: number) {
@@ -264,10 +253,6 @@ export class DispatchTableComponent implements OnInit {
         }
 
         this.openedTrailerDropdown = -1;
-    }
-
-    addParking() {
-        this.openParkingDropdown = -1;
     }
 
     handleInputSelect(e: any) {

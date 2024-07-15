@@ -1,0 +1,63 @@
+<div
+    class="dispatch-parking"
+    [ngClass]="{
+        'dispatch-parking_empty': !isTruckOrTrailerSelected,
+        'dispatch-parking_assigned': isParkingAssigned
+    }"
+>
+    <div class="d-flex align-items-center p-x-1">
+        <span
+            [mainTooltip]="'Central parking'"
+            [tooltipBackground]="'#424242'"
+            ngbTooltip
+            position="bottom"
+        >
+            <!-- TODO: -->
+            <svg-icon
+                src="assets/svg/dispatchboard/parking.svg"
+                class="mr-1 dispatch-parking-icon"
+                [ngClass]="{
+                    'dispatch-parking-icon_empty': !isParkingAssigned,
+                    'dispatch-parking-icon_assigned': isParkingAssigned
+                }"
+            >
+            </svg-icon>
+        </span>
+        <div
+            class="dispatch-parking-text ta-font-medium"
+            [ngClass]="{
+                'dispatch-parking_assigned': !isParkingAssigned
+            }"
+        >
+            ASSIGN
+        </div>
+    </div>
+
+    
+    <app-ta-input-dropdown
+    [formControl]="parkingFormControl"
+    [template]="'double-text-template'"
+    [inputConfig]="{
+        name: 'Input Dropdown',
+        type: 'text',
+        isDropdown: true,
+        label: 'Unit No.',
+        placeholder: 'Unit No.',
+        placeholderInsteadOfLabel: true,
+        autoFocus: true,
+        blackInput: true,
+        hideDropdownArrow: true,
+        hideRequiredCheck: true,
+        hideDangerMark: true,
+        hideErrorMessage: true,
+        mergeDropdownBodyWithInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-118'
+    }"
+    [canAddNew]="true"
+    [canOpenModal]="true"
+    [options]="parkingList"
+    [activeItem]="selectedParking"
+    (selectedItem)="addParking($event)"
+></app-ta-input-dropdown>
+</div>

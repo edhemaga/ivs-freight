@@ -1,0 +1,43 @@
+@import 'src/theme/variables';
+
+.dispatch-parking {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: .3s;
+
+    // States
+    &_assigned {
+        &:hover {
+            background-color: $bw2;
+        }
+    }
+
+    &_empty {
+        background-color: $ta-light-grey-5;
+    }
+
+    &-text {
+        font-size: 14px;
+        position: relative;
+        top: 1px;
+
+        &_assigned {
+            color: $ta-black-2;
+        }
+    }
+
+    // Parking icon
+    &-icon {
+        &_empty {
+            path {
+                fill: $muted;
+            }
+        }
+        &_assigned {
+            path {
+                fill: $ta-blue-26;
+            }
+        }
+    }
+}
