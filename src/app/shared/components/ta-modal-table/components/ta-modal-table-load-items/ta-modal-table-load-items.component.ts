@@ -22,9 +22,6 @@ import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load
 // Enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-//pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
 // Models
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -48,9 +45,6 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
         // Components
         TaInputComponent,
         TaInputDropdownComponent,
-
-        //pipes
-        TrackByPropertyPipe,
     ],
 })
 export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {

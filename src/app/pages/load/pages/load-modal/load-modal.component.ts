@@ -61,6 +61,7 @@ import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/compon
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 import { LoadDetailsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-comments/load-details-item-comments.component';
 import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -133,7 +134,6 @@ import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/lo
 import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
 import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';

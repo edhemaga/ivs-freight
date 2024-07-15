@@ -1,14 +1,13 @@
 <form
     [formGroup]="modalTableForm"
     class="table-body load-modal-table-items-container"
->
+> 
     <div class="d-flex flex-column">
         <ng-container
-            [formArrayName]="arrayName"
+            [formArrayName]="'loadModalTableItems'"
             *ngFor="
                 let loadModalItemStop of formArray.controls;
                 let i = index;
-                trackBy: '' | trackByProperty
             "
         >
             <div

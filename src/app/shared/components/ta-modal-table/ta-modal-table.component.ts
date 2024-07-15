@@ -1,5 +1,4 @@
 import {
-    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -860,7 +859,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public deleteFormArrayRow(index: number): void {
         this.getFormArray().removeAt(index);
-
         switch (this.tableType) {
             case ModalTableTypeEnum.PHONE:
                 this.isContactPhoneExtExist.splice(index, 1);
