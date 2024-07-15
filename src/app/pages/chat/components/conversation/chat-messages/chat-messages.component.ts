@@ -5,11 +5,13 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
   ViewChild
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // Routes
@@ -20,7 +22,11 @@ import { UserChatService } from '@pages/chat/services/chat.service';
 import { HubService } from '@pages/chat/services/hub.service';
 
 // Models
-import { CompanyUserShortResponse, ConversationResponse, MessageResponse } from 'appcoretruckassist';
+import {
+  CompanyUserShortResponse,
+  ConversationResponse,
+  MessageResponse
+} from 'appcoretruckassist';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,24 +53,29 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Messages
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
-  private canSendMessage: boolean = true;
-
+  private isMessageSendable: boolean = true;
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
 
-  // Services
-  private chatService = inject(UserChatService);
-  private chatHub = inject(HubService);
-
   // Form
-  public messageForm!: FormGroup;
+  public messageForm!: UntypedFormGroup;
 
   constructor(
+    // Ref
+    private cdref: ChangeDetectorRef,
+
+    //Router
     private activatedRoute: ActivatedRoute,
-    private cdref: ChangeDetectorRef
+
+    // Form
+    private formBuilder: UntypedFormBuilder,
+
+    // Services
+    private chatService: UserChatService,
+    private chatHubService: HubService,
   ) {
-    this.initForm();
+    this.creteForm();
   }
 
   ngOnInit(): void {
@@ -76,13 +87,12 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.cdref.detectChanges();
   }
 
-  // Get Data --------------------------------
   private getResolvedData(): void {
     this.activatedRoute.data
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          this.messages = res.messages;
+      .subscribe(
+        (res) => {
+          this.messages = [...res.messages];
 
           // Conversation participants
           this.conversation = res.information;
@@ -90,61 +100,48 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
             ?.participants
             .filter(participant => participant.id !== this.currentUserId);
         }
-      });
+      );
   }
 
   private connectToHub(): void {
-    this.chatHub
+    this.chatHubService
       .connect()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.chatHub
+          this.chatHubService
             .receiveMessage()
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-              next: (message) => {
+            .subscribe(
+              message => {
                 if (message) {
                   this.messages = [...this.messages, message];
                 }
-              },
-              error: (err) => {
-                console.error(err)
-              },
-              complete: () => {
-                console.log("Message received!")
               }
-            });
+            );
         }
       });
   }
-  // -----------------------------------------
 
-  // Messages --------------------------------
   public sendMessage(): void {
 
-    if (!this.messageToSend || !this.conversation?.id || !this.canSendMessage) return;
+    if (!this.messageToSend || !this.conversation?.id || !this.isMessageSendable) return;
 
-    this.canSendMessage = false;
+    this.isMessageSendable = false;
 
     this.chatService
       .sendMessage(this.conversation.id, this.messageToSend)
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.messageToSend = "";
-          this.canSendMessage = true;
-        }
+      .subscribe(() => {
+        this.messageToSend = "";
+        this.isMessageSendable = true;
       });
 
   }
-  // ------------------------------------------
 
-
-  // Util -------------------------------------
-  private initForm(): void {
-    this.messageForm = new FormGroup({
-      message: new FormControl()
+  private creteForm(): void {
+    this.messageForm = this.formBuilder.group({
+      message: [null]
     });
   }
 
@@ -155,12 +152,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public trackById(index: number, item: MessageResponse): number {
     return item.id;
   }
-  // ------------------------------------------
-
 
   ngOnDestroy(): void {
     this.remainingParticipants = [];
-    this.chatHub.disconnect();
+    this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();
   }

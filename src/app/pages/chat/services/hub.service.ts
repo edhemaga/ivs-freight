@@ -3,17 +3,19 @@ import { Observable } from 'rxjs';
 // SingalR
 import * as signalR from '@microsoft/signalr';
 
-// Env
-import { environment } from 'src/environments/environment';
+// Models
 import { MessageResponse } from 'appcoretruckassist';
 
+// Env
+import { environment } from 'src/environments/environment';
+
 export class HubService {
-    token: string = localStorage.getItem('user')
+    private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;
-    hubConnection!: signalR.HubConnection;
+    private hubConnection!: signalR.HubConnection;
 
-    constructor() {
+    private establishInitialConnection(): void {
         this.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
@@ -26,8 +28,13 @@ export class HubService {
             .build();
     }
 
-    connect(): Observable<void> {
+    public connect(): Observable<void> {
         if (!this.token) return;
+
+        this.establishInitialConnection();
+
+        if (!this.hubConnection) return;
+
         return new Observable<void>((observer) => {
             this.hubConnection
                 .start()
@@ -40,13 +47,13 @@ export class HubService {
         });
     }
 
-    disconnect(): void {
+    public disconnect(): void {
         this.hubConnection
             .stop()
             .then();
     }
 
-    receiveMessage(): Observable<MessageResponse> {
+    public receiveMessage(): Observable<MessageResponse> {
         return new Observable<MessageResponse>((observer) => {
             this.hubConnection.on('ReceiveMessage',
                 (

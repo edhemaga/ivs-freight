@@ -1,5 +1,8 @@
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+    FormsModule,
+    ReactiveFormsModule
+} from "@angular/forms";
 
 // Modules
 import { CommonModule } from "@angular/common";
@@ -25,7 +28,6 @@ import { TaInputComponent } from "@shared/components/ta-input/ta-input.component
 import { TaAppTooltipV2Component } from "@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component";
 
 // Services
-import { UserChatService } from "@pages/chat/services/chat.service";
 import { HubService } from "@pages/chat/services/hub.service";
 
 // Resolvers
@@ -77,7 +79,6 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
     ],
     providers: [
         // Services
-        UserChatService,
         HubService,
 
         // Resolvers

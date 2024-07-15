@@ -1,11 +1,15 @@
 <div class="message-container d-flex">
     <div
         [ngClass]="
-            currentUserId === message.sender?.id ? 'align-right' : 'align-left'
+            currentUserId === message.sender?.id
+                ? 'flex-row'
+                : 'flex-row-reverse'
         "
-        class="content-wrapper d-flex"
+        class="content-wrapper d-flex justify-content-end"
     >
-        <div class="message-time d-flex">
+        <div
+            class="message-time d-flex justify-content-center align-items-center"
+        >
             {{ message.createdAt | formatTime }}
         </div>
 

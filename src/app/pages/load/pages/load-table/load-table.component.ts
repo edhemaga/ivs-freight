@@ -26,6 +26,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Models
 import {
@@ -83,6 +84,7 @@ import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-fi
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
@@ -154,7 +156,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadQuery: LoadQuery,
         private cardsModalService: CardsModalConfigService,
         private loadCardsModalService: LoadCardModalService,
-
+        private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
 
         //store
@@ -213,10 +215,31 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadServices.statusAction$
             .pipe(filter((statusAction) => statusAction !== null))
             .subscribe((status) => {
-                this.loadServices
-                    .updateLoadStatus(status.id, status.data, false)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
+                const foundObject = this.viewData.find(
+                    (item) => item.id === status.id
+                );
+
+                const mappedEvent = {
+                    ...foundObject,
+                    data: {
+                        ...foundObject,
+                        nameBack: status.dataBack,
+                        nameFront: status.dataFront,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationActivationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        type: TableStringEnum.STATUS,
+                        template: TableStringEnum.STATUS_2,
+                        subType: TableStringEnum.STATUS_2,
+                        modalTitle: foundObject.loadNumber,
+                        modalSecondTitle: foundObject.driver?.truckNumber,
+                    }
+                );
             });
     }
 
@@ -236,6 +259,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         });
+
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((confirmationResponse) => {
+                this.loadServices
+                    .updateLoadStatus(
+                        confirmationResponse.id,
+                        confirmationResponse.data.nameBack,
+                        false
+                    )
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+            });
     }
 
     private pendingTabCardsConfig(): void {

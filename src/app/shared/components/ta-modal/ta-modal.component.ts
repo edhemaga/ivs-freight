@@ -444,6 +444,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
+            case 'change-status': {
+                this.confirmationAction.emit(this.confirmationData);
+                break;
+            }
             default: {
                 break;
             }
