@@ -1,0 +1,160 @@
+<form
+    [formGroup]="modalTableForm"
+    class="table-body load-modal-table-items-container"
+> 
+    <div class="d-flex flex-column">
+        <ng-container
+            [formArrayName]="'loadModalTableItems'"
+            *ngFor="
+                let loadModalItemStop of formArray.controls;
+                let i = index;
+            "
+        >
+            <div
+                class="align-items-center table-item"
+                [ngClass]="{ valid: loadModalItemStop.valid }"
+                [formGroupName]="i"
+            >
+                <!-- Number & Delete -->
+                <div
+                    class="d-flex justify-content-center align-items-center table-item-number stop-items-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                    <svg-icon
+                        class="delete-icon"
+                        [src]="loadModalSvgRoutes.deleteStopItem"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    ></svg-icon>
+                </div>
+
+                <div class="gradient-border-container stop-items-desc">
+                    <ng-container *ngIf="!isHazardous; else hazardousTemplate">
+                        <app-ta-input
+                            formControlName="description"
+                            [inputConfig]="descriptionInputConfig"
+                        ></app-ta-input>
+                    </ng-container>
+                    <ng-template #hazardousTemplate>
+                        <app-ta-input-dropdown
+                            formControlName="hazardousMaterialId"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="descriptionInputConfig"
+                            [options]="stopItemDropdownLists?.hazardousDropdownList"
+                            [activeItem]="selectedHazardous[i]"
+                        ></app-ta-input-dropdown>
+                    </ng-template>
+                    
+                </div>
+
+                <div>
+                    <ng-container *ngIf="!selectedQuantity[i] else quantityTemplate">
+                        <app-ta-input-dropdown
+                            formControlName="units"
+                            [inputConfig]="quantityInputConfig"
+                            [options]="
+                                stopItemDropdownLists?.quantityDropdownList
+                            "
+                            [activeItem]="selectedQuantity[i]"
+                            (selectedItem)="emitOnSelectDropdown($event, i)"
+                        ></app-ta-input-dropdown>
+                    </ng-container>
+
+                    <ng-template #quantityTemplate>
+                        <app-ta-input
+                            formControlName="quantity"
+                            [inputConfig]="unitInputConfig(i)"
+                        ></app-ta-input>
+                    </ng-template>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="temperature"
+                        [inputConfig]="temperatureInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="weight"
+                        [inputConfig]="weightInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div class="gradient-border-container">
+                    <app-ta-input
+                        formControlName="length"
+                        [inputConfig]="lengthInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="height"
+                        [inputConfig]="heightInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input-dropdown
+                        formControlName="tarp"
+                        [inputConfig]="tarpInputConfig"
+                        [options]="stopItemDropdownLists?.tarpDropdownList"
+                        [activeItem]="selectedTarps[i]"
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div>
+                    <app-ta-input-dropdown
+                        formControlName="stackable"
+                        [inputConfig]="stackableInputConfig"
+                        [options]="stopItemDropdownLists?.stackDropdownList"
+                        [activeItem]="selectedStack[i]"
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div>
+                    <app-ta-input-dropdown
+                        formControlName="secure"
+                        [inputConfig]="secureInputConfig"
+                        [options]="stopItemDropdownLists?.secureDropdownList"
+                        [activeItem]="selectedSecure[i]"
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="bolNumber"
+                        [inputConfig]="bolInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="pickupNumber"
+                        [inputConfig]="pickupInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="sealNumber"
+                        [inputConfig]="sealNumberInputConfig"
+                    ></app-ta-input>
+                </div>
+
+                <div>
+                    <app-ta-input
+                        formControlName="code"
+                        [inputConfig]="codeInputConfig"
+                    ></app-ta-input>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</form>

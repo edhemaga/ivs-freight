@@ -1,4 +1,4 @@
-<div class="load-stop-container {{ state }}" [ngClass]="{ active: isCardOpen }">
+<div class="load-stop-container {{ state }} {{state === 'steps-invalid' ? 'invalid ': ''}}" [ngClass]="{ active: isCardOpen }">
     <div
         class="d-flex align-items-center load-stop-header-bar"
         [ngClass]="{
@@ -96,7 +96,8 @@
                         !shipper &&
                         !shipperAddress &&
                         state &&
-                        state === 'invalid'
+                        state === 'invalid' ||
+                        state === 'steps-invalid'
                     "
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
@@ -111,7 +112,7 @@
 
                 <!-- Data -->
 
-                <ng-container *ngIf="shipper && shipperAddress">
+                <ng-container *ngIf="shipper && shipperAddress && state !== 'steps-invalid'">
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p>{{ shipper }}</p>
                     </div>
