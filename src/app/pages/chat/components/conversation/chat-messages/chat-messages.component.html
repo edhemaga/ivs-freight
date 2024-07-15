@@ -50,22 +50,20 @@
         [scrollTop]="messagesContent?.scrollHeight"
     >
         <ng-container *ngIf="messages?.length">
-            <div>
-                <ng-container
-                    *ngFor="
-                        let message of messages;
-                        let ind = index;
-                        trackBy: trackById
-                    "
-                >
-                    <ng-container *ngIf="message">
-                        <app-chat-message
-                            [currentUserId]="currentUserId"
-                            [message]="message"
-                        ></app-chat-message>
-                    </ng-container>
+            <ng-container
+                *ngFor="
+                    let message of messages;
+                    let ind = index;
+                    trackBy: trackById
+                "
+            >
+                <ng-container *ngIf="message">
+                    <app-chat-message
+                        [currentUserId]="currentUserId"
+                        [message]="message"
+                    ></app-chat-message>
                 </ng-container>
-            </div>
+            </ng-container>
         </ng-container>
     </div>
 

@@ -7,11 +7,11 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup
-} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // Routes
@@ -55,7 +55,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
 
-
   // Input toggle
   public isChatTypingActivated: boolean = false;
 
@@ -63,9 +62,16 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messageForm!: UntypedFormGroup;
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
-    private activatedRoute: ActivatedRoute,
+    // Ref
     private cdref: ChangeDetectorRef,
+
+    //Router
+    private activatedRoute: ActivatedRoute,
+
+    // Form
+    private formBuilder: UntypedFormBuilder,
+
+    // Services
     private chatService: UserChatService,
     private chatHubService: HubService,
   ) {
@@ -81,7 +87,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.cdref.detectChanges();
   }
 
-  // Get Data 
   private getResolvedData(): void {
     this.activatedRoute.data
       .pipe(takeUntil(this.destroy$))
@@ -117,9 +122,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         }
       });
   }
-  // 
 
-  // Messages 
   public sendMessage(): void {
 
     if (!this.messageToSend || !this.conversation?.id || !this.isMessageSendable) return;
@@ -135,12 +138,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       });
 
   }
-  //
 
-  // Util 
   private creteForm(): void {
     this.messageForm = this.formBuilder.group({
-      message: null
+      message: [null]
     });
   }
 
@@ -151,7 +152,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public trackById(index: number, item: MessageResponse): number {
     return item.id;
   }
-  // 
 
   ngOnDestroy(): void {
     this.remainingParticipants = [];
