@@ -92,6 +92,7 @@ import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constant
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import {
@@ -561,16 +562,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
+        
+        if(this.editData?.selectedTab === TableStringEnum.TEMPLATE) {
+            return 'Edit Load Template';
+        }
+
+        if(this.editData?.selectedTab === TableStringEnum.CLOSED) {
+            return 'Edit Closed Load';
+        }
+
+        if(this.editData?.selectedTab === TableStringEnum.ACTIVE) {
+            return 'Edit Active Load';
+        }
+
+        if(this.editData?.selectedTab === TableStringEnum.PENDING) {
+            return 'Edit Pending Load';
+        }
 
         if (this.isConvertedToTemplate) {
             return 'Create Load Template';
         } else if (!isEdit) {
             return 'Create Load';
-        } else {
-            return `Edit ${
-                (this.editData.data as LoadResponse).statusType.name
-            } Load`;
-        }
+        } 
     }
 
     public get getLoadStatus(): string {
