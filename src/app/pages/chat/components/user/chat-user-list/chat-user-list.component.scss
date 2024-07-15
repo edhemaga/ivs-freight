@@ -42,10 +42,6 @@
             padding: 0px 6px;
             margin: auto 5px;
         }
-
-        .contact-wrapper {
-            margin: 1px 0;
-        }
     }
     .no-data-button-wrapper {
         width: 100%;
@@ -60,5 +56,14 @@
         border-radius: 2px;
         color: $white;
         border: none;
+    }
+}
+
+.contact-wrapper {
+    height: calc(50vh - 92px);
+    overflow-y: auto;
+
+    .contact {
+        margin: 1px 0;
     }
 }

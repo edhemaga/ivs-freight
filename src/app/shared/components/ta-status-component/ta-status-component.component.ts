@@ -56,10 +56,11 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
             });
     }
 
-    public sendStatus(item: LoadStatus): void {
+    public sendStatus(item: LoadStatus, statusName: LoadStatus): void {
         this.loadService.updateStatus({
             id: this.statusId,
-            data: item as LoadStatus,
+            dataBack: item as LoadStatus,
+            dataFront: statusName as LoadStatus,
         });
     }
 

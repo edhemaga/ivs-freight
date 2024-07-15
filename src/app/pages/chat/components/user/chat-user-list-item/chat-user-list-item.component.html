@@ -13,7 +13,7 @@
             [withTooltip]="false"
             [showHoverAnimation]="false"
             [size]="'medium'"
-            [type]="'driver'"
+            [type]="contact.userType?.name | lowercase"
             [name]="contact.companyUser?.fullName"
         >
         </app-ta-profile-images>
