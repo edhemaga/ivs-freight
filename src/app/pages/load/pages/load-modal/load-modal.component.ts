@@ -560,30 +560,40 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE).value;
     }
 
+    public get isTemplateLoad(): boolean {
+        return this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+    }
+
+    public isActiveLoad() {
+        return (!this.editData?.type?.includes('edit') || (this.editData?.type?.includes('edit') && this.isTemplateLoad));
+    }
+
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
-        
-        if(this.editData?.selectedTab === TableStringEnum.TEMPLATE) {
+
+        if (!isEdit) {
+            if (this.isConvertedToTemplate) {
+                return 'Create Load Template';
+            } else if (!isEdit) {
+                return 'Create Load';
+            }
+        }
+
+        if (this.isTemplateLoad) {
             return 'Edit Load Template';
         }
 
-        if(this.editData?.selectedTab === TableStringEnum.CLOSED) {
+        if (this.editData?.selectedTab === TableStringEnum.CLOSED) {
             return 'Edit Closed Load';
         }
 
-        if(this.editData?.selectedTab === TableStringEnum.ACTIVE) {
+        if (this.editData?.selectedTab === TableStringEnum.ACTIVE) {
             return 'Edit Active Load';
         }
 
-        if(this.editData?.selectedTab === TableStringEnum.PENDING) {
+        if (this.editData?.selectedTab === TableStringEnum.PENDING) {
             return 'Edit Pending Load';
         }
-
-        if (this.isConvertedToTemplate) {
-            return 'Create Load Template';
-        } else if (!isEdit) {
-            return 'Create Load';
-        } 
     }
 
     public get getLoadStatus(): string {
@@ -608,8 +618,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public handleTonuRateVisiblity(): void {
         const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CANCELLED ||
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU;
+            this.selectedStatus &&
+            (this.selectedStatus.name ===
+                LoadModalStringEnum.STATUS_CANCELLED ||
+                this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU);
 
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.TONU),
@@ -3754,7 +3766,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
-                    ).status.statusString;
+                    )?.status?.statusString;
 
                     this.handleTonuRateVisiblity();
                 });

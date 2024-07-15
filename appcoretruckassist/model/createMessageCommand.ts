@@ -12,6 +12,7 @@
 
 
 export interface CreateMessageCommand { 
+    messageType?: number;
     conversationId?: number;
     content?: string | null;
     parentMessageId?: number | null;

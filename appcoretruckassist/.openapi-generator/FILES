@@ -646,6 +646,7 @@ model/milesByUnitListResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
 model/milesInfo.ts
+model/milesStopDetailsResponse.ts
 model/milesStopPayrollResponse.ts
 model/milesStopResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
