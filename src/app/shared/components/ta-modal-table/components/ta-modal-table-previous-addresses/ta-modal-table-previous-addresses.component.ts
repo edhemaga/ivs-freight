@@ -20,9 +20,6 @@ import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/
 // models
 import { AddressEntity } from 'appcoretruckassist';
 
-// pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
 @Component({
     selector: 'app-ta-modal-table-previous-addresses',
     templateUrl: './ta-modal-table-previous-addresses.component.html',
@@ -38,9 +35,6 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         TaInputComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
-
-        // pipes
-        TrackByPropertyPipe,
     ],
 })
 export class TaModalTablePreviousAddressesComponent {
