@@ -1,1 +1,109 @@
-<p>dispatch-table-truck-trailer works!</p>
+<div class="main_inside addNew truck-trailer-container" [class.filled]="truck">
+    <ng-container *ngIf="openedTruckDropdown !== rowIndex; else dropdown">
+        <div class="padding-inside">
+            <!-- No Value -->
+
+            <ng-container
+                *ngIf="!truck && !isBoardLocked; else selectedTruckTrailer"
+            >
+                <div class="add_new" (click)="showTruckDropdown(rowIndex)">
+                    <div class="text">Add</div>
+
+                    <svg-icon
+                        *ngIf="!isDrag"
+                        [src]="
+                            'assets/svg/truckassist-table/dropdown/content/add.svg'
+                        "
+                        [svgStyle]="{
+                            'width.px': '18',
+                            'height.px': '18'
+                        }"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Truck - Trailer -->
+
+            <ng-template #selectedTruckTrailer>
+                <ng-container *ngIf="truck">
+                    <div class="d-flex align-items-center selected-container">
+                        <svg-icon
+                            [src]="dispatchTableSvgRoutes.circleSvgRoute"
+                            [svgStyle]="{
+                                'width.px': '10',
+                                'height.px': '10'
+                            }"
+                        ></svg-icon>
+                    </div>
+
+                    <!--    <div
+                   
+                    class="circles-holder truck_{{
+                        'truck' | colorFinder : truck.truckType.id
+                    }}"
+                >
+                    <svg-icon
+                        [src]="'ic_circle.svg'"
+                        [svgStyle]="{
+                            'width.px': '10',
+                            'height.px': '10'
+                        }"
+                    ></svg-icon>
+
+                    <div class="info-item">
+                        <svg-icon
+                            class="truck-trailer-image"
+                            [src]="truck.truckType.logoName"
+                            [svgStyle]="{
+                                'height.px': '16'
+                            }"
+                        ></svg-icon>
+
+                        <span class="truck-trailer-number">{{
+                            truck.truckNumber
+                        }}</span>
+
+                        <div
+                            *ngIf="!isDrag"
+                            class="remove-item"
+                            (click)="removeTruck(rowIndex)"
+                        >
+                            <svg-icon
+                                [src]="'assets/svg/applicant/close-x.svg'"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div> -->
+                </ng-container>
+            </ng-template>
+        </div>
+    </ng-container>
+
+    <ng-template #dropdown>
+        <app-ta-input-dropdown
+            [formControl]="truckFormControll"
+            [template]="'svgtext-dispatch-template'"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Unit No.',
+                placeholder: 'Unit No.',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-118',
+                placeholderInsteadOfLabel: true,
+                hideDropdownArrow: true,
+                autoFocus: true,
+                blackInput: true,
+                hideRequiredCheck: true,
+                hideDangerMark: true,
+                hideErrorMessage: true,
+                mergeDropdownBodyWithInput: true
+            }"
+            [options]="truckList"
+            [canAddNew]="true"
+            [canOpenModal]="true"
+            [activeItem]="null"
+            (selectedItem)="addTruck($event)"
+        ></app-ta-input-dropdown>
+    </ng-template>
+</div>

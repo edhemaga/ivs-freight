@@ -44,105 +44,17 @@
                 cdkDragBoundary=".dispatch-table"
             >
                 <td class="truck-field" cdkDragHandle>
-                    <div class="main_inside addNew" [class.filled]="item.truck">
-                        <div
-                            class="padding-inside"
-                            *ngIf="openedTruckDropdown != rowIndex"
-                        >
-                            <div
-                                *ngIf="
-                                    openedTruckDropdown != rowIndex &&
-                                    !item.truck &&
-                                    !__isBoardLocked
-                                "
-                                class="add_new"
-                                (click)="showTruckDropdown(rowIndex)"
-                            >
-                                <div class="text">Add</div>
-                                <svg-icon
-                                    *ngIf="!isDrag"
-                                    [src]="
-                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '18',
-                                        'height.px': '18'
-                                    }"
-                                ></svg-icon>
-                            </div>
-                            <div
-                                class="circles-holder truck_{{
-                                    'truck'
-                                        | colorFinder : item.truck.truckType.id
-                                }}"
-                                *ngIf="item.truck"
-                            >
-                                <svg-icon
-                                    [src]="'ic_circle.svg'"
-                                    [svgStyle]="{
-                                        'width.px': '10',
-                                        'height.px': '10'
-                                    }"
-                                ></svg-icon>
-                                <div class="info-item">
-                                    <svg-icon
-                                        class="truck-trailer-image"
-                                        [src]="item.truck.truckType.logoName"
-                                        [svgStyle]="{
-                                            'height.px': '16'
-                                        }"
-                                    ></svg-icon>
-                                    <span class="truck-trailer-number">{{
-                                        item.truck.truckNumber
-                                    }}</span>
-                                    <div
-                                        *ngIf="
-                                            item.truck &&
-                                            !__isBoardLocked &&
-                                            !isDrag
-                                        "
-                                        class="remove-item"
-                                        (click)="removeTruck(rowIndex)"
-                                    >
-                                        <svg-icon
-                                            [src]="
-                                                'assets/svg/applicant/close-x.svg'
-                                            "
-                                        ></svg-icon>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <app-ta-input-dropdown
-                            *ngIf="openedTruckDropdown == rowIndex"
-                            [formControl]="truckFormControll"
-                            [template]="'svgtext-dispatch-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Unit No.',
-                                placeholder: 'Unit No.',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-118',
-                                placeholderInsteadOfLabel: true,
-                                hideDropdownArrow: true,
-                                autoFocus: true,
-                                blackInput: true,
-                                hideDropdownArrow: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                hideErrorMessage: true,
-                                mergeDropdownBodyWithInput: true
-                            }"
-                            [options]="truckList"
-                            [canAddNew]="true"
-                            [canOpenModal]="true"
-                            [activeItem]="null"
-                            (selectedItem)="addTruck($event)"
-                        ></app-ta-input-dropdown>
-                    </div>
+                    <app-dispatch-table-truck-trailer
+                        [truck]="item?.truck"
+                        [truckList]="truckList"
+                        [rowIndex]="rowIndex"
+                        [isBoardLocked]="__isBoardLocked"
+                        [isDrag]="isDrag"
+                        (removeTruckEmitter)="handleRemoveTruckClick($event)"
+                    >
+                    </app-dispatch-table-truck-trailer>
                 </td>
+
                 <td class="trailer-field">
                     <div
                         class="main_inside"
@@ -687,7 +599,7 @@
                     </div>
                 </td>
                 <td class="pickup-delivery-field">
-                    <div
+                    <!--   <div
                         class="main_inside"
                         [class.filled]="
                             item.driver &&
@@ -797,7 +709,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="progress-field">
                     <div class="main_inside filled">
@@ -938,9 +850,9 @@
             </tr>
 
             <tr *ngIf="!__isBoardLocked">
-                <td class="truck-field">
+                <!--  <td class="truck-field">
                     <div class="main_inside addNew">
-                        <div
+                      <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != -2"
                         >
@@ -960,7 +872,7 @@
                                     }"
                                 ></svg-icon>
                             </div>
-                        </div>
+                        </div> 
 
                         <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == -2"
@@ -988,9 +900,9 @@
                             [canAddNew]="true"
                             [canOpenModal]="true"
                             (selectedItem)="addTruck($event)"
-                        ></app-ta-input-dropdown>
+                        ></app-ta-input-dropdown> 
                     </div>
-                </td>
+                </td> -->
                 <td class="trailer-field">
                     <div
                         class="main_inside addNew"

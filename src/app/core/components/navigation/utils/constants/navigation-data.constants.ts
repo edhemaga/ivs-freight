@@ -19,7 +19,7 @@ export class NavigationDataConstants {
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
             construction: true,
-            isRouteActive: false,
+            isRouteActive: true,
         },
         {
             id: 3,
@@ -33,7 +33,6 @@ export class NavigationDataConstants {
                     name: 'Load',
                     route: '/list/load',
                     activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
-                    construction: true,
                 },
                 {
                     name: 'Customer',
@@ -266,7 +265,6 @@ export class NavigationDataConstants {
             route: 'chat',
             isRouteActive: true,
             messages: 5,
-            construction: true,
         },
         {
             id: 11,

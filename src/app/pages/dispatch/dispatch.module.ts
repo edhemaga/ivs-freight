@@ -36,6 +36,8 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         DispatchComponent,
         DispatchTableComponent,
 
+        DispatchTableTruckTrailerComponent,
+
         // Pipes
         ColorFinderPipe,
         HosFilterPipe,
@@ -65,8 +67,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
-
-        DispatchTableTruckTrailerComponent,
     ],
+    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}
