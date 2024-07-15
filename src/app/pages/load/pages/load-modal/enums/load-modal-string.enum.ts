@@ -205,6 +205,11 @@ export enum LoadModalStringEnum {
     DELIVERY_DATE_FROM = 'deliveryDateFrom',
     DELIVERY_DATE_TO = 'deliveryDateTo',
     DELIVERY_TIME_FROM = 'deliveryTimeFrom',
+    STEP_INVALID_STATUS = 'steps-invalid',
     INVALID_STATUS = 'invalid',
     VALID_STATUS = 'valid',
+    INVOICED_DATE = 'invoicedDate',
+    PICKUP_SHAPE = 'pickupShape',
+    DELIVERY_SHAPE = 'deliveryShape',
+    SHAPE = 'shape',
 }

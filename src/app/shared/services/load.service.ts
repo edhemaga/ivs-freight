@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, forkJoin, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, tap, BehaviorSubject } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -40,6 +40,7 @@ import {
     LoadStatusType,
     DispatcherFilterResponse,
     LoadStatus,
+    LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import {
@@ -56,6 +57,21 @@ export class LoadService {
     public data$: Observable<Comment> = this.newComment.asObservable();
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
+
+    private statusAction: BehaviorSubject<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }> = new BehaviorSubject<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }>(null);
+    public statusAction$: Observable<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }> = this.statusAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
         new Subject<DeleteComment>();
@@ -87,6 +103,13 @@ export class LoadService {
 
     public removeComment(comment: DeleteComment): void {
         this.deleteComment.next(comment);
+    }
+    public updateStatus(data: {
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }) {
+        this.statusAction.next(data);
     }
 
     // table operations
@@ -307,6 +330,12 @@ export class LoadService {
         return this.loadService.apiLoadModalGet(loadEditId);
     }
 
+    public getLoadListLoadstop(
+        loadId: number
+    ): Observable<LoadListLoadStopResponse> {
+        return this.loadService.apiLoadListLoadstopIdGet(loadId);
+    }
+
     public getRouting(location: string): Observable<RoutingResponse> {
         return this.routingService.apiRoutingGet(location);
     }
@@ -323,12 +352,20 @@ export class LoadService {
 
     public updateLoadStatus(
         loadId: number,
-        loadStatus: LoadStatus
+        loadStatus: LoadStatus,
+        isRevert: boolean
     ): Observable<CreateResponse> {
-        return this.loadService.apiLoadStatusPut({
-            id: loadId,
-            status: loadStatus,
-        });
+        if (isRevert) {
+            return this.loadService.apiLoadStatusRevertPut({
+                id: loadId,
+                status: loadStatus,
+            });
+        } else {
+            return this.loadService.apiLoadStatusPut({
+                id: loadId,
+                status: loadStatus,
+            });
+        }
     }
 
     // modal operations - template
@@ -341,7 +378,6 @@ export class LoadService {
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
-
     public deleteLoadTemplateById(loadId: number): Observable<void> {
         return this.loadService.apiLoadTemplateIdDelete(loadId).pipe(
             tap(() => {
@@ -516,7 +552,7 @@ export class LoadService {
         value: string;
     }): void {
         let storeLoads;
-    
+
         switch (data.selectedTab) {
             case TableStringEnum.ACTIVE:
                 storeLoads = this.loadActiveQuery.getAll();
@@ -534,7 +570,7 @@ export class LoadService {
                 storeLoads = [];
                 break;
         }
-    
+
         storeLoads.map((load: LoadResponse) => {
             if (data.id === load.id) {
                 switch (data.selectedTab) {
@@ -566,5 +602,4 @@ export class LoadService {
             }
         });
     }
-    
 }

@@ -171,4 +171,64 @@ export class LoadCardModalConfig {
         null,
         null,
     ];
+
+    static displayRowsFrontClosed: CardRows[] = [
+        {
+            title: 'Status',
+            key: 'status',
+            secondKey: 'statusString',
+        },
+        {
+            title: 'Billing • Rate',
+            secondTitle: 'Rate',
+            key: 'billing',
+            secondKey: 'rate',
+            type: 'money',
+        },
+        {
+            title: 'Billing • Paid',
+            secondTitle: 'Paid',
+            key: 'billing',
+            secondKey: 'paid',
+            type: 'money',
+        },
+        {
+            title: 'Billing • Due',
+            secondTitle: 'Due',
+            key: 'billing',
+            secondKey: 'due',
+            type: 'money',
+        },
+        null,
+        null,
+    ];
+
+    static displayRowsBackClosed: CardRows[] = [
+        {
+            title: 'Broker Detail • Business Name',
+            secondTitle: 'Business Name',
+            key: 'broker',
+            secondKey: 'businessName',
+        },
+        {
+            title: 'Pickup',
+            key: 'pickup',
+            secondKey: 'count',
+            thirdKey: 'location',
+        },
+        {
+            title: 'Delivery',
+            key: 'delivery',
+            secondKey: 'count',
+            thirdKey: 'location',
+        },
+        {
+            title: 'Billing • Age - Unpaid',
+            secondTitle: 'Age - Unpaid',
+            key: 'billing',
+            secondKey: 'ageUnpaid',
+        },
+        null,
+        null,
+    ];
 }

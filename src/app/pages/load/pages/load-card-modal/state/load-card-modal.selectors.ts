@@ -14,6 +14,7 @@ export const selectActiveModalTabs = (
         | TableStringEnum.ACTIVE
         | TableStringEnum.PENDING
         | TableStringEnum.TEMPLATE
+        | TableStringEnum.CLOSED
 ) => createSelector(selectLoadCardDataState, (state) => state[type]);
 
 export const selectPendingModalTabs = createSelector(
@@ -65,6 +66,24 @@ export const selectTemplateTabCards = createSelector(
 
             const filteredCardRowsBack =
                 state.template.back_side.filter(Boolean);
+
+            return {
+                displayRowsFront: filteredCardRowsFront,
+                displayRowsBack: filteredCardRowsBack,
+            };
+        }
+    }
+);
+
+export const selectClosedTabCards = createSelector(
+    selectLoadCardDataState,
+    (state) => {
+        if (state.closed) {
+            const filteredCardRowsFront =
+                state.closed.front_side.filter(Boolean);
+
+            const filteredCardRowsBack =
+                state.closed.back_side.filter(Boolean);
 
             return {
                 displayRowsFront: filteredCardRowsFront,

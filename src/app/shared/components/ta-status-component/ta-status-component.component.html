@@ -1,0 +1,57 @@
+<ng-container *ngIf="statusDetails">
+    <div class="status-node">
+        <ng-container *ngIf="statusDetails?.possibleStatuses?.length">
+            <div class="status-next">
+                <ng-container
+                    *ngFor="
+                        let item of statusDetails.possibleStatuses;
+                        trackBy: trackStatusDetails
+                    "
+                >
+                    <div
+                        class="status-next-item ta-font-bold"
+                        (click)="
+                            sendStatus(item.statusValue.name, item.statusString)
+                        "
+                    >
+                        <app-load-status-string
+                            [status]="{
+                                name: item.statusString,
+                                valueForRequest: item.statusValue.name
+                            }"
+                            [justifyStart]="true"
+                        ></app-load-status-string>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="statusDetails.previousStatus?.statusString">
+            <div class="status-previous">
+                <p class="status-previous-back ta-font-bold">Or back to</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div
+                        class="status-previous-item ta-font-bold"
+                        (click)="
+                            sendStatus(
+                                statusDetails.previousStatus.statusValue.name,
+                                statusDetails.previousStatus.statusString
+                            )
+                        "
+                    >
+                        <app-load-status-string
+                            [status]="{
+                                name: statusDetails.previousStatus.statusString,
+                                valueForRequest:
+                                    statusDetails.previousStatus.statusValue
+                                        .name
+                            }"
+                            [justifyStart]="true"
+                        ></app-load-status-string>
+                    </div>
+                    <img [src]="backStatus" />
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>

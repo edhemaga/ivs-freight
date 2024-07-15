@@ -26,6 +26,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { FilterTrailerColorPipe } from '@shared/components/ta-filter//pipes/filter-trailer-color.pipe';
 import { FilterLoadStatusPipe } from '@shared/components/ta-filter/pipes/filter-load-status-color.pipe';
+import { DropdownLoadStatusColorPipe } from '@shared/pipes/dropdown-load-status-color.pipe';
 
 // validators
 import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -92,6 +93,7 @@ import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/tool
         TaSvgPipe,
         FilterTrailerColorPipe,
         FilterLoadStatusPipe,
+        DropdownLoadStatusColorPipe,
     ],
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],

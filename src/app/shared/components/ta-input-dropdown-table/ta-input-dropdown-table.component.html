@@ -62,6 +62,10 @@
     <div
         class="comment-button overflow-unset"
         [ngClass]="commentsDropdown.isOpen() ? 'comments-dropdown-opened' : ''"
+        [ngbTooltip]="!dropdownComments"
+        [mainTooltip]="'Comment'"
+        tooltipBackground="#424242"
+        position="bottom"
     >
         <div
             [ngbPopover]="dropdownComments"

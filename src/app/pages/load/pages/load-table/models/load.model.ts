@@ -14,6 +14,7 @@ export interface LoadModel extends LoadListDto {
     type: Type;
     loadNumber: string;
     loadInvoice: LoadInvoice;
+    name?: string;
     statusType: StatusType;
     status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number } | null;
@@ -77,7 +78,7 @@ export interface LoadModel extends LoadListDto {
     loadStatus: LoadStatus;
     textCommodity: string;
     textMiles: string;
-    textWeight: string;
+    textWeight: number;
     textBase: string;
     textAdditional: string;
     textAdvance: string;
@@ -86,86 +87,86 @@ export interface LoadModel extends LoadListDto {
     comments?: Comment[];
     tableAttachments: File[];
     tableDropdownContent: TableDropdownContent;
+    emptyMiles?: string;
+    loaded?: string;
 }
 
 interface TableDropdownContent {
     hasContent: boolean;
     content: DropdownItem[];
 }
-interface LoadStatus {
-    status: string;
-    color: string;
-    time: string;
-}
-interface LoadTotal {
+
+export interface LoadTotal {
     total: string;
     subTotal: string;
 }
 
-interface LoadStatus {
+export interface LoadStatus {
     status: string;
     color: string;
     time: string;
 }
-interface LoadDelivery {
+export interface LoadDelivery {
     count: string | number;
     location: string;
     date: string;
     time: string;
 }
 
-interface LoadPickup {
+export interface LoadPickup {
     count: number;
     location: string;
-    date: string;
-    time: string;
+    date?: string;
+    time?: string;
+    delivery?: boolean;
 }
 
-interface LoadTruckTrailerNumber {
+export interface LoadTruckTrailerNumber {
     number: string;
     color: string;
 }
 
-interface LoadDispatcher {
+export interface LoadDispatcher {
     name: string;
     avatar: string | SafeResourceUrl;
 }
 
-interface LoadInvoice {
+export interface LoadInvoice {
     invoice: string;
     type: string;
 }
 
-interface Type {
+export interface Type {
     name: string;
     id: number;
 }
 
-interface StatusType {
+export interface StatusType {
     name: string;
     id: number;
 }
 
-interface Status {
+export interface Status {
     name: string;
     id: number;
 }
 
-interface LastStatusPassed {
+export interface LastStatusPassed {
     hours: number;
     minutes: number;
     additionalProp3: number;
 }
 
-interface Dispatcher {
+export interface Dispatcher {
     id: number;
     userId: number;
     fullName: string;
     avatarFile: FileResponse;
     departmentId: number;
+    driver?: Driver;
 }
 
-interface Company {
+export interface Company {
     id: number;
     companyName: string;
     logo: string;
@@ -174,48 +175,50 @@ interface Company {
     lastLogin: string;
 }
 
-interface Dispatch {
+export interface Dispatch {
     id: number;
     dispatchBoardId: number;
     dispatcherId: number;
     truck: Truck;
     trailer: Trailer;
-    driver: Driver;
+    driver?: Driver;
     coDriver: CoDriver;
 }
 
-interface Truck {
+export interface Truck {
     id: number;
     truckNumber: string;
     status: number;
+    model?: string;
     owner: string;
     color: Color;
     truckType: TruckType;
 }
 
-interface Color {
+export interface Color {
     id: number;
     companyId: number;
     name: string;
     code: string;
 }
 
-interface TruckType {
+export interface TruckType {
     id: number;
     companyId: number;
     name: string;
     logoName: string;
 }
 
-interface Trailer {
+export interface Trailer {
     id: number;
     trailerNumber: string;
     status: number;
     owner: string;
+    model?: string;
     trailerType: TrailerType;
 }
 
-interface TrailerType {
+export interface TrailerType {
     id: number;
     companyId: number;
     name: string;
@@ -223,7 +226,17 @@ interface TrailerType {
     hasVolume: boolean;
 }
 
-interface Driver {
+export interface Driver {
+    id: number;
+    firstName: string;
+    lastName: string;
+    owner: number;
+    status: number;
+    avatar: string;
+    avatarFile?: FileResponse;
+}
+
+export interface CoDriver {
     id: number;
     firstName: string;
     lastName: string;
@@ -232,16 +245,7 @@ interface Driver {
     avatar: string;
 }
 
-interface CoDriver {
-    id: number;
-    firstName: string;
-    lastName: string;
-    owner: number;
-    status: number;
-    avatar: string;
-}
-
-interface Broker {
+export interface Broker {
     id: number;
     businessName: string;
     availableCredit: number;
@@ -251,17 +255,17 @@ interface Broker {
     ban: boolean;
 }
 
-interface AvailableCreditType {
+export interface AvailableCreditType {
     name: string;
     id: number;
 }
 
-interface PayTerm {
+export interface PayTerm {
     name: string;
     id: number;
 }
 
-interface BrokerContact {
+export interface BrokerContact {
     id: number;
     brokerId: number;
     email: string;
@@ -269,19 +273,20 @@ interface BrokerContact {
     contactName: string;
     department: Department;
     extensionPhone: string;
+    phoneExt?: string;
 }
 
-interface Department {
+export interface Department {
     id: number;
     name: string;
 }
 
-interface GeneralCommodity {
+export interface GeneralCommodity {
     name: string;
     id: number;
 }
 
-interface LoadRequirements {
+export interface LoadRequirements {
     id: number;
     truckType: TruckType2;
     trailerType: TrailerType2;
@@ -293,14 +298,14 @@ interface LoadRequirements {
     driverMessage: string;
 }
 
-interface TruckType2 {
+export interface TruckType2 {
     id: number;
     companyId: number;
     name: string;
     logoName: string;
 }
 
-interface TrailerType2 {
+export interface TrailerType2 {
     id: number;
     companyId: number;
     name: string;
@@ -308,23 +313,23 @@ interface TrailerType2 {
     hasVolume: boolean;
 }
 
-interface DoorType {
+export interface DoorType {
     name: string;
     id: number;
 }
 
-interface Suspension {
+export interface Suspension {
     name: string;
     id: number;
 }
 
-interface TrailerLength {
+export interface TrailerLength {
     id: number;
     companyId: number;
     name: string;
 }
 
-interface Stop {
+export interface Stop {
     id: number;
     stopType: StopType;
     stopOrder: number;
@@ -345,14 +350,15 @@ interface Stop {
     legHours: number;
     legMinutes: number;
     shape: string;
+    count?: number;
 }
 
-interface StopType {
+export interface StopType {
     name: string;
     id: number;
 }
 
-interface Shipper {
+export interface Shipper {
     id: number;
     businessName: string;
     address: Address;
@@ -360,7 +366,7 @@ interface Shipper {
     latitude: number;
 }
 
-interface Address {
+export interface Address {
     city: string;
     state: string;
     county: string;
@@ -373,7 +379,7 @@ interface Address {
     addressUnit: string;
 }
 
-interface ShipperContact {
+export interface ShipperContact {
     id: number;
     shipperId: number;
     phone: string;
@@ -381,18 +387,18 @@ interface ShipperContact {
     extensionPhone: string;
 }
 
-interface TimeType {
+export interface TimeType {
     name: string;
     id: number;
 }
 
-interface Wait {
+export interface Wait {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-interface Item {
+export interface Item {
     id: number;
     bolNumber: string;
     appointmentNumber: string;
@@ -414,32 +420,32 @@ interface Item {
     hazardousMaterial: HazardousMaterial;
 }
 
-interface Units {
+export interface Units {
     name: string;
     id: number;
 }
 
-interface Secure {
+export interface Secure {
     name: string;
     id: number;
 }
 
-interface Tarp {
+export interface Tarp {
     name: string;
     id: number;
 }
 
-interface Stackable {
+export interface Stackable {
     name: string;
     id: number;
 }
 
-interface DriverAssist {
+export interface DriverAssist {
     name: string;
     id: number;
 }
 
-interface HazardousMaterial {
+export interface HazardousMaterial {
     id: number;
     class: number;
     division: number;
@@ -449,12 +455,12 @@ interface HazardousMaterial {
     logoName: string;
 }
 
-interface MilesType {
+export interface MilesType {
     name: string;
     id: number;
 }
 
-interface SplitLoad {
+export interface SplitLoad {
     id: number;
     previousStopOrder: number;
     nextStopOrder: number;
@@ -470,7 +476,7 @@ interface SplitLoad {
     updatedAt: string;
 }
 
-interface SplitLocation {
+export interface SplitLocation {
     city: string;
     state: string;
     county: string;
@@ -483,7 +489,7 @@ interface SplitLocation {
     addressUnit: string;
 }
 
-interface NewDispatch {
+export interface NewDispatch {
     id: number;
     dispatchBoardId: number;
     dispatcherId: number;
@@ -493,7 +499,7 @@ interface NewDispatch {
     coDriver: CoDriver2;
 }
 
-interface Truck2 {
+export interface Truck2 {
     id: number;
     truckNumber: string;
     status: number;
@@ -502,21 +508,21 @@ interface Truck2 {
     truckType: TruckType3;
 }
 
-interface Color2 {
+export interface Color2 {
     id: number;
     companyId: number;
     name: string;
     code: string;
 }
 
-interface TruckType3 {
+export interface TruckType3 {
     id: number;
     companyId: number;
     name: string;
     logoName: string;
 }
 
-interface Trailer2 {
+export interface Trailer2 {
     id: number;
     trailerNumber: string;
     status: number;
@@ -524,7 +530,7 @@ interface Trailer2 {
     trailerType: TrailerType3;
 }
 
-interface TrailerType3 {
+export interface TrailerType3 {
     id: number;
     companyId: number;
     name: string;
@@ -532,7 +538,7 @@ interface TrailerType3 {
     hasVolume: boolean;
 }
 
-interface Driver2 {
+export interface Driver2 {
     id: number;
     firstName: string;
     lastName: string;
@@ -541,7 +547,7 @@ interface Driver2 {
     avatar: string;
 }
 
-interface CoDriver2 {
+export interface CoDriver2 {
     id: number;
     firstName: string;
     lastName: string;
@@ -550,40 +556,40 @@ interface CoDriver2 {
     avatar: string;
 }
 
-interface AdditionalBillingRate {
+export interface AdditionalBillingRate {
     id: number;
     additionalBillingType: AdditionalBillingType;
     rate: number;
 }
 
-interface AdditionalBillingType {
+export interface AdditionalBillingType {
     name: string;
     id: number;
 }
 
-interface Pay {
+export interface Pay {
     id: number;
     paymentType: PaymentType;
     pay: number;
     payDate: string;
 }
 
-interface PaymentType {
+export interface PaymentType {
     name: string;
     id: number;
 }
 
-interface StatusHistory {
+export interface StatusHistory {
     status: Status2;
     updatedAt: string;
 }
 
-interface Status2 {
+export interface Status2 {
     name: string;
     id: number;
 }
 
-interface Comment {
+export interface Comment {
     avatarColor: {
         background: string;
         color: string;
@@ -599,37 +605,37 @@ interface Comment {
     updatedAt: string;
 }
 
-interface CompanyUser {
+export interface CompanyUser {
     id: number;
     fullName: string;
     avatar: string;
     departmentId: number;
 }
 
-interface EntityTypeComment {
+export interface EntityTypeComment {
     name: string;
     id: number;
 }
 
-interface TotalLoadTime {
+export interface TotalLoadTime {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-interface FirstPickupTime {
+export interface FirstPickupTime {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-interface LastDeliveryTime {
+export interface LastDeliveryTime {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-interface CurrentLocation {
+export interface CurrentLocation {
     city: string;
     state: string;
     county: string;
@@ -642,7 +648,7 @@ interface CurrentLocation {
     addressUnit: string;
 }
 
-interface NextStop {
+export interface NextStop {
     id: number;
     stopType: StopType2;
     stopOrder: number;
@@ -665,12 +671,12 @@ interface NextStop {
     shape: string;
 }
 
-interface StopType2 {
+export interface StopType2 {
     name: string;
     id: number;
 }
 
-interface Shipper2 {
+export interface Shipper2 {
     id: number;
     businessName: string;
     address: Address2;
@@ -678,7 +684,7 @@ interface Shipper2 {
     latitude: number;
 }
 
-interface Address2 {
+export interface Address2 {
     city: string;
     state: string;
     county: string;
@@ -691,7 +697,7 @@ interface Address2 {
     addressUnit: string;
 }
 
-interface ShipperContact2 {
+export interface ShipperContact2 {
     id: number;
     shipperId: number;
     phone: string;
@@ -699,18 +705,18 @@ interface ShipperContact2 {
     extensionPhone: string;
 }
 
-interface TimeType2 {
+export interface TimeType2 {
     name: string;
     id: number;
 }
 
-interface Wait2 {
+export interface Wait2 {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-interface Item2 {
+export interface Item2 {
     id: number;
     bolNumber: string;
     appointmentNumber: string;
@@ -732,32 +738,32 @@ interface Item2 {
     hazardousMaterial: HazardousMaterial2;
 }
 
-interface Units2 {
+export interface Units2 {
     name: string;
     id: number;
 }
 
-interface Secure2 {
+export interface Secure2 {
     name: string;
     id: number;
 }
 
-interface Tarp2 {
+export interface Tarp2 {
     name: string;
     id: number;
 }
 
-interface Stackable2 {
+export interface Stackable2 {
     name: string;
     id: number;
 }
 
-interface DriverAssist2 {
+export interface DriverAssist2 {
     name: string;
     id: number;
 }
 
-interface HazardousMaterial2 {
+export interface HazardousMaterial2 {
     id: number;
     class: number;
     division: number;
@@ -767,24 +773,24 @@ interface HazardousMaterial2 {
     logoName: string;
 }
 
-interface MilesType2 {
+export interface MilesType2 {
     name: string;
     id: number;
 }
 
-interface ProgressBar {
+export interface ProgressBar {
     loadStopId: number;
     stopType: StopType3;
     totalLegMiles: number;
     progressBarPercentage: number;
 }
 
-interface StopType3 {
+export interface StopType3 {
     name: string;
     id: number;
 }
 
-interface File {
+export interface File {
     fileId: number;
     fileName: string;
     url: string;

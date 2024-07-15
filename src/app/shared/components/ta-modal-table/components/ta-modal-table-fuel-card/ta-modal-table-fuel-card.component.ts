@@ -15,10 +15,7 @@ import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-
-// pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
+ 
 // models
 import { DriverModalFuelCardResponse } from 'appcoretruckassist';
 
@@ -33,9 +30,6 @@ import { DriverModalFuelCardResponse } from 'appcoretruckassist';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-
-        // pipes
-        TrackByPropertyPipe,
     ],
     templateUrl: './ta-modal-table-fuel-card.component.html',
     styleUrls: ['./ta-modal-table-fuel-card.component.scss'],

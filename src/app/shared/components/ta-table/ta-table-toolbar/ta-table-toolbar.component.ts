@@ -350,7 +350,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     private getToolbarWidth(): void {
         const tableContainer = document.querySelector('.table-container');
 
-        this.maxToolbarWidth = tableContainer.clientWidth;
+        this.maxToolbarWidth = tableContainer?.clientWidth;
 
         this.changeDetectorRef.detectChanges();
 

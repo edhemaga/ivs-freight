@@ -8,7 +8,7 @@
     }
 
     &.not-pined-columns-container {
-        padding: 2px 0px 2px 0px;
+        padding: 2px 4px 2px 4px;
         overflow: hidden;
     }
 
@@ -75,6 +75,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
+        .status {
+            padding: 2px 10px 2px 10px;
+        }
+
         // selected rows count
         .selected-rows-count {
             cursor: pointer;
@@ -153,9 +157,16 @@
             }
 
             &-double {
-                border-left: 1px solid $ta-light-grey-6;
-                padding-left: 6px;
-
+                position: relative;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -6px;
+                    width: 1px;
+                    height: 100%;
+                    background-color: $ta-light-grey-6; // Change color as needed
+                }
                 &-subtitle {
                     font-size: 9px;
                     line-height: 12px;

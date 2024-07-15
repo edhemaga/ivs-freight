@@ -654,7 +654,10 @@
                     <!-- Cancel -->
 
                     <ng-container
-                        *ngIf="confirmationData.subType !== 'cdl void'"
+                        *ngIf="
+                            confirmationData.subType !== 'cdl void' &&
+                            confirmationData.type !== 'status'
+                        "
                     >
                         <button
                             (click)="onAction('close')"
@@ -696,15 +699,19 @@
                     </ng-container>
 
                     <ng-container
-                        *ngIf="confirmationData.subType === 'cdl void'"
+                        *ngIf="
+                            confirmationData.subType === 'cdl void' ||
+                            confirmationData.type === 'status'
+                        "
                     >
                         <button
                             (click)="onAction('close')"
                             class="ta-font-bold modal-cancel-btn"
                             [ngClass]="{
-                                'active-cancel-btn': ['cdl'].includes(
-                                    confirmationData?.template
-                                )
+                                'active-cancel-btn':
+                                    ['cdl'].includes(
+                                        confirmationData?.template
+                                    ) || confirmationData.type === 'status'
                             }"
                             type="button"
                         >
@@ -712,8 +719,18 @@
                         </button>
                     </ng-container>
 
-                    <!-- Delete -->
+                    <ng-container *ngIf="confirmationData.type === 'status'">
+                        <button
+                            (click)="onAction('change-status')"
+                            class="ta-font-bold modal-delete-btn modal-gray-btn modal-confirmation-btn"
+                            type="button"
+                            [ngClass]="{ 'not-clickable': !isModalValid }"
+                        >
+                            Change Status
+                        </button>
+                    </ng-container>
 
+                    <!-- Delete -->
                     <ng-container
                         *ngIf="
                             [

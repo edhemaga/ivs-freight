@@ -15,3 +15,8 @@ export const setTemplateTabCards = createAction(
     '[Load Card Modal] Set Template Tab Cards',
     props<LoadCardTypes>()
 );
+
+export const setClosedTabCards = createAction(
+    '[Load Card Modal] Set Closed Tab Cards',
+    props<LoadCardTypes>()
+);

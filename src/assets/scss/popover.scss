@@ -236,75 +236,6 @@
         }
     }
 }
-.status-node {
-    background-color: #2c2c2c;
-    color: #d3d3d3;
-    text-align: center;
-    width: 120px;
-    padding: 4px;
-    gap: 4px;
-    border-radius: 3px 0px 0px 0px;
-    position: relative;
-    font-family: Arial, sans-serif;
-}
-
-.status-name {
-    font-size: 18px;
-    color: #a6a6ff;
-    cursor: pointer;
-}
-
-.status-next {
-    padding: 2px 6px 2px 6px;
-}
-
-.status-next-item {
-    color: #f0f0f0;
-    font-family: Montserrat;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 14px;
-    text-align: left;
-    height: 26px;
-    padding: 6px;
-    gap: 4px;
-    border-radius: 2px 0px 0px 0px;
-}
-
-.status-previous {
-    border-top: 1px solid #4d4d4d;
-    padding: 2px 6px 2px 6px;
-}
-
-.status-previous p {
-    font-family: Montserrat;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 14px;
-    text-align: left;
-    color: #aaaaaa;
-    padding: 6px;
-}
-
-.status-previous-item {
-    font-family: Montserrat;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 14px;
-    text-align: left;
-    height: 26px;
-    padding: 6px;
-    gap: 4px;
-    border-radius: 2px 0px 0px 0px;
-}
-
-.status-previous-icon {
-    font-size: 16px;
-    color: #d3d3d3;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
 
 // Table Status Popup
 .table-status-popover {
@@ -934,13 +865,17 @@
             width: 100%;
             height: 28px;
             background: $ta-black-2;
-            border-radius: 2px;
             margin-bottom: 2px;
             margin-top: -34px;
-            padding: 2px;
             display: flex;
             align-items: center;
-            color: $ta-light-grey-6;
+            padding: 6px 10px 6px 6px;
+            border-radius: 2px 0px 0px 0px;
+            color: $bw5;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 14px;
+
             .number-container {
                 display: flex;
                 flex-direction: column;
@@ -965,8 +900,26 @@
             height: fit-content;
 
             padding: 4px;
-            border-radius: 10px;
+            border-radius: 3px;
             position: relative;
+            .spinner {
+                border: 2px solid $white;
+                border-radius: 50%;
+                border-top: 2px solid $ta-black;
+                width: 30px;
+                height: 30px;
+                animation: spin 2s linear infinite;
+                margin: auto;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
 
             .items-container {
                 background: $ta-black-2;
@@ -996,6 +949,9 @@
             .delivery {
                 color: $ta-red-13 !important;
             }
+            .deadhead {
+                color: $white !important;
+            }
             .number {
                 color: #00ffcc;
                 font-family: Montserrat;
@@ -1003,6 +959,9 @@
                 font-weight: 700;
                 line-height: 18px;
                 text-align: center;
+            }
+            .deadhead-number {
+                color: $bw5 !important;
             }
 
             .line {
@@ -1014,6 +973,7 @@
 
             .details {
                 flex: 1;
+                height: 100%;
                 font-family: Montserrat;
                 font-size: 11px;
                 font-weight: 400;
@@ -1044,19 +1004,20 @@
 
             .total {
                 font-weight: bold;
-                border: 1px solid $ta-black;
+                border-top: 1px solid $ta-black;
                 background: $ta-black-2;
-                div {
-                    padding: 0 6px 0 6px;
-                }
-            }
-
-            .total span {
                 font-family: Montserrat;
                 font-size: 11px;
                 font-weight: 400;
                 line-height: 14px;
+            }
+            .pick-up {
                 text-align: left;
+                padding: 0 6px 0 6px;
+            }
+            .total-miles {
+                text-align: right;
+                padding: 0 6px 0 6px;
             }
         }
     }

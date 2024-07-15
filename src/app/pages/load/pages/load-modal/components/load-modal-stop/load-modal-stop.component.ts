@@ -58,7 +58,7 @@ export class LoadModalStopComponent {
         avatar: string;
     };
     @Input() isCardOpen: boolean;
-    @Input() state: LoadStatusStringEnum.VALID | LoadStatusStringEnum.INVALID;
+    @Input() state: LoadStatusStringEnum.VALID | LoadStatusStringEnum.INVALID | LoadStatusStringEnum.STEP_INVALID_STATUS;
     @Input() animationMarginParams = LoadModalConstants.ANIMATION_MARGIN_PARAMS;
     @Input() isDestinationTab = false;
     @Input() isDragAndDropActive = false;
@@ -79,9 +79,6 @@ export class LoadModalStopComponent {
         if (!this.disabledCard && !this.preventOpening) {
             event.preventDefault();
             event.stopPropagation();
-
-            this.isCardOpen = !this.isCardOpen;
-
             this.toggleEvent.emit(this.isCardOpen);
         }
     }

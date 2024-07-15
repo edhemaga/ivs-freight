@@ -1,0 +1,29 @@
+@import 'src/theme/variables';
+
+.chat-no-data-wrapper {
+    width: 318px;
+    padding-bottom: 32px;
+
+    .illustration {
+        height: 100px;
+        width: 100%;
+        background: $bw2;
+        background: linear-gradient(180deg, $bw2 0%, $white 100%, $white 100%);
+    }
+
+    .no-data-found {
+        color: $bw5;
+        font-size: 26px;
+        line-height: 32px;
+        text-align: center;
+    }
+
+    .no-data-message {
+        margin: 22px auto;
+        padding: 0 30px;
+        width: 100%;
+        line-height: 14px;
+        font-size: 11px;
+        text-align: center;
+    }
+}

@@ -129,11 +129,6 @@ body {
     text-align: right !important;
 }
 
-// Need to override to get scroll
-html body .content-holder .stop-items-wrapper app-load-modal-stop-items {
-    scrollbar-width: thin !important;
-}
-
 html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     overflow-x: scroll !important;
     scrollbar-width: thin !important;
@@ -212,7 +207,7 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
 
 .cdk-drag-preview {
     background-color: $white !important;
-    
+
     .load-stop-counter-container {
         display: none !important;
     }
@@ -248,6 +243,35 @@ app-load-modal .note-container .note-header .note-arrow {
     right: 0 !important;
 }
 
+app-load-modal {
+    .comments-container {
+        padding: 6px 0 !important;
+    }
+
+    .comment-container {
+        margin-bottom: 6px;
+    }
+}
+
 .status__dropdown-body .load-status {
     font-size: 12px !important;
+}
+
+.load-modal-table-items-container {
+    .valid-focus-out {
+        .input-required-check {
+            display: none;
+        }
+        .valid-focus-out-filled {
+            background-color: $white !important;
+            &:hover {
+                background-color: $ta-blue-17;
+            }
+        }
+    }
+    .input-control {
+        &.valid-focus-in {
+            background-color: $black;
+        }
+    }
 }

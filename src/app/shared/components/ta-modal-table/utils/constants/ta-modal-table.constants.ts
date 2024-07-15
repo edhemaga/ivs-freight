@@ -66,6 +66,23 @@ export class ModalTableConstants {
         'UNIT'
     ];
 
+    static LOAD_ITEM_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'DESCRIPTION',
+        'QUANTITY',
+        'TMP',
+        'WEIGHT',
+        'LENGTH',
+        'HEIGHT',
+        'TARP',
+        'STACK',
+        'SECURE',
+        'BOL NO',
+        'PICKUP NO',
+        'SEAL NO',
+        'CODE'
+    ];
+    
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
@@ -74,4 +91,5 @@ export class ModalTableConstants {
     static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_FUEL_CARD: boolean[] = [false];
     static IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_LOAD_ITEMS: boolean[] = [false, false,false, false,false, false,false, false,false, false,false, false,false];
 }

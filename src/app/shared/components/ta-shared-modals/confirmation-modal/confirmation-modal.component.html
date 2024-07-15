@@ -42,7 +42,9 @@
             ? 'Delete Trailer'
             : editData?.template === 'driver'
             ? 'Delete Driver'
-            : ' Confirmation'
+            : editData?.template === 'comment'
+            ? 'Delete Comment'
+            : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"

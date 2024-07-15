@@ -17,7 +17,7 @@ export class FormDataService {
                         Object.entries(element).map((it) => {
                             if (it[1] instanceof Array) {
                                 it[1].map((ita, mapIndex) => {
-                                    if (ita instanceof Object) {
+                                    if (ita instanceof Object && !(ita instanceof File)) {
                                         Object.entries(ita).forEach(([subKey, subValue]) => {
                                             this.formData.append(
                                                 `${item[0]}[${ind}].${it[0]}[${mapIndex}].${subKey}`,

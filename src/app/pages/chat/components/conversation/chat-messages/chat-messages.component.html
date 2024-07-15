@@ -1,0 +1,131 @@
+<div class="messages-container">
+    <ng-container [ngSwitch]="remainingParticipants?.length">
+        <div class="messages-header d-flex align-items-center">
+            <ng-container *ngSwitchCase="1">
+                <div class="name ta-font-extra-bold">
+                    {{ remainingParticipants[0].fullName }}
+                </div>
+
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="ChatSvgRoutes.searchIcon"
+                >
+                </svg-icon>
+
+                <div class="right-icons d-flex">
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.informationIcon"
+                    >
+                    </svg-icon>
+
+                    <div
+                        class="border-container d-flex justify-content-center align-items-center"
+                    >
+                        <div class="border"></div>
+                    </div>
+
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.listOptionsIcon"
+                    >
+                    </svg-icon>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+
+    <div
+        class="messages-content"
+        #messagesContent
+        [scrollTop]="messagesContent?.scrollHeight"
+    >
+        <ng-container *ngIf="messages?.length">
+            <ng-container
+                *ngFor="
+                    let message of messages;
+                    let ind = index;
+                    trackBy: trackById
+                "
+            >
+                <ng-container *ngIf="message">
+                    <app-chat-message
+                        [currentUserId]="currentUserId"
+                        [message]="message"
+                    ></app-chat-message>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <div class="left-side d-flex">
+            <ng-container *ngIf="!isChatTypingActivated; else chatInputField">
+                <div
+                    (click)="enableChatInput()"
+                    class="input-placeholder-not-touched ta-font-regular"
+                >
+                    Type your message here
+                </div>
+            </ng-container>
+            <ng-template #chatInputField>
+                <div class="form-wrapper" [formGroup]="messageForm">
+                    <app-ta-input
+                        formControlName="message"
+                        [(ngModel)]="messageToSend"
+                        [inputConfig]="{
+                            name: 'message',
+                            type: 'text',
+                            label: 'Type your message here',
+                            hideRequiredCheck: true,
+                            placeholderInsteadOfLabel: true
+                        }"
+                    ></app-ta-input>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="right-side d-flex">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                [src]="ChatSvgRoutes.faceEmojiIcon"
+            ></svg-icon>
+
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                [src]="ChatSvgRoutes.documentIcon"
+            ></svg-icon>
+
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [ngClass]="messageToSend && 'blue-icon'"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                [src]="ChatSvgRoutes.sendMessageIcon"
+                (click)="sendMessage()"
+            ></svg-icon>
+        </div>
+    </div>
+</div>

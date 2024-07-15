@@ -21,7 +21,12 @@
                 [ngClass]="{
                     'justify-content-center': first,
                     'justify-content-end': last,
-                    'hide-responsive': i === 2 || i === 3
+                    'hide-responsive':
+                        (i === 2 &&
+                            stopsData?.statusType?.name !== 'Pending') ||
+                        i === 3,
+                    'contact-box':
+                        stopsData?.statusType?.name !== 'Pending' && i === 3
                 }"
             >
                 <p class="m-0 ta-font-bold">{{ headerItem }}</p>
@@ -121,7 +126,10 @@
             <!-- Location, Type -->
 
             <div class="d-flex flex-column justify-content-center stop-box">
-                <p class="m-0 ta-font-semi-bold text-truncate">
+                <p
+                    class="m-0 ta-font-semi-bold text-truncate"
+                    style="max-width: 186px"
+                >
                     {{
                         stop?.shipper?.address?.city +
                             ', ' +
@@ -149,10 +157,13 @@
             <!-- Shipper, Address -->
 
             <div
-                class="d-flex flex-column justify-content-center hide-responsive stop-box"
+                class="d-flex flex-column justify-content-center stop-box"
+                [ngClass]="{
+                    'hide-responsive': stopsData?.statusType?.name !== 'Pending'
+                }"
             >
                 <div class="d-flex align-items-center">
-                    <p class="m-0 text-truncate">
+                    <p class="m-0 text-truncate" style="max-width: 186px">
                         {{ stop?.shipper?.businessName }}
                     </p>
 
@@ -180,6 +191,9 @@
 
             <div
                 class="d-flex flex-column justify-content-center hide-responsive stop-box"
+                [ngClass]="{
+                    'contact-box': stopsData?.statusType?.name !== 'Pending'
+                }"
                 [ngStyle]="{
                     visibility: !stop?.stopType?.id ? 'hidden' : 'visible'
                 }"
@@ -251,7 +265,7 @@
                                     else timeTo
                                 "
                             >
-                                {{ stop?.timeType?.name }}
+                                Appt.
                             </ng-container>
 
                             <ng-template #timeTo>
