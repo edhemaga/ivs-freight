@@ -456,6 +456,7 @@ export enum TableStringEnum {
     DNU = 'dnu',
     TYPE = 'type',
     STATUS = 'status',
+    STATUS_2 = 'Status',
     FTL_ARRAY = 'ftlArray',
     LTL_ARRAY = 'ltlArray',
     REPAIR_ARRAY = 'repairArray',
@@ -484,7 +485,7 @@ export enum TableStringEnum {
     TEXT_TYPE = 'textType',
     SSN_2 = 'SSN',
     SSN_EIN = 'ssnEin',
-
+    CHANGE = 'Change',
     // Links
     LOAD_DETAILS = '/list/load/',
 

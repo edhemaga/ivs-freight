@@ -20,9 +20,6 @@ import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { EnumValue } from 'appcoretruckassist';
 
-//pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
 @Component({
     selector: 'app-ta-modal-table-email',
     templateUrl: './ta-modal-table-email.component.html',
@@ -37,9 +34,6 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-
-        //pipes
-        TrackByPropertyPipe,
     ],
 })
 export class TaModalTableEmailComponent {

@@ -12,7 +12,8 @@
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
-            'previous-adresses-table-header': isPreviousAddressesTable
+            'previous-adresses-table-header': isPreviousAddressesTable,
+            'load-items-table': isLoadItemTable
         }"
     >
         <ng-container
@@ -28,8 +29,11 @@
                     'justify-content-center': i === 0,
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
-                    'justify-content-end subtotal': i === 5 && !isContactTable,
-                    'first-item': i === 0 && isContactTable
+                    'justify-content-end subtotal':
+                        i === 5 && !isContactTable && !isLoadItemTable,
+                    'first-item': i === 0 && isContactTable,
+                    'stop-items-number': isLoadItemTable && i === 0,
+                    'stop-items-desc': isLoadItemTable && i === 1
                 }"
             >
                 <ng-container
@@ -197,5 +201,27 @@
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-previous-addresses>
+
+        <ng-container *ngIf="isHazardous !== undefined">
+            <app-ta-modal-table-load-items
+                *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [stopItemDropdownLists]="stopItemDropdownLists"
+                [selectedQuantity]="selectedQuantity"
+                [selectedHazardous]="selectedHazardous"
+                [selectedStack]="selectedStack"
+                [selectedSecure]="selectedSecure"
+                [selectedTarps]="selectedTarps"
+                [selectedTrailer]="selectedTrailer"
+                [isHazardous]="isHazardous"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+                (onFieldReset)="deleteHazardous($event)"
+                (unitsChanged)="unitsChanged($event)"
+            >
+            </app-ta-modal-table-load-items>
+        </ng-container>
     </ng-container>
 </div>

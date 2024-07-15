@@ -2848,9 +2848,9 @@ export class TaInputComponent
                     !isNaN(this.span1.nativeElement.innerHTML) &&
                     !isNaN(this.span2.nativeElement.innerHTML)
                 ) {
-                    this.calendarService.dateChanged.next(
-                        this.dateTimeInputDate
-                    );
+                    // this.calendarService.dateChanged.next(
+                    //     this.dateTimeInputDate
+                    // );
                 } else {
                     this.span1.nativeElement.innerHTML = 'HH';
                     this.span2.nativeElement.innerHTML = 'MM';
