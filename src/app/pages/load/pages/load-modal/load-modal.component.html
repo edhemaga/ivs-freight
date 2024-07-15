@@ -41,10 +41,9 @@
                 }"
             >
                 <!-- FTL-LTL Switcher -->
-
                 <div class="tabs-container">
                     <ng-container
-                        *ngIf="!editData?.type?.includes('edit'); else editLoad"
+                        *ngIf="isActiveLoad(); else editLoad"
                     >
                         <app-ta-tab-switch
                             [tabs]="tabs"
@@ -1564,7 +1563,7 @@
             <!-- Comments -->
             <div
                 class="load-modal-row"
-                *ngIf="editData?.type?.includes('edit')"
+                *ngIf="editData?.type?.includes('edit') && comments.length"
             >
                 <app-ta-custom-card
                     [cardName]="'Comment'"

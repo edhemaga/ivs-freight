@@ -879,12 +879,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: dispatcher?.fullName,
                 avatar: dispatcher?.avatarFile?.url,
             },
-            avatarImg: dispatch.driver?.avatarFile?.url,
-            tableDriver: dispatch.driver?.firstName
-                ? dispatch.driver?.firstName + ' ' + dispatch.driver?.lastName
+            avatarImg: dispatch?.driver?.avatarFile?.url,
+            tableDriver: dispatch?.driver?.firstName
+                ? dispatch?.driver?.firstName + ' ' + dispatch?.driver?.lastName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruck: dispatch.truck?.truckNumber,
-            tableTrailer: dispatch.trailer?.trailerNumber,
+            tableTruck: dispatch?.truck?.truckNumber,
+            tableTrailer: dispatch?.trailer?.trailerNumber,
             loadTotal: {
                 total: totalRate
                     ? TableStringEnum.DOLLAR_SIGN +
@@ -956,15 +956,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? LoadModalStopItemsStringEnum.YES
                 : null,
             tableAssignedUnitTruck: {
-                text: dispatch.truck?.truckNumber,
-                type: dispatch.truck?.model,
-                color: this.setTruckTooltipColor(dispatch.truck?.model),
+                text: dispatch?.truck?.truckNumber,
+                type: dispatch?.truck?.model,
+                color: this.setTruckTooltipColor(dispatch?.truck?.model),
                 hover: false,
             },
             tableAssignedUnitTrailer: {
-                text: dispatch.trailer?.trailerNumber,
-                type: dispatch.trailer?.model,
-                color: this.setTrailerTooltipColor(dispatch.trailer?.model),
+                text: dispatch?.trailer?.trailerNumber,
+                type: dispatch?.trailer?.model,
+                color: this.setTrailerTooltipColor(dispatch?.trailer?.model),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -1504,7 +1504,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.EDIT) {
             this.loadServices
-                .getLoadById(event.id)
+                .getLoadById(event.id, this.selectedTab === TableStringEnum.TEMPLATE)
                 .pipe(
                     takeUntil(this.destroy$),
                     tap((load) => {
