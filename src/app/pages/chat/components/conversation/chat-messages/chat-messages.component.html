@@ -49,24 +49,26 @@
         #messagesContent
         [scrollTop]="messagesContent?.scrollHeight"
     >
-        <div *ngIf="messages?.length">
-            <!-- TODO Add trackBy -->
-            <ng-container
-                *ngFor="
-                    let message of messages;
-                    let ind = index;
-                    trackBy: trackById
-                "
-            >
-                <ng-container *ngIf="message">
-                    <app-chat-message
-                        [currentUserId]="currentUserId"
-                        [message]="message"
-                    ></app-chat-message>
+        <ng-container *ngIf="messages?.length">
+            <div>
+                <ng-container
+                    *ngFor="
+                        let message of messages;
+                        let ind = index;
+                        trackBy: trackById
+                    "
+                >
+                    <ng-container *ngIf="message">
+                        <app-chat-message
+                            [currentUserId]="currentUserId"
+                            [message]="message"
+                        ></app-chat-message>
+                    </ng-container>
                 </ng-container>
-            </ng-container>
-        </div>
+            </div>
+        </ng-container>
     </div>
+
     <div class="chat-footer d-flex">
         <div class="left-side d-flex">
             <ng-container *ngIf="!isChatTypingActivated; else chatInputField">
@@ -119,7 +121,6 @@
                 <div class="border"></div>
             </div>
 
-            <!-- TODO Prevent sending multiple messages, wait for api call to complete before sending another messag -->
             <svg-icon
                 class="d-flex justify-content-center align-items-center"
                 [ngClass]="messageToSend && 'blue-icon'"

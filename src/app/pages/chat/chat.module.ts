@@ -1,4 +1,8 @@
 import { NgModule } from "@angular/core";
+import {
+    FormsModule,
+    ReactiveFormsModule
+} from "@angular/forms";
 
 // Modules
 import { CommonModule } from "@angular/common";
@@ -22,7 +26,6 @@ import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/t
 import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
 
 // Services
-import { UserChatService } from "@pages/chat/services/chat.service";
 import { HubService } from "@pages/chat/services/hub.service";
 
 // Resolvers
@@ -34,7 +37,6 @@ import { ConversationResolver } from "@pages/chat/resolvers/conversation/convers
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -73,7 +75,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     ],
     providers: [
         // Services
-        UserChatService,
         HubService,
 
         // Resolvers
