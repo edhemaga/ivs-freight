@@ -67,3 +67,19 @@
         margin: 1px 0;
     }
 }
+
+svg-icon {
+    height: 26px;
+    width: 26px;
+    border-radius: 3px;
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        background-color: $bw3;
+        svg {
+            path {
+                fill: $ta-black;
+            }
+        }
+    }
+}

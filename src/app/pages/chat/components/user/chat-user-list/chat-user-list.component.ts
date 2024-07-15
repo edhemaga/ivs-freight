@@ -33,4 +33,7 @@ export class ChatUserListComponent implements OnInit {
     return chat.companyUser.id;
   }
 
+  showOnlineUsers(): void { }
+
+  filterByDepartment(): void { }
 }

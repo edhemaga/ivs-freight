@@ -26,16 +26,30 @@
             <div class="border"></div>
         </div>
 
-        <div class="status-icon">
+        <div
+            ngbTooltip
+            mainTooltip="Online users"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="status-icon"
+        >
             <svg-icon
+                (click)="showOnlineUsers()"
                 class="d-flex justify-content-center align-items-center"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
                 [src]="ChatSvgRoutes.contactStatusIcon"
             ></svg-icon>
         </div>
 
-        <div class="department-icon">
+        <div
+            ngbTooltip
+            mainTooltip="Department filter"
+            tooltipBackground="'#424242'"
+            position="bottom"
+            class="department-icon"
+        >
             <svg-icon
+                (click)="filterByDepartment()"
                 class="d-flex justify-content-center align-items-center"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
                 [src]="ChatSvgRoutes.departmentIcon"

@@ -1,10 +1,12 @@
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // Modules
 import { CommonModule } from "@angular/common";
-import { ChatRoutingModule } from "./chat-routing.module";
+import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { SharedModule } from '@shared/shared.module';
+import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
@@ -20,6 +22,7 @@ import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-bad
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
 import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
+import { TaAppTooltipV2Component } from "@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component";
 
 // Services
 import { UserChatService } from "@pages/chat/services/chat.service";
@@ -34,7 +37,6 @@ import { ConversationResolver } from "@pages/chat/resolvers/conversation/convers
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -62,6 +64,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
+        NgbModule,
 
         // Pipes
         NameInitialsPipe,
@@ -69,7 +72,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
         // Shared Components
         TaProfileImagesComponent,
-        TaInputComponent
+        TaInputComponent,
+        TaAppTooltipV2Component
     ],
     providers: [
         // Services
