@@ -83,8 +83,10 @@ import { LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes/load-time-t
 // constants
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
-import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
 import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
+
+// config
+import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants/load-stop-items-config';
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
@@ -277,6 +279,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public stopItemDropdownLists: LoadStopItemDropdownLists;
     public statusDropDownList: SelectedStatus[];
     public previousStatus: SelectedStatus;
+    public savedPickupStopItems: LoadStopItemCommand[] = [];
+    public savedDeliveryStopItems: LoadStopItemCommand[] = [];
+    public savedExtraStopItems: LoadStopItemCommand[][] = [];
+    public isPickupStopValid: boolean = true;
+    public isDeliveryStopValid: boolean = true;
+    public stopItemsValid: boolean[] = [];
 
     // input configurations
     public loadDispatchesTTDInputConfig: ITaInput;
@@ -362,7 +370,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadStopRoutes: MapRoute[] = [];
 
     // hazardous dropdown
-    public isHazardousPicked: boolean = undefined;
+    public isHazardousPicked: boolean = false;
     public isHazardousVisible: boolean = false;
 
     // stops date range
@@ -397,12 +405,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private statusHistory: LoadStatusHistoryResponse[];
     private initialinvoicedDate: string;
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public savedPickupStopItems: LoadStopItemCommand[] = [];
-    public savedDeliveryStopItems: LoadStopItemCommand[] = [];
-    public savedExtraStopItems: LoadStopItemCommand[][] = [];
-    public pickupStopValid: boolean = true;
-    public deliveryStopValid: boolean = true;
-    public stopItemsValid: boolean[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -772,7 +774,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // stop items
         this.isCreatedNewStopItemsRow =
-            LoadStopItems.IS_CREATED_NEW_STOP_ITEMS_ROW;
+            LoadStopItemsConfig.IS_CREATED_NEW_STOP_ITEMS_ROW;
     }
 
     public validatePickupStops(
@@ -782,8 +784,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         | LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
-            
-        if(this.pickupStopItems.length && !this.pickupStopValid) {
+        if (this.pickupStopItems.length && !this.isPickupStopValid) {
             return LoadModalStringEnum.STEP_INVALID_STATUS;
         }
 
@@ -842,7 +843,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         | null
         | LoadModalStringEnum.VALID_STATUS {
         const stopForm = loadFormArray.at(indx);
-        if(this.savedExtraStopItems[indx].length && !this.stopItemsValid[indx]) {
+        if (
+            this.savedExtraStopItems[indx].length &&
+            !this.stopItemsValid[indx]
+        ) {
             return LoadModalStringEnum.STEP_INVALID_STATUS;
         }
 
@@ -860,11 +864,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadForm: UntypedFormGroup
     ):
         | LoadModalStringEnum.INVALID_STATUS
-        |  LoadModalStringEnum.STEP_INVALID_STATUS
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
-            
-        if(this.deliveryStopItems.length && !this.deliveryStopValid) {
+        if (this.deliveryStopItems.length && !this.isDeliveryStopValid) {
             return LoadModalStringEnum.STEP_INVALID_STATUS;
         }
 
@@ -2934,53 +2937,81 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private remapStopItems(stopItems: LoadStopItemCommand[] | any) {
-        let _pickupStopItems = stopItems;
+    private remapStopItems(
+        stopItems: LoadStopItemCommand[]
+    ): LoadStopItemCommand[] {
+        return stopItems.map((item: any) => {
+            let newItem = { ...item };
 
-        _pickupStopItems = _pickupStopItems.map((item: any) => {
-            if (item.units) {
-                if(item.units.id) item.units = item.units.id;
-                item.units =
-                    this.stopItemDropdownLists.quantityDropdownList.find(
-                        (q) => q.name === item.units || item.units === q.id
-                    )?.id;
+            if (newItem.units) {
+                newItem = {
+                    ...newItem,
+                    units: newItem.units.id
+                        ? newItem.units.id
+                        : this.stopItemDropdownLists.quantityDropdownList.find(
+                              (unit) =>
+                                  unit.name === newItem.units ||
+                                  newItem.units === unit.id
+                          )?.id,
+                };
             }
-            if (item.secure) {
-                item.secure =
-                    this.stopItemDropdownLists.secureDropdownList.find(
-                        (q) => q.name === item.secure 
-                    )?.id;
+
+            if (newItem.secure) {
+                newItem = {
+                    ...newItem,
+                    secure: this.stopItemDropdownLists.secureDropdownList.find(
+                        (secure) => secure.name === newItem.secure
+                    )?.id,
+                };
             }
-            if (item.stackable) {
-                item.stackable =
-                    this.stopItemDropdownLists.stackDropdownList.find(
-                        (q) => q.name === item.stackable 
-                    )?.id;
+
+            if (newItem.stackable) {
+                newItem = {
+                    ...newItem,
+                    stackable:
+                        this.stopItemDropdownLists.stackDropdownList.find(
+                            (stackable) => stackable.name === newItem.stackable
+                        )?.id,
+                };
             }
-            if (item.tarp) {
-                item.tarp = this.stopItemDropdownLists.tarpDropdownList.find(
-                    (q) => q.name === item.tarp 
-                )?.id;
+
+            if (newItem.tarp) {
+                newItem = {
+                    ...newItem,
+                    tarp: this.stopItemDropdownLists.tarpDropdownList.find(
+                        (tarp) => tarp.name === newItem.tarp
+                    )?.id,
+                };
             }
-            if(item.hazardousMaterialId) {
-                item.description = null;
-                item.hazardousMaterialId = this.stopItemDropdownLists.hazardousDropdownList.find(
-                    (q) => q.description === item.hazardousMaterialId || item.id === q.id)?.id;
+
+            if (newItem.hazardousMaterialId) {
+                newItem = {
+                    ...newItem,
+                    description: null,
+                    hazardousMaterialId:
+                        this.stopItemDropdownLists.hazardousDropdownList.find(
+                            (hazard) =>
+                                hazard.description ===
+                                    newItem.hazardousMaterialId ||
+                                newItem.id === hazard.id
+                        )?.id,
+                };
             } else {
-                item.hazardousMaterialId = null;
+                newItem = {
+                    ...newItem,
+                    hazardousMaterialId: null,
+                };
             }
 
             // Remove null properties from form data
-            Object.keys(item).forEach((key) => {
-                if (item[key] === null) {
+            Object.keys(newItem).forEach((key) => {
+                if (newItem[key] === null) {
                     delete item[key];
                 }
             });
 
-            return item;
+            return newItem;
         });
-
-        return _pickupStopItems;
     }
 
     private mapLegTime(
@@ -3491,26 +3522,31 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public handleStopItemsValidStatusEmit(validStatus: boolean,
+    public handleStopItemsValidStatusEmit(
+        validStatus: boolean,
         type: string,
-        extraStopIndex?: number): void {
-            // Flag to trigger form change on items change
-            this.isFormDirty = true;
-            switch (type) {
-                case LoadModalStringEnum.PICKUP:
-                    this.pickupStopValid = validStatus;
-                    break;
-                case LoadModalStringEnum.DELIVERY:
-                    this.deliveryStopValid = validStatus;
-                    break;
-                case LoadModalStringEnum.EXTRA_STOP:
-                    this.stopItemsValid[extraStopIndex] = validStatus;
-                    break;
-                default:
-                    break;
-            }
+        extraStopIndex?: number
+    ): void {
+        // Flag to trigger form change on items change
+        this.isFormDirty = true;
+        switch (type) {
+            case LoadModalStringEnum.PICKUP:
+                this.isPickupStopValid = validStatus;
+                break;
+            case LoadModalStringEnum.DELIVERY:
+                this.isDeliveryStopValid = validStatus;
+                break;
+            case LoadModalStringEnum.EXTRA_STOP:
+                this.stopItemsValid[extraStopIndex] = validStatus;
+                break;
+            default:
+                break;
+        }
 
-        this.isEachStopItemsRowValid = this.pickupStopValid && this.deliveryStopValid && this.stopItemsValid.every(stop => stop);
+        this.isEachStopItemsRowValid =
+            this.isPickupStopValid &&
+            this.isDeliveryStopValid &&
+            this.stopItemsValid.every((stop) => stop);
     }
 
     public additionalPartVisibility(event: {
@@ -3998,14 +4034,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stackDropdownList: res.stackable,
                         secureDropdownList: res.secures,
                         tarpDropdownList: res.tarps,
-                        hazardousDropdownList:  res.hazardousMaterials.map((item) => {
-                            return {
-                                ...item,
-                                name: item.description,
-                                folder: LoadModalStringEnum.COMMON,
-                                subFolder: LoadModalStringEnum.LOAD,
-                            };
-                        })
+                        hazardousDropdownList: res.hazardousMaterials.map(
+                            (item) => {
+                                return {
+                                    ...item,
+                                    name: item.description,
+                                    folder: LoadModalStringEnum.COMMON,
+                                    subFolder: LoadModalStringEnum.LOAD,
+                                };
+                            }
+                        ),
                     };
                 },
 
@@ -4306,14 +4344,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             if (index === 0) {
                 this.pickupStatusHistory = stop.statusHistory;
                 this.pickupStopItems = stop.items;
-                this.savedPickupStopItems = stop.items.length ? [stop.items] : [];
+                this.savedPickupStopItems = stop.items.length
+                    ? [stop.items]
+                    : [];
             } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = stop.items;
                 this.extraStopStatusHistory[index - 1] = stop.statusHistory;
-                this.savedExtraStopItems[index - 1] = stop.items.length ? [stop.items] : [];
+                this.savedExtraStopItems[index - 1] = stop.items.length
+                    ? [stop.items]
+                    : [];
             } else {
                 this.deliveryStopItems = stop.items;
-                this.savedDeliveryStopItems = stop.items.length ? [stop.items] : [];
+                this.savedDeliveryStopItems = stop.items.length
+                    ? [stop.items]
+                    : [];
                 this.deliveryStatusHistory = stop.statusHistory;
             }
         });

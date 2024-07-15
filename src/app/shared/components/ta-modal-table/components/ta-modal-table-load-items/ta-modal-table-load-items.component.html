@@ -23,7 +23,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="loadModalSvgRoutes.deleteStopItem"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
@@ -33,27 +33,26 @@
                 </div>
 
                 <div class="gradient-border-container stop-items-desc">
-                    <ng-container *ngIf="!isHazardous">
+                    <ng-container *ngIf="!isHazardous; else hazardousTemplate">
                         <app-ta-input
                             formControlName="description"
                             [inputConfig]="descriptionInputConfig"
                         ></app-ta-input>
                     </ng-container>
-                    <ng-container *ngIf="isHazardous">
+                    <ng-template #hazardousTemplate>
                         <app-ta-input-dropdown
                             formControlName="hazardousMaterialId"
                             [template]="'svgtext-template'"
                             [inputConfig]="descriptionInputConfig"
-                            [options]="
-                                stopItemDropdownLists?.hazardousDropdownList
-                            "
+                            [options]="stopItemDropdownLists?.hazardousDropdownList"
                             [activeItem]="selectedHazardous[i]"
                         ></app-ta-input-dropdown>
-                    </ng-container>
+                    </ng-template>
+                    
                 </div>
 
                 <div>
-                    <ng-container *ngIf="!selectedQuantity[i]">
+                    <ng-container *ngIf="!selectedQuantity[i] else quantityTemplate">
                         <app-ta-input-dropdown
                             formControlName="units"
                             [inputConfig]="quantityInputConfig"
@@ -65,12 +64,12 @@
                         ></app-ta-input-dropdown>
                     </ng-container>
 
-                    <ng-container *ngIf="selectedQuantity[i]">
+                    <ng-template #quantityTemplate>
                         <app-ta-input
                             formControlName="quantity"
                             [inputConfig]="unitInputConfig(i)"
                         ></app-ta-input>
-                    </ng-container>
+                    </ng-template>
                 </div>
 
                 <div>

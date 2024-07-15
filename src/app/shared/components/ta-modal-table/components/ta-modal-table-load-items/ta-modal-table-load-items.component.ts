@@ -17,7 +17,7 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Const
-import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
+import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants/load-stop-items-config';
 
 // Enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
@@ -30,6 +30,9 @@ import { EnumValue, TrailerTypeResponse } from 'appcoretruckassist';
 // Components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+
+// Svg routes
+import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-load-items',
@@ -48,6 +51,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
     ],
 })
 export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
+    public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
@@ -64,27 +68,27 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         new EventEmitter();
 
     @Output() onFieldReset: EventEmitter<number> = new EventEmitter();
-    @Output() unitsChanged: EventEmitter<{ unit: EnumValue; i: number }> =
+    @Output() unitsChanged: EventEmitter<{ unit: EnumValue; index: number }> =
         new EventEmitter();
 
     // input configurations
     public descriptionInputConfig: ITaInput =
-        LoadStopItems.DESCRIPTION_INPUT_CONFIG;
-    public quantityInputConfig: ITaInput = LoadStopItems.QUANTITY_INPUT_CONFIG;
-    public bolInputConfig: ITaInput = LoadStopItems.BOL_INPUT_CONFIG;
-    public weightInputConfig: ITaInput = LoadStopItems.WEIGHT_INPUT_CONFIG;
-    public lengthInputConfig: ITaInput = LoadStopItems.LENGTH_INPUT_CONFIG;
-    public heightInputConfig: ITaInput = LoadStopItems.HEIGHT_INPUT_CONFIG;
+        LoadStopItemsConfig.DESCRIPTION_INPUT_CONFIG;
+    public quantityInputConfig: ITaInput = LoadStopItemsConfig.QUANTITY_INPUT_CONFIG;
+    public bolInputConfig: ITaInput = LoadStopItemsConfig.BOL_INPUT_CONFIG;
+    public weightInputConfig: ITaInput = LoadStopItemsConfig.WEIGHT_INPUT_CONFIG;
+    public lengthInputConfig: ITaInput = LoadStopItemsConfig.LENGTH_INPUT_CONFIG;
+    public heightInputConfig: ITaInput = LoadStopItemsConfig.HEIGHT_INPUT_CONFIG;
     public tarpInputConfig: ITaInput;
-    public codeInputConfig: ITaInput = LoadStopItems.CODE_INPUT_CONFIG;
+    public codeInputConfig: ITaInput = LoadStopItemsConfig.CODE_INPUT_CONFIG;
     public sealNumberInputConfig: ITaInput =
-        LoadStopItems.SEAL_NUMBER_INPUT_CONFIG;
-    public pickupInputConfig: ITaInput = LoadStopItems.PICKUP_INPUT_CONFIG;
+        LoadStopItemsConfig.SEAL_NUMBER_INPUT_CONFIG;
+    public pickupInputConfig: ITaInput = LoadStopItemsConfig.PICKUP_INPUT_CONFIG;
     public secureInputConfig: ITaInput;
     public stackableInputConfig: ITaInput =
-        LoadStopItems.STACKABLE_INPUT_CONFIG;
+        LoadStopItemsConfig.STACKABLE_INPUT_CONFIG;
     public temperatureInputConfig: ITaInput =
-        LoadStopItems.TEMPERATURE_INPUT_CONFIG;
+        LoadStopItemsConfig.TEMPERATURE_INPUT_CONFIG;
 
     constructor() {}
 
@@ -138,10 +142,10 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     }
 
     private createDynamicFields() {
-        this.tarpInputConfig = LoadStopItems.getTarpInputConfig(
+        this.tarpInputConfig = LoadStopItemsConfig.getTarpInputConfig(
             this.isTarpDisabled
         );
-        this.secureInputConfig = LoadStopItems.getSecureInputConfig(
+        this.secureInputConfig = LoadStopItemsConfig.getSecureInputConfig(
             this.isStrapChainDisabled
         );
 
@@ -181,12 +185,12 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         );
     }
 
-    public emitOnSelectDropdown(unit: EnumValue, i: number): void {
-        this.selectedQuantity[i] = unit;
-        this.unitsChanged.emit({ unit, i });
+    public emitOnSelectDropdown(unit: EnumValue, index: number): void {
+        this.selectedQuantity[index] = unit;
+        this.unitsChanged.emit({ unit, index });
     }
 
     public unitInputConfig(i: number): ITaInput {
-        return LoadStopItems.getUnitsInputConfig(this.selectedQuantity[i].name);
+        return LoadStopItemsConfig.getUnitsInputConfig(this.selectedQuantity[i].name);
     }
 }

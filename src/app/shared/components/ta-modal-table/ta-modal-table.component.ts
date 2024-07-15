@@ -183,16 +183,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedFuelCard: DriverModalFuelCardResponse[] = [];
     public fuelCardOptions: DriverModalFuelCardResponse[] = [];
 
-    public loadItems: any = [];
-
-    // enums
-    public taModalTableStringEnum = TaModalTableStringEnum;
-    public modalTableTypeEnum = ModalTableTypeEnum;
+    // Load table 
     public selectedQuantity: EnumValue[] = [];
     public selectedStack: EnumValue[] = [];
     public selectedSecure: EnumValue[] = [];
     public selectedTarps: EnumValue[] = [];
     public selectedHazardous: EnumValue[] = [];
+
+    // enums
+    public taModalTableStringEnum = TaModalTableStringEnum;
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -1042,8 +1042,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             }, 300);
     }
 
-    public unitsChanged(event: {unit: EnumValue, i: number}) :void {
-        const formGroup = this.getFormArray().at(event.i);
+    public unitsChanged(event: {unit: EnumValue, index: number}) :void {
+        const formGroup = this.getFormArray().at(event.index);
         formGroup.patchValue({
             units: event.unit.id
         });
