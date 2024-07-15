@@ -70,7 +70,8 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         new EventEmitter();
 
     @Output() onFieldReset: EventEmitter<number> = new EventEmitter();
-    @Output() unitsChanged: EventEmitter<{unit: EnumValue, i: number}> = new EventEmitter();
+    @Output() unitsChanged: EventEmitter<{ unit: EnumValue; i: number }> =
+        new EventEmitter();
 
     // input configurations
     public descriptionInputConfig: ITaInput =
@@ -95,7 +96,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.createDynamicFields();
-        setTimeout(() =>this.fieldValidators(), 1);
+        setTimeout(() => this.fieldValidators(false), 1);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -109,12 +110,12 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
             changes.isHazardous?.previousValue !==
             changes.isHazardous?.currentValue
         ) {
-            this.fieldValidators();
+            this.fieldValidators(true);
         }
     }
 
-    private fieldValidators(): void {
-        this.formArray.controls.forEach((control, index) => { 
+    private fieldValidators(resetField: boolean): void {
+        this.formArray.controls.forEach((control, index) => {
             const descriptionControl = control.get(
                 TaModalTableStringEnum.DESCRIPTION
             );
@@ -122,7 +123,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
                 TaModalTableStringEnum.HAZARDOUS
             );
 
-            if(this.isHazardous) {
+            if (this.isHazardous) {
                 descriptionControl.removeValidators(Validators.required);
                 hazardousControl.addValidators(Validators.required);
             } else {
@@ -132,7 +133,10 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
 
             hazardousControl.patchValue(null);
             descriptionControl.patchValue(null);
-            this.onFieldReset.emit(index);
+            if (resetField) {
+                console.log('Reseting field');
+                this.onFieldReset.emit(index);
+            }
         });
     }
 
@@ -146,7 +150,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         );
         this.secureInputConfig = LoadStopItems.getSecureInputConfig(
             this.isStrapChainDisabled
-        ); 
+        );
 
         // Reset values if field is disabled
         if (this.isTarpDisabled || this.isStrapChainDisabled) {
@@ -184,9 +188,10 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         );
     }
 
-    public emitOnSelectDropdown(unit: EnumValue, i:number): void {
+    public emitOnSelectDropdown(unit: EnumValue, i: number): void {
+        console.log('wtfFF??????');
         this.selectedQuantity[i] = unit;
-        this.unitsChanged.emit({unit, i});
+        this.unitsChanged.emit({ unit, i });
     }
 
     public unitInputConfig(i: number): ITaInput {
