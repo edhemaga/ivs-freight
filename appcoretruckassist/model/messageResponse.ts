@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
 export interface MessageResponse { 
     id?: number;
+    messageType?: EnumValue;
     sender?: CompanyUserShortResponse;
     conversationId?: number;
     content?: string | null;
