@@ -24,6 +24,8 @@ export class ConfirmationModalTitlePipe implements PipeTransform {
             type === TableStringEnum.ACTIVATE_MULTIPLE
         ) {
             titleString = TableStringEnum.ACTIVATE_2;
+        } else if (type === TableStringEnum.STATUS) {
+            titleString = TableStringEnum.CHANGE;
         } else {
             titleString = ConfirmationActivationStringEnum.CLOSE_TITLE;
         }

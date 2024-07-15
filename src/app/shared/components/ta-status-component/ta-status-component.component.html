@@ -10,7 +10,9 @@
                 >
                     <div
                         class="status-next-item ta-font-bold"
-                        (click)="sendStatus(item.statusValue.name)"
+                        (click)="
+                            sendStatus(item.statusValue.name, item.statusString)
+                        "
                     >
                         <app-load-status-string
                             [status]="{
@@ -32,7 +34,8 @@
                         class="status-previous-item ta-font-bold"
                         (click)="
                             sendStatus(
-                                statusDetails.previousStatus.statusValue.name
+                                statusDetails.previousStatus.statusValue.name,
+                                statusDetails.previousStatus.statusString
                             )
                         "
                     >

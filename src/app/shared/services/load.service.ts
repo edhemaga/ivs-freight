@@ -58,10 +58,20 @@ export class LoadService {
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
-    private statusAction: BehaviorSubject<{ data: LoadStatus; id: number }> =
-        new BehaviorSubject<{ data: LoadStatus; id: number }>(null);
-    public statusAction$: Observable<{ data: LoadStatus; id: number }> =
-        this.statusAction.asObservable();
+    private statusAction: BehaviorSubject<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }> = new BehaviorSubject<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }>(null);
+    public statusAction$: Observable<{
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }> = this.statusAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
         new Subject<DeleteComment>();
@@ -94,7 +104,11 @@ export class LoadService {
     public removeComment(comment: DeleteComment): void {
         this.deleteComment.next(comment);
     }
-    public updateStatus(data: { data: LoadStatus; id: number }) {
+    public updateStatus(data: {
+        dataBack: LoadStatus;
+        dataFront: LoadStatus;
+        id: number;
+    }) {
         this.statusAction.next(data);
     }
 
