@@ -36,7 +36,7 @@
                           editData?.type +
                           '.svg'
                         : editData?.type.includes('status')
-                        ? 'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
+                        ? 'assets/svg/common/confirmation/ic_confirmation_info2.svg'
                         : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
                           editData?.type +
                           '.svg'
@@ -54,6 +54,10 @@
 
                 <div
                     class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
+                    [ngClass]="{
+                        'status-gap': editData?.template === 'Status',
+                        'gap-2': editData?.template !== 'Status'
+                    }"
                 >
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
                         <ng-container [ngSwitch]="editData?.template">
@@ -134,7 +138,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'Status'">
-                                <div class="d-flex w-100 gap-1">
+                                <div class="d-flex w-100 gap-2">
                                     <div class="m-0 status-title ta-font-bold">
                                         This status change requires manual truck
                                         location entry.
@@ -146,17 +150,6 @@
                                         <div class="m-0 ta-font-bold">
                                             Load {{ editData.modalTitle }}
                                         </div>
-
-                                        <ng-container
-                                            *ngIf="editData?.type === 'open'"
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
-                                                    confirmationImageRoutes.confirmationCloseBrokerSvg
-                                                "
-                                            ></svg-icon>
-                                        </ng-container>
                                     </div>
 
                                     <div class="m-0 text-2">
@@ -165,7 +158,7 @@
                                 </div>
 
                                 <div
-                                    class="d-flex align-items-center flex-row gap-1"
+                                    class="d-flex align-items-center flex-row gap-2"
                                 >
                                     <p class="ta-font-extra-bold status-title">
                                         to
@@ -185,7 +178,7 @@
                                     "
                                 >
                                     <div
-                                        class="truck-location d-flex align-items-center flex-row gap-1"
+                                        class="truck-location d-flex align-items-center flex-row gap-2"
                                         [formGroup]="locationForm"
                                     >
                                         <app-ta-input-address-dropdown
@@ -195,13 +188,13 @@
                                                 type: 'text',
                                                 textAlign: left,
                                                 isIconInput: false,
-                                                label: 'Origin',
+                                                label: 'Truck location',
                                                 isIconHidden: true,
+                                                isRequired: true,
                                                 placeholder: 'Truck location',
                                                 dropdownWidthClass: 'w-col-264',
                                                 minLength: 6,
-                                                maxLength: 256,
-                                                placeholderInsteadOfLabel: true
+                                                maxLength: 256
                                             }"
                                             [placeholderType]="'city'"
                                             (selectedAddress)="

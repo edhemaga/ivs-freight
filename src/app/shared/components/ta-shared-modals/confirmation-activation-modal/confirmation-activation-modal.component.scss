@@ -25,6 +25,10 @@
             }
         }
 
+        .status-gap {
+            gap: 12px;
+        }
+
         &-title,
         &-middle {
             p,
@@ -90,6 +94,7 @@
                 margin-right: 6px;
             }
             .truck-location {
+                margin: 14px 0;
                 app-ta-input-address-dropdown {
                     width: 264px;
                 }
