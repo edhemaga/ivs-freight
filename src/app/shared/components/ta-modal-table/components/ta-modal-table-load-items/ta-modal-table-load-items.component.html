@@ -42,22 +42,36 @@
                     </ng-container>
                     <ng-container *ngIf="isHazardous">
                         <app-ta-input-dropdown
-                        formControlName="hazardousMaterialId"
-                        [template]="'svgtext-template'"
+                            formControlName="hazardousMaterialId"
+                            [template]="'svgtext-template'"
                             [inputConfig]="descriptionInputConfig"
-                            [options]="stopItemDropdownLists?.hazardousDropdownList"
+                            [options]="
+                                stopItemDropdownLists?.hazardousDropdownList
+                            "
                             [activeItem]="selectedHazardous[i]"
                         ></app-ta-input-dropdown>
                     </ng-container>
                 </div>
 
                 <div>
-                    <app-ta-input-dropdown
-                        formControlName="quantity"
-                        [inputConfig]="quantityInputConfig"
-                        [options]="stopItemDropdownLists?.quantityDropdownList"
-                        [activeItem]="selectedQuantity[i]"
-                    ></app-ta-input-dropdown>
+                    <ng-container *ngIf="!selectedQuantity[i]">
+                        <app-ta-input-dropdown
+                            formControlName="units"
+                            [inputConfig]="quantityInputConfig"
+                            [options]="
+                                stopItemDropdownLists?.quantityDropdownList
+                            "
+                            [activeItem]="selectedQuantity[i]"
+                            (selectedItem)="emitOnSelectDropdown($event, i)"
+                        ></app-ta-input-dropdown>
+                    </ng-container>
+
+                    <ng-container *ngIf="selectedQuantity[i]">
+                        <app-ta-input
+                            formControlName="quantity"
+                            [inputConfig]="unitInputConfig(i)"
+                        ></app-ta-input>
+                    </ng-container>
                 </div>
 
                 <div>

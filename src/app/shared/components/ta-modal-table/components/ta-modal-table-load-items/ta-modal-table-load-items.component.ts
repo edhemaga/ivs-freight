@@ -70,6 +70,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         new EventEmitter();
 
     @Output() onFieldReset: EventEmitter<number> = new EventEmitter();
+    @Output() unitsChanged: EventEmitter<{unit: EnumValue, i: number}> = new EventEmitter();
 
     // input configurations
     public descriptionInputConfig: ITaInput =
@@ -145,7 +146,7 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
         );
         this.secureInputConfig = LoadStopItems.getSecureInputConfig(
             this.isStrapChainDisabled
-        );
+        ); 
 
         // Reset values if field is disabled
         if (this.isTarpDisabled || this.isStrapChainDisabled) {
@@ -181,5 +182,14 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
             this.selectedTrailer.id === 10 ||
             this.selectedTrailer.id === 12
         );
+    }
+
+    public emitOnSelectDropdown(unit: EnumValue, i:number): void {
+        this.selectedQuantity[i] = unit;
+        this.unitsChanged.emit({unit, i});
+    }
+
+    public unitInputConfig(i: number): ITaInput {
+        return LoadStopItems.getUnitsInputConfig(this.selectedQuantity[i].name);
     }
 }

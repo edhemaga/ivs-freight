@@ -10,6 +10,7 @@ export class LoadStopItems {
         placeholderInsteadOfLabel: true,
         isRequired: true,
         hideErrorMessage: true,
+        dropdownWidthClass: 'w-col-150',
     };
 
     static QUANTITY_INPUT_CONFIG: ITaInput = {
@@ -58,7 +59,7 @@ export class LoadStopItems {
             label: 'Tarp',
             placeholderInsteadOfLabel: true,
             dropdownWidthClass: 'w-col-130',
-            isDisabled
+            isDisabled,
         };
     }
 
@@ -70,7 +71,19 @@ export class LoadStopItems {
             label: 'Secure',
             placeholderInsteadOfLabel: true,
             dropdownWidthClass: 'w-col-100',
-            isDisabled
+            isDisabled,
+        };
+    }
+
+    static getUnitsInputConfig(fixedPlacholder: string): ITaInput {
+        return {
+            name: 'Input Dropdown',
+            type: 'text',
+            isDropdown: true,
+            label: 'Quantity',
+            placeholderInsteadOfLabel: true,
+            dropdownWidthClass: 'w-col-130',
+            fixedPlacholder,
         };
     }
 
@@ -108,7 +121,7 @@ export class LoadStopItems {
         type: 'text',
         label: 'TMP',
         placeholderInsteadOfLabel: true,
-        fixedPlacholder: '°F'
+        fixedPlacholder: '°F',
     };
 
     static IS_CREATED_NEW_STOP_ITEMS_ROW: LoadItemStop = {

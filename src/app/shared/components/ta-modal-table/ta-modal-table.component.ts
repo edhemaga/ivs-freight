@@ -191,10 +191,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public selectedQuantity: EnumValue[] = [];
     public selectedStack: EnumValue[] = [];
-    public selectedSecure: EnumValue[]= [];
-    public selectedTarps: EnumValue[]= [];
-    public selectedHazardous: EnumValue[]= [];
-    
+    public selectedSecure: EnumValue[] = [];
+    public selectedTarps: EnumValue[] = [];
+    public selectedHazardous: EnumValue[] = [];
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -823,10 +823,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 newFormArrayRow = this.formBuilder.group({
                     description: [
                         null,
-                        [...descriptionValidation, Validators.required],
+                        this.isHazardous
+                            ? null
+                            : [...descriptionValidation, Validators.required],
                     ],
                     quantity: [null],
-                    temperature: [null, this.formService.rangeValidator(-20, 99)],
+                    temperature: [
+                        null,
+                        this.formService.rangeValidator(-20, 99),
+                    ],
                     weight: [null],
                     length: [null],
                     height: [null],
@@ -837,7 +842,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     pickupNumber: [null],
                     sealNumber: [null],
                     code: [null],
-                    hazardousMaterialId: [null]
+                    hazardousMaterialId: [
+                        null,
+                        !this.isHazardous ? null : [Validators.required],
+                    ],
+                    units: [null],
                 });
 
                 break;
@@ -883,7 +892,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedSecure.splice(index, 1);
                 this.selectedTarps.splice(index, 1);
                 this.selectedHazardous.splice(index, 1);
-                
+
                 break;
             default:
                 break;
@@ -968,7 +977,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     ): void {
         modalTableData.forEach((data, i) => {
             this.createFormArrayRow();
-            console.log(data);
 
             switch (this.tableType) {
                 case ModalTableTypeEnum.CONTACT:
@@ -1035,6 +1043,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.calculateRepairBillSubtotal();
             }, 300);
     }
+
+    public unitsChanged(event: {unit: EnumValue, i: number}) :void {
+        const formGroup = this.getFormArray().at(event.i);
+        formGroup.patchValue({
+            units: event.unit.id
+        });
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
+        this.modalTableValueEmitter.emit(this.getFormArray().value);
+    }
+
     handleContactData(contact: RepairShopContactResponse, i: number) {
         const formGroup = this.getFormArray().at(i);
         formGroup.patchValue({
@@ -1176,27 +1194,30 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             weight: modalItem.weight || null,
             length: modalItem.length || null,
             height: modalItem.height || null,
-            tarp: (modalItem.tarp as EnumValue)?.name|| null,
+            tarp: (modalItem.tarp as EnumValue)?.name || null,
             stackable: (modalItem.stackable as EnumValue)?.name || null,
             secure: (modalItem.secure as EnumValue)?.name || null,
             bolNumber: modalItem.bolNumber || null,
             pickupNumber: modalItem.pickupNumber || null,
             sealNumber: modalItem.sealNumber || null,
             code: modalItem.code || null,
-            hazardousMaterialId: modalItem.hazardousMaterialId
+            hazardousMaterialId: modalItem.hazardousMaterialId,
+            units: modalItem.units || null,
         });
 
         this.selectedQuantity[index] =
             this.stopItemDropdownLists?.quantityDropdownList?.find(
-                (quantity) => quantity.id === modalItem.quantity
+                (quantity) => quantity.id === (modalItem.units as EnumValue)?.id
             );
         this.selectedStack[index] = modalItem.stackable as EnumValue;
         this.selectedSecure[index] = modalItem.secure as EnumValue;
         this.selectedTarps[index] = modalItem.tarp as EnumValue;
         // if we get items from backend field is called hazardousMaterial not hazardousMaterialId
-        this.selectedHazardous[index] = this.stopItemDropdownLists?.hazardousDropdownList.find(hazard => hazard.id 
-            === (modalItem as any).hazardousMaterial?.id
-        )
+        this.selectedHazardous[index] =
+            this.stopItemDropdownLists?.hazardousDropdownList.find(
+                (hazard) =>
+                    hazard.id === (modalItem as any).hazardousMaterial?.id
+            );
     }
 
     private checkForInputChanges(): void {

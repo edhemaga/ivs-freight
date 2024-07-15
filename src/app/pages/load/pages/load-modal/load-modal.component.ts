@@ -2938,28 +2938,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         let _pickupStopItems = stopItems;
 
         _pickupStopItems = _pickupStopItems.map((item: any) => {
-            if (item.quantity) {
-                item.quantity =
+            if (item.units) {
+                if(item.units.id) item.units = item.units.id;
+                item.units =
                     this.stopItemDropdownLists.quantityDropdownList.find(
-                        (q) => q.name === item.quantity || item.id === q.id
-                    ).id;
+                        (q) => q.name === item.units || item.units === q.id
+                    )?.id;
             }
             if (item.secure) {
                 item.secure =
                     this.stopItemDropdownLists.secureDropdownList.find(
-                        (q) => q.name === item.secure || item.id === q.id
-                    ).id;
+                        (q) => q.name === item.secure 
+                    )?.id;
             }
             if (item.stackable) {
                 item.stackable =
                     this.stopItemDropdownLists.stackDropdownList.find(
-                        (q) => q.name === item.stackable || item.id === q.id
-                    ).id;
+                        (q) => q.name === item.stackable 
+                    )?.id;
             }
             if (item.tarp) {
                 item.tarp = this.stopItemDropdownLists.tarpDropdownList.find(
-                    (q) => q.name === item.tarp || item.id === q.id
-                ).id;
+                    (q) => q.name === item.tarp 
+                )?.id;
             }
             if(item.hazardousMaterialId) {
                 item.description = null;
@@ -4711,6 +4712,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.extraStopItems,
             this.extraStopStatusHistory,
             this.loadExtraStopsDateRange as [],
+            this.isCreatedNewStopItemsRow.extraStops,
         ];
 
         itemsToReorder.forEach((item) => {

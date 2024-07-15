@@ -256,3 +256,22 @@ app-load-modal {
 .status__dropdown-body .load-status {
     font-size: 12px !important;
 }
+
+.load-modal-table-items-container {
+    .valid-focus-out {
+        .input-required-check {
+            display: none;
+        }
+        .valid-focus-out-filled {
+            background-color: $white !important;
+            &:hover {
+                background-color: $ta-blue-17;
+            }
+        }
+    }
+    .input-control {
+        &.valid-focus-in {
+            background-color: $black;
+        }
+    }
+}
