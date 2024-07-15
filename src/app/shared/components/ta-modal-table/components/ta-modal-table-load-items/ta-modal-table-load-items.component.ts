@@ -134,7 +134,6 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
             hazardousControl.patchValue(null);
             descriptionControl.patchValue(null);
             if (resetField) {
-                console.log('Reseting field');
                 this.onFieldReset.emit(index);
             }
         });
@@ -189,7 +188,6 @@ export class TaModalTableLoadItemsComponent implements OnInit, OnChanges {
     }
 
     public emitOnSelectDropdown(unit: EnumValue, i: number): void {
-        console.log('wtfFF??????');
         this.selectedQuantity[i] = unit;
         this.unitsChanged.emit({ unit, i });
     }
