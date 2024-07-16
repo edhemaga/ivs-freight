@@ -37,6 +37,7 @@ export class TaCommentsSearchComponent {
     @Input() commentsData: CommentCompanyUser[];
     @Input() isDisplaySearch: boolean = false;
     @Input() isHeaderHidden: boolean = false;
+
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() btnSortEmitter = new EventEmitter<string>();
     @Output() searchHightlightEmitter = new EventEmitter<string>();
