@@ -1,15 +1,13 @@
-import { NgModule } from "@angular/core";
 import {
-    FormsModule,
     ReactiveFormsModule
 } from "@angular/forms";
 
 // Modules
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
-import { AngularSvgIconModule } from "angular-svg-icon";
-import { SharedModule } from '@shared/shared.module';
 import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from "angular-svg-icon";
+import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
@@ -25,7 +23,7 @@ import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-bad
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
 import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
-import { TaAppTooltipV2Component } from "@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component";
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Services
 import { HubService } from "@pages/chat/services/hub.service";
@@ -41,41 +39,41 @@ import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 
 @NgModule({
-    declarations: [
-        ChatComponent,
-
-        // CHAT LIST
-        ChatUserListComponent,
-        ChatUserListItemComponent,
-
-        // CONVERSATIONS
-        ChatMessagesComponent,
-        ChatMessageComponent,
-        MessagesNotSelectedComponent,
-
-        // AUXILLARY COMPONENTS
-        ChatToolbarComponent,
-        ChatNoDataComponent,
-        UserStatusBadgeComponent
-    ],
     imports: [
         // Modules
+        // NgbModule,
         CommonModule,
         ChatRoutingModule,
         AngularSvgIconModule,
-        SharedModule,
-        FormsModule,
         ReactiveFormsModule,
-        NgbModule,
+        NgbTooltipModule,
+
+        // Shared Components
+        // TaAppTooltipV2Component,
+        TaInputComponent,
+        TaProfileImagesComponent,
 
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
+    ],
 
-        // Shared Components
-        TaProfileImagesComponent,
-        TaInputComponent,
-        TaAppTooltipV2Component
+    declarations: [
+        ChatComponent,
+
+        // Chat list
+        ChatUserListComponent,
+        ChatUserListItemComponent,
+
+        // Conversations
+        ChatMessagesComponent,
+        ChatMessageComponent,
+        MessagesNotSelectedComponent,
+
+        // Auxillary components
+        ChatToolbarComponent,
+        ChatNoDataComponent,
+        UserStatusBadgeComponent,
     ],
     providers: [
         // Services
@@ -88,7 +86,8 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         ConversationResolver,
 
         // Pipes
-        NameInitialsPipe
+        NameInitialsPipe,
+
     ]
 })
 export class ChatModule { };

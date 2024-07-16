@@ -1,16 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+} from '@angular/forms';
 
 // SVG routes
-import { CompanyUserChatResponse } from 'appcoretruckassist';
+import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
 
 // Models
+import { CompanyUserChatResponse } from 'appcoretruckassist';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
 
 @Component({
   selector: 'app-chat-user-list',
   templateUrl: './chat-user-list.component.html',
-  styleUrls: ['./chat-user-list.component.scss']
+  styleUrls: ['./chat-user-list.component.scss'],
 })
 export class ChatUserListComponent implements OnInit {
 
@@ -21,7 +31,13 @@ export class ChatUserListComponent implements OnInit {
 
   public ChatSvgRoutes = ChatSvgRoutes;
 
-  constructor() { }
+  public searchForm!: UntypedFormGroup;
+  public isSearchActive: boolean = false;
+  public searchTerm: string = "";
+
+  constructor(private formBuilder: UntypedFormBuilder) {
+    this.creteForm();
+  }
 
   ngOnInit(): void { }
 
@@ -33,7 +49,17 @@ export class ChatUserListComponent implements OnInit {
     return chat.companyUser.id;
   }
 
-  showOnlineUsers(): void { }
+  public showOnlineUsers(): void { }
 
-  filterByDepartment(): void { }
+  public filterByDepartment(): void { }
+
+  private creteForm(): void {
+    this.searchForm = this.formBuilder.group({
+      searchTerm: [null]
+    });
+  }
+
+  public toggleSearch(): void {
+    this.isSearchActive = !this.isSearchActive;
+  }
 }

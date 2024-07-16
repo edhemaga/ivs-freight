@@ -1,60 +1,71 @@
 <div class="user-list-container">
-    <div class="chat-header d-flex align-items-center">
-        <div class="chat-header-type ta-font-extra-bold">
-            {{ type }}
-        </div>
-
-        <div class="chat-header-message-count ta-font-extra-bold">
-            {{ contact?.count }}
-        </div>
-
+    <div class="chat-header-wrapper">
         <div
-            class="border-container d-flex justify-content-center align-items-center"
+            class="chat-header d-flex align-items-center"
+            [ngClass]="isSearchActive ? 'no-border-bottom' : 'border-bottom'"
         >
-            <div class="border"></div>
-        </div>
+            <div class="chat-header-type ta-font-extra-bold">
+                {{ type }}
+            </div>
 
-        <svg-icon
-            class="d-flex justify-content-center align-items-center"
-            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-            [src]="ChatSvgRoutes.searchIcon"
-        ></svg-icon>
+            <div class="chat-header-message-count ta-font-extra-bold">
+                {{ contact?.count }}
+            </div>
 
-        <div
-            class="border-container d-flex justify-content-center align-items-center"
-        >
-            <div class="border"></div>
-        </div>
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
 
-        <div
-            ngbTooltip
-            mainTooltip="Online users"
-            tooltipBackground="#424242"
-            position="bottom"
-            class="status-icon"
-        >
             <svg-icon
-                (click)="showOnlineUsers()"
                 class="d-flex justify-content-center align-items-center"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.contactStatusIcon"
+                [src]="ChatSvgRoutes.searchIcon"
+                (click)="toggleSearch()"
             ></svg-icon>
-        </div>
 
-        <div
-            ngbTooltip
-            mainTooltip="Department filter"
-            tooltipBackground="'#424242'"
-            position="bottom"
-            class="department-icon"
-        >
-            <svg-icon
-                (click)="filterByDepartment()"
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.departmentIcon"
-            ></svg-icon>
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+
+            <div class="status-icon">
+                <svg-icon
+                    (click)="showOnlineUsers()"
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="ChatSvgRoutes.contactStatusIcon"
+                ></svg-icon>
+            </div>
+
+            <div class="department-icon">
+                <svg-icon
+                    (click)="filterByDepartment()"
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="ChatSvgRoutes.departmentIcon"
+                ></svg-icon>
+            </div>
         </div>
+        <ng-container *ngIf="isSearchActive">
+            <div class="form-wrapper" [formGroup]="searchForm">
+                <app-ta-input
+                    formControlName="searchTerm"
+                    [(ngModel)]="searchTerm"
+                    [inputConfig]="{
+                        name: 'searchTerm',
+                        type: 'text',
+                        label: 'Type your message here',
+                        hideRequiredCheck: true,
+                        placeholderInsteadOfLabel: true,
+                        autoFocus: true,
+                        minLength: 3
+                    }"
+                ></app-ta-input>
+            </div>
+        </ng-container>
     </div>
 
     <ng-container *ngIf="contact?.count > 0; else noData">
