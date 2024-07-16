@@ -399,7 +399,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public reorderingSaveError: boolean = false;
     private originalStatus: string;
     private stops: LoadStopResponse[];
-    public areCommentsVisible: boolean = false;
+    public isCommentsVisible: boolean = false;
     private lastCallTimeout: any;
     private debounceDelay: number = 1000;
     private isPreviousStatus: boolean = false;
@@ -3610,7 +3610,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createComment(): void {
-        this.areCommentsVisible = true;
+        this.isCommentsVisible = true;
         this.isCommenting = true;
         setTimeout(() => (this.isCommenting = false), 400);
     }

@@ -970,7 +970,8 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                !!savedExtraStopItems[indx]?.length
+                                                    !!savedExtraStopItems[indx]
+                                                        ?.length
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
@@ -1571,35 +1572,35 @@
             </div>
 
             <!-- Comments -->
-            <div
-                class="load-modal-row"
+            <ng-container
                 *ngIf="editData?.type?.includes('edit') && comments?.length"
             >
-                <app-ta-custom-card
-                    [cardName]="'Comment'"
-                    [isCardOpen]="comments?.length || areCommentsVisible"
-                    [hasCounter]="comments?.length"
-                    [hasActionSvg]="editData"
-                    [hasScrollBody]="comments?.length"
-                    [hasBodyData]="true"
-                    [animationMarginParams]="{
-                        marginTop: '10px',
-                        marginBottom: '12px'
-                    }"
-                    [disabledCard]="!editData"
-                    (onActionEvent)="createComment()"
-                >
-                    <app-load-details-item-comments
-                        [load]="editData?.data"
-                        [isAddNewComment]="isCommenting"
-                        [isSearchComment]="false"
-                        [isHeaderHidden]="true"
-                        (commentsCountChanged)="commentsCountChanged()"
+                <div class="load-modal-row">
+                    <app-ta-custom-card
+                        [cardName]="'Comment'"
+                        [isCardOpen]="comments?.length || isCommentsVisible"
+                        [hasCounter]="comments?.length"
+                        [hasActionSvg]="editData"
+                        [hasScrollBody]="comments?.length"
+                        [hasBodyData]="true"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '12px'
+                        }"
+                        [disabledCard]="!editData"
+                        (onActionEvent)="createComment()"
                     >
-                    </app-load-details-item-comments>
-                </app-ta-custom-card>
-            </div>
-
+                        <app-load-details-item-comments
+                            [load]="editData?.data"
+                            [isAddNewComment]="isCommenting"
+                            [isSearchComment]="false"
+                            [isHeaderHidden]="true"
+                            (commentsCountChanged)="commentsCountChanged()"
+                        >
+                        </app-load-details-item-comments>
+                    </app-ta-custom-card>
+                </div>
+            </ng-container>
             <!-- Documents -->
 
             <div class="load-modal-row">
