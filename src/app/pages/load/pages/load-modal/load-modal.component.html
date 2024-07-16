@@ -42,9 +42,7 @@
             >
                 <!-- FTL-LTL Switcher -->
                 <div class="tabs-container">
-                    <ng-container
-                        *ngIf="isActiveLoad(); else editLoad"
-                    >
+                    <ng-container *ngIf="isActiveLoad(); else editLoad">
                         <app-ta-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onTabChange($event, 'ftl-ltl')"
@@ -611,7 +609,10 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event, 'pickup')
+                                        handleStopItemsValidStatusEmit(
+                                            $event,
+                                            'pickup'
+                                        )
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>
@@ -969,12 +970,13 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    savedExtraStopItems[indx]
-                                                        .length
+                                                    !!savedExtraStopItems[indx]
+                                                        ?.length
                                                 "
                                                 [hasCounter]="
+                                                    savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
-                                                        .length
+                                                        ?.length
                                                 "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
@@ -984,8 +986,9 @@
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
+                                                    savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
-                                                        .length
+                                                        ?.length
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
@@ -1008,8 +1011,12 @@
                                                     [stopItemDropdownLists]="
                                                         stopItemDropdownLists
                                                     "
-                                                    [selectedTrailer]="selectedTrailerReq"
-                                                    [isHazardous]="isHazardousPicked"
+                                                    [selectedTrailer]="
+                                                        selectedTrailerReq
+                                                    "
+                                                    [isHazardous]="
+                                                        isHazardousPicked
+                                                    "
                                                     (modalTableValueEmitter)="
                                                         handleStopItemsDataValueEmit(
                                                             $event,
@@ -1027,6 +1034,7 @@
                                                 ></app-ta-modal-table>
                                             </app-ta-custom-card>
                                         </div>
+
                                         <ng-container
                                             *ngIf="
                                                 extraStopStatusHistory[indx] &&
@@ -1259,7 +1267,10 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event, 'delivery')
+                                        handleStopItemsValidStatusEmit(
+                                            $event,
+                                            'delivery'
+                                        )
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>
@@ -1561,35 +1572,35 @@
             </div>
 
             <!-- Comments -->
-            <div
-                class="load-modal-row"
-                *ngIf="editData?.type?.includes('edit') && comments.length"
+            <ng-container
+                *ngIf="editData?.type?.includes('edit') && comments?.length"
             >
-                <app-ta-custom-card
-                    [cardName]="'Comment'"
-                    [isCardOpen]="comments.length || areCommentsVisible"
-                    [hasCounter]="comments.length"
-                    [hasActionSvg]="editData"
-                    [hasScrollBody]="comments.length"
-                    [hasBodyData]="true"
-                    [animationMarginParams]="{
-                        marginTop: '10px',
-                        marginBottom: '12px'
-                    }"
-                    [disabledCard]="!editData"
-                    (onActionEvent)="createComment()"
-                >
-                    <app-load-details-item-comments
-                        [load]="editData?.data"
-                        [isAddNewComment]="isCommenting"
-                        [isSearchComment]="false"
-                        [isHeaderHidden]="true"
-                        (commentsCountChanged)="commentsCountChanged()"
+                <div class="load-modal-row">
+                    <app-ta-custom-card
+                        [cardName]="'Comment'"
+                        [isCardOpen]="comments?.length || isCommentsVisible"
+                        [hasCounter]="comments?.length"
+                        [hasActionSvg]="editData"
+                        [hasScrollBody]="comments?.length"
+                        [hasBodyData]="true"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '12px'
+                        }"
+                        [disabledCard]="!editData"
+                        (onActionEvent)="createComment()"
                     >
-                    </app-load-details-item-comments>
-                </app-ta-custom-card>
-            </div>
-
+                        <app-load-details-item-comments
+                            [load]="editData?.data"
+                            [isAddNewComment]="isCommenting"
+                            [isSearchComment]="false"
+                            [isHeaderHidden]="true"
+                            (commentsCountChanged)="commentsCountChanged()"
+                        >
+                        </app-load-details-item-comments>
+                    </app-ta-custom-card>
+                </div>
+            </ng-container>
             <!-- Documents -->
 
             <div class="load-modal-row">
