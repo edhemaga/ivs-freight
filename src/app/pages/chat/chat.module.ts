@@ -5,7 +5,7 @@ import {
 // Modules
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
@@ -39,25 +39,6 @@ import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 
 @NgModule({
-    imports: [
-        // Modules
-        // NgbModule,
-        CommonModule,
-        ChatRoutingModule,
-        AngularSvgIconModule,
-        ReactiveFormsModule,
-        NgbTooltipModule,
-
-        // Shared Components
-        // TaAppTooltipV2Component,
-        TaInputComponent,
-        TaProfileImagesComponent,
-
-        // Pipes
-        NameInitialsPipe,
-        FormatTimePipe,
-    ],
-
     declarations: [
         ChatComponent,
 
@@ -73,7 +54,25 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         // Auxillary components
         ChatToolbarComponent,
         ChatNoDataComponent,
-        UserStatusBadgeComponent,
+        UserStatusBadgeComponent
+    ],
+    imports: [
+        // Modules
+        // NgbModule,
+        CommonModule,
+        ChatRoutingModule,
+        AngularSvgIconModule,
+        ReactiveFormsModule,
+        NgbModule,
+
+        // Shared Components
+        TaInputComponent,
+        TaProfileImagesComponent,
+        TaAppTooltipV2Component,
+
+        // Pipes
+        NameInitialsPipe,
+        FormatTimePipe,
     ],
     providers: [
         // Services

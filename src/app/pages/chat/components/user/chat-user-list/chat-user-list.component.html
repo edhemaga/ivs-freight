@@ -1,9 +1,6 @@
 <div class="user-list-container">
     <div class="chat-header-wrapper">
-        <div
-            class="chat-header d-flex align-items-center"
-            [ngClass]="isSearchActive ? 'no-border-bottom' : 'border-bottom'"
-        >
+        <div class="chat-header d-flex align-items-center">
             <div class="chat-header-type ta-font-extra-bold">
                 {{ type }}
             </div>
@@ -31,7 +28,13 @@
                 <div class="border"></div>
             </div>
 
-            <div class="status-icon">
+            <div
+                ngbTooltip
+                mainTooltip="Online Users"
+                tooltipBackground="#424242"
+                position="bottom"
+                class="status-icon"
+            >
                 <svg-icon
                     (click)="showOnlineUsers()"
                     class="d-flex justify-content-center align-items-center"
@@ -40,7 +43,13 @@
                 ></svg-icon>
             </div>
 
-            <div class="department-icon">
+            <div
+                ngbTooltip
+                mainTooltip="Department Filter"
+                tooltipBackground="#424242"
+                position="bottom"
+                class="department-icon"
+            >
                 <svg-icon
                     (click)="filterByDepartment()"
                     class="d-flex justify-content-center align-items-center"
@@ -49,6 +58,9 @@
                 ></svg-icon>
             </div>
         </div>
+        <ng-container *ngIf="!isSearchActive">
+            <div class="horizontal-border"></div>
+        </ng-container>
         <ng-container *ngIf="isSearchActive">
             <div class="form-wrapper" [formGroup]="searchForm">
                 <app-ta-input

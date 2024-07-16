@@ -15,16 +15,9 @@
         }
         .chat-header {
             width: 318px;
-            height: 32px;
-            padding: 0 4px;
+            height: 26px;
+            padding: 0 6px;
             margin-bottom: 4px;
-
-            .border-bottom {
-                border-bottom: 1px solid $bw-9;
-            }
-            .no-border-bottom {
-                border-bottom: none;
-            }
 
             .border-container {
                 height: 34px;
@@ -56,6 +49,12 @@
                 margin: auto 5px;
             }
         }
+
+        .horizontal-border {
+            width: auto;
+            margin: 6px 2px 6px 2px;
+            border-bottom: 1px solid $bw-9;
+        }
     }
     .no-data-button-wrapper {
         width: 100%;
@@ -78,7 +77,7 @@
     overflow-y: auto;
 
     .contact {
-        margin: 1px 0;
+        margin-top: 2px;
     }
 }
 

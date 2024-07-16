@@ -2,12 +2,11 @@
 
 .chat-list-item {
     width: 318px;
-    min-height: 46px;
-    padding: 4px;
+    padding: 0 4px;
 
     &-avatar {
-        height: 32px;
-        width: 32px;
+        width: 28px;
+        height: 30px;
         border-radius: 50px;
     }
 }
