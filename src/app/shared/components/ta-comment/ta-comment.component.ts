@@ -212,6 +212,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public deleteComment(commentId: number): void {
         this.closeDropdown.emit(true);
+
         const comment = {
             commentContent: this.commentCardsDataDropdown.commentContent,
             entityTypeId: this.commentsCardId,
@@ -248,6 +249,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         const userLocalStorage = JSON.parse(
             localStorage.getItem(CommentStringEnum.USER)
         );
+
         this.loggedUserCommented = user === userLocalStorage.companyUserId;
     }
 

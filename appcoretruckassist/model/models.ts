@@ -574,6 +574,7 @@ export * from './milesByUnitListResponse';
 export * from './milesByUnitResponse';
 export * from './milesByUnitResponsePagination';
 export * from './milesInfo';
+export * from './milesStopDetailsResponse';
 export * from './milesStopPayrollResponse';
 export * from './milesStopResponse';
 export * from './mobileFuelStopExpensesChartResponse';
