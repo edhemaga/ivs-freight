@@ -565,7 +565,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isActiveLoad() {
-        return (!this.editData?.type?.includes('edit') || (this.editData?.type?.includes('edit') && this.isTemplateLoad));
+        return (
+            !this.editData?.type?.includes('edit') ||
+            (this.editData?.type?.includes('edit') && this.isTemplateLoad)
+        );
     }
 
     public get modalTitle(): string {
@@ -605,7 +608,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get isLoadClosed(): boolean {
-        return this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+        return this.selectedStatus?.name === LoadModalStringEnum.STATUS_CLOSED;
     }
 
     public get isRequirementVisible(): boolean {
@@ -1152,7 +1155,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     return;
                 }
 
-                if (this.isConvertedToTemplate) {
+                if (
+                    this.editData?.type === 'edit' &&
+                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
+                ) {
+                    this.updateLoadTemplate();
+                } else if (this.isConvertedToTemplate) {
                     this.saveLoadTemplate();
                 } else {
                     this.editData?.data
@@ -2743,9 +2751,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
-        this.loadExtraStops().controls[this.loadExtraStops().length - 1].get(LoadModalStringEnum.OPEN_CLOSE).patchValue(
-            true
-        )
+        this.loadExtraStops()
+            .controls[this.loadExtraStops().length - 1].get(
+                LoadModalStringEnum.OPEN_CLOSE
+            )
+            .patchValue(true);
 
         const obj = this.numberOfLoadExtraStops();
 
@@ -2967,7 +2977,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private remapStopItems(
         stopItems: LoadStopItemCommand[]
     ): LoadStopItemCommand[] {
-        if(!stopItems) return []
+        if (!stopItems) return [];
         return stopItems.map((item: any) => {
             let newItem = { ...item };
 
@@ -3032,12 +3042,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
 
             // Remove null properties from form data
-        // Remove null properties from form data
-        Object.keys(newItem).forEach((key) => {
-            if (newItem[key] === null) {
-                delete newItem[key];
-            }
-        });
+            Object.keys(newItem).forEach((key) => {
+                if (newItem[key] === null) {
+                    delete newItem[key];
+                }
+            });
 
             return newItem;
         });
@@ -4053,6 +4062,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.populateLoadModalData(
                             this.editData.data as LoadResponse
                         );
+                        this.isConvertedToTemplate =
+                            this.editData.selectedTab ===
+                            TableStringEnum.TEMPLATE;
                     } else {
                         this.watchFormChanges();
                     }
@@ -4195,7 +4207,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 id: loadRequirements?.id,
             },
             filesForDeleteIds: this.filesForDelete,
-            status: this.selectedStatus.valueForRequest,
+            status: this.selectedStatus?.valueForRequest,
             statusHistory: this.remapStopWaitTime(),
         };
     }
@@ -4217,22 +4229,45 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createNewLoad(): void {
+        const isTemplate = this.editData?.selectedTab === TableStringEnum.TEMPLATE;
         this.loadService
-            .createLoad(this.generateLoadModel(true))
+        .createLoad(this.generateLoadModel(true))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: (data) => {
+                const loadServiceObservable = !isTemplate
+                    ? this.loadService.getLoadInsideListById(data.id)
+                    : this.loadService.getLoadTemplateInsideListById(data.id);
+    
+                loadServiceObservable.subscribe((newLoadData) => {
+                    this.loadService.addNewLoad(newLoadData, isTemplate);
+                    this.setModalSpinner(null, true, true);
+                });
+            },
+            error: () => this.setModalSpinner(null, false, false),
+        });
+    }
+
+    public updateLoadTemplate() {
+        const newData = {
+            ...this.generateLoadModel(false),
+            name: this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME).value,
+        };
+        this.loadService
+            .updateLoadTemplate(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data) => {
+                next: () => {
                     this.loadService
-                        .getLoadInsideListById(data.id)
-                        .subscribe((newLoad) => {
-                            this.loadService.addNewLoad(newLoad, false);
-                            this.setModalSpinner(null, true, true);
+                        .getLoadTemplateInsideListById(newData.id)
+                        .subscribe((res) => {
+                            this.loadService.updateLoadTemplatePartily(res);
                         });
+                    this.setModalSpinner(null, true, true);
                 },
                 error: () => this.setModalSpinner(null, false, false),
             });
     }
-
     private updateLoad(): void {
         const newData = this.generateLoadModel(false);
 
@@ -4289,7 +4324,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe({
                 next: (data) => {
                     this.loadService
-                        .getLoadInsideListById(data.id)
+                        .getLoadTemplateInsideListById(data.id)
                         .subscribe((newLoad) => {
                             this.loadService.addNewLoad(newLoad, true);
                             this.setModalSpinner(
@@ -4443,6 +4478,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // form
         this.loadForm.patchValue({
+            templateName: (loadModalData as any).name,
             referenceNumber: referenceNumber,
             weight: weight,
             liftgate: loadRequirements?.liftgate,

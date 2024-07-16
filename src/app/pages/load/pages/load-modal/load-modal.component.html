@@ -1573,14 +1573,14 @@
             <!-- Comments -->
             <div
                 class="load-modal-row"
-                *ngIf="editData?.type?.includes('edit') && comments.length"
+                *ngIf="editData?.type?.includes('edit') && comments?.length"
             >
                 <app-ta-custom-card
                     [cardName]="'Comment'"
-                    [isCardOpen]="comments.length || areCommentsVisible"
-                    [hasCounter]="comments.length"
+                    [isCardOpen]="comments?.length || areCommentsVisible"
+                    [hasCounter]="comments?.length"
                     [hasActionSvg]="editData"
-                    [hasScrollBody]="comments.length"
+                    [hasScrollBody]="comments?.length"
                     [hasBodyData]="true"
                     [animationMarginParams]="{
                         marginTop: '10px',
