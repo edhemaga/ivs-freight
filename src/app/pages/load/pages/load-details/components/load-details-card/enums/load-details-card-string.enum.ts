@@ -25,4 +25,6 @@ export enum LoadDetailsCardStringEnum {
     DELIVERY = 'Delivery',
 
     EMPTY_STRING = '',
+
+    TRUCK = 'truck',
 }

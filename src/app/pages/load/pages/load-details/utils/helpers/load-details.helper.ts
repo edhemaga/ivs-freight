@@ -67,7 +67,7 @@ export class LoadDetailsHelper {
 
     static getLoadDetailsConfig(
         load: LoadResponse,
-        dropdownItemId: number = 0
+        dropdownItemId: number = 1
     ): DetailsConfig[] {
         return [
             {
@@ -101,9 +101,9 @@ export class LoadDetailsHelper {
             },
             {
                 id: 2,
-                name: dropdownItemId === 0 ? 'Comment' : 'Status History',
+                name: dropdownItemId === 1 ? 'Comment' : 'Status History',
                 template: 'comment',
-                hide: false,
+                hide: dropdownItemId !== 1,
                 hasDanger: false,
                 hasArrow: true,
                 capsulaText: false,
@@ -113,7 +113,7 @@ export class LoadDetailsHelper {
                 isSearchBtn: !!load?.comments?.length,
                 data: load,
                 length:
-                    dropdownItemId === 0
+                    dropdownItemId === 1
                         ? load?.comments?.length
                         : load?.statusHistory?.length,
             },
@@ -122,7 +122,7 @@ export class LoadDetailsHelper {
 
     static getMultipleSelectDetailsDropdown(
         load: LoadResponse,
-        dropdownItemId: number = 0
+        dropdownItemId: number = 1
     ): MultipleSelectDetailsDropdownItem[] {
         let multipleSelectDetailsDropdown: MultipleSelectDetailsDropdownItem[] =
             JSON.parse(
