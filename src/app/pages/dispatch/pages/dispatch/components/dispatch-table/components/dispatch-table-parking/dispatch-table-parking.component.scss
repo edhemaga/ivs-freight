@@ -6,14 +6,14 @@
     cursor: pointer;
     transition: 0.3s;
     border-radius: 2px;
-    transition: .3s;
+    transition: 0.3s;
 
     &:hover {
         background-color: $bw2;
     }
 
     &-dropdown {
-        height: 200px;
+        max-height: 275px;
         overflow-y: scroll;
         background-color: $ta-black-2;
         width: 150px;
@@ -30,8 +30,16 @@
         &-add-new {
             color: $ta-blue-19;
             padding: 0 4px;
+            border-radius: 2px;
             margin: 4px 4px 6px;
             font-size: 11px;
+            transition: 0.3s;
+            padding: 4px;
+
+            &:hover {
+                color: $white;
+                background: $ta-blue-21;
+            }
 
             svg {
                 width: 12px;
@@ -55,6 +63,7 @@
             cursor: pointer;
             height: 32px;
             margin: 0 !important;
+            background: none !important;
 
             &-overflow {
                 width: 110px;
@@ -80,14 +89,25 @@
         &-item {
             margin: 0 2px;
             padding: 6px;
+            border-radius: 2px;
+
+            &:hover {
+                background: $ta-black;
+                color: $white;
+            }
         }
 
         &-slot {
             color: $white;
+            margin-bottom: 6px;
         }
 
         &-parkings {
             border-bottom: 2px solid $ta-black;
+
+            &:last-of-type {
+                border-bottom: 0;
+            }
             margin: 0 4px;
         }
 
@@ -102,7 +122,6 @@
             }
         }
     }
-
 
     &-text {
         font-size: 11px;
@@ -147,8 +166,6 @@
             }
         }
     }
-
-    
     // States
     &_assigned {
         &:hover {
