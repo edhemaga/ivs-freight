@@ -212,4 +212,5 @@ export enum LoadModalStringEnum {
     PICKUP_SHAPE = 'pickupShape',
     DELIVERY_SHAPE = 'deliveryShape',
     SHAPE = 'shape',
+    ID = 'id'
 }
