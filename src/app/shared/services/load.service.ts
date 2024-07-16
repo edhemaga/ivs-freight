@@ -297,8 +297,12 @@ export class LoadService {
         );
     }
 
-    public getLoadById(id: number): Observable<LoadResponse> {
-        return this.loadService.apiLoadIdGet(id);
+    public getLoadById(id: number, isTemplate?: boolean): Observable<LoadResponse> {
+        if(isTemplate) {
+            return  this.loadService.apiLoadTemplateIdGet(id);
+        }
+
+        return  this.loadService.apiLoadIdGet(id);;
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
@@ -501,6 +505,7 @@ export class LoadService {
     }
 
     public addNewLoad(data: LoadListResponse, isTemplate: boolean): void {
+        console.log(data, isTemplate)
         const loadCount = JSON.parse(
             localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
         );

@@ -30,16 +30,17 @@
                         else statusHistory
                     "
                 >
-                    <app-load-details-item-comments
-                        [load]="loadItem?.data"
-                        [isAddNewComment]="isAddNewComment"
-                        [isSearchComment]="isSearchComment"
-                        [isHeaderHidden]="isCommentsHeaderHidden"
-                        (commentsCountChanged)="
-                            handleIsCommentsHeaderHidden($event)
-                        "
-                    >
-                    </app-load-details-item-comments>
+                    <ng-container *ngIf="!isHideComments">
+                        <app-load-details-item-comments
+                            [load]="loadItem?.data"
+                            [isAddNewComment]="isAddNewComment"
+                            [isSearchComment]="isSearchComment"
+                            (commentsCountChanged)="
+                                handleIsCommentsHeaderHidden($event)
+                            "
+                        >
+                        </app-load-details-item-comments>
+                    </ng-container>
                 </ng-container>
 
                 <ng-template #statusHistory>

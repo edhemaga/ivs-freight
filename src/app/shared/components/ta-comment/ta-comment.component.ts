@@ -244,6 +244,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         const userLocalStorage = JSON.parse(
             localStorage.getItem(CommentStringEnum.USER)
         );
+
         this.loggedUserCommented = user === userLocalStorage.companyUserId;
     }
 

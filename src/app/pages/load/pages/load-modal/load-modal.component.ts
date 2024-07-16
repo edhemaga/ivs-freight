@@ -92,6 +92,7 @@ import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constant
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import {
@@ -559,17 +560,39 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE).value;
     }
 
+    public get isTemplateLoad(): boolean {
+        return this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+    }
+
+    public isActiveLoad() {
+        return (!this.editData?.type?.includes('edit') || (this.editData?.type?.includes('edit') && this.isTemplateLoad));
+    }
+
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
 
-        if (this.isConvertedToTemplate) {
-            return 'Create Load Template';
-        } else if (!isEdit) {
-            return 'Create Load';
-        } else {
-            return `Edit ${
-                (this.editData.data as LoadResponse).statusType.name
-            } Load`;
+        if (!isEdit) {
+            if (this.isConvertedToTemplate) {
+                return 'Create Load Template';
+            } else if (!isEdit) {
+                return 'Create Load';
+            }
+        }
+
+        if (this.isTemplateLoad) {
+            return 'Edit Load Template';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.CLOSED) {
+            return 'Edit Closed Load';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.ACTIVE) {
+            return 'Edit Active Load';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.PENDING) {
+            return 'Edit Pending Load';
         }
     }
 
@@ -595,8 +618,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public handleTonuRateVisiblity(): void {
         const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CANCELLED ||
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU;
+            this.selectedStatus &&
+            (this.selectedStatus.name ===
+                LoadModalStringEnum.STATUS_CANCELLED ||
+                this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU);
 
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.TONU),
@@ -3741,7 +3766,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
-                    ).status.statusString;
+                    )?.status?.statusString;
 
                     this.handleTonuRateVisiblity();
                 });

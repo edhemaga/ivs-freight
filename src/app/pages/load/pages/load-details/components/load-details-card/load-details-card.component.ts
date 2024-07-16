@@ -83,7 +83,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
         // store
         private loadMinimalListQuery: LoadMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -94,7 +94,6 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('load', changes?.load?.currentValue);
         if (!changes?.load?.firstChange && changes?.load.currentValue)
             this.getLoadsDropdown();
     }
@@ -117,7 +116,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                 if (load?.status?.statusCheckInNumber) {
                     const pickupStatus = [
                         LoadStatusEnum[4],
-                        
+
                         LoadStatusEnum[46],
                         LoadStatusEnum[48],
                         LoadStatusEnum[50],
@@ -134,8 +133,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                     stopType = pickupStatus.includes(status.statusValue.name)
                         ? LoadDetailsCardStringEnum.PICKUP
                         : deliveryStatus.includes(status.statusValue.name)
-                            ? LoadDetailsCardStringEnum.DELIVERY
-                            : LoadDetailsCardStringEnum.EMPTY_STRING;
+                        ? LoadDetailsCardStringEnum.DELIVERY
+                        : LoadDetailsCardStringEnum.EMPTY_STRING;
                 }
 
                 return {

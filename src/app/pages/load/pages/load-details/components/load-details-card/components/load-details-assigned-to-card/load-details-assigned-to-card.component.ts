@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -11,6 +12,9 @@ import { LoadDetailsCardSvgRoutes } from '@pages/load/pages/load-details/compone
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// enums
+import { LoadDetailsCardStringEnum } from '@pages/load/pages/load-details/components/load-details-card/enums/load-details-card-string.enum';
 
 // models
 import { LoadResponse } from 'appcoretruckassist';
@@ -36,5 +40,13 @@ export class LoadDetailsAssignedToCardComponent {
 
     public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
 
-    constructor() { }
+    constructor(private router: Router) {}
+
+    public handleViewDetailsClick(type: string, id: number): void {
+        if (type === LoadDetailsCardStringEnum.TRUCK) {
+            this.router.navigate([`/list/truck/${id}/details`]);
+        } else {
+            this.router.navigate([`/list/trailer/${id}/details`]);
+        }
+    }
 }
