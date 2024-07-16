@@ -1420,9 +1420,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return this.mapTemplateData(data);
                     });
                 } else {
-                    let newData = [...this.viewData];
+                    const newData = [...this.viewData];
+                    this.viewData = loads.pagination.data;
 
-                    loads.pagination.data.map((data: any) => {
+                    this.viewData.map((data: LoadModel) => {
                         newData.push(this.mapTemplateData(data));
                     });
 
