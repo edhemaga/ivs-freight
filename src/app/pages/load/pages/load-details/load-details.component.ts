@@ -106,6 +106,8 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         this.handleLoadIdRouteChange();
     }
 
+    ngOnChange;
+
     public trackByIdentity(index: number): number {
         return index;
     }

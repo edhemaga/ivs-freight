@@ -44,6 +44,12 @@
                             mainTooltip="View Details"
                             tooltipBackground="#424242"
                             position="bottom"
+                            (click)="
+                                handleViewDetailsClick(
+                                    'truck',
+                                    cardData.dispatch?.truck?.id
+                                )
+                            "
                         >
                             <svg-icon
                                 class="open-modal-icon"
@@ -88,6 +94,12 @@
                             mainTooltip="View Details"
                             tooltipBackground="#424242"
                             position="bottom"
+                            (click)="
+                                handleViewDetailsClick(
+                                    'trailer',
+                                    cardData.dispatch?.trailer?.id
+                                )
+                            "
                         >
                             <svg-icon
                                 class="open-modal-icon"

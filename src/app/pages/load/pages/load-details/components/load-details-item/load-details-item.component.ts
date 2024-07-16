@@ -30,7 +30,7 @@ export class LoadDetailsItemComponent implements OnChanges {
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
 
-    public isCommentsHeaderHidden: boolean = true;
+    public isHideComments: boolean = true;
 
     constructor() {}
 
@@ -39,6 +39,8 @@ export class LoadDetailsItemComponent implements OnChanges {
             this.setIsCommentsHeaderHidden(
                 changes?.detailsConfig?.currentValue
             );
+
+        if (changes?.isAddNewComment?.currentValue) this.isHideComments = false;
     }
 
     public trackByIdentity(_: number, item: DetailsConfig): number {
@@ -48,10 +50,10 @@ export class LoadDetailsItemComponent implements OnChanges {
     private setIsCommentsHeaderHidden(detailsConfig: DetailsConfig): void {
         const comments = detailsConfig[2]?.data?.comments;
 
-        this.isCommentsHeaderHidden = !comments.length;
+        this.isHideComments = !comments.length;
     }
 
     public handleIsCommentsHeaderHidden(isChanged: boolean): void {
-        this.isCommentsHeaderHidden = isChanged;
+        this.isHideComments = !isChanged;
     }
 }
