@@ -50,6 +50,7 @@
                         [rowIndex]="rowIndex"
                         [isBoardLocked]="__isBoardLocked"
                         [isDrag]="isDrag"
+                        [isActiveLoad]="!!item.activeLoad"
                         (removeTruckEmitter)="handleRemoveTruckClick($event)"
                     >
                     </app-dispatch-table-truck-trailer>
@@ -86,15 +87,15 @@
                             (cdkDragEnded)="dragEnd()"
                             [cdkDragDisabled]="__isBoardLocked || !item.trailer"
                             cdkDragLockAxis="y"
-                            [cdkDragPreviewClass]="
+                            cdkDragPreviewContainer="parent"
+                            cdkDragBoundary=".dispatch-table table tbody"
+                        >
+                            <!--  [cdkDragPreviewClass]="
                                 'trailer_' +
                                 ('trailer'
                                     | colorFinder
                                         : item.trailer?.trailerType?.id)
-                            "
-                            cdkDragPreviewContainer="parent"
-                            cdkDragBoundary=".dispatch-table table tbody"
-                        >
+                            " -->
                             <div
                                 *cdkDragPlaceholder
                                 class="custom-dispatch-placeholder"
@@ -125,14 +126,12 @@
                                     ></svg-icon>
                                 </div>
 
-                                <div
-                                    class="circles-holder trailer_{{
+                                <div *ngIf="item.trailer">
+                                    <!-- class="circles-holder trailer_{{
                                         'trailer'
                                             | colorFinder
                                                 : item.trailer.trailerType.id
-                                    }}"
-                                    *ngIf="item.trailer"
-                                >
+                                    }}" -->
                                     <svg-icon
                                         [src]="'ic_circle.svg'"
                                         [svgStyle]="{

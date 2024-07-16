@@ -1,0 +1,50 @@
+@import 'src/theme/variables';
+
+.add-new-container {
+    height: 100%;
+    border-radius: 3px;
+    padding: 0 8px 0 10px;
+    background: $white;
+    cursor: pointer;
+    transition: background 0.2s ease-in;
+
+    &:hover {
+        background: $ta-blue-15;
+
+        p {
+            color: $white;
+        }
+
+        .icon {
+            svg {
+                path {
+                    fill: $ta-blue-17;
+                }
+            }
+        }
+    }
+
+    p {
+        /* 
+        position: relative;
+        top: 2px; */
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-black;
+        transition: color 0.2s ease-in;
+
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .icon {
+        svg {
+            path {
+                fill: $ta-blue-13;
+                transition: fill 0.2s ease-in;
+            }
+        }
+    }
+}

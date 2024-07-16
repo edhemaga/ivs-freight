@@ -29,6 +29,7 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     @Input() rowIndex: number;
     @Input() isBoardLocked: boolean;
     @Input() isDrag: boolean;
+    @Input() isActiveLoad: boolean;
 
     @Output() removeTruckEmitter = new EventEmitter<{
         type: string;
@@ -80,6 +81,8 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     }
 
     removeTruck(index) {
+        if (this.isActiveLoad) return;
+
         this.removeTruckEmitter.emit({ type: 'truckId', index });
         /*  this.updateOrAddDispatchBoardAndSend('truckId', null, indx); */
     }

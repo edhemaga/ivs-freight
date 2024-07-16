@@ -74,7 +74,7 @@ export class DispatchTableComponent implements OnInit {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
         this.truckList = newTruckList.map((item) => {
             item.name = item.truckNumber;
-            item.code = this.colorPipe.transform('truck', item.truckType.id);
+            item.code = this.colorPipe.transform(item.truckType.id, 'truck');
             item.folder = 'common';
             item.subFolder = 'colors';
             item.logoName = 'ic_circle.svg';
@@ -84,8 +84,8 @@ export class DispatchTableComponent implements OnInit {
         this.trailerList = newTrailerList.map((item) => {
             item.name = item.trailerNumber;
             item.code = this.colorPipe.transform(
-                'trailer',
-                item.trailerType.id
+                item.trailerType.id,
+                'trailer'
             );
             item.folder = 'common';
             item.subFolder = 'colors';
