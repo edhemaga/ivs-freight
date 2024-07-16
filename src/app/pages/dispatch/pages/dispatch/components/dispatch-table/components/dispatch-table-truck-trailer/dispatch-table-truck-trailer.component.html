@@ -1,4 +1,4 @@
-<div class="main_inside addNew truck-trailer-container" [class.filled]="truck">
+<div class="main_inside truck-trailer-container" [class.filled]="truck">
     <ng-container *ngIf="openedTruckDropdown !== rowIndex; else dropdown">
         <div class="padding-inside">
             <!-- No Value -->
@@ -28,12 +28,19 @@
                 <ng-container *ngIf="truck">
                     <div class="d-flex align-items-center selected-container">
                         <svg-icon
+                            class="circle-icon"
                             [src]="dispatchTableSvgRoutes.circleSvgRoute"
                             [svgStyle]="{
                                 'width.px': '10',
                                 'height.px': '10'
                             }"
                         ></svg-icon>
+
+                        <p class="m-0 ta-font-bold">{{ truck.truckNumber }}</p>
+
+                        <span>{{
+                            !!truck.year ? '(' + truck.year + ')' : ''
+                        }}</span>
                     </div>
 
                     <!--    <div
