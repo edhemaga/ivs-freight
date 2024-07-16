@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { ParkingDispatchModalResponse } from 'appcoretruckassist';
+
+import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
+import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
 
 @Component({
     selector: 'app-dispatch-table-parking',
@@ -8,16 +10,39 @@ import { ParkingDispatchModalResponse } from 'appcoretruckassist';
     styleUrls: ['./dispatch-table-parking.component.scss'],
 })
 export class DispatchTableParkingComponent implements OnInit {
-    @Input() parkingList: Array<ParkingDispatchModalResponse> | null;
+    @Input() parkingList: Array<DispatchBoardParking> | null;
     @Input() parkingFormControl: UntypedFormControl;
-    // TODO: Use throught props
-    public isTruckOrTrailerSelected: boolean = true;
-    public isParkingAssigned: boolean = true;
-    public selectedParking = {};
-    constructor() {}
-    ngOnInit(): void {}
 
-    public addParking(e: any): void {
-        console.log(e);
+    public svgRoutes = DispatchParkingSvgRoutes;
+    // TODO: Use throught props
+    public isTruckOrTrailerSelected: boolean = false;
+    public isParkingAssigned: boolean = false;
+    public isMultipleParkingSlots: boolean;
+    constructor() {}
+    ngOnInit(): void {
+        this.handleListVisibility();
+    }
+
+    private handleListVisibility() {
+        // We can have parking with 0 slots
+        this.isMultipleParkingSlots =
+            this.parkingList.filter(
+                (parkingList) => parkingList.parkingSlots.length > 0
+            ).length > 1;
+
+        // If we have only one parking, open it and remove parking title
+        if (!this.isMultipleParkingSlots) {
+            this.parkingList[0].isDropdownVisible = true;
+        }
+    }
+
+    public addParking(e: any): void {}
+
+    openParkingList(index: number) {
+        const parking = this.parkingList[index];
+        this.parkingList[index] = {
+            ...parking,
+            isDropdownVisible: !parking.isDropdownVisible,
+        };
     }
 }
