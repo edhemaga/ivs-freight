@@ -970,11 +970,7 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    savedExtraStopItems[indx] &&
-                                                    savedExtraStopItems[indx]
-                                                        ?.length
-                                                        ? true
-                                                        : false
+                                                !!savedExtraStopItems[indx]?.length
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&

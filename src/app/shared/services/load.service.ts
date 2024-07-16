@@ -505,7 +505,6 @@ export class LoadService {
     }
 
     public addNewLoad(data: LoadListResponse, isTemplate: boolean): void {
-        console.log(data, isTemplate)
         const loadCount = JSON.parse(
             localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
         );
