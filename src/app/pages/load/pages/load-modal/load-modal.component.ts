@@ -869,7 +869,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         | LoadModalStringEnum.VALID_STATUS {
         const stopForm = loadFormArray.at(indx);
         if (
-            this.savedExtraStopItems[indx].length &&
+            this.savedExtraStopItems[indx]?.length &&
             !this.stopItemsValid[indx]
         ) {
             return LoadModalStringEnum.STEP_INVALID_STATUS;
@@ -2740,10 +2740,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public addLoadExtraStop(): void {
         this.loadExtraStops().push(this.newLoadExtraStop());
-
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
+        this.loadExtraStops().controls[this.loadExtraStops().length - 1].get(LoadModalStringEnum.OPEN_CLOSE).patchValue(
+            true
+        )
 
         const obj = this.numberOfLoadExtraStops();
 
@@ -2965,6 +2967,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private remapStopItems(
         stopItems: LoadStopItemCommand[]
     ): LoadStopItemCommand[] {
+        if(!stopItems) return []
         return stopItems.map((item: any) => {
             let newItem = { ...item };
 
@@ -3029,11 +3032,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
 
             // Remove null properties from form data
-            Object.keys(newItem).forEach((key) => {
-                if (newItem[key] === null) {
-                    delete item[key];
-                }
-            });
+        // Remove null properties from form data
+        Object.keys(newItem).forEach((key) => {
+            if (newItem[key] === null) {
+                delete newItem[key];
+            }
+        });
 
             return newItem;
         });
@@ -3148,7 +3152,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: this.stops?.[index + 1]?.id ?? null,
+                    id: item.get(LoadModalStringEnum.ID).value ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -4698,7 +4702,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return (
             this.isStepFinished(extraStop) ||
             this.isDragAndDropActive ||
-            this.loadExtraStops().controls.length < 2
+            this.loadExtraStops().controls.length < 2 ||
+            extraStop.get(LoadModalStringEnum.OPEN_CLOSE).value
         );
     }
 

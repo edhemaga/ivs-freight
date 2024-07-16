@@ -42,9 +42,7 @@
             >
                 <!-- FTL-LTL Switcher -->
                 <div class="tabs-container">
-                    <ng-container
-                        *ngIf="isActiveLoad(); else editLoad"
-                    >
+                    <ng-container *ngIf="isActiveLoad(); else editLoad">
                         <app-ta-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onTabChange($event, 'ftl-ltl')"
@@ -611,7 +609,10 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event, 'pickup')
+                                        handleStopItemsValidStatusEmit(
+                                            $event,
+                                            'pickup'
+                                        )
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>
@@ -969,12 +970,16 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
+                                                    savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
-                                                        .length
+                                                        ?.length
+                                                        ? true
+                                                        : false
                                                 "
                                                 [hasCounter]="
+                                                    savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
-                                                        .length
+                                                        ?.length
                                                 "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
@@ -984,8 +989,9 @@
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
+                                                    savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
-                                                        .length
+                                                        ?.length
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
@@ -1008,8 +1014,12 @@
                                                     [stopItemDropdownLists]="
                                                         stopItemDropdownLists
                                                     "
-                                                    [selectedTrailer]="selectedTrailerReq"
-                                                    [isHazardous]="isHazardousPicked"
+                                                    [selectedTrailer]="
+                                                        selectedTrailerReq
+                                                    "
+                                                    [isHazardous]="
+                                                        isHazardousPicked
+                                                    "
                                                     (modalTableValueEmitter)="
                                                         handleStopItemsDataValueEmit(
                                                             $event,
@@ -1027,6 +1037,7 @@
                                                 ></app-ta-modal-table>
                                             </app-ta-custom-card>
                                         </div>
+
                                         <ng-container
                                             *ngIf="
                                                 extraStopStatusHistory[indx] &&
@@ -1259,7 +1270,10 @@
                                         )
                                     "
                                     (modalTableValidStatusEmitter)="
-                                        handleStopItemsValidStatusEmit($event, 'delivery')
+                                        handleStopItemsValidStatusEmit(
+                                            $event,
+                                            'delivery'
+                                        )
                                     "
                                 ></app-ta-modal-table>
                             </app-ta-custom-card>
