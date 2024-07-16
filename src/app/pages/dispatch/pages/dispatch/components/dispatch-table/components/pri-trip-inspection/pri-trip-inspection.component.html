@@ -1,0 +1,10 @@
+<div
+    class="d-flex justify-content-center align-items-center"
+    [ngClass]="{
+        'status-disabled': status === 0,
+        'status-enabled': status === 1 && !doneInspection,
+        'status-done': doneInspection && status === 1
+    }"
+>
+    <svg-icon src="assets/svg/common/ic_pre_trip_inspenction.svg"> </svg-icon>
+</div>

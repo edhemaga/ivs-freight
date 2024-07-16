@@ -83,6 +83,7 @@ export class TaProfileImagesComponent implements OnChanges {
     @Input() type: string = 'driver';
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
+    @Input() url?: string = null;
 
     public profileImageColor: string;
     public profileImageBackgroundColor: string;
@@ -90,6 +91,7 @@ export class TaProfileImagesComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.url);
         if (changes?.indx) {
             this.getProfileImageColors();
         }

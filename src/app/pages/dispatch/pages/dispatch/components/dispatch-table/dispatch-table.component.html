@@ -19,7 +19,14 @@
                 <th>TRAILER</th>
                 <th>DRIVER</th>
                 <th class="empty"></th>
-                <th class="empty"></th>
+                <th
+                    class="icon d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_pre_trip_inspenction.svg"
+                    >
+                    </svg-icon>
+                </th>
                 <th>LAST LOCATION</th>
                 <th class="text-center p-0">STATUS</th>
                 <th class="pick-delivery">
@@ -28,7 +35,14 @@
                 </th>
                 <th>PROGRESS</th>
                 <th>PARKING</th>
-                <th class="empty"></th>
+                <th
+                    class="icon d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_dispatch_board_dispatcher_icon.svg"
+                    >
+                    </svg-icon>
+                </th>
                 <th>NOTE</th>
                 <th class="empty"></th>
             </tr>
@@ -553,48 +567,9 @@
                 <td class="box-item">
                     <div class="main_inside filled">
                         <div class="padding-inside">
-                            <div
-                                #t1="ngbPopover"
-                                (click)="
-                                    toggleHos(t1, item.hoursOfService, item.id)
-                                "
-                                (hidden)="
-                                    saveHosData(item.hoursOfService, rowIndex)
-                                "
-                                [class.statusOpened]="statusOpenedIndex > -1"
-                                [class.empty-box-field]="true"
-                                [ngbPopover]="hos"
-                                autoClose="outside"
-                                class="hos-column"
-                                [ngClass]="
-                                    item.hoursOfService &&
-                                    item.hoursOfService[
-                                        item.hoursOfService.length - 1
-                                    ]?.flag.name === 'On'
-                                        ? 'active_hos'
-                                        : 'innactive_hos'
-                                "
-                                placement="bottom"
-                                triggers="manual"
-                                container="body"
-                                popoverClass="hos-ngb-popover"
-                            >
-                                <div class="hos-img">
-                                    <svg-icon
-                                        [src]="
-                                            'assets/svg/dispatchboard/hos-arrow.svg'
-                                        "
-                                    ></svg-icon>
-                                </div>
-                                <div class="hos-number">
-                                    {{
-                                        (item.hoursOfService !== null
-                                            ? item.hoursOfService
-                                            : []
-                                        ) | hosTime
-                                    }}
-                                </div>
-                            </div>
+                            <app-pri-trip-inspection
+                                [status]="item.truck?.status"
+                            ></app-pri-trip-inspection>
                         </div>
                     </div>
                 </td>
@@ -875,14 +850,17 @@
                     <div class="main_inside filled">
                         <div class="padding-inside">
                             <div class="info-item justify-content-center">
-                                <app-ta-profile-images
-                                    [indx]="rowIndex"
-                                    [name]="'Slavisa Markovic'"
-                                    [size]="'small'"
-                                    [type]="'user'"
-                                    [withTooltip]="true"
-                                >
-                                </app-ta-profile-images>
+                                <ng-container *ngIf="item.dispatcher?.fullName">
+                                    <app-ta-profile-images
+                                        [indx]="rowIndex"
+                                        [name]="item.dispatcher?.fullName"
+                                        [size]="'small'"
+                                        [type]="'user'"
+                                        [withTooltip]="true"
+                                        [url]="item.dispatcher?.avatarFile?.url"
+                                    >
+                                    </app-ta-profile-images>
+                                </ng-container>
                             </div>
                         </div>
                     </div>

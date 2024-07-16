@@ -24,7 +24,9 @@
     }
     table {
         width: 100%;
-
+        th.icon {
+            padding-left: 0;
+        }
         th.pick-delivery {
             display: flex;
             div {

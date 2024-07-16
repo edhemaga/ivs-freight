@@ -7,20 +7,37 @@
         *ngIf="size == 'small' || size == 'medium' || size === 'confirmation'"
         class="small-medium-holder"
     >
-        <div
-            class="profile-image-small"
-            [class.small]="size == 'small'"
-            [class.medium]="size == 'medium'"
-            [class.round]="type == 'user'"
-            [class.show_hover_animation]="size == 'small' && showHoverAnimation"
-            [class.confirmation]="size === 'confirmation'"
-            [ngStyle]="{
-                'background-color': backgroundColors[indx],
-                color: textColors[indx]
-            }"
-        >
-            {{ name | nameInitials }}
-        </div>
+        <ng-container *ngIf="url; else default">
+            <img
+                [src]="url"
+                class="profile-image-small"
+                [class.small]="size == 'small'"
+                [class.medium]="size == 'medium'"
+                [class.round]="type == 'user'"
+                [class.show_hover_animation]="
+                    size == 'small' && showHoverAnimation
+                "
+                [class.confirmation]="size === 'confirmation'"
+            />
+        </ng-container>
+        <ng-template #default>
+            <div
+                class="profile-image-small"
+                [class.small]="size == 'small'"
+                [class.medium]="size == 'medium'"
+                [class.round]="type == 'user'"
+                [class.show_hover_animation]="
+                    size == 'small' && showHoverAnimation
+                "
+                [class.confirmation]="size === 'confirmation'"
+                [ngStyle]="{
+                    'background-color': backgroundColors[indx],
+                    color: textColors[indx]
+                }"
+            >
+                {{ name | nameInitials }}
+            </div>
+        </ng-template>
     </div>
     <div
         *ngIf="size == 'large'"
