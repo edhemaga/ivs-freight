@@ -33,7 +33,6 @@ export class NavigationDataConstants {
                     name: 'Load',
                     route: '/list/load',
                     activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
-                    construction: true,
                 },
                 {
                     name: 'Customer',
