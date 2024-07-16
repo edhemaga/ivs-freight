@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+
+// services
+import { LoadService } from '@shared/services/load.service';
+
+// store
+import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
+import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 
 // models
 import {
@@ -15,23 +22,54 @@ import {
     providedIn: 'root',
 })
 export class CommentsService {
-    constructor(private commentService: CommentService) {}
+    constructor(
+        private commentService: CommentService,
+        private loadService: LoadService,
+        private loadDetailsListStore: LoadDetailsListStore,
+        private loadItemStore: LoadItemStore
+    ) {}
 
     public createComment(
-        data: CreateCommentCommand
+        data: CreateCommentCommand,
+        loadId?: number
     ): Observable<CreateResponse> {
-        return this.commentService.apiCommentPost(data);
+        return this.commentService.apiCommentPost(data).pipe(
+            tap(() => {
+                if (loadId) this.handleLoadDetailsState(loadId);
+            })
+        );
     }
 
-    public deleteCommentById(id: number): Observable<any> {
-        return this.commentService.apiCommentIdDelete(id);
+    public deleteCommentById(id: number, loadId?: number): Observable<any> {
+        return this.commentService.apiCommentIdDelete(id).pipe(
+            tap(() => {
+                if (loadId) this.handleLoadDetailsState(loadId);
+            })
+        );
     }
 
-    public updateComment(data: UpdateCommentCommand): Observable<any> {
-        return this.commentService.apiCommentPut(data);
+    public updateComment(
+        data: UpdateCommentCommand,
+        loadId?: number
+    ): Observable<any> {
+        return this.commentService.apiCommentPut(data).pipe(
+            tap(() => {
+                if (loadId) this.handleLoadDetailsState(loadId);
+            })
+        );
     }
 
     public getModalComments(): Observable<GetCommentModalResponse> {
         return this.commentService.apiCommentModalGet();
+    }
+
+    private handleLoadDetailsState(loadId: number): void {
+        this.loadService.getLoadById(loadId).subscribe((load) => {
+            this.loadDetailsListStore.remove(({ id }) => id === loadId);
+            this.loadItemStore.remove(({ id }) => id === loadId);
+
+            this.loadDetailsListStore.add(load);
+            this.loadItemStore.set([load]);
+        });
     }
 }
