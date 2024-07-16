@@ -811,7 +811,11 @@
                 <td class="parking-field">
                     <div class="main_inside filled">
                         <div class="padding-inside">
-                            <app-dispatch-table-parking [parkingList]="parkingList" [parkingFormControl]="parkingFormControl"></app-dispatch-table-parking>
+                            <app-dispatch-table-parking 
+                            [parkingList]="parkingList" 
+                            [parkingFormControl]="parkingFormControl" 
+                            [parkingSlot]="item.parkingSlot"
+                            (addOrUpdateParking)="addOrUpdateParking($event, rowIndex)"></app-dispatch-table-parking>
                         </div>
                     </div>
                 </td>

@@ -1,8 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
-import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
+// Svg routes
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
+
+// Models
+import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
+import { ParkingSlotDispatchModalResponse, ParkingSlotShortResponse } from 'appcoretruckassist';
+
 
 @Component({
     selector: 'app-dispatch-table-parking',
@@ -10,17 +15,28 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/h
     styleUrls: ['./dispatch-table-parking.component.scss'],
 })
 export class DispatchTableParkingComponent implements OnInit {
+    // Inputs
     @Input() parkingList: Array<DispatchBoardParking> | null;
+    @Input() parkingSlot: ParkingSlotShortResponse | null;
     @Input() parkingFormControl: UntypedFormControl;
+    
+    // Ouputs
+    @Output() addOrUpdateParking = new EventEmitter();
 
+    // Svg routes 
     public svgRoutes = DispatchParkingSvgRoutes;
+    
     // TODO: Use throught props
     public isTruckOrTrailerSelected: boolean = false;
-    public isParkingAssigned: boolean = false;
     public isMultipleParkingSlots: boolean;
     constructor() {}
     ngOnInit(): void {
         this.handleListVisibility();
+    }
+
+
+    public get isParkingAssigned() : boolean {
+        return !!this.parkingSlot;
     }
 
     private handleListVisibility() {
@@ -36,7 +52,17 @@ export class DispatchTableParkingComponent implements OnInit {
         }
     }
 
-    public addParking(e: any): void {}
+    public addParking(parkingSlot: ParkingSlotDispatchModalResponse): void {
+        // Parking cannot be reassign, user needs to remove it first
+        if(!!this.parkingSlot) {
+            return;
+        }
+        this.addOrUpdateParking.emit(parkingSlot);
+    }
+
+    public removeParking(): void {
+        this.addOrUpdateParking.emit({id: null});
+    }
 
     openParkingList(index: number) {
         const parking = this.parkingList[index];

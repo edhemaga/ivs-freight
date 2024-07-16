@@ -5,6 +5,12 @@
     height: 100%;
     cursor: pointer;
     transition: 0.3s;
+    border-radius: 2px;
+    transition: .3s;
+
+    &:hover {
+        background-color: $bw2;
+    }
 
     &-dropdown {
         height: 200px;
@@ -97,18 +103,12 @@
         }
     }
 
-    // States
-    &_assigned {
-    }
-
-    &_empty {
-        // background-color: $ta-light-grey-5;
-    }
 
     &-text {
         font-size: 11px;
         position: relative;
         top: 1px;
+        min-width: 42px;
 
         &_assigned {
             color: $ta-black-2;
@@ -135,6 +135,10 @@
         width: 26px;
         height: 26px;
 
+        &-wrapper {
+            visibility: hidden;
+        }
+
         &:hover {
             background-color: $ta-red-15;
 
@@ -142,5 +146,19 @@
                 fill: $ta-red-14;
             }
         }
+    }
+
+    
+    // States
+    &_assigned {
+        &:hover {
+            .dispatch-parking-remove-wrapper {
+                visibility: visible;
+            }
+        }
+    }
+
+    &_empty {
+        // background-color: $ta-light-grey-5;
     }
 }

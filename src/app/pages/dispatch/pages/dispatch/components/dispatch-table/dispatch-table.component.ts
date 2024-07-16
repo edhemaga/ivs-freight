@@ -17,6 +17,7 @@ import { Options } from 'ng5-slider';
 import {
     CreateDispatchCommand,
     DispatchStatus,
+    ParkingSlotDispatchModalResponse,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
@@ -255,6 +256,10 @@ export class DispatchTableComponent implements OnInit {
         this.openedTrailerDropdown = -1;
     }
 
+    addOrUpdateParking(parkingSlot: ParkingSlotDispatchModalResponse, index: number) {
+        this.updateOrAddDispatchBoardAndSend('parkingSlotId', parkingSlot.id, index)
+    }
+
     handleInputSelect(e: any) {
         // return;
         if (e.valid) {
@@ -344,6 +349,7 @@ export class DispatchTableComponent implements OnInit {
             // hoursOfService: 0,
             note: oldData.note,
             loadIds: [],
+            parkingSlotId: oldData.parkingSlotId
         };
 
         let newData: any = {

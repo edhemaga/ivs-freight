@@ -6,7 +6,7 @@
     }"
 >
     <div
-        class="d-flex align-items-center p-x-1"
+        class="d-flex align-items-center p-x-1 justify-content-between"
         #t2="ngbPopover"
         [ngbPopover]="parkingDropDownPopover"
         popoverClass="ta-input-dropdown"
@@ -14,41 +14,49 @@
         [container]="'body'"
         [placement]="['bottom-left']"
     >
-        <span
-            [mainTooltip]="'Central parking'"
-            [tooltipBackground]="'#424242'"
-            ngbTooltip
-            position="bottom"
-        >
+        <ng-container *ngIf="isParkingAssigned; else noTooltip">
+            <span
+                [mainTooltip]="parkingSlot?.parking?.name"
+                [tooltipBackground]="'#424242'"
+                ngbTooltip
+                position="bottom"
+            >
+                <svg-icon
+                    [src]="svgRoutes.parking"
+                    class="mr-1 dispatch-parking-icon dispatch-parking-icon_assigned"
+                >
+                </svg-icon>
+            </span>
+        </ng-container>
+        <ng-template #noTooltip>
             <svg-icon
                 [src]="svgRoutes.parking"
-                class="mr-1 dispatch-parking-icon"
-                [ngClass]="{
-                    'dispatch-parking-icon_empty': !isParkingAssigned,
-                    'dispatch-parking-icon_assigned': isParkingAssigned
-                }"
+                class="mr-1 dispatch-parking-icon dispatch-parking-icon_empty"
             >
             </svg-icon>
-        </span>
+        </ng-template>
 
         <div
-            class="dispatch-parking-text ta-font-medium"
+            class="dispatch-parking-text ta-font-medium flex-1"
             [ngClass]="{
                 'dispatch-parking_assigned': !isParkingAssigned
             }"
         >
-            ASSIGN
+            {{ isParkingAssigned ? parkingSlot?.slotNumber : 'ASSIGN' }}
         </div>
 
-        <span
-            class="d-flex align-items-center justify-content-center dispatch-parking-remove"
-            [mainTooltip]="'Remove'"
-            [tooltipBackground]="'#DF3C3C'"
-            ngbTooltip
-            position="bottom"
-        >
-            <svg-icon [src]="svgRoutes.close"> </svg-icon>
-        </span>
+        <div class="dispatch-parking-remove-wrapper">
+            <span
+                class="d-flex align-items-center justify-content-center dispatch-parking-remove"
+                ngbTooltip
+                position="bottom"
+                [mainTooltip]="'Remove'"
+                [tooltipBackground]="'#DF3C3C'"
+                (click)="removeParking(); $event.stopPropagation()"
+            >
+                <svg-icon [src]="svgRoutes.close"> </svg-icon>
+            </span>
+        </div>
     </div>
 
     <ng-template #parkingDropDownPopover>
@@ -106,7 +114,9 @@
                                 [src]="svgRoutes.plus"
                             ></svg-icon>
                         </div>
-                        <div class="dispatch-parking-dropdown-all-assigned ta-font-bold">
+                        <div
+                            class="dispatch-parking-dropdown-all-assigned ta-font-bold"
+                        >
                             All Assigned
                         </div>
                     </ng-container>
@@ -118,6 +128,7 @@
                                 trackBy: parkingSlotIndex
                             "
                             class="dispatch-parking-dropdown-item dispatch-parking-dropdown-slot d-flex justify-content-between align-items-center mouse-pointer"
+                            (click)="addParking(parkingSlot)"
                         >
                             <span>
                                 {{ parkingSlot.slotNumber }}
