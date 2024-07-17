@@ -400,6 +400,7 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+
                     <img
                         *ngIf="option.logoName && option?.isDriver"
                         [alt]="option.name"
@@ -412,6 +413,7 @@
                         [ngStyle]="{ 'margin-right': '6px' }"
                         class="svg-template-logo"
                     />
+
                     <div
                         *ngIf="!option.logoName && option?.isDriver"
                         class="no-profile-image"
@@ -425,7 +427,9 @@
                         >
                         </app-ta-profile-images>
                     </div>
+
                     <!-- Text -->
+
                     <div
                         [innerHtml]="
                             option?.number
@@ -454,6 +458,7 @@
                     ></div>
 
                     <!-- Additional Text -->
+
                     <div
                         *ngIf="option?.additionalText"
                         [innerHtml]="

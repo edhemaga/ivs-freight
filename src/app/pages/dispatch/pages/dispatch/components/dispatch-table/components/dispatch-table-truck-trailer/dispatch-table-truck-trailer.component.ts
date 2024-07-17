@@ -27,6 +27,9 @@ import { ModalService } from '@shared/services/modal.service';
 export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     @Input() type: string;
 
+    @Input() hasAdditionalFieldTruck: boolean = false;
+    @Input() hasAdditionalFieldTrailer: boolean = false;
+
     @Input() truck: any;
     @Input() trailer: any;
 

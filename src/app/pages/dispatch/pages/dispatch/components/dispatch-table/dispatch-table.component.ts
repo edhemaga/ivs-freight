@@ -29,6 +29,8 @@ import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-m
 // models
 import {
     CreateDispatchCommand,
+    DispatchBoardResponse,
+    DispatchResponse,
     DispatchStatus,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
@@ -53,6 +55,19 @@ import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/compo
     ],
 })
 export class DispatchTableComponent implements OnInit {
+    @Input() set _dData(value: DispatchBoardResponse[]) {
+        this.dData = JSON.parse(JSON.stringify(value));
+
+        console.log(' this.dData.dispatches', this.dData.dispatches);
+
+        this.handleTruckTrailerAdditionalFields(this.dData.dispatches);
+
+        this.handleHoursOfService();
+    }
+
+    public hasAdditionalFieldTruck: boolean = false;
+    public hasAdditionalFieldTrailer: boolean = false;
+
     /////////////////////////////////////////// UPDATE
 
     checkForEmpty: string = '';
@@ -96,27 +111,6 @@ export class DispatchTableComponent implements OnInit {
             item.name = `${item.firstName} ${item.lastName}`;
             item.svg = item.owner ? 'ic_owner-status.svg' : null;
             item.folder = 'common';
-            return item;
-        });
-    }
-
-    @Input() set _dData(value) {
-        this.dData = JSON.parse(JSON.stringify(value));
-
-        console.log(' this.dData.dispatches', this.dData.dispatches);
-
-        this.dData.dispatches = this.dData.dispatches.map((item) => {
-            let i = 0;
-            item.hoursOfService = item.hoursOfService
-                .sort((a, b): number => {
-                    return a.id < b.id ? -1 : 0;
-                })
-                .map((it) => {
-                    it.indx = i;
-                    i++;
-                    return it;
-                });
-
             return item;
         });
     }
@@ -196,6 +190,31 @@ export class DispatchTableComponent implements OnInit {
         index: number;
     }) {
         this.updateOrAddDispatchBoardAndSend(event.type, null, event.index);
+    }
+
+    private handleTruckTrailerAdditionalFields(
+        dispatches: DispatchResponse[]
+    ): void {
+        this.hasAdditionalFieldTruck = dispatches.some(
+            (dispatch) => !!dispatch.truck.year
+        );
+        this.hasAdditionalFieldTrailer = dispatches.some(
+            (dispatch) => !!dispatch.trailer.year
+        );
+    }
+
+    private handleHoursOfService() {
+        const mappedDispatches = this.dData.dispatches.map((item) => {
+            item.hoursOfService = item.hoursOfService
+                .sort((a, b) => a.id - b.id)
+                .map((item, indx) => ({ ...item, indx }));
+            return item;
+        });
+
+        this.dData = {
+            ...this.dData,
+            dispatches: mappedDispatches,
+        };
     }
 
     /////////////////////////////////////////// UPDATE
