@@ -809,12 +809,16 @@
                     </div>
                 </td>
                 <td class="parking-field">
-                    <div class="main_inside filled">
+                    <div class="main_inside" [ngClass]="{
+                        'add-new': !!item.trailer === false && !!item.truck=== false,
+                        'filled': !!item.trailer || !!item.truck
+                    }">
                         <div class="padding-inside">
                             <app-dispatch-table-parking
                                 [parkingList]="parkingList"
                                 [parkingSlot]="item.parkingSlot"
                                 [isTableUnlocked]="!__isBoardLocked"
+                                [isTruckOrTrailerSelected]="!!item.trailer || !!item.truck"
                                 (addOrUpdateParking)="
                                     addOrUpdateParking($event, rowIndex)
                                 "

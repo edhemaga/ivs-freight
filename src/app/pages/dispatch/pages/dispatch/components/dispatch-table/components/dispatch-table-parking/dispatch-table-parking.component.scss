@@ -8,8 +8,8 @@
     transition: 0.3s;
 
     &:hover {
-        background-color: $ta-light-grey-5;
-    };
+        background-color: $bw2;
+    }
 
     &-dropdown {
         max-height: 275px;
@@ -184,11 +184,19 @@
     }
 
     &_empty {
-        background-color: $ta-light-grey-5;
-        opacity: .5;
+        color: $muted;
+        transition: 0.3s;
+        svg path {
+            transition: 0.3s;
+            fill: $ta-light-grey-6;
+        }
 
         &:hover {
-            opacity: 1;
-        };
+            color: $ta-black;
+
+            svg path {
+                fill: $muted;
+            }
+        }
     }
 }

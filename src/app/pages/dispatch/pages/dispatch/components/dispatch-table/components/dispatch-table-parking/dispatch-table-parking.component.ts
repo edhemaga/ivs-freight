@@ -35,6 +35,7 @@ export class DispatchTableParkingComponent implements OnInit {
     @Input() parkingList: Array<DispatchBoardParking> | null;
     @Input() parkingSlot: ParkingSlotShortResponse | null;
     @Input() isTableUnlocked: boolean;
+    @Input() isTruckOrTrailerSelected: boolean;
     // Ouputs
     @Output()
     addOrUpdateParking: EventEmitter<ParkingSlotDispatchModalResponse> =
@@ -49,9 +50,7 @@ export class DispatchTableParkingComponent implements OnInit {
     @ViewChild('t2') public popoverRef: NgbPopover;
 
     // Use to show on frontend so we don't change orginal data
-    public filteredParkingList: Array<DispatchBoardParking>;
-    // TODO: Chek this field
-    public isTruckOrTrailerSelected: boolean = false;
+    public filteredParkingList: Array<DispatchBoardParking>; 
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
@@ -70,7 +69,7 @@ export class DispatchTableParkingComponent implements OnInit {
     }
 
     public get isParkingAvailable(): boolean {
-        return !!this.parkingList.length;
+        return !!this.parkingList.length && this.isTruckOrTrailerSelected;
     }
 
     private createForm() {
