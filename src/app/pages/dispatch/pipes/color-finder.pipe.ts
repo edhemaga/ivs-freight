@@ -1,25 +1,54 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// constants
-import { DispatchConstants } from '@pages/dispatch/utils/constants/dispatch.constants';
-
-// models
-import { TruckTrailer } from '@pages/dispatch/models/truck-trailer.model';
-
 @Pipe({
     name: 'colorFinder',
 })
 export class ColorFinderPipe implements PipeTransform {
-    transform(value: string, id: number): string {
-        let searchInArray: TruckTrailer[] | TruckTrailer[] =
-            DispatchConstants.TRAILER_TYPES;
+    transform(id: number, type: string, isTooltip?: boolean): string {
+        if (type === 'truck') {
+            switch (id) {
+                case 1:
+                case 6:
+                    if (isTooltip) return '#3B73ED';
 
-        if (value === 'truck') searchInArray = DispatchConstants.TRUCK_TYPES;
+                    return 'blue';
+                case 2:
+                case 5:
+                    if (isTooltip) return '#F89B2E';
 
-        const findedColor = searchInArray.find((item) => item.id == id);
+                    return 'yellow';
+                default:
+                    if (isTooltip) return '#259F94';
 
-        if (findedColor) return findedColor.color;
+                    return 'green';
+            }
+        } else {
+            switch (id) {
+                case 3:
+                case 4:
+                case 6:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                    if (isTooltip) return '#3B73ED';
 
-        return '';
+                    return 'blue';
+                case 1:
+                case 2:
+                    if (isTooltip) return '#F89B2E';
+
+                    return 'yellow';
+                case 7:
+                case 13:
+                    if (isTooltip) return '#DF3C3C ';
+
+                    return 'red';
+                default:
+                    if (isTooltip) return '#259F94';
+
+                    return 'green';
+            }
+        }
     }
 }

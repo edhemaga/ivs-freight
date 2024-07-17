@@ -1,0 +1,208 @@
+@import 'src/theme/variables';
+@import '../../dispatch-table.component.scss';
+
+.truck-trailer-container {
+    .selected-container {
+        border-radius: 2px;
+        transition: background 0.2s ease-in;
+
+        &:hover {
+            background: $bw2 !important;
+        }
+
+        .circle-icon {
+            position: relative !important;
+            bottom: 1px !important;
+            margin-right: 4px !important;
+
+            svg {
+                path {
+                    transition: fill 0.2s ease-in;
+                }
+            }
+
+            &.blue {
+                svg {
+                    path {
+                        fill: $ta-blue-13 !important;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-blue-14 !important;
+                        }
+                    }
+                }
+            }
+
+            &.yellow {
+                svg {
+                    path {
+                        fill: $ta-yellow-1 !important;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-yellow-5 !important;
+                        }
+                    }
+                }
+            }
+
+            &.red {
+                svg {
+                    path {
+                        fill: $ta-red-10 !important;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-red-11 !important;
+                        }
+                    }
+                }
+            }
+
+            &.green {
+                svg {
+                    path {
+                        fill: $ta-green !important;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-green-2 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .truck-trailer-icon {
+            position: relative !important;
+            bottom: 1px !important;
+
+            &.blue {
+                svg {
+                    path {
+                        fill: $ta-blue-14 !important;
+                    }
+                }
+            }
+
+            &.yellow {
+                svg {
+                    path {
+                        fill: $ta-yellow-5 !important;
+                    }
+                }
+            }
+
+            &.red {
+                svg {
+                    path {
+                        fill: $ta-red-11 !important;
+                    }
+                }
+            }
+
+            &.green {
+                svg {
+                    path {
+                        fill: $ta-green-2 !important;
+                    }
+                }
+            }
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgba(22, 9, 9, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        span {
+            position: relative;
+            bottom: 1px;
+            font-size: 11px;
+            line-height: 14px;
+            margin-left: 4px;
+            color: $bw5;
+
+            &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+            }
+        }
+
+        .remove-icon-container {
+            width: 26px;
+            height: 26px;
+            border-radius: 2px;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.2s ease-in;
+
+            &:hover {
+                background: $ta-red-15;
+
+                svg {
+                    path {
+                        fill: $ta-red-14;
+                    }
+                }
+            }
+
+            &.disabled {
+                svg {
+                    path {
+                        fill: $ta-light-grey-6;
+                    }
+                }
+
+                &:hover {
+                    background: transparent;
+
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                        }
+                    }
+                }
+            }
+
+            svg {
+                width: 18px;
+                height: 18px;
+
+                path {
+                    fill: $bw5;
+                    transition: fill 0.2s ease-in;
+                }
+            }
+        }
+    }
+}
