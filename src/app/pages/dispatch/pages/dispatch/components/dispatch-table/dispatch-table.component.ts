@@ -25,7 +25,6 @@ import { ModalService } from '@shared/services/modal.service';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // models
 import {
@@ -128,7 +127,7 @@ export class DispatchTableComponent implements OnInit {
     public selectedColor: any = {};
 
     openParkingDropdown: number = -1;
-    openedTrailerDropdown: number = -1;
+
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
     showAddAddressField: number = -1;
@@ -192,7 +191,10 @@ export class DispatchTableComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public handleRemoveTruckClick(event: { type: string; index: number }) {
+    public handleRemoveTruckTrailerClick(event: {
+        type: string;
+        index: number;
+    }) {
         this.updateOrAddDispatchBoardAndSend(event.type, null, event.index);
     }
 
@@ -202,36 +204,8 @@ export class DispatchTableComponent implements OnInit {
         this.openParkingDropdown = ind;
     }
 
-    showTrailerDropdown(ind: number) {
-        this.openedTrailerDropdown = ind;
-    }
-
     showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
-    }
-
-    addTrailer(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: TrailerModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                this.updateOrAddDispatchBoardAndSend(
-                    'trailerId',
-                    e.id,
-                    this.openedTrailerDropdown
-                );
-            }
-        }
-
-        this.openedTrailerDropdown = -1;
     }
 
     addParking() {
@@ -532,10 +506,6 @@ export class DispatchTableComponent implements OnInit {
                         this.__change_in_proggress = false;
                     });
             });
-    }
-
-    removeTrailer(indx) {
-        this.updateOrAddDispatchBoardAndSend('trailerId', null, indx);
     }
 
     removeDriver(indx) {

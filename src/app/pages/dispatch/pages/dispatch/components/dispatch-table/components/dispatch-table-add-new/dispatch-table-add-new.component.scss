@@ -4,7 +4,7 @@
     height: 100%;
     border-radius: 3px;
     padding: 0 8px 0 10px;
-    background: $white;
+    background: $ta-light-grey-5;
     cursor: pointer;
     transition: background 0.2s ease-in;
 
@@ -25,9 +25,6 @@
     }
 
     p {
-        /* 
-        position: relative;
-        top: 2px; */
         font-size: 11px;
         line-height: 14px;
         color: $ta-black;

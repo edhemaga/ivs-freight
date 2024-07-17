@@ -53,6 +53,22 @@
                 }
             }
 
+            &.red {
+                svg {
+                    path {
+                        fill: $ta-red-10 !important;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-red-11 !important;
+                        }
+                    }
+                }
+            }
+
             &.green {
                 svg {
                     path {
@@ -86,6 +102,14 @@
                 svg {
                     path {
                         fill: $ta-yellow-5 !important;
+                    }
+                }
+            }
+
+            &.red {
+                svg {
+                    path {
+                        fill: $ta-red-11 !important;
                     }
                 }
             }

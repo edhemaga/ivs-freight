@@ -1,10 +1,11 @@
 <div
     class="d-flex align-items-center justify-content-between add-new-container"
+    (click)="handleAddClick()"
 >
-    <!-- (click)="showTruckDropdown(rowIndex)" -->
     <p class="m-0 ta-font-medium">ADD</p>
 
     <svg-icon
+        *ngIf="!isDrag"
         class="icon"
         [src]="dispatchTableSvgRoutes.plusSvgRoute"
         [svgStyle]="{
@@ -12,6 +13,4 @@
             'height.px': '16'
         }"
     ></svg-icon>
-
-    <!--   *ngIf="!isDrag" -->
 </div>

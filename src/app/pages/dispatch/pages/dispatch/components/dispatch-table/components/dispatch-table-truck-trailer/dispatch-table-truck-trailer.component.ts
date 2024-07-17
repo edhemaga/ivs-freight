@@ -14,6 +14,7 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
 
 // components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -24,29 +25,37 @@ import { ModalService } from '@shared/services/modal.service';
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
 export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
+    @Input() type: string;
+
     @Input() truck: any;
+    @Input() trailer: any;
+
     @Input() truckList: any[];
+    @Input() trailerList: any[];
+
     @Input() rowIndex: number;
+
     @Input() isBoardLocked: boolean;
     @Input() isDrag: boolean;
     @Input() isActiveLoad: boolean;
 
-    @Output() removeTruckEmitter = new EventEmitter<{
+    @Output() removeTruckTrailerEmitter = new EventEmitter<{
         type: string;
         index: number;
     }>();
 
-    truckFormControll: UntypedFormControl = new UntypedFormControl();
+    truckTrailerFormControl: UntypedFormControl = new UntypedFormControl();
 
     openedTruckDropdown: number = -1;
+    openedTrailerDropdown: number = -1;
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {
-        console.log('truckList', this.truckList);
-        console.log('truck', this.truck);
+        console.log('trailerList', this.trailerList);
+        console.log('trailer', this.trailer);
     }
 
     ngOnChanges(changes: SimpleChanges): void {}
@@ -55,6 +64,10 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
         this.openedTruckDropdown = ind;
 
         console.log(' this.openedTruckDropdown', this.openedTruckDropdown);
+    }
+
+    showTrailerDropdown(ind: number) {
+        this.openedTrailerDropdown = ind;
     }
 
     addTruck(e) {
@@ -80,10 +93,50 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
         this.openedTruckDropdown = -1;
     }
 
+    addTrailer(e) {
+        if (e) {
+            if (e.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: 'open',
+                    payload: {
+                        key: 'truck-modal',
+                        value: null,
+                    },
+                    component: TrailerModalComponent,
+                    size: 'small',
+                });
+            } else {
+                /*  this.updateOrAddDispatchBoardAndSend(
+                    'trailerId',
+                    e.id,
+                    this.openedTrailerDropdown
+                ); */
+            }
+        }
+
+        this.openedTrailerDropdown = -1;
+    }
+
     removeTruck(index) {
         if (this.isActiveLoad) return;
 
-        this.removeTruckEmitter.emit({ type: 'truckId', index });
+        this.removeTruckTrailerEmitter.emit({ type: 'truckId', index });
         /*  this.updateOrAddDispatchBoardAndSend('truckId', null, indx); */
+    }
+
+    removeTrailer(index) {
+        if (this.isActiveLoad) return;
+
+        this.removeTruckTrailerEmitter.emit({ type: 'trailerId', index });
+
+        /*  this.updateOrAddDispatchBoardAndSend('trailerId', null, indx); */
+    }
+
+    public handleAddClick(isClicked: boolean): void {
+        if (this.type === 'truck') {
+            this.showTruckDropdown(this.rowIndex);
+        } else {
+            this.showTrailerDropdown(this.rowIndex);
+        }
     }
 }

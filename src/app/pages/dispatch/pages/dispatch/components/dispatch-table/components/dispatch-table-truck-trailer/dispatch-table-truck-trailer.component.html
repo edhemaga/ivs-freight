@@ -1,33 +1,59 @@
 <div
     class="main_inside truck-trailer-container"
-    [class.filled]="truck"
+    [class.filled]="type === 'truck' ? !!truck : !!trailer"
     [ngStyle]="{ background: !truck && !isBoardLocked ? '#fff' : '' }"
 >
-    <ng-container *ngIf="openedTruckDropdown !== rowIndex; else dropdown">
+    <ng-container
+        *ngIf="
+            (type === 'truck' && openedTruckDropdown !== rowIndex) ||
+                (type === 'trailer' && openedTrailerDropdown !== rowIndex);
+            else dropdown
+        "
+    >
         <!-- Not Selected -->
 
         <ng-container
-            *ngIf="!truck && !isBoardLocked; else selectedTruckTrailer"
+            *ngIf="
+                ((type === 'truck' && !truck) ||
+                    (type === 'trailer' && !trailer)) &&
+                    !isBoardLocked;
+                else selectedTruckTrailer
+            "
         >
-            <app-dispatch-table-add-new> </app-dispatch-table-add-new>
+            <app-dispatch-table-add-new
+                [isDrag]="isDrag"
+                (clickValueEmitter)="handleAddClick($event)"
+            ></app-dispatch-table-add-new>
         </ng-container>
 
         <!-- Selected -->
 
         <ng-template #selectedTruckTrailer>
-            <ng-container *ngIf="truck">
+            <ng-container
+                *ngIf="
+                    (type === 'truck' && truck) ||
+                    (type === 'trailer' && trailer)
+                "
+            >
                 <div class="padding-inside">
                     <div
                         class="d-flex align-items-center justify-content-between selected-container"
                         ngbTooltip
                         position="bottom"
                         [mainTooltip]="
-                            isCircleIconHovering ? truck.truckType.name : ''
+                            isCircleIconHovering
+                                ? type === 'truck'
+                                    ? truck.truckType.name
+                                    : trailer.trailerType.name
+                                : ''
                         "
                         [tooltipBackground]="
                             isCircleIconHovering
-                                ? (truck.truckType.id
-                                  | colorFinder : 'truck' : true)
+                                ? type === 'truck'
+                                    ? (truck.truckType.id
+                                      | colorFinder : 'truck' : true)
+                                    : (trailer.trailerType.id
+                                      | colorFinder : 'trailer' : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
@@ -42,7 +68,11 @@
                             <svg-icon
                                 class="circle-icon"
                                 [ngClass]="
-                                    truck.truckType.id | colorFinder : 'truck'
+                                    type === 'truck'
+                                        ? (truck.truckType.id
+                                          | colorFinder : 'truck')
+                                        : (trailer.trailerType.id
+                                          | colorFinder : 'trailer')
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
@@ -64,13 +94,20 @@
                                 <svg-icon
                                     class="truck-trailer-icon"
                                     [ngClass]="
-                                        truck.truckType.id
-                                            | colorFinder : 'truck'
+                                        type === 'truck'
+                                            ? (truck.truckType.id
+                                              | colorFinder : 'truck')
+                                            : (trailer.trailerType.id
+                                              | colorFinder : 'trailer')
                                     "
                                     [svgStyle]="{
                                         'height.px': '18'
                                     }"
-                                    [src]="truck.truckType.logoName"
+                                    [src]="
+                                        type === 'truck'
+                                            ? truck.truckType.logoName
+                                            : trailer.trailerType.logoName
+                                    "
                                 ></svg-icon>
                             </ng-container>
 
@@ -78,13 +115,20 @@
 
                             <ng-template #notHoveringCircleIcon>
                                 <p class="m-0 ta-font-bold">
-                                    {{ truck.truckNumber }}
+                                    {{
+                                        type === 'truck'
+                                            ? truck.truckNumber
+                                            : trailer.trailerNumber
+                                    }}
                                 </p>
 
                                 <span>
                                     {{
-                                        !!truck.year
+                                        type === 'truck' && !!truck.year
                                             ? '(' + truck.year + ')'
+                                            : type === 'trailer' &&
+                                              !!trailer.year
+                                            ? '(' + trailer.year + ')'
                                             : ''
                                     }}
                                 </span>
@@ -106,7 +150,11 @@
                                 "
                                 tooltipMarginTop="5px"
                                 position="bottom"
-                                (click)="removeTruck(rowIndex)"
+                                (click)="
+                                    type === 'truck'
+                                        ? removeTruck(rowIndex)
+                                        : removeTrailer(rowIndex)
+                                "
                             >
                                 <svg-icon
                                     class="icon"
@@ -124,7 +172,7 @@
 
     <ng-template #dropdown>
         <app-ta-input-dropdown
-            [formControl]="truckFormControll"
+            [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="{
                 name: 'Input Dropdown',
@@ -132,7 +180,6 @@
                 label: 'Unit No.',
                 placeholder: 'Unit No.',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-118',
                 placeholderInsteadOfLabel: true,
                 hideDropdownArrow: true,
                 autoFocus: true,
@@ -140,13 +187,16 @@
                 hideRequiredCheck: true,
                 hideDangerMark: true,
                 hideErrorMessage: true,
-                mergeDropdownBodyWithInput: true
+                mergeDropdownBodyWithInput: true,
+                dropdownWidthClass: 'w-col-118'
             }"
-            [options]="truckList"
+            [options]="type === 'truck' ? truckList : trailerList"
             [canAddNew]="true"
             [canOpenModal]="true"
             [activeItem]="null"
-            (selectedItem)="addTruck($event)"
+            (selectedItem)="
+                type === 'truck' ? addTruck($event) : addTrailer($event)
+            "
         ></app-ta-input-dropdown>
     </ng-template>
 </div>
