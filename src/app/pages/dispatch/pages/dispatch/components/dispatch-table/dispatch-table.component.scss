@@ -633,13 +633,6 @@
                 }
             }
 
-            &.truck-field,
-            &.trailer-field {
-                min-width: 120px;
-                max-width: 120px;
-                width: 120px;
-            }
-
             &.driver-field {
                 min-width: 200px;
                 max-width: 200px;
@@ -891,11 +884,6 @@
                     background-color: #42424233;
                     color: #424242;
                 }
-            }
-
-            &.truck-filed,
-            &.trailer-field {
-                width: 120px;
             }
 
             &.taken-field {

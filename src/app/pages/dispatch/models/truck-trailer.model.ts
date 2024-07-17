@@ -3,5 +3,6 @@ export interface TruckTrailer {
     name: string;
     icon: string;
     color: string;
+    hoverColor?: string;
     isSelected?: boolean;
 }

@@ -15,6 +15,7 @@
         <ng-container *ngIf="!isHeaderHidden">
             <div
                 class="d-flex align-items-center justify-content-between comments-container-header"
+                [ngClass]="{ disabled: commentsData?.length === 1 }"
             >
                 <p class="m-0 ta-font-bold">SORT BY</p>
 
@@ -23,7 +24,11 @@
 
                     <svg-icon
                         class="icon"
-                        [src]="commentsSearchSvgRoutes.arrowSortRoute"
+                        [src]="
+                            sortDirection === 'dsc'
+                                ? commentsSearchSvgRoutes.arrowUpSortRoute
+                                : commentsSearchSvgRoutes.arrowDownSortRoute
+                        "
                         (click)="handleSortClick()"
                     ></svg-icon>
                 </div>
