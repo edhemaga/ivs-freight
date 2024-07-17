@@ -43,9 +43,16 @@
                 cdkDragPreviewContainer="parent"
                 cdkDragBoundary=".dispatch-table"
             >
-                <td class="truck-field" cdkDragHandle>
+                <td
+                    cdkDragHandle
+                    class="truck-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTruck ? '160px' : '120px'
+                    }"
+                >
                     <app-dispatch-table-truck-trailer
                         [type]="'truck'"
+                        [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
                         [truck]="item?.truck"
                         [truckList]="truckList"
                         [rowIndex]="rowIndex"
@@ -59,7 +66,12 @@
                     </app-dispatch-table-truck-trailer>
                 </td>
 
-                <td class="trailer-field">
+                <td
+                    class="trailer-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                    }"
+                >
                     <div
                         [class.isDragging]="isDrag && draggingType == 'trailer'"
                         cdkDropList
@@ -94,6 +106,9 @@
 
                             <app-dispatch-table-truck-trailer
                                 [type]="'trailer'"
+                                [hasAdditionalFieldTrailer]="
+                                    hasAdditionalFieldTrailer
+                                "
                                 [trailer]="item?.trailer"
                                 [trailerList]="trailerList"
                                 [rowIndex]="rowIndex"
@@ -760,8 +775,8 @@
             </tr>
 
             <tr *ngIf="!__isBoardLocked">
-                <!--  <td class="truck-field">
-                    <div class="main_inside addNew">
+                <td class="truck-field">
+                    <!--    <div class="main_inside addNew">
                       <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != -2"
@@ -811,10 +826,10 @@
                             [canOpenModal]="true"
                             (selectedItem)="addTruck($event)"
                         ></app-ta-input-dropdown> 
-                    </div>
-                </td> -->
-                <!--  <td class="trailer-field">
-                    <div
+                    </div> -->
+                </td>
+                <td class="trailer-field">
+                    <!--  <div
                         class="main_inside addNew"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
@@ -885,8 +900,8 @@
                                 (selectedItem)="addTrailer($event)"
                             ></app-ta-input-dropdown>
                         </div>
-                    </div>
-                </td> -->
+                    </div> -->
+                </td>
                 <td class="driver-field">
                     <div
                         class="main_inside"

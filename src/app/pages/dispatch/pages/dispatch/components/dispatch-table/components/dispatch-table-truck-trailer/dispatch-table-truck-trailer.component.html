@@ -178,7 +178,6 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Unit No.',
-                placeholder: 'Unit No.',
                 isDropdown: true,
                 placeholderInsteadOfLabel: true,
                 hideDropdownArrow: true,
@@ -188,7 +187,14 @@
                 hideDangerMark: true,
                 hideErrorMessage: true,
                 mergeDropdownBodyWithInput: true,
-                dropdownWidthClass: 'w-col-118'
+                dropdownWidthClass:
+                    type === 'truck'
+                        ? hasAdditionalFieldTruck
+                            ? 'w-col-158'
+                            : 'w-col-118'
+                        : hasAdditionalFieldTrailer
+                        ? 'w-col-158'
+                        : 'w-col-130'
             }"
             [options]="type === 'truck' ? truckList : trailerList"
             [canAddNew]="true"
