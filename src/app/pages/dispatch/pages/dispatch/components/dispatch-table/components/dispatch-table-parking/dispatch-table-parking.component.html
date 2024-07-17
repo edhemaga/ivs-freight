@@ -1,7 +1,7 @@
 <div
     class="dispatch-parking"
     [ngClass]="{
-        'dispatch-parking_empty': !isTruckOrTrailerSelected,
+        'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
         'dispatch-parking_assigned': isParkingAssigned
     }"
 >
@@ -61,6 +61,7 @@
                 <app-ta-input
                     formControlName="parking"
                     #t2="ngbPopover"
+                    #input
                     [ngbPopover]="parkingDropDownPopover"
                     [autoClose]="false"
                     [popoverClass]="'parking-popover'"
