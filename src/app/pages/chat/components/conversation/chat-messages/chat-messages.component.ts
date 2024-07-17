@@ -12,7 +12,10 @@ import {
   UntypedFormGroup,
   UntypedFormBuilder,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  Subject,
+  takeUntil
+} from 'rxjs';
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
@@ -32,7 +35,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-chat-messages',
   templateUrl: './chat-messages.component.html',
-  styleUrls: ['./chat-messages.component.scss']
+  styleUrls: ['./chat-messages.component.scss'],
 })
 export class ChatMessagesComponent implements OnInit, OnDestroy {
 
@@ -92,7 +95,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.messages = [...res.messages];
+          console.log(res);
+          this.messages = [...res.messages?.pagination?.data];
 
           // Conversation participants
           this.conversation = res.information;

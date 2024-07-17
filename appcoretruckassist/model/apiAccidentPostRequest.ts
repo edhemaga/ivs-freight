@@ -90,5 +90,6 @@ export interface ApiAccidentPostRequest {
     FilesForDeleteIds?: Array<number>;
     Medies?: Array<Blob>;
     MediesForDeleteIds?: Array<number>;
+    Note?: string;
 }
 

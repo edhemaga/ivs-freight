@@ -6,7 +6,7 @@
             </div>
 
             <div class="chat-header-message-count ta-font-extra-bold">
-                {{ contact?.count }}
+                {{ contactsInfo?.count }}
             </div>
 
             <div
@@ -15,18 +15,20 @@
                 <div class="border"></div>
             </div>
 
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.searchIcon"
-                (click)="toggleSearch()"
-            ></svg-icon>
+            <ng-container *ngIf="!isSearchActive">
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="ChatSvgRoutes.searchIcon"
+                    (click)="toggleSearch()"
+                ></svg-icon>
 
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border"></div>
+                </div>
+            </ng-container>
 
             <div
                 ngbTooltip
@@ -58,44 +60,53 @@
                 ></svg-icon>
             </div>
         </div>
-        <ng-container *ngIf="!isSearchActive">
+        <ng-container *ngIf="!isSearchActive; else searchBlock">
             <div class="horizontal-border"></div>
         </ng-container>
-        <ng-container *ngIf="isSearchActive">
-            <div class="form-wrapper" [formGroup]="searchForm">
+        <ng-template #searchBlock>
+            <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
                 <app-ta-input
                     formControlName="searchTerm"
-                    [(ngModel)]="searchTerm"
                     [inputConfig]="{
                         name: 'searchTerm',
                         type: 'text',
                         label: 'Type your message here',
+                        placeholderIcon: 'search',
                         hideRequiredCheck: true,
                         placeholderInsteadOfLabel: true,
                         autoFocus: true,
                         minLength: 3
                     }"
+                    (clear)="toggleSearch(false)"
                 ></app-ta-input>
             </div>
-        </ng-container>
+        </ng-template>
     </div>
 
-    <ng-container *ngIf="contact?.count > 0; else noData">
-        <div class="contact-wrapper">
-            <ng-container
-                *ngFor="
-                    let chat of contact?.data;
-                    let ind = index;
-                    trackBy: trackById
-                "
-            >
-                <div class="contact">
-                    <app-chat-user-list-item
-                        [contact]="chat"
-                        (click)="selectUser(chat.companyUser.id)"
-                    ></app-chat-user-list-item>
-                </div>
-            </ng-container>
+    <ng-container *ngIf="contactsInfo?.count; else noData">
+        <div class="contact-container">
+            <div class="contact-wrapper">
+                <ng-container
+                    *ngFor="
+                        let contact of contactsInfo?.data;
+                        let ind = index;
+                        trackBy: trackById
+                    "
+                >
+                    <div
+                        class="contact"
+                        [ngClass]="
+                            contact.companyUser.id === this.selectedUserId &&
+                            'selected-contact'
+                        "
+                    >
+                        <app-chat-user-list-item
+                            [contact]="contact"
+                            (click)="selectUser(contact.companyUser.id)"
+                        ></app-chat-user-list-item>
+                    </div>
+                </ng-container>
+            </div>
         </div>
     </ng-container>
 

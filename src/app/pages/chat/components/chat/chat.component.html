@@ -91,7 +91,7 @@
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
                 [type]="'Company'"
-                [contact]="companyUsers"
+                [contactsInfo]="companyUsers"
             >
             </app-chat-user-list>
 
@@ -101,7 +101,7 @@
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
                 [type]="'Driver'"
-                [contact]="drivers"
+                [contactsInfo]="drivers"
             >
             </app-chat-user-list>
         </div>

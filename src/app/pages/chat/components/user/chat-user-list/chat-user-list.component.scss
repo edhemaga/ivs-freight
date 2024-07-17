@@ -1,23 +1,27 @@
 @import 'src/theme/variables';
 
 .user-list-container {
+    height: fit-content;
     width: fit-content;
     background: $white;
     border-radius: 3px;
-    padding: 6px;
 
     .chat-header-wrapper {
         width: 100%;
+        padding-top: 6px;
+        padding-left: 6px;
+        padding-right: 6px;
 
         .form-wrapper {
             flex: 1;
             width: 100%;
         }
+
         .chat-header {
             width: 318px;
             height: 26px;
             padding: 0 6px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
 
             .border-container {
                 height: 34px;
@@ -52,7 +56,7 @@
 
         .horizontal-border {
             width: auto;
-            margin: 6px 2px 6px 2px;
+            margin: 0px 2px 6px 2px;
             border-bottom: 1px solid $bw-9;
         }
     }
@@ -72,12 +76,26 @@
     }
 }
 
-.contact-wrapper {
-    height: calc(50vh - 92px);
-    overflow-y: auto;
+.contact-container {
+    height: calc(50lvh - 92px);
+    padding-bottom: 6px;
 
-    .contact {
-        margin-top: 2px;
+    .contact-wrapper {
+        height: 100%;
+        overflow-y: scroll !important;
+        scrollbar-width: thin !important; /* Firefox */
+        scrollbar-color: $ta-light-grey-6 transparent !important;
+        scrollbar-width: 1px !important;
+
+        .selected-contact {
+            background-color: $ta-light-grey;
+        }
+        .contact {
+            border-radius: 2px;
+            margin-top: 2px;
+            margin-left: 6px;
+            margin-right: 6px;
+        }
     }
 }
 
