@@ -811,11 +811,14 @@
                 <td class="parking-field">
                     <div class="main_inside filled">
                         <div class="padding-inside">
-                            <app-dispatch-table-parking 
-                            [parkingList]="parkingList" 
-                            [parkingFormControl]="parkingFormControl" 
-                            [parkingSlot]="item.parkingSlot"
-                            (addOrUpdateParking)="addOrUpdateParking($event, rowIndex)"></app-dispatch-table-parking>
+                            <app-dispatch-table-parking
+                                [parkingList]="parkingList"
+                                [parkingSlot]="item.parkingSlot"
+                                [isTableUnlocked]="!__isBoardLocked"
+                                (addOrUpdateParking)="
+                                    addOrUpdateParking($event, rowIndex)
+                                "
+                            ></app-dispatch-table-parking>
                         </div>
                     </div>
                 </td>
@@ -1149,9 +1152,9 @@
                     </div>
                 </td>
                 <td class="parking-field">
-                    <div class="main_inside">
+                    <!-- <div class="main_inside">
                         <div class="padding-inside"></div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="box-item">
                     <div class="main_inside">

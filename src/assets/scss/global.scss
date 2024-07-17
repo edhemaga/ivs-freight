@@ -276,7 +276,6 @@ app-load-modal {
     }
 }
 
-
 .mouse-pointer {
     cursor: pointer;
 }
@@ -286,7 +285,25 @@ app-load-modal {
 }
 
 .dispatch-parking {
-    .input-control  {
+    .input-control {
         background-color: $ta-black-2 !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        color: $white !important;
+        padding: 16px 6px !important;
+        border-bottom: 2px solid $ta-black !important;
+        position: relative;
+        left: -7px;
+        top: -4px;
+        width: calc(100% + 14px) !important;
+        margin-bottom: 3px !important;
+    }
+
+    .input-custom-group label {
+        color: $muted !important;
+        font-weight: 400;
+        top: 3px;
+        font-size: 14px;
+        left: -1px;
     }
 }

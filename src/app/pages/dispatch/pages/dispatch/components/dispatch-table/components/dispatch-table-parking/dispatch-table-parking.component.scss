@@ -9,15 +9,24 @@
     transition: 0.3s;
 
     &:hover {
-        background-color: $bw2;
+        // background-color: $bw2;
     }
 
     &-dropdown {
         max-height: 275px;
         overflow-y: scroll;
         background-color: $ta-black-2;
-        width: 150px;
+        width: 96px;
         border-radius: 3px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        position: relative;
+        left: -7px;
+        top: -5px;
+
+        &_large {
+            width: 146px;
+        }
 
         &-badge {
             color: $white;

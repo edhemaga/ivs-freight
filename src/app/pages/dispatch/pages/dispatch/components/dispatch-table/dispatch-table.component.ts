@@ -57,7 +57,6 @@ export class DispatchTableComponent implements OnInit {
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: UntypedFormControl = new UntypedFormControl();
     truckAddress: UntypedFormControl = new UntypedFormControl(null);
-    parkingFormControl: UntypedFormControl = new UntypedFormControl(null);
     truckList: any[];
     trailerList: any[];
     driverList: any[];
@@ -256,8 +255,15 @@ export class DispatchTableComponent implements OnInit {
         this.openedTrailerDropdown = -1;
     }
 
-    addOrUpdateParking(parkingSlot: ParkingSlotDispatchModalResponse, index: number) {
-        this.updateOrAddDispatchBoardAndSend('parkingSlotId', parkingSlot.id, index)
+    addOrUpdateParking(
+        parkingSlot: ParkingSlotDispatchModalResponse,
+        index: number
+    ) {
+        this.updateOrAddDispatchBoardAndSend(
+            'parkingSlotId',
+            parkingSlot.id,
+            index
+        );
     }
 
     handleInputSelect(e: any) {
@@ -349,7 +355,7 @@ export class DispatchTableComponent implements OnInit {
             // hoursOfService: 0,
             note: oldData.note,
             loadIds: [],
-            parkingSlotId: oldData.parkingSlotId
+            parkingSlotId: oldData.parkingSlotId,
         };
 
         let newData: any = {

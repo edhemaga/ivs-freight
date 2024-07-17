@@ -6,11 +6,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import {
-    UntypedFormBuilder,
-    UntypedFormControl,
-    UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 // Svg routes
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
@@ -23,6 +19,12 @@ import {
 } from 'appcoretruckassist';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
+// Components
+import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+
+// Services
+import { ModalService } from '@shared/services/modal.service';
+
 @Component({
     selector: 'app-dispatch-table-parking',
     templateUrl: './dispatch-table-parking.component.html',
@@ -32,11 +34,11 @@ export class DispatchTableParkingComponent implements OnInit {
     // Inputs
     @Input() parkingList: Array<DispatchBoardParking> | null;
     @Input() parkingSlot: ParkingSlotShortResponse | null;
-    @Input() parkingFormControl: UntypedFormControl;
-
+    @Input() isTableUnlocked: boolean;
     // Ouputs
-    @Output() addOrUpdateParking = new EventEmitter();
-
+    @Output()
+    addOrUpdateParking: EventEmitter<ParkingSlotDispatchModalResponse> =
+        new EventEmitter();
     // Svg routes
     public svgRoutes = DispatchParkingSvgRoutes;
 
@@ -44,19 +46,31 @@ export class DispatchTableParkingComponent implements OnInit {
     public parkingForm: UntypedFormGroup;
 
     // Popover
-    @ViewChild('t2', { static: true }) public popover: NgbPopover;
+    @ViewChild('t2') public popoverRef: NgbPopover;
 
     // Use to show on frontend so we don't change orginal data
     public filteredParkingList: Array<DispatchBoardParking>;
+    // TODO: Chek this field
     public isTruckOrTrailerSelected: boolean = false;
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private modalService: ModalService
+    ) {}
 
     ngOnInit(): void {
         this.handleListVisibility();
         this.createForm();
+    }
+
+    public get isParkingAssigned(): boolean {
+        return !!this.parkingSlot;
+    }
+
+    public get isParkingAvailable(): boolean {
+        return !!this.parkingList.length;
     }
 
     private createForm() {
@@ -71,6 +85,7 @@ export class DispatchTableParkingComponent implements OnInit {
     }
 
     private filterParkingList(input: string): void {
+        this.popoverRef.open();
         if (input) {
             const searchValue = input.toLowerCase();
             this.filteredParkingList = this.parkingList
@@ -89,10 +104,6 @@ export class DispatchTableParkingComponent implements OnInit {
         }
     }
 
-    public get isParkingAssigned(): boolean {
-        return !!this.parkingSlot;
-    }
-
     private handleListVisibility(): void {
         // We can have parking with 0 slots
         this.isMultipleParkingSlots =
@@ -101,19 +112,19 @@ export class DispatchTableParkingComponent implements OnInit {
             ).length > 1;
 
         // If we have only one parking, open it and remove parking title
-        if (!this.isMultipleParkingSlots) {
+        if (!this.isMultipleParkingSlots && this.parkingList.length) {
             this.parkingList[0].isDropdownVisible = true;
         }
     }
 
     public addParking(parkingSlot: ParkingSlotDispatchModalResponse): void {
+        this.popoverRef.close();
         // Parking cannot be reassign, user needs to remove it first
         if (!!this.parkingSlot) {
             return;
         }
         this.addOrUpdateParking.emit(parkingSlot);
         this.isInputInFocus = false;
-        this.popover.close();
     }
 
     public removeParking(): void {
@@ -128,12 +139,14 @@ export class DispatchTableParkingComponent implements OnInit {
         };
     }
 
-    public showInputField(): void {
-        this.isInputInFocus = true;
+    public addNewParking(): void {
+        this.popoverRef.close();
+        this.modalService.openModal(SettingsParkingModalComponent, {
+            size: 'small',
+        });
     }
 
-    public inputOnFocusOut(): void {
-        this.isInputInFocus = false;
-        setTimeout(() => this.parkingForm.get('parking').patchValue(''), 150);
+    public onInputClick(): void {
+        this.isInputInFocus = true;
     }
 }
