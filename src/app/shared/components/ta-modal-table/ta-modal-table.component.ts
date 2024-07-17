@@ -33,6 +33,7 @@ import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/compo
 import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-off-duty-location/ta-modal-table-off-duty-location.component';
 import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
 import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
+import { TaModalTableLoadItemsComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-load-items/ta-modal-table-load-items.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -40,6 +41,7 @@ import { ContactsService } from '@shared/services/contacts.service';
 import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { DriverService } from '@pages/driver/services/driver.service';
+import { FormService } from '@shared/services/form.service';
 
 // constants
 import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';
@@ -78,6 +80,8 @@ import {
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
     RepairShopContactResponse,
+    LoadStopItemCommand,
+    TrailerTypeResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -85,6 +89,7 @@ import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-ta
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -107,6 +112,7 @@ import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
         TaModalTableOffDutyLocationComponent,
         TaModalTableFuelCardComponent,
         TaModalTablePreviousAddressesComponent,
+        TaModalTableLoadItemsComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -128,11 +134,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | DriverDetailsOffDutyLocationResponse[]
         | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
-
+    @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
+    @Input() isHazardous: boolean;
+    @Input() selectedTrailer: TrailerTypeResponse;
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
         | RepairItemCommand[]
+        | LoadStopItemCommand[]
     >();
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
     @Output() totalCostValueEmitter = new EventEmitter<RepairSubtotal[]>();
@@ -174,6 +183,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedFuelCard: DriverModalFuelCardResponse[] = [];
     public fuelCardOptions: DriverModalFuelCardResponse[] = [];
 
+    // Load table 
+    public selectedQuantity: EnumValue[] = [];
+    public selectedStack: EnumValue[] = [];
+    public selectedSecure: EnumValue[] = [];
+    public selectedTarps: EnumValue[] = [];
+    public selectedHazardous: EnumValue[] = [];
+
     // enums
     public taModalTableStringEnum = TaModalTableStringEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
@@ -186,7 +202,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private contactService: ContactsService,
         private repairService: RepairService,
         private pmService: PmService,
-        private driverService: DriverService
+        private driverService: DriverService,
+        private formService: FormService
     ) {}
 
     ngOnInit(): void {
@@ -280,6 +297,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         return this.tableType === ModalTableTypeEnum.PREVIOUS_ADDRESSES;
     }
 
+    get isLoadItemTable() {
+        return this.tableType === ModalTableTypeEnum.LOAD_ITEMS;
+    }
+
     public trackByIdentity = (_: number, item: string): string => item;
 
     private createForm(): void {
@@ -293,6 +314,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             offDutyLocationTableItems: this.formBuilder.array([]),
             fuelCardTableItems: this.formBuilder.array([]),
             previousAddressesTableItems: this.formBuilder.array([]),
+            loadModalTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -569,6 +591,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.PREVIOUS_ADDRESSES_TABLE_HEADER_ITEMS;
 
                 break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                this.modalTableHeaders =
+                    ModalTableConstants.LOAD_ITEM_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -626,7 +653,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
             );
         }
-
         this.modalTableValueEmitter.emit(modalTableDataValue);
     }
 
@@ -669,6 +695,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS
                 ) as UntypedFormArray;
             default:
                 break;
@@ -788,6 +818,37 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                newFormArrayRow = this.formBuilder.group({
+                    description: [
+                        null,
+                        this.isHazardous
+                            ? null
+                            : [...descriptionValidation, Validators.required],
+                    ],
+                    quantity: [null],
+                    temperature: [
+                        null,
+                        this.formService.rangeValidator(-20, 99),
+                    ],
+                    weight: [null],
+                    length: [null],
+                    height: [null],
+                    tarp: [null],
+                    stackable: [null],
+                    secure: [null],
+                    bolNumber: [null],
+                    pickupNumber: [null],
+                    sealNumber: [null],
+                    code: [null],
+                    hazardousMaterialId: [
+                        null,
+                        !this.isHazardous ? null : [Validators.required],
+                    ],
+                    units: [null],
+                });
+
+                break;
             default:
                 break;
         }
@@ -798,7 +859,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public deleteFormArrayRow(index: number): void {
         this.getFormArray().removeAt(index);
-
         switch (this.tableType) {
             case ModalTableTypeEnum.PHONE:
                 this.isContactPhoneExtExist.splice(index, 1);
@@ -823,11 +883,24 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedFuelCard.splice(index, 1);
 
                 break;
+
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                this.selectedQuantity.splice(index, 1);
+                this.selectedStack.splice(index, 1);
+                this.selectedSecure.splice(index, 1);
+                this.selectedTarps.splice(index, 1);
+                this.selectedHazardous.splice(index, 1);
+
+                break;
             default:
                 break;
         }
 
         this.getModalTableDataValue();
+    }
+
+    public deleteHazardous(index: number) {
+        this.selectedHazardous.splice(index, 1);
     }
 
     private createIsHoverRow(): boolean[] {
@@ -871,6 +944,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 isInputHoverRow =
                     ModalTableConstants.IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES;
                 break;
+            case ModalTableTypeEnum.LOAD_ITEMS:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_LOAD_ITEMS;
+                break;
         }
 
         return JSON.parse(JSON.stringify(isInputHoverRow));
@@ -893,6 +970,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | RepairItemResponse
             | PMTableData
             | DriverDetailsOffDutyLocationResponse
+            | LoadStopItemCommand
         )[]
     ): void {
         modalTableData.forEach((data, i) => {
@@ -939,8 +1017,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         unit: addressData?.addressUnit,
                         address: addressData?.address?.address,
                     });
-                    
+
                     this.selectedAddress[i] = addressData.address;
+                    break;
+                case ModalTableTypeEnum.LOAD_ITEMS:
+                    this.handleLoadModalItems(data, i);
+
                     break;
                 default:
                     break;
@@ -959,6 +1041,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.calculateRepairBillSubtotal();
             }, 300);
     }
+
+    public unitsChanged(event: {unit: EnumValue, index: number}) :void {
+        const formGroup = this.getFormArray().at(event.index);
+        formGroup.patchValue({
+            units: event.unit.id
+        });
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
+        this.modalTableValueEmitter.emit(this.getFormArray().value);
+    }
+
     handleContactData(contact: RepairShopContactResponse, i: number) {
         const formGroup = this.getFormArray().at(i);
         formGroup.patchValue({
@@ -1086,6 +1178,44 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.selectedAddress[index] = offDutyLocationData?.address;
+    }
+
+    private handleLoadModalItems(
+        modalItem: LoadStopItemCommand,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+        formGroup.patchValue({
+            description: modalItem.description || null,
+            quantity: modalItem.quantity || null,
+            temperature: modalItem.temperature || null,
+            weight: modalItem.weight || null,
+            length: modalItem.length || null,
+            height: modalItem.height || null,
+            tarp: (modalItem.tarp as EnumValue)?.name || null,
+            stackable: (modalItem.stackable as EnumValue)?.name || null,
+            secure: (modalItem.secure as EnumValue)?.name || null,
+            bolNumber: modalItem.bolNumber || null,
+            pickupNumber: modalItem.pickupNumber || null,
+            sealNumber: modalItem.sealNumber || null,
+            code: modalItem.code || null,
+            hazardousMaterialId: modalItem.hazardousMaterialId,
+            units: modalItem.units || null,
+        });
+
+        this.selectedQuantity[index] =
+            this.stopItemDropdownLists?.quantityDropdownList?.find(
+                (quantity) => quantity.id === (modalItem.units as EnumValue)?.id
+            );
+        this.selectedStack[index] = modalItem.stackable as EnumValue;
+        this.selectedSecure[index] = modalItem.secure as EnumValue;
+        this.selectedTarps[index] = modalItem.tarp as EnumValue;
+        // if we get items from backend field is called hazardousMaterial not hazardousMaterialId
+        this.selectedHazardous[index] =
+            this.stopItemDropdownLists?.hazardousDropdownList.find(
+                (hazard) =>
+                    hazard.id === (modalItem as any).hazardousMaterial?.id
+            );
     }
 
     private checkForInputChanges(): void {

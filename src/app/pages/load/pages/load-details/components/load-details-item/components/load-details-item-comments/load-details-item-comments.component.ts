@@ -226,7 +226,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         };
 
         this.commentsService
-            .createComment(comment)
+            .createComment(comment, this.load?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.comments[commentIndex] = {
@@ -243,14 +243,14 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         };
 
         this.commentsService
-            .updateComment(comment)
+            .updateComment(comment, this.load?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
     private deleteCommentById(id: number): void {
         this.commentsService
-            .deleteCommentById(id)
+            .deleteCommentById(id, this.load?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }

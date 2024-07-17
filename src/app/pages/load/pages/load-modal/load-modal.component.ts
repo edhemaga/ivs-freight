@@ -44,7 +44,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { LoadModalFinancialComponent } from '@pages/load/pages/load-modal/components/load-modal-financial/load-modal-financial.component';
 import { LoadModalStopComponent } from '@pages/load/pages/load-modal/components/load-modal-stop/load-modal-stop.component';
-import { LoadModalStopItemsComponent } from '@pages/load/pages/load-modal/components/load-modal-stop-items/load-modal-stop-items.component';
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -62,6 +61,7 @@ import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/compon
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 import { LoadDetailsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-comments/load-details-item-comments.component';
 import { TaInputDropdownStatusComponent } from '@shared/components/ta-input-dropdown-status/ta-input-dropdown-status.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -83,12 +83,16 @@ import { LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes/load-time-t
 // constants
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
-import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
 import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
+
+// config
+import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants/load-stop-items-config';
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import {
@@ -164,12 +168,12 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         TaInputNoteComponent,
         TaMapsComponent,
         TaCommentComponent,
-        LoadModalStopItemsComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
+        TaModalTableComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -276,6 +280,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public stopItemDropdownLists: LoadStopItemDropdownLists;
     public statusDropDownList: SelectedStatus[];
     public previousStatus: SelectedStatus;
+    public savedPickupStopItems: LoadStopItemCommand[] = [];
+    public savedDeliveryStopItems: LoadStopItemCommand[] = [];
+    public savedExtraStopItems: LoadStopItemCommand[][] = [];
+    public isPickupStopValid: boolean = true;
+    public isDeliveryStopValid: boolean = true;
+    public stopItemsValid: boolean[] = [];
 
     // input configurations
     public loadDispatchesTTDInputConfig: ITaInput;
@@ -328,7 +338,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // stop items
     public pickupStopItems: LoadStopItemResponse[] = [];
     public deliveryStopItems: LoadStopItemResponse[] = [];
-    public extraStopItems: LoadStopItemCommand[][] = [];
+    public extraStopItems: LoadStopItemCommand[] = [];
 
     public isCreatedNewStopItemsRow: LoadItemStop;
     public isEachStopItemsRowValid: boolean = true;
@@ -389,12 +399,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public reorderingSaveError: boolean = false;
     private originalStatus: string;
     private stops: LoadStopResponse[];
-    public areCommentsVisible: boolean = false;
+    public isCommentsVisible: boolean = false;
     private lastCallTimeout: any;
     private debounceDelay: number = 1000;
     private isPreviousStatus: boolean = false;
     private statusHistory: LoadStatusHistoryResponse[];
     private initialinvoicedDate: string;
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -548,17 +560,42 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE).value;
     }
 
+    public get isTemplateLoad(): boolean {
+        return this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+    }
+
+    public isActiveLoad() {
+        return (
+            !this.editData?.type?.includes('edit') ||
+            (this.editData?.type?.includes('edit') && this.isTemplateLoad)
+        );
+    }
+
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
 
-        if (this.isConvertedToTemplate) {
-            return 'Create Load Template';
-        } else if (!isEdit) {
-            return 'Create Load';
-        } else {
-            return `Edit ${
-                (this.editData.data as LoadResponse).statusType.name
-            } Load`;
+        if (!isEdit) {
+            if (this.isConvertedToTemplate) {
+                return 'Create Load Template';
+            } else if (!isEdit) {
+                return 'Create Load';
+            }
+        }
+
+        if (this.isTemplateLoad) {
+            return 'Edit Load Template';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.CLOSED) {
+            return 'Edit Closed Load';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.ACTIVE) {
+            return 'Edit Active Load';
+        }
+
+        if (this.editData?.selectedTab === TableStringEnum.PENDING) {
+            return 'Edit Pending Load';
         }
     }
 
@@ -571,7 +608,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get isLoadClosed(): boolean {
-        return this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+        return this.selectedStatus?.name === LoadModalStringEnum.STATUS_CLOSED;
     }
 
     public get isRequirementVisible(): boolean {
@@ -584,8 +621,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public handleTonuRateVisiblity(): void {
         const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CANCELLED ||
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU;
+            this.selectedStatus &&
+            (this.selectedStatus.name ===
+                LoadModalStringEnum.STATUS_CANCELLED ||
+                this.selectedStatus.name === LoadModalStringEnum.STATUS_TONU);
 
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.TONU),
@@ -763,15 +802,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // stop items
         this.isCreatedNewStopItemsRow =
-            LoadStopItems.IS_CREATED_NEW_STOP_ITEMS_ROW;
+            LoadStopItemsConfig.IS_CREATED_NEW_STOP_ITEMS_ROW;
     }
 
     public validatePickupStops(
         loadForm: UntypedFormGroup
     ):
         | LoadModalStringEnum.INVALID_STATUS
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
+        if (this.pickupStopItems.length && !this.isPickupStopValid) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         const pickupShipperControl = loadForm.get(
             LoadModalStringEnum.PICKUP_SHIPPER
         );
@@ -822,10 +866,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadFormArray: UntypedFormArray,
         indx: number
     ):
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | LoadModalStringEnum.INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
         const stopForm = loadFormArray.at(indx);
+        if (
+            this.savedExtraStopItems[indx]?.length &&
+            !this.stopItemsValid[indx]
+        ) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         if (stopForm.dirty && !stopForm.valid) {
             return LoadModalStringEnum.INVALID_STATUS;
         }
@@ -840,8 +892,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         loadForm: UntypedFormGroup
     ):
         | LoadModalStringEnum.INVALID_STATUS
+        | LoadModalStringEnum.STEP_INVALID_STATUS
         | null
         | LoadModalStringEnum.VALID_STATUS {
+        if (this.deliveryStopItems.length && !this.isDeliveryStopValid) {
+            return LoadModalStringEnum.STEP_INVALID_STATUS;
+        }
+
         const deliveryShipperControl = loadForm.get(
             LoadModalStringEnum.DELIVERY_SHIPPER
         );
@@ -1098,7 +1155,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     return;
                 }
 
-                if (this.isConvertedToTemplate) {
+                if (
+                    this.editData?.type === 'edit' &&
+                    this.editData?.selectedTab === TableStringEnum.TEMPLATE
+                ) {
+                    this.updateLoadTemplate();
+                } else if (this.isConvertedToTemplate) {
                     this.saveLoadTemplate();
                 } else {
                     this.editData?.data
@@ -2432,6 +2494,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             list = this.orginalPaymentTypesDropdownList.filter(
                 (payments) => payments.id !== LoadModalConstants.ADVANCE_PAY
             );
+        } else {
+            list = this.orginalPaymentTypesDropdownList;
         }
 
         this.paymentTypesDropdownList = list;
@@ -2684,10 +2748,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public addLoadExtraStop(): void {
         this.loadExtraStops().push(this.newLoadExtraStop());
-
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
+        this.loadExtraStops()
+            .controls[this.loadExtraStops().length - 1].get(
+                LoadModalStringEnum.OPEN_CLOSE
+            )
+            .patchValue(true);
 
         const obj = this.numberOfLoadExtraStops();
 
@@ -2906,35 +2974,82 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private remapStopItems(stopItems: LoadStopItemCommand[] | any) {
-        let _pickupStopItems = stopItems;
+    private remapStopItems(
+        stopItems: LoadStopItemCommand[]
+    ): LoadStopItemCommand[] {
+        if (!stopItems) return [];
+        return stopItems.map((item: any) => {
+            let newItem = { ...item };
 
-        if (this.pickupStopItems.length) {
-            _pickupStopItems = _pickupStopItems.map((item: any) => {
-                if (item.quantity) {
-                    item.quantity =
-                        this.stopItemDropdownLists.quantityDropdownList.find(
-                            (q) => q.name === item.quantity
-                        ).id;
-                }
-                if (item.secure) {
-                    item.secure =
-                        this.stopItemDropdownLists.secureDropdownList.find(
-                            (q) => q.name === item.secure
-                        ).id;
-                }
-                if (item.stack) {
-                    item.stack =
+            if (newItem.units) {
+                newItem = {
+                    ...newItem,
+                    units: newItem.units.id
+                        ? newItem.units.id
+                        : this.stopItemDropdownLists.quantityDropdownList.find(
+                              (unit) =>
+                                  unit.name === newItem.units ||
+                                  newItem.units === unit.id
+                          )?.id,
+                };
+            }
+
+            if (newItem.secure) {
+                newItem = {
+                    ...newItem,
+                    secure: this.stopItemDropdownLists.secureDropdownList.find(
+                        (secure) => secure.name === newItem.secure
+                    )?.id,
+                };
+            }
+
+            if (newItem.stackable) {
+                newItem = {
+                    ...newItem,
+                    stackable:
                         this.stopItemDropdownLists.stackDropdownList.find(
-                            (q) => q.name === item.stack
-                        ).id;
+                            (stackable) => stackable.name === newItem.stackable
+                        )?.id,
+                };
+            }
+
+            if (newItem.tarp) {
+                newItem = {
+                    ...newItem,
+                    tarp: this.stopItemDropdownLists.tarpDropdownList.find(
+                        (tarp) => tarp.name === newItem.tarp
+                    )?.id,
+                };
+            }
+
+            if (newItem.hazardousMaterialId) {
+                newItem = {
+                    ...newItem,
+                    description: null,
+                    hazardousMaterialId:
+                        this.stopItemDropdownLists.hazardousDropdownList.find(
+                            (hazard) =>
+                                hazard.description ===
+                                    newItem.hazardousMaterialId ||
+                                newItem.id === hazard.id
+                        )?.id,
+                };
+            } else {
+                newItem = {
+                    ...newItem,
+                    hazardousMaterialId: null,
+                };
+            }
+
+            // Remove null properties from form data
+            Object.keys(newItem).forEach((key) => {
+                if (newItem[key] === null) {
+                    delete newItem[key];
                 }
-
-                return item;
             });
-        }
 
-        return _pickupStopItems;
+            return newItem;
+        });
     }
 
     private mapLegTime(
@@ -3032,7 +3147,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles,
                 legHours,
                 legMinutes,
-                items: this.remapStopItems(this.pickupStopItems),
+                items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
             });
         }
@@ -3046,7 +3161,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: this.stops?.[index + 1]?.id ?? null,
+                    id: item.get(LoadModalStringEnum.ID).value ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3072,7 +3187,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMiles,
                     legHours,
                     legMinutes,
-                    items: this.remapStopItems(this.extraStopItems[index]),
+                    items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
                 });
             });
@@ -3111,7 +3226,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles,
                 legHours,
                 legMinutes,
-                items: this.remapStopItems(this.deliveryStopItems),
+                items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
             });
         }
@@ -3430,15 +3545,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ): void {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
-                this.pickupStopItems = stopItemsDataValue;
-
+                this.savedPickupStopItems = stopItemsDataValue;
                 break;
             case LoadModalStringEnum.DELIVERY:
-                this.deliveryStopItems = stopItemsDataValue;
+                this.savedDeliveryStopItems = stopItemsDataValue;
 
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                this.extraStopItems[extraStopIndex] = stopItemsDataValue;
+                this.savedExtraStopItems[extraStopIndex] = stopItemsDataValue;
 
                 break;
             default:
@@ -3446,8 +3560,31 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public handleStopItemsValidStatusEmit(validStatus: boolean): void {
-        this.isEachStopItemsRowValid = validStatus;
+    public handleStopItemsValidStatusEmit(
+        validStatus: boolean,
+        type: string,
+        extraStopIndex?: number
+    ): void {
+        // Flag to trigger form change on items change
+        this.isFormDirty = true;
+        switch (type) {
+            case LoadModalStringEnum.PICKUP:
+                this.isPickupStopValid = validStatus;
+                break;
+            case LoadModalStringEnum.DELIVERY:
+                this.isDeliveryStopValid = validStatus;
+                break;
+            case LoadModalStringEnum.EXTRA_STOP:
+                this.stopItemsValid[extraStopIndex] = validStatus;
+                break;
+            default:
+                break;
+        }
+
+        this.isEachStopItemsRowValid =
+            this.isPickupStopValid &&
+            this.isDeliveryStopValid &&
+            this.stopItemsValid.every((stop) => stop);
     }
 
     public additionalPartVisibility(event: {
@@ -3473,7 +3610,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createComment(): void {
-        this.areCommentsVisible = true;
+        this.isCommentsVisible = true;
         this.isCommenting = true;
         setTimeout(() => (this.isCommenting = false), 400);
     }
@@ -3642,7 +3779,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
-                    ).status.statusString;
+                    )?.status?.statusString;
 
                     this.handleTonuRateVisiblity();
                 });
@@ -3925,6 +4062,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.populateLoadModalData(
                             this.editData.data as LoadResponse
                         );
+                        this.isConvertedToTemplate =
+                            this.editData.selectedTab ===
+                            TableStringEnum.TEMPLATE;
                     } else {
                         this.watchFormChanges();
                     }
@@ -3934,6 +4074,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         quantityDropdownList: res.loadItemUnits,
                         stackDropdownList: res.stackable,
                         secureDropdownList: res.secures,
+                        tarpDropdownList: res.tarps,
+                        hazardousDropdownList: res.hazardousMaterials.map(
+                            (item) => {
+                                return {
+                                    ...item,
+                                    name: item.description,
+                                    folder: LoadModalStringEnum.COMMON,
+                                    subFolder: LoadModalStringEnum.LOAD,
+                                };
+                            }
+                        ),
                     };
                 },
 
@@ -4056,7 +4207,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 id: loadRequirements?.id,
             },
             filesForDeleteIds: this.filesForDelete,
-            status: this.selectedStatus.valueForRequest,
+            status: this.selectedStatus?.valueForRequest,
             statusHistory: this.remapStopWaitTime(),
         };
     }
@@ -4078,22 +4229,45 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createNewLoad(): void {
+        const isTemplate = this.editData?.selectedTab === TableStringEnum.TEMPLATE;
         this.loadService
-            .createLoad(this.generateLoadModel(true))
+        .createLoad(this.generateLoadModel(true))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+            next: (data) => {
+                const loadServiceObservable = !isTemplate
+                    ? this.loadService.getLoadInsideListById(data.id)
+                    : this.loadService.getLoadTemplateInsideListById(data.id);
+    
+                loadServiceObservable.subscribe((newLoadData) => {
+                    this.loadService.addNewLoad(newLoadData, isTemplate);
+                    this.setModalSpinner(null, true, true);
+                });
+            },
+            error: () => this.setModalSpinner(null, false, false),
+        });
+    }
+
+    public updateLoadTemplate() {
+        const newData = {
+            ...this.generateLoadModel(false),
+            name: this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME).value,
+        };
+        this.loadService
+            .updateLoadTemplate(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data) => {
+                next: () => {
                     this.loadService
-                        .getLoadInsideListById(data.id)
-                        .subscribe((newLoad) => {
-                            this.loadService.addNewLoad(newLoad, false);
-                            this.setModalSpinner(null, true, true);
+                        .getLoadTemplateInsideListById(newData.id)
+                        .subscribe((res) => {
+                            this.loadService.updateLoadTemplatePartily(res);
                         });
+                    this.setModalSpinner(null, true, true);
                 },
                 error: () => this.setModalSpinner(null, false, false),
             });
     }
-
     private updateLoad(): void {
         const newData = this.generateLoadModel(false);
 
@@ -4150,7 +4324,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe({
                 next: (data) => {
                     this.loadService
-                        .getLoadInsideListById(data.id)
+                        .getLoadTemplateInsideListById(data.id)
                         .subscribe((newLoad) => {
                             this.loadService.addNewLoad(newLoad, true);
                             this.setModalSpinner(
@@ -4233,12 +4407,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         stops.forEach((stop, index) => {
             if (index === 0) {
                 this.pickupStatusHistory = stop.statusHistory;
-                this.pickupStopItems = [stop.items];
+                this.pickupStopItems = stop.items;
+                this.savedPickupStopItems = stop.items.length
+                    ? [stop.items]
+                    : [];
             } else if (index !== stops.length - 1) {
-                this.extraStopItems[index - 1] = [stop.items];
+                this.extraStopItems[index - 1] = stop.items;
                 this.extraStopStatusHistory[index - 1] = stop.statusHistory;
+                this.savedExtraStopItems[index - 1] = stop.items.length
+                    ? [stop.items]
+                    : [];
             } else {
-                this.deliveryStopItems = [stop.items];
+                this.deliveryStopItems = stop.items;
+                this.savedDeliveryStopItems = stop.items.length
+                    ? [stop.items]
+                    : [];
                 this.deliveryStatusHistory = stop.statusHistory;
             }
         });
@@ -4295,6 +4478,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // form
         this.loadForm.patchValue({
+            templateName: (loadModalData as any).name,
             referenceNumber: referenceNumber,
             weight: weight,
             liftgate: loadRequirements?.liftgate,
@@ -4554,7 +4738,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return (
             this.isStepFinished(extraStop) ||
             this.isDragAndDropActive ||
-            this.loadExtraStops().controls.length < 2
+            this.loadExtraStops().controls.length < 2 ||
+            extraStop.get(LoadModalStringEnum.OPEN_CLOSE).value
         );
     }
 
@@ -4637,6 +4822,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.extraStopItems,
             this.extraStopStatusHistory,
             this.loadExtraStopsDateRange as [],
+            this.isCreatedNewStopItemsRow.extraStops,
         ];
 
         itemsToReorder.forEach((item) => {

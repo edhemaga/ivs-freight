@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup, ValidatorFn } from '@angular/forms';
 
 import { diff } from 'deep-object-diff';
 
@@ -39,6 +39,20 @@ export class FormService implements OnDestroy {
         this.formReset$.next(true);
     }
 
+    public rangeValidator(min: number, max: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            const value = control.value;
+
+            if (
+                value !== null &&
+                (isNaN(value) || value < min || value > max)
+            ) {
+                return { range: true };
+            }
+
+            return null;
+        };
+    }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

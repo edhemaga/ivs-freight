@@ -44,7 +44,7 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { LoadListResponse } from 'appcoretruckassist';
+import { LoadListResponse, LoadTemplateListResponse } from 'appcoretruckassist';
 import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 import { LoadTemplate } from '@pages/load/pages/load-table/models/load-template.model';
 
@@ -879,12 +879,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: dispatcher?.fullName,
                 avatar: dispatcher?.avatarFile?.url,
             },
-            avatarImg: dispatch.driver?.avatarFile?.url,
-            tableDriver: dispatch.driver?.firstName
-                ? dispatch.driver?.firstName + ' ' + dispatch.driver?.lastName
+            avatarImg: dispatch?.driver?.avatarFile?.url,
+            tableDriver: dispatch?.driver?.firstName
+                ? dispatch?.driver?.firstName + ' ' + dispatch?.driver?.lastName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruck: dispatch.truck?.truckNumber,
-            tableTrailer: dispatch.trailer?.trailerNumber,
+            tableTruck: dispatch?.truck?.truckNumber,
+            tableTrailer: dispatch?.trailer?.trailerNumber,
             loadTotal: {
                 total: totalRate
                     ? TableStringEnum.DOLLAR_SIGN +
@@ -956,15 +956,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? LoadModalStopItemsStringEnum.YES
                 : null,
             tableAssignedUnitTruck: {
-                text: dispatch.truck?.truckNumber,
-                type: dispatch.truck?.model,
-                color: this.setTruckTooltipColor(dispatch.truck?.model),
+                text: dispatch?.truck?.truckNumber,
+                type: dispatch?.truck?.model,
+                color: this.setTruckTooltipColor(dispatch?.truck?.model),
                 hover: false,
             },
             tableAssignedUnitTrailer: {
-                text: dispatch.trailer?.trailerNumber,
-                type: dispatch.trailer?.model,
-                color: this.setTrailerTooltipColor(dispatch.trailer?.model),
+                text: dispatch?.trailer?.trailerNumber,
+                type: dispatch?.trailer?.model,
+                color: this.setTrailerTooltipColor(dispatch?.trailer?.model),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -1394,6 +1394,43 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
+    private loadTemplateBackFilter(
+        filter: FilterOptionsLoad,
+        isShowMore?: boolean
+    ): void {
+        this.loadServices
+            .getLoadTemplateList(
+                filter.loadType,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loads: LoadTemplateListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = loads.pagination.data;
+
+                    this.viewData = this.viewData.map((data: LoadModel) => {
+                        return this.mapTemplateData(data);
+                    });
+                } else {
+                    const newData = [...this.viewData];
+                    this.viewData = loads.pagination.data;
+
+                    this.viewData.map((data: LoadModel) => {
+                        newData.push(this.mapTemplateData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
 
     // ---------------------------- Table Actions ------------------------------
     public onToolBarAction(event: TableToolbarActions): void {
@@ -1438,8 +1475,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
+                if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    this.loadTemplateBackFilter(this.backLoadFilterQuery);
+                } else {
+                    this.loadBackFilter(this.backLoadFilterQuery);
+                }
             } else {
                 this.sendLoadData();
             }
@@ -1504,7 +1544,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.EDIT) {
             this.loadServices
-                .getLoadById(event.id)
+                .getLoadById(
+                    event.id,
+                    this.selectedTab === TableStringEnum.TEMPLATE
+                )
                 .pipe(
                     takeUntil(this.destroy$),
                     tap((load) => {

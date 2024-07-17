@@ -20,9 +20,6 @@ import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/
 //models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 
-//pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
 @Component({
     selector: 'app-ta-modal-table-pm',
     templateUrl: './ta-modal-table-pm.component.html',
@@ -38,9 +35,6 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
-
-        //pipes
-        TrackByPropertyPipe,
     ],
 })
 export class TaModalTablePmComponent {
