@@ -303,6 +303,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 id: parkingSlot.parking,
                 trailerId: parkingSlot.trailerId,
                 truckId: parkingSlot.truckId,
+                dispatchId: id
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
