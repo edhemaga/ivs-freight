@@ -217,7 +217,6 @@
                     line-height: 14px;
                     font-size: 11px;
                     font-weight: 700;
-                    padding: 0px !important;
                     color: $bw5;
                     height: auto !important;
                     -webkit-user-select: none;
@@ -1421,6 +1420,36 @@
             // Dispatch Dropdown
             &.svgtext-dispatch-template {
                 top: -4px;
+
+                .plus-icon {
+                    margin-right: 4px;
+                }
+
+                .icon {
+                    &.blue {
+                        circle {
+                            fill: $ta-blue-19 !important;
+                        }
+                    }
+
+                    &.yellow {
+                        circle {
+                            fill: $ta-yellow-4 !important;
+                        }
+                    }
+
+                    &.red {
+                        circle {
+                            fill: $ta-red-13 !important;
+                        }
+                    }
+
+                    &.green {
+                        circle {
+                            fill: $ta-green-4 !important;
+                        }
+                    }
+                }
             }
         }
     }
