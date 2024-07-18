@@ -148,6 +148,6 @@ export class DispatchTableParkingComponent implements OnInit {
     }
 
     public onInputClick(): void {
-        this.popoverRef.open()
+        this.popoverRef.open();
     }
 }
