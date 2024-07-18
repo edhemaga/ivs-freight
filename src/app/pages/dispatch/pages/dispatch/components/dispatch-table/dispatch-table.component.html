@@ -12,6 +12,7 @@
         @iconAnimation
         class="loadingItem goTop"
     ></div>
+
     <table>
         <thead>
             <tr>
@@ -59,6 +60,9 @@
                         [isBoardLocked]="__isBoardLocked"
                         [isDrag]="isDrag"
                         [isActiveLoad]="!!item.activeLoad"
+                        (addTruckTrailerEmitter)="
+                            handleAddTruckTrailerClick($event)
+                        "
                         (removeTruckTrailerEmitter)="
                             handleRemoveTruckTrailerClick($event)
                         "

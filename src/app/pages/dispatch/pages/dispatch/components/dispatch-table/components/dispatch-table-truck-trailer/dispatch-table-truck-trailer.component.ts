@@ -42,6 +42,7 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     @Input() isDrag: boolean;
     @Input() isActiveLoad: boolean;
 
+    @Output() addTruckTrailerEmitter = new EventEmitter<any>();
     @Output() removeTruckTrailerEmitter = new EventEmitter<{
         type: string;
         index: number;
@@ -54,9 +55,14 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
+    public hasNoResultsTruck: boolean = false;
+    public hasNoResultsTrailer: boolean = false;
+
     constructor(private modalService: ModalService) {}
 
     ngOnInit(): void {
+        /*   console.log('trailerList', this.trailerList);
+        console.log('trailer', this.trailer); */
     }
 
     ngOnChanges(changes: SimpleChanges): void {}
@@ -82,6 +88,11 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
                     size: 'small',
                 });
             } else {
+                this.addTruckTrailerEmitter.emit({
+                    event: e,
+                    truckDropdownIndex: this.openedTruckDropdown,
+                });
+
                 /*  if (this.openedTruckDropdown == -2) this.savedTruckId = e;
 
                 else this.dData.dispatches[this.openedTruckDropdown].truck = e;
@@ -132,10 +143,10 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     }
 
     public handleAddClick(isClicked: boolean): void {
-        if (this.type === 'truck') {
-            this.showTruckDropdown(this.rowIndex);
-        } else {
-            this.showTrailerDropdown(this.rowIndex);
+        if (isClicked) {
+            this.type === 'truck'
+                ? this.showTruckDropdown(this.rowIndex)
+                : this.showTrailerDropdown(this.rowIndex);
         }
     }
 }

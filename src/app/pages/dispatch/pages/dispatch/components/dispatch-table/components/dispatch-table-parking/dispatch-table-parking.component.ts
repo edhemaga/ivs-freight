@@ -15,6 +15,9 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/h
 // Config
 import { DispatchParkingConfig } from '@pages/dispatch/pages/dispatch/utils/config/dispatch-parking.config';
 
+// Enums
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+
 // Models
 import {
     DispatchBoardParking,
@@ -85,7 +88,7 @@ export class DispatchTableParkingComponent implements OnInit {
     }
 
     public get isParkingAvailable(): boolean {
-        return !!this.parkingList.length && this.isTruckOrTrailerSelected;
+        return !!this.parkingList?.length && this.isTruckOrTrailerSelected;
     }
 
     private createForm() {
@@ -94,7 +97,7 @@ export class DispatchTableParkingComponent implements OnInit {
         });
 
         this.parkingForm
-            .get('parking')
+            .get(DispatchTableStringEnum.PARKING)
             .valueChanges.subscribe((value) => this.filterParkingList(value));
         this.filteredParkingList = this.parkingList;
     }

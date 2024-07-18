@@ -3,7 +3,8 @@
         class="dispatch-parking"
         [ngClass]="{
             'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
-            'dispatch-parking_assigned': isParkingAssigned
+            'dispatch-parking_assigned': isParkingAssigned,
+            'dispatch-parking-hover': isParkingAvailable
         }"
     >
         <ng-container *ngIf="isParkingAvailable">
