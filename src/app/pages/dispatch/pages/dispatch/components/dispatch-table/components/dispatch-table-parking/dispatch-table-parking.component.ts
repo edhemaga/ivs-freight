@@ -1,5 +1,6 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnInit,
@@ -48,9 +49,10 @@ export class DispatchTableParkingComponent implements OnInit {
 
     // Popover
     @ViewChild('t2') public popoverRef: NgbPopover;
+    @ViewChild('input') public input: ElementRef;
 
     // Use to show on frontend so we don't change orginal data
-    public filteredParkingList: Array<DispatchBoardParking>; 
+    public filteredParkingList: Array<DispatchBoardParking>;
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
@@ -146,6 +148,6 @@ export class DispatchTableParkingComponent implements OnInit {
     }
 
     public onInputClick(): void {
-        this.isInputInFocus = true;
+        this.popoverRef.open()
     }
 }
