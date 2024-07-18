@@ -11,16 +11,8 @@
  */
 
 
-export interface InsuranceTypeCommand { 
-    id?: number | null;
-    insTypes?: number;
-    insurancePolicyId?: number | null;
-    claimNo?: number | null;
-    insAdjuster?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    files?: Array<Blob> | null;
-    filesForDeleteIds?: Array<number> | null;
-    note?: string | null;
+export interface UpdateViolationDescriptionCommand { 
+    id?: number;
+    extraDescription?: string | null;
 }
 

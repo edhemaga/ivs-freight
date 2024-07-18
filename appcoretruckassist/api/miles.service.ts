@@ -23,7 +23,9 @@ import { LongLat } from '../model/longLat';
 // @ts-ignore
 import { MilesByUnitListResponse } from '../model/milesByUnitListResponse';
 // @ts-ignore
-import { MilesByUnitResponse } from '../model/milesByUnitResponse';
+import { MilesByUnitPaginatedStopsResponse } from '../model/milesByUnitPaginatedStopsResponse';
+// @ts-ignore
+import { MilesStateFilterResponse } from '../model/milesStateFilterResponse';
 // @ts-ignore
 import { MilesStopDetailsResponse } from '../model/milesStopDetailsResponse';
 // @ts-ignore
@@ -226,18 +228,100 @@ export class MilesService {
     }
 
     /**
-     * @param truckId 
-     * @param dateFrom 
-     * @param dateTo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiMilesUnitGet(truckId?: number, dateFrom?: string, dateTo?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MilesByUnitResponse>;
-    public apiMilesUnitGet(truckId?: number, dateFrom?: string, dateTo?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MilesByUnitResponse>>;
-    public apiMilesUnitGet(truckId?: number, dateFrom?: string, dateTo?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MilesByUnitResponse>>;
-    public apiMilesUnitGet(truckId?: number, dateFrom?: string, dateTo?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiMilesStateFilterGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<MilesStateFilterResponse>>;
+    public apiMilesStateFilterGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<MilesStateFilterResponse>>>;
+    public apiMilesStateFilterGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<MilesStateFilterResponse>>>;
+    public apiMilesStateFilterGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/miles/state/filter`;
+        return this.httpClient.request<Array<MilesStateFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param pageSize 
+     * @param pageIndex 
+     * @param truckId 
+     * @param dateFrom 
+     * @param dateTo 
+     * @param state 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MilesByUnitPaginatedStopsResponse>;
+    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MilesByUnitPaginatedStopsResponse>>;
+    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MilesByUnitPaginatedStopsResponse>>;
+    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
         if (truckId !== undefined && truckId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>truckId, 'TruckId');
@@ -249,6 +333,12 @@ export class MilesService {
         if (dateTo !== undefined && dateTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>dateTo, 'DateTo');
+        }
+        if (state) {
+            state.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'State');
+            })
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -298,7 +388,7 @@ export class MilesService {
         }
 
         let localVarPath = `/api/miles/unit`;
-        return this.httpClient.request<MilesByUnitResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<MilesByUnitPaginatedStopsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

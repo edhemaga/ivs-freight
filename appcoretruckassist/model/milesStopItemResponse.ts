@@ -9,18 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { AddressEntity } from './addressEntity';
 
 
-export interface InsuranceTypeCommand { 
-    id?: number | null;
-    insTypes?: number;
-    insurancePolicyId?: number | null;
-    claimNo?: number | null;
-    insAdjuster?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    files?: Array<Blob> | null;
-    filesForDeleteIds?: Array<number> | null;
-    note?: string | null;
+export interface MilesStopItemResponse { 
+    id?: number;
+    order?: number;
+    type?: EnumValue;
+    location?: AddressEntity;
+    legMiles?: number;
+    totalMiles?: number;
+    longitude?: number;
+    latitude?: number;
 }
 

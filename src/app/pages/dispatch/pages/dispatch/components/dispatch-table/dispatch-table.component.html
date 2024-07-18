@@ -646,19 +646,23 @@
                     </div>
                 </td>
                 <td class="parking-field">
-                    <div class="main_inside" [ngClass]="{
-                        'add-new': !!item.trailer === false && !!item.truck=== false,
-                        'filled': !!item.trailer || !!item.truck
-                    }">
-                            <app-dispatch-table-parking
-                                [parkingList]="parkingList"
-                                [parkingSlot]="item.parkingSlot"
-                                [isTableUnlocked]="!__isBoardLocked"
-                                [isTruckOrTrailerSelected]="!!item.trailer || !!item.truck"
-                                (addOrUpdateParking)="
-                                    addOrUpdateParking($event, rowIndex)
-                                "
-                            ></app-dispatch-table-parking>
+                    <div
+                        class="main_inside"
+                        [ngClass]="{
+                            'add-new':
+                                !!item.trailer === false &&
+                                !!item.truck === false,
+                            filled: !!item.trailer || !!item.truck
+                        }"
+                    >
+                        <app-dispatch-table-parking
+                            [parkingList]="parkingList"
+                            [parkingSlot]="item.parkingSlot"
+                            [isTableUnlocked]="!__isBoardLocked"
+                            [truckId]="item.truck?.id"
+                            [trailerId]="item.trailer?.id"
+                            (updateParking)="updateParking($event, index)"
+                        ></app-dispatch-table-parking>
                     </div>
                 </td>
                 <td class="box-item">

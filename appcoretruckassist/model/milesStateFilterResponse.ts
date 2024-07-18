@@ -9,18 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MilesCountByStateResponse } from './milesCountByStateResponse';
 
 
-export interface InsuranceTypeCommand { 
-    id?: number | null;
-    insTypes?: number;
-    insurancePolicyId?: number | null;
-    claimNo?: number | null;
-    insAdjuster?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    files?: Array<Blob> | null;
-    filesForDeleteIds?: Array<number> | null;
-    note?: string | null;
+export interface MilesStateFilterResponse { 
+    country?: string | null;
+    states?: Array<MilesCountByStateResponse> | null;
 }
 

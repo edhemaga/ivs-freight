@@ -35,6 +35,8 @@ import { RoadsideInspectionResponse } from '../model/roadsideInspectionResponse'
 // @ts-ignore
 import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspectionSpecialCheckCommand';
 // @ts-ignore
+import { UpdateViolationDescriptionCommand } from '../model/updateViolationDescriptionCommand';
+// @ts-ignore
 import { ViolationCommand } from '../model/violationCommand';
 
 // @ts-ignore
@@ -320,6 +322,90 @@ export class ViolationService {
         return this.httpClient.request<Array<ClusterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param updateViolationDescriptionCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiViolationDescriptionPatch(updateViolationDescriptionCommand?: UpdateViolationDescriptionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiViolationDescriptionPatch(updateViolationDescriptionCommand?: UpdateViolationDescriptionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiViolationDescriptionPatch(updateViolationDescriptionCommand?: UpdateViolationDescriptionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiViolationDescriptionPatch(updateViolationDescriptionCommand?: UpdateViolationDescriptionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/violation/description`;
+        return this.httpClient.request<any>('patch', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: updateViolationDescriptionCommand,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -1042,6 +1128,10 @@ export class ViolationService {
     /**
      * @param id 
      * @param county 
+     * @param driverId 
+     * @param coDriverId 
+     * @param truckId 
+     * @param trailerId 
      * @param violations 
      * @param note 
      * @param policeDepartment 
@@ -1092,10 +1182,10 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationPut(id?: number, county?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiViolationPut(id?: number, county?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, county?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, county?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, longitude?: number, latitude?: number, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -1157,6 +1247,18 @@ export class ViolationService {
         }
         if (county !== undefined) {
             localVarFormParams = localVarFormParams.append('County', <any>county) as any || localVarFormParams;
+        }
+        if (driverId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverId', <any>driverId) as any || localVarFormParams;
+        }
+        if (coDriverId !== undefined) {
+            localVarFormParams = localVarFormParams.append('CoDriverId', <any>coDriverId) as any || localVarFormParams;
+        }
+        if (truckId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
+        }
+        if (trailerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;
         }
         if (violations) {
             violations.forEach((element) => {

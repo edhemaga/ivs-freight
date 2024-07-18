@@ -10,9 +10,10 @@
  * Do not edit the class manually.
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
+import { MilesStopItemResponsePagination } from './milesStopItemResponsePagination';
 
 
-export interface MilesByUnitResponse { 
+export interface MilesByUnitPaginatedStopsResponse { 
     id?: number;
     truck?: TruckMinimalResponse;
     stopsCount?: number;
@@ -40,5 +41,6 @@ export interface MilesByUnitResponse {
     totalMiles?: number;
     createdAt?: string;
     updatedAt?: string;
+    stops?: MilesStopItemResponsePagination;
 }
 

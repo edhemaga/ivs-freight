@@ -13,7 +13,10 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
 
 // Models
-import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
+import {
+    DispatchBoardParking,
+    DispatchBoardParkingEmiter,
+} from '@pages/dispatch/models/dispatch-parking.model';
 import {
     ParkingSlotDispatchModalResponse,
     ParkingSlotShortResponse,
@@ -36,10 +39,11 @@ export class DispatchTableParkingComponent implements OnInit {
     @Input() parkingList: Array<DispatchBoardParking> | null;
     @Input() parkingSlot: ParkingSlotShortResponse | null;
     @Input() isTableUnlocked: boolean;
-    @Input() isTruckOrTrailerSelected: boolean;
+    @Input() truckId: number;
+    @Input() trailerId: number;
     // Ouputs
     @Output()
-    addOrUpdateParking: EventEmitter<ParkingSlotDispatchModalResponse> =
+    updateParking: EventEmitter<DispatchBoardParkingEmiter> =
         new EventEmitter();
     // Svg routes
     public svgRoutes = DispatchParkingSvgRoutes;
@@ -68,6 +72,10 @@ export class DispatchTableParkingComponent implements OnInit {
 
     public get isParkingAssigned(): boolean {
         return !!this.parkingSlot;
+    }
+
+    private get isTruckOrTrailerSelected(): boolean {
+        return !!this.trailerId || !!this.truckId;
     }
 
     public get isParkingAvailable(): boolean {
@@ -124,12 +132,20 @@ export class DispatchTableParkingComponent implements OnInit {
         if (!!this.parkingSlot) {
             return;
         }
-        this.addOrUpdateParking.emit(parkingSlot);
+        this.updateParking.emit({
+            parking: parkingSlot.id,
+            trailerId: this.trailerId,
+            truckId: this.truckId
+        });
         this.isInputInFocus = false;
     }
 
     public removeParking(): void {
-        this.addOrUpdateParking.emit({ id: null });
+        this.updateParking.emit({
+            parking: this.parkingSlot.id,
+            trailerId: null,
+            truckId: null,
+        });
     }
 
     public openParkingList(index: number): void {
