@@ -12,6 +12,9 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 // Svg routes
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
 
+// Config
+import { DispatchParkingConfig } from '@pages/dispatch/pages/dispatch/utils/config/dispatch-parking.config';
+
 // Models
 import {
     DispatchBoardParking,
@@ -57,9 +60,12 @@ export class DispatchTableParkingComponent implements OnInit {
 
     // Use to show on frontend so we don't change orginal data
     public filteredParkingList: Array<DispatchBoardParking>;
+    
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
+    public parkingConfig =  DispatchParkingConfig.parking;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private modalService: ModalService
