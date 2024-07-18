@@ -59,7 +59,6 @@ export class DispatchTableParkingComponent implements OnInit {
 
     // Popover
     @ViewChild('t2') public popoverRef: NgbPopover;
-    @ViewChild('input') public input: ElementRef;
 
     // Use to show on frontend so we don't change orginal data
     public filteredParkingList: Array<DispatchBoardParking>;
@@ -68,7 +67,6 @@ export class DispatchTableParkingComponent implements OnInit {
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
     public parkingConfig =  DispatchParkingConfig.parking;
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         private modalService: ModalService

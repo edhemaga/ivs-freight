@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DispatchTableParkingComponent } from './dispatch-table-parking.component';
+import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
 
 describe('DispatchTableParkingComponent', () => {
   let component: DispatchTableParkingComponent;

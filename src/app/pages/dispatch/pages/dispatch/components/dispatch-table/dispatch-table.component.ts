@@ -105,7 +105,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     openedTruckDropdown: number = -1;
     openedTrailerDropdown: number = -1;
-    openParkingDropdown: number = -1;
 
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
@@ -247,11 +246,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     /////////////////////////////////////////// UPDATE
-
-    showParkingDropdown(ind: number) {
-        this.openParkingDropdown = ind;
-    }
-
     showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
     }
@@ -302,7 +296,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedTrailerDropdown = -1;
     }
 
-    public updateParking(parkingSlot: DispatchBoardParkingEmiter): void {
+    public updateParking(parkingSlot: DispatchBoardParkingEmiter, id:number): void {
         this.__change_in_proggress = true;
         this.parkingService
             .apiParkingParkingslotPut({
@@ -312,7 +306,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.__change_in_proggress = false;
+                this.dispatcherService
+                    .updateDispatchboardRowById(id, this.dData.id)
+                    .subscribe(() => {
+                        this.dispatcherService.updateModalList();
+                        this.checkEmptySet = '';
+                        this.__change_in_proggress = false;
+                    });
             });
     }
 

@@ -665,7 +665,7 @@
                             [isTableUnlocked]="!__isBoardLocked"
                             [truckId]="item.truck?.id"
                             [trailerId]="item.trailer?.id"
-                            (updateParking)="updateParking($event, index)"
+                            (updateParking)="updateParking($event, item.id)"
                         ></app-dispatch-table-parking>
                     </div>
                 </td>

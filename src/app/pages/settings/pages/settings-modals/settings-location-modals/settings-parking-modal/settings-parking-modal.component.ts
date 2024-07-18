@@ -484,7 +484,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
-                    this.dispatcherService.newParkingSubject.next(true);
+                    this.dispatcherService.updateModalList();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
