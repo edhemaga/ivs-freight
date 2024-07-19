@@ -19,5 +19,8 @@ export interface InsuranceTypeCommand {
     insAdjuster?: string | null;
     phone?: string | null;
     email?: string | null;
+    files?: Array<Blob> | null;
+    filesForDeleteIds?: Array<number> | null;
+    note?: string | null;
 }
 

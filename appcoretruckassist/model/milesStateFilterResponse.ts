@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MilesCountByStateResponse } from './milesCountByStateResponse';
 
 
-export interface UpdateParkingSlotCommand { 
-    id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+export interface MilesStateFilterResponse { 
+    country?: string | null;
+    states?: Array<MilesCountByStateResponse> | null;
 }
 

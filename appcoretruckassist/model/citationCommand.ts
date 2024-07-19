@@ -20,6 +20,8 @@ export interface CitationCommand {
     paid?: YesNoEnum;
     description?: string | null;
     citationDate?: string;
+    files?: Array<Blob> | null;
+    filesForDeleteIds?: Array<number> | null;
     note?: string | null;
 }
 

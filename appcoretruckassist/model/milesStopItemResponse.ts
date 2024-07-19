@@ -9,13 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateParkingSlotCommand { 
+export interface MilesStopItemResponse { 
     id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+    order?: number;
+    type?: EnumValue;
+    location?: AddressEntity;
+    legMiles?: number;
+    totalMiles?: number;
+    longitude?: number;
+    latitude?: number;
 }
 

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface DriverAccidentResponse { 
@@ -17,5 +18,6 @@ export interface DriverAccidentResponse {
     dateOfBirth?: string;
     cdlNumber?: string | null;
     stateShortName?: string | null;
+    avatarFile?: FileResponse;
 }
 

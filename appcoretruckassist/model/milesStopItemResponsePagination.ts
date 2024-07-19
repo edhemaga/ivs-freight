@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MilesStopItemResponse } from './milesStopItemResponse';
 
 
-export interface UpdateParkingSlotCommand { 
-    id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+export interface MilesStopItemResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MilesStopItemResponse> | null;
 }
 

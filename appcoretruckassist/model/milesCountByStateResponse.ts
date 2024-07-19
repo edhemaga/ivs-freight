@@ -11,11 +11,9 @@
  */
 
 
-export interface UpdateParkingSlotCommand { 
-    id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+export interface MilesCountByStateResponse { 
+    stateName?: string | null;
+    stateShortName?: string | null;
+    count?: number;
 }
 

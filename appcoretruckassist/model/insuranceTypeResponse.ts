@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
 import { InsurancePolicyShortResponse } from './insurancePolicyShortResponse';
 
@@ -21,5 +22,6 @@ export interface InsuranceTypeResponse {
     insAdjuster?: string | null;
     phone?: string | null;
     email?: string | null;
+    files?: Array<FileResponse> | null;
 }
 

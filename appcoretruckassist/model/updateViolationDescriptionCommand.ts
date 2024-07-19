@@ -11,11 +11,8 @@
  */
 
 
-export interface UpdateParkingSlotCommand { 
+export interface UpdateViolationDescriptionCommand { 
     id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+    extraDescription?: string | null;
 }
 
