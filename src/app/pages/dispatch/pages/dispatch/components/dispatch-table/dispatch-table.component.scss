@@ -667,6 +667,12 @@
                 min-width: 100px;
                 max-width: 100px;
                 width: 100px;
+
+                &-large {
+                    min-width: 150px;
+                    max-width: 150px;
+                    width: 150px;
+                }
             }
         }
     }
@@ -817,9 +823,7 @@
                         }
                     }
 
-                    &:not(.truck-field):not(.trailer-field):not(
-                            .driver-field
-                        ):not(.parking-field) {
+                    &:not(.truck-field):not(.trailer-field):not(.driver-field) {
                         pointer-events: none;
                         .padding-inside {
                             &:after {

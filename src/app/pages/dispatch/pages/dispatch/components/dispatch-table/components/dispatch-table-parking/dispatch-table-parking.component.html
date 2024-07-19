@@ -11,7 +11,7 @@
             <div
                 class="d-flex align-items-center p-x-1 justify-content-between pos-absolute"
                 [ngClass]="{
-                    'dispatch-parking-large': isTableUnlocked
+                    'dispatch-parking-large': isWideTable
                 }"
                 (click)="onInputClick()"
             >
@@ -82,7 +82,7 @@
                     <div
                         class="dispatch-parking-dropdown"
                         [ngClass]="{
-                            'dispatch-parking-dropdown_large': isTableUnlocked
+                            'dispatch-parking-dropdown_large': isWideTable
                         }"
                     >
                         <form

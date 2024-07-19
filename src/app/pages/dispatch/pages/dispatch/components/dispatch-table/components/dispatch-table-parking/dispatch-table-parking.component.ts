@@ -44,7 +44,7 @@ export class DispatchTableParkingComponent implements OnInit {
     // Inputs
     @Input() parkingList: Array<DispatchBoardParking> | null;
     @Input() parkingSlot: ParkingSlotShortResponse | null;
-    @Input() isTableUnlocked: boolean;
+    @Input() isWideTable: boolean;
     @Input() truckId: number;
     @Input() trailerId: number;
     // Ouputs
@@ -62,11 +62,11 @@ export class DispatchTableParkingComponent implements OnInit {
 
     // Use to show on frontend so we don't change orginal data
     public filteredParkingList: Array<DispatchBoardParking>;
-    
+
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
-    public parkingConfig =  DispatchParkingConfig.parking;
+    public parkingConfig = DispatchParkingConfig.parking;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private modalService: ModalService
@@ -142,7 +142,7 @@ export class DispatchTableParkingComponent implements OnInit {
         this.updateParking.emit({
             parking: parkingSlot.id,
             trailerId: this.trailerId,
-            truckId: this.truckId
+            truckId: this.truckId,
         });
         this.isInputInFocus = false;
     }

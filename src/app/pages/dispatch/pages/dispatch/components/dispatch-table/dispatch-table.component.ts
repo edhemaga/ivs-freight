@@ -158,7 +158,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private handleTruckTrailerDriverLists(lists): void {
         console.log('lists', lists);
-        const { trucks, trailers, drivers,parkings } = lists;
+        const { trucks, trailers, drivers, parkings } = lists;
 
         const truckList = JSON.parse(JSON.stringify(trucks));
         const trailerList = JSON.parse(JSON.stringify(trailers));
@@ -296,14 +296,17 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedTrailerDropdown = -1;
     }
 
-    public updateParking(parkingSlot: DispatchBoardParkingEmiter, id:number): void {
+    public updateParking(
+        parkingSlot: DispatchBoardParkingEmiter,
+        id: number
+    ): void {
         this.__change_in_proggress = true;
         this.parkingService
             .apiParkingParkingslotPut({
                 id: parkingSlot.parking,
                 trailerId: parkingSlot.trailerId,
                 truckId: parkingSlot.truckId,
-                dispatchId: id
+                dispatchId: id,
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {

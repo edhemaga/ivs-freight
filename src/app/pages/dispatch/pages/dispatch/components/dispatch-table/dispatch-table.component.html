@@ -649,7 +649,12 @@
                         </div>
                     </div>
                 </td>
-                <td class="parking-field">
+                <td
+                    class="parking-field"
+                    [ngClass]="{
+                        'parking-field-large': parkingList?.length > 1
+                    }"
+                >
                     <div
                         class="main_inside"
                         [ngClass]="{
@@ -659,14 +664,16 @@
                             filled: !!item.trailer || !!item.truck
                         }"
                     >
-                        <app-dispatch-table-parking
-                            [parkingList]="parkingList"
-                            [parkingSlot]="item.parkingSlot"
-                            [isTableUnlocked]="!__isBoardLocked"
-                            [truckId]="item.truck?.id"
-                            [trailerId]="item.trailer?.id"
-                            (updateParking)="updateParking($event, item.id)"
-                        ></app-dispatch-table-parking>
+                        <div class="padding-inside p-0">
+                            <app-dispatch-table-parking
+                                [parkingList]="parkingList"
+                                [parkingSlot]="item.parkingSlot"
+                                [isWideTable]="parkingList?.length > 1"
+                                [truckId]="item.truck?.id"
+                                [trailerId]="item.trailer?.id"
+                                (updateParking)="updateParking($event, item.id)"
+                            ></app-dispatch-table-parking>
+                        </div>
                     </div>
                 </td>
                 <td class="box-item">
@@ -711,25 +718,13 @@
                         class="main_inside"
                         [class.filled]="item.driver && item.truck"
                     >
-                        <div class="padding-inside">
-                            <div
-                                *ngIf="item.driver && item.truck"
-                                class="new_load_dispatch_hold"
-                            >
-                                <button
-                                    [mainTooltip]="'Assign load'"
-                                    [tooltipBackground]="'#6C6C6C'"
-                                    ngbTooltip
-                                    position="top"
-                                    class="btn-transparent new_load_dispatch"
-                                >
-                                    <svg-icon
-                                        class="icon-hover-blue-16"
-                                        src="assets/svg/common/ic_plus.svg"
-                                    >
-                                    </svg-icon>
-                                </button>
-                            </div>
+                        <div class="padding-inside p-0">
+                            <app-dispatch-table-assign-load
+                                [driver]="item.driver"
+                                [truck]="item.truck"
+                                [trailer]="item.driver"
+                                [activeLoad]="item.activeLoad"
+                            ></app-dispatch-table-assign-load>
                         </div>
                     </div>
                 </td>
@@ -740,7 +735,7 @@
                     <!--    <div class="main_inside addNew">
                       <div
                             class="padding-inside"
-                            *ngIf="openedTruckDropdown != -2"
+                            *ngIf="openedTruckDropdown != -2" 
                         >
                             <div
                                 class="add_new"

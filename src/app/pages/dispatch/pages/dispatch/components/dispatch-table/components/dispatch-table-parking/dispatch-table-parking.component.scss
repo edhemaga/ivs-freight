@@ -6,7 +6,7 @@
     border-radius: 3px;
     transition: 0.3s;
     height: 27px;
-    
+
     &-wrapper {
         // same as padding-inside
         padding: 4px;
@@ -16,7 +16,7 @@
     &-large {
         left: 4px;
         width: calc(100% - 4px);
-    };
+    }
 
     &-hover {
         cursor: pointer;
@@ -108,7 +108,7 @@
 
         &-item {
             margin: 0 2px;
-            padding: 6px;
+            padding: 6px 4px;
             border-radius: 2px;
 
             &:hover {
