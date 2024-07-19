@@ -19,7 +19,7 @@ export class NavigationDataConstants {
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
             construction: true,
-            isRouteActive: true,
+            isRouteActive: false,
         },
         {
             id: 3,
