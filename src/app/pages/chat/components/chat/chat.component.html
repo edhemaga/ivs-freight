@@ -35,12 +35,30 @@
                 </div>
             </ng-container>
         </div>
-
         <div
             class="border-container d-flex justify-content-center align-items-center"
         >
             <div class="border"></div>
         </div>
+        <ng-container *ngIf="unreadCount">
+            <div class="d-flex unread-messages-wrapper">
+                <div
+                    class="unread-messages-icon d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.unreadMessageIcon"
+                    >
+                    </svg-icon>
+                </div>
+                <div
+                    class="unread-count-wrapper d-flex justify-content-center align-items-center ta-font-extra-bold"
+                >
+                    <div class="unread-count">{{ unreadCount }}</div>
+                </div>
+            </div>
+        </ng-container>
 
         <div
             class="table-actions d-flex justify-content-end align-items-center"
