@@ -11,11 +11,11 @@
  */
 
 
-export interface UpdateParkingSlotCommand { 
-    id?: number;
-    dispatchId?: number | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    note?: string | null;
+export interface ApiChatMessagePostRequest { 
+    MessageType?: number;
+    ConversationId?: number;
+    Content?: string;
+    ParentMessageId?: number;
+    Attachments?: Array<Blob>;
 }
 
