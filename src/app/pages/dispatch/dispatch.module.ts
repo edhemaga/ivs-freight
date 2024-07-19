@@ -22,6 +22,7 @@ import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
+import { LastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/last-location-component/last-location-component.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -69,6 +70,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
+        LastLocationComponentComponent,
     ],
     exports: [ColorFinderPipe],
 })

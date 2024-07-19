@@ -58,8 +58,6 @@ export class DispatchTableComponent implements OnInit {
     @Input() set _dData(value: DispatchBoardResponse[]) {
         this.dData = JSON.parse(JSON.stringify(value));
 
-        console.log(' this.dData.dispatches', this.dData.dispatches);
-
         this.handleTruckTrailerAdditionalFields();
 
         this.handleHoursOfService();
@@ -87,14 +85,16 @@ export class DispatchTableComponent implements OnInit {
     checkForEmpty: string = '';
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: UntypedFormControl = new UntypedFormControl();
-    truckAddress: UntypedFormControl = new UntypedFormControl(null);
 
+    parkingList: any[];
     copyIndex: number = -1;
     testTimeout: any;
     startIndexTrailer: number;
     startIndexDriver: number;
     savedTruckData: any = null;
     draggingType: string = '';
+
+    @Input() dDataIndx: number;
 
     public selectedColor: any = {};
 
@@ -160,7 +160,6 @@ export class DispatchTableComponent implements OnInit {
     ngOnInit(): void {}
 
     private handleTruckTrailerDriverLists(lists): void {
-        console.log('lists', lists);
         const { trucks, trailers, drivers } = lists;
 
         const truckList = JSON.parse(JSON.stringify(trucks));
@@ -205,6 +204,7 @@ export class DispatchTableComponent implements OnInit {
                 folder: DispatchTableStringEnum.COMMON,
             };
         });
+        this.parkingList = JSON.parse(JSON.stringify(lists.parkings));
     }
 
     private handleTruckTrailerAdditionalFields(): void {
@@ -259,17 +259,6 @@ export class DispatchTableComponent implements OnInit {
 
     addParking() {
         this.openParkingDropdown = -1;
-    }
-
-    handleInputSelect(e: any) {
-        // return;
-        if (e.valid) {
-            this.updateOrAddDispatchBoardAndSend(
-                'location',
-                e.address,
-                this.showAddAddressField
-            );
-        }
     }
 
     onHideDropdown() {

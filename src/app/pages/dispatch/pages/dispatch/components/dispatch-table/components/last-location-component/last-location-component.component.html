@@ -1,0 +1,32 @@
+<ng-container *ngIf="showAddAddressField == rowIndex">
+    <app-ta-input-address-dropdown
+        [formControl]="truckAddress"
+        [inputConfig]="LastLocationAddressConfig"
+        [placeholderType]="'shortAddress'"
+        (incorrectEvent)="incorrectInput($event, 0, 18)"
+        [activeAddress]="selectedAddress"
+        (selectedAddress)="handleInputSelect($event)"
+        (closeDropdown)="onHideDropdown($event)"
+    ></app-ta-input-address-dropdown>
+</ng-container>
+<ng-container *ngIf="item.address && showAddAddressField != rowIndex">
+    <div class="info-item">
+        <div
+            class="location-field d-flex justify-content-between align-items-center"
+        >
+            <div class="location-city d-flex">
+                <div class="location-f-city">
+                    {{ item.city }}
+                </div>
+                <div class="location-f-st">, {{ item.stateShortName }}</div>
+            </div>
+            <ng-container *ngIf="show">
+                <div
+                    class="parking-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="parking">P</div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>

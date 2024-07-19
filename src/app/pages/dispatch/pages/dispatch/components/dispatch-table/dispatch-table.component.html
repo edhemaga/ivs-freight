@@ -448,47 +448,28 @@
                         "
                     >
                         <div class="padding-inside">
-                            <app-ta-input-address-dropdown
-                                *ngIf="showAddAddressField == rowIndex"
-                                [formControl]="truckAddress"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Location',
-                                    placeholder: 'Location',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-151',
-                                    minLength: 12,
-                                    maxLength: 256,
-                                    autoFocus: true,
-                                    placeholderInsteadOfLabel: true,
-                                    hideErrorMessage: true,
-                                    blackInput: true
-                                }"
-                                [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
-                                (selectedAddress)="
-                                    handleInputSelect($event, 'ADDRESS')
-                                "
-                                (closeDropdown)="onHideDropdown($event)"
-                            ></app-ta-input-address-dropdown>
-                            <div
-                                class="info-item"
+                            <ng-container
                                 *ngIf="
-                                    item.location.address &&
-                                    showAddAddressField != rowIndex
+                                    item?.location?.address ||
+                                    showAddAddressField == rowIndex
                                 "
                             >
-                                <div class="location-field">
-                                    <div class="location-f-city">
-                                        {{ item.location.city }}
-                                    </div>
-                                    <div class="location-f-st">
-                                        , {{ item.location.stateShortName }}
-                                    </div>
-                                </div>
-                            </div>
+                                <app-last-location-component
+                                    [item]="item.location"
+                                    [rowIndex]="rowIndex"
+                                    [showAddAddressField]="showAddAddressField"
+                                    [_parkings]="parkingList"
+                                    (updateDispatchBoard)="
+                                        updateOrAddDispatchBoardAndSend(
+                                            'location',
+                                            $event,
+                                            this.showAddAddressField
+                                        )
+                                    "
+                                    (hideDropdown)="onHideDropdown()"
+                                >
+                                </app-last-location-component>
+                            </ng-container>
                         </div>
                     </div>
                 </td>
@@ -993,7 +974,7 @@
                     </div>
                 </td>
                 <td class="location-field">
-                    <div
+                    <!-- <div
                         class="main_inside"
                         [class.filled]="showAddAddressField == -2"
                     >
@@ -1024,7 +1005,7 @@
                                 (closeDropdown)="onHideDropdown($event)"
                             ></app-ta-input-address-dropdown>
                         </div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="status-field">
                     <div class="main_inside">

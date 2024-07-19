@@ -1,0 +1,37 @@
+@import '../../dispatch-table.component.scss';
+
+.location-city {
+    width: 120px;
+}
+.location-f-city,
+.location-f-st {
+    font-size: 14px;
+    color: $ta-black-2;
+
+    &.location-f-city {
+        white-space: nowrap;
+        max-width: 70%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &,
+    &.location-f-city {
+        &::selection {
+            background-color: #2f2f2f33;
+            color: $ta-black-2;
+        }
+    }
+}
+
+.parking-container {
+    width: 15px;
+    height: 15px;
+    background-color: $muted; /* Gray background */
+    border-radius: 2px;
+}
+.parking {
+    font-size: 11px;
+    color: $white;
+    font-weight: bold;
+}
