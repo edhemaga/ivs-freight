@@ -52,13 +52,14 @@ export class UserChatService {
         );
     }
 
-    public sendMessage(conversationId: number, content: string): Observable<CreateResponse> {
-        //TODO add form field type
-        const messageToSend: any = {
+    public sendMessage(conversationId: number, content: string, attachments?: Blob[]): Observable<CreateResponse> {
+        return this.chatService.apiChatMessagePost(
+            1,
             conversationId,
-            content
-        }
-        return this.chatService.apiChatMessagePost(messageToSend);
+            content,
+            null,
+            attachments
+        );
     }
 
 }

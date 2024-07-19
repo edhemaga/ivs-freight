@@ -58,7 +58,6 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
     ],
     imports: [
         // Modules
-        // NgbModule,
         CommonModule,
         ChatRoutingModule,
         AngularSvgIconModule,
