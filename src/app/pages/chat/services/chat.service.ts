@@ -22,7 +22,7 @@ export class UserChatService {
 
     constructor(private chatService: ChatService) { }
 
-    public getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
+    public getCompanyUserList(userType: UserType, searchParam?: string): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
@@ -30,7 +30,7 @@ export class UserChatService {
             null,
             null,
             null,
-            null,
+            searchParam ?? null,
             null
         );
     }

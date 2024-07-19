@@ -49,7 +49,7 @@
         #messagesContent
         [scrollTop]="messagesContent?.scrollHeight"
     >
-        <ng-container *ngIf="messages?.length; else noMessages">
+        <ng-container *ngIf="messages?.length; else emptyConversation">
             <ng-container
                 *ngFor="
                     let message of messages;
@@ -65,13 +65,19 @@
                 </ng-container>
             </ng-container>
         </ng-container>
-        <ng-template #noMessages>
-            <div>
-                <img
-                    class="chat-list-item-avatar align-items-center"
-                    [src]="contact?.companyUser?.avatarFile?.url"
-                    [alt]="contact?.companyUser?.fullName"
-                />
+        <ng-template #emptyConversation>
+            <div class="d-flex justify-content-center">
+                <div class="empty-conversation">
+                    <div class="image-wrapper d-flex justify-content-center">
+                        <img
+                            [src]="ChatPngRoutes.contact"
+                            [alt]="remainingParticipants[0]?.fullName"
+                        />
+                    </div>
+                    <div class="fullname ta-font-bold">
+                        {{ remainingParticipants[0]?.fullName }}
+                    </div>
+                </div>
             </div>
         </ng-template>
     </div>

@@ -19,6 +19,7 @@ import {
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -43,6 +44,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  //User data
   public currentUserId: number = localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user')).companyUserId
     : 0;
@@ -50,8 +52,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
 
-  // Icons
+  // Icons and images
   public ChatSvgRoutes = ChatSvgRoutes;
+  public ChatPngRoutes = ChatPngRoutes;
 
   // Messages
   public messageToSend: string = "";
@@ -95,7 +98,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          console.log(res);
           this.messages = [...res.messages?.pagination?.data];
 
           // Conversation participants
