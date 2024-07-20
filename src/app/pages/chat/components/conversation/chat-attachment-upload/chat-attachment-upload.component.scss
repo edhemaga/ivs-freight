@@ -1,0 +1,40 @@
+@import 'src/theme/variables';
+
+.upload-container {
+    width: 100%;
+    height: calc(100% - 32px);
+    border: 5px dashed $ta-light-grey-6;
+
+    .upload-input {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .upload-attachment {
+        position: relative;
+        top: -70%;
+        z-index: 0;
+    }
+
+    .upload-image {
+        width: 100%;
+
+        img {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    .upload-text {
+        margin-top: 32px;
+        line-height: 18px;
+        font-size: 14px;
+        text-align: center;
+        color: $ta-black;
+    }
+}

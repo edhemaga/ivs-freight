@@ -1,0 +1,18 @@
+<div class="upload-container align-items-center justify-content-center">
+    <input
+        type="file"
+        class="upload-input"
+        #fileDrop
+        multiple
+        (change)="handleFileDrop($event.target?.files)"
+    />
+    <div class="upload-attachment">
+        <div class="upload-image d-flex justify-content-center">
+            <img
+                [src]="ChatPngRoutes.uploadDragDropZone"
+                alt="nothing-selected"
+            />
+        </div>
+        <div class="upload-text ta-font-bold">DRAG FILES HERE</div>
+    </div>
+</div>

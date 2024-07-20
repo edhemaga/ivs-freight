@@ -4,6 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 //Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
+import { ChatAttachmentUploadComponent } from "@pages/chat/components/conversation/chat-attachment-upload/chat-attachment-upload.component";
 
 //Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
@@ -35,7 +36,6 @@ const routes: Routes = [
                 },
             }
         ]
-
     }
 ];
 

@@ -7,7 +7,10 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 import {
   UntypedFormGroup,
   UntypedFormBuilder,
@@ -60,6 +63,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
+
+  // Attachment upload
+  public attachmentUpload: boolean = false;
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
@@ -157,6 +163,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public trackById(index: number, item: MessageResponse): number {
     return item.id;
+  }
+
+  public uploadAttachmentDragAndDrop(): void {
+    this.attachmentUpload = true;
   }
 
   ngOnDestroy(): void {
