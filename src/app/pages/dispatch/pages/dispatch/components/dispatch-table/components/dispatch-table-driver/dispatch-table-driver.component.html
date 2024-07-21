@@ -1,0 +1,177 @@
+<div
+    class="main_inside"
+    [class.addNew]="!driver && driverList.length && !isBoardLocked"
+    [class.filled]="driver"
+    [class.default]="!driver && !driverList.length && !isBoardLocked"
+    [class.isDragging]="isDrag && draggingType == 'driver'"
+    cdkDropList
+    (cdkDropListDropped)="dropDriver($event, rowIndex)"
+    id="{{ rowIndex | cdkid : gridIndex : 'driver' }}"
+    [cdkDropListData]="dData"
+    [cdkDropListConnectedTo]="
+        rowIndex | cdkconnect : dData.dispatches.length : gridIndex : 'driver'
+    "
+>
+    <div
+        class="drag-hold-between"
+        cdkDrag
+        (cdkDragStarted)="cdkDragStartedDriver($event, rowIndex)"
+        (cdkDragEnded)="dragEnd()"
+        [cdkDragDisabled]="isBoardLocked || !driver"
+        cdkDragLockAxis="y"
+        [cdkDragPreviewClass]="'trailer_3074D3'"
+        cdkDragPreviewContainer="parent"
+        cdkDragBoundary=".dispatch-table table tbody"
+    >
+        <div *cdkDragPlaceholder class="custom-dispatch-placeholder"></div>
+        <div class="padding-inside" *ngIf="openedDriverDropdown != rowIndex">
+            <div
+                class="add_new"
+                *ngIf="!driver && driverList.length && !isBoardLocked"
+                (click)="showDriverDropdown(rowIndex)"
+            >
+                <div class="text">Add</div>
+                <svg-icon
+                    *ngIf="!isDrag"
+                    [src]="
+                        'assets/svg/truckassist-table/dropdown/content/add.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '18',
+                        'height.px': '18'
+                    }"
+                ></svg-icon>
+            </div>
+            <div class="info-item" *ngIf="driver">
+                <div class="driver-copy" *ngIf="copyIndex == rowIndex">
+                    COPIED
+                </div>
+                <div class="driver-buttons">
+                    <span
+                        *ngIf="driverHover.txt != 'email'"
+                        [class.only_active_icon]="
+                            driverCopy.indx == rowIndex &&
+                            driverCopy.txt != 'phone'
+                        "
+                        [class.active-icon]="
+                            driverCopy.indx == rowIndex &&
+                            driverCopy.txt == 'phone'
+                        "
+                        (mouseover)="setMouseOver('phone', rowIndex)"
+                        (mouseout)="setMouseOut()"
+                        (click)="copy(phone, rowIndex, 'phone')"
+                    >
+                        <svg-icon
+                            [src]="'assets/svg/common/ic_phone.svg'"
+                            [svgStyle]="{
+                                'width.px': '18',
+                                'height.px': '18'
+                            }"
+                            [fill]="'#ff0000'"
+                        ></svg-icon>
+                    </span>
+                    <span
+                        [class.only_active_icon]="
+                            driverCopy.indx == rowIndex &&
+                            driverCopy.txt != 'email'
+                        "
+                        [class.active-icon]="
+                            driverCopy.indx == rowIndex &&
+                            driverCopy.txt == 'email'
+                        "
+                        (mouseover)="setMouseOver('email', rowIndex)"
+                        (mouseout)="setMouseOut()"
+                        (click)="copy(email, rowIndex, 'email')"
+                    >
+                        <svg-icon
+                            [src]="'assets/svg/common/ic_email.svg'"
+                            [svgStyle]="{
+                                'width.px': '18',
+                                'height.px': '18'
+                            }"
+                            [fill]="'#ff0000'"
+                        ></svg-icon>
+                    </span>
+                </div>
+                <span class="dr-span-left" *ngIf="driverHover.indx != rowIndex"
+                    >{{ driver.firstName }}
+                    {{ driver.lastName }}</span
+                >
+                <div
+                    class="copy_divs"
+                    *ngIf="
+                        driverHover.indx == rowIndex &&
+                        driverHover.txt == 'phone'
+                    "
+                >
+                    {{ phone }}
+                </div>
+                <div
+                    class="copy_divs"
+                    *ngIf="
+                        driverHover.indx == rowIndex &&
+                        driverHover.txt == 'email'
+                    "
+                >
+                    {{ email }}
+                </div>
+                <span
+                    class="dr-span"
+                    ngbTooltip
+                    mainTooltip="Owner"
+                    tooltipBackground="#3074D3"
+                    position="right"
+                >
+                    <svg-icon
+                        *ngIf="
+                            driver.owner && driverHover.indx != rowIndex
+                        "
+                        [src]="'assets/svg/common/ic_driver-owner.svg'"
+                        [svgStyle]="{
+                            'width.px': '13',
+                            'height.px': '13'
+                        }"
+                        [fill]="'#ff0000'"
+                    ></svg-icon>
+                </span>
+                <div
+                    *ngIf="!isDrag"
+                    class="remove-item driver-remove-item"
+                    (click)="removeDriver(rowIndex)"
+                >
+                    <svg-icon
+                        [src]="'assets/svg/applicant/close-x.svg'"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
+
+        <app-ta-input-dropdown
+            *ngIf="openedDriverDropdown == rowIndex"
+            [formControl]="truckFormControll"
+            [template]="'details-template'"
+            [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Unit No',
+                placeholder: 'Unit No.',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-198',
+                placeholderInsteadOfLabel: true,
+                hideDropdownArrow: true,
+                autoFocus: true,
+                blackInput: true,
+                hideDropdownArrow: true,
+                hideRequiredCheck: true,
+                hideDangerMark: true,
+                hideErrorMessage: true,
+                mergeDropdownBodyWithInput: true
+            }"
+            [options]="driverList"
+            [canAddNew]="true"
+            [canOpenModal]="true"
+            [activeItem]="null"
+            (selectedItem)="addDriver($event)"
+        ></app-ta-input-dropdown>
+    </div>
+</div>
