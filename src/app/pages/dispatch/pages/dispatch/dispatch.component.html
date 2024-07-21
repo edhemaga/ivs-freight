@@ -8,6 +8,7 @@
         [selectedDispatcher]="selectedDispatcher"
         [dispathcboardTableLocked]="isBoardLocked"
     ></app-ta-table-toolbar>
+
     <div
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
@@ -20,7 +21,6 @@
             <app-dispatch-table
                 [_dData]="item"
                 [isBoardLocked]="isBoardLocked"
-                [dDataIndx]="indx"
                 [smallList]="dispatchBoardSmallList | async"
                 [toolbarWidth]="maxToolbarWidth"
             ></app-dispatch-table>

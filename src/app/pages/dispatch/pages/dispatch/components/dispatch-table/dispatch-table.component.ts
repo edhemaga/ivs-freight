@@ -6,33 +6,36 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { catchError, of } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
+
+import { catchError, of } from 'rxjs';
+
+// modules
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Options } from 'ng5-slider';
 
-// Models
+// pipes
+import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
+
+// services
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// components
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+
+// models
 import {
     CreateDispatchCommand,
+    DispatchBoardResponse,
     DispatchStatus,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatcher.model';
-
-// Pipes
-import { ColorFinderPipe } from '@pages/dispatch/pipes/color-finder.pipe';
-
-// Services
-import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { ModalService } from '@shared/services/modal.service';
-
-// Modals
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -52,13 +55,40 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
     ],
 })
 export class DispatchTableComponent implements OnInit {
+    @Input() set _dData(value: DispatchBoardResponse[]) {
+        this.dData = JSON.parse(JSON.stringify(value));
+
+        console.log(' this.dData.dispatches', this.dData.dispatches);
+
+        this.handleTruckTrailerAdditionalFields();
+
+        this.handleHoursOfService();
+    }
+
+    @Input() set smallList(value) {
+        this.handleTruckTrailerDriverLists(value);
+    }
+
+    @Input() set isBoardLocked(isLocked: boolean) {
+        this.__isBoardLocked = isLocked;
+    }
+
+    @Input() toolbarWidth: number = 0;
+
+    public hasAdditionalFieldTruck: boolean = false;
+    public hasAdditionalFieldTrailer: boolean = false;
+
+    public truckList: any[];
+    public trailerList: any[];
+    public driverList: any[];
+
+    /////////////////////////////////////////// UPDATE
+
     checkForEmpty: string = '';
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: UntypedFormControl = new UntypedFormControl();
     truckAddress: UntypedFormControl = new UntypedFormControl(null);
-    truckList: any[];
-    trailerList: any[];
-    driverList: any[];
+
     copyIndex: number = -1;
     testTimeout: any;
     startIndexTrailer: number;
@@ -66,64 +96,10 @@ export class DispatchTableComponent implements OnInit {
     savedTruckData: any = null;
     draggingType: string = '';
 
-    @Input() set smallList(value) {
-        const newTruckList = JSON.parse(JSON.stringify(value.trucks));
-        this.truckList = newTruckList.map((item) => {
-            item.name = item.truckNumber;
-            item.code = this.colorPipe.transform('truck', item.truckType.id);
-            item.folder = 'common';
-            item.subFolder = 'colors';
-            item.logoName = 'ic_circle.svg';
-            return item;
-        });
-        const newTrailerList = JSON.parse(JSON.stringify(value.trailers));
-        this.trailerList = newTrailerList.map((item) => {
-            item.name = item.trailerNumber;
-            item.code = this.colorPipe.transform(
-                'trailer',
-                item.trailerType.id
-            );
-            item.folder = 'common';
-            item.subFolder = 'colors';
-            item.logoName = 'ic_circle.svg';
-            return item;
-        });
-        const driversList = JSON.parse(JSON.stringify(value.drivers));
-        this.driverList = driversList.map((item) => {
-            item.name = `${item.firstName} ${item.lastName}`;
-            item.svg = item.owner ? 'ic_owner-status.svg' : null;
-            item.folder = 'common';
-            return item;
-        });
-    }
-
-    @Input() set _dData(value) {
-        this.dData = JSON.parse(JSON.stringify(value));
-
-        this.dData.dispatches = this.dData.dispatches.map((item) => {
-            let i = 0;
-            item.hoursOfService = item.hoursOfService
-                .sort((a, b): number => {
-                    return a.id < b.id ? -1 : 0;
-                })
-                .map((it) => {
-                    it.indx = i;
-                    i++;
-                    return it;
-                });
-
-            return item;
-        });
-    }
-
-    @Input() dDataIndx: number;
-    @Input() toolbarWidth: number = 0;
-
     public selectedColor: any = {};
 
-    openedTruckDropdown: number = -1;
     openParkingDropdown: number = -1;
-    openedTrailerDropdown: number = -1;
+
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
     showAddAddressField: number = -1;
@@ -140,10 +116,6 @@ export class DispatchTableComponent implements OnInit {
 
     __isBoardLocked: boolean = true;
     __change_in_proggress: boolean = false;
-
-    @Input() set isBoardLocked(isLocked: boolean) {
-        this.__isBoardLocked = isLocked;
-    }
 
     hosHelper = [];
 
@@ -187,83 +159,102 @@ export class DispatchTableComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public onSelectDropdown(event: any, action: string, test: string) {
-        this.selectedColor = event;
-        switch (test) {
-            case 'truck':
-                this.openedTruckDropdown = -1;
-                break;
-            case 'trailer':
-                this.openedTrailerDropdown = -1;
-                break;
-            case 'driver':
-                this.openedDriverDropdown = -1;
-                break;
-        }
+    private handleTruckTrailerDriverLists(lists): void {
+        console.log('lists', lists);
+        const { trucks, trailers, drivers } = lists;
 
-        this.truckFormControll.reset();
+        const truckList = JSON.parse(JSON.stringify(trucks));
+        const trailerList = JSON.parse(JSON.stringify(trailers));
+        const driverList = JSON.parse(JSON.stringify(drivers));
+
+        this.truckList = truckList.map((truck) => {
+            return {
+                ...truck,
+                name: truck.truckNumber,
+                class: this.colorPipe.transform(
+                    truck.truckType.id,
+                    DispatchTableStringEnum.TRUCK
+                ),
+                folder: DispatchTableStringEnum.COMMON,
+                subFolder: DispatchTableStringEnum.COLORS,
+                logoName: DispatchTableStringEnum.CIRCLE_ROUTE,
+            };
+        });
+
+        this.trailerList = trailerList.map((trailer) => {
+            return {
+                ...trailer,
+                name: trailer.trailerNumber,
+                class: this.colorPipe.transform(
+                    trailer.trailerType.id,
+                    DispatchTableStringEnum.TRAILER
+                ),
+                folder: DispatchTableStringEnum.COMMON,
+                subFolder: DispatchTableStringEnum.COLORS,
+                logoName: DispatchTableStringEnum.CIRCLE_ROUTE,
+            };
+        });
+
+        this.driverList = driverList.map((driver) => {
+            return {
+                ...driver,
+                name: `${driver.firstName} ${driver.lastName}`,
+                svg: driver.owner
+                    ? DispatchTableStringEnum.OWNER_STATUS_ROUTE
+                    : null,
+                folder: DispatchTableStringEnum.COMMON,
+            };
+        });
     }
 
-    showTruckDropdown(ind: number) {
-        this.openedTruckDropdown = ind;
+    private handleTruckTrailerAdditionalFields(): void {
+        this.hasAdditionalFieldTruck = this.dData.dispatches.some(
+            (dispatch) => !!dispatch?.truck?.year
+        );
+        this.hasAdditionalFieldTrailer = this.dData.dispatches.some(
+            (dispatch) => !!dispatch?.trailer?.year
+        );
     }
+
+    public handleAddTruckTrailerClick(event): void {
+        this.dData.dispatches[event.truckDropdownIndex].truck = event.event;
+
+        this.showAddAddressField = event.truckDropdownIndex;
+    }
+
+    public handleRemoveTruckTrailerClick(event: {
+        type: string;
+        index: number;
+    }) {
+        this.updateOrAddDispatchBoardAndSend(event.type, null, event.index);
+    }
+
+    private handleHoursOfService() {
+        const mappedDispatches = this.dData.dispatches.map((item) => {
+            const hoursOfService = item.hoursOfService
+                .sort((a, b) => a.id - b.id)
+                .map((item, indx) => ({ ...item, indx }));
+
+            return {
+                ...item,
+                hoursOfService,
+            };
+        });
+
+        this.dData = {
+            ...this.dData,
+            dispatches: mappedDispatches,
+        };
+    }
+
+    /////////////////////////////////////////// UPDATE
 
     showParkingDropdown(ind: number) {
         this.openParkingDropdown = ind;
     }
 
-    showTrailerDropdown(ind: number) {
-        this.openedTrailerDropdown = ind;
-    }
-
     showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
-    }
-
-    addTruck(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: TruckModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                if (this.openedTruckDropdown == -2) this.savedTruckId = e;
-                else this.dData.dispatches[this.openedTruckDropdown].truck = e;
-                this.showAddAddressField = this.openedTruckDropdown;
-            }
-        }
-
-        this.openedTruckDropdown = -1;
-    }
-
-    addTrailer(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: TrailerModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                this.updateOrAddDispatchBoardAndSend(
-                    'trailerId',
-                    e.id,
-                    this.openedTrailerDropdown
-                );
-            }
-        }
-
-        this.openedTrailerDropdown = -1;
     }
 
     addParking() {
@@ -400,7 +391,7 @@ export class DispatchTableComponent implements OnInit {
         } else {
             newData.dispatchBoardId = this.dData.id;
 
-            if (key == 'location') newData.truckId = this.savedTruckId.id;
+            /* if (key == 'location') newData.truckId = this.savedTruckId.id; */
 
             this.dispatcherService
                 .createDispatchBoard(newData, this.dData.id)
@@ -566,14 +557,6 @@ export class DispatchTableComponent implements OnInit {
             });
     }
 
-    removeTruck(indx) {
-        this.updateOrAddDispatchBoardAndSend('truckId', null, indx);
-    }
-
-    removeTrailer(indx) {
-        this.updateOrAddDispatchBoardAndSend('trailerId', null, indx);
-    }
-
     removeDriver(indx) {
         this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
     }
@@ -727,7 +710,7 @@ export class DispatchTableComponent implements OnInit {
     cdkDragStartedTrailer(event, indx) {
         this.startIndexTrailer = indx;
         this.isDrag = true;
-        this.draggingType = 'trailer';
+        this.draggingType = DispatchTableStringEnum.TRUCK;
     }
 
     cdkDragStartedDriver(event, indx) {
@@ -749,4 +732,25 @@ export class DispatchTableComponent implements OnInit {
     trailerPositionPrediction = () => {
         return true;
     };
+
+    /////////////////////// UNUSED
+
+    /* 
+    public onSelectDropdown(event: any, action: string, test: string) {
+        this.selectedColor = event;
+        switch (test) {
+            case DispatchTableStringEnum.TRUCK:
+                this.openedTruckDropdown = -1;
+                break;
+            case DispatchTableStringEnum.TRUCK:
+                this.openedTrailerDropdown = -1;
+                break;
+            case 'driver':
+                this.openedDriverDropdown = -1;
+                break;
+        }
+
+        this.truckFormControll.reset();
+    }
+ */
 }

@@ -21,9 +21,11 @@ import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
+import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
+import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
 
 // Pipes
-import { ColorFinderPipe } from '@pages/dispatch/pipes/color-finder.pipe';
+import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
@@ -37,8 +39,10 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         DispatchTableComponent,
         DispatchTableDriverComponent,
 
+        DispatchTableTruckTrailerComponent,
+        DispatchTableAddNewComponent,
+
         // Pipes
-        ColorFinderPipe,
         HosFilterPipe,
         TooltipWidthPipe,
     ],
@@ -56,6 +60,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
+        ColorFinderPipe,
 
         // Components
         TaAppTooltipV2Component,
@@ -67,5 +72,6 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaNoteComponent,
         TaPickupDeliveryComponent,
     ],
+    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}

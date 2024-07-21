@@ -12,6 +12,7 @@
         @iconAnimation
         class="loadingItem goTop"
     ></div>
+
     <table>
         <thead>
             <tr>
@@ -43,115 +44,40 @@
                 cdkDragPreviewContainer="parent"
                 cdkDragBoundary=".dispatch-table"
             >
-                <td class="truck-field" cdkDragHandle>
-                    <div class="main_inside addNew" [class.filled]="item.truck">
-                        <div
-                            class="padding-inside"
-                            *ngIf="openedTruckDropdown != rowIndex"
-                        >
-                            <div
-                                *ngIf="
-                                    openedTruckDropdown != rowIndex &&
-                                    !item.truck &&
-                                    !__isBoardLocked
-                                "
-                                class="add_new"
-                                (click)="showTruckDropdown(rowIndex)"
-                            >
-                                <div class="text">Add</div>
-                                <svg-icon
-                                    *ngIf="!isDrag"
-                                    [src]="
-                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '18',
-                                        'height.px': '18'
-                                    }"
-                                ></svg-icon>
-                            </div>
-                            <div
-                                class="circles-holder truck_{{
-                                    'truck'
-                                        | colorFinder : item.truck.truckType.id
-                                }}"
-                                *ngIf="item.truck"
-                            >
-                                <svg-icon
-                                    [src]="'ic_circle.svg'"
-                                    [svgStyle]="{
-                                        'width.px': '10',
-                                        'height.px': '10'
-                                    }"
-                                ></svg-icon>
-                                <div class="info-item">
-                                    <svg-icon
-                                        class="truck-trailer-image"
-                                        [src]="item.truck.truckType.logoName"
-                                        [svgStyle]="{
-                                            'height.px': '16'
-                                        }"
-                                    ></svg-icon>
-                                    <span class="truck-trailer-number">{{
-                                        item.truck.truckNumber
-                                    }}</span>
-                                    <div
-                                        *ngIf="
-                                            item.truck &&
-                                            !__isBoardLocked &&
-                                            !isDrag
-                                        "
-                                        class="remove-item"
-                                        (click)="removeTruck(rowIndex)"
-                                    >
-                                        <svg-icon
-                                            [src]="
-                                                'assets/svg/applicant/close-x.svg'
-                                            "
-                                        ></svg-icon>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <app-ta-input-dropdown
-                            *ngIf="openedTruckDropdown == rowIndex"
-                            [formControl]="truckFormControll"
-                            [template]="'svgtext-dispatch-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Unit No.',
-                                placeholder: 'Unit No.',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-118',
-                                placeholderInsteadOfLabel: true,
-                                hideDropdownArrow: true,
-                                autoFocus: true,
-                                blackInput: true,
-                                hideDropdownArrow: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                hideErrorMessage: true,
-                                mergeDropdownBodyWithInput: true
-                            }"
-                            [options]="truckList"
-                            [canAddNew]="true"
-                            [canOpenModal]="true"
-                            [activeItem]="null"
-                            (selectedItem)="addTruck($event)"
-                        ></app-ta-input-dropdown>
-                    </div>
-                </td>
-                <td class="trailer-field">
-                    <div
-                        class="main_inside"
-                        [class.addNew]="!item.trailer && !__isBoardLocked"
-                        [class.filled]="item.trailer"
-                        [class.isDragging]="isDrag && draggingType == 'trailer'"
-                        [class.dropdownActive]="
-                            openedTrailerDropdown == rowIndex
+                <td
+                    cdkDragHandle
+                    class="truck-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTruck ? '160px' : '120px'
+                    }"
+                >
+                    <app-dispatch-table-truck-trailer
+                        [type]="'truck'"
+                        [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
+                        [truck]="item?.truck"
+                        [truckList]="truckList"
+                        [rowIndex]="rowIndex"
+                        [isBoardLocked]="__isBoardLocked"
+                        [isDrag]="isDrag"
+                        [isActiveLoad]="!!item.activeLoad"
+                        (addTruckTrailerEmitter)="
+                            handleAddTruckTrailerClick($event)
                         "
+                        (removeTruckTrailerEmitter)="
+                            handleRemoveTruckTrailerClick($event)
+                        "
+                    >
+                    </app-dispatch-table-truck-trailer>
+                </td>
+
+                <td
+                    class="trailer-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                    }"
+                >
+                    <div
+                        [class.isDragging]="isDrag && draggingType == 'trailer'"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
                         (cdkDropListDropped)="dropTrailer($event, rowIndex)"
@@ -174,12 +100,6 @@
                             (cdkDragEnded)="dragEnd()"
                             [cdkDragDisabled]="__isBoardLocked || !item.trailer"
                             cdkDragLockAxis="y"
-                            [cdkDragPreviewClass]="
-                                'trailer_' +
-                                ('trailer'
-                                    | colorFinder
-                                        : item.trailer?.trailerType?.id)
-                            "
                             cdkDragPreviewContainer="parent"
                             cdkDragBoundary=".dispatch-table table tbody"
                         >
@@ -187,106 +107,27 @@
                                 *cdkDragPlaceholder
                                 class="custom-dispatch-placeholder"
                             ></div>
-                            <div
-                                class="padding-inside"
-                                *ngIf="openedTrailerDropdown != rowIndex"
+
+                            <app-dispatch-table-truck-trailer
+                                [type]="'trailer'"
+                                [hasAdditionalFieldTrailer]="
+                                    hasAdditionalFieldTrailer
+                                "
+                                [trailer]="item?.trailer"
+                                [trailerList]="trailerList"
+                                [rowIndex]="rowIndex"
+                                [isBoardLocked]="__isBoardLocked"
+                                [isDrag]="isDrag"
+                                [isActiveLoad]="!!item.activeLoad"
+                                (removeTruckTrailerEmitter)="
+                                    handleRemoveTruckTrailerClick($event)
+                                "
                             >
-                                <div
-                                    class="add_new"
-                                    *ngIf="
-                                        openedTrailerDropdown != rowIndex &&
-                                        !item.trailer &&
-                                        !__isBoardLocked
-                                    "
-                                    (click)="showTrailerDropdown(rowIndex)"
-                                >
-                                    <div class="text">Add</div>
-                                    <svg-icon
-                                        *ngIf="!isDrag"
-                                        [src]="
-                                            'assets/svg/truckassist-table/dropdown/content/add.svg'
-                                        "
-                                        [svgStyle]="{
-                                            'width.px': '18',
-                                            'height.px': '18'
-                                        }"
-                                    ></svg-icon>
-                                </div>
-
-                                <div
-                                    class="circles-holder trailer_{{
-                                        'trailer'
-                                            | colorFinder
-                                                : item.trailer.trailerType.id
-                                    }}"
-                                    *ngIf="item.trailer"
-                                >
-                                    <svg-icon
-                                        [src]="'ic_circle.svg'"
-                                        [svgStyle]="{
-                                            'width.px': '10',
-                                            'height.px': '10'
-                                        }"
-                                    ></svg-icon>
-                                    <div class="info-item">
-                                        <svg-icon
-                                            class="truck-trailer-image"
-                                            [src]="
-                                                item.trailer.trailerType
-                                                    .logoName
-                                            "
-                                            [svgStyle]="{
-                                                'height.px': '16'
-                                            }"
-                                        ></svg-icon>
-                                        <span class="truck-trailer-number">{{
-                                            item.trailer.trailerNumber
-                                        }}</span>
-                                        <div
-                                            *ngIf="!isDrag"
-                                            class="remove-item"
-                                            (click)="removeTrailer(rowIndex)"
-                                        >
-                                            <svg-icon
-                                                [src]="
-                                                    'assets/svg/applicant/close-x.svg'
-                                                "
-                                            ></svg-icon>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <app-ta-input-dropdown
-                                *ngIf="openedTrailerDropdown == rowIndex"
-                                [formControl]="truckFormControll"
-                                [template]="'svgtext-dispatch-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Unit No',
-                                    placeholder: 'Unit No.',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-118',
-                                    placeholderInsteadOfLabel: true,
-                                    hideDropdownArrow: true,
-                                    autoFocus: true,
-                                    blackInput: true,
-                                    hideDropdownArrow: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    hideErrorMessage: true,
-                                    mergeDropdownBodyWithInput: true
-                                }"
-                                [options]="trailerList"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                [activeItem]="null"
-                                (selectedItem)="addTrailer($event)"
-                            ></app-ta-input-dropdown>
+                            </app-dispatch-table-truck-trailer>
                         </div>
                     </div>
                 </td>
+
                 <td class="driver-field">
                     <app-dispatch-table-driver
                         [driver]="item?.driver"
@@ -469,7 +310,7 @@
                     </div>
                 </td>
                 <td class="pickup-delivery-field">
-                    <div
+                    <!--   <div
                         class="main_inside"
                         [class.filled]="
                             item.driver &&
@@ -579,7 +420,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="progress-field">
                     <div class="main_inside filled">
@@ -721,8 +562,8 @@
 
             <tr *ngIf="!__isBoardLocked">
                 <td class="truck-field">
-                    <div class="main_inside addNew">
-                        <div
+                    <!--    <div class="main_inside addNew">
+                      <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != -2"
                         >
@@ -742,7 +583,7 @@
                                     }"
                                 ></svg-icon>
                             </div>
-                        </div>
+                        </div> 
 
                         <app-ta-input-dropdown
                             *ngIf="openedTruckDropdown == -2"
@@ -770,11 +611,11 @@
                             [canAddNew]="true"
                             [canOpenModal]="true"
                             (selectedItem)="addTruck($event)"
-                        ></app-ta-input-dropdown>
-                    </div>
+                        ></app-ta-input-dropdown> 
+                    </div> -->
                 </td>
                 <td class="trailer-field">
-                    <div
+                    <!--  <div
                         class="main_inside addNew"
                         cdkDropList
                         [cdkDropListSortPredicate]="trailerPositionPrediction"
@@ -845,7 +686,7 @@
                                 (selectedItem)="addTrailer($event)"
                             ></app-ta-input-dropdown>
                         </div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="driver-field">
                     <div

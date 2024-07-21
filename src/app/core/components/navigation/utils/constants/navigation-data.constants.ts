@@ -19,7 +19,7 @@ export class NavigationDataConstants {
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
             construction: true,
-            isRouteActive: false,
+            isRouteActive: true,
         },
         {
             id: 3,
@@ -263,9 +263,9 @@ export class NavigationDataConstants {
             name: 'Chat',
             image: 'ic_chat.svg',
             route: 'chat',
-            isRouteActive: true,
+            isRouteActive: false,
             messages: 5,
-            construction: false,
+            construction: true,
         },
         {
             id: 11,
