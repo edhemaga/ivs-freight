@@ -20,8 +20,7 @@ export class HubService {
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
-                accessTokenFactory: () => this.token,
-                transport: 4 // 4 - Long polling, web socket not working at the moment
+                accessTokenFactory: () => this.token
             })
             .configureLogging(signalR.LogLevel.Information)
             .withAutomaticReconnect()
