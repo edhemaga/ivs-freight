@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import 'src/theme/variables'; 
 
 .dispatch-table-driver {
     padding: 4px;
@@ -17,7 +17,7 @@
 
     &_hover {
         cursor: pointer;
-        transition: 0.3s;
+        transition: $transition;
         border-radius: 3px;
 
         &:hover {

@@ -8,11 +8,14 @@ import {
     LoadShortResponse,
 } from 'appcoretruckassist';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 
 // Components
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 // Svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -26,7 +29,7 @@ export class DispatchTableAssignLoadComponent implements OnInit {
     @Input() driver: DriverDispatchResponse;
     @Input() truck: TruckMinimalResponse;
     @Input() trailer: TrailerMinimalResponse;
-    @Input() activeLoad: LoadShortResponse;
+    @Input() isActiveLoad: LoadShortResponse;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
@@ -46,20 +49,20 @@ export class DispatchTableAssignLoadComponent implements OnInit {
         // Cargo Van
         // Box Truck
         // Car Hauler then we don't need trailer
-        const truckDoesntRequireTrailer = [2, 4, 5].includes(
+        const truckDoesntRequireTrailerIds = [2, 4, 5].includes(
             this.truck.truckType.id
         );
 
-        if (truckDoesntRequireTrailer) return false;
+        if (truckDoesntRequireTrailerIds) return;
 
         if (!this.trailer) return true;
 
-        return false;
+        return;
     }
 
     public onLoadIconClick(): void {
         this.modalService.openModal(AssignDispatchLoadModalComponent, {
-            size: 'small',
+            size: TableStringEnum.SMALL,
         });
     }
 }

@@ -32,14 +32,17 @@ import {
     CreateDispatchCommand,
     DispatchBoardResponse,
     DispatchStatus,
+    ParkingDispatchModalResponse,
     ParkingService,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatcher.model';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
-import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking.model';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component'; 
+import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
+
+// Enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
 @Component({
@@ -86,7 +89,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public truckList: any[];
     public trailerList: any[];
     public driverList: any[];
-    public parkingList: any[];
+    public parkingList: Array<ParkingDispatchModalResponse>[];
 
     /////////////////////////////////////////// UPDATE
 
@@ -164,7 +167,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         const trailerList = JSON.parse(JSON.stringify(trailers));
         const driverList = JSON.parse(JSON.stringify(drivers));
         this.parkingList = JSON.parse(JSON.stringify(parkings));
-
         this.truckList = truckList.map((truck) => {
             return {
                 ...truck,

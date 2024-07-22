@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { flatMap, delay, of, map, Subject } from 'rxjs';
+import { flatMap, delay, of, map, BehaviorSubject } from 'rxjs';
 
 // Store
 import { DispatcherStore } from '@pages/dispatch/state/dispatcher.store';
@@ -19,7 +19,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class DispatcherService {
     public parkingOpened: boolean = false;
-    public newParkingSubject = new Subject<boolean>();
+    public newParkingSubject = new BehaviorSubject<boolean>(false);
 
     constructor(
         private dispatcherStore: DispatcherStore,

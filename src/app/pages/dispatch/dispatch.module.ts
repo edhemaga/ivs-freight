@@ -25,7 +25,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
 import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
 // Pipes
@@ -46,11 +46,11 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         DispatchTableTruckTrailerComponent,
         DispatchTableAddNewComponent,
         DispatchTableAssignLoadComponent,
+        AssignDispatchLoadModalComponent,
 
         // Pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        AssignDispatchLoadModalComponent,
     ],
     imports: [
         // Modules

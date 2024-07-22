@@ -655,25 +655,15 @@
                         'parking-field-large': parkingList?.length > 1
                     }"
                 >
-                    <div
-                        class="main_inside"
-                        [ngClass]="{
-                            'add-new':
-                                !!item.trailer === false &&
-                                !!item.truck === false,
-                            filled: !!item.trailer || !!item.truck
-                        }"
-                    >
-                        <div class="padding-inside p-0">
-                            <app-dispatch-table-parking
-                                [parkingList]="parkingList"
-                                [parkingSlot]="item.parkingSlot"
-                                [isWideTable]="parkingList?.length > 1"
-                                [truckId]="item.truck?.id"
-                                [trailerId]="item.trailer?.id"
-                                (updateParking)="updateParking($event, item.id)"
-                            ></app-dispatch-table-parking>
-                        </div>
+                    <div class="padding-inside p-0">
+                        <app-dispatch-table-parking
+                            [parkingList]="parkingList"
+                            [parkingSlot]="item.parkingSlot"
+                            [isWideTable]="parkingList?.length > 1"
+                            [truckId]="item.truck?.id"
+                            [trailerId]="item.trailer?.id"
+                            (updateParking)="updateParking($event, item.id)"
+                        ></app-dispatch-table-parking>
                     </div>
                 </td>
                 <td class="box-item">
@@ -723,7 +713,7 @@
                                 [driver]="item.driver"
                                 [truck]="item.truck"
                                 [trailer]="item.driver"
-                                [activeLoad]="item.activeLoad"
+                                [isActiveLoad]="item.activeLoad"
                             ></app-dispatch-table-assign-load>
                         </div>
                     </div>
@@ -993,11 +983,7 @@
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td class="parking-field">
-                    <!-- <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div> -->
-                </td>
+                <td class="parking-field"></td>
                 <td class="box-item">
                     <div class="main_inside">
                         <div class="padding-inside"></div>

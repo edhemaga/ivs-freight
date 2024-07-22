@@ -1,6 +1,5 @@
 import {
     Component,
-    ElementRef,
     EventEmitter,
     Input,
     OnInit,
@@ -21,8 +20,8 @@ import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/componen
 // Models
 import {
     DispatchBoardParking,
-    DispatchBoardParkingEmiter,
 } from '@pages/dispatch/models/dispatch-parking.model';
+import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
     ParkingSlotDispatchModalResponse,
     ParkingSlotShortResponse,
@@ -42,15 +41,17 @@ import { ModalService } from '@shared/services/modal.service';
 })
 export class DispatchTableParkingComponent implements OnInit {
     // Inputs
-    @Input() parkingList: Array<DispatchBoardParking> | null;
-    @Input() parkingSlot: ParkingSlotShortResponse | null;
+    @Input() parkingList: Array<DispatchBoardParking>;
+    @Input() parkingSlot: ParkingSlotShortResponse;
     @Input() isWideTable: boolean;
     @Input() truckId: number;
     @Input() trailerId: number;
+
     // Ouputs
     @Output()
     updateParking: EventEmitter<DispatchBoardParkingEmiter> =
         new EventEmitter();
+
     // Svg routes
     public svgRoutes = DispatchParkingSvgRoutes;
 
@@ -66,6 +67,7 @@ export class DispatchTableParkingComponent implements OnInit {
     // If we have only one parking no need to show name
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
+
     public parkingConfig = DispatchParkingConfig.parking;
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -73,8 +75,8 @@ export class DispatchTableParkingComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.handleListVisibility();
         this.createForm();
+        this.handleListVisibility();
     }
 
     public get isParkingAssigned(): boolean {
@@ -114,7 +116,7 @@ export class DispatchTableParkingComponent implements OnInit {
                         slot.slotNumber.toString().includes(searchValue)
                     ),
                 }))
-                .filter((parking) => parking.parkingSlots.length > 0);
+                .filter((parking) => parking.parkingSlots.length);
         } else {
             this.filteredParkingList = this.parkingList;
         }
@@ -124,26 +126,29 @@ export class DispatchTableParkingComponent implements OnInit {
         // We can have parking with 0 slots
         this.isMultipleParkingSlots =
             this.parkingList.filter(
-                (parkingList) => parkingList.parkingSlots.length > 0
+                (parkingList) => parkingList.parkingSlots.length
             ).length > 1;
 
         // If we have only one parking, open it and remove parking title
         if (!this.isMultipleParkingSlots && this.parkingList.length) {
-            this.parkingList[0].isDropdownVisible = true;
+            this.openParkingList(0);
         }
     }
 
     public addParking(parkingSlot: ParkingSlotDispatchModalResponse): void {
         this.popoverRef.close();
+
         // Parking cannot be reassign, user needs to remove it first
         if (!!this.parkingSlot) {
             return;
         }
+
         this.updateParking.emit({
             parking: parkingSlot.id,
             trailerId: this.trailerId,
             truckId: this.truckId,
         });
+
         this.isInputInFocus = false;
     }
 
@@ -172,5 +177,9 @@ export class DispatchTableParkingComponent implements OnInit {
 
     public onInputClick(): void {
         this.popoverRef.open();
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 }
