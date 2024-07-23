@@ -158,7 +158,7 @@
                                         trackBy: trackByAttachmentName
                                     "
                                 >
-                                    <div class="attachment-preview">
+                                    <div class="attachment-preview d-flex">
                                         <img
                                             [src]="attachment.stringifiedData"
                                             [alt]="attachment.name"
@@ -171,20 +171,12 @@
 
                         <app-ta-input
                             formControlName="message"
-                            [inputConfig]="{
-                                name: 'message',
-                                type: 'text',
-                                label: 'Type your message here',
-                                hideRequiredCheck: true,
-                                placeholderInsteadOfLabel: true,
-                                autoFocus: true,
-                                blackInput: true,
-                                customClass:
-                                    isChatTypingActivated &&
+                            [inputConfig]="
+                                ChatInput.messageInput(
+                                    isChatTypingActivated,
                                     attachments?.length > 0
-                                        ? 'rounded-top-0'
-                                        : ''
-                            }"
+                                )
+                            "
                             [(ngModel)]="messageToSend"
                             (blurInput)="blurInput()"
                             (focusInput)="focusInput()"
