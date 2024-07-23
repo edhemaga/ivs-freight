@@ -21,7 +21,6 @@ export interface ViolationCommand {
     sms?: boolean | null;
     description?: string | null;
     extraDescription?: string | null;
-    basic?: string | null;
     reason?: string | null;
     violationCategoryId?: number | null;
 }

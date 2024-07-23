@@ -31,6 +31,7 @@ export interface RoadsideInspectionResponse {
     startTime?: string | null;
     endTime?: string | null;
     date?: string | null;
+    active?: boolean;
     inspectionLevel?: string | null;
     hmInspectionType?: string | null;
     severityWeight?: number | null;
@@ -46,6 +47,7 @@ export interface RoadsideInspectionResponse {
     driver_LicenceNo?: string | null;
     driver_State?: string | null;
     driver_DateOfBirth?: string | null;
+    coDriver?: DriverAccidentResponse;
     coDriver_FullName?: string | null;
     coDriver_LicenceNo?: string | null;
     coDriver_State?: string | null;
