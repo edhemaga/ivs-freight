@@ -80,15 +80,24 @@
                 .attachment-list {
                     width: 100%;
                     height: 46px;
-                    background-color: $ta-black-3;
                     border-radius: 2px;
                     border-bottom-left-radius: 0;
                     border-bottom-right-radius: 0;
                     padding: 4px 2px 2px 4px;
                     margin-top: 8px;
+
+                    &-dark {
+                        background-color: $ta-black-3;
+                    }
+
+                    &-light {
+                        background-color: $bw2;
+                    }
                 }
 
                 .attachment-preview {
+                    margin-right: 6px;
+
                     &-thumbnail {
                         width: 40px;
                         height: 40px;

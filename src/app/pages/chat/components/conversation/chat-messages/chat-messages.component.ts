@@ -75,10 +75,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   // Attachment upload
   public attachmentUploadActive: boolean = false;
-  public attachments!: ChatAttachmentForThumbnail[];
+  public attachments: ChatAttachmentForThumbnail[] = [];
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
+  public isChatTypingBlurred: boolean = false;
 
   // Form
   public messageForm!: UntypedFormGroup;
@@ -179,12 +180,18 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public addAttachments(files: ChatAttachmentForThumbnail[]): void {
-    this.attachments = files;
+    this.attachments = [...this.attachments, ...files];
     this.attachmentUploadActive = false;
   }
 
-  // Trackers
+  public blurInput(): void {
+    this.isChatTypingBlurred = false;
+  }
+  public focusInput(): void {
+    this.isChatTypingBlurred = true;
+  }
 
+  // Trackers
   public trackById(index: number, item: MessageResponse): number {
     return item.id;
   }

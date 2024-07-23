@@ -143,7 +143,14 @@
                 <ng-template #chatInputField>
                     <div class="form-wrapper" [formGroup]="messageForm">
                         <ng-container *ngIf="attachments?.length">
-                            <div class="attachment-list">
+                            <div
+                                class="attachment-list d-flex"
+                                [ngClass]="
+                                    isChatTypingBlurred
+                                        ? 'attachment-list-dark'
+                                        : 'attachment-list-light'
+                                "
+                            >
                                 <ng-container
                                     *ngFor="
                                         let attachment of attachments;
@@ -179,6 +186,8 @@
                                         : ''
                             }"
                             [(ngModel)]="messageToSend"
+                            (blurInput)="blurInput()"
+                            (focusInput)="focusInput()"
                             (keyup.enter)="sendMessage()"
                         ></app-ta-input>
                     </div>
