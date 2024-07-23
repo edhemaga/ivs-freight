@@ -272,6 +272,12 @@
             align-self: center;
             cursor: pointer;
 
+            &-locked {
+                background-color: $ta-light-grey-6;
+                cursor: none;
+                pointer-events: none;
+            }
+
             svg-icon {
                 display: flex;
             }
