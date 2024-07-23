@@ -34,7 +34,6 @@ import { UserChatService } from '@pages/chat/services/chat.service';
 import { CompanyUserChatResponse, UserType } from 'appcoretruckassist';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
 
-
 @Component({
   selector: 'app-chat-user-list',
   templateUrl: './chat-user-list.component.html',
