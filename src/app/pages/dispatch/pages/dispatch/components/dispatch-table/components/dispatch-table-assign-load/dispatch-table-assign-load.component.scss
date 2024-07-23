@@ -1,0 +1,32 @@
+@import 'src/theme/variables'; 
+
+.dispatch-table-driver {
+    padding: 4px;
+    height: 34px;
+
+    &_unassigned {
+        background-color: $ta-light-grey-5;
+    }
+
+    svg {
+        height: 16px;
+        path {
+            transition: fill .3s;
+            fill: $ta-blue-13;
+        }
+    }
+
+    &_hover {
+        cursor: pointer;
+        transition: background-color .3s;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: $ta-blue-15;
+
+            svg path {
+                fill: $white;
+            }
+        }
+    }
+}

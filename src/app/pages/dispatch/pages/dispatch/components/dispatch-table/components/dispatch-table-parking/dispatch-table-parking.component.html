@@ -1,0 +1,242 @@
+<div
+    class="main_inside"
+    [ngClass]="{
+        'add-new': !trailerId && !truckId,
+        filled: !!trailerId || !!truckId
+    }"
+>
+    <div class="dispatch-parking-wrapper">
+        <div
+            class="dispatch-parking"
+            [ngClass]="{
+                'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
+                'dispatch-parking_assigned': isParkingAssigned,
+                'dispatch-parking-hover': isParkingAvailable
+            }"
+        >
+            <ng-container *ngIf="isParkingAvailable">
+                <div
+                    class="d-flex align-items-center p-x-1 justify-content-between pos-absolute"
+                    [ngClass]="{
+                        'dispatch-parking-large': isWideTable
+                    }"
+                    (click)="onInputClick()"
+                >
+                    <ng-container *ngIf="!isInputInFocus; else showInput">
+                        <ng-container *ngIf="isParkingAssigned; else noTooltip">
+                            <span
+                                [mainTooltip]="parkingSlot?.parking?.name"
+                                [tooltipBackground]="'#424242'"
+                                ngbTooltip
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="svgRoutes.parking"
+                                    class="mr-1 dispatch-parking-icon dispatch-parking-icon_assigned"
+                                >
+                                </svg-icon>
+                            </span>
+                        </ng-container>
+                        <ng-template #noTooltip>
+                            <svg-icon
+                                [src]="svgRoutes.parking"
+                                class="mr-1 dispatch-parking-icon dispatch-parking-icon_empty"
+                            >
+                            </svg-icon>
+                        </ng-template>
+
+                        <div
+                            class="dispatch-parking-text ta-font-medium flex-1"
+                            [ngClass]="{
+                                'dispatch-parking_assigned': !isParkingAssigned
+                            }"
+                        >
+                            {{
+                                isParkingAssigned
+                                    ? parkingSlot?.slotNumber
+                                    : 'ASSIGN'
+                            }}
+                        </div>
+
+                        <div class="dispatch-parking-remove-wrapper">
+                            <span
+                                class="d-flex align-items-center justify-content-center dispatch-parking-remove"
+                                ngbTooltip
+                                position="bottom"
+                                [mainTooltip]="'Remove'"
+                                [tooltipBackground]="'#DF3C3C'"
+                                (click)="
+                                    removeParking(); $event.stopPropagation()
+                                "
+                            >
+                                <svg-icon [src]="svgRoutes.close"> </svg-icon>
+                            </span>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div
+                    #t2="ngbPopover"
+                    #input
+                    [ngbPopover]="parkingDropDownPopover"
+                    [autoClose]="'outside'"
+                    [popoverClass]="'parking-popover'"
+                    [container]="'body'"
+                    [placement]="['bottom-left']"
+                    (click)="onInputClick()"
+                    (shown)="isInputInFocus = true"
+                    (hidden)="isInputInFocus = false"
+                >
+                    <ng-template #parkingDropDownPopover>
+                        <div
+                            class="dispatch-parking-dropdown"
+                            [ngClass]="{
+                                'dispatch-parking-dropdown_large': isWideTable
+                            }"
+                        >
+                            <form
+                                [formGroup]="parkingForm"
+                                (click)="$event.stopPropagation()"
+                            >
+                                <app-ta-input
+                                    formControlName="parking"
+                                    [inputConfig]="parkingConfig"
+                                ></app-ta-input>
+                            </form>
+
+                            <ng-container
+                                *ngFor="
+                                    let parking of filteredParkingList;
+                                    let index = index;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div class="dispatch-parking-dropdown-parkings">
+                                    <ng-container
+                                        *ngIf="isMultipleParkingSlots"
+                                    >
+                                        <div
+                                            class="dispatch-parking-dropdown-title ta-font-bold dispatch-parking-dropdown-item d-flex justify-content-between align-items-center"
+                                            (click)="
+                                                inputFocusedByClick = true;
+                                                openParkingList(index)
+                                            "
+                                        >
+                                            <span
+                                                class="dispatch-parking-dropdown-title-overflow"
+                                            >
+                                                {{ parking.name }}
+                                            </span>
+
+                                            <span
+                                                class="dispatch-parking-dropdown-badge ta-font-semibold"
+                                                [hidden]="
+                                                    !parking.isDropdownVisible
+                                                "
+                                            >
+                                                {{
+                                                    parking.parkingSlots.length
+                                                }}
+                                            </span>
+
+                                            <svg-icon
+                                                class="dispatch-parking-dropdown-caret"
+                                                [src]="svgRoutes.caret"
+                                                [hidden]="
+                                                    parking.isDropdownVisible
+                                                "
+                                                [ngClass]="{
+                                                    'dispatch-parking-dropdown-caret-rotate':
+                                                        parking.isDropdownVisible
+                                                }"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="parking.isDropdownVisible"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !parking.parkingSlots.length;
+                                                else showParkingSlots
+                                            "
+                                        >
+                                            <div
+                                                class="d-flex justify-content-between align-items-center dispatch-parking-dropdown-add-new mouse-pointer"
+                                                (click)="addNewParking()"
+                                            >
+                                                <span class="ta-font-bold">
+                                                    ADD NEW
+                                                </span>
+                                                <svg-icon
+                                                    class="dispatch-parking-dropdown-caret"
+                                                    [src]="svgRoutes.plus"
+                                                ></svg-icon>
+                                            </div>
+                                            <div
+                                                class="dispatch-parking-dropdown-all-assigned ta-font-bold"
+                                            >
+                                                All Assigned
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #showParkingSlots>
+                                            <div
+                                                *ngFor="
+                                                    let parkingSlot of parking.parkingSlots;
+                                                    let parkingSlotIndex = index;
+                                                    trackBy: parkingSlotIndex
+                                                "
+                                                class="dispatch-parking-dropdown-item dispatch-parking-dropdown-slot d-flex justify-content-between align-items-center mouse-pointer"
+                                                (click)="
+                                                    addParking(parkingSlot)
+                                                "
+                                            >
+                                                <span>
+                                                    {{ parkingSlot.slotNumber }}
+                                                </span>
+                                                <span
+                                                    class="dispatch-parking-dropdown-type"
+                                                >
+                                                    {{
+                                                        parkingSlot
+                                                            .parkingSlotType
+                                                            .name
+                                                    }}
+                                                </span>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    !filteredParkingList.length &&
+                                    parkingList.length
+                                "
+                            >
+                                <div
+                                    class="d-flex justify-content-between align-items-center dispatch-parking-dropdown-add-new mouse-pointer"
+                                    (click)="addNewParking()"
+                                >
+                                    <span class="ta-font-bold"> ADD NEW </span>
+                                    <svg-icon
+                                        class="dispatch-parking-dropdown-caret"
+                                        [src]="svgRoutes.plus"
+                                    ></svg-icon>
+                                </div>
+                                <div
+                                    class="dispatch-parking-dropdown-all-assigned ta-font-bold"
+                                >
+                                    No Results
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

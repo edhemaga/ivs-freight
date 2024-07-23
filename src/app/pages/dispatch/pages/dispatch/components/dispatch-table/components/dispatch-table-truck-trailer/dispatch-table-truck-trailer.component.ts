@@ -69,8 +69,6 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
 
     showTruckDropdown(ind: number) {
         this.openedTruckDropdown = ind;
-
-        console.log(' this.openedTruckDropdown', this.openedTruckDropdown);
     }
 
     showTrailerDropdown(ind: number) {

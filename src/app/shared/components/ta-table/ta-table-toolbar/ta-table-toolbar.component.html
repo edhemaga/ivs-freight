@@ -424,7 +424,13 @@
             </ng-container>
 
             <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
-                <div class="new-load">
+                <div
+                    class="new-load"
+                    [ngClass]="{
+                        'new-load-locked': !dispathcboardTableLocked
+                    }"
+                    (click)="openAssignLoadModal()"
+                >
                     <svg-icon
                         [src]="'assets/svg/dispatchboard/add-load.svg'"
                     ></svg-icon>

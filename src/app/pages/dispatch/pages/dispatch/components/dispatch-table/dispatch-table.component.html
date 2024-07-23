@@ -440,57 +440,21 @@
                     </div>
                 </td>
                 <td class="location-field">
-                    <div
-                        class="main_inside"
-                        [class.filled]="
-                            item.location.address ||
-                            showAddAddressField == rowIndex
+                    <app-last-location-component
+                        [address]="item.location"
+                        [rowIndex]="rowIndex"
+                        [showAddAddressField]="showAddAddressField"
+                        [_parkingLists]="parkingList"
+                        (handleUpdateLastLocationEmit)="
+                            updateOrAddDispatchBoardAndSend(
+                                'location',
+                                $event,
+                                this.showAddAddressField
+                            )
                         "
+                        (isDropdownHidden)="onHideDropdown()"
                     >
-                        <div class="padding-inside">
-                            <app-ta-input-address-dropdown
-                                *ngIf="showAddAddressField == rowIndex"
-                                [formControl]="truckAddress"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Location',
-                                    placeholder: 'Location',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-151',
-                                    minLength: 12,
-                                    maxLength: 256,
-                                    autoFocus: true,
-                                    placeholderInsteadOfLabel: true,
-                                    hideErrorMessage: true,
-                                    blackInput: true
-                                }"
-                                [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
-                                (selectedAddress)="
-                                    handleInputSelect($event, 'ADDRESS')
-                                "
-                                (closeDropdown)="onHideDropdown($event)"
-                            ></app-ta-input-address-dropdown>
-                            <div
-                                class="info-item"
-                                *ngIf="
-                                    item.location.address &&
-                                    showAddAddressField != rowIndex
-                                "
-                            >
-                                <div class="location-field">
-                                    <div class="location-f-city">
-                                        {{ item.location.city }}
-                                    </div>
-                                    <div class="location-f-st">
-                                        , {{ item.location.stateShortName }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </app-last-location-component>
                 </td>
                 <td class="status-field">
                     <div
@@ -649,67 +613,21 @@
                         </div>
                     </div>
                 </td>
-                <td class="parking-field">
-                    <div
-                        class="main_inside parking-field-new {{
-                            item.parkingSlot ? 'filled' : 'addNew'
-                        }} "
-                        [class.unassigned]="!item.parkingSlot"
-                    >
-                        <div
-                            class="padding-inside"
-                            *ngIf="openParkingDropdown != rowIndex"
-                        >
-                            <!-- <div class="info-item">
-                                <div class="parking-field d-flex">
-                                    <svg-icon
-                                        src="assets/svg/dispatchboard/parking.svg"
-                                    >
-                                    </svg-icon>
-                                    <div class="parking-number">8650</div>
-                                </div>
-                            </div> -->
-                            <div
-                                *ngIf="item.truck || item.trailer"
-                                class="add_new"
-                                (click)="showParkingDropdown(rowIndex)"
-                            >
-                                <svg-icon
-                                    *ngIf="!isDrag"
-                                    src="assets/svg/dispatchboard/parking.svg"
-                                >
-                                </svg-icon>
-                                <div class="text">Assign</div>
-                            </div>
-                        </div>
-
-                        <app-ta-input-dropdown
-                            *ngIf="openParkingDropdown == rowIndex"
-                            [formControl]="truckFormControll"
-                            [template]="'double-text-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                isDropdown: true,
-                                label: 'Unit No.',
-                                placeholder: 'Unit No.',
-                                placeholderInsteadOfLabel: true,
-                                autoFocus: true,
-                                blackInput: true,
-                                hideDropdownArrow: true,
-                                hideRequiredCheck: true,
-                                hideDangerMark: true,
-                                hideErrorMessage: true,
-                                mergeDropdownBodyWithInput: true,
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-118'
-                            }"
-                            [canAddNew]="true"
-                            [canOpenModal]="true"
-                            [options]="parking"
-                            [activeItem]="selectedLabel"
-                            (selectedItem)="addParking($event)"
-                        ></app-ta-input-dropdown>
+                <td
+                    class="parking-field"
+                    [ngClass]="{
+                        'parking-field-large': parkingList?.length > 1
+                    }"
+                >
+                    <div class="padding-inside p-0">
+                        <app-dispatch-table-parking
+                            [parkingList]="parkingList"
+                            [parkingSlot]="item.parkingSlot"
+                            [isWideTable]="parkingList?.length > 1"
+                            [truckId]="item.truck?.id"
+                            [trailerId]="item.trailer?.id"
+                            (updateParking)="updateParking($event, item.id)"
+                        ></app-dispatch-table-parking>
                     </div>
                 </td>
                 <td class="box-item">
@@ -754,25 +672,13 @@
                         class="main_inside"
                         [class.filled]="item.driver && item.truck"
                     >
-                        <div class="padding-inside">
-                            <div
-                                *ngIf="item.driver && item.truck"
-                                class="new_load_dispatch_hold"
-                            >
-                                <button
-                                    [mainTooltip]="'Assign load'"
-                                    [tooltipBackground]="'#6C6C6C'"
-                                    ngbTooltip
-                                    position="top"
-                                    class="btn-transparent new_load_dispatch"
-                                >
-                                    <svg-icon
-                                        class="icon-hover-blue-16"
-                                        src="assets/svg/common/ic_plus.svg"
-                                    >
-                                    </svg-icon>
-                                </button>
-                            </div>
+                        <div class="padding-inside p-0">
+                            <app-dispatch-table-assign-load
+                                [driver]="item.driver"
+                                [truck]="item.truck"
+                                [trailer]="item.driver"
+                                [isActiveLoad]="item.activeLoad"
+                            ></app-dispatch-table-assign-load>
                         </div>
                     </div>
                 </td>
@@ -783,7 +689,7 @@
                     <!--    <div class="main_inside addNew">
                       <div
                             class="padding-inside"
-                            *ngIf="openedTruckDropdown != -2"
+                            *ngIf="openedTruckDropdown != -2" 
                         >
                             <div
                                 class="add_new"
@@ -993,7 +899,7 @@
                     </div>
                 </td>
                 <td class="location-field">
-                    <div
+                    <!-- <div
                         class="main_inside"
                         [class.filled]="showAddAddressField == -2"
                     >
@@ -1024,7 +930,7 @@
                                 (closeDropdown)="onHideDropdown($event)"
                             ></app-ta-input-address-dropdown>
                         </div>
-                    </div>
+                    </div> -->
                 </td>
                 <td class="status-field">
                     <div class="main_inside">
@@ -1041,11 +947,7 @@
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td class="parking-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                <td class="parking-field"></td>
                 <td class="box-item">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
