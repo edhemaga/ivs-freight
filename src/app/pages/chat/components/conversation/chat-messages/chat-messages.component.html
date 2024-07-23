@@ -123,14 +123,7 @@
                 <div class="form-wrapper" [formGroup]="messageForm">
                     <app-ta-input
                         formControlName="message"
-                        [inputConfig]="{
-                            name: 'message',
-                            type: 'text',
-                            label: 'Type your message here',
-                            hideRequiredCheck: true,
-                            placeholderInsteadOfLabel: true,
-                            autoFocus: true
-                        }"
+                        [inputConfig]="ChatInput.messageInput"
                         [(ngModel)]="messageToSend"
                         (keyup.enter)="sendMessage()"
                     ></app-ta-input>

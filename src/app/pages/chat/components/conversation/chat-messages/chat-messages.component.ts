@@ -17,9 +17,12 @@ import {
   takeUntil
 } from 'rxjs';
 
-// Routes
+// Assets routes
 import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
 import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
+
+// Config
+import { ChatInput } from '@pages/chat/util/config/chat-input.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -67,6 +70,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Form
   public messageForm!: UntypedFormGroup;
 
+  // Config
+  public ChatInput: ChatInput = ChatInput;
+
   constructor(
     // Ref
     private cdref: ChangeDetectorRef,
@@ -80,11 +86,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     // Services
     private chatService: UserChatService,
     private chatHubService: HubService,
-  ) {
-    this.creteForm();
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.creteForm();
     this.getResolvedData();
     this.connectToHub();
   }

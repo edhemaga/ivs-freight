@@ -67,16 +67,7 @@
             <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
                 <app-ta-input
                     formControlName="searchTerm"
-                    [inputConfig]="{
-                        name: 'searchTerm',
-                        type: 'text',
-                        label: 'Type your message here',
-                        placeholderIcon: 'search',
-                        hideRequiredCheck: true,
-                        placeholderInsteadOfLabel: true,
-                        autoFocus: true,
-                        minLength: 3
-                    }"
+                    [inputConfig]="ChatInput.userSearchInput"
                     (clear)="toggleSearch(false)"
                 ></app-ta-input>
             </div>
