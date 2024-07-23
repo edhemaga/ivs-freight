@@ -30,6 +30,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { rentValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import { FormService } from '@shared/services/form.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
@@ -171,7 +172,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
-        private formService: FormService
+        private formService: FormService,
+        private dispatcherService: DispatcherService
     ) {}
 
     ngOnInit() {
@@ -482,6 +484,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
+                    this.dispatcherService.updateModalList();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({

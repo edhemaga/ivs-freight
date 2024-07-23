@@ -643,12 +643,16 @@ model/medicalResponse.ts
 model/messageResponse.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
+model/milesByUnitPaginatedStopsResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
+model/milesCountByStateResponse.ts
 model/milesInfo.ts
+model/milesStateFilterResponse.ts
 model/milesStopDetailsResponse.ts
+model/milesStopItemResponse.ts
+model/milesStopItemResponsePagination.ts
 model/milesStopPayrollResponse.ts
-model/milesStopResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
 model/mobileFuelStopExpensesResponse.ts
 model/mobileFuelStopListResponse.ts
@@ -1092,6 +1096,7 @@ model/updateTrafficViolationReviewCommand.ts
 model/updateTrailerPMUnitCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
+model/updateViolationDescriptionCommand.ts
 model/updateWorkExperienceCommand.ts
 model/updateWorkExperienceItemCommand.ts
 model/updateWorkExperienceItemReviewCommand.ts

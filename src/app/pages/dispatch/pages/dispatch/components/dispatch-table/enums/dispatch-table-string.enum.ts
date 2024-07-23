@@ -7,4 +7,6 @@ export enum DispatchTableStringEnum {
 
     CIRCLE_ROUTE = 'ic_circle.svg',
     OWNER_STATUS_ROUTE = 'ic_owner-status.svg',
+
+    PARKING = 'parking'
 }

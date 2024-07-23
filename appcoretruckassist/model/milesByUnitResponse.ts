@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckShortResponse } from './truckShortResponse';
-import { MilesStopResponse } from './milesStopResponse';
+import { TruckMinimalResponse } from './truckMinimalResponse';
 
 
 export interface MilesByUnitResponse { 
     id?: number;
-    truck?: TruckShortResponse;
+    truck?: TruckMinimalResponse;
     stopsCount?: number;
     pickupCount?: number;
     pickupPercentage?: number;
@@ -41,6 +40,5 @@ export interface MilesByUnitResponse {
     totalMiles?: number;
     createdAt?: string;
     updatedAt?: string;
-    stops?: Array<MilesStopResponse> | null;
 }
 

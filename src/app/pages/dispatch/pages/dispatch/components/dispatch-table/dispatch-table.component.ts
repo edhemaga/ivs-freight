@@ -3,13 +3,14 @@ import {
     ChangeDetectorRef,
     Component,
     Input,
+    OnDestroy,
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 
-import { catchError, of } from 'rxjs';
+import { catchError, of, Subject, takeUntil } from 'rxjs';
 
 // modules
 import { moveItemInArray } from '@angular/cdk/drag-drop';
@@ -31,10 +32,15 @@ import {
     CreateDispatchCommand,
     DispatchBoardResponse,
     DispatchStatus,
+    ParkingDispatchModalResponse,
+    ParkingService,
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatcher.model';
+import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
+
+// Enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
 @Component({
@@ -54,7 +60,7 @@ import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/componen
         ]),
     ],
 })
-export class DispatchTableComponent implements OnInit {
+export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set _dData(value: DispatchBoardResponse[]) {
         this.dData = JSON.parse(JSON.stringify(value));
 
@@ -79,14 +85,14 @@ export class DispatchTableComponent implements OnInit {
     public truckList: any[];
     public trailerList: any[];
     public driverList: any[];
+    public parkingList: Array<ParkingDispatchModalResponse>[];
 
     /////////////////////////////////////////// UPDATE
 
     checkForEmpty: string = '';
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: UntypedFormControl = new UntypedFormControl();
-
-    parkingList: any[];
+    truckAddress: UntypedFormControl = new UntypedFormControl(null);
     copyIndex: number = -1;
     testTimeout: any;
     startIndexTrailer: number;
@@ -94,11 +100,10 @@ export class DispatchTableComponent implements OnInit {
     savedTruckData: any = null;
     draggingType: string = '';
 
-    @Input() dDataIndx: number;
-
     public selectedColor: any = {};
 
-    openParkingDropdown: number = -1;
+    openedTruckDropdown: number = -1;
+    openedTrailerDropdown: number = -1;
 
     openedDriverDropdown: number = -1;
     statusOpenedIndex: number = -1;
@@ -123,17 +128,6 @@ export class DispatchTableComponent implements OnInit {
 
     tooltip: any;
 
-    parking: any[] = [
-        {
-            id: 1,
-            name: '2334',
-        },
-        {
-            id: 2,
-            name: '5555',
-        },
-    ];
-
     options: Options = {
         floor: 0,
         ceil: 1440,
@@ -146,6 +140,7 @@ export class DispatchTableComponent implements OnInit {
 
     isDrag: boolean = false;
 
+    private destroy$ = new Subject<void>();
     constructor(
         private chd: ChangeDetectorRef,
 
@@ -154,18 +149,19 @@ export class DispatchTableComponent implements OnInit {
 
         // Services
         private dispatcherService: DispatcherService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private parkingService: ParkingService
     ) {}
 
     ngOnInit(): void {}
 
     private handleTruckTrailerDriverLists(lists): void {
-        const { trucks, trailers, drivers } = lists;
+        const { trucks, trailers, drivers, parkings } = lists;
 
         const truckList = JSON.parse(JSON.stringify(trucks));
         const trailerList = JSON.parse(JSON.stringify(trailers));
         const driverList = JSON.parse(JSON.stringify(drivers));
-
+        this.parkingList = JSON.parse(JSON.stringify(parkings));
         this.truckList = truckList.map((truck) => {
             return {
                 ...truck,
@@ -204,7 +200,6 @@ export class DispatchTableComponent implements OnInit {
                 folder: DispatchTableStringEnum.COMMON,
             };
         });
-        this.parkingList = JSON.parse(JSON.stringify(lists.parkings));
     }
 
     private handleTruckTrailerAdditionalFields(): void {
@@ -248,17 +243,32 @@ export class DispatchTableComponent implements OnInit {
     }
 
     /////////////////////////////////////////// UPDATE
-
-    showParkingDropdown(ind: number) {
-        this.openParkingDropdown = ind;
-    }
-
     showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
     }
 
-    addParking() {
-        this.openParkingDropdown = -1;
+    public updateParking(
+        parkingSlot: DispatchBoardParkingEmiter,
+        id: number
+    ): void {
+        this.__change_in_proggress = true;
+        this.parkingService
+            .apiParkingParkingslotPut({
+                id: parkingSlot.parking,
+                trailerId: parkingSlot.trailerId,
+                truckId: parkingSlot.truckId,
+                dispatchId: id,
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.dispatcherService
+                    .updateDispatchboardRowById(id, this.dData.id)
+                    .subscribe(() => {
+                        this.dispatcherService.updateModalList();
+                        this.checkEmptySet = '';
+                        this.__change_in_proggress = false;
+                    });
+            });
     }
 
     onHideDropdown() {
@@ -339,6 +349,7 @@ export class DispatchTableComponent implements OnInit {
             // hoursOfService: 0,
             note: oldData.note,
             loadIds: [],
+            parkingSlotId: oldData.parkingSlotId,
         };
 
         let newData: any = {
@@ -742,4 +753,9 @@ export class DispatchTableComponent implements OnInit {
         this.truckFormControll.reset();
     }
  */
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

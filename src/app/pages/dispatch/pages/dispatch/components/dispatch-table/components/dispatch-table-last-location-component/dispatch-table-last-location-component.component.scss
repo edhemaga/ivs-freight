@@ -17,7 +17,7 @@
 
     &,
     &.location-f-city {
-        &::selection {
+        &::selection &::-moz-selection {
             background-color: #2f2f2f33;
             color: $ta-black-2;
         }
@@ -33,5 +33,4 @@
 .parking {
     font-size: 11px;
     color: $white;
-    font-weight: bold;
 }
