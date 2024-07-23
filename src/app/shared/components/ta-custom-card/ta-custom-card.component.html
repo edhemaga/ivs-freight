@@ -238,6 +238,15 @@
                 </div>
             </ng-container>
 
+            <ng-container *ngIf="showReorderButton">
+                <button
+                    class="reodering-button reodering-button-mild ta-font-bold "
+                    (click)="onAction($event, 'start-reordering')"
+                >
+                    REORDER
+                </button>
+            </ng-container>
+
             <ng-container *ngIf="showFinishReordering">
                 <button
                     class="reodering-button ta-font-bold"

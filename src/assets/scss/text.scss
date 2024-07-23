@@ -1,0 +1,15 @@
+@import 'src/theme/variables.scss';
+
+.text-color {
+    &-muted {
+        color: $muted;
+    }
+
+    &-green{
+        color: $ta-green;
+    }
+
+    &-red-10{
+        color: $ta-red-10;
+    }
+}

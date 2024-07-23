@@ -536,6 +536,10 @@
     color: $ta-blue-13;
     transition: 0.3s;
 
+    &-mild {
+        color: $bw6-2;
+    }
+
     &:hover {
         color: $white;
         background-color: $ta-blue-15;

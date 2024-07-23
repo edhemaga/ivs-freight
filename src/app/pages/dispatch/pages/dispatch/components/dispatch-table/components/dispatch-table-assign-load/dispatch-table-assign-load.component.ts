@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+// RXJS
+import { Subject, takeUntil } from 'rxjs';
 
 // Models
 import {
@@ -6,6 +9,7 @@ import {
     TruckMinimalResponse,
     TrailerMinimalResponse,
     LoadShortResponse,
+    LoadService,
 } from 'appcoretruckassist';
 
 // Enums
@@ -25,17 +29,25 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
     templateUrl: './dispatch-table-assign-load.component.html',
     styleUrls: ['./dispatch-table-assign-load.component.scss'],
 })
-export class DispatchTableAssignLoadComponent implements OnInit {
+export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     @Input() driver: DriverDispatchResponse;
     @Input() truck: TruckMinimalResponse;
     @Input() trailer: TrailerMinimalResponse;
     @Input() isActiveLoad: LoadShortResponse;
+    @Input() dispatchId: number;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
-    constructor(private modalService: ModalService) {}
+    private destroy$ = new Subject<void>();
 
-    ngOnInit(): void {}
+    constructor(
+        private modalService: ModalService,
+        private loadService: LoadService
+    ) {}
+
+    ngOnInit(): void {
+        console.log(this.dispatchId);
+    }
 
     public get isButtonDisabled(): boolean {
         if (!this.driver) return true;
@@ -61,8 +73,27 @@ export class DispatchTableAssignLoadComponent implements OnInit {
     }
 
     public onLoadIconClick(): void {
-        this.modalService.openModal(AssignDispatchLoadModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        this.loadService
+            .apiLoadListAssignedIdGet(this.dispatchId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.modalService.openModal(
+                    AssignDispatchLoadModalComponent,
+                    {
+                        size: TableStringEnum.SMALL,
+                    },
+                    {
+                        data: response,
+                        truck: this.truck,
+                        driver: this.driver,
+                        trailer: this.trailer
+                    }
+                );
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

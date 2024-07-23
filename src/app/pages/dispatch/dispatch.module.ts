@@ -8,6 +8,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DispatchRoutingModule } from '@pages/dispatch/dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
+import { CDK_DRAG_CONFIG, DragDropModule } from '@angular/cdk/drag-drop';
+
+// Config
+import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
 
 // Components
 import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
@@ -27,6 +31,8 @@ import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/com
 import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
 import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/components/load-short-details/load-short-details.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -51,6 +57,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         // Pipes
         HosFilterPipe,
         TooltipWidthPipe,
+        LoadShortDetailsComponent,
     ],
     imports: [
         // Modules
@@ -61,6 +68,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         ReactiveFormsModule,
         SharedModule,
         NgbModule,
+        DragDropModule,
 
         // Pipes
         CdkIdPipe,
@@ -79,7 +87,8 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaPickupDeliveryComponent,
         TaInputComponent,
         TaModalComponent,
+        TaCustomCardComponent
     ],
-    exports: [ColorFinderPipe],
+    exports: [ColorFinderPipe]
 })
 export class DispatchModule {}

@@ -194,6 +194,7 @@ export enum LoadModalStringEnum {
     WAIT_TIME_STATUS = 'status',
     WAIT_TIME_STATUS_NUMBER = 'statusNumber',
     REORDERING = 'reordering',
+    START_REORDER = 'start-reordering',
     ASSIGNED = 'Assigned',
     UNASSIGNED = 'Unassigned',
     CLOSED = 'Closed',

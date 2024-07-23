@@ -1,0 +1,33 @@
+@import 'src/theme/variables';
+
+.dispatch-load {
+    margin-top: 22px;
+
+    &-header {
+        font-size: 11px;
+        line-height: 14px;
+    }
+}
+
+::ng-deep .cdk-drag-preview {
+    background-color: $ta-black !important;
+    border-radius: 3px;
+    div,
+    span {
+        color: $white !important;
+    }
+
+    .short-load-icon {
+        &-text {
+            display: none;
+        }
+        &_drag {
+            display: block !important;
+        }
+    }
+}
+
+::ng-deep .cdk-drag-placeholder {
+    box-shadow: 0px 0px 4px 0px #0000004d inset;
+    background: #123456 !important;
+}
