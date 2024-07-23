@@ -97,11 +97,39 @@
 
                 .attachment-preview {
                     margin-right: 6px;
+                    padding: 1px;
+                    border-radius: 2px;
+                    background-color: $ta-black-2;
 
-                    &-thumbnail {
-                        width: 40px;
-                        height: 40px;
-                        padding-right: 6px;
+                    &-document {
+                        height: 36px;
+                        width: 132px;
+                        padding-left: 6px;
+
+                        &-info {
+                            line-height: 14px;
+                            font-size: 11px;
+                            width: 84px;
+                            height: 14px;
+
+                            .name {
+                                color: $white;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                padding: 4px;
+                            }
+
+                            .size {
+                                color: $bw5;
+                                padding: 4px;
+                            }
+                        }
+
+                        &-thumbnail {
+                            height: 40px;
+                            padding-right: 6px;
+                        }
                     }
                 }
             }

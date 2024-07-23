@@ -64,7 +64,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
 
-  // Icons and images
+  // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
   public ChatPngRoutes = ChatPngRoutes;
 
@@ -181,6 +181,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public addAttachments(files: ChatAttachmentForThumbnail[]): void {
     this.attachments = [...this.attachments, ...files];
+    console.log(this.attachments);
     this.attachmentUploadActive = false;
   }
 
@@ -206,5 +207,4 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }
