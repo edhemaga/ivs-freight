@@ -4,4 +4,5 @@ export class DispatchTableSvgRoutes {
     static closeSvgRoute: string = 'assets/svg/applicant/close-x.svg';
     static plusSvgRoute: string =
         'assets/svg/truckassist-table/dropdown/content/add.svg';
+    static assignLoad: string = 'assets/svg/common/ic_plus.svg';
 }

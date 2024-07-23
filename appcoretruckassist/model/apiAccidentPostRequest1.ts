@@ -88,5 +88,6 @@ export interface ApiAccidentPostRequest1 {
     Cargo?: string;
     Files?: Array<Blob>;
     Medies?: Array<Blob>;
+    Note?: string;
 }
 

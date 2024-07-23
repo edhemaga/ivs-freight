@@ -912,19 +912,54 @@ export class ChatService {
     }
 
     /**
-     * @param conversationId 
+     * @param messageSpecParamsConversationId 
+     * @param messageSpecParamsPageIndex 
+     * @param messageSpecParamsPageSize 
+     * @param messageSpecParamsCompanyId 
+     * @param messageSpecParamsSort 
+     * @param messageSpecParamsSearch 
+     * @param messageSpecParamsSearch1 
+     * @param messageSpecParamsSearch2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiChatMessageListGet(conversationId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<MessageResponse>>;
-    public apiChatMessageListGet(conversationId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<MessageResponse>>>;
-    public apiChatMessageListGet(conversationId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<MessageResponse>>>;
-    public apiChatMessageListGet(conversationId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiChatMessageListGet(messageSpecParamsConversationId?: number, messageSpecParamsPageIndex?: number, messageSpecParamsPageSize?: number, messageSpecParamsCompanyId?: number, messageSpecParamsSort?: string, messageSpecParamsSearch?: string, messageSpecParamsSearch1?: string, messageSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<MessageResponse>>;
+    public apiChatMessageListGet(messageSpecParamsConversationId?: number, messageSpecParamsPageIndex?: number, messageSpecParamsPageSize?: number, messageSpecParamsCompanyId?: number, messageSpecParamsSort?: string, messageSpecParamsSearch?: string, messageSpecParamsSearch1?: string, messageSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<MessageResponse>>>;
+    public apiChatMessageListGet(messageSpecParamsConversationId?: number, messageSpecParamsPageIndex?: number, messageSpecParamsPageSize?: number, messageSpecParamsCompanyId?: number, messageSpecParamsSort?: string, messageSpecParamsSearch?: string, messageSpecParamsSearch1?: string, messageSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<MessageResponse>>>;
+    public apiChatMessageListGet(messageSpecParamsConversationId?: number, messageSpecParamsPageIndex?: number, messageSpecParamsPageSize?: number, messageSpecParamsCompanyId?: number, messageSpecParamsSort?: string, messageSpecParamsSearch?: string, messageSpecParamsSearch1?: string, messageSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (conversationId !== undefined && conversationId !== null) {
+        if (messageSpecParamsConversationId !== undefined && messageSpecParamsConversationId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>conversationId, 'ConversationId');
+            <any>messageSpecParamsConversationId, 'MessageSpecParams.ConversationId');
+        }
+        if (messageSpecParamsPageIndex !== undefined && messageSpecParamsPageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsPageIndex, 'MessageSpecParams.PageIndex');
+        }
+        if (messageSpecParamsPageSize !== undefined && messageSpecParamsPageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsPageSize, 'MessageSpecParams.PageSize');
+        }
+        if (messageSpecParamsCompanyId !== undefined && messageSpecParamsCompanyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsCompanyId, 'MessageSpecParams.CompanyId');
+        }
+        if (messageSpecParamsSort !== undefined && messageSpecParamsSort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsSort, 'MessageSpecParams.Sort');
+        }
+        if (messageSpecParamsSearch !== undefined && messageSpecParamsSearch !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsSearch, 'MessageSpecParams.Search');
+        }
+        if (messageSpecParamsSearch1 !== undefined && messageSpecParamsSearch1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsSearch1, 'MessageSpecParams.Search1');
+        }
+        if (messageSpecParamsSearch2 !== undefined && messageSpecParamsSearch2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>messageSpecParamsSearch2, 'MessageSpecParams.Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
