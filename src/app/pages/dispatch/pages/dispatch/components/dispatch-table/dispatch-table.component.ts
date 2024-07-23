@@ -38,8 +38,6 @@ import {
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatcher.model';
-import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component'; 
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
 // Enums
@@ -65,8 +63,6 @@ import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/componen
 export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set _dData(value: DispatchBoardResponse[]) {
         this.dData = JSON.parse(JSON.stringify(value));
-
-        console.log(' this.dData.dispatches', this.dData.dispatches);
 
         this.handleTruckTrailerAdditionalFields();
 
@@ -160,7 +156,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     ngOnInit(): void {}
 
     private handleTruckTrailerDriverLists(lists): void {
-        console.log('lists', lists);
         const { trucks, trailers, drivers, parkings } = lists;
 
         const truckList = JSON.parse(JSON.stringify(trucks));
@@ -252,52 +247,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = ind;
     }
 
-    addTruck(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: TruckModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                if (this.openedTruckDropdown == -2) this.savedTruckId = e;
-                else this.dData.dispatches[this.openedTruckDropdown].truck = e;
-                this.showAddAddressField = this.openedTruckDropdown;
-            }
-        }
-
-        this.openedTruckDropdown = -1;
-    }
-
-    addTrailer(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: TrailerModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                this.updateOrAddDispatchBoardAndSend(
-                    'trailerId',
-                    e.id,
-                    this.openedTrailerDropdown
-                );
-            }
-        }
-
-        this.openedTrailerDropdown = -1;
-    }
-
     public updateParking(
         parkingSlot: DispatchBoardParkingEmiter,
         id: number
@@ -320,17 +269,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         this.__change_in_proggress = false;
                     });
             });
-    }
-
-    handleInputSelect(e: any) {
-        // return;
-        if (e.valid) {
-            this.updateOrAddDispatchBoardAndSend(
-                'location',
-                e.address,
-                this.showAddAddressField
-            );
-        }
     }
 
     onHideDropdown() {

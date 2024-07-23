@@ -27,7 +27,7 @@ export class DispatcherQuery extends QueryEntity<DispatcherState> {
         trucks: state.modal.trucks,
         trailers: state.modal.trailers,
         statuses: state.modal.dispatchStatuses,
-        parkings: state.modal.parkings
+        parkings: state.modal.parkings,
     }));
 
     get modalList() {

@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import '/src/theme/variables';
 
 .dispatch-table {
     position: relative;
@@ -284,27 +284,6 @@
                         .location-field {
                             display: flex;
                             width: 100%;
-
-                            .location-f-city,
-                            .location-f-st {
-                                font-size: 14px;
-                                color: #2f2f2f;
-
-                                &.location-f-city {
-                                    white-space: nowrap;
-                                    max-width: 80%;
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                }
-
-                                &,
-                                &.location-f-city {
-                                    &::selection {
-                                        background-color: #2f2f2f33;
-                                        color: #2f2f2f;
-                                    }
-                                }
-                            }
                         }
                         .no-delpickup {
                             padding-left: 4px;
