@@ -4,7 +4,7 @@
     width: 100%;
     height: 100%;
     border-radius: 3px;
-    transition: 0.3s;
+    transition: background-color 0.3s;
     height: 27px;
 
     &-wrapper {
@@ -55,10 +55,11 @@
             font-size: 11px;
             transition: 0.3s;
             padding: 4px;
+            transition-property: color, background-color;
 
             &:hover {
                 color: $white;
-                background: $ta-blue-21;
+                background-color: $ta-blue-21;
             }
 
             svg {
@@ -79,7 +80,7 @@
         &-title {
             font-size: 11px;
             color: $ta-light-grey-2;
-            transition: 0.3s;
+            transition: color 0.3s;
             cursor: pointer;
             height: 32px;
             margin: 0 !important;
@@ -197,9 +198,9 @@
 
     &_empty {
         color: $muted;
-        transition: 0.3s;
+        transition: color 0.3s;
         svg path {
-            transition: 0.3s;
+            transition: fill 0.3s;
             fill: $ta-light-grey-6;
         }
 
