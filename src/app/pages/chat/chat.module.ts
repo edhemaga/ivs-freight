@@ -39,6 +39,9 @@ import { ConversationResolver } from "@pages/chat/resolvers/conversation/convers
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 
+// Directives
+import { DragAndDropDirective } from "./util/directives/drag-and-drop.directive";
+
 @NgModule({
     declarations: [
         ChatComponent,
@@ -56,7 +59,10 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         // Auxillary components
         ChatToolbarComponent,
         ChatNoDataComponent,
-        UserStatusBadgeComponent
+        UserStatusBadgeComponent,
+
+        // Directives
+        DragAndDropDirective
     ],
     imports: [
         // Modules

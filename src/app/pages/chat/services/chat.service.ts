@@ -52,13 +52,15 @@ export class UserChatService {
         );
     }
 
-    public sendMessage(conversationId: number, content: string, attachments?: Blob[]): Observable<CreateResponse> {
+    public sendMessage(
+        conversationId: number,
+        content: string,
+        attachments?: Blob[]
+    ): Observable<CreateResponse> {
         return this.chatService.apiChatMessagePost(
             1,
             conversationId,
             content,
-            null,
-            attachments
         );
     }
 

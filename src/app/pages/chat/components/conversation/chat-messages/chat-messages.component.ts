@@ -5,11 +5,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild
+  ViewChild,
+  HostListener
 } from '@angular/core';
 import {
   ActivatedRoute,
-  Router
 } from '@angular/router';
 import {
   UntypedFormGroup,
@@ -34,6 +34,7 @@ import {
   ConversationResponse,
   MessageResponse
 } from 'appcoretruckassist';
+import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +45,11 @@ import {
 export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContent') messagesContent: ElementRef;
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Escape') this.attachmentUploadActive = false;
+  }
 
   private destroy$ = new Subject<void>();
 
@@ -65,7 +71,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   private isMessageSendable: boolean = true;
 
   // Attachment upload
-  public attachmentUpload: boolean = false;
+  public attachmentUploadActive: boolean = false;
+  public attachments!: ChatAttachmentForThumbnail[];
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
@@ -161,12 +168,24 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingActivated = true;
   }
 
+
+  public uploadAttachmentDragAndDrop(): void {
+    this.attachmentUploadActive = true;
+  }
+
+  public addAttachments(files: ChatAttachmentForThumbnail[]): void {
+    this.attachments = files;
+    this.attachmentUploadActive = false;
+  }
+
+  // Trackers
+
   public trackById(index: number, item: MessageResponse): number {
     return item.id;
   }
 
-  public uploadAttachmentDragAndDrop(): void {
-    this.attachmentUpload = true;
+  public trackByAttachmentName(index: number, attachment: ChatAttachmentForThumbnail): string {
+    return attachment.name;
   }
 
   ngOnDestroy(): void {
