@@ -207,8 +207,4 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public showAtt(): void {
-    console.log(this.attachments)
-  }
-
 }
