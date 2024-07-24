@@ -21,8 +21,14 @@ import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
+import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
+import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location-component.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -38,8 +44,11 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         DispatchComponent,
         DispatchTableComponent,
         DispatchTableDriverComponent,
+        DispatchTableParkingComponent,
         DispatchTableTruckTrailerComponent,
         DispatchTableAddNewComponent,
+        DispatchTableAssignLoadComponent,
+        AssignDispatchLoadModalComponent,
 
         // Pipes
         HosFilterPipe,
@@ -70,6 +79,9 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
+        TaInputComponent,
+        DispatchTableLastLocationComponentComponent,
+        TaModalComponent,
     ],
     exports: [ColorFinderPipe],
 })

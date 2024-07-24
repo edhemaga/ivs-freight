@@ -16,6 +16,10 @@ import { ViolationCommand } from './violationCommand';
 export interface ApiViolationPutRequest { 
     Id?: number;
     County?: string;
+    DriverId?: number;
+    CoDriverId?: number;
+    TruckId?: number;
+    TrailerId?: number;
     Violations?: Array<ViolationCommand>;
     Note?: string;
     PoliceDepartment?: string;

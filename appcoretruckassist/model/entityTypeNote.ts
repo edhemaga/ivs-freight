@@ -11,7 +11,7 @@
  */
 
 
-export type EntityTypeNote = 'Driver' | 'Truck' | 'Trailer' | 'Todo' | 'Title' | 'Test' | 'Shipper' | 'RoadsideInspection' | 'RepairShop' | 'Repair' | 'Registration' | 'Owner' | 'Mvr' | 'Medical' | 'LoadTemplate' | 'Load' | 'InsurancePolicy' | 'Inspection' | 'FuelStopExtension' | 'FactoringCompany' | 'DispatchHistory' | 'Dispatch' | 'CompanyUser' | 'CompanyContact' | 'CompanyAccount' | 'Cdl' | 'Broker' | 'Applicant';
+export type EntityTypeNote = 'Driver' | 'Truck' | 'Trailer' | 'Todo' | 'Title' | 'Test' | 'Shipper' | 'RoadsideInspection' | 'RepairShop' | 'Repair' | 'Registration' | 'Owner' | 'Mvr' | 'Medical' | 'LoadTemplate' | 'Load' | 'InsurancePolicy' | 'Inspection' | 'FuelStopExtension' | 'FactoringCompany' | 'DispatchHistory' | 'Dispatch' | 'CompanyUser' | 'CompanyContact' | 'CompanyAccount' | 'Cdl' | 'Broker' | 'Applicant' | 'Accident' | 'InsuranceType';
 
 export const EntityTypeNote = {
     Driver: 'Driver' as EntityTypeNote,
@@ -41,6 +41,8 @@ export const EntityTypeNote = {
     CompanyAccount: 'CompanyAccount' as EntityTypeNote,
     Cdl: 'Cdl' as EntityTypeNote,
     Broker: 'Broker' as EntityTypeNote,
-    Applicant: 'Applicant' as EntityTypeNote
+    Applicant: 'Applicant' as EntityTypeNote,
+    Accident: 'Accident' as EntityTypeNote,
+    InsuranceType: 'InsuranceType' as EntityTypeNote
 };
 

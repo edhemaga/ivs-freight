@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { ParkingSlotDispatchModalResponse } from './parkingSlotDispatchModalResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface ParkingDispatchModalResponse { 
     name?: string | null;
+    address?: AddressEntity;
     parkingSlots?: Array<ParkingSlotDispatchModalResponse> | null;
 }
 

@@ -1,0 +1,21 @@
+<div class="dispatch-table-driver">
+    <ng-container *ngIf="!isButtonDisabled">
+        <div
+            [ngClass]="{
+                ' dispatch-table-driver_unassigned': isButtonDisabled,
+                ' dispatch-table-driver_hover': !isButtonDisabled
+            }"
+        >
+            <div
+                class="d-flex align-items-center justify-content-center"
+                [mainTooltip]="'Assign'"
+                [tooltipBackground]="'#424242'"
+                ngbTooltip
+                position="bottom"
+                (click)="onLoadIconClick()"
+            >
+                <svg-icon [src]="svgRoutes.assignLoad"> </svg-icon>
+            </div>
+        </div>
+    </ng-container>
+</div>
