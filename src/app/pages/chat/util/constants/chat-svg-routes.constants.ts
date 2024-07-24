@@ -10,4 +10,5 @@ export class ChatSvgRoutes {
     static faceEmojiIcon: string = 'assets/svg/chat/face-smile-emoji-icon.svg';
     static documentIcon: string = 'assets/svg/chat/document-icon.svg';
     static sendMessageIcon: string = 'assets/svg/chat/send-message-icon.svg';
+    static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
 }

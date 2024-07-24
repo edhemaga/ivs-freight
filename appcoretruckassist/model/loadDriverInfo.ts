@@ -15,7 +15,7 @@ import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface LoadDriverInfo { 
-    id?: number;
+    id?: number | null;
     avatarFile?: FileResponse;
     firstName?: string | null;
     lastName?: string | null;
