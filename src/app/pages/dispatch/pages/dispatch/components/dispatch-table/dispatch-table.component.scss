@@ -145,9 +145,7 @@
 
                         .text {
                             color: #ffffff;
-                            font-size: 11px;
-                            line-height: 14px;
-                            font-weight: 500;
+                            font-size: 14px;
                             user-select: none;
                         }
 
@@ -156,9 +154,7 @@
 
                             svg {
                                 path {
-                                    fill: $ta-blue-13;
-                                    width: 16px;
-                                    height: 16px;
+                                    fill: #3074d3;
                                 }
                             }
                         }
@@ -493,12 +489,12 @@
                     background-color: #f7f7f7;
 
                     .text {
-                        color: $ta-black !important;
+                        color: #2f2f2f !important;
                     }
 
                     &:hover {
                         cursor: pointer;
-                        background-color: $ta-blue-15;
+                        background-color: #3074d3;
 
                         .text {
                             color: #fff !important;
@@ -508,7 +504,7 @@
                             svg-icon {
                                 svg {
                                     path {
-                                        fill: $ta-blue-17 !important;
+                                        fill: #fff !important;
                                     }
                                 }
                             }

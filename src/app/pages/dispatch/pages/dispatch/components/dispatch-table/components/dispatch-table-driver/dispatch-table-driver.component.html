@@ -1,30 +1,19 @@
 <div
     class="main_inside driver-container"
     [class.filled]="driver"
-    [class.addNew]="!driver && driverList.length && !isBoardLocked"
     [class.default]="!driver && !driverList.length && !isBoardLocked"
     [class.isDragging]="isDrag && draggingType === 'driver'"
 >
-    <ng-container *ngIf="openedDriverDropdown !== rowIndex">
-        <div class="padding-inside">
-            <ng-container
-                *ngIf="!driver && driverList.length && !isBoardLocked"
-            >
-                <div class="add_new" (click)="showDriverDropdown(rowIndex)">
-                    <div class="text">ADD</div>
-                    <svg-icon
-                        *ngIf="!isDrag"
-                        [src]="
-                            'assets/svg/truckassist-table/dropdown/content/add.svg'
-                        "
-                        [svgStyle]="{
-                            'width.px': '16',
-                            'height.px': '16'
-                        }"
-                    ></svg-icon>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="driver">
+    <ng-container *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown">
+        <ng-container *ngIf="!driver && driverList.length && !isBoardLocked">
+            <app-dispatch-table-add-new
+                [isDrag]="isDrag"
+                (clickValueEmitter)="showDriverDropdown(rowIndex)"
+            ></app-dispatch-table-add-new>
+        </ng-container>
+
+        <ng-container *ngIf="driver">
+            <div class="padding-inside">
                 <div class="info-item">
                     <div class="driver-buttons">
                         <ng-container *ngIf="driverHover.txt !== 'email'">
@@ -159,11 +148,11 @@
                         </div>
                     </ng-container>
                 </div>
-            </ng-container>
-        </div>
+            </div>
+        </ng-container>
     </ng-container>
 
-    <ng-container *ngIf="openedDriverDropdown === rowIndex">
+    <ng-template #driverDropdown>
         <app-ta-input-dropdown
             [formControl]="driverFormControl"
             [template]="'details-template'"
@@ -173,7 +162,7 @@
                 label: 'Unit No',
                 placeholder: 'Unit No.',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-198',
+                dropdownWidthClass: 'w-col-238',
                 placeholderInsteadOfLabel: true,
                 hideDropdownArrow: true,
                 autoFocus: true,
@@ -190,5 +179,5 @@
             [activeItem]="null"
             (selectedItem)="addDriver($event)"
         ></app-ta-input-dropdown>
-    </ng-container>
+    </ng-template>
 </div>
