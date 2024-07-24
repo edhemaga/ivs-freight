@@ -33,11 +33,13 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
     ],
 })
 export class DispatchTableLastLocationComponentComponent {
-    @Input() address: AddressEntity;
+    @Input() address?: AddressEntity = null;
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
     @Input() set _parkingLists(value) {
-        this.checkParkingLocation(value);
+        if (this.address) {
+            this.checkParkingLocation(value);
+        }
     }
     @Output() handleUpdateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();

@@ -881,54 +881,22 @@
                 </td>
 
                 <td class="location-field">
-                    <!-- <app-last-location-component
-                        *ngIf="showAddAddressFieldIndex == -2"
-                        [address]="null"
-                        [rowIndex]="rowIndex"
-                        [showAddAddressField]="showAddAddressFieldIndex"
-                        [_parkingLists]="parkingList"
-                        (handleUpdateLastLocationEmit)="
-                            updateOrAddDispatchBoardAndSend(
-                                'location',
-                                $event,
-                                this.showAddAddressFieldIndex
-                            )
-                        "
-                        (isDropdownHidden)="onHideDropdown()"
-                    >
-                    </app-last-location-component> -->
-                    <div
-                        class="main_inside"
-                        [class.filled]="showAddAddressFieldIndex == -2"
-                    >
-                        <div class="padding-inside">
-                            <app-ta-input-address-dropdown
-                                *ngIf="showAddAddressFieldIndex == -2"
-                                [formControl]="truckAddress"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Location',
-                                    placeholder: 'Location',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-151',
-                                    minLength: 12,
-                                    maxLength: 256,
-                                    autoFocus: true,
-                                    placeholderInsteadOfLabel: true,
-                                    hideErrorMessage: true,
-                                    blackInput: true
-                                }"
-                                [placeholderType]="'shortAddress'"
-                                (incorrectEvent)="incorrectInput($event, 0, 18)"
-                                [activeAddress]="selectedAddress"
-                                (selectedAddress)="
-                                    handleInputSelect($event, 'ADDRESS')
-                                "
-                                (closeDropdown)="onHideDropdown($event)"
-                            ></app-ta-input-address-dropdown>
-                        </div>
-                    </div>
+                    <ng-container *ngIf="showAddAddressFieldIndex == -2">
+                        <app-last-location-component
+                            [rowIndex]="showAddAddressFieldIndex"
+                            [showAddAddressField]="showAddAddressFieldIndex"
+                            [_parkingLists]="parkingList"
+                            (handleUpdateLastLocationEmit)="
+                                updateOrAddDispatchBoardAndSend(
+                                    'location',
+                                    $event,
+                                    this.showAddAddressFieldIndex
+                                )
+                            "
+                            (isDropdownHidden)="onHideDropdown()"
+                        >
+                        </app-last-location-component>
+                    </ng-container>
                 </td>
 
                 <td class="status-field">
