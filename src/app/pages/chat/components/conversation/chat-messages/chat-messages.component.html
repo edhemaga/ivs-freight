@@ -159,134 +159,57 @@
                                     "
                                 >
                                     <ng-container
-                                        [ngSwitch]="
-                                            attachment.name | fileExtension
+                                        *ngIf="
+                                            (attachment.name
+                                                | fileExtension) ===
+                                                ('jpg' || 'jpeg' || 'png');
+                                            else mediaFiles
                                         "
                                     >
-                                        <!-- TODO isolate types -->
-                                        <ng-container *ngSwitchCase="'zip'">
+                                        <div class="attachment-preview d-flex">
+                                            <img
+                                                [src]="
+                                                    attachment.stringifiedData
+                                                "
+                                                [alt]="attachment.name"
+                                                class="attachment-preview-thumbnail"
+                                            />
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-template #mediaFiles>
+                                        <div class="attachment-preview d-flex">
                                             <div
-                                                class="attachment-preview d-flex"
-                                            >
-                                                <div
-                                                    class="attachment-preview-document d-flex"
-                                                >
-                                                    <img
-                                                        [src]="
-                                                            ChatPngRoutes.zipFileType
-                                                        "
-                                                        [alt]="attachment.name"
-                                                        class="attachment-preview-document-thumbnail"
-                                                    />
-                                                    <div
-                                                        class="attachment-preview-document-info"
-                                                    >
-                                                        <div class="name">
-                                                            {{
-                                                                attachment.name
-                                                            }}
-                                                        </div>
-                                                        <div class="size">
-                                                            {{
-                                                                attachment.size
-                                                            }}
-                                                            kB
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngSwitchCase="'xls'">
-                                            <div
-                                                class="attachment-preview d-flex"
-                                            >
-                                                <div
-                                                    class="attachment-preview-document"
-                                                >
-                                                    <img
-                                                        [src]="
-                                                            ChatPngRoutes.xlsFileType
-                                                        "
-                                                        [alt]="attachment.name"
-                                                        class="attachment-preview-document-thumbnail"
-                                                    />
-                                                    <div
-                                                        class="attachment-preview-document-info"
-                                                    >
-                                                        <div
-                                                            class="name ta-font-medium"
-                                                        >
-                                                            {{
-                                                                attachment.name
-                                                            }}
-                                                        </div>
-                                                        <div
-                                                            class="size ta-font-regular"
-                                                        >
-                                                            {{
-                                                                attachment.size
-                                                            }}
-                                                            kB
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngSwitchCase="'pdf'">
-                                            <div
-                                                class="attachment-preview d-flex"
-                                            >
-                                                <div
-                                                    class="attachment-preview-document"
-                                                >
-                                                    <img
-                                                        [src]="
-                                                            ChatPngRoutes.pdfFileType
-                                                        "
-                                                        [alt]="attachment.name"
-                                                        class="attachment-preview-document-thumbnail"
-                                                    />
-                                                    <div
-                                                        class="attachment-preview-document-info"
-                                                    >
-                                                        <div class="name">
-                                                            {{
-                                                                attachment.name
-                                                            }}
-                                                        </div>
-                                                        <div class="size">
-                                                            {{
-                                                                attachment.size
-                                                            }}
-                                                            kB
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container
-                                            *ngSwitchCase="
-                                                'jpg' || 'jpeg' || 'png'
-                                            "
-                                        >
-                                            <div
-                                                class="attachment-preview d-flex"
+                                                class="attachment-preview-document d-flex"
                                             >
                                                 <img
                                                     [src]="
-                                                        attachment.stringifiedData
+                                                        attachment.name
+                                                            | fileExtensionIllustration
                                                     "
                                                     [alt]="attachment.name"
-                                                    class="attachment-preview-thumbnail"
+                                                    class="attachment-preview-document-thumbnail"
                                                 />
+                                                <div
+                                                    class="attachment-preview-document-info"
+                                                >
+                                                    <div class="name">
+                                                        {{ attachment.name }}
+                                                    </div>
+                                                    <div class="size">
+                                                        {{ attachment.size }}
+                                                        kB
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </ng-container>
-                                    </ng-container>
+                                        </div>
+                                    </ng-template>
                                 </ng-container>
                             </div>
                         </ng-container>
 
                         <app-ta-input
+                            #messagesInput
                             formControlName="message"
                             [inputConfig]="
                                 ChatInput.messageInput(

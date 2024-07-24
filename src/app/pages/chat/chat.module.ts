@@ -39,6 +39,7 @@ import { ConversationResolver } from "@pages/chat/resolvers/conversation/convers
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
+import { FileExtensionIllustrationPipe } from "@shared/pipes/file-extension-ilustration.pipe";
 
 // Directives
 import { DragAndDropDirective } from "./util/directives/drag-and-drop.directive";
@@ -81,7 +82,8 @@ import { DragAndDropDirective } from "./util/directives/drag-and-drop.directive"
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
-        FileExtensionPipe
+        FileExtensionPipe,
+        FileExtensionIllustrationPipe
     ],
     providers: [
         // Services

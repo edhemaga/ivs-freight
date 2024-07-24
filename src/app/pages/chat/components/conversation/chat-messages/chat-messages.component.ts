@@ -181,8 +181,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public addAttachments(files: ChatAttachmentForThumbnail[]): void {
     this.attachments = [...this.attachments, ...files];
-    console.log(this.attachments);
     this.attachmentUploadActive = false;
+
+    this.enableChatInput();
   }
 
   public blurInput(): void {

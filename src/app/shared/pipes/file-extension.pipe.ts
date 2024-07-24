@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true
 })
 export class FileExtensionPipe implements PipeTransform {
-    transform(url: string): any {
+    transform(url: string): string {
         if (!url) {
             return null;
         }
