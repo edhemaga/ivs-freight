@@ -140,6 +140,7 @@
                         Type your message here
                     </div>
                 </ng-container>
+
                 <ng-template #chatInputField>
                     <div class="form-wrapper" [formGroup]="messageForm">
                         <ng-container *ngIf="attachments?.length">
@@ -178,7 +179,14 @@
                                     </ng-container>
 
                                     <ng-template #mediaFiles>
-                                        <div class="attachment-preview d-flex">
+                                        <div
+                                            class="attachment-preview d-flex"
+                                            [ngClass]="
+                                                !isChatTypingBlurred
+                                                    ? 'attachment-preview-dark'
+                                                    : 'attachment-preview-light'
+                                            "
+                                        >
                                             <div
                                                 class="attachment-preview-document d-flex"
                                             >
@@ -193,10 +201,10 @@
                                                 <div
                                                     class="attachment-preview-document-info"
                                                 >
-                                                    <div class="name">
+                                                    <div class="text name">
                                                         {{ attachment.name }}
                                                     </div>
-                                                    <div class="size">
+                                                    <div class="text size">
                                                         {{ attachment.size }}
                                                         kB
                                                     </div>

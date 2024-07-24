@@ -93,42 +93,53 @@
                     &-light {
                         background-color: $bw2;
                     }
-                }
 
-                .attachment-preview {
-                    margin-right: 6px;
-                    padding: 1px;
-                    border-radius: 2px;
-                    background-color: $ta-black-2;
+                    .attachment-preview {
+                        margin-right: 6px;
+                        padding: 1px;
+                        border-radius: 2px;
 
-                    &-document {
-                        height: 36px;
-                        width: 132px;
-                        padding-left: 6px;
-
-                        &-info {
-                            line-height: 14px;
-                            font-size: 11px;
-                            width: 84px;
-                            height: 14px;
-
-                            .name {
-                                color: $white;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
-                                overflow: hidden;
-                                padding: 4px;
-                            }
-
-                            .size {
-                                color: $bw5;
-                                padding: 4px;
-                            }
+                        &-dark {
+                            background-color: $bw2;
+                            color: $white;
                         }
 
-                        &-thumbnail {
-                            height: 40px;
-                            padding-right: 6px;
+                        &-light {
+                            background-color: $ta-black-2;
+                            color: $ta-black-2 !important;
+                        }
+
+                        &-document {
+                            height: 36px;
+                            width: 132px;
+                            padding-left: 6px;
+
+                            &-info {
+                                line-height: 14px;
+                                font-size: 11px;
+                                width: 84px;
+                                height: 14px;
+
+                                .text {
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                }
+
+                                .name {
+                                    padding: 4px;
+                                }
+
+                                .size {
+                                    color: $bw5;
+                                    padding: 0 4px;
+                                }
+                            }
+
+                            &-thumbnail {
+                                height: 40px;
+                                padding-right: 6px;
+                            }
                         }
                     }
                 }
