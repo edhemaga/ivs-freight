@@ -1,154 +1,171 @@
 <div
-    class="main_inside"
-    [class.addNew]="!driver && driverList.length && !isBoardLocked"
+    class="main_inside driver-container"
     [class.filled]="driver"
+    [class.addNew]="!driver && driverList.length && !isBoardLocked"
     [class.default]="!driver && !driverList.length && !isBoardLocked"
-    [class.isDragging]="isDrag && draggingType == 'driver'"
-    cdkDropList
-    (cdkDropListDropped)="dropDriver($event, rowIndex)"
-    id="{{ rowIndex | cdkid : gridIndex : 'driver' }}"
-    [cdkDropListData]="dData"
-    [cdkDropListConnectedTo]="
-        rowIndex | cdkconnect : dData.dispatches.length : gridIndex : 'driver'
-    "
+    [class.isDragging]="isDrag && draggingType === 'driver'"
 >
-    <div
-        class="drag-hold-between"
-        cdkDrag
-        (cdkDragStarted)="cdkDragStartedDriver($event, rowIndex)"
-        (cdkDragEnded)="dragEnd()"
-        [cdkDragDisabled]="isBoardLocked || !driver"
-        cdkDragLockAxis="y"
-        [cdkDragPreviewClass]="'trailer_3074D3'"
-        cdkDragPreviewContainer="parent"
-        cdkDragBoundary=".dispatch-table table tbody"
-    >
-        <div *cdkDragPlaceholder class="custom-dispatch-placeholder"></div>
-        <div class="padding-inside" *ngIf="openedDriverDropdown != rowIndex">
-            <div
-                class="add_new"
+    <ng-container *ngIf="openedDriverDropdown !== rowIndex">
+        <div class="padding-inside">
+            <ng-container
                 *ngIf="!driver && driverList.length && !isBoardLocked"
-                (click)="showDriverDropdown(rowIndex)"
             >
-                <div class="text">Add</div>
-                <svg-icon
-                    *ngIf="!isDrag"
-                    [src]="
-                        'assets/svg/truckassist-table/dropdown/content/add.svg'
-                    "
-                    [svgStyle]="{
-                        'width.px': '18',
-                        'height.px': '18'
-                    }"
-                ></svg-icon>
-            </div>
-            <div class="info-item" *ngIf="driver">
-                <div class="driver-copy" *ngIf="copyIndex == rowIndex">
-                    COPIED
-                </div>
-                <div class="driver-buttons">
-                    <span
-                        *ngIf="driverHover.txt != 'email'"
-                        [class.only_active_icon]="
-                            driverCopy.indx == rowIndex &&
-                            driverCopy.txt != 'phone'
-                        "
-                        [class.active-icon]="
-                            driverCopy.indx == rowIndex &&
-                            driverCopy.txt == 'phone'
-                        "
-                        (mouseover)="setMouseOver('phone', rowIndex)"
-                        (mouseout)="setMouseOut()"
-                        (click)="copy(phone, rowIndex, 'phone')"
-                    >
-                        <svg-icon
-                            [src]="'assets/svg/common/ic_phone.svg'"
-                            [svgStyle]="{
-                                'width.px': '18',
-                                'height.px': '18'
-                            }"
-                            [fill]="'#ff0000'"
-                        ></svg-icon>
-                    </span>
-                    <span
-                        [class.only_active_icon]="
-                            driverCopy.indx == rowIndex &&
-                            driverCopy.txt != 'email'
-                        "
-                        [class.active-icon]="
-                            driverCopy.indx == rowIndex &&
-                            driverCopy.txt == 'email'
-                        "
-                        (mouseover)="setMouseOver('email', rowIndex)"
-                        (mouseout)="setMouseOut()"
-                        (click)="copy(email, rowIndex, 'email')"
-                    >
-                        <svg-icon
-                            [src]="'assets/svg/common/ic_email.svg'"
-                            [svgStyle]="{
-                                'width.px': '18',
-                                'height.px': '18'
-                            }"
-                            [fill]="'#ff0000'"
-                        ></svg-icon>
-                    </span>
-                </div>
-                <span class="dr-span-left" *ngIf="driverHover.indx != rowIndex"
-                    >{{ driver.firstName }}
-                    {{ driver.lastName }}</span
-                >
-                <div
-                    class="copy_divs"
-                    *ngIf="
-                        driverHover.indx == rowIndex &&
-                        driverHover.txt == 'phone'
-                    "
-                >
-                    {{ phone }}
-                </div>
-                <div
-                    class="copy_divs"
-                    *ngIf="
-                        driverHover.indx == rowIndex &&
-                        driverHover.txt == 'email'
-                    "
-                >
-                    {{ email }}
-                </div>
-                <span
-                    class="dr-span"
-                    ngbTooltip
-                    mainTooltip="Owner"
-                    tooltipBackground="#3074D3"
-                    position="right"
-                >
+                <div class="add_new" (click)="showDriverDropdown(rowIndex)">
+                    <div class="text">ADD</div>
                     <svg-icon
-                        *ngIf="
-                            driver.owner && driverHover.indx != rowIndex
+                        *ngIf="!isDrag"
+                        [src]="
+                            'assets/svg/truckassist-table/dropdown/content/add.svg'
                         "
-                        [src]="'assets/svg/common/ic_driver-owner.svg'"
                         [svgStyle]="{
-                            'width.px': '13',
-                            'height.px': '13'
+                            'width.px': '16',
+                            'height.px': '16'
                         }"
-                        [fill]="'#ff0000'"
-                    ></svg-icon>
-                </span>
-                <div
-                    *ngIf="!isDrag"
-                    class="remove-item driver-remove-item"
-                    (click)="removeDriver(rowIndex)"
-                >
-                    <svg-icon
-                        [src]="'assets/svg/applicant/close-x.svg'"
                     ></svg-icon>
                 </div>
-            </div>
+            </ng-container>
+            <ng-container *ngIf="driver">
+                <div class="info-item">
+                    <div class="driver-buttons">
+                        <ng-container *ngIf="driverHover.txt !== 'email'">
+                            <span
+                                (mouseover)="setMouseOver('phone', rowIndex)"
+                                (mouseout)="setMouseOut()"
+                                (click)="copy(phone, rowIndex, 'phone')"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    copyIndex === rowIndex &&
+                                    driverCopy.txt === 'phone'
+                                        ? 'Copied'
+                                        : 'Copy'
+                                "
+                                [tooltipBackground]="
+                                    copyIndex === rowIndex &&
+                                    driverCopy.txt === 'phone'
+                                        ? '#3B73ED'
+                                        : '#424242'
+                                "
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/ic_phone.svg'"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                    [fill]="'#ff0000'"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                        <span
+                            (mouseover)="setMouseOver('email', rowIndex)"
+                            (mouseout)="setMouseOut()"
+                            (click)="copy(email, rowIndex, 'email')"
+                            ngbTooltip
+                            [mainTooltip]="
+                                copyIndex === rowIndex &&
+                                driverCopy.txt === 'email'
+                                    ? 'Copied'
+                                    : 'Copy'
+                            "
+                            [tooltipBackground]="
+                                copyIndex === rowIndex &&
+                                driverCopy.txt === 'email'
+                                    ? '#3B73ED'
+                                    : '#424242'
+                            "
+                            position="bottom"
+                        >
+                            <svg-icon
+                                [src]="'assets/svg/common/ic_email.svg'"
+                                [svgStyle]="{
+                                    'width.px': '18',
+                                    'height.px': '18'
+                                }"
+                                [fill]="'#ff0000'"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                    <div class="driver-items-hold d-flex align-items-center">
+                        <ng-container *ngIf="driverHover.indx !== rowIndex">
+                            <span class="dr-span-left"
+                                >{{ driver.firstName }}
+                                {{ driver.lastName }}</span
+                            >
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driverHover.indx === rowIndex &&
+                                driverHover.txt === 'phone'
+                            "
+                        >
+                            <div class="copy_divs">
+                                {{ phone }}
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driverHover.indx === rowIndex &&
+                                driverHover.txt === 'email'
+                            "
+                        >
+                            <div class="copy_divs">
+                                {{ email }}
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driver.owner && driverHover.indx !== rowIndex
+                            "
+                        >
+                            <span
+                                class="owner-circle"
+                                ngbTooltip
+                                mainTooltip="Owner"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/ic_driver-owner.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '13',
+                                        'height.px': '13'
+                                    }"
+                                    [fill]="'#ff0000'"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                    </div>
+                    <ng-container *ngIf="!isBoardLocked && !isDrag">
+                        <div
+                            class="d-flex justify-content-center align-items-center remove-icon-container"
+                            [ngClass]="{ disabled: isActiveLoad }"
+                            ngbTooltip
+                            [mainTooltip]="
+                                isActiveLoad ? 'Active Load' : 'Remove'
+                            "
+                            [tooltipBackground]="
+                                isActiveLoad ? '#424242' : '#DF3C3C'
+                            "
+                            tooltipMarginTop="5px"
+                            position="bottom"
+                        >
+                            <svg-icon
+                                class="icon"
+                                [src]="dispatchTableSvgRoutes.closeSvgRoute"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
+    </ng-container>
 
+    <ng-container *ngIf="openedDriverDropdown === rowIndex">
         <app-ta-input-dropdown
-            *ngIf="openedDriverDropdown == rowIndex"
-            [formControl]="truckFormControll"
+            [formControl]="driverFormControl"
             [template]="'details-template'"
             [inputConfig]="{
                 name: 'Input Dropdown',
@@ -173,5 +190,5 @@
             [activeItem]="null"
             (selectedItem)="addDriver($event)"
         ></app-ta-input-dropdown>
-    </div>
+    </ng-container>
 </div>

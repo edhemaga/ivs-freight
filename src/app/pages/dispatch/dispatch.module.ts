@@ -38,7 +38,6 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         DispatchComponent,
         DispatchTableComponent,
         DispatchTableDriverComponent,
-
         DispatchTableTruckTrailerComponent,
         DispatchTableAddNewComponent,
 

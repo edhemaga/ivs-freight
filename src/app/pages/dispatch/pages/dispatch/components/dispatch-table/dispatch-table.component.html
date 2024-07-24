@@ -129,19 +129,63 @@
                 </td>
 
                 <td class="driver-field">
-                    <app-dispatch-table-driver
-                        [driver]="item?.driver"
-                        [driverList]="driverList"
-                        [rowIndex]="rowIndex"
-                        [isBoardLocked]="__isBoardLocked"
-                        [isDrag]="isDrag"
-                        [phone]="item?.phone"
-                        [email]="item?.email"
-                        [draggingType]="draggingType"
-                        [openedDriverDropdown]="openedDriverDropdown"
-                        (removeDriverEmitter)="handleRemoveDriverClick($event)"
+                    <div
+                        class="main_inside"
+                        [class.addNew]="
+                            !driver && driverList.length && !isBoardLocked
+                        "
+                        [class.filled]="driver"
+                        [class.default]="
+                            !driver && !driverList.length && !isBoardLocked
+                        "
+                        [class.isDragging]="isDrag && draggingType == 'driver'"
+                        cdkDropList
+                        (cdkDropListDropped)="dropDriver($event, rowIndex)"
+                        id="{{ rowIndex | cdkid : gridIndex : 'driver' }}"
+                        [cdkDropListData]="dData"
+                        [cdkDropListConnectedTo]="
+                            rowIndex
+                                | cdkconnect
+                                    : dData.dispatches.length
+                                    : gridIndex
+                                    : 'driver'
+                        "
                     >
-                    </app-dispatch-table-driver>
+                        <div
+                            class="drag-hold-between"
+                            cdkDrag
+                            (cdkDragStarted)="
+                                cdkDragStartedDriver($event, rowIndex)
+                            "
+                            (cdkDragEnded)="dragEnd()"
+                            [cdkDragDisabled]="isBoardLocked || !item.driver"
+                            cdkDragLockAxis="y"
+                            [cdkDragPreviewClass]="'trailer_3074D3'"
+                            cdkDragPreviewContainer="parent"
+                            cdkDragBoundary=".dispatch-table table tbody"
+                        >
+                            <div
+                                *cdkDragPlaceholder
+                                class="custom-dispatch-placeholder"
+                            ></div>
+                            <app-dispatch-table-driver
+                                [driver]="item?.driver"
+                                [driverList]="driverList"
+                                [rowIndex]="rowIndex"
+                                [isBoardLocked]="__isBoardLocked"
+                                [isDrag]="isDrag"
+                                [phone]="item?.phone"
+                                [email]="item?.email"
+                                [draggingType]="draggingType"
+                                [openedDriverDropdown]="openedDriverDropdown"
+                                [isActiveLoad]="!!item.activeLoad"
+                                (removeDriverEmitter)="
+                                    handleRemoveDriverClick($event)
+                                "
+                            >
+                            </app-dispatch-table-driver>
+                        </div>
+                    </div>
                 </td>
                 <td class="box-item">
                     <div class="main_inside" [class.filled]="item.driver">
