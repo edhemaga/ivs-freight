@@ -29,6 +29,12 @@ import { ModalService } from '@shared/services/modal.service';
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
+// constants
+import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
+
+// enums
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+
 // models
 import {
     CreateDispatchCommand,
@@ -46,9 +52,6 @@ import {
     TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
-
-// enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -79,6 +82,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() toolbarWidth: number = 0;
 
     private destroy$ = new Subject<void>();
+
+    public dispatchTableHeaderItems: { title?: string; icon?: string }[] = [];
 
     public dispatchData: DispatchBoardResponse;
 
@@ -154,12 +159,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private parkingService: ParkingService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getConstantData();
+    }
 
     public trackByIdentity = (index: number): number => index;
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+    }
+
+    private getConstantData(): void {
+        this.dispatchTableHeaderItems = DispatchTableConstants.HEADER_ITEMS;
     }
 
     private handleTruckTrailerDriverLists(lists: DispatchModalResponse): void {
@@ -312,7 +323,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         const previousData = this.dispatchData.dispatches[index]
             ? JSON.parse(JSON.stringify(this.dispatchData.dispatches[index]))
             : {};
+
         console.log('previousData', previousData);
+
         const {
             id,
             status,
@@ -325,6 +338,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             note,
             parkingSlot,
         } = previousData;
+
         const updatedPreviousData:
             | CreateDispatchCommand
             | UpdateDispatchCommand = {
@@ -343,6 +357,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             hoursOfService: null,
             parkingSlotId: parkingSlot?.id ?? null,
         };
+
         const newData: CreateDispatchCommand | UpdateDispatchCommand = {
             ...updatedPreviousData,
             [key]: value,
@@ -352,10 +367,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 value
             ),
         };
+
         console.log('newData', newData);
+
         this.isDispatchBoardChangeInProgress = true;
+
         /* TODO */
         this.checkForEmpty = key;
+
         if (updatedPreviousData.id) {
             this.dispatcherService
                 .updateDispatchBoard(newData, this.dispatchData.id)
