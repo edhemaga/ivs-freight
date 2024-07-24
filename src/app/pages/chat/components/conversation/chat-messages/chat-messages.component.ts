@@ -155,7 +155,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isMessageSendable = false;
 
     this.chatService
-      .sendMessage(this.conversation.id, this.messageToSend)
+      .sendMessage(
+        this.conversation.id,
+        this.messageToSend,
+        this.attachments)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.messageToSend = "";
