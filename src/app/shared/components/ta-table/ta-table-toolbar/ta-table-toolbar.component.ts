@@ -61,7 +61,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TableToolbarConstants } from './utils/constants/table-toolbar.constants';
 
 // models
-import { TableType } from 'appcoretruckassist';
+import { LoadService, TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 // Pipes
@@ -136,7 +136,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private confirmationResetService: ConfirmationResetService,
-        private changeDetectorRef: ChangeDetectorRef
+        private changeDetectorRef: ChangeDetectorRef,
+
+        private loadService: LoadService
     ) {}
 
     ngOnInit(): void {
@@ -813,9 +815,23 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public openAssignLoadModal(): void {
-        this.modalService.openModal(AssignDispatchLoadModalComponent, {
-            size: 'small',
-        });
+        this.loadService
+            .apiLoadListAssignedIdGet(null)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.modalService.openModal(
+                    AssignDispatchLoadModalComponent,
+                    {
+                        size: TableStringEnum.SMALL,
+                    },
+                    {
+                        data: response,
+                        truck: null,
+                        driver: null,
+                        trailer: null,
+                    }
+                );
+            });
     }
 
     // --------------------------------ON DESTROY---------------------------------

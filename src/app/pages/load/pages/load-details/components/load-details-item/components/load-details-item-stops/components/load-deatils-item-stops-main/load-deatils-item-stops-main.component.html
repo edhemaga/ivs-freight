@@ -4,7 +4,8 @@
     <div
         class="align-items-center stops-main-header"
         [ngClass]="{
-            'includes-check-in-grid': stopsData?.statusType?.name !== 'Pending'
+            'includes-check-in-grid': stopsData?.statusType?.name !== 'Pending',
+            'stop-items-grid-small': isSmallDesign
         }"
     >
         <ng-container
@@ -50,7 +51,8 @@
             [ngClass]="{
                 'includes-check-in-grid':
                     stopsData?.statusType?.name !== 'Pending',
-                active: i === stopItemDropdownIndex
+                active: i === stopItemDropdownIndex,
+                'stop-items-grid-small': isSmallDesign
             }"
             [ngStyle]="{
                 cursor: stop?.items?.length ? 'pointer' : 'unset'
@@ -352,6 +354,9 @@
             >
                 <div
                     class="d-flex flex-column justify-content-center stops-main-item-dropdown-inner"
+                    [ngClass]="{
+                        'stops-main-item-dropdown-inner-scroll': isSmallDesign
+                    }"
                 >
                     <div class="align-items-center stop-items-header">
                         <div class="align-items-center first-box">
@@ -446,12 +451,23 @@
                                 <ng-container
                                     *ngIf="
                                         property.key !== 'id' &&
+                                        property.key !== 'units' &&
                                         property.key !== 'description'
                                     "
                                 >
                                     <div class="d-flex align-items-center box">
                                         <p class="m-0">
                                             {{ property.value }}
+
+                                            <ng-containeṛ
+                                                *ngIf="
+                                                    property.key === 'quantity'
+                                                "
+                                                ><span
+                                                    class="text-color-muted"
+                                                    >{{ item.units }}</span
+                                                >
+                                            </ng-containeṛ>
                                         </p>
                                     </div>
                                 </ng-container>

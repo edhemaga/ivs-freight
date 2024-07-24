@@ -1,4 +1,7 @@
-<div class="short-load dispatch-load-grid d-grid align-items-center">
+<div
+    class="short-load dispatch-load-grid d-grid align-items-center"
+    (click)="selectLoad()"
+>
     <div
         class="short-load-index ta-font-semi-bold text-center mouse-pointer"
         [ngClass]="{ 'short-load-index_assigned': isAssigned }"
@@ -7,7 +10,10 @@
             {{ index }}
         </span>
 
-        <svg-icon [src]="svgIcons.drag" class="short-load-icon short-load-icon_drag"></svg-icon>
+        <svg-icon
+            [src]="svgIcons.drag"
+            class="short-load-icon short-load-icon_drag"
+        ></svg-icon>
 
         <div
             class="short-load-icon short-load-icon-actions"
@@ -15,6 +21,7 @@
             [tooltipBackground]="'#424242'"
             ngbTooltip
             position="bottom"
+            (click)="changeLoadList(); $event.stopPropagation()"
         >
             <ng-container *ngIf="isAssigned; else notAssigned">
                 <svg-icon

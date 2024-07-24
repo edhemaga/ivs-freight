@@ -128,6 +128,23 @@
                         </div>
                     </ng-container>
 
+                    <!-- Assign load modal on dispatch board -->
+                    <ng-container *ngIf="isAssignLoadModal">
+                        <div
+                            ngbTooltip
+                            mainTooltip="Side Panel"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                            [ngClass]="{ active: isSidePanelActive }"
+                            (click)="toggleAdditionalPart('side-panel')"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/load/ic_side-panel.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
                     <!-- Stepper -->
 
                     <ng-container *ngIf="isStepper">
@@ -947,6 +964,12 @@
         >
             <div class="modal-additional-part">
                 <ng-content select="[additional]"></ng-content>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="isAdditionalAssignLoadModalVisible">
+            <div class="modal-additional-part">
+                <ng-content select="[assignLoadModal]"></ng-content>
             </div>
         </ng-container>
     </div>

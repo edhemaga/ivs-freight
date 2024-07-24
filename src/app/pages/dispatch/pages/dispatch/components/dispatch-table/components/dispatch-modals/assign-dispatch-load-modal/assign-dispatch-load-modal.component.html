@@ -1,4 +1,10 @@
-<app-ta-modal [modalTitle]="'Assign Load'" [customClass]="'modal-container-M'">
+<app-ta-modal
+    [modalTitle]="'Assign Load'"
+    [customClass]="loadModalSize"
+    [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
+    [isAssignLoadModal]="true"
+    (additionalPartVisibility)="additionalPartVisibility($event)"
+>
     <div origin>
         <div class="dispatch-load">
             <form [formGroup]="assingLoadForm" class="mb-2">
@@ -58,9 +64,9 @@
                 [hasActionSvg]="false"
                 [hasBodyData]="true"
                 [hasArrow]="true"
-                [showReorderButton]="assignedCardState.showReorderButton"
-                [showFinishReordering]="assignedCardState.showFinishReordering"
-                (onActionEvent)="assignedCardState.action($event)"
+                [showReorderButton]="showReorderButton"
+                [showFinishReordering]="showFinishReordering"
+                (onActionEvent)="onReorderAction($event)"
                 cdkDropList
                 (cdkDropListDropped)="dropAssigned($event)"
             >
@@ -86,17 +92,25 @@
                             [load]="assignedLoad"
                             [index]="index + 1"
                             [isAssigned]="true"
+                            (changeLoadList$)="changeLoadList(index, true)"
+                            (selectLoad$)="selectLoad(assignedLoad.id, true)"
                         ></app-load-short-details>
                     </div>
                 </ng-container>
 
                 <ng-template #showNoAssignedLoads>
-                    <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div
+                        class="d-flex flex-column align-items-center justify-content-center"
+                    >
                         <svg-icon [src]="svgIcons.noLoads"></svg-icon>
 
-                        <div class="ta-font-bold">No data found</div>
-                        <p class="ta-font-medium">
-                            There are currently no unassigned loads
+                        <div
+                            class="ta-font-bold dispatch-load-no-results-title"
+                        >
+                            No data found
+                        </div>
+                        <p class="ta-font-medium dispatch-load-no-results-text">
+                            There are currently no assigned loads
                         </p>
                     </div>
                 </ng-template>
@@ -109,13 +123,6 @@
                 [hasActionSvg]="false"
                 [hasBodyData]="true"
                 [hasArrow]="true"
-                [showReorderButton]="unassignedCardState.showReorderButton"
-                [showFinishReordering]="
-                    unassignedCardState.showFinishReordering
-                "
-                (onActionEvent)="unassignedCardState.action($event)"
-                cdkDropList
-                (cdkDropListDropped)="dropUnassigned($event)"
             >
                 <ng-container
                     *ngIf="
@@ -129,31 +136,113 @@
                             let index = index;
                             trackBy: trackByIdentity
                         "
-                        cdkDrag
                     >
-                        <div
-                            class="dragdrop-custom-placeholder"
-                            *cdkDragPlaceholder
-                        ></div>
                         <app-load-short-details
                             [load]="unassignedLoad"
                             [index]="index + 1"
                             [isAssigned]="false"
+                            (changeLoadList$)="changeLoadList(index, false)"
+                            (selectLoad$)="selectLoad(unassignedLoad.id, false)"
                         ></app-load-short-details>
                     </div>
                 </ng-container>
 
                 <ng-template #showNoUnassignedLoads>
-                    <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div
+                        class="d-flex flex-column align-items-center justify-content-center"
+                    >
                         <svg-icon [src]="svgIcons.noLoads"></svg-icon>
-
-                        <div class="ta-font-bold">No data found</div>
-                        <p class="ta-font-medium">
+                        <div
+                            class="ta-font-bold dispatch-load-no-results-title"
+                        >
+                            No data found
+                        </div>
+                        <p class="ta-font-medium dispatch-load-no-results-text">
                             There are currently no unassigned loads
                         </p>
                     </div>
                 </ng-template>
             </app-ta-custom-card>
+        </div>
+    </div>
+
+    <div assignLoadModal>
+        <ng-container *ngIf="selectedLoad">
+            <div class="modal-header d-flex justify-content-between">
+                <div class="modal-header-leftside">
+                    <h5 class="modal-title">Load</h5>
+                    <h5 class="edit-name">
+                        {{ selectedLoad.loadNumber }}
+                    </h5>
+                </div>
+
+                <div class="modal-header-rightside">
+                    <div
+                        [mainTooltip]="'Edit load'"
+                        [tooltipBackground]="'#424242'"
+                        ngbTooltip
+                        position="bottom"
+                        class="modal-header-edit-button"
+                        (click)="editLoad()"
+                    >
+                        <svg-icon [src]="svgIcons.penIcon"></svg-icon>
+                    </div>
+
+                    <div
+                        [mainTooltip]="isAssignedLoad ? 'Unassign' : 'Assign'"
+                        [tooltipBackground]="'#424242'"
+                        ngbTooltip
+                        position="bottom"
+                    >
+                        <ng-container *ngIf="isAssignedLoad; else notAssigned">
+                            <svg-icon [src]="svgIcons.minus"></svg-icon>
+                        </ng-container>
+                        <ng-template #notAssigned>
+                            <svg-icon [src]="svgIcons.plus"></svg-icon
+                        ></ng-template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <app-ta-custom-card
+                [cardName]="'Stops'"
+                [capsulaText]="
+                    selectedLoad?.stops.length - 2
+                        ? selectedLoad?.stops.length - 2 + ' EXTRA'
+                        : null
+                "
+                [isCardOpen]="true"
+                [hasCounter]="selectedLoad?.stops.length"
+                [hasActionSvg]="false"
+                [hasBodyData]="true"
+                [hasArrow]="false"
+                [animationMarginParams]="{
+                    marginTop: '10px',
+                    marginBottom: '12px'
+                }"
+            >
+                <app-load-deatils-item-stops-main
+                    [stopsData]="{
+                        statusType: selectedLoad?.statusType,
+                        stops: selectedLoad?.stops
+                    }"
+                    [isMapDisplayed]="false"
+                    [isSmallDesign]="true"
+                >
+                </app-load-deatils-item-stops-main>
+            </app-ta-custom-card>
+        </ng-container>
+
+        <div
+            class="d-flex justify-content-center align-items-center dispatch-load-map"
+        >
+            <app-ta-maps
+                [mapType]="'routing'"
+                [routes]="loadStopRoutes"
+                [ngStyle]="{ width: '100%', height: '100%' }"
+            ></app-ta-maps>
         </div>
     </div>
 </app-ta-modal>

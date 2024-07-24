@@ -298,21 +298,21 @@ export class LoadService {
         );
     }
 
-    public getLoadById(id: number, isTemplate?: boolean): Observable<LoadResponse> {
-        if(isTemplate) {
-            return  this.loadService.apiLoadTemplateIdGet(id);
+    public getLoadById(
+        id: number,
+        isTemplate?: boolean
+    ): Observable<LoadResponse> {
+        if (isTemplate) {
+            return this.loadService.apiLoadTemplateIdGet(id);
         }
 
-        return  this.loadService.apiLoadIdGet(id);;
+        return this.loadService.apiLoadIdGet(id);
     }
 
-    public getLoadTemplateInsideListById(id: number): Observable<LoadListResponse> {
-        return this.loadService.apiLoadTemplateListGet(
-            null,
-            null,
-            null,
-            id
-        );
+    public getLoadTemplateInsideListById(
+        id: number
+    ): Observable<LoadListResponse> {
+        return this.loadService.apiLoadTemplateListGet(null, null, null, id);
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
@@ -388,11 +388,11 @@ export class LoadService {
     ): Observable<CreateResponse> {
         return this.loadService.apiLoadTemplatePost(data);
     }
-    
+
     public updateLoadTemplate(
         data: CreateLoadTemplateCommand
     ): Observable<CreateResponse> {
-        return this.loadService.apiLoadTemplatePut(data)
+        return this.loadService.apiLoadTemplatePut(data);
     }
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {

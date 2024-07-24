@@ -45,9 +45,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
         private loadService: LoadService
     ) {}
 
-    ngOnInit(): void {
-        console.log(this.dispatchId);
-    }
+    ngOnInit(): void {}
 
     public get isButtonDisabled(): boolean {
         if (!this.driver) return true;
@@ -86,7 +84,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
                         data: response,
                         truck: this.truck,
                         driver: this.driver,
-                        trailer: this.trailer
+                        trailer: this.trailer,
                     }
                 );
             });

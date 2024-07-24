@@ -8,10 +8,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DispatchRoutingModule } from '@pages/dispatch/dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
-import { CDK_DRAG_CONFIG, DragDropModule } from '@angular/cdk/drag-drop';
-
-// Config
-import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
 
 // Components
 import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
@@ -33,6 +29,8 @@ import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/components/load-short-details/load-short-details.component';
+import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
+import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -68,7 +66,6 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         ReactiveFormsModule,
         SharedModule,
         NgbModule,
-        DragDropModule,
 
         // Pipes
         CdkIdPipe,
@@ -87,8 +84,10 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaPickupDeliveryComponent,
         TaInputComponent,
         TaModalComponent,
-        TaCustomCardComponent
+        TaCustomCardComponent,
+        LoadDeatilsItemStopsMainComponent,
+        TaMapsComponent,
     ],
-    exports: [ColorFinderPipe]
+    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}

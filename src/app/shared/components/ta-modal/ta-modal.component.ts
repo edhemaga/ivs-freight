@@ -140,6 +140,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
+    @Input() isAdditionalAssignLoadModalVisible = false;
+    @Input() isAssignLoadModal = false;
 
     // -----------------
 
@@ -199,6 +201,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     public mapVisibility: boolean = false;
     public hazardousVisibility: boolean = false;
+    public isSidePanelActive: boolean = false;
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
@@ -514,6 +517,15 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
+            case 'side-panel': {
+                this.isSidePanelActive = !this.isSidePanelActive;
+                this.additionalPartVisibilityEvent.emit({
+                    action: 'side-panel',
+                    isOpen: this.isSidePanelActive,
+                });
+                break;
+            }
+
             default: {
                 break;
             }
