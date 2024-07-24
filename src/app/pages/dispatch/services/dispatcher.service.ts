@@ -242,7 +242,7 @@ export class DispatcherService {
         }));
     }
 
-    async updateCountList(id: number, type: string, value: string) {
+    async updateCountList<T>(id: number, type: string, value: T) {
         const dss = await this.dispatcherStore.getValue();
         const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
 
