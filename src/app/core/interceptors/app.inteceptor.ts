@@ -67,7 +67,16 @@ export class AppInterceptor implements HttpInterceptor {
     }
 
     handleBodyIn(req: HttpRequest<any>) {
-        if (['post', 'put'].includes(req.method.toLowerCase())) {
+        const skipFormClone = req.headers.get('skip-form');
+        const token = localStorage.getItem('user')
+            ? JSON.parse(localStorage.getItem('user')).token
+            : 0;
+
+        let headers = req.headers;
+        if (
+            ['post', 'put'].includes(req.method.toLowerCase()) &&
+            !skipFormClone
+        ) {
             if (req.body instanceof FormData) {
                 const serviceData = this.formDataService.formDataValue;
 
@@ -75,6 +84,11 @@ export class AppInterceptor implements HttpInterceptor {
                     body: serviceData,
                 });
             }
+        } else if (skipFormClone) {
+            if (token) {
+                headers = headers.set('Authorization', `Bearer ${token}`);
+            }
+            req = req.clone({ headers: headers });
         }
         return req;
     }
