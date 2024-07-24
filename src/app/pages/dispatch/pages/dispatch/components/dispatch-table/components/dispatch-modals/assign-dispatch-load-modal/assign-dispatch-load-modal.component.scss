@@ -21,11 +21,14 @@
     }
 
     &-map {
-        padding: 6px;
-        background: #ffffff;
         width: auto;
-        height: 480px;
+        // min-height: 480px;
         border-radius: 3px;
+        height: 480px;
+
+        &-parent {
+            height: 100%;
+        }
     }
 }
 

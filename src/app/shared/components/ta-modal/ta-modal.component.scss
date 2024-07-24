@@ -103,6 +103,10 @@
 
         .modal-additional-part {
             width: 640px;
+
+            &-load {
+                background-color: $ta-light-grey-5;
+            }
         }
     }
 

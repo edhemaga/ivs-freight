@@ -133,19 +133,29 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public changeLoadList(loadIndex: number, isAssignedList: boolean) {
+    public changeLoadList(loadId: number, isAssignedList: boolean, isIconClick?: boolean) {
         if (isAssignedList) {
+            const loadIndex = this.editData.data.assignedLoads.findIndex(
+                (load) => load.id === loadId
+            );
             const [movedLoad] = this.editData.data.assignedLoads.splice(
                 loadIndex,
                 1
             );
             this.editData.data.unassignedLoads.push(movedLoad);
         } else {
+            const loadIndex = this.editData.data.assignedLoads.findIndex(
+                (load) => load.id === loadId
+            );
             const [movedLoad] = this.editData.data.unassignedLoads.splice(
                 loadIndex,
                 1
             );
             this.editData.data.assignedLoads.push(movedLoad);
+        }
+
+        if(isIconClick || loadId === this.selectedLoad.id) {
+            this.isAssignedLoad = !isAssignedList;
         }
     }
 

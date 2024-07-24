@@ -92,7 +92,7 @@
                             [load]="assignedLoad"
                             [index]="index + 1"
                             [isAssigned]="true"
-                            (changeLoadList$)="changeLoadList(index, true)"
+                            (changeLoadList$)="changeLoadList(assignedLoad.id, true)"
                             (selectLoad$)="selectLoad(assignedLoad.id, true)"
                         ></app-load-short-details>
                     </div>
@@ -141,7 +141,7 @@
                             [load]="unassignedLoad"
                             [index]="index + 1"
                             [isAssigned]="false"
-                            (changeLoadList$)="changeLoadList(index, false)"
+                            (changeLoadList$)="changeLoadList(unassignedLoad.id, false)"
                             (selectLoad$)="selectLoad(unassignedLoad.id, false)"
                         ></app-load-short-details>
                     </div>
@@ -167,7 +167,7 @@
     </div>
 
     <div assignLoadModal>
-        <ng-container *ngIf="selectedLoad">
+        <ng-container *ngIf="selectedLoad; else modalTitle">
             <div class="modal-header d-flex justify-content-between">
                 <div class="modal-header-leftside">
                     <h5 class="modal-title">Load</h5>
@@ -193,6 +193,10 @@
                         [tooltipBackground]="'#424242'"
                         ngbTooltip
                         position="bottom"
+                        [ngClass]="{
+                            'dispatch-table-driver_hover': !isAssignedLoad
+                        }"
+                        (click)="changeLoadList(selectedLoad.id, isAssignedLoad, true)"
                     >
                         <ng-container *ngIf="isAssignedLoad; else notAssigned">
                             <svg-icon [src]="svgIcons.minus"></svg-icon>
@@ -203,8 +207,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="divider"></div>
 
             <app-ta-custom-card
                 [cardName]="'Stops'"
@@ -222,6 +224,7 @@
                     marginTop: '10px',
                     marginBottom: '12px'
                 }"
+                [addSpaceToXAsis]="true"
             >
                 <app-load-deatils-item-stops-main
                     [stopsData]="{
@@ -235,6 +238,13 @@
             </app-ta-custom-card>
         </ng-container>
 
+        <ng-template #modalTitle>
+            <div class="modal-header modal-header-absolute d-flex justify-content-between">
+                <div class="modal-header-leftside">
+                    <h5 class="modal-title">Assigned ({{editData.data.assignedLoads.length}})</h5>
+                </div>
+            </div>
+        </ng-template>
         <div
             class="d-flex justify-content-center align-items-center dispatch-load-map"
         >

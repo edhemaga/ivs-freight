@@ -5,6 +5,10 @@
     border-radius: 3px;
     background: $white;
 
+    &-grey {
+        background-color: $ta-light-grey-5;
+    }
+
     &-header {
         display: grid;
         grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 76px;
