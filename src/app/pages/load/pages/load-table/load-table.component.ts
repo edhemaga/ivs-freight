@@ -84,6 +84,7 @@ import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -104,7 +105,6 @@ import {
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 @Component({
     selector: 'app-load-table',
@@ -296,6 +296,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const foundObject = this.viewData.find(
                     (item) => item.id === confirmationResponse.id
                 );
+
+                if ( !foundObject ) return;
 
                 this.updateLoadStatus(
                     confirmationResponse.id,
