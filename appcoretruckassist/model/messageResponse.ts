@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 
@@ -23,5 +24,7 @@ export interface MessageResponse {
     parentMessageContent?: string | null;
     createdAt?: string;
     updatedAt?: string;
+    isEdited?: boolean;
+    attachments?: Array<FileResponse> | null;
 }
 

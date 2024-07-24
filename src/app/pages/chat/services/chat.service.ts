@@ -6,7 +6,6 @@ import {
     CompanyUserForChatListResponse,
     ConversationResponse,
     CreateConversationCommand,
-    CreateMessageCommand,
     CreateResponse,
     MessageResponse,
     UserType
@@ -22,7 +21,7 @@ export class UserChatService {
 
     constructor(private chatService: ChatService) { }
 
-    public getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
+    public getCompanyUserList(userType: UserType, searchParam?: string): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
@@ -30,7 +29,7 @@ export class UserChatService {
             null,
             null,
             null,
-            null,
+            searchParam ?? null,
             null
         );
     }
@@ -53,12 +52,14 @@ export class UserChatService {
         );
     }
 
-    public sendMessage(conversationId: number, content: string): Observable<CreateResponse> {
-        const messageToSend: CreateMessageCommand = {
+    public sendMessage(conversationId: number, content: string, attachments?: Blob[]): Observable<CreateResponse> {
+        return this.chatService.apiChatMessagePost(
+            1,
             conversationId,
-            content
-        }
-        return this.chatService.apiChatMessagePost(messageToSend);
+            content,
+            null,
+            attachments
+        );
     }
 
 }
