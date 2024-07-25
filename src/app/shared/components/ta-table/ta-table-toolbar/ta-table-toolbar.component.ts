@@ -578,7 +578,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             return option;
         });
-        console.log(optionsPopup);
 
         this.optionsPopup = optionsPopup;
 
