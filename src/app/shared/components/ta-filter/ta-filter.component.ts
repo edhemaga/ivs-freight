@@ -1023,9 +1023,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             });
                         } else {
                             newData = res.data?.map((type: any) => {
-                                type['name'] = type.name;
+                                type['name'] = type.trailerType.name;
                                 type['logo'] =
-                                    FilterIconRoutes.trailerSVG + type.logoName;
+                                    FilterIconRoutes.trailerSVG +
+                                    type.trailerType.logoName;
                                 return type;
                             });
                         }
@@ -1768,6 +1769,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.truckType.id);
+                    });
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                ) {
+                    this.filterActiveArray.map((data) => {
+                        selectedUsersIdArray.push(data.trailerType.id);
                     });
                 } else {
                     this.filterActiveArray.map((data) => {

@@ -11,6 +11,7 @@
  */
 import { LoadStatusResponse } from './loadStatusResponse';
 import { AssignedLoadStopResponse } from './assignedLoadStopResponse';
+import { EnumValue } from './enumValue';
 import { LoadStopInfo } from './loadStopInfo';
 import { LoadBrokerInfo } from './loadBrokerInfo';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
@@ -21,6 +22,7 @@ export interface AssignedLoadResponse {
     loadNumber?: string | null;
     referenceNumber?: string | null;
     status?: LoadStatusResponse;
+    type?: EnumValue;
     broker?: LoadBrokerInfo;
     pickup?: LoadStopInfo;
     delivery?: LoadStopInfo;

@@ -23,12 +23,64 @@
         </div>
     </ng-container>
     <!-- TABS -->
+    <ng-container *ngIf="options.toolbarActions.showDropdown">
+        <div class="tab-wrapper d-flex align-items-center">
+            <div class="tab-container">
+                <div
+                    class="tab-input d-flex justify-content-between align-items-center gap-2"
+                >
+                    <div class="d-flex align-items-center gap-1 p-1">
+                        <ng-container
+                            *ngIf="selectedDispatcher?.avatarFile?.url"
+                        >
+                            <img
+                                class="dispatch-img"
+                                [src]="selectedDispatcher.avatarFile.url"
+                            />
+                        </ng-container>
+
+                        <p class="dispatcer-name ta-font-bold">
+                            {{ selectedDispatcher.name }}
+                        </p>
+                    </div>
+                    <div ngbTooltip>
+                        <div
+                            #op="ngbPopover"
+                            (click)="showDispatchList(op)"
+                            [ngbPopover]="dispatchPopover"
+                            [autoClose]="'outside'"
+                            popoverClass="toolbar-options-popover"
+                            triggers="manual"
+                            (hidden)="dispatchPopoverOpen = false"
+                            class="dispatch-dropdown d-flex align-items-center"
+                            [ngClass]="{
+                                'dispatch-dropdown-active': dispatchPopoverOpen
+                            }"
+                            mainTooltip="Select"
+                            [tooltipBackground]="'#424242'"
+                            [tooltipColor]="'#FFFFFF'"
+                            position="bottom"
+                        >
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="
+                                    'assets/svg/common/dropdown_arrow_bold.svg'
+                                "
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
     <ng-container *ngIf="tableData.length > 1">
         <div class="tab-wrapper d-flex align-items-center">
             <ng-container *ngFor="let data of tableData; let i = index">
                 <ng-container [ngSwitch]="data.type">
                     <ng-container *ngSwitchCase="'dropdown'">
-                        <div class="tab-container d-flex tab-margin">
+                        <div class="tab-container tab-input">
                             <app-ta-input-dropdown
                                 [formControl]="dropdownSelection"
                                 [template]="data.template"
@@ -80,11 +132,13 @@
         </div>
     </ng-container>
     <!-- TOOLBAR FILTERS AND OTHER -->
-    <ng-container *ngIf="tableData.length > 1">
+    <ng-container
+        *ngIf="tableData.length > 1 || options.toolbarActions.showDropdown"
+    >
         <div
             class="border-container d-flex justify-content-center align-items-center"
         >
-            <div class="border"></div>
+            <div class="border-stick"></div>
         </div>
     </ng-container>
 
@@ -353,7 +407,7 @@
                 <div
                     class="border-container d-flex justify-content-center align-items-center"
                 >
-                    <div class="border"></div>
+                    <div class="border-stick"></div>
                 </div>
             </ng-container>
 
@@ -392,47 +446,107 @@
             </ng-container>
 
             <!-- Dispatchboard table options -->
-            <div
-                class="lock-unlock-dispatch"
-                *ngIf="options.toolbarActions.showDispatchSettings"
-                (click)="onToolBarAction('toggle-locked')"
-            >
-                <svg-icon
-                    [src]="
-                        dispathcboardTableLocked
-                            ? 'assets/svg/common/ic_lock.svg'
-                            : 'assets/svg/common/ic_unlock.svg'
-                    "
-                ></svg-icon>
-            </div>
-
-            <!-- Border -->
             <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
+                <div
+                    class="dispatch-online d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        [src]="'assets/svg/dispatchboard/dispatch_online.svg'"
+                    ></svg-icon>
+                </div>
+
+                <div
+                    class="lock-unlock-dispatch d-flex justify-content-center align-items-center"
+                    (click)="onToolBarAction('toggle-locked')"
+                    [ngStyle]="{
+                        'pointer-events': selectedDispatcher.canUnlock
+                            ? 'auto'
+                            : 'none'
+                    }"
+                    [ngClass]="{
+                        'unlock-dispatch': !dispathcboardTableLocked,
+                        'disabled-icon': !selectedDispatcher.canUnlock
+                    }"
+                >
+                    <svg-icon
+                        [src]="
+                            dispathcboardTableLocked
+                                ? 'assets/svg/common/ic_lock.svg'
+                                : 'assets/svg/common/ic_unlock.svg'
+                        "
+                    ></svg-icon>
+                </div>
+
                 <div
                     class="border-container d-flex justify-content-center align-items-center"
                 >
-                    <div class="border"></div>
+                    <div class="border-stick"></div>
                 </div>
-            </ng-container>
 
-            <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
-                <div class="settings-dispatch">
+                <div ngbTooltip>
+                    <div
+                        #op="ngbPopover"
+                        (click)="onShowOptions(op)"
+                        [ngbPopover]="optionsPopover"
+                        [placement]="'bottom-right'"
+                        [autoClose]="'outside'"
+                        popoverClass="toolbar-options-popover"
+                        triggers="manual"
+                        (hidden)="optionsPopupOpen = false"
+                        class="action-div active-options d-flex align-items-center"
+                        mainTooltip="Tooltip"
+                        [tooltipBackground]="
+                            optionsPopupOpen ? '#CCCCCC' : '#424242'
+                        "
+                        [tooltipColor]="
+                            optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
+                        "
+                        position="bottom"
+                    >
+                        <svg-icon
+                            class="d-flex justify-content-center align-items-center"
+                            [ngClass]="{ 'dropdown-active': optionsPopupOpen }"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                            [src]="
+                                'assets/svg/truckassist-table/burger-icon.svg'
+                            "
+                        ></svg-icon>
+                    </div>
+                </div>
+
+                <div
+                    class="border-container d-flex justify-content-center align-items-center"
+                >
+                    <div class="border-stick"></div>
+                </div>
+
+                <div
+                    class="settings-dispatch dispach-history d-flex justify-content-center align-items-center"
+                    ngbTooltip
+                    [mainTooltip]="'Dispatch History'"
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    (click)="onToolBarAction('status-history-modal')"
+                >
                     <svg-icon
-                        [src]="'assets/svg/common/ic_settings.svg'"
+                        [src]="'assets/svg/common/ic_half_time.svg'"
                     ></svg-icon>
                 </div>
             </ng-container>
 
             <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
                 <div
-                    class="new-load"
+                    class="new-load d-flex justify-content-center align-items-center"
                     [ngClass]="{
                         'new-load-locked': !dispathcboardTableLocked
                     }"
                     (click)="openAssignLoadModal()"
                 >
                     <svg-icon
-                        [src]="'assets/svg/dispatchboard/add-load.svg'"
+                        [src]="
+                            'assets/svg/dispatchboard/ic_dispatch_toolbar_button.svg'
+                        "
                     ></svg-icon>
                 </div>
             </ng-container>
@@ -473,6 +587,101 @@
 
     <!-- OPEN MODAL BUTTON -->
 </div>
+
+<ng-template #dispatchPopover let-data="data" data-toggle="popover">
+    <div class="dispatch-dropdown-container d-flex flex-column">
+        <ng-container *ngFor="let option of tableData[0].dropdownData">
+            <div
+                class="d-flex align-items-center"
+                (click)="
+                    onToolBarSelectAction(option);
+                    showDispatchList(dispatchPopoup)
+                "
+            >
+                <div
+                    class="dispatch-dropdown-item d-flex align-items-center justify-content-between"
+                    [class.selected]="selectedDispatcher.name === option?.name"
+                >
+                    <div
+                        class="dispatch-dropdown-icon d-flex align-items-center gap-1"
+                    >
+                        <ng-container
+                            *ngIf="
+                                option.name === 'Team Board' ||
+                                    option.name === 'All Boards';
+                                else avatar
+                            "
+                        >
+                            <div
+                                [ngClass]="{
+                                    'dispatch-dropdown-icon-inactive':
+                                        selectedDispatcher.name !== option?.name
+                                }"
+                            >
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/dispatchboard/dispatch_board_toolbar_team_icon.svg'
+                                    "
+                                >
+                                </svg-icon>
+                            </div>
+                        </ng-container>
+                        <ng-template #avatar>
+                            <ng-container
+                                *ngIf="
+                                    option.avatar || option.avatarFile;
+                                    else noImage
+                                "
+                            >
+                                <div class="dispatch-dropdown-image">
+                                    <img
+                                        [src]="
+                                            option.avatar?.url
+                                                ? option.avatar?.url
+                                                : option.avatarFile?.url
+                                        "
+                                    />
+                                </div>
+                            </ng-container>
+                            <ng-template #noImage>
+                                <div
+                                    class="dispatch-dropdown-no-img ta-font-extra-bold d-flex justify-content-center align-items-center"
+                                    [ngStyle]="{
+                                        'background-color':
+                                            option.avatarColor?.background ??
+                                            unset,
+                                        color:
+                                            option.avatarColor?.color ?? unset
+                                    }"
+                                >
+                                    {{ option.shortName }}
+                                </div>
+                            </ng-template>
+                        </ng-template>
+
+                        <span
+                            [ngClass]="
+                                selectedDispatcher.name === option?.name
+                                    ? 'ta-font-bold'
+                                    : 'ta-font-regular'
+                            "
+                            >{{ option.name }}</span
+                        >
+                    </div>
+                    <ng-container
+                        *ngIf="selectedDispatcher.name === option?.name"
+                    >
+                        <svg-icon
+                            class="check-icon"
+                            src="assets/svg/applicant/check.svg"
+                            [svgStyle]="{ 'width.px': 13, 'height.px': 10 }"
+                        ></svg-icon>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
 
 <ng-template #optionsPopover let-data="data" data-toggle="popover">
     <div class="options-container">

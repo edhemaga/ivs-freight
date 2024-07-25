@@ -15,7 +15,5 @@ import { AssignedLoadResponse } from './assignedLoadResponse';
 export interface AssignedLoadListResponse { 
     assignedLoadsCount?: number;
     assignedLoads?: Array<AssignedLoadResponse> | null;
-    unassignedLoadsCount?: number;
-    unassignedLoads?: Array<AssignedLoadResponse> | null;
 }
 
