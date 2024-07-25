@@ -9,6 +9,8 @@ export enum LoadFilterStringEnum {
     USER_FILTER = 'userFilter',
     MONEY_FILTER = 'moneyFilter',
     LOAD_TYPE_FILTER = 'loadTypeFilter',
+    PICKUP_FILTER = 'pickupFilter',
+    DELIVERY_FILTER = 'deliveryFilter',
 
     // Load Tabs
     PENDING = 'pending',

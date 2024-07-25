@@ -29,7 +29,16 @@ export class ShipperItemResolver implements Resolve<any[]> {
 
         const shipperData$ = this.shipperService.getShipperById(ids);
 
-        const shipperLoads$ = this.shipperService.getShipperLoads(ids);
+        const shipperLoads$ = this.shipperService.getShipperLoads(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            ids
+        );
 
         return forkJoin({
             shipperData: shipperData$,

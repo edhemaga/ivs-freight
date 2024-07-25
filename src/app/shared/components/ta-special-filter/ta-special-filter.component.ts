@@ -47,9 +47,11 @@ export class TaSpecialFilterComponent implements OnInit {
     @Input() filterTitle: string = '';
     @Input() dataArray: any = [];
     @Input() selectedFilter: boolean;
+    @Input() isCountHidden: boolean = false;
     @Output() setFilter = new EventEmitter<{
         data?: any;
         selectedFilter?: boolean;
+        isReset?: boolean;
     }>();
 
     ngOnInit(): void {
@@ -73,9 +75,16 @@ export class TaSpecialFilterComponent implements OnInit {
         this.tableService.isSpecialFiltersReset
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.activeFilter = false;
-                    this.setFilter.emit({ ...this.dataArray, selectedFilter: false });
+                if (res?.isReset) {
+                    if (!res.filterType || res.filterType === this.type) {
+                        this.activeFilter = false;
+
+                        this.setFilter.emit({
+                            ...this.dataArray,
+                            selectedFilter: false,
+                            isReset: true,
+                        });
+                    }
                 }
             });
     }

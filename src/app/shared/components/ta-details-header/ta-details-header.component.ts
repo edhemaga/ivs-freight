@@ -25,6 +25,8 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
+import { TaSearchComponent } from '../ta-search/ta-search.component';
+import { TaSpecialFilterComponent } from '../ta-special-filter/ta-special-filter.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -55,6 +57,8 @@ import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-detail
         TaCounterComponent,
         TaSearchV2Component,
         TaFilterComponent,
+        TaSearchComponent,
+        TaSpecialFilterComponent,
 
         //Pipes
         FormatCurrencyPipe,
@@ -104,6 +108,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() hasMultipleDetailsSelectDropdown: boolean;
     @Input() multipleDetailsSelectDropdown: MultipleSelectDetailsDropdownItem[];
     @Input() isSearchBtn: boolean;
+    @Input() pickupFilter: boolean = false;
+    @Input() deliveryFilter: boolean = false;
+    @Input() pickupFilterData: { selectedFilter: boolean; filteredArray: any[] };
+    @Input() deliveryFilterData: { selectedFilter: boolean; filteredArray: any[] };
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -113,6 +121,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Output() searchBtnEmitter = new EventEmitter<boolean>();
     @Output() multipleDetailsSelectDropdownEmitter = new EventEmitter<number>();
     @Output() dropActions = new EventEmitter<any>();
+    @Output() filterActions = new EventEmitter<any>();
+    @Output() specialFilterActions = new EventEmitter<any>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
@@ -337,5 +347,13 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.multipleDetailsSelectDropdownEmitter.emit(id);
 
         this.multipleDetailsPopover.close();
+    }
+
+    public setFilterValue(data): void {
+        this.filterActions.emit(data);
+    }
+
+    public onSpecialFilter(data, type): void {
+        this.specialFilterActions.emit({ data, type });
     }
 }

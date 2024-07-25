@@ -17,6 +17,10 @@ export class FilterClassPipe implements PipeTransform {
             'archive-filter-active': type === 'archiveFilter' && activeFilter,
             'broker-filter': type === 'broker-filter' && !activeFilter,
             'broker-filter-active': type === 'broker-filter' && activeFilter,
+            'pickup-filter': type === 'pickupFilter' && !activeFilter,
+            'pickup-filter-active': type === 'pickupFilter' && activeFilter,
+            'delivery-filter': type === 'deliveryFilter' && !activeFilter,
+            'delivery-filter-active': type === 'deliveryFilter' && activeFilter,
             'zero-filter':
                 dataArray?.filteredArray?.length === 0 ||
                 !dataArray?.filteredArray?.length,

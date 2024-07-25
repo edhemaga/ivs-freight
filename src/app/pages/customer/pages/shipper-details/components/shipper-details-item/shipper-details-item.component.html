@@ -13,7 +13,7 @@
             <div *ngSwitchCase="'load'" class="load">
                 <div
                     class="repair-container shipper-details-padding"
-                    *ngIf="shipperData?.data?.loadStops?.length"
+                    *ngIf="shipperLoads?.length"
                 >
                     <div class="repair-header">
                         <span class="repaier-headers">LOAD NO</span>
@@ -27,7 +27,7 @@
                     <div class="divider"></div>
                     <ng-container
                         *ngFor="
-                            let loadStop of shipperData.data.loadStops;
+                            let loadStop of shipperLoads;
                             trackBy: identity
                         "
                     >
@@ -67,7 +67,7 @@
                                     </div>
                                     <span class="date">
                                         {{
-                                            loadStop?.driver?.firstName.length >
+                                            loadStop?.driver?.firstName?.length >
                                             6
                                                 ? loadStop?.driver
                                                       ?.firstName[0] + '.'

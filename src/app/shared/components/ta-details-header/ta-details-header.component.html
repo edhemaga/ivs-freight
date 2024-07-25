@@ -230,16 +230,52 @@
                     </ng-container>
                 </div>
 
+                <ng-container *ngIf="hasSearch">
+                    <div class="border-line-left"></div>
+                    <span class="mx-1">
+                        <app-ta-search
+                            [searchType]="'tabel'"
+                            [toolbarSearch]="true"
+                        ></app-ta-search>
+                    </span>
+                </ng-container>
+
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
-                    <span class="ic-hed" *ngIf="timeFilter">
+                    <span class="ic-hed ms-1" *ngIf="timeFilter">
                         <app-ta-filter
                             [type]="'timeFilter'"
                             [icon]="'ic_time'"
                             [filterTitle]="'Time Filter'"
+                            (setFilter)="setFilterValue($event)"
                         >
                         </app-ta-filter>
-                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed ms-1" *ngIf="pickupFilter">
+                        <app-ta-special-filter
+                            [type]="'pickupFilter'"
+                            [icon]="'ic_pickup_filter'"
+                            [filterTitle]="'Pickup Filter'"
+                            [dataArray]="pickupFilterData"
+                            (setFilter)="
+                                onSpecialFilter($event, 'pickupFilter')
+                            "
+                            [selectedFilter]="pickupFilterData.selectedFilter"
+                            [isCountHidden]="true"
+                        ></app-ta-special-filter>
+                    </span>
+                    <span class="ic-hed ms-1" *ngIf="deliveryFilter">
+                        <app-ta-special-filter
+                            [type]="'deliveryFilter'"
+                            [icon]="'ic_delivery_filter'"
+                            [filterTitle]="'Delivery Filter'"
+                            [dataArray]="deliveryFilterData"
+                            (setFilter)="
+                                onSpecialFilter($event, 'deliveryFilter')
+                            "
+                            [selectedFilter]="deliveryFilterData.selectedFilter"
+                            [isCountHidden]="true"
+                        ></app-ta-special-filter>
                     </span>
                     <span class="ic-hed" *ngIf="pmFilter">
                         <app-ta-filter
@@ -250,6 +286,7 @@
                             [defFilterHolder]="true"
                             [noLeftIcon]="false"
                             [leftSideIcon]="true"
+                            (setFilter)="setFilterValue($event)"
                         >
                         </app-ta-filter>
                         <div class="border-line-left"></div>
@@ -262,6 +299,7 @@
                             [defFilterHolder]="true"
                             [noLeftIcon]="false"
                             [leftSideIcon]="true"
+                            (setFilter)="setFilterValue($event)"
                         >
                         </app-ta-filter>
                         <div class="border-line-left"></div>
@@ -273,6 +311,7 @@
                             [filterTitle]="'Money Filter'"
                             [subType]="'no-all'"
                             [moneyFilter]="true"
+                            (setFilter)="setFilterValue($event)"
                         >
                         </app-ta-filter>
                         <div class="border-line-left"></div>
