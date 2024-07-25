@@ -432,6 +432,16 @@
                                     Finish Order
                                 </button>
                             </ng-container>
+
+                            <ng-container *ngIf="isAssignLoadModal">
+                                <button
+                                    (click)="onAction('assign-create-load')"
+                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
+                                    type="button"
+                                >
+                                    Create load
+                                </button>
+                            </ng-container>
                         </div>
                     </ng-container>
 
@@ -620,6 +630,25 @@
                                         ></app-ta-spinner>
                                     </div>
                                 </ng-container>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="isAssignLoadModal">
+                            <button
+                                (click)="onAction('assign-save-assign')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save & Assign New
+                            </button>
+                            <button
+                                (click)="onAction('assign-save-changes')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save Changes
                             </button>
                         </ng-container>
                     </div>
