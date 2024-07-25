@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { flatMap, delay, of, map, BehaviorSubject } from 'rxjs';
+import { mergeMap, delay, of, map, BehaviorSubject, tap } from 'rxjs';
 
 // Store
 import { DispatcherStore } from '@pages/dispatch/state/dispatcher.store';
@@ -80,8 +80,32 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchSwitchPut(swithcData);
     }
 
-    deleteDispatchboard(id: number) {
-        return this.dispatchService.apiDispatchIdDelete(id);
+    deleteDispatchboard(dispatchId: number) {
+        console.log('store', this.dispatcherStore);
+        console.log('dispatchId', dispatchId);
+
+        return this.dispatchService.apiDispatchIdDelete(dispatchId).pipe(
+            tap(() => {
+                /*  this.dispatcherStore.update((store) => {
+                    console.log('store', store);
+                    return {
+                        ...store,
+                        dispatchList: store.dispatchList.pagination.data.map(
+                            (dispatchData) => {
+                                return {
+                                    ...dispatchData,
+                                    dispatches: dispatchData.dispatches.filter(
+                                        (dispatch) => dispatch.id !== dispatchId
+                                    ),
+                                };
+                            }
+                        ),
+                    };
+                }); */
+
+                console.log('UPDATE', this.dispatcherStore);
+            })
+        );
     }
 
     createDispatchBoard(
@@ -91,7 +115,7 @@ export class DispatcherService {
         return this.dispatchService
             .apiDispatchPost(createData)
             .pipe(
-                flatMap((params) => {
+                mergeMap((params) => {
                     return this.getDispatchBoardRowById(params.id);
                 })
             )
@@ -105,7 +129,7 @@ export class DispatcherService {
     updateDispatchboardRowById(id: number, dispatch_id: number) {
         return this.getDispatchBoardRowById(id)
             .pipe(
-                flatMap((response) => {
+                mergeMap((response) => {
                     if (
                         !response.truck &&
                         !response.trailer &&
@@ -138,9 +162,9 @@ export class DispatcherService {
         return this.dispatchService
             .apiDispatchPut(updateData)
             .pipe(
-                flatMap(() => {
+                mergeMap(() => {
                     return this.getDispatchBoardRowById(updateData.id).pipe(
-                        flatMap((response) => {
+                        mergeMap((response) => {
                             if (
                                 !response.truck &&
                                 !response.trailer &&
@@ -242,7 +266,7 @@ export class DispatcherService {
         }));
     }
 
-    async updateCountList(id: number, type: string, value: string) {
+    async updateCountList<T>(id: number, type: string, value: T) {
         const dss = await this.dispatcherStore.getValue();
         const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
 

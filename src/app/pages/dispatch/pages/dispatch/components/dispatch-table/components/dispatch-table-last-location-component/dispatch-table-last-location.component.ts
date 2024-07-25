@@ -16,11 +16,12 @@ import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispat
 //models
 import { AddressEntity } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
 
 @Component({
-    selector: 'app-last-location-component',
-    templateUrl: './dispatch-table-last-location-component.component.html',
-    styleUrls: ['./dispatch-table-last-location-component.component.scss'],
+    selector: 'app-dispatch-table-last-location',
+    templateUrl: './dispatch-table-last-location.component.html',
+    styleUrls: ['./dispatch-table-last-location.component.scss'],
     standalone: true,
     imports: [
         CommonModule,
@@ -33,13 +34,15 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
     ],
 })
 export class DispatchTableLastLocationComponentComponent {
-    @Input() address: AddressEntity;
+    @Input() address?: AddressEntity = null;
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
-    @Input() set _parkingLists(value) {
-        this.checkParkingLocation(value);
+    @Input() set parkingList(value: DispatchBoardParking[]) {
+        if (this.address) {
+            this.checkParkingLocation(value);
+        }
     }
-    @Output() handleUpdateLastLocationEmit: EventEmitter<AddressEntity> =
+    @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
     @Output() isDropdownHidden: EventEmitter<boolean> =
         new EventEmitter<boolean>();
@@ -57,7 +60,7 @@ export class DispatchTableLastLocationComponentComponent {
 
     public handleInputSelect(event): void {
         if (event.valid) {
-            this.handleUpdateLastLocationEmit.emit(event.address);
+            this.updateLastLocationEmit.emit(event.address);
         }
     }
 
