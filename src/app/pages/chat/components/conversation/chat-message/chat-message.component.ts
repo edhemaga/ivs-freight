@@ -13,6 +13,7 @@ export class ChatMessageComponent implements OnInit {
   @Input() currentUserId!: string;
   @Input() chatParticipants: CompanyUserShortResponse[];
   @Input() message!: MessageResponse;
+  @Input() showDate: boolean = true;
 
   constructor() { }
 

@@ -98,6 +98,10 @@
                         <app-chat-message
                             [currentUserId]="currentUserId"
                             [message]="message"
+                            [showDate]="
+                                (message.createdAt | formatTime) !==
+                                (messages[ind - 1]?.createdAt | formatTime)
+                            "
                         ></app-chat-message>
                     </ng-container>
                 </ng-container>
