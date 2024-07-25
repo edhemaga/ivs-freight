@@ -20,6 +20,60 @@
             class="content ta-font-regular"
         >
             {{ message.content }}
+            <!-- //TODO add trackBy with pipe -->
+            <ng-container *ngIf="message.attachments?.length">
+                <div class="attachment-list d-flex">
+                    <ng-container
+                        *ngFor="
+                            let attachment of message.attachments;
+                            let ind = index
+                        "
+                    >
+                        <ng-container
+                            *ngIf="
+                                (attachment.fileName | fileExtension) ===
+                                    ('jpg' || 'jpeg' || 'png');
+                                else mediaFiles
+                            "
+                        >
+                            <div class="attachment-preview d-flex">
+                                <img
+                                    [src]="attachment.url"
+                                    [alt]="attachment.fileName"
+                                    class="attachment-preview-thumbnail"
+                                />
+                            </div>
+                        </ng-container>
+
+                        <ng-template #mediaFiles>
+                            <div class="attachment-preview d-flex">
+                                <div class="attachment-preview-document d-flex">
+                                    <img
+                                        [src]="
+                                            attachment.fileName
+                                                | fileExtensionIllustration
+                                        "
+                                        [alt]="attachment.fileName"
+                                        class="attachment-preview-document-thumbnail"
+                                    />
+                                    <div
+                                        class="attachment-preview-document-info"
+                                    >
+                                        <div class="text name">
+                                            {{ attachment.fileName }}
+                                        </div>
+                                        <div class="text size">
+                                            {{ attachment.fileSize }}
+                                            kB
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                    <div></div>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>
