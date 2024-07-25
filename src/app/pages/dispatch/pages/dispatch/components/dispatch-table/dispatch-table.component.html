@@ -489,21 +489,17 @@
                     </td>
 
                     <td class="location-field">
-                        <app-last-location-component
+                        <app-dispatch-table-last-location
                             [address]="item.location"
                             [rowIndex]="rowIndex"
                             [showAddAddressField]="showAddAddressFieldIndex"
-                            [_parkingLists]="parkingList"
-                            (handleUpdateLastLocationEmit)="
-                                updateOrAddDispatchBoardAndSend(
-                                    'location',
-                                    $event,
-                                    this.showAddAddressFieldIndex
-                                )
+                            [parkingList]="parkingList"
+                            (updateLastLocationEmit)="
+                                handleUpdateLastLocationEmit($event)
                             "
                             (isDropdownHidden)="onHideDropdown()"
                         >
-                        </app-last-location-component>
+                        </app-dispatch-table-last-location>
                     </td>
 
                     <td class="status-field">
@@ -881,21 +877,17 @@
                 </td>
 
                 <td class="location-field">
-                    <ng-container *ngIf="showAddAddressFieldIndex == -2">
-                        <app-last-location-component
+                    <ng-container *ngIf="showAddAddressFieldIndex === -2">
+                        <app-dispatch-table-last-location
                             [rowIndex]="showAddAddressFieldIndex"
                             [showAddAddressField]="showAddAddressFieldIndex"
-                            [_parkingLists]="parkingList"
-                            (handleUpdateLastLocationEmit)="
-                                updateOrAddDispatchBoardAndSend(
-                                    'location',
-                                    $event,
-                                    this.showAddAddressFieldIndex
-                                )
+                            [parkingList]="parkingList"
+                            (updateLastLocationEmit)="
+                                handleUpdateLastLocationEmit($event)
                             "
                             (isDropdownHidden)="onHideDropdown()"
                         >
-                        </app-last-location-component>
+                        </app-dispatch-table-last-location>
                     </ng-container>
                 </td>
 

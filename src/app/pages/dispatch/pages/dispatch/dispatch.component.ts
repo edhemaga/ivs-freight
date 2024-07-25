@@ -2,7 +2,6 @@ import {
     Component,
     OnInit,
     AfterViewInit,
-    Input,
     ChangeDetectorRef,
     ViewEncapsulation,
     OnChanges,
@@ -27,7 +26,6 @@ import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
     encapsulation: ViewEncapsulation.None,
 })
 export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
-    @Input() test: any = 'test';
     tableOptions: any = {};
     tableData: any[] = [];
     selectedTab = 'active';
@@ -56,10 +54,6 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     ) {}
 
     ngOnInit(): void {
-        setTimeout(() => {
-            this.test = '333';
-            this.cd.detectChanges();
-        }, 5000);
         this.dispatcherQuery.modalBoardListData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((result) => {

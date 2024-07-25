@@ -83,6 +83,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public checkForEmpty: string;
+
     public dispatchTableHeaderItems: { title?: string; icon?: string }[] = [];
 
     public dispatchData: DispatchBoardResponse;
@@ -99,11 +101,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public parkingList: ParkingDispatchModalResponse[];
 
     public addNewTruckData: TruckMinimalResponse;
+
     public showAddAddressFieldIndex: number = -1;
 
     /////////////////////////////////////////// UPDATE
 
-    checkForEmpty: string = '';
     truckFormControll: UntypedFormControl = new UntypedFormControl();
     truckAddress: UntypedFormControl = new UntypedFormControl(null);
     copyIndex: number = -1;
@@ -161,6 +163,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getConstantData();
+    }
+
+    set checkEmptySet(value: string) {
+        setTimeout(() => {
+            this.checkForEmpty = value;
+
+            this.cdRef.detectChanges();
+        }, 300);
     }
 
     public trackByIdentity = (index: number): number => index;
@@ -272,7 +282,27 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }) {
         const { type, index } = event;
 
-        this.updateOrAddDispatchBoardAndSend(type, null, index);
+        if (
+            !this.dispatchData.dispatches[index].truck &&
+            !this.dispatchData.dispatches[index].driver
+        ) {
+            const id = this.dispatchData.dispatches[index].id;
+
+            this.isDispatchBoardChangeInProgress = true;
+            this.checkEmptySet = DispatchTableStringEnum.TRAILER_ID;
+
+            this.deleteDispatchBoardById(id);
+        } else {
+            this.updateOrAddDispatchBoardAndSend(type, null, index);
+        }
+    }
+
+    public handleUpdateLastLocationEmit(event: string): void {
+        this.updateOrAddDispatchBoardAndSend(
+            DispatchTableStringEnum.LOCATION,
+            event,
+            this.showAddAddressFieldIndex
+        );
     }
 
     private handleHoursOfService() {
@@ -294,7 +324,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         };
     }
 
-    /////////////////////////////////////////// UPDATE
+    public onHideDropdown(): void {
+        setTimeout(() => {
+            if (this.showAddAddressFieldIndex !== -2) {
+                this.dispatchData.dispatches[
+                    this.showAddAddressFieldIndex
+                ].truck = this.addNewTruckData;
+            }
+
+            this.showAddAddressFieldIndex = -1;
+
+            this.addNewTruckData = null;
+
+            this.cdRef.detectChanges();
+        }, 3000);
+    }
+
     private setCreateUpdateOptionalProperties<T>(
         id: number,
         key: string,
@@ -317,14 +362,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         value: T,
         index: number
     ): void {
-        console.log('key', key);
-        console.log('value', value);
-        console.log('index', index);
         const previousData = this.dispatchData.dispatches[index]
             ? JSON.parse(JSON.stringify(this.dispatchData.dispatches[index]))
             : {};
-
-        console.log('previousData', previousData);
 
         const {
             id,
@@ -368,11 +408,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ),
         };
 
-        console.log('newData', newData);
-
         this.isDispatchBoardChangeInProgress = true;
 
-        /* TODO */
         this.checkForEmpty = key;
 
         if (updatedPreviousData.id) {
@@ -383,6 +420,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     catchError(() => {
                         this.isDispatchBoardChangeInProgress = false;
                         this.checkEmptySet = '';
+
                         return of(null);
                     })
                 )
@@ -393,6 +431,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         value
                     );
                     this.dispatcherService.updateModalList();
+
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = '';
                 });
@@ -404,6 +443,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     catchError(() => {
                         this.isDispatchBoardChangeInProgress = false;
                         this.checkEmptySet = '';
+
                         return of(null);
                     })
                 )
@@ -414,14 +454,24 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                         value
                     );
                     this.dispatcherService.updateModalList();
+
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = '';
                 });
         }
     }
 
-    showDriverDropdown(ind: number) {
-        this.openedDriverDropdown = ind;
+    private deleteDispatchBoardById(id: number): void {
+        this.dispatcherService
+            .deleteDispatchboard(id)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap(() => {
+                    this.isDispatchBoardChangeInProgress = false;
+                    this.checkEmptySet = '';
+                })
+            )
+            .subscribe();
     }
 
     public updateParking(
@@ -429,6 +479,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         id: number
     ): void {
         this.isDispatchBoardChangeInProgress = true;
+
         this.parkingService
             .apiParkingParkingslotPut({
                 id: parkingSlot.parking,
@@ -448,21 +499,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
-    onHideDropdown() {
-        console.log('showAddAddressFieldIndex', this.showAddAddressFieldIndex);
+    /////////////////////////////////////////// UPDATE
 
-        setTimeout(() => {
-            if (this.showAddAddressFieldIndex != -2)
-                this.dispatchData.dispatches[
-                    this.showAddAddressFieldIndex
-                ].truck = this.addNewTruckData;
-
-            this.showAddAddressFieldIndex = -1;
-
-            this.addNewTruckData = null;
-
-            this.cdRef.detectChanges();
-        }, 3000);
+    showDriverDropdown(ind: number) {
+        this.openedDriverDropdown = ind;
     }
 
     addDriver(e) {
@@ -511,13 +551,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
 
         this.statusOpenedIndex = -1;
-    }
-
-    set checkEmptySet(value) {
-        setTimeout(() => {
-            this.checkForEmpty = value;
-            this.cdRef.detectChanges();
-        }, 300);
     }
 
     public copy(text: string, indx: number, type: string): void {
@@ -842,27 +875,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     trailerPositionPrediction = () => {
         return true;
     };
-
-    /////////////////////// UNUSED
-
-    /* 
-    public onSelectDropdown(event: any, action: string, test: string) {
-        this.selectedColor = event;
-        switch (test) {
-            case DispatchTableStringEnum.TRUCK:
-                this.openedTruckDropdown = -1;
-                break;
-            case DispatchTableStringEnum.TRUCK:
-                this.openedTrailerDropdown = -1;
-                break;
-            case 'driver':
-                this.openedDriverDropdown = -1;
-                break;
-        }
-
-        this.truckFormControll.reset();
-    }
- */
 
     ngOnDestroy(): void {
         this.destroy$.next();

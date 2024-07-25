@@ -701,127 +701,6 @@
         }
     }
 
-    table {
-        tr {
-            td {
-                .main_inside {
-                    .cdk-drag {
-                        @each $truck_col in $truck_colors {
-                            &.truck_#{$truck_col} {
-                                &:hover {
-                                    .info-item {
-                                        background-color: unquote(
-                                            '#' + $truck_col + '33'
-                                        );
-                                    }
-                                }
-                                svg-icon {
-                                    svg {
-                                        circle {
-                                            fill: unquote('#' + $truck_col);
-                                        }
-                                    }
-
-                                    &:hover {
-                                        & ~ .info-item {
-                                            background-color: unquote(
-                                                '#' + $truck_col
-                                            );
-
-                                            svg-icon {
-                                                display: flex;
-                                            }
-                                            span {
-                                                display: none;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        @each $trailer_col in $trailer_colors {
-                            &.trailer_#{$trailer_col} {
-                                &.cdk-drag {
-                                    background-color: unquote(
-                                        '#' + $trailer_col
-                                    );
-                                    border-radius: 2px;
-
-                                    svg-icon {
-                                        display: none;
-                                    }
-                                    .info-item {
-                                        padding-left: 0;
-                                        span {
-                                            color: #fff !important;
-                                        }
-                                    }
-
-                                    &:after {
-                                        content: '';
-                                        width: 18px;
-                                        height: 18px;
-                                        position: absolute;
-                                        right: 10px;
-                                        top: 50%;
-
-                                        transform: translateY(-50%);
-                                        background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
-                                        background-size: 20px 17px;
-                                        background-repeat: no-repeat;
-                                        background-position: center;
-                                    }
-                                }
-                                &:hover {
-                                    .info-item {
-                                        background-color: unquote(
-                                            '#' + $trailer_col + '33'
-                                        );
-                                    }
-                                }
-                                svg-icon {
-                                    svg {
-                                        pointer-events: none;
-                                        circle {
-                                            pointer-events: none;
-                                            fill: unquote('#' + $trailer_col);
-                                        }
-                                    }
-
-                                    &:hover {
-                                        & ~ .info-item {
-                                            background-color: unquote(
-                                                '#' + $trailer_col
-                                            );
-
-                                            svg-icon {
-                                                display: flex;
-                                            }
-                                            span {
-                                                display: none;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        svg-icon {
-                            &:hover {
-                                svg {
-                                    circle {
-                                        fill: #fff;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     .table-info {
         margin-top: 2px;
 
@@ -850,59 +729,6 @@
             &.dispatcher-field {
                 width: 300px;
                 text-align: right;
-            }
-        }
-    }
-
-    .new_load_dispatch_hold {
-        width: 26px;
-        height: 26px;
-        border-radius: 3px;
-        background-color: #fff;
-    }
-
-    .new_load_dispatch {
-        width: 26px;
-        height: 26px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        border-radius: 3px;
-        background-color: #fff;
-        margin: 0 0 0 auto;
-
-        svg-icon {
-            display: flex;
-        }
-
-        svg {
-            path {
-                transition: none !important;
-                fill: #b7b7b7;
-            }
-        }
-
-        &:hover {
-            background-color: #eeeeee;
-
-            svg {
-                path {
-                    fill: #6d82c7;
-                }
-            }
-        }
-
-        &[disabled] {
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: default;
-
-            &:hover {
-                svg {
-                    path {
-                        fill: #cfcfcf;
-                    }
-                }
             }
         }
     }
@@ -937,10 +763,6 @@
             *:not(.switch_statuses) {
                 color: #fff !important;
             }
-        }
-
-        .new_load_dispatch_hold {
-            display: none !important;
         }
 
         .padding-inside {
