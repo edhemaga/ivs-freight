@@ -91,7 +91,7 @@
                     *ngFor="
                         let message of messages;
                         let ind = index;
-                        trackBy: trackById
+                        trackBy: '' | trackByProperty
                     "
                 >
                     <ng-container *ngIf="message">
@@ -156,18 +156,25 @@
                                     *ngFor="
                                         let attachment of attachments;
                                         let ind = index;
-                                        trackBy: trackByAttachmentName
+                                        trackBy: '' | trackByProperty
                                     "
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            (attachment.name
-                                                | fileExtension) ===
-                                                ('jpg' || 'jpeg' || 'png');
-                                            else mediaFiles
+                                    <div
+                                        class="attachment-preview pointer d-flex"
+                                        [ngClass]="
+                                            !isChatTypingBlurred
+                                                ? 'attachment-preview-dark'
+                                                : 'attachment-preview-light'
                                         "
                                     >
-                                        <div class="attachment-preview d-flex">
+                                        <ng-container
+                                            *ngIf="
+                                                (attachment.name
+                                                    | fileExtension) ===
+                                                    ('jpg' || 'jpeg' || 'png');
+                                                else documentFiles
+                                            "
+                                        >
                                             <img
                                                 [src]="
                                                     attachment.stringifiedData
@@ -175,18 +182,8 @@
                                                 [alt]="attachment.name"
                                                 class="attachment-preview-thumbnail"
                                             />
-                                        </div>
-                                    </ng-container>
-
-                                    <ng-template #mediaFiles>
-                                        <div
-                                            class="attachment-preview d-flex"
-                                            [ngClass]="
-                                                !isChatTypingBlurred
-                                                    ? 'attachment-preview-dark'
-                                                    : 'attachment-preview-light'
-                                            "
-                                        >
+                                        </ng-container>
+                                        <ng-template #documentFiles>
                                             <div
                                                 class="attachment-preview-document d-flex"
                                             >
@@ -210,8 +207,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </ng-template>
+                                        </ng-template>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="ChatSvgRoutes.xIcon"
+                                            (click)="
+                                                removeAttachment(attachment)
+                                            "
+                                        ></svg-icon>
+                                    </div>
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -250,11 +258,15 @@
                             : { height: '24px' }
                     "
                 >
-                    <svg-icon
-                        class="d-flex justify-content-center align-items-center"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                        [src]="ChatSvgRoutes.faceEmojiIcon"
-                    ></svg-icon>
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div class="d-flex justify-content-center icon">
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.faceEmojiIcon"
+                            ></svg-icon>
+                        </div>
+                    </div>
 
                     <div
                         class="border-container d-flex justify-content-center align-items-center"
@@ -262,12 +274,16 @@
                         <div class="border"></div>
                     </div>
 
-                    <svg-icon
-                        class="d-flex justify-content-center align-items-center"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                        [src]="ChatSvgRoutes.documentIcon"
-                        (click)="uploadAttachmentDragAndDrop()"
-                    ></svg-icon>
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div class="d-flex justify-content-center icon">
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.documentIcon"
+                                (click)="uploadAttachmentDragAndDrop()"
+                            ></svg-icon>
+                        </div>
+                    </div>
 
                     <div
                         class="border-container d-flex justify-content-center align-items-center"
@@ -275,13 +291,17 @@
                         <div class="border"></div>
                     </div>
 
-                    <svg-icon
-                        class="d-flex justify-content-center align-items-center"
-                        [ngClass]="messageToSend && 'blue-icon'"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                        [src]="ChatSvgRoutes.sendMessageIcon"
-                        (click)="sendMessage()"
-                    ></svg-icon>
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div class="d-flex justify-content-center icon">
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [ngClass]="messageToSend && 'blue-icon'"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.sendMessageIcon"
+                                (click)="sendMessage()"
+                            ></svg-icon>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

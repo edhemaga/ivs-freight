@@ -189,9 +189,14 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.enableChatInput();
   }
 
+  public removeAttachment(attachment: ChatAttachmentForThumbnail): void {
+    this.attachments = [...this.attachments.filter(arg => arg !== attachment)];
+  }
+
   public blurInput(): void {
     this.isChatTypingBlurred = false;
   }
+
   public focusInput(): void {
     this.isChatTypingBlurred = true;
   }

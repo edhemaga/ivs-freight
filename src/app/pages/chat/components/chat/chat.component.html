@@ -10,7 +10,11 @@
         <!-- TABS -->
         <div class="tab-wrapper d-flex align-items-center">
             <ng-container
-                *ngFor="let tab of tabs; let ind = index; trackBy: trackById"
+                *ngFor="
+                    let tab of tabs;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
             >
                 <div
                     class="tab-container d-flex"

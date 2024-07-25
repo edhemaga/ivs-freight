@@ -20,8 +20,13 @@
 
         .right-icons {
             margin: auto 0 auto auto;
+
             svg-icon {
                 padding: 0 4px;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     }
@@ -85,6 +90,8 @@
                     border-bottom-right-radius: 0;
                     padding: 4px 2px 2px 4px;
                     margin-top: 8px;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
 
                     &-dark {
                         background-color: $ta-black-3;
@@ -95,18 +102,18 @@
                     }
 
                     .attachment-preview {
-                        margin-right: 6px;
+                        margin-right: 8px;
                         padding: 1px;
                         border-radius: 2px;
 
                         &-dark {
                             background-color: $bw2;
-                            color: $white;
+                            color: $ta-black-2 !important;
                         }
 
                         &-light {
                             background-color: $ta-black-2;
-                            color: $ta-black-2 !important;
+                            color: $white;
                         }
 
                         &-document {
@@ -141,19 +148,45 @@
                                 padding-right: 6px;
                             }
                         }
+
+                        svg-icon {
+                            height: fit-content;
+                            position: relative;
+                            top: 0;
+                            right: -6px;
+                        }
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
             }
         }
 
-        svg-icon {
-            padding: 0 12px;
-        }
+        .right-side {
+            .icon-wrapper {
+                height: 26px;
+                width: 26px;
+                margin: 0 6px;
 
-        .blue-icon {
-            svg {
-                path {
-                    fill: $ta-blue-13;
+                .icon {
+                    width: 100%;
+                    border-radius: 2px;
+                }
+
+                :hover {
+                    background-color: $bw2;
+                }
+                svg-icon:hover {
+                    cursor: pointer;
+                }
+
+                .blue-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
                 }
             }
         }

@@ -10,9 +10,12 @@ import { Output } from '@angular/core';
 // Assets route
 import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
 
+// Helpers
+import { checkIfAttachmentExistsAndHandlePreview } from '@pages/chat/util/helpers/file-upload-handler.helper';
+
 //Models
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
-import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-chat-attachment-upload',
@@ -34,38 +37,8 @@ export class ChatAttachmentUploadComponent implements OnInit {
   ngOnInit(): void { }
 
   public handleUploadedFiles(files: FileList): void {
-    for (let i = 0; i < files.length; i++) {
-      const fileExists: boolean = this.attachments
-        .some(
-          attachment => attachment.name === files[i].name
-        )
-      if (fileExists) continue;
-
-      let newFile: ChatAttachmentForThumbnail = files[i];
-      this.convertFileToUrl(files[i]).subscribe(arg => {
-        newFile.stringifiedData = arg;
-      });
-
-      this.attachments = [...this.attachments, newFile];
-    }
+    this.attachments = checkIfAttachmentExistsAndHandlePreview(files, this.attachments);
 
     this.attachmentsToUpload.emit(this.attachments);
-  }
-
-  private convertFileToUrl(file: File): Observable<string | ArrayBuffer> {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    return new Observable((observer) => {
-
-      reader.onload = () => {
-        observer.next(reader.result);
-      };
-
-      reader.onerror = () => {
-        observer.error(reader.error);
-      };
-    });
   }
 }
