@@ -111,7 +111,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     public listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
-    public dispatchPopover: string | TemplateRef<any>;
+    public dispatchPopoup: string | TemplateRef<any>;
     public dispatchPopoverOpen: boolean = false;
     public optionsPopupOpen: boolean = false;
     public selectedDispatcher: any;
@@ -578,6 +578,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             return option;
         });
+        console.log(optionsPopup);
 
         this.optionsPopup = optionsPopup;
 
@@ -593,7 +594,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public showDispatchList(optionsPopup): void {
-        this.dispatchPopover = optionsPopup;
+        this.dispatchPopoup = optionsPopup;
 
         if (optionsPopup.isOpen()) {
             optionsPopup.close();
