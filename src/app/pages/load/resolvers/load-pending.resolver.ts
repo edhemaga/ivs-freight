@@ -65,7 +65,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                     localStorage.setItem(
                         'loadTableCount',
                         JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
+                            pendingCount: loadPagination.pagination.count,
                             activeCount: loadPagination.activeCount,
                             closedCount: loadPagination.closedCount,
                             templateCount: loadPagination.templateCount,

@@ -60,7 +60,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                         'loadTableCount',
                         JSON.stringify({
                             pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
+                            activeCount: loadPagination.pagination.count,
                             closedCount: loadPagination.closedCount,
                             templateCount: loadPagination.templateCount,
                         })
