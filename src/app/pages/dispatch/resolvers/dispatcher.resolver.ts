@@ -13,7 +13,7 @@ export class DispatcherResolver implements Resolve<any> {
     constructor(
         // Services
         private dispatcherService: DispatcherService
-    ) {}
+    ) { }
     resolve(): Observable<any> {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
             ? JSON.parse(localStorage.getItem('dispatchUserSelect')).id
@@ -23,21 +23,12 @@ export class DispatcherResolver implements Resolve<any> {
             dispatcherId == -1
                 ? this.dispatcherService.getDispatchboardList()
                 : this.dispatcherService.getDispatchBoardByDispatcherList(
-                      dispatcherId
-                  );
+                    dispatcherId
+                );
         const modalList = this.dispatcherService.getDispatcherList();
 
         let join = forkJoin([modalList, dispatchList]).pipe(
             map((list: any) => {
-                list[1] =
-                    dispatcherId == -1
-                        ? list[1]
-                        : {
-                              pagination: {
-                                  data: [list[1]],
-                              },
-                          };
-
                 this.dispatcherService.dispatcherData = list;
 
                 return list;
