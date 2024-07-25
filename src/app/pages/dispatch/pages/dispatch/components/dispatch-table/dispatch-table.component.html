@@ -149,7 +149,7 @@
                     <td class="driver-field">
                         <div
                             class="main_inside"
-                            [class.filled]="item.driver"
+                            [class.filled]="item?.driver"
                             [class.default]="
                                 !item.driver &&
                                 !driverList.length &&
@@ -201,7 +201,7 @@
                                     [openedDriverDropdown]="
                                         openedDriverDropdown
                                     "
-                                    [isActiveLoad]="!!item.activeLoad"
+                                    [isActiveLoad]="!!item?.activeLoad"
                                     (removeDriverEmitter)="
                                         handleRemoveDriverClick($event)
                                     "
@@ -212,22 +212,22 @@
                     </td>
 
                     <td class="box-item">
-                        <div class="main_inside" [class.filled]="item.driver">
+                        <div class="main_inside" [class.filled]="item?.driver">
                             <div class="padding-inside">
                                 <div
-                                    *ngIf="item.driver"
+                                    *ngIf="item?.driver"
                                     class="info-item c-pointer"
                                     [class.driver-on-vacation]="
-                                        item.driver.vacation
+                                        item?.driver.vacation
                                     "
                                     (click)="changeDriverVacation(item)"
                                     [mainTooltip]="
-                                        item.driver.vacation
+                                        item?.driver.vacation
                                             ? 'Remove from Vacation'
                                             : 'Send to Vacation'
                                     "
                                     [tooltipBackground]="
-                                        item.driver.vacation
+                                        item?.driver.vacation
                                             ? '#EF5350'
                                             : '#2F2F2F'
                                     "
@@ -320,7 +320,7 @@
                         <div
                             class="main_inside"
                             [class.filled]="
-                                item.driver &&
+                                item?.driver &&
                                 item.trailer &&
                                 item.location.address
                             "
@@ -328,7 +328,7 @@
                             <div class="padding-inside">
                                 <app-ta-status-switch
                                     *ngIf="
-                                        item.driver &&
+                                        item?.driver &&
                                         item.trailer &&
                                         item.location.address
                                     "
@@ -612,28 +612,28 @@
                         [email]="item?.email"
                         [draggingType]="draggingType"
                         [openedDriverDropdown]="openedDriverDropdown"
-                        [isActiveLoad]="!!item.activeLoad"
+                        [isActiveLoad]="!!item?.activeLoad"
                         (removeDriverEmitter)="handleRemoveDriverClick($event)"
                     >
                     </app-dispatch-table-driver>
                 </td>
                 <td class="box-item">
-                    <div class="main_inside" [class.filled]="item.driver">
+                    <div class="main_inside" [class.filled]="item?.driver">
                         <div class="padding-inside">
                             <div
-                                *ngIf="item.driver"
+                                *ngIf="item?.driver"
                                 class="info-item c-pointer"
                                 [class.driver-on-vacation]="
-                                    item.driver.vacation
+                                    item?.driver.vacation
                                 "
                                 (click)="changeDriverVacation(item)"
                                 [mainTooltip]="
-                                    item.driver.vacation
+                                    item?.driver.vacation
                                         ? 'Remove from Vacation'
                                         : 'Send to Vacation'
                                 "
                                 [tooltipBackground]="
-                                    item.driver.vacation ? '#EF5350' : '#2F2F2F'
+                                    item?.driver.vacation ? '#EF5350' : '#2F2F2F'
                                 "
                                 ngbTooltip
                                 position="right"
