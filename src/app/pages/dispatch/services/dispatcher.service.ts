@@ -12,6 +12,7 @@ import {
     DispatchService,
     DriverService,
     ReorderDispatchesCommand,
+    ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
@@ -273,5 +274,9 @@ export class DispatcherService {
                 },
             },
         }));
+    }
+
+    public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
+        return this.dispatchService.apiDispatchReorderLoadsPut(loads);
     }
 }

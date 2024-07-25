@@ -12,12 +12,11 @@
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
+                    [options]="labelsDispatches"
+                    [activeItem]="selectedDispatches"
+                    (selectedItem)="onDispachChange($event)"
                 ></app-ta-input-dropdown>
             </form>
-
-            <!-- [options]="labelsDispatches"
-        [activeItem]="selectedDispatches"
-            (selectedItem)="onSelectDropdown($event, 'dispatches')" -->
             <!-- Table header -->
             <div class="d-grid dispatch-load-grid">
                 <div>
@@ -65,75 +64,75 @@
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
             >
-            <div firstElement class="h-full">
-                <app-ta-custom-card
-                    [cardName]="'Assigned'"
-                    [hasCounter]="assignedLoads.length"
-                    [isCardOpen]="isAssignLoadCardOpen"
-                    [hasActionSvg]="false"
-                    [hasBodyData]="true"
-                    [hasArrow]="true"
-                    [showReorderButton]="showReorderButton"
-                    [showFinishReordering]="showFinishReordering"
-                    [hasScrollBody]="true"
-                    (onOpenCard)="isAssignLoadCardOpen = $event"
-                    [isInheritingParentSize]="true"
-                    (onActionEvent)="onReorderAction($event)"
-                    (cdkDropListDropped)="dropAssigned($event)"
-                    cdkDropList
-                >
-                    <ng-container
-                        *ngIf="
-                            assignedLoads.length;
-                            else showNoAssignedLoads
-                        "
+                <div firstElement class="h-full">
+                    <app-ta-custom-card
+                        [cardName]="'Assigned'"
+                        [hasCounter]="assignedLoads.length"
+                        [isCardOpen]="isAssignLoadCardOpen"
+                        [hasActionSvg]="false"
+                        [hasBodyData]="true"
+                        [hasArrow]="true"
+                        [showReorderButton]="showReorderButton"
+                        [showFinishReordering]="showFinishReordering"
+                        [hasScrollBody]="true"
+                        (onOpenCard)="isAssignLoadCardOpen = $event"
+                        [isInheritingParentSize]="true"
+                        (onActionEvent)="onReorderAction($event)"
+                        (cdkDropListDropped)="dropAssigned($event)"
+                        cdkDropList
                     >
-                        <div
-                            *ngFor="
-                                let assignedLoad of assignedLoads;
-                                let index = index;
-                                trackBy: trackByIdentity
+                        <ng-container
+                            *ngIf="
+                                assignedLoads.length;
+                                else showNoAssignedLoads
                             "
-                            cdkDrag
                         >
                             <div
-                                class="dragdrop-custom-placeholder-assign-load"
-                                *cdkDragPlaceholder
-                            ></div>
-                            <app-load-short-details
-                                [load]="assignedLoad"
-                                [index]="index + 1"
-                                [isAssigned]="true"
-                                (changeLoadList$)="
-                                    changeLoadList(assignedLoad.id, true)
+                                *ngFor="
+                                    let assignedLoad of assignedLoads;
+                                    let index = index;
+                                    trackBy: trackByIdentity
                                 "
-                                (selectLoad$)="
-                                    selectLoad(assignedLoad.id, true)
-                                "
-                            ></app-load-short-details>
-                        </div>
-                    </ng-container>
-            
-                    <ng-template #showNoAssignedLoads>
-                        <div
-                            class="d-flex flex-column align-items-center justify-content-center"
-                        >
-                            <svg-icon [src]="svgIcons.noLoads"></svg-icon>
-            
-                            <div
-                                class="ta-font-bold dispatch-load-no-results-title"
+                                cdkDrag
                             >
-                                No data found
+                                <div
+                                    class="dragdrop-custom-placeholder-assign-load"
+                                    *cdkDragPlaceholder
+                                ></div>
+                                <app-load-short-details
+                                    [load]="assignedLoad"
+                                    [index]="index + 1"
+                                    [isAssigned]="true"
+                                    (changeLoadList$)="
+                                        changeLoadList(assignedLoad.id, true)
+                                    "
+                                    (selectLoad$)="
+                                        selectLoad(assignedLoad.id, true)
+                                    "
+                                ></app-load-short-details>
                             </div>
-                            <p
-                                class="ta-font-medium dispatch-load-no-results-text"
+                        </ng-container>
+
+                        <ng-template #showNoAssignedLoads>
+                            <div
+                                class="d-flex flex-column align-items-center justify-content-center"
                             >
-                                There are currently no assigned loads
-                            </p>
-                        </div>
-                    </ng-template>
-                </app-ta-custom-card>
-            </div>
+                                <svg-icon [src]="svgIcons.noLoads"></svg-icon>
+
+                                <div
+                                    class="ta-font-bold dispatch-load-no-results-title"
+                                >
+                                    No data found
+                                </div>
+                                <p
+                                    class="ta-font-medium dispatch-load-no-results-text"
+                                >
+                                    There are currently no assigned loads
+                                </p>
+                            </div>
+                        </ng-template>
+                    </app-ta-custom-card>
+                </div>
 
                 <div secondElement class="h-full">
                     <app-ta-custom-card
@@ -192,7 +191,6 @@
                         </ng-template>
                     </app-ta-custom-card>
                 </div>
-            
             </app-ta-resizer>
         </div>
     </div>

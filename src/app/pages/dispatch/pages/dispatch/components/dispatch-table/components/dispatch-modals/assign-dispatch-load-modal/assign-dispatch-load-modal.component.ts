@@ -25,9 +25,11 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import {
     AssignedLoadListResponse,
     AssignedLoadResponse,
+    DispatchLoadModalResponse,
     DriverDispatchResponse,
     LoadResponse,
     LoadStopResponse,
+    ReorderDispatchLoadsCommand,
     TrailerMinimalResponse,
     TruckMinimalResponse,
 } from 'appcoretruckassist';
@@ -40,6 +42,7 @@ import { ModalService } from '@shared/services/modal.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 @Component({
     selector: 'app-assign-dispatch-load-modal',
@@ -86,11 +89,13 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     public loadStopRoutes: MapRoute[] = [];
     public unassignedLoads: AssignedLoadResponse[] = [];
     public assignedLoads: AssignedLoadResponse[] = [];
-
+    public labelsDispatches: any;
+    public selectedDispatches: any = null;
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private dispatchService: DispatcherService
     ) {}
 
     ngOnInit(): void {
@@ -106,7 +111,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     this.unassignedLoads = res.unassignedLoads;
-
+                    this.mapDispatchers(res.dispatches);
                     if (this.editData?.data) {
                         this.assignedLoads = this.editData.data.assignedLoads;
                     }
@@ -121,6 +126,132 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         this.assingLoadForm = this.formBuilder.group({
             dispatchId: [null],
         });
+    }
+
+    private mapDispatchers(dispatches: DispatchLoadModalResponse[]): void {
+        this.labelsDispatches = dispatches.map((item, index) => {
+            return {
+                ...item,
+                driver: {
+                    ...item.driver,
+                    name: item.driver?.firstName?.concat(
+                        LoadModalStringEnum.EMPTY_SPACE_STRING,
+                        item.driver?.lastName
+                    ),
+                    logoName: item.driver?.avatarFile?.url,
+                    owner: !!item.driver?.owner,
+                },
+                coDriver: {
+                    ...item.coDriver,
+                    name: item.coDriver?.firstName?.concat(
+                        LoadModalStringEnum.EMPTY_SPACE_STRING,
+                        item.coDriver?.lastName
+                    ),
+                },
+                truck: {
+                    ...item.truck,
+                    name: item.truck?.truckNumber,
+                    logoType: item.truck?.truckType?.name,
+                    logoName: item.truck?.truckType?.logoName,
+                    folder: LoadModalStringEnum.COMMON,
+                    subFolder: LoadModalStringEnum.TRUCKS,
+                },
+                trailer: {
+                    ...item.trailer,
+                    name: item.trailer?.trailerNumber,
+                    logoType: item.trailer?.trailerType?.name,
+                    logoName: item.trailer?.trailerType?.logoName,
+                    folder: LoadModalStringEnum.COMMON,
+                    subFolder: LoadModalStringEnum.TRAILERS,
+                },
+                itemIndex: index,
+                fullName: item.truck?.truckNumber
+                    .concat(
+                        LoadModalStringEnum.EMPTY_SPACE_STRING,
+                        item.trailer?.trailerNumber
+                    )
+                    .concat(
+                        LoadModalStringEnum.EMPTY_SPACE_STRING,
+                        item.driver?.firstName.concat(
+                            LoadModalStringEnum.EMPTY_SPACE_STRING,
+                            item.driver?.lastName
+                        )
+                    ),
+            };
+        });
+    }
+
+    public onDispachChange(dispach: any) {
+        this.selectedDispatches = {
+            ...dispach,
+            name: dispach?.truck?.name
+                ?.concat(
+                    LoadModalStringEnum.EMPTY_SPACE_STRING,
+                    dispach?.trailer?.name
+                )
+                .concat(
+                    LoadModalStringEnum.EMPTY_SPACE_STRING,
+                    dispach?.driver?.name
+                ),
+        };
+
+        this.loadDispatchesTTDInputConfig = {
+            ...this.loadDispatchesTTDInputConfig,
+            multipleLabel: {
+                labels: [
+                    LoadModalStringEnum.TRUCK,
+                    LoadModalStringEnum.TRAILER,
+                    LoadModalStringEnum.DRIVER,
+                    dispach?.payType ? LoadModalStringEnum.DRIVER_PAY : null,
+                ],
+                customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
+            },
+            multipleInputValues: {
+                options: [
+                    {
+                        id: dispach?.truck?.id,
+                        value: dispach?.truck?.name,
+                        logoName: dispach?.truck?.logoName,
+                        isImg: false,
+                        isSvg: true,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRUCKS,
+                        logoType: dispach?.truck?.logoType,
+                    },
+                    {
+                        value: dispach?.trailer?.name,
+                        logoName: dispach?.trailer?.logoName,
+                        isImg: false,
+                        isSvg: true,
+                        folder: LoadModalStringEnum.COMMON,
+                        subFolder: LoadModalStringEnum.TRAILERS,
+                        logoType: dispach?.trailer?.logoType,
+                    },
+                    {
+                        value: dispach?.driver?.name,
+                        logoName: dispach?.driver?.logoName
+                            ? dispach?.driver?.logoName
+                            : LoadModalStringEnum.NO_URL,
+                        isImg: true,
+                        isSvg: false,
+                        folder: null,
+                        subFolder: null,
+                        isOwner: dispach?.driver?.owner,
+                        logoType: null,
+                    },
+                    {
+                        value: dispach?.payType,
+                        logoName: null,
+                        isImg: false,
+                        isSvg: false,
+                        folder: null,
+                        subFolder: null,
+                        logoType: null,
+                    },
+                ],
+                customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
+            },
+        };
     }
 
     public trackByIdentity(id: number): number {
@@ -258,6 +389,28 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             .getLoadById(loadId)
             .pipe(takeUntil(this.destroy$), tap(callback))
             .subscribe();
+    }
+
+    private mapLoadsForRequest(): ReorderDispatchLoadsCommand {
+        const loads = this.assignedLoads.map((load, index) => {
+            return {
+                id: load.id,
+                order: index,
+            };
+        });
+        return {
+            dispatchId: this.selectedDispatches.id,
+            loads,
+        };
+    }
+
+    public saveLoads() {
+        this.dispatchService
+            .saveDispatchLoads(this.mapLoadsForRequest())
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {},
+            });
     }
 
     public ngOnDestroy(): void {
