@@ -308,3 +308,13 @@ app-load-modal {
     overflow: hidden;
     white-space: nowrap;
 }
+
+.h-full {
+    height: 100%;
+}
+
+.ta-custom-card .ta-card-body.scroll.h-full {
+    scrollbar-width: thin !important;
+    padding-bottom: 30px;
+    overflow-y: auto !important;
+}

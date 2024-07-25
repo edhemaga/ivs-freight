@@ -42,6 +42,7 @@ import {
     LoadStatus,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
+    AssignLoadModalResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -628,5 +629,9 @@ export class LoadService {
                 }
             }
         });
+    }
+
+    public getDispatchModalData(): Observable<AssignLoadModalResponse> {
+        return this.loadService.apiLoadModalAssignGet();
     }
 }

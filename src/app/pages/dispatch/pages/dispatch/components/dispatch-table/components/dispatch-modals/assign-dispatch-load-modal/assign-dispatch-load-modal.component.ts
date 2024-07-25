@@ -24,6 +24,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Models
 import {
     AssignedLoadListResponse,
+    AssignedLoadResponse,
     DriverDispatchResponse,
     LoadResponse,
     LoadStopResponse,
@@ -76,10 +77,15 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
+    public isAssignLoadCardOpen: boolean = true;
+    public isUnAssignLoadCardOpen: boolean = true;
+
     // Additional load
     public isAssignedLoad: boolean = false;
 
     public loadStopRoutes: MapRoute[] = [];
+    public unassignedLoads: AssignedLoadResponse[] = [];
+    public assignedLoads: AssignedLoadResponse[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -88,8 +94,27 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.getModalData();
         this.createForm();
         this.drawAssignedLoadRoutes();
+    }
+
+    private getModalData(): void {
+        this.loadService
+            .getDispatchModalData()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    this.unassignedLoads = res.unassignedLoads;
+
+                    if (this.editData?.data) {
+                        this.assignedLoads = this.editData.data.assignedLoads;
+                    }
+
+                    this.isAssignLoadCardOpen = !!this.assignedLoads.length;
+                    this.isUnAssignLoadCardOpen = !!this.unassignedLoads.length;
+                },
+            });
     }
 
     private createForm() {
@@ -117,7 +142,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             return;
         }
         moveItemInArray(
-            this.editData.data.assignedLoads,
+            this.assignedLoads,
             event.previousIndex,
             event.currentIndex
         );
@@ -133,28 +158,26 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public changeLoadList(loadId: number, isAssignedList: boolean, isIconClick?: boolean) {
+    public changeLoadList(
+        loadId: number,
+        isAssignedList: boolean,
+        isIconClick?: boolean
+    ) {
         if (isAssignedList) {
-            const loadIndex = this.editData.data.assignedLoads.findIndex(
+            const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
             );
-            const [movedLoad] = this.editData.data.assignedLoads.splice(
-                loadIndex,
-                1
-            );
-            this.editData.data.unassignedLoads.push(movedLoad);
+            const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
+            this.unassignedLoads.push(movedLoad);
         } else {
-            const loadIndex = this.editData.data.assignedLoads.findIndex(
+            const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
             );
-            const [movedLoad] = this.editData.data.unassignedLoads.splice(
-                loadIndex,
-                1
-            );
-            this.editData.data.assignedLoads.push(movedLoad);
+            const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
+            this.assignedLoads.push(movedLoad);
         }
 
-        if(isIconClick || loadId === this.selectedLoad.id) {
+        if (isIconClick || loadId === this.selectedLoad?.id) {
             this.isAssignedLoad = !isAssignedList;
         }
     }
@@ -199,7 +222,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private drawAssignedLoadRoutes() {
-        this.editData.data.assignedLoads.forEach((load) => {
+        this.assignedLoads.forEach((load) => {
             this.fetchLoadById(load.id, (loadResponse) => {
                 this.getLoadStopRoutes(loadResponse.stops);
             });
@@ -213,6 +236,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
                     ...load,
                 },
                 type: TableStringEnum.EDIT,
+                selectedTab: TableStringEnum.PENDING,
             };
 
             this.modalService.openModal(

@@ -23,11 +23,11 @@ import { CreateDispatchCommand } from '../model/createDispatchCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
-import { DispatchAssignedLoadListResponse } from '../model/dispatchAssignedLoadListResponse';
-// @ts-ignore
 import { DispatchBoardListResponse } from '../model/dispatchBoardListResponse';
 // @ts-ignore
 import { DispatchBoardResponse } from '../model/dispatchBoardResponse';
+// @ts-ignore
+import { DispatchGroupedLoadsResponse } from '../model/dispatchGroupedLoadsResponse';
 // @ts-ignore
 import { DispatchHistoryDriverListResponse } from '../model/dispatchHistoryDriverListResponse';
 // @ts-ignore
@@ -39,9 +39,9 @@ import { DispatchHistoryModalResponse } from '../model/dispatchHistoryModalRespo
 // @ts-ignore
 import { DispatchModalResponse } from '../model/dispatchModalResponse';
 // @ts-ignore
-import { DispatchResponse } from '../model/dispatchResponse';
+import { DispatchPossibleStatusResponse } from '../model/dispatchPossibleStatusResponse';
 // @ts-ignore
-import { DispatchStatusResponse } from '../model/dispatchStatusResponse';
+import { DispatchResponse } from '../model/dispatchResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
@@ -50,6 +50,8 @@ import { ReorderDispatchLoadsCommand } from '../model/reorderDispatchLoadsComman
 import { ReorderDispatchesCommand } from '../model/reorderDispatchesCommand';
 // @ts-ignore
 import { RevertDispatchStatusCommand } from '../model/revertDispatchStatusCommand';
+// @ts-ignore
+import { SetPreTripInspectionCommand } from '../model/setPreTripInspectionCommand';
 // @ts-ignore
 import { SwitchDispatchesCommand } from '../model/switchDispatchesCommand';
 // @ts-ignore
@@ -132,9 +134,9 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchAssignedLoadListResponse>;
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchAssignedLoadListResponse>>;
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchAssignedLoadListResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchGroupedLoadsResponse>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchGroupedLoadsResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchGroupedLoadsResponse>>;
     public apiDispatchAssignedloadsIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchAssignedloadsIdGet.');
@@ -189,7 +191,7 @@ export class DispatchService {
         }
 
         let localVarPath = `/api/dispatch/assignedloads/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<DispatchAssignedLoadListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<DispatchGroupedLoadsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -1113,9 +1115,9 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DispatchStatusResponse>>;
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DispatchStatusResponse>>>;
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DispatchStatusResponse>>>;
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchPossibleStatusResponse>;
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchPossibleStatusResponse>>;
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchPossibleStatusResponse>>;
     public apiDispatchNextstatusesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchNextstatusesIdGet.');
@@ -1170,7 +1172,7 @@ export class DispatchService {
         }
 
         let localVarPath = `/api/dispatch/nextstatuses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<Array<DispatchStatusResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<DispatchPossibleStatusResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -1257,6 +1259,90 @@ export class DispatchService {
             {
                 context: localVarHttpContext,
                 body: createDispatchCommand,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param setPreTripInspectionCommand 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dispatch/pre-trip-inspection`;
+        return this.httpClient.request<any>('patch', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: setPreTripInspectionCommand,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

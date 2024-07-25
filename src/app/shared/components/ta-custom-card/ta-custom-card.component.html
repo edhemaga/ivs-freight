@@ -1,6 +1,7 @@
 <div
     class="ta-custom-card"
     [class.dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
+    [class.h-full]="isInheritingParentSize && _isCardOpen"
 >
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
@@ -20,7 +21,7 @@
         "
         [class.dropdown-card]="isDropdownCard && !isDropdownModalCard"
         [class.dropdown-modal-card]="isDropdownModalCard"
-        [class.ta-card-spacing-x]="addSpaceToXAsis"
+        [class.ta-card-spacing-x]="addSpaceToXAsis" 
         [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
@@ -304,7 +305,11 @@
         class="ta-card-body"
         [ngClass]="{
             scroll: hasScrollBody,
-            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen
+            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
+            'h-full': isInheritingParentSize && _isCardOpen
+        }"
+        [ngStyle]="{
+            'scrollbar-width': isInheritingParentSize && _isCardOpen ? 'thin !important' : 'none'
         }"
         [@.disabled]="disableAnimation"
     >

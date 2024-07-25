@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AssignedLoadResponse } from './assignedLoadResponse';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
-export interface AssignedLoadListResponse { 
-    assignedLoadsCount?: number;
-    assignedLoads?: Array<AssignedLoadResponse> | null;
+export interface DispatchPossibleStatusResponse { 
+    possibleStatuses?: Array<DispatchStatusResponse> | null;
+    previousStatus?: DispatchStatusResponse;
 }
 

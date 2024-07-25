@@ -815,23 +815,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public openAssignLoadModal(): void {
-        this.loadService
-            .apiLoadListAssignedIdGet(null)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                this.modalService.openModal(
-                    AssignDispatchLoadModalComponent,
-                    {
-                        size: TableStringEnum.SMALL,
-                    },
-                    {
-                        data: response,
-                        truck: null,
-                        driver: null,
-                        trailer: null,
-                    }
-                );
-            });
+        this.modalService.openModal(
+            AssignDispatchLoadModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                data: null,
+                truck: null,
+                driver: null,
+                trailer: null,
+            }
+        );
     }
 
     // --------------------------------ON DESTROY---------------------------------

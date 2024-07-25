@@ -6,7 +6,6 @@ import {
     CompanyUserForChatListResponse,
     ConversationResponse,
     CreateConversationCommand,
-    CreateMessageCommand,
     CreateResponse,
     MessageResponse,
     UserType
@@ -54,7 +53,7 @@ export class UserChatService {
     }
 
     public sendMessage(conversationId: number, content: string): Observable<CreateResponse> {
-        const messageToSend: CreateMessageCommand = {
+        const messageToSend: any = {
             conversationId,
             content
         }

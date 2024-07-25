@@ -39,6 +39,7 @@ import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 
 @NgModule({
     declarations: [
@@ -87,6 +88,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaCustomCardComponent,
         LoadDeatilsItemStopsMainComponent,
         TaMapsComponent,
+        TaResizerComponent
     ],
     exports: [ColorFinderPipe],
 })

@@ -9,11 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AssignedLoadResponse } from './assignedLoadResponse';
 
 
-export interface AssignedLoadListResponse { 
-    assignedLoadsCount?: number;
-    assignedLoads?: Array<AssignedLoadResponse> | null;
+export interface SetPreTripInspectionCommand { 
+    id?: number;
 }
 

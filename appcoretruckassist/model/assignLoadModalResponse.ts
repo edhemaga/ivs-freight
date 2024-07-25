@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 import { AssignedLoadResponse } from './assignedLoadResponse';
+import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 
 
-export interface AssignedLoadListResponse { 
-    assignedLoadsCount?: number;
-    assignedLoads?: Array<AssignedLoadResponse> | null;
+export interface AssignLoadModalResponse { 
+    dispatches?: Array<DispatchLoadModalResponse> | null;
+    unassignedLoadsCount?: number;
+    unassignedLoads?: Array<AssignedLoadResponse> | null;
 }
 

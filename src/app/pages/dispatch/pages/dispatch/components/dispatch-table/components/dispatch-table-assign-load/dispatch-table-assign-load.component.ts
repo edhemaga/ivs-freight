@@ -75,6 +75,10 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
             .apiLoadListAssignedIdGet(this.dispatchId)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
+                // for(let i = 0; i < 15; i++) {
+                //     response.assignedLoads.push(response.assignedLoads[0]);
+                //     // response.unassignedLoads.push(response.unassignedLoads[0]);
+                // }
                 this.modalService.openModal(
                     AssignDispatchLoadModalComponent,
                     {

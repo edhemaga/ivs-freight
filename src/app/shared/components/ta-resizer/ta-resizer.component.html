@@ -1,0 +1,15 @@
+<div
+    class="ta-resizer-container d-flex flex-column"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()"
+>
+    <div [ngStyle]="{ 'height.px': firstElementHeight }" class="overflow-hidden">
+        <ng-content select="[firstElement]"></ng-content>
+    </div>
+    <div class="ta-resizer-handle position-relative" (mousedown)="onMouseDown($event)">
+        <svg-icon [src]="svgRoutes.drag" class="ta-resizer-container-icon d-flex align-items-center justify-content-center position-absolute rounded-circle"></svg-icon>
+    </div>
+    <div [ngStyle]="{ 'height.px': secondElementHeight }" class="overflow-hidden" >
+        <ng-content select="[secondElement]"></ng-content>
+    </div>
+</div>

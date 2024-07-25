@@ -1,0 +1,38 @@
+@import 'src/theme/variables';
+
+.ta-resizer {
+    &-container {
+        &-icon {
+            background: $white;
+            height: 16px;
+            width: 16px;
+            top: 0;
+            left: 50%;
+            box-shadow: 0px 0px 4px 0px $ta-border-grey;
+
+            svg {
+                height: 12px;
+            }
+
+            path {
+                fill: $bw-9;
+            }
+        }
+    }
+
+    &-handle {
+        cursor: row-resize;
+        height: 10px;
+
+        &:before {
+            content: '';
+            width: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(50% + 3px);
+            height: 1px;
+            background-color: $bw-9;
+        }
+    }
+}

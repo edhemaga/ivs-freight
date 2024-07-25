@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AssignedLoadResponse } from './assignedLoadResponse';
+import { LoadShortResponse } from './loadShortResponse';
 
 
-export interface AssignedLoadListResponse { 
-    assignedLoadsCount?: number;
-    assignedLoads?: Array<AssignedLoadResponse> | null;
+export interface DispatchGroupedLoadsResponse { 
+    pending?: Array<LoadShortResponse> | null;
+    closed?: Array<LoadShortResponse> | null;
+    active?: Array<LoadShortResponse> | null;
 }
 

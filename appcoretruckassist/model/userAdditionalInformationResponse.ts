@@ -10,18 +10,17 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
-import { TrailerTypeResponse } from './trailerTypeResponse';
-import { TruckTypeResponse } from './truckTypeResponse';
+import { EnumValue } from './enumValue';
 
 
-export interface LoadDriverInfo { 
-    id?: number | null;
-    avatarFile?: FileResponse;
+export interface UserAdditionalInformationResponse { 
     firstName?: string | null;
     lastName?: string | null;
-    truckNumber?: string | null;
-    truckType?: TruckTypeResponse;
-    trailerNumber?: string | null;
-    trailerType?: TrailerTypeResponse;
+    userId?: number;
+    userType?: EnumValue;
+    avatarFile?: FileResponse;
+    email?: string | null;
+    phone?: string | null;
+    companyName?: string | null;
 }
 
