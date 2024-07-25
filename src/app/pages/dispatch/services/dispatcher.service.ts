@@ -41,7 +41,7 @@ export class DispatcherService {
     }
 
     getDispatchBoardByDispatcherList(id: number) {
-        return this.dispatchService.apiDispatchBoardIdGet(id);
+        return this.dispatchService.apiDispatchBoardGet(id);
     }
 
     getDispatchboardAllListAndUpdate() {
@@ -58,10 +58,6 @@ export class DispatcherService {
                 this.dispatchByDispatcher = [result];
             }
         );
-    }
-
-    getDispatchboardById(id: number) {
-        return this.dispatchService.apiDispatchBoardIdGet(id);
     }
 
     getDispatchBoardRowById(id: number) {
@@ -81,20 +77,15 @@ export class DispatcherService {
     }
 
     deleteDispatchboard(dispatchId: number) {
-        console.log('store', this.dispatcherStore);
-        console.log('dispatchId', dispatchId);
-
         return this.dispatchService.apiDispatchIdDelete(dispatchId).pipe(
             tap(() => {
                 this.dispatcherStore.update((store) => {
-                    console.log('store', store);
                     return {
                         ...store,
                         dispatchList: {
-                            ...store.dispatchList,
-                            pagination: {
-                                ...store.dispatchList.pagination,
-                                data: store.dispatchList.pagination.data.map(
+                            ...store.dispatchList.dispatchBoards,
+                            dispatchBoards:
+                                store.dispatchList.dispatchBoards.map(
                                     (dispatchData) => {
                                         return {
                                             ...dispatchData,
@@ -107,12 +98,10 @@ export class DispatcherService {
                                         };
                                     }
                                 ),
-                            },
                         },
                     };
                 });
 
-                console.log('UPDATE', this.dispatcherStore);
             })
         );
     }
@@ -203,39 +192,38 @@ export class DispatcherService {
 
     set dispatchBoardItem(boardData) {
         const dss = this.dispatcherStore.getValue();
-        const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
+        const dispatchData = JSON.parse(
+            JSON.stringify(dss.dispatchList.dispatchBoards)
+        );
+
         this.dispatcherStore.update((store) => ({
             ...store,
             dispatchList: {
                 ...store.dispatchList,
-                pagination: {
-                    ...store.dispatchList.pagination,
-                    data: dispatchData.pagination.data.map((item) => {
-                        let findedItem = false;
-                        if (item.id == boardData.id) {
-                            item.dispatches = item.dispatches
-                                .map((data) => {
-                                    if (data.id == boardData.item.id) {
-                                        findedItem = true;
-                                        data = { ...boardData.item };
-                                    }
+                dispatchBoards: dispatchData.map((item) => {
+                    let findedItem = false;
 
-                                    return data;
-                                })
-                                .filter(
-                                    (data) =>
-                                        data.truck ||
-                                        data.trailer ||
-                                        data.driver
-                                );
+                    if (item.id == boardData.id) {
+                        item.dispatches = item.dispatches
+                            .map((data) => {
+                                if (data.id == boardData.item.id) {
+                                    findedItem = true;
+                                    data = { ...boardData.item };
+                                }
 
-                            if (!findedItem) {
-                                item.dispatches.push({ ...boardData.item });
-                            }
+                                return data;
+                            })
+                            .filter(
+                                (data) =>
+                                    data.truck || data.trailer || data.driver
+                            );
+
+                        if (!findedItem) {
+                            item.dispatches.push({ ...boardData.item });
                         }
-                        return item;
-                    }),
-                },
+                    }
+                    return item;
+                }),
             },
         }));
     }
@@ -259,10 +247,7 @@ export class DispatcherService {
             ...store,
             dispatchList: {
                 ...store.dispatchList,
-                pagination: {
-                    ...store.dispatchList.pagination,
-                    data: dispatch,
-                },
+                dispatchBoards: dispatch,
             },
         }));
     }
@@ -277,33 +262,33 @@ export class DispatcherService {
 
     async updateCountList<T>(id: number, type: string, value: T) {
         const dss = await this.dispatcherStore.getValue();
-        const dispatchData = JSON.parse(JSON.stringify(dss.dispatchList));
+        const dispatchData = JSON.parse(
+            JSON.stringify(dss.dispatchList.dispatchBoards)
+        );
 
         this.dispatcherStore.update((store) => ({
             ...store,
-            dispatchList: {
-                ...store.dispatchList,
-                pagination: {
-                    ...store.dispatchList.pagination,
-                    data: dispatchData.pagination.data.map((item) => {
-                        if (item.id == id) {
-                            switch (type) {
-                                case 'trailerId':
-                                    item.trailerCount += value ? 1 : -1;
-                                    break;
-                                case 'location':
-                                    item.truckCount += value ? 1 : -1;
-                                    break;
-                                case 'driverId':
-                                    item.driverCount += value ? 1 : -1;
-                                    break;
-                                default:
-                            }
-                        }
 
-                        return item;
-                    }),
-                },
+            dispatchList: {
+                ...store.dispatchList.dispatchBoards,
+                dispatchBoards: dispatchData.map((item) => {
+                    if (item.id == id) {
+                        switch (type) {
+                            case 'trailerId':
+                                item.trailerCount += value ? 1 : -1;
+                                break;
+                            case 'location':
+                                item.truckCount += value ? 1 : -1;
+                                break;
+                            case 'driverId':
+                                item.driverCount += value ? 1 : -1;
+                                break;
+                            default:
+                        }
+                    }
+
+                    return item;
+                }),
             },
         }));
     }

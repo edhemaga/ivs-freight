@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerTypeResponse } from './trailerTypeResponse';
 
 
 export interface TrailerTypeFilterResponse { 
-    id?: number;
-    name?: string | null;
-    logoName?: string | null;
+    trailerType?: TrailerTypeResponse;
     count?: number;
 }
 
