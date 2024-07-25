@@ -1,46 +1,63 @@
 @import 'src/theme/variables';
 
 .user-list-container {
+    height: fit-content;
     width: fit-content;
     background: $white;
     border-radius: 3px;
-    padding: 6px;
 
-    .chat-header {
-        width: 318px;
-        height: 32px;
-        padding: 0 4px;
-        margin-bottom: 4px;
-        border-bottom: 1px solid $bw-9;
+    .chat-header-wrapper {
+        width: 100%;
+        padding-top: 6px;
+        padding-left: 6px;
+        padding-right: 6px;
 
-        .border-container {
-            height: 34px;
-            padding: 0 4px;
+        .form-wrapper {
+            flex: 1;
+            width: 100%;
+        }
 
-            .border {
-                width: 2px;
+        .chat-header {
+            width: 318px;
+            height: 26px;
+            padding: 0 6px;
+            margin-bottom: 6px;
+
+            .border-container {
+                height: 34px;
+                padding: 0 4px;
+
+                .border {
+                    width: 2px;
+                    height: 18px;
+                    border-radius: 1px;
+                    background: $ta-light-grey-4;
+                }
+            }
+            .department-icon {
+                padding: 0 4px;
+            }
+            &-type {
+                color: $ta-black;
+            }
+
+            &-message-count {
+                font-size: 11px;
+                line-height: 18px;
                 height: 18px;
-                border-radius: 1px;
-                background: $ta-light-grey-4;
+                min-width: 18px;
+                border-radius: 50px;
+                background: $bw5;
+                color: $white;
+                padding: 0px 6px;
+                margin: auto 5px;
             }
         }
-        .department-icon {
-            padding: 0 4px;
-        }
-        &-type {
-            color: $ta-black;
-        }
 
-        &-message-count {
-            font-size: 11px;
-            line-height: 18px;
-            height: 18px;
-            min-width: 18px;
-            border-radius: 50px;
-            background: $bw5;
-            color: $white;
-            padding: 0px 6px;
-            margin: auto 5px;
+        .horizontal-border {
+            width: auto;
+            margin: 0px 2px 6px 2px;
+            border-bottom: 1px solid $bw-9;
         }
     }
     .no-data-button-wrapper {
@@ -50,7 +67,6 @@
         width: 150px;
         height: 32px;
         margin: 10px 0px 0px 0px;
-        font-weight: 700;
         font-size: 14px;
         background-color: $ta-blue-14;
         border-radius: 2px;
@@ -59,11 +75,41 @@
     }
 }
 
-.contact-wrapper {
-    height: calc(50vh - 92px);
-    overflow-y: auto;
+.contact-container {
+    height: calc(50lvh - 92px);
+    padding-bottom: 6px;
 
-    .contact {
-        margin: 1px 0;
+    .contact-wrapper {
+        height: 100%;
+        overflow-y: scroll !important;
+        scrollbar-width: thin !important; /* Firefox */
+        scrollbar-color: $ta-light-grey-6 transparent !important;
+        scrollbar-width: 1px !important;
+
+        .selected-contact {
+            background-color: $ta-light-grey;
+        }
+        .contact {
+            border-radius: 2px;
+            margin-top: 2px;
+            margin-left: 6px;
+            margin-right: 6px;
+        }
+    }
+}
+
+svg-icon {
+    height: 26px;
+    width: 26px;
+    border-radius: 3px;
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        background-color: $bw3;
+        svg {
+            path {
+                fill: $ta-black;
+            }
+        }
     }
 }

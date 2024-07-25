@@ -3,9 +3,6 @@ import { Resolve } from '@angular/router';
 
 import { forkJoin, Observable, map } from 'rxjs';
 
-// Store
-import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
-
 // Services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
@@ -15,10 +12,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 export class DispatcherResolver implements Resolve<any> {
     constructor(
         // Services
-        private dispatcherService: DispatcherService,
-
-        // Store
-        private dispatcherQuery: DispatcherQuery
+        private dispatcherService: DispatcherService
     ) {}
     resolve(): Observable<any> {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
@@ -35,13 +29,13 @@ export class DispatcherResolver implements Resolve<any> {
 
         let join = forkJoin([modalList, dispatchList]).pipe(
             map((list: any) => {
+                console.log('list', list);
+
                 list[1] =
-                    dispatcherId == -1
+                    dispatcherId === -1
                         ? list[1]
                         : {
-                              pagination: {
-                                  data: [list[1]],
-                              },
+                              dispatchBoards: [list[1]],
                           };
 
                 this.dispatcherService.dispatcherData = list;

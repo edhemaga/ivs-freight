@@ -31,6 +31,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/components/load-short-details/load-short-details.component';
 import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -84,11 +85,12 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaNoteComponent,
         TaPickupDeliveryComponent,
         TaInputComponent,
+        DispatchTableLastLocationComponentComponent,
         TaModalComponent,
         TaCustomCardComponent,
         LoadDeatilsItemStopsMainComponent,
         TaMapsComponent,
-        TaResizerComponent
+        TaResizerComponent,
     ],
     exports: [ColorFinderPipe],
 })

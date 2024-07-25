@@ -14,10 +14,9 @@ import {
 })
 export class DispatcherQuery extends QueryEntity<DispatcherState> {
     modalList$ = this.select('modal');
-    dispatchboardList$ = this.select('dispatchList');
 
     dispatchBoardListData$ = this.select(
-        (state) => state.dispatchList.pagination.data
+        (state) => state.dispatchList.dispatchBoards
     );
 
     modalBoardListData$ = this.select((state) => state.modal);
@@ -27,7 +26,7 @@ export class DispatcherQuery extends QueryEntity<DispatcherState> {
         trucks: state.modal.trucks,
         trailers: state.modal.trailers,
         statuses: state.modal.dispatchStatuses,
-        parkings: state.modal.parkings
+        parkings: state.modal.parkings,
     }));
 
     get modalList() {

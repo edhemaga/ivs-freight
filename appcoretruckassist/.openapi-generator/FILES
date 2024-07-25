@@ -1,1136 +1,1138 @@
 .gitignore
 README.md
 api.module.ts
-api/accident.service.ts
-api/account.service.ts
-api/api.ts
-api/applicant.service.ts
-api/bank.service.ts
-api/broker.service.ts
-api/cdl.service.ts
-api/chat.service.ts
-api/citation.service.ts
-api/comment.service.ts
-api/company.service.ts
-api/companyAccount.service.ts
-api/companyAccountLabel.service.ts
-api/companyContact.service.ts
-api/companyContactLabel.service.ts
-api/companyOffice.service.ts
-api/companyUser.service.ts
-api/dashboard.service.ts
-api/department.service.ts
-api/dispatch.service.ts
-api/driver.service.ts
-api/employmentHistory.service.ts
-api/event.service.ts
-api/file.service.ts
-api/fuel.service.ts
-api/geolocation.service.ts
-api/inspection.service.ts
-api/integration.service.ts
-api/listCounter.service.ts
-api/load.service.ts
-api/map.service.ts
-api/medical.service.ts
-api/miles.service.ts
-api/mvr.service.ts
-api/note.service.ts
-api/owner.service.ts
-api/ownerHistory.service.ts
-api/parking.service.ts
-api/payroll.service.ts
-api/ratingReview.service.ts
-api/redirect.service.ts
-api/registration.service.ts
-api/repair.service.ts
-api/repairShop.service.ts
-api/route.service.ts
-api/routing.service.ts
-api/shipper.service.ts
-api/state.service.ts
-api/stop.service.ts
-api/tableConfig.service.ts
-api/tag.service.ts
-api/telematics.service.ts
-api/terminal.service.ts
-api/test.service.ts
-api/testDeploy.service.ts
-api/title.service.ts
-api/todo.service.ts
-api/trailer.service.ts
-api/trailerType.service.ts
-api/truck.service.ts
-api/truckType.service.ts
-api/user.service.ts
-api/vinDecode.service.ts
-api/violation.service.ts
-api/weather.service.ts
+api / accident.service.ts
+api / account.service.ts
+api / api.ts
+api / applicant.service.ts
+api / bank.service.ts
+api / broker.service.ts
+api / cdl.service.ts
+api / chat.service.ts
+api / citation.service.ts
+api / comment.service.ts
+api / company.service.ts
+api / companyAccount.service.ts
+api / companyAccountLabel.service.ts
+api / companyContact.service.ts
+api / companyContactLabel.service.ts
+api / companyOffice.service.ts
+api / companyUser.service.ts
+api / dashboard.service.ts
+api / department.service.ts
+api / dispatch.service.ts
+api / driver.service.ts
+api / employmentHistory.service.ts
+api / event.service.ts
+api / file.service.ts
+api / fuel.service.ts
+api / geolocation.service.ts
+api / inspection.service.ts
+api / integration.service.ts
+api / listCounter.service.ts
+api / load.service.ts
+api / map.service.ts
+api / medical.service.ts
+api / miles.service.ts
+api / mvr.service.ts
+api / note.service.ts
+api / owner.service.ts
+api / ownerHistory.service.ts
+api / parking.service.ts
+api / payroll.service.ts
+api / ratingReview.service.ts
+api / redirect.service.ts
+api / registration.service.ts
+api / repair.service.ts
+api / repairShop.service.ts
+api / route.service.ts
+api / routing.service.ts
+api / shipper.service.ts
+api / state.service.ts
+api / stop.service.ts
+api / tableConfig.service.ts
+api / tag.service.ts
+api / telematics.service.ts
+api / terminal.service.ts
+api / test.service.ts
+api / testDeploy.service.ts
+api / title.service.ts
+api / todo.service.ts
+api / trailer.service.ts
+api / trailerType.service.ts
+api / truck.service.ts
+api / truckType.service.ts
+api / user.service.ts
+api / vinDecode.service.ts
+api / violation.service.ts
+api / weather.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
-model/acceptApplicationCommand.ts
-model/accidentByStateListResponse.ts
-model/accidentByStateResponse.ts
-model/accidentByStateResponsePagination.ts
-model/accidentIntervalResponse.ts
-model/accidentItemResponse.ts
-model/accidentItemReviewResponse.ts
-model/accidentListResponse.ts
-model/accidentMinimalListResponse.ts
-model/accidentMinimalResponse.ts
-model/accidentMinimalResponsePagination.ts
-model/accidentModalResponse.ts
-model/accidentRecordFeedbackResponse.ts
-model/accidentResponse.ts
-model/accidentShortResponse.ts
-model/accidentShortResponsePagination.ts
-model/accountColorResponse.ts
-model/activateConversationCommand.ts
-model/activateDeactivateEFSFuelCard.ts
-model/activeLoadProgressBarResponse.ts
-model/addApplicantToFavouriteCommand.ts
-model/addFuelCardCommand.ts
-model/addIntegrationCommand.ts
-model/addressEntity.ts
-model/addressListResponse.ts
-model/addressResponse.ts
-model/apUnit.ts
-model/apiAccidentPostRequest.ts
-model/apiAccidentPostRequest1.ts
-model/apiApplicantCdlPostRequest.ts
-model/apiApplicantCdlPostRequest1.ts
-model/apiApplicantCdlcardPostRequest.ts
-model/apiApplicantCdlcardPostRequest1.ts
-model/apiApplicantMedicalcertificatePostRequest.ts
-model/apiApplicantMedicalcertificatePostRequest1.ts
-model/apiApplicantMvrPostRequest.ts
-model/apiApplicantMvrPostRequest1.ts
-model/apiApplicantOwnerinfoCompanyPostRequest.ts
-model/apiApplicantOwnerinfoCompanyPostRequest1.ts
-model/apiApplicantPersonalPostRequest.ts
-model/apiApplicantPersonalPostRequest1.ts
-model/apiApplicantPreviousemployerDocumentsPostRequest.ts
-model/apiBrokerImportPostRequest.ts
-model/apiBrokerPostRequest.ts
-model/apiBrokerPostRequest1.ts
-model/apiCdlPostRequest.ts
-model/apiCdlPostRequest1.ts
-model/apiChatMessagePostRequest.ts
-model/apiCitationPostRequest.ts
-model/apiCitationPostRequest1.ts
-model/apiCompanyDocumentsGetRequest.ts
-model/apiCompanyInsurancepolicyGetRequest.ts
-model/apiCompanyInsurancepolicyGetRequest1.ts
-model/apiCompanyaccountImportPostRequest.ts
-model/apiCompanycontactImportPostRequest.ts
-model/apiDriverImportPostRequest.ts
-model/apiDriverPostRequest.ts
-model/apiDriverPostRequest1.ts
-model/apiFuelEfsTransactionPutRequest.ts
-model/apiFuelFuelstopPostRequest.ts
-model/apiFuelFuelstopPostRequest1.ts
-model/apiFuelFuelstopUpdatePutRequest.ts
-model/apiFuelImportPostRequest.ts
-model/apiFuelTransactionPostRequest.ts
-model/apiFuelTransactionPostRequest1.ts
-model/apiInspectionPostRequest.ts
-model/apiInspectionPostRequest1.ts
-model/apiLoadPostRequest.ts
-model/apiLoadPostRequest1.ts
-model/apiMedicalPostRequest.ts
-model/apiMedicalPostRequest1.ts
-model/apiMvrPostRequest.ts
-model/apiMvrPostRequest1.ts
-model/apiOwnerPostRequest.ts
-model/apiOwnerPostRequest1.ts
-model/apiRegistrationPostRequest.ts
-model/apiRegistrationPostRequest1.ts
-model/apiRepairPostRequest.ts
-model/apiRepairPostRequest1.ts
-model/apiRepairshopImportPostRequest.ts
-model/apiRepairshopPostRequest.ts
-model/apiRepairshopPostRequest1.ts
-model/apiShipperImportPostRequest.ts
-model/apiShipperPostRequest.ts
-model/apiShipperPostRequest1.ts
-model/apiTestPostRequest.ts
-model/apiTestPostRequest1.ts
-model/apiTitlePostRequest.ts
-model/apiTitlePostRequest1.ts
-model/apiTodoPostRequest.ts
-model/apiTodoPostRequest1.ts
-model/apiTrailerImportPostRequest.ts
-model/apiTrailerPostRequest.ts
-model/apiTrailerPostRequest1.ts
-model/apiTruckImportPostRequest.ts
-model/apiTruckPostRequest.ts
-model/apiTruckPostRequest1.ts
-model/apiViolationPutRequest.ts
-model/applicantAdminResponse.ts
-model/applicantCompanyInfoResponse.ts
-model/applicantListResponse.ts
-model/applicantModalResponse.ts
-model/applicantPersonalInfoReviewResponse.ts
-model/applicantPreviousAddressResponse.ts
-model/applicantPreviousAddressReviewResponse.ts
-model/applicantResponse.ts
-model/applicantShortResponse.ts
-model/applicantShortResponsePagination.ts
-model/applicationStatus.ts
-model/archiveApplicationCommand.ts
-model/archiveConversationCommand.ts
-model/archiveMultipleApplicationsCommand.ts
-model/assignGpsDevicesToCompanyCommand.ts
-model/assignGpsDevicesToTrailerCommand.ts
-model/assignGpsDevicesToTruckCommand.ts
-model/assignLoadModalResponse.ts
-model/assignedLoadListResponse.ts
-model/assignedLoadResponse.ts
-model/assignedLoadStopResponse.ts
-model/authorizationFeedbackResponse.ts
-model/autocompleteSearchLayer.ts
-model/avatarResponse.ts
-model/bankAccountResponse.ts
-model/bankAccountStatus.ts
-model/bankCardResponse.ts
-model/bankListResponse.ts
-model/bankResponse.ts
-model/bankResponsePagination.ts
-model/billingInfo.ts
-model/brakes.ts
-model/brokerAvailableCreditCommand.ts
-model/brokerAvailableCreditResponse.ts
-model/brokerByIdResponse.ts
-model/brokerContactCommand.ts
-model/brokerContactGroupResponse.ts
-model/brokerContactResponse.ts
-model/brokerContactShortResponse.ts
-model/brokerFilterListResponse.ts
-model/brokerFilterResponse.ts
-model/brokerFilterResponsePagination.ts
-model/brokerIntervalResponse.ts
-model/brokerInvoiceAgeingResponse.ts
-model/brokerLoadModalResponse.ts
-model/brokerLoadStopResponse.ts
-model/brokerLoadsResponse.ts
-model/brokerMileageRateChartResponse.ts
-model/brokerMileageRateResponse.ts
-model/brokerMinimalListResponse.ts
-model/brokerMinimalResponse.ts
-model/brokerMinimalResponsePagination.ts
-model/brokerModalResponse.ts
-model/brokerPaidInvoiceChartResponse.ts
-model/brokerPaidInvoiceResponse.ts
-model/brokerPaymentHistoryChartResponse.ts
-model/brokerPaymentHistoryResponse.ts
-model/brokerResponse.ts
-model/brokerResponsePagination.ts
-model/brokerShortResponse.ts
-model/byStateReportType.ts
-model/cdlEndorsementResponse.ts
-model/cdlFeedbackResponse.ts
-model/cdlLicenseResponse.ts
-model/cdlLicenseReviewResponse.ts
-model/cdlMinimalResponse.ts
-model/cdlResponse.ts
-model/cdlRestrictionResponse.ts
-model/cdlReviewResponse.ts
-model/checkDriverBySsnResponse.ts
-model/checkOwnerSsnEinResponse.ts
-model/checkUserByEmailResponse.ts
-model/citationCommand.ts
-model/citationResponse.ts
-model/classOfEquipmentResponse.ts
-model/classType.ts
-model/closePayrollDriverCommissionCommand.ts
-model/closePayrollDriverFlatRateCommand.ts
-model/closePayrollDriverMileageCommand.ts
-model/closePayrollOwnerCommand.ts
-model/closedLoadProgressBarResponse.ts
-model/clusterResponse.ts
-model/colorResponse.ts
-model/commentByEntityTypeListResponse.ts
-model/commentResponse.ts
-model/commentResponsePagination.ts
-model/companyAccountLabelCountResponse.ts
-model/companyAccountLabelCountResponsePagination.ts
-model/companyAccountLabelResponse.ts
-model/companyAccountModalResponse.ts
-model/companyAccountResponse.ts
-model/companyAccountResponsePagination.ts
-model/companyAdditionalInfo.ts
-model/companyAdditionalInfoResponse.ts
-model/companyContactLabelCountResponse.ts
-model/companyContactLabelCountResponsePagination.ts
-model/companyContactLabelResponse.ts
-model/companyContactModalResponse.ts
-model/companyContactResponse.ts
-model/companyContactResponsePagination.ts
-model/companyContactUser.ts
-model/companyDocumentsStatisticResponse.ts
-model/companyDurationResponse.ts
-model/companyIntegrationProviderListResponse.ts
-model/companyIntegrationResponse.ts
-model/companyIntegrationResponsePagination.ts
-model/companyModalResponse.ts
-model/companyOfficeDepartmentContactCommand.ts
-model/companyOfficeDepartmentContactResponse.ts
-model/companyOfficeListResponse.ts
-model/companyOfficeMarkerResponse.ts
-model/companyOfficeModalResponse.ts
-model/companyOfficeResponse.ts
-model/companyOfficeResponsePagination.ts
-model/companyOfficeShortResponse.ts
-model/companyOwnerInfoFeedbackResponse.ts
-model/companyOwnerInfoReviewResponse.ts
-model/companyPayrollResponse.ts
-model/companyResponse.ts
-model/companySettingsDocumentsResponse.ts
-model/companyShortResponse.ts
-model/companyUserChatResponse.ts
-model/companyUserChatResponsePagination.ts
-model/companyUserForChatListResponse.ts
-model/companyUserListItemResponse.ts
-model/companyUserListItemResponsePagination.ts
-model/companyUserListResponse.ts
-model/companyUserModalResponse.ts
-model/companyUserResponse.ts
-model/companyUserShortResponse.ts
-model/contactColorResponse.ts
-model/contactEmailResponse.ts
-model/contactEmailType.ts
-model/contactPhoneResponse.ts
-model/contactPhoneType.ts
-model/conversationInfoResponse.ts
-model/conversationResponse.ts
-model/conversationType.ts
-model/counterResponse.ts
-model/countryType.ts
-model/createAccidentItemCommand.ts
-model/createAccidentItemReviewCommand.ts
-model/createAccidentRecordCommand.ts
-model/createAccidentRecordReviewCommand.ts
-model/createApplicantCdlCommand.ts
-model/createApplicantCdlInformationReviewCommand.ts
-model/createApplicantCdlReviewCommand.ts
-model/createApplicantCommand.ts
-model/createAuthorizationReviewCommand.ts
-model/createBankCommand.ts
-model/createCdlCardReviewCommand.ts
-model/createClassOfEquipmentCommand.ts
-model/createCommentCommand.ts
-model/createCompanyAccountCommand.ts
-model/createCompanyAccountLabelCommand.ts
-model/createCompanyContactCommand.ts
-model/createCompanyContactLabelCommand.ts
-model/createCompanyOfficeCommand.ts
-model/createCompanyOwnerInfoReviewCommand.ts
-model/createCompanyUserCommand.ts
-model/createContactEmailCommand.ts
-model/createContactPhoneCommand.ts
-model/createConversationCommand.ts
-model/createDisclosureReviewCommand.ts
-model/createDispatchCommand.ts
-model/createDivisionCompanyCommand.ts
-model/createDriverPasswordMobileCommand.ts
-model/createDriverRightsReviewCommand.ts
-model/createDrugAndAlcoholCommand.ts
-model/createDrugAndAlcoholReviewCommand.ts
-model/createEducationCommand.ts
-model/createEducationReviewCommand.ts
-model/createEmergencyContactCommand.ts
-model/createEmergencyContactReviewCommand.ts
-model/createEventCommand.ts
-model/createFuelItemCommand.ts
-model/createHosCommand.ts
-model/createHosRulesReviewCommand.ts
-model/createInsurancePolicyAddonCommand.ts
-model/createLoadTemplateCommand.ts
-model/createMapCommand.ts
-model/createMedicalCertificateReviewCommand.ts
-model/createMobileAccountCommand.ts
-model/createMvrAuthReviewCommand.ts
-model/createOffDutyLocationCommand.ts
-model/createParkingCommand.ts
-model/createPayrollBonusCommand.ts
-model/createPayrollCreditCommand.ts
-model/createPayrollDeductionCommand.ts
-model/createPayrollPaymentCommand.ts
-model/createPersonalInfoReviewCommand.ts
-model/createPreviousAddressCommand.ts
-model/createPreviousAddressReviewCommand.ts
-model/createPreviousEmployerAccidentHistoryCommand.ts
-model/createPreviousEmployerDrugAndAlcoholCommand.ts
-model/createPspAuthReviewCommand.ts
-model/createRatingCommand.ts
-model/createResponse.ts
-model/createReviewCommand.ts
-model/createRouteCommand.ts
-model/createSevenDaysHosCommand.ts
-model/createSevenDaysHosReviewCommand.ts
-model/createSphReviewCommand.ts
-model/createTagCommand.ts
-model/createTerminalCommand.ts
-model/createTrafficViolationCommand.ts
-model/createTrafficViolationItemCommand.ts
-model/createTrafficViolationItemReviewCommand.ts
-model/createTrafficViolationReviewCommand.ts
-model/createWithUploadsResponse.ts
-model/createWorkExperienceCommand.ts
-model/createWorkExperienceItemCommand.ts
-model/createWorkExperienceItemReviewCommand.ts
-model/createWorkExperienceReviewCommand.ts
-model/creditType.ts
-model/dashboardTopReportType.ts
-model/dayOfWeek.ts
-model/defaultFolderViewResponse.ts
-model/deleteMultipleApplicationsCommand.ts
-model/departmentContactResponse.ts
-model/departmentFilterResponse.ts
-model/departmentResponse.ts
-model/departmentShortResponse.ts
-model/disclosureReleaseFeedbackResponse.ts
-model/dispatchBoardListResponse.ts
-model/dispatchBoardResponse.ts
-model/dispatchBoardResponsePagination.ts
-model/dispatchGroupedLoadsResponse.ts
-model/dispatchHistoryDriverListResponse.ts
-model/dispatchHistoryGroupItemResponse.ts
-model/dispatchHistoryGroupListResponse.ts
-model/dispatchHistoryGroupResponse.ts
-model/dispatchHistoryGroupResponsePagination.ts
-model/dispatchHistoryListResponse.ts
-model/dispatchHistoryModalResponse.ts
-model/dispatchHistoryResponse.ts
-model/dispatchHistoryResponsePagination.ts
-model/dispatchHosCommand.ts
-model/dispatchHosFlag.ts
-model/dispatchHosResponse.ts
-model/dispatchLoadModalResponse.ts
-model/dispatchModalResponse.ts
-model/dispatchPossibleStatusResponse.ts
-model/dispatchResponse.ts
-model/dispatchResponsePagination.ts
-model/dispatchShortResponse.ts
-model/dispatchStatus.ts
-model/dispatchStatusResponse.ts
-model/dispatcherFilterResponse.ts
-model/dispatcherIntervalResponse.ts
-model/driverAccidentResponse.ts
-model/driverDetailsBankResponse.ts
-model/driverDetailsDispatchResponse.ts
-model/driverDetailsEmergencyContactResponse.ts
-model/driverDetailsFuelCardResponse.ts
-model/driverDetailsNotificationResponse.ts
-model/driverDetailsOffDutyLocationResponse.ts
-model/driverDetailsOwnerResponse.ts
-model/driverDetailsPayrollResponse.ts
-model/driverDispatchModalResponse.ts
-model/driverDispatchResponse.ts
-model/driverFilterListResponse.ts
-model/driverFilterResponse.ts
-model/driverFilterResponsePagination.ts
-model/driverForgotPasswordCommand.ts
-model/driverIntervalResponse.ts
-model/driverListBankResponse.ts
-model/driverListCdlCodeDescriptionResponse.ts
-model/driverListCdlResponse.ts
-model/driverListEmergencyContactResponse.ts
-model/driverListFuelCardResponse.ts
-model/driverListItemResponse.ts
-model/driverListItemResponsePagination.ts
-model/driverListMedicalResponse.ts
-model/driverListMvrResponse.ts
-model/driverListNotificationResponse.ts
-model/driverListOffDutyLocationResponse.ts
-model/driverListOwnerResponse.ts
-model/driverListPayrollResponse.ts
-model/driverListResponse.ts
-model/driverListTestResponse.ts
-model/driverMinimalListResponse.ts
-model/driverMinimalResponse.ts
-model/driverMinimalResponsePagination.ts
-model/driverModalFuelCardResponse.ts
-model/driverModalOwnerResponse.ts
-model/driverPayrollChartResponse.ts
-model/driverPayrollResponse.ts
-model/driverResponse.ts
-model/driverRightsFeedbackResponse.ts
-model/driverShortResponse.ts
-model/drugAndAlcoholFeedbackResponse.ts
-model/drugAndAlcoholReviewResponse.ts
-model/editFuelCardCommand.ts
-model/editFuelItemCommand.ts
-model/editIntegrationCommand.ts
-model/editTagCommand.ts
-model/editTagsCommand.ts
-model/educationFeedbackResponse.ts
-model/educationReviewResponse.ts
-model/emergencyContactResponse.ts
-model/emergencyContactReviewResponse.ts
-model/employmentHistoryResponse.ts
-model/entityTypeNote.ts
-model/entityTypeReview.ts
-model/enumValue.ts
-model/eventModalResponse.ts
-model/eventResponse.ts
-model/eventType.ts
-model/factoringCompany.ts
-model/fileManagerDefaultViewType.ts
-model/fileResponse.ts
-model/fileResponsePagination.ts
-model/fileReviewCommand.ts
-model/fleetType.ts
-model/folderResponse.ts
-model/forgotPasswordCommand.ts
-model/fuelByStateListResponse.ts
-model/fuelByStateResponse.ts
-model/fuelByStateResponsePagination.ts
-model/fuelCardListResponse.ts
-model/fuelCardResponse.ts
-model/fuelCardResponsePagination.ts
-model/fuelCardShortResponse.ts
-model/fuelDispatchHistoryResponse.ts
-model/fuelIntervalResponse.ts
-model/fuelItemResponse.ts
-model/fuelMainModuleResponse.ts
-model/fuelModalStopResponse.ts
-model/fuelModalStopResponsePagination.ts
-model/fuelStopExpensesChartResponse.ts
-model/fuelStopExpensesResponse.ts
-model/fuelStopFranchiseListResponse.ts
-model/fuelStopFranchiseMinimalResponse.ts
-model/fuelStopFranchiseMinimalResponsePagination.ts
-model/fuelStopFranchiseResponse.ts
-model/fuelStopFranchiseResponsePagination.ts
-model/fuelStopIntervalResponse.ts
-model/fuelStopListResponse.ts
-model/fuelStopResponse.ts
-model/fuelStopResponsePagination.ts
-model/fuelStopShortResponse.ts
-model/fuelTransactionListResponse.ts
-model/fuelTransactionResponse.ts
-model/fuelTransactionResponsePagination.ts
-model/fuelType.ts
-model/fuelledVehicleHistoryListResponse.ts
-model/fuelledVehicleResponse.ts
-model/fuelledVehicleResponsePagination.ts
-model/getAvailableCreditEFSQuery.ts
-model/getBrokerListResponse.ts
-model/getCdlModalResponse.ts
-model/getCommentModalResponse.ts
-model/getCompanyAccountLabelListResponse.ts
-model/getCompanyAccountListResponse.ts
-model/getCompanyContactLabelListResponse.ts
-model/getCompanyContactListResponse.ts
-model/getDriverModalResponse.ts
-model/getEFSTransactionCommand.ts
-model/getFileManagerSubfoldersQuery.ts
-model/getFuelModalResponse.ts
-model/getFuelStopModalResponse.ts
-model/getHazardousMaterialDropdownModalQuery.ts
-model/getMapListResponse.ts
-model/getMobileFuelTransactionTrucksResponse.ts
-model/getMobileRepairShopCountResponse.ts
-model/getModalFuelStopFranchiseByIdResponse.ts
-model/getModalFuelStopFranchiseResponse.ts
-model/getMvrModalResponse.ts
-model/getOwnerListResponse.ts
-model/getRatingReviewModalResponse.ts
-model/getRouteListResponse.ts
-model/getSearchFileManagerQuery.ts
-model/getStopListResponse.ts
-model/getTestModalResponse.ts
-model/getTrailerModalResponse.ts
-model/getTransactionModalFranchiseStopResponse.ts
-model/getTransactionModalFranchiseStopResponsePagination.ts
-model/getTruckModalResponse.ts
-model/gpsType.ts
-model/hazardousMaterialResponse.ts
-model/hireApplicantCommand.ts
-model/hosResponse.ts
-model/hosRuleFeedbackResponse.ts
-model/inspectionResponse.ts
-model/insurancePolicyAddonResponse.ts
-model/insurancePolicyModalResponse.ts
-model/insurancePolicyResponse.ts
-model/insurancePolicyShortResponse.ts
-model/insuranceTypeCommand.ts
-model/insuranceTypeResponse.ts
-model/integrationConectedResponse.ts
-model/integrationConnectDisconnectCommand.ts
-model/integrationListResponse.ts
-model/integrationModalResponse.ts
-model/integrationProviderResponse.ts
-model/integrationProviderResponsePagination.ts
-model/intervalLabelResponse.ts
-model/inviteEmployerResponse.ts
-model/invitePreviousEmployerCommand.ts
-model/invoiceAgeingResponse.ts
-model/invoiceAgingProgressBarResponse.ts
-model/itemFuel.ts
-model/joinConversationCommand.ts
-model/leaveConversationCommand.ts
-model/legResponse.ts
-model/liveTrackingBaseResponse.ts
-model/liveTrackingHistoryItemResponse.ts
-model/liveTrackingHistoryMotionTimeResponse.ts
-model/liveTrackingHistoryResponse.ts
-model/liveTrackingHistoryStopItemResponse.ts
-model/liveTrackingItemLiteResponse.ts
-model/liveTrackingItemResponse.ts
-model/liveTrackingLiteResponse.ts
-model/liveTrackingLoadStopResponse.ts
-model/liveTrackingResponse.ts
-model/liveTrackingUnassignResponse.ts
-model/loadBillingAdditionalCommand.ts
-model/loadBillingAdditionalResponse.ts
-model/loadBrokerDetailsResponse.ts
-model/loadBrokerDetailsResponsePagination.ts
-model/loadBrokerInfo.ts
-model/loadDetails.ts
-model/loadDriverInfo.ts
-model/loadItemUnit.ts
-model/loadListDto.ts
-model/loadListDtoPagination.ts
-model/loadListLoadStopResponse.ts
-model/loadListResponse.ts
-model/loadMinimalListResponse.ts
-model/loadMinimalResponse.ts
-model/loadMinimalResponsePagination.ts
-model/loadMobileListResponse.ts
-model/loadMobileResponse.ts
-model/loadModalResponse.ts
-model/loadPaymentPayCommand.ts
-model/loadPaymentPayResponse.ts
-model/loadPossibleStatusesResponse.ts
-model/loadProgressResponse.ts
-model/loadRequirementsCommand.ts
-model/loadRequirementsResponse.ts
-model/loadResponse.ts
-model/loadShortResponse.ts
-model/loadStatus.ts
-model/loadStatusHistoryCommand.ts
-model/loadStatusHistoryResponse.ts
-model/loadStatusResponse.ts
-model/loadStatusType.ts
-model/loadStopCommand.ts
-model/loadStopInfo.ts
-model/loadStopItemAutocompleteDescriptionResponse.ts
-model/loadStopItemCommand.ts
-model/loadStopItemResponse.ts
-model/loadStopLoadListResponse.ts
-model/loadStopProgressBarResponse.ts
-model/loadStopResponse.ts
-model/loadStopShortResponse.ts
-model/loadStopType.ts
-model/loadTemplateListResponse.ts
-model/loadTemplateResponse.ts
-model/loadTemplateResponsePagination.ts
-model/loadType.ts
-model/locationType.ts
-model/loginMobileCommand.ts
-model/longLat.ts
-model/mapMarker.ts
-model/mapMarkerListResponse.ts
-model/mapMinimalResponse.ts
-model/mapMinimalResponsePagination.ts
-model/mapResponse.ts
-model/markerNamesResponse.ts
-model/markerNamesResponsePagination.ts
-model/medicalCertificateFeedbackResponse.ts
-model/medicalCertificateReviewResponse.ts
-model/medicalResponse.ts
-model/messageResponse.ts
-model/milesByStateResponse.ts
-model/milesByUnitListResponse.ts
-model/milesByUnitPaginatedStopsResponse.ts
-model/milesByUnitResponse.ts
-model/milesByUnitResponsePagination.ts
-model/milesCountByStateResponse.ts
-model/milesInfo.ts
-model/milesStateFilterResponse.ts
-model/milesStopDetailsResponse.ts
-model/milesStopItemResponse.ts
-model/milesStopItemResponsePagination.ts
-model/milesStopPayrollResponse.ts
-model/mobileFuelStopExpensesChartResponse.ts
-model/mobileFuelStopExpensesResponse.ts
-model/mobileFuelStopListResponse.ts
-model/mobileFuelStopResponse.ts
-model/mobileFuelStopResponsePagination.ts
-model/mobileFuelStopShortResponse.ts
-model/mobileFuelTransactionResponse.ts
-model/mobileFuelTransactionResponsePagination.ts
-model/mobileGpsDataCommand.ts
-model/mobileRepairShopDetailsResponse.ts
-model/mobileRepairShopDetailsResponsePagination.ts
-model/mobileRepairShopExpensesChartResponse.ts
-model/mobileRepairShopExpensesResponse.ts
-model/mobileRepairShopListResponse.ts
-model/mobileTransactionListResponse.ts
-model/models.ts
-model/moveMultipleToApplicantsCommand.ts
-model/moveToApplicantsCommand.ts
-model/multipleChangeBanFlagCommand.ts
-model/multipleChangeDnuFlagCommand.ts
-model/multipleChangeTrailerStatusCommand.ts
-model/multipleChangeTruckStatusCommand.ts
-model/mvrAuthFeedbackResponse.ts
-model/mvrResponse.ts
-model/notificationEntity.ts
-model/ownerDetailsResponse.ts
-model/ownerHistoryResponse.ts
-model/ownerIntervalResponse.ts
-model/ownerModalResponse.ts
-model/ownerResponse.ts
-model/ownerShortResponse.ts
-model/ownerTableResponse.ts
-model/ownerTableResponsePagination.ts
-model/ownerTrailerModalResponse.ts
-model/ownerType.ts
-model/pMStatus.ts
-model/pMTrailerDefaultDropdownResponse.ts
-model/pMTrailerListResponse.ts
-model/pMTrailerResponse.ts
-model/pMTrailerResponsePagination.ts
-model/pMTrailerShortResponse.ts
-model/pMTrailerUnitListResponse.ts
-model/pMTrailerUnitResponse.ts
-model/pMTrailerUnitResponsePagination.ts
-model/pMTruckDefaultDropdownResponse.ts
-model/pMTruckListResponse.ts
-model/pMTruckResponse.ts
-model/pMTruckResponsePagination.ts
-model/pMTruckShortResponse.ts
-model/pMTruckUnitListResponse.ts
-model/pMTruckUnitResponse.ts
-model/pMTruckUnitResponsePagination.ts
-model/parkingDispatchModalResponse.ts
-model/parkingListResponse.ts
-model/parkingResponse.ts
-model/parkingResponsePagination.ts
-model/parkingShortResponse.ts
-model/parkingSlotCommand.ts
-model/parkingSlotDispatchModalResponse.ts
-model/parkingSlotResponse.ts
-model/parkingSlotShortResponse.ts
-model/parkingSlotType.ts
-model/passwordResponse.ts
-model/patchNoteCommand.ts
-model/payPeriod.ts
-model/payrollBonusDeductionResponse.ts
-model/payrollBonusDescriptionAutocompleteResponse.ts
-model/payrollBonusMinimalResponse.ts
-model/payrollBonusModalResponse.ts
-model/payrollBonusResponse.ts
-model/payrollCommissionTotalSum.ts
-model/payrollCountItemResponse.ts
-model/payrollCountsResponse.ts
-model/payrollCreditDescriptionAutocompleteResponse.ts
-model/payrollCreditMinimalResponse.ts
-model/payrollCreditModalResponse.ts
-model/payrollCreditResponse.ts
-model/payrollCreditType.ts
-model/payrollDeadlinePeriod.ts
-model/payrollDeadlineShortResponse.ts
-model/payrollDeductionDescriptionAutocompleteResponse.ts
-model/payrollDeductionMinimalResponse.ts
-model/payrollDeductionModalResponse.ts
-model/payrollDeductionRecurringType.ts
-model/payrollDeductionResponse.ts
-model/payrollDeductionType.ts
-model/payrollDriverCommissionByIdResponse.ts
-model/payrollDriverCommissionResponse.ts
-model/payrollDriverCommissionResponsePagination.ts
-model/payrollDriverFlatRateClosedByIdResponse.ts
-model/payrollDriverMileageListResponse.ts
-model/payrollDriverMileageResponse.ts
-model/payrollFlatRateTotalSum.ts
-model/payrollFuelMinimalResponse.ts
-model/payrollListResponse.ts
-model/payrollLoadMinimalResponse.ts
-model/payrollLoadStopMinimalResponse.ts
-model/payrollMainListResponse.ts
-model/payrollMapLocation.ts
-model/payrollMilesShortResponse.ts
-model/payrollMinimalListResponse.ts
-model/payrollMinimalResponse.ts
-model/payrollMinimalResponsePagination.ts
-model/payrollOwnerClosedResponse.ts
-model/payrollOwnerResponse.ts
-model/payrollOwnerResponsePagination.ts
-model/payrollPaymentCommand.ts
-model/payrollPaymentResponse.ts
-model/payrollPaymentShortResponse.ts
-model/payrollPaymentType.ts
-model/payrollPaymentsMinimalResponse.ts
-model/payrollResponse.ts
-model/payrollResponsePagination.ts
-model/pendingLoadProgressBarResponse.ts
-model/perMileEntity.ts
-model/performanceGraphListResponse.ts
-model/performanceGraphMetric.ts
-model/performanceGraphResponse.ts
-model/performanceResponse.ts
-model/performanceTableMetric.ts
-model/performanceTableResponse.ts
-model/personalInfoFeedbackResponse.ts
-model/pickupDeliveryByStateListResponse.ts
-model/pickupDeliveryByStateResponse.ts
-model/pickupDeliveryByStateResponsePagination.ts
-model/pickupDeliveryIntervalResponse.ts
-model/poBoxEntity.ts
-model/preferredLoadType.ts
-model/previousEmployerAccidentHistoryItemCommand.ts
-model/previousEmployerDocumentsResponse.ts
-model/previousEmployerModalResponse.ts
-model/previousEmployerRequestResponse.ts
-model/problemDetails.ts
-model/pspAuthFeedbackResponse.ts
-model/ratingReviewResponse.ts
-model/ratingSetResponse.ts
-model/refreshMobileTokenCommand.ts
-model/refreshTokenCommand.ts
-model/registrationModalResponse.ts
-model/registrationResponse.ts
-model/removeApplicantFromFavouriteCommand.ts
-model/renewCdlCommand.ts
-model/reorderDispatchCommand.ts
-model/reorderDispatchLoadsCommand.ts
-model/reorderDispatchesCommand.ts
-model/repairAutocompleteDescriptionResponse.ts
-model/repairByStateListResponse.ts
-model/repairByStateResponse.ts
-model/repairByStateResponsePagination.ts
-model/repairCategoryFilterResponse.ts
-model/repairDriverResponse.ts
-model/repairIntervalResponse.ts
-model/repairItemCommand.ts
-model/repairItemResponse.ts
-model/repairListResponse.ts
-model/repairMainModuleResponse.ts
-model/repairModalResponse.ts
-model/repairResponse.ts
-model/repairResponsePagination.ts
-model/repairServiceTypeCommand.ts
-model/repairServiceTypeResponse.ts
-model/repairShopContactCommand.ts
-model/repairShopContactListResponse.ts
-model/repairShopContactResponse.ts
-model/repairShopExpensesChartResponse.ts
-model/repairShopExpensesResponse.ts
-model/repairShopIntervalResponse.ts
-model/repairShopListDto.ts
-model/repairShopListDtoPagination.ts
-model/repairShopListResponse.ts
-model/repairShopMinimalListResponse.ts
-model/repairShopMinimalResponse.ts
-model/repairShopMinimalResponsePagination.ts
-model/repairShopModalResponse.ts
-model/repairShopNewListResponse.ts
-model/repairShopOpenHoursCommand.ts
-model/repairShopOpenHoursResponse.ts
-model/repairShopPMResponse.ts
-model/repairShopResponse.ts
-model/repairShopResponsePagination.ts
-model/repairShopServiceTypeCommand.ts
-model/repairShopServiceTypeResponse.ts
-model/repairShopShortResponse.ts
-model/repairShortResponse.ts
-model/repairTrailerFilterListResponse.ts
-model/repairTrailerFilterResponse.ts
-model/repairTruckFilterListResponse.ts
-model/repairTruckFilterResponse.ts
-model/repairType.ts
-model/repairUnitType.ts
-model/repairedVehicleListResponse.ts
-model/repairedVehicleResponse.ts
-model/repairedVehicleResponsePagination.ts
-model/resendInviteCommand.ts
-model/resendSignUpCompanyOrUserCommand.ts
-model/revertDispatchStatusCommand.ts
-model/revertLoadStatusCommand.ts
-model/reviewByEntityTypeListResponse.ts
-model/reviewResponse.ts
-model/reviewResponsePagination.ts
-model/roadsideByStateListResponse.ts
-model/roadsideByStateResponse.ts
-model/roadsideByStateResponsePagination.ts
-model/roadsideInspectionListResponse.ts
-model/roadsideInspectionMinimalListResponse.ts
-model/roadsideInspectionMinimalResponse.ts
-model/roadsideInspectionMinimalResponsePagination.ts
-model/roadsideInspectionResponse.ts
-model/roadsideInspectionResponsePagination.ts
-model/roadsideInspectionSpecialCheckCommand.ts
-model/roadsideInspectionSpecialCheckResponse.ts
-model/roadsideIntervalResponse.ts
-model/routeResponse.ts
-model/routeResponsePagination.ts
-model/routingResponse.ts
-model/secure.ts
-model/selectCompanyCommand.ts
-model/selectCompanyResponse.ts
-model/serviceType.ts
-model/serviceTypeResponse.ts
-model/setNewPasswordCommand.ts
-model/setPreTripInspectionCommand.ts
-model/sevenDaysHosFeedbackResponse.ts
-model/sevenDaysHosReviewResponse.ts
-model/shipperAverageWaitingTimeChartResponse.ts
-model/shipperAverageWaitingTimeResponse.ts
-model/shipperContactCommand.ts
-model/shipperContactGroupResponse.ts
-model/shipperContactResponse.ts
-model/shipperContactShortResponse.ts
-model/shipperIntervalResponse.ts
-model/shipperListResponse.ts
-model/shipperLoadModalResponse.ts
-model/shipperLoadStopsResponse.ts
-model/shipperLoadStopsResponsePagination.ts
-model/shipperLoadsResponse.ts
-model/shipperMinimalListResponse.ts
-model/shipperMinimalResponse.ts
-model/shipperMinimalResponsePagination.ts
-model/shipperModalResponse.ts
-model/shipperResponse.ts
-model/shipperResponsePagination.ts
-model/shipperShortResponse.ts
-model/signInCommand.ts
-model/signInResponse.ts
-model/signUpCompanyCommand.ts
-model/signupUserCommand.ts
-model/specialCheck.ts
-model/sphAccidentHistoryItemResponse.ts
-model/sphAccidentHistoryResponse.ts
-model/sphDrugAndAlcoholResponse.ts
-model/sphFeedbackResponse.ts
-model/sphPreviousEmployerProspectResponse.ts
-model/splitLoadResponse.ts
-model/stateResponse.ts
-model/statusSetCompanyUserCommand.ts
-model/statusSetMultipleBrokerCommand.ts
-model/statusSetMultipleCompanyUserCommand.ts
-model/statusSetMultipleDriverCommand.ts
-model/statusSetMultipleShipperCommand.ts
-model/stopResponse.ts
-model/stopResponsePagination.ts
-model/subintervalType.ts
-model/switchDispatchCommand.ts
-model/switchDispatchesCommand.ts
-model/tableConfigResponse.ts
-model/tableType.ts
-model/tagResponse.ts
-model/terminalListResponse.ts
-model/terminalResponse.ts
-model/terminalResponsePagination.ts
-model/testResponse.ts
-model/testResult.ts
-model/testType.ts
-model/timeInterval.ts
-model/timeSpan.ts
-model/tireSizeResponse.ts
-model/titleModalResponse.ts
-model/titleResponse.ts
-model/todoListResponse.ts
-model/todoModalResponse.ts
-model/todoResponse.ts
-model/todoResponsePagination.ts
-model/todoStatus.ts
-model/todoUserResponse.ts
-model/topBrokersListResponse.ts
-model/topBrokersResponse.ts
-model/topBrokersResponsePagination.ts
-model/topDispatchersListResponse.ts
-model/topDispatchersResponse.ts
-model/topDispatchersResponsePagination.ts
-model/topDriverListResponse.ts
-model/topDriverResponse.ts
-model/topDriverResponsePagination.ts
-model/topFuelStopListResponse.ts
-model/topFuelStopResponse.ts
-model/topFuelStopResponsePagination.ts
-model/topOwnerListResponse.ts
-model/topOwnerResponse.ts
-model/topOwnerResponsePagination.ts
-model/topRepairShopListResponse.ts
-model/topRepairShopResponse.ts
-model/topRepairShopResponsePagination.ts
-model/topShipperListResponse.ts
-model/topShipperResponse.ts
-model/topShipperResponsePagination.ts
-model/topTruckListResponse.ts
-model/topTruckResponse.ts
-model/topTruckResponsePagination.ts
-model/trafficViolationFeedbackResponse.ts
-model/trafficViolationItemResponse.ts
-model/trafficViolationItemReviewResponse.ts
-model/trailerAccidentResponse.ts
-model/trailerAutocompleteModelResponse.ts
-model/trailerDispatchModalResponse.ts
-model/trailerFilterResponse.ts
-model/trailerFuelConsumptionChartResponse.ts
-model/trailerFuelConsumptionResponse.ts
-model/trailerLengthResponse.ts
-model/trailerListResponse.ts
-model/trailerMakeResponse.ts
-model/trailerMinimalListResponse.ts
-model/trailerMinimalResponse.ts
-model/trailerMinimalResponsePagination.ts
-model/trailerResponse.ts
-model/trailerShortResponse.ts
-model/trailerShortResponsePagination.ts
-model/trailerTypeFilterResponse.ts
-model/trailerTypeResponse.ts
-model/transferRegistrationCommand.ts
-model/transponderGroup.ts
-model/truckAccidentResponse.ts
-model/truckAutocompleteModelResponse.ts
-model/truckDispatchModalResponse.ts
-model/truckEngineModelResponse.ts
-model/truckExpensesChartResponse.ts
-model/truckExpensesResponse.ts
-model/truckFilterListResponse.ts
-model/truckFilterResponse.ts
-model/truckFilterResponsePagination.ts
-model/truckFuelConsumptionChartResponse.ts
-model/truckFuelConsumptionResponse.ts
-model/truckFuelTransactionResponse.ts
-model/truckGrossWeightResponse.ts
-model/truckIntervalResponse.ts
-model/truckListResponse.ts
-model/truckMakeResponse.ts
-model/truckMinimalListResponse.ts
-model/truckMinimalResponse.ts
-model/truckMinimalResponsePagination.ts
-model/truckPerformanceResponse.ts
-model/truckResponse.ts
-model/truckRevenueChartResponse.ts
-model/truckRevenueResponse.ts
-model/truckShortResponse.ts
-model/truckShortResponsePagination.ts
-model/truckTypeFilterResponse.ts
-model/truckTypeResponse.ts
-model/unitType.ts
-model/updateAccidentItemCommand.ts
-model/updateAccidentItemReviewCommand.ts
-model/updateAccidentRecordCommand.ts
-model/updateAccidentRecordReviewCommand.ts
-model/updateApplicantCdlCommand.ts
-model/updateApplicantCdlInformationReviewCommand.ts
-model/updateApplicantCdlReviewCommand.ts
-model/updateApplicantCommand.ts
-model/updateAuthorizationCommand.ts
-model/updateBankAccountCommand.ts
-model/updateBankCardCommand.ts
-model/updateBankCommand.ts
-model/updateCdlCardReviewCommand.ts
-model/updateClassOfEquipmentCommand.ts
-model/updateCommentCommand.ts
-model/updateCompanyAccountCommand.ts
-model/updateCompanyAccountLabelCommand.ts
-model/updateCompanyCommand.ts
-model/updateCompanyContactCommand.ts
-model/updateCompanyContactLabelCommand.ts
-model/updateCompanyOfficeCommand.ts
-model/updateCompanyOwnerInfoReviewCommand.ts
-model/updateCompanyPayrollCommand.ts
-model/updateCompanyUserCommand.ts
-model/updateContactEmailCommand.ts
-model/updateContactPhoneCommand.ts
-model/updateDepartmentContactCommand.ts
-model/updateDisclosureReleaseCommand.ts
-model/updateDispatchCommand.ts
-model/updateDispatchStatusCommand.ts
-model/updateDivisionCompanyCommand.ts
-model/updateDriverRightsCommand.ts
-model/updateDrugAndAlcoholCommand.ts
-model/updateDrugAndAlcoholReviewCommand.ts
-model/updateEducationCommand.ts
-model/updateEducationReviewCommand.ts
-model/updateEmergencyContactCommand.ts
-model/updateEmergencyContactReviewCommand.ts
-model/updateEmploymentHistoryCommand.ts
-model/updateEventCommand.ts
-model/updateFactoringCompanyCommand.ts
-model/updateHosCommand.ts
-model/updateHosRulesCommand.ts
-model/updateInsurancePolicyAddonCommand.ts
-model/updateLoadStatusCommand.ts
-model/updateLoadTemplateCommand.ts
-model/updateMapCommand.ts
-model/updateMedicalCertificateReviewCommand.ts
-model/updateMessageCommand.ts
-model/updateMvrAuthReviewCommand.ts
-model/updateOffDutyLocationCommand.ts
-model/updateOwnerHistoryCommand.ts
-model/updatePMTrailerDefaultCommand.ts
-model/updatePMTrailerListDefaultCommand.ts
-model/updatePMTrailerUnitListCommand.ts
-model/updatePMTruckDefaultCommand.ts
-model/updatePMTruckDefaultListCommand.ts
-model/updatePMTruckUnitListCommand.ts
-model/updateParkingCommand.ts
-model/updateParkingSlotCommand.ts
-model/updatePayrollBonusCommand.ts
-model/updatePayrollCreditCommand.ts
-model/updatePayrollDeductionCommand.ts
-model/updatePersonalInfoReviewCommand.ts
-model/updatePreviousAddressCommand.ts
-model/updatePreviousAddressReviewCommand.ts
-model/updatePreviousEmployerAccidentHistoryCommand.ts
-model/updatePreviousEmployerDrugAndAlcoholCommand.ts
-model/updatePspAuthCommand.ts
-model/updateReviewCommand.ts
-model/updateRouteCommand.ts
-model/updateSevenDaysHosCommand.ts
-model/updateSevenDaysHosReviewCommand.ts
-model/updateSphCommand.ts
-model/updateStopCommand.ts
-model/updateTableConfigCommand.ts
-model/updateTerminalCommand.ts
-model/updateTodoStatusCommand.ts
-model/updateTrafficViolationCommand.ts
-model/updateTrafficViolationItemCommand.ts
-model/updateTrafficViolationItemReviewCommand.ts
-model/updateTrafficViolationReviewCommand.ts
-model/updateTrailerPMUnitCommand.ts
-model/updateTruckPMUnitCommand.ts
-model/updateUserCommand.ts
-model/updateViolationDescriptionCommand.ts
-model/updateWorkExperienceCommand.ts
-model/updateWorkExperienceItemCommand.ts
-model/updateWorkExperienceItemReviewCommand.ts
-model/updateWorkExperienceReviewCommand.ts
-model/userAdditionalInformationResponse.ts
-model/userResponse.ts
-model/userType.ts
-model/validatePasswordCommand.ts
-model/verifyApplicantCommand.ts
-model/verifyDriverCommand.ts
-model/verifyForgotPasswordCommand.ts
-model/verifyForgotPasswordDriverCommand.ts
-model/verifyOwnerCommand.ts
-model/verifyPreviousEmployerCommand.ts
-model/verifyUserCommand.ts
-model/vinDecodeResponse.ts
-model/violationByStateListResponse.ts
-model/violationByStateResponse.ts
-model/violationByStateResponsePagination.ts
-model/violationCategoryResponse.ts
-model/violationCommand.ts
-model/violationIntervalResponse.ts
-model/violationResponse.ts
-model/voidRegistrationCommand.ts
-model/weatherDataResponse.ts
-model/weatherDaysResponse.ts
-model/wheelsType.ts
-model/workExperienceFeedbackResponse.ts
-model/workExperienceItemResponse.ts
-model/workExperienceItemReviewResponse.ts
-model/yesNoEnum.ts
+model / acceptApplicationCommand.ts
+model / accidentByStateListResponse.ts
+model / accidentByStateResponse.ts
+model / accidentByStateResponsePagination.ts
+model / accidentIntervalResponse.ts
+model / accidentItemResponse.ts
+model / accidentItemReviewResponse.ts
+model / accidentListResponse.ts
+model / accidentMinimalListResponse.ts
+model / accidentMinimalResponse.ts
+model / accidentMinimalResponsePagination.ts
+model / accidentModalResponse.ts
+model / accidentRecordFeedbackResponse.ts
+model / accidentResponse.ts
+model / accidentShortResponse.ts
+model / accidentShortResponsePagination.ts
+model / accountColorResponse.ts
+model / activateConversationCommand.ts
+model / activateDeactivateEFSFuelCard.ts
+model / activeLoadProgressBarResponse.ts
+model / addApplicantToFavouriteCommand.ts
+model / addFuelCardCommand.ts
+model / addIntegrationCommand.ts
+model / addressEntity.ts
+model / addressListResponse.ts
+model / addressResponse.ts
+model / apUnit.ts
+model / apiAccidentPostRequest.ts
+model / apiAccidentPostRequest1.ts
+model / apiApplicantCdlPostRequest.ts
+model / apiApplicantCdlPostRequest1.ts
+model / apiApplicantCdlcardPostRequest.ts
+model / apiApplicantCdlcardPostRequest1.ts
+model / apiApplicantMedicalcertificatePostRequest.ts
+model / apiApplicantMedicalcertificatePostRequest1.ts
+model / apiApplicantMvrPostRequest.ts
+model / apiApplicantMvrPostRequest1.ts
+model / apiApplicantOwnerinfoCompanyPostRequest.ts
+model / apiApplicantOwnerinfoCompanyPostRequest1.ts
+model / apiApplicantPersonalPostRequest.ts
+model / apiApplicantPersonalPostRequest1.ts
+model / apiApplicantPreviousemployerDocumentsPostRequest.ts
+model / apiBrokerImportPostRequest.ts
+model / apiBrokerPostRequest.ts
+model / apiBrokerPostRequest1.ts
+model / apiCdlPostRequest.ts
+model / apiCdlPostRequest1.ts
+model / apiChatMessagePostRequest.ts
+model / apiCitationPostRequest.ts
+model / apiCitationPostRequest1.ts
+model / apiCompanyDocumentsGetRequest.ts
+model / apiCompanyInsurancepolicyGetRequest.ts
+model / apiCompanyInsurancepolicyGetRequest1.ts
+model / apiCompanyaccountImportPostRequest.ts
+model / apiCompanycontactImportPostRequest.ts
+model / apiDriverImportPostRequest.ts
+model / apiDriverPostRequest.ts
+model / apiDriverPostRequest1.ts
+model / apiFuelEfsTransactionPutRequest.ts
+model / apiFuelFuelstopPostRequest.ts
+model / apiFuelFuelstopPostRequest1.ts
+model / apiFuelFuelstopUpdatePutRequest.ts
+model / apiFuelImportPostRequest.ts
+model / apiFuelTransactionPostRequest.ts
+model / apiFuelTransactionPostRequest1.ts
+model / apiInspectionPostRequest.ts
+model / apiInspectionPostRequest1.ts
+model / apiLoadPostRequest.ts
+model / apiLoadPostRequest1.ts
+model / apiMedicalPostRequest.ts
+model / apiMedicalPostRequest1.ts
+model / apiMvrPostRequest.ts
+model / apiMvrPostRequest1.ts
+model / apiOwnerPostRequest.ts
+model / apiOwnerPostRequest1.ts
+model / apiRegistrationPostRequest.ts
+model / apiRegistrationPostRequest1.ts
+model / apiRepairPostRequest.ts
+model / apiRepairPostRequest1.ts
+model / apiRepairshopImportPostRequest.ts
+model / apiRepairshopPostRequest.ts
+model / apiRepairshopPostRequest1.ts
+model / apiShipperImportPostRequest.ts
+model / apiShipperPostRequest.ts
+model / apiShipperPostRequest1.ts
+model / apiTestPostRequest.ts
+model / apiTestPostRequest1.ts
+model / apiTitlePostRequest.ts
+model / apiTitlePostRequest1.ts
+model / apiTodoPostRequest.ts
+model / apiTodoPostRequest1.ts
+model / apiTrailerImportPostRequest.ts
+model / apiTrailerPostRequest.ts
+model / apiTrailerPostRequest1.ts
+model / apiTruckImportPostRequest.ts
+model / apiTruckPostRequest.ts
+model / apiTruckPostRequest1.ts
+model / apiViolationPutRequest.ts
+model / applicantAdminResponse.ts
+model / applicantCompanyInfoResponse.ts
+model / applicantListResponse.ts
+model / applicantModalResponse.ts
+model / applicantPersonalInfoReviewResponse.ts
+model / applicantPreviousAddressResponse.ts
+model / applicantPreviousAddressReviewResponse.ts
+model / applicantResponse.ts
+model / applicantShortResponse.ts
+model / applicantShortResponsePagination.ts
+model / applicationStatus.ts
+model / archiveApplicationCommand.ts
+model / archiveConversationCommand.ts
+model / archiveMultipleApplicationsCommand.ts
+model / assignGpsDevicesToCompanyCommand.ts
+model / assignGpsDevicesToTrailerCommand.ts
+model / assignGpsDevicesToTruckCommand.ts
+model / assignLoadModalResponse.ts
+model / assignedLoadListResponse.ts
+model / assignedLoadResponse.ts
+model / assignedLoadStopResponse.ts
+model / authorizationFeedbackResponse.ts
+model / autocompleteSearchLayer.ts
+model / avatarResponse.ts
+model / bankAccountResponse.ts
+model / bankAccountStatus.ts
+model / bankCardResponse.ts
+model / bankListResponse.ts
+model / bankResponse.ts
+model / bankResponsePagination.ts
+model / billingInfo.ts
+model / brakes.ts
+model / brokerAvailableCreditCommand.ts
+model / brokerAvailableCreditResponse.ts
+model / brokerByIdResponse.ts
+model / brokerContactCommand.ts
+model / brokerContactGroupResponse.ts
+model / brokerContactResponse.ts
+model / brokerContactShortResponse.ts
+model / brokerFilterListResponse.ts
+model / brokerFilterResponse.ts
+model / brokerFilterResponsePagination.ts
+model / brokerIntervalResponse.ts
+model / brokerInvoiceAgeingResponse.ts
+model / brokerLoadModalResponse.ts
+model / brokerLoadStopResponse.ts
+model / brokerLoadsResponse.ts
+model / brokerMileageRateChartResponse.ts
+model / brokerMileageRateResponse.ts
+model / brokerMinimalListResponse.ts
+model / brokerMinimalResponse.ts
+model / brokerMinimalResponsePagination.ts
+model / brokerModalResponse.ts
+model / brokerPaidInvoiceChartResponse.ts
+model / brokerPaidInvoiceResponse.ts
+model / brokerPaymentHistoryChartResponse.ts
+model / brokerPaymentHistoryResponse.ts
+model / brokerResponse.ts
+model / brokerResponsePagination.ts
+model / brokerShortResponse.ts
+model / byStateReportType.ts
+model / cdlEndorsementResponse.ts
+model / cdlFeedbackResponse.ts
+model / cdlLicenseResponse.ts
+model / cdlLicenseReviewResponse.ts
+model / cdlMinimalResponse.ts
+model / cdlResponse.ts
+model / cdlRestrictionResponse.ts
+model / cdlReviewResponse.ts
+model / checkDriverBySsnResponse.ts
+model / checkOwnerSsnEinResponse.ts
+model / checkUserByEmailResponse.ts
+model / citationCommand.ts
+model / citationResponse.ts
+model / classOfEquipmentResponse.ts
+model / classType.ts
+model / closePayrollDriverCommissionCommand.ts
+model / closePayrollDriverFlatRateCommand.ts
+model / closePayrollDriverMileageCommand.ts
+model / closePayrollOwnerCommand.ts
+model / closedLoadProgressBarResponse.ts
+model / clusterResponse.ts
+model / colorResponse.ts
+model / commentByEntityTypeListResponse.ts
+model / commentResponse.ts
+model / commentResponsePagination.ts
+model / companyAccountLabelCountResponse.ts
+model / companyAccountLabelCountResponsePagination.ts
+model / companyAccountLabelResponse.ts
+model / companyAccountModalResponse.ts
+model / companyAccountResponse.ts
+model / companyAccountResponsePagination.ts
+model / companyAdditionalInfo.ts
+model / companyAdditionalInfoResponse.ts
+model / companyContactLabelCountResponse.ts
+model / companyContactLabelCountResponsePagination.ts
+model / companyContactLabelResponse.ts
+model / companyContactModalResponse.ts
+model / companyContactResponse.ts
+model / companyContactResponsePagination.ts
+model / companyContactUser.ts
+model / companyDocumentsStatisticResponse.ts
+model / companyDurationResponse.ts
+model / companyIntegrationProviderListResponse.ts
+model / companyIntegrationResponse.ts
+model / companyIntegrationResponsePagination.ts
+model / companyModalResponse.ts
+model / companyOfficeDepartmentContactCommand.ts
+model / companyOfficeDepartmentContactResponse.ts
+model / companyOfficeListResponse.ts
+model / companyOfficeMarkerResponse.ts
+model / companyOfficeModalResponse.ts
+model / companyOfficeResponse.ts
+model / companyOfficeResponsePagination.ts
+model / companyOfficeShortResponse.ts
+model / companyOwnerInfoFeedbackResponse.ts
+model / companyOwnerInfoReviewResponse.ts
+model / companyPayrollResponse.ts
+model / companyResponse.ts
+model / companySettingsDocumentsResponse.ts
+model / companyShortResponse.ts
+model / companyUserChatResponse.ts
+model / companyUserChatResponsePagination.ts
+model / companyUserForChatListResponse.ts
+model / companyUserListItemResponse.ts
+model / companyUserListItemResponsePagination.ts
+model / companyUserListResponse.ts
+model / companyUserModalResponse.ts
+model / companyUserResponse.ts
+model / companyUserShortResponse.ts
+model / contactColorResponse.ts
+model / contactEmailResponse.ts
+model / contactEmailType.ts
+model / contactPhoneResponse.ts
+model / contactPhoneType.ts
+model / conversationInfoResponse.ts
+model / conversationResponse.ts
+model / conversationType.ts
+model / counterResponse.ts
+model / countryType.ts
+model / createAccidentItemCommand.ts
+model / createAccidentItemReviewCommand.ts
+model / createAccidentRecordCommand.ts
+model / createAccidentRecordReviewCommand.ts
+model / createApplicantCdlCommand.ts
+model / createApplicantCdlInformationReviewCommand.ts
+model / createApplicantCdlReviewCommand.ts
+model / createApplicantCommand.ts
+model / createAuthorizationReviewCommand.ts
+model / createBankCommand.ts
+model / createCdlCardReviewCommand.ts
+model / createClassOfEquipmentCommand.ts
+model / createCommentCommand.ts
+model / createCompanyAccountCommand.ts
+model / createCompanyAccountLabelCommand.ts
+model / createCompanyContactCommand.ts
+model / createCompanyContactLabelCommand.ts
+model / createCompanyOfficeCommand.ts
+model / createCompanyOwnerInfoReviewCommand.ts
+model / createCompanyUserCommand.ts
+model / createContactEmailCommand.ts
+model / createContactPhoneCommand.ts
+model / createConversationCommand.ts
+model / createDisclosureReviewCommand.ts
+model / createDispatchCommand.ts
+model / createDivisionCompanyCommand.ts
+model / createDriverPasswordMobileCommand.ts
+model / createDriverRightsReviewCommand.ts
+model / createDrugAndAlcoholCommand.ts
+model / createDrugAndAlcoholReviewCommand.ts
+model / createEducationCommand.ts
+model / createEducationReviewCommand.ts
+model / createEmergencyContactCommand.ts
+model / createEmergencyContactReviewCommand.ts
+model / createEventCommand.ts
+model / createFuelItemCommand.ts
+model / createHosCommand.ts
+model / createHosRulesReviewCommand.ts
+model / createInsurancePolicyAddonCommand.ts
+model / createLoadTemplateCommand.ts
+model / createMapCommand.ts
+model / createMedicalCertificateReviewCommand.ts
+model / createMobileAccountCommand.ts
+model / createMvrAuthReviewCommand.ts
+model / createOffDutyLocationCommand.ts
+model / createParkingCommand.ts
+model / createPayrollBonusCommand.ts
+model / createPayrollCreditCommand.ts
+model / createPayrollDeductionCommand.ts
+model / createPayrollPaymentCommand.ts
+model / createPersonalInfoReviewCommand.ts
+model / createPreviousAddressCommand.ts
+model / createPreviousAddressReviewCommand.ts
+model / createPreviousEmployerAccidentHistoryCommand.ts
+model / createPreviousEmployerDrugAndAlcoholCommand.ts
+model / createPspAuthReviewCommand.ts
+model / createRatingCommand.ts
+model / createResponse.ts
+model / createReviewCommand.ts
+model / createRouteCommand.ts
+model / createSevenDaysHosCommand.ts
+model / createSevenDaysHosReviewCommand.ts
+model / createSphReviewCommand.ts
+model / createTagCommand.ts
+model / createTerminalCommand.ts
+model / createTrafficViolationCommand.ts
+model / createTrafficViolationItemCommand.ts
+model / createTrafficViolationItemReviewCommand.ts
+model / createTrafficViolationReviewCommand.ts
+model / createWithUploadsResponse.ts
+model / createWorkExperienceCommand.ts
+model / createWorkExperienceItemCommand.ts
+model / createWorkExperienceItemReviewCommand.ts
+model / createWorkExperienceReviewCommand.ts
+model / creditType.ts
+model / dashboardTopReportType.ts
+model / dayOfWeek.ts
+model / defaultFolderViewResponse.ts
+model / deleteMultipleApplicationsCommand.ts
+model / departmentContactResponse.ts
+model / departmentFilterResponse.ts
+model / departmentResponse.ts
+model / departmentShortResponse.ts
+model / disclosureReleaseFeedbackResponse.ts
+model / dispatchBoardFiltersResponse.ts
+model / dispatchBoardListResponse.ts
+model / dispatchBoardResponse.ts
+model / dispatchGroupedLoadsResponse.ts
+model / dispatchHistoryDriverListResponse.ts
+model / dispatchHistoryGroupItemResponse.ts
+model / dispatchHistoryGroupListResponse.ts
+model / dispatchHistoryGroupResponse.ts
+model / dispatchHistoryGroupResponsePagination.ts
+model / dispatchHistoryListResponse.ts
+model / dispatchHistoryModalResponse.ts
+model / dispatchHistoryResponse.ts
+model / dispatchHistoryResponsePagination.ts
+model / dispatchHosCommand.ts
+model / dispatchHosFlag.ts
+model / dispatchHosResponse.ts
+model / dispatchLoadModalResponse.ts
+model / dispatchModalResponse.ts
+model / dispatchParkingFilterResponse.ts
+model / dispatchPossibleStatusResponse.ts
+model / dispatchResponse.ts
+model / dispatchResponsePagination.ts
+model / dispatchShortResponse.ts
+model / dispatchStatus.ts
+model / dispatchStatusFilterResponse.ts
+model / dispatchStatusResponse.ts
+model / dispatcherFilterResponse.ts
+model / dispatcherIntervalResponse.ts
+model / driverAccidentResponse.ts
+model / driverDetailsBankResponse.ts
+model / driverDetailsDispatchResponse.ts
+model / driverDetailsEmergencyContactResponse.ts
+model / driverDetailsFuelCardResponse.ts
+model / driverDetailsNotificationResponse.ts
+model / driverDetailsOffDutyLocationResponse.ts
+model / driverDetailsOwnerResponse.ts
+model / driverDetailsPayrollResponse.ts
+model / driverDispatchModalResponse.ts
+model / driverDispatchResponse.ts
+model / driverFilterListResponse.ts
+model / driverFilterResponse.ts
+model / driverFilterResponsePagination.ts
+model / driverForgotPasswordCommand.ts
+model / driverIntervalResponse.ts
+model / driverListBankResponse.ts
+model / driverListCdlCodeDescriptionResponse.ts
+model / driverListCdlResponse.ts
+model / driverListEmergencyContactResponse.ts
+model / driverListFuelCardResponse.ts
+model / driverListItemResponse.ts
+model / driverListItemResponsePagination.ts
+model / driverListMedicalResponse.ts
+model / driverListMvrResponse.ts
+model / driverListNotificationResponse.ts
+model / driverListOffDutyLocationResponse.ts
+model / driverListOwnerResponse.ts
+model / driverListPayrollResponse.ts
+model / driverListResponse.ts
+model / driverListTestResponse.ts
+model / driverMinimalListResponse.ts
+model / driverMinimalResponse.ts
+model / driverMinimalResponsePagination.ts
+model / driverModalFuelCardResponse.ts
+model / driverModalOwnerResponse.ts
+model / driverPayrollChartResponse.ts
+model / driverPayrollResponse.ts
+model / driverResponse.ts
+model / driverRightsFeedbackResponse.ts
+model / driverShortResponse.ts
+model / drugAndAlcoholFeedbackResponse.ts
+model / drugAndAlcoholReviewResponse.ts
+model / editFuelCardCommand.ts
+model / editFuelItemCommand.ts
+model / editIntegrationCommand.ts
+model / editTagCommand.ts
+model / editTagsCommand.ts
+model / educationFeedbackResponse.ts
+model / educationReviewResponse.ts
+model / emergencyContactResponse.ts
+model / emergencyContactReviewResponse.ts
+model / employmentHistoryResponse.ts
+model / entityTypeNote.ts
+model / entityTypeReview.ts
+model / enumValue.ts
+model / eventModalResponse.ts
+model / eventResponse.ts
+model / eventType.ts
+model / factoringCompany.ts
+model / fileManagerDefaultViewType.ts
+model / fileResponse.ts
+model / fileResponsePagination.ts
+model / fileReviewCommand.ts
+model / fleetType.ts
+model / folderResponse.ts
+model / forgotPasswordCommand.ts
+model / fuelByStateListResponse.ts
+model / fuelByStateResponse.ts
+model / fuelByStateResponsePagination.ts
+model / fuelCardListResponse.ts
+model / fuelCardResponse.ts
+model / fuelCardResponsePagination.ts
+model / fuelCardShortResponse.ts
+model / fuelDispatchHistoryResponse.ts
+model / fuelIntervalResponse.ts
+model / fuelItemResponse.ts
+model / fuelMainModuleResponse.ts
+model / fuelModalStopResponse.ts
+model / fuelModalStopResponsePagination.ts
+model / fuelStopExpensesChartResponse.ts
+model / fuelStopExpensesResponse.ts
+model / fuelStopFranchiseListResponse.ts
+model / fuelStopFranchiseMinimalResponse.ts
+model / fuelStopFranchiseMinimalResponsePagination.ts
+model / fuelStopFranchiseResponse.ts
+model / fuelStopFranchiseResponsePagination.ts
+model / fuelStopIntervalResponse.ts
+model / fuelStopListResponse.ts
+model / fuelStopResponse.ts
+model / fuelStopResponsePagination.ts
+model / fuelStopShortResponse.ts
+model / fuelTransactionListResponse.ts
+model / fuelTransactionResponse.ts
+model / fuelTransactionResponsePagination.ts
+model / fuelType.ts
+model / fuelledVehicleHistoryListResponse.ts
+model / fuelledVehicleResponse.ts
+model / fuelledVehicleResponsePagination.ts
+model / getAvailableCreditEFSQuery.ts
+model / getBrokerListResponse.ts
+model / getCdlModalResponse.ts
+model / getCommentModalResponse.ts
+model / getCompanyAccountLabelListResponse.ts
+model / getCompanyAccountListResponse.ts
+model / getCompanyContactLabelListResponse.ts
+model / getCompanyContactListResponse.ts
+model / getDriverModalResponse.ts
+model / getEFSTransactionCommand.ts
+model / getFileManagerSubfoldersQuery.ts
+model / getFuelModalResponse.ts
+model / getFuelStopModalResponse.ts
+model / getHazardousMaterialDropdownModalQuery.ts
+model / getMapListResponse.ts
+model / getMobileFuelTransactionTrucksResponse.ts
+model / getMobileRepairShopCountResponse.ts
+model / getModalFuelStopFranchiseByIdResponse.ts
+model / getModalFuelStopFranchiseResponse.ts
+model / getMvrModalResponse.ts
+model / getOwnerListResponse.ts
+model / getRatingReviewModalResponse.ts
+model / getRouteListResponse.ts
+model / getSearchFileManagerQuery.ts
+model / getStopListResponse.ts
+model / getTestModalResponse.ts
+model / getTrailerModalResponse.ts
+model / getTransactionModalFranchiseStopResponse.ts
+model / getTransactionModalFranchiseStopResponsePagination.ts
+model / getTruckModalResponse.ts
+model / gpsType.ts
+model / hazardousMaterialResponse.ts
+model / hireApplicantCommand.ts
+model / hosResponse.ts
+model / hosRuleFeedbackResponse.ts
+model / inspectionResponse.ts
+model / insurancePolicyAddonResponse.ts
+model / insurancePolicyModalResponse.ts
+model / insurancePolicyResponse.ts
+model / insurancePolicyShortResponse.ts
+model / insuranceTypeCommand.ts
+model / insuranceTypeResponse.ts
+model / integrationConectedResponse.ts
+model / integrationConnectDisconnectCommand.ts
+model / integrationListResponse.ts
+model / integrationModalResponse.ts
+model / integrationProviderResponse.ts
+model / integrationProviderResponsePagination.ts
+model / intervalLabelResponse.ts
+model / inviteEmployerResponse.ts
+model / invitePreviousEmployerCommand.ts
+model / invoiceAgeingResponse.ts
+model / invoiceAgingProgressBarResponse.ts
+model / itemFuel.ts
+model / joinConversationCommand.ts
+model / leaveConversationCommand.ts
+model / legResponse.ts
+model / liveTrackingBaseResponse.ts
+model / liveTrackingHistoryItemResponse.ts
+model / liveTrackingHistoryMotionTimeResponse.ts
+model / liveTrackingHistoryResponse.ts
+model / liveTrackingHistoryStopItemResponse.ts
+model / liveTrackingItemLiteResponse.ts
+model / liveTrackingItemResponse.ts
+model / liveTrackingLiteResponse.ts
+model / liveTrackingLoadStopResponse.ts
+model / liveTrackingResponse.ts
+model / liveTrackingUnassignResponse.ts
+model / loadBillingAdditionalCommand.ts
+model / loadBillingAdditionalResponse.ts
+model / loadBrokerDetailsResponse.ts
+model / loadBrokerDetailsResponsePagination.ts
+model / loadBrokerInfo.ts
+model / loadDetails.ts
+model / loadDriverInfo.ts
+model / loadItemUnit.ts
+model / loadListDto.ts
+model / loadListDtoPagination.ts
+model / loadListLoadStopResponse.ts
+model / loadListResponse.ts
+model / loadMinimalListResponse.ts
+model / loadMinimalResponse.ts
+model / loadMinimalResponsePagination.ts
+model / loadMobileListResponse.ts
+model / loadMobileResponse.ts
+model / loadModalResponse.ts
+model / loadPaymentPayCommand.ts
+model / loadPaymentPayResponse.ts
+model / loadPossibleStatusesResponse.ts
+model / loadProgressResponse.ts
+model / loadRequirementsCommand.ts
+model / loadRequirementsResponse.ts
+model / loadResponse.ts
+model / loadShortResponse.ts
+model / loadStatus.ts
+model / loadStatusHistoryCommand.ts
+model / loadStatusHistoryResponse.ts
+model / loadStatusResponse.ts
+model / loadStatusType.ts
+model / loadStopCommand.ts
+model / loadStopInfo.ts
+model / loadStopItemAutocompleteDescriptionResponse.ts
+model / loadStopItemCommand.ts
+model / loadStopItemResponse.ts
+model / loadStopLoadListResponse.ts
+model / loadStopProgressBarResponse.ts
+model / loadStopResponse.ts
+model / loadStopShortResponse.ts
+model / loadStopType.ts
+model / loadTemplateListResponse.ts
+model / loadTemplateResponse.ts
+model / loadTemplateResponsePagination.ts
+model / loadType.ts
+model / locationType.ts
+model / loginMobileCommand.ts
+model / longLat.ts
+model / mapMarker.ts
+model / mapMarkerListResponse.ts
+model / mapMinimalResponse.ts
+model / mapMinimalResponsePagination.ts
+model / mapResponse.ts
+model / markerNamesResponse.ts
+model / markerNamesResponsePagination.ts
+model / medicalCertificateFeedbackResponse.ts
+model / medicalCertificateReviewResponse.ts
+model / medicalResponse.ts
+model / messageResponse.ts
+model / milesByStateResponse.ts
+model / milesByUnitListResponse.ts
+model / milesByUnitPaginatedStopsResponse.ts
+model / milesByUnitResponse.ts
+model / milesByUnitResponsePagination.ts
+model / milesCountByStateResponse.ts
+model / milesInfo.ts
+model / milesStateFilterResponse.ts
+model / milesStopDetailsResponse.ts
+model / milesStopItemResponse.ts
+model / milesStopItemResponsePagination.ts
+model / milesStopPayrollResponse.ts
+model / mobileFuelStopExpensesChartResponse.ts
+model / mobileFuelStopExpensesResponse.ts
+model / mobileFuelStopListResponse.ts
+model / mobileFuelStopResponse.ts
+model / mobileFuelStopResponsePagination.ts
+model / mobileFuelStopShortResponse.ts
+model / mobileFuelTransactionResponse.ts
+model / mobileFuelTransactionResponsePagination.ts
+model / mobileGpsDataCommand.ts
+model / mobileRepairShopDetailsResponse.ts
+model / mobileRepairShopDetailsResponsePagination.ts
+model / mobileRepairShopExpensesChartResponse.ts
+model / mobileRepairShopExpensesResponse.ts
+model / mobileRepairShopListResponse.ts
+model / mobileTransactionListResponse.ts
+model / models.ts
+model / moveMultipleToApplicantsCommand.ts
+model / moveToApplicantsCommand.ts
+model / multipleChangeBanFlagCommand.ts
+model / multipleChangeDnuFlagCommand.ts
+model / multipleChangeTrailerStatusCommand.ts
+model / multipleChangeTruckStatusCommand.ts
+model / mvrAuthFeedbackResponse.ts
+model / mvrResponse.ts
+model / notificationEntity.ts
+model / ownerDetailsResponse.ts
+model / ownerHistoryResponse.ts
+model / ownerIntervalResponse.ts
+model / ownerModalResponse.ts
+model / ownerResponse.ts
+model / ownerShortResponse.ts
+model / ownerTableResponse.ts
+model / ownerTableResponsePagination.ts
+model / ownerTrailerModalResponse.ts
+model / ownerType.ts
+model / pMStatus.ts
+model / pMTrailerDefaultDropdownResponse.ts
+model / pMTrailerListResponse.ts
+model / pMTrailerResponse.ts
+model / pMTrailerResponsePagination.ts
+model / pMTrailerShortResponse.ts
+model / pMTrailerUnitListResponse.ts
+model / pMTrailerUnitResponse.ts
+model / pMTrailerUnitResponsePagination.ts
+model / pMTruckDefaultDropdownResponse.ts
+model / pMTruckListResponse.ts
+model / pMTruckResponse.ts
+model / pMTruckResponsePagination.ts
+model / pMTruckShortResponse.ts
+model / pMTruckUnitListResponse.ts
+model / pMTruckUnitResponse.ts
+model / pMTruckUnitResponsePagination.ts
+model / parkingDispatchModalResponse.ts
+model / parkingListResponse.ts
+model / parkingResponse.ts
+model / parkingResponsePagination.ts
+model / parkingShortResponse.ts
+model / parkingSlotCommand.ts
+model / parkingSlotDispatchModalResponse.ts
+model / parkingSlotResponse.ts
+model / parkingSlotShortResponse.ts
+model / parkingSlotType.ts
+model / passwordResponse.ts
+model / patchNoteCommand.ts
+model / payPeriod.ts
+model / payrollBonusDeductionResponse.ts
+model / payrollBonusDescriptionAutocompleteResponse.ts
+model / payrollBonusMinimalResponse.ts
+model / payrollBonusModalResponse.ts
+model / payrollBonusResponse.ts
+model / payrollCommissionTotalSum.ts
+model / payrollCountItemResponse.ts
+model / payrollCountsResponse.ts
+model / payrollCreditDescriptionAutocompleteResponse.ts
+model / payrollCreditMinimalResponse.ts
+model / payrollCreditModalResponse.ts
+model / payrollCreditResponse.ts
+model / payrollCreditType.ts
+model / payrollDeadlinePeriod.ts
+model / payrollDeadlineShortResponse.ts
+model / payrollDeductionDescriptionAutocompleteResponse.ts
+model / payrollDeductionMinimalResponse.ts
+model / payrollDeductionModalResponse.ts
+model / payrollDeductionRecurringType.ts
+model / payrollDeductionResponse.ts
+model / payrollDeductionType.ts
+model / payrollDriverCommissionByIdResponse.ts
+model / payrollDriverCommissionResponse.ts
+model / payrollDriverCommissionResponsePagination.ts
+model / payrollDriverFlatRateClosedByIdResponse.ts
+model / payrollDriverMileageListResponse.ts
+model / payrollDriverMileageResponse.ts
+model / payrollFlatRateTotalSum.ts
+model / payrollFuelMinimalResponse.ts
+model / payrollListResponse.ts
+model / payrollLoadMinimalResponse.ts
+model / payrollLoadStopMinimalResponse.ts
+model / payrollMainListResponse.ts
+model / payrollMapLocation.ts
+model / payrollMilesShortResponse.ts
+model / payrollMinimalListResponse.ts
+model / payrollMinimalResponse.ts
+model / payrollMinimalResponsePagination.ts
+model / payrollOwnerClosedResponse.ts
+model / payrollOwnerResponse.ts
+model / payrollOwnerResponsePagination.ts
+model / payrollPaymentCommand.ts
+model / payrollPaymentResponse.ts
+model / payrollPaymentShortResponse.ts
+model / payrollPaymentType.ts
+model / payrollPaymentsMinimalResponse.ts
+model / payrollResponse.ts
+model / payrollResponsePagination.ts
+model / pendingLoadProgressBarResponse.ts
+model / perMileEntity.ts
+model / performanceGraphListResponse.ts
+model / performanceGraphMetric.ts
+model / performanceGraphResponse.ts
+model / performanceResponse.ts
+model / performanceTableMetric.ts
+model / performanceTableResponse.ts
+model / personalInfoFeedbackResponse.ts
+model / pickupDeliveryByStateListResponse.ts
+model / pickupDeliveryByStateResponse.ts
+model / pickupDeliveryByStateResponsePagination.ts
+model / pickupDeliveryIntervalResponse.ts
+model / poBoxEntity.ts
+model / preferredLoadType.ts
+model / previousEmployerAccidentHistoryItemCommand.ts
+model / previousEmployerDocumentsResponse.ts
+model / previousEmployerModalResponse.ts
+model / previousEmployerRequestResponse.ts
+model / problemDetails.ts
+model / pspAuthFeedbackResponse.ts
+model / ratingReviewResponse.ts
+model / ratingSetResponse.ts
+model / refreshMobileTokenCommand.ts
+model / refreshTokenCommand.ts
+model / registrationModalResponse.ts
+model / registrationResponse.ts
+model / removeApplicantFromFavouriteCommand.ts
+model / renewCdlCommand.ts
+model / reorderDispatchCommand.ts
+model / reorderDispatchLoadsCommand.ts
+model / reorderDispatchesCommand.ts
+model / repairAutocompleteDescriptionResponse.ts
+model / repairByStateListResponse.ts
+model / repairByStateResponse.ts
+model / repairByStateResponsePagination.ts
+model / repairCategoryFilterResponse.ts
+model / repairDriverResponse.ts
+model / repairIntervalResponse.ts
+model / repairItemCommand.ts
+model / repairItemResponse.ts
+model / repairListResponse.ts
+model / repairMainModuleResponse.ts
+model / repairModalResponse.ts
+model / repairResponse.ts
+model / repairResponsePagination.ts
+model / repairServiceTypeCommand.ts
+model / repairServiceTypeResponse.ts
+model / repairShopContactCommand.ts
+model / repairShopContactListResponse.ts
+model / repairShopContactResponse.ts
+model / repairShopExpensesChartResponse.ts
+model / repairShopExpensesResponse.ts
+model / repairShopIntervalResponse.ts
+model / repairShopListDto.ts
+model / repairShopListDtoPagination.ts
+model / repairShopListResponse.ts
+model / repairShopMinimalListResponse.ts
+model / repairShopMinimalResponse.ts
+model / repairShopMinimalResponsePagination.ts
+model / repairShopModalResponse.ts
+model / repairShopNewListResponse.ts
+model / repairShopOpenHoursCommand.ts
+model / repairShopOpenHoursResponse.ts
+model / repairShopPMResponse.ts
+model / repairShopResponse.ts
+model / repairShopResponsePagination.ts
+model / repairShopServiceTypeCommand.ts
+model / repairShopServiceTypeResponse.ts
+model / repairShopShortResponse.ts
+model / repairShortResponse.ts
+model / repairTrailerFilterListResponse.ts
+model / repairTrailerFilterResponse.ts
+model / repairTruckFilterListResponse.ts
+model / repairTruckFilterResponse.ts
+model / repairType.ts
+model / repairUnitType.ts
+model / repairedVehicleListResponse.ts
+model / repairedVehicleResponse.ts
+model / repairedVehicleResponsePagination.ts
+model / resendInviteCommand.ts
+model / resendSignUpCompanyOrUserCommand.ts
+model / revertDispatchStatusCommand.ts
+model / revertLoadStatusCommand.ts
+model / reviewByEntityTypeListResponse.ts
+model / reviewResponse.ts
+model / reviewResponsePagination.ts
+model / roadsideByStateListResponse.ts
+model / roadsideByStateResponse.ts
+model / roadsideByStateResponsePagination.ts
+model / roadsideInspectionListResponse.ts
+model / roadsideInspectionMinimalListResponse.ts
+model / roadsideInspectionMinimalResponse.ts
+model / roadsideInspectionMinimalResponsePagination.ts
+model / roadsideInspectionResponse.ts
+model / roadsideInspectionResponsePagination.ts
+model / roadsideInspectionSpecialCheckCommand.ts
+model / roadsideInspectionSpecialCheckResponse.ts
+model / roadsideIntervalResponse.ts
+model / routeResponse.ts
+model / routeResponsePagination.ts
+model / routingResponse.ts
+model / secure.ts
+model / selectCompanyCommand.ts
+model / selectCompanyResponse.ts
+model / serviceType.ts
+model / serviceTypeResponse.ts
+model / setNewPasswordCommand.ts
+model / setPreTripInspectionCommand.ts
+model / sevenDaysHosFeedbackResponse.ts
+model / sevenDaysHosReviewResponse.ts
+model / shipperAverageWaitingTimeChartResponse.ts
+model / shipperAverageWaitingTimeResponse.ts
+model / shipperContactCommand.ts
+model / shipperContactGroupResponse.ts
+model / shipperContactResponse.ts
+model / shipperContactShortResponse.ts
+model / shipperIntervalResponse.ts
+model / shipperListResponse.ts
+model / shipperLoadModalResponse.ts
+model / shipperLoadStopsResponse.ts
+model / shipperLoadStopsResponsePagination.ts
+model / shipperLoadsResponse.ts
+model / shipperMinimalListResponse.ts
+model / shipperMinimalResponse.ts
+model / shipperMinimalResponsePagination.ts
+model / shipperModalResponse.ts
+model / shipperResponse.ts
+model / shipperResponsePagination.ts
+model / shipperShortResponse.ts
+model / signInCommand.ts
+model / signInResponse.ts
+model / signUpCompanyCommand.ts
+model / signupUserCommand.ts
+model / specialCheck.ts
+model / sphAccidentHistoryItemResponse.ts
+model / sphAccidentHistoryResponse.ts
+model / sphDrugAndAlcoholResponse.ts
+model / sphFeedbackResponse.ts
+model / sphPreviousEmployerProspectResponse.ts
+model / splitLoadResponse.ts
+model / stateResponse.ts
+model / statusSetCompanyUserCommand.ts
+model / statusSetMultipleBrokerCommand.ts
+model / statusSetMultipleCompanyUserCommand.ts
+model / statusSetMultipleDriverCommand.ts
+model / statusSetMultipleShipperCommand.ts
+model / stopResponse.ts
+model / stopResponsePagination.ts
+model / subintervalType.ts
+model / switchDispatchCommand.ts
+model / switchDispatchesCommand.ts
+model / tableConfigResponse.ts
+model / tableType.ts
+model / tagResponse.ts
+model / terminalListResponse.ts
+model / terminalResponse.ts
+model / terminalResponsePagination.ts
+model / testResponse.ts
+model / testResult.ts
+model / testType.ts
+model / timeInterval.ts
+model / timeSpan.ts
+model / tireSizeResponse.ts
+model / titleModalResponse.ts
+model / titleResponse.ts
+model / todoListResponse.ts
+model / todoModalResponse.ts
+model / todoResponse.ts
+model / todoResponsePagination.ts
+model / todoStatus.ts
+model / todoUserResponse.ts
+model / topBrokersListResponse.ts
+model / topBrokersResponse.ts
+model / topBrokersResponsePagination.ts
+model / topDispatchersListResponse.ts
+model / topDispatchersResponse.ts
+model / topDispatchersResponsePagination.ts
+model / topDriverListResponse.ts
+model / topDriverResponse.ts
+model / topDriverResponsePagination.ts
+model / topFuelStopListResponse.ts
+model / topFuelStopResponse.ts
+model / topFuelStopResponsePagination.ts
+model / topOwnerListResponse.ts
+model / topOwnerResponse.ts
+model / topOwnerResponsePagination.ts
+model / topRepairShopListResponse.ts
+model / topRepairShopResponse.ts
+model / topRepairShopResponsePagination.ts
+model / topShipperListResponse.ts
+model / topShipperResponse.ts
+model / topShipperResponsePagination.ts
+model / topTruckListResponse.ts
+model / topTruckResponse.ts
+model / topTruckResponsePagination.ts
+model / trafficViolationFeedbackResponse.ts
+model / trafficViolationItemResponse.ts
+model / trafficViolationItemReviewResponse.ts
+model / trailerAccidentResponse.ts
+model / trailerAutocompleteModelResponse.ts
+model / trailerDispatchModalResponse.ts
+model / trailerFilterResponse.ts
+model / trailerFuelConsumptionChartResponse.ts
+model / trailerFuelConsumptionResponse.ts
+model / trailerLengthResponse.ts
+model / trailerListResponse.ts
+model / trailerMakeResponse.ts
+model / trailerMinimalListResponse.ts
+model / trailerMinimalResponse.ts
+model / trailerMinimalResponsePagination.ts
+model / trailerResponse.ts
+model / trailerShortResponse.ts
+model / trailerShortResponsePagination.ts
+model / trailerTypeFilterResponse.ts
+model / trailerTypeResponse.ts
+model / transferRegistrationCommand.ts
+model / transponderGroup.ts
+model / truckAccidentResponse.ts
+model / truckAutocompleteModelResponse.ts
+model / truckDispatchModalResponse.ts
+model / truckEngineModelResponse.ts
+model / truckExpensesChartResponse.ts
+model / truckExpensesResponse.ts
+model / truckFilterListResponse.ts
+model / truckFilterResponse.ts
+model / truckFilterResponsePagination.ts
+model / truckFuelConsumptionChartResponse.ts
+model / truckFuelConsumptionResponse.ts
+model / truckFuelTransactionResponse.ts
+model / truckGrossWeightResponse.ts
+model / truckIntervalResponse.ts
+model / truckListResponse.ts
+model / truckMakeResponse.ts
+model / truckMinimalListResponse.ts
+model / truckMinimalResponse.ts
+model / truckMinimalResponsePagination.ts
+model / truckPerformanceResponse.ts
+model / truckResponse.ts
+model / truckRevenueChartResponse.ts
+model / truckRevenueResponse.ts
+model / truckShortResponse.ts
+model / truckShortResponsePagination.ts
+model / truckTypeFilterResponse.ts
+model / truckTypeResponse.ts
+model / unitType.ts
+model / updateAccidentItemCommand.ts
+model / updateAccidentItemReviewCommand.ts
+model / updateAccidentRecordCommand.ts
+model / updateAccidentRecordReviewCommand.ts
+model / updateApplicantCdlCommand.ts
+model / updateApplicantCdlInformationReviewCommand.ts
+model / updateApplicantCdlReviewCommand.ts
+model / updateApplicantCommand.ts
+model / updateAuthorizationCommand.ts
+model / updateBankAccountCommand.ts
+model / updateBankCardCommand.ts
+model / updateBankCommand.ts
+model / updateCdlCardReviewCommand.ts
+model / updateClassOfEquipmentCommand.ts
+model / updateCommentCommand.ts
+model / updateCompanyAccountCommand.ts
+model / updateCompanyAccountLabelCommand.ts
+model / updateCompanyCommand.ts
+model / updateCompanyContactCommand.ts
+model / updateCompanyContactLabelCommand.ts
+model / updateCompanyOfficeCommand.ts
+model / updateCompanyOwnerInfoReviewCommand.ts
+model / updateCompanyPayrollCommand.ts
+model / updateCompanyUserCommand.ts
+model / updateContactEmailCommand.ts
+model / updateContactPhoneCommand.ts
+model / updateDepartmentContactCommand.ts
+model / updateDisclosureReleaseCommand.ts
+model / updateDispatchCommand.ts
+model / updateDispatchStatusCommand.ts
+model / updateDivisionCompanyCommand.ts
+model / updateDriverRightsCommand.ts
+model / updateDrugAndAlcoholCommand.ts
+model / updateDrugAndAlcoholReviewCommand.ts
+model / updateEducationCommand.ts
+model / updateEducationReviewCommand.ts
+model / updateEmergencyContactCommand.ts
+model / updateEmergencyContactReviewCommand.ts
+model / updateEmploymentHistoryCommand.ts
+model / updateEventCommand.ts
+model / updateFactoringCompanyCommand.ts
+model / updateHosCommand.ts
+model / updateHosRulesCommand.ts
+model / updateInsurancePolicyAddonCommand.ts
+model / updateLoadStatusCommand.ts
+model / updateLoadTemplateCommand.ts
+model / updateMapCommand.ts
+model / updateMedicalCertificateReviewCommand.ts
+model / updateMessageCommand.ts
+model / updateMvrAuthReviewCommand.ts
+model / updateOffDutyLocationCommand.ts
+model / updateOwnerHistoryCommand.ts
+model / updatePMTrailerDefaultCommand.ts
+model / updatePMTrailerListDefaultCommand.ts
+model / updatePMTrailerUnitListCommand.ts
+model / updatePMTruckDefaultCommand.ts
+model / updatePMTruckDefaultListCommand.ts
+model / updatePMTruckUnitListCommand.ts
+model / updateParkingCommand.ts
+model / updateParkingSlotCommand.ts
+model / updatePayrollBonusCommand.ts
+model / updatePayrollCreditCommand.ts
+model / updatePayrollDeductionCommand.ts
+model / updatePersonalInfoReviewCommand.ts
+model / updatePreviousAddressCommand.ts
+model / updatePreviousAddressReviewCommand.ts
+model / updatePreviousEmployerAccidentHistoryCommand.ts
+model / updatePreviousEmployerDrugAndAlcoholCommand.ts
+model / updatePspAuthCommand.ts
+model / updateReviewCommand.ts
+model / updateRouteCommand.ts
+model / updateSevenDaysHosCommand.ts
+model / updateSevenDaysHosReviewCommand.ts
+model / updateSphCommand.ts
+model / updateStopCommand.ts
+model / updateTableConfigCommand.ts
+model / updateTerminalCommand.ts
+model / updateTodoStatusCommand.ts
+model / updateTrafficViolationCommand.ts
+model / updateTrafficViolationItemCommand.ts
+model / updateTrafficViolationItemReviewCommand.ts
+model / updateTrafficViolationReviewCommand.ts
+model / updateTrailerPMUnitCommand.ts
+model / updateTruckPMUnitCommand.ts
+model / updateUserCommand.ts
+model / updateViolationDescriptionCommand.ts
+model / updateWorkExperienceCommand.ts
+model / updateWorkExperienceItemCommand.ts
+model / updateWorkExperienceItemReviewCommand.ts
+model / updateWorkExperienceReviewCommand.ts
+model / userAdditionalInformationResponse.ts
+model / userResponse.ts
+model / userType.ts
+model / validatePasswordCommand.ts
+model / verifyApplicantCommand.ts
+model / verifyDriverCommand.ts
+model / verifyForgotPasswordCommand.ts
+model / verifyForgotPasswordDriverCommand.ts
+model / verifyOwnerCommand.ts
+model / verifyPreviousEmployerCommand.ts
+model / verifyUserCommand.ts
+model / vinDecodeResponse.ts
+model / violationByStateListResponse.ts
+model / violationByStateResponse.ts
+model / violationByStateResponsePagination.ts
+model / violationCategoryResponse.ts
+model / violationCommand.ts
+model / violationIntervalResponse.ts
+model / violationResponse.ts
+model / voidRegistrationCommand.ts
+model / weatherDataResponse.ts
+model / weatherDaysResponse.ts
+model / wheelsType.ts
+model / workExperienceFeedbackResponse.ts
+model / workExperienceItemResponse.ts
+model / workExperienceItemReviewResponse.ts
+model / yesNoEnum.ts
 param.ts
 variables.ts

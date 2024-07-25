@@ -45,7 +45,7 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                             pendingCount: loadPagination.pendingCount,
                             activeCount: loadPagination.activeCount,
                             closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
+                            templateCount: loadPagination.pagination.count,
                         })
                     );
 

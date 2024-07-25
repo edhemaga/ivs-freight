@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { Injectable } from "@angular/core";
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 // Models
 import {
@@ -8,20 +8,22 @@ import {
     CreateConversationCommand,
     CreateResponse,
     MessageResponse,
-    UserType
-} from "appcoretruckassist";
+    UserType,
+} from 'appcoretruckassist';
 
 // Services
-import { ChatService } from "appcoretruckassist/api/chat.service";
+import { ChatService } from 'appcoretruckassist/api/chat.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UserChatService {
+    constructor(private chatService: ChatService) {}
 
-    constructor(private chatService: ChatService) { }
-
-    public getCompanyUserList(userType: UserType): Observable<CompanyUserForChatListResponse> {
+    public getCompanyUserList(
+        userType: UserType,
+        searchParam?: string
+    ): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
@@ -29,7 +31,7 @@ export class UserChatService {
             null,
             null,
             null,
-            null,
+            searchParam ?? null,
             null
         );
     }
@@ -42,9 +44,11 @@ export class UserChatService {
         return this.chatService.apiChatMessageListGet(id);
     }
 
-    public createConversation(participants: number[]): Observable<CreateResponse> {
+    public createConversation(
+        participants: number[]
+    ): Observable<CreateResponse> {
         const conversationParticipants: CreateConversationCommand = {
-            participantIds: participants
+            participantIds: participants,
         };
 
         return this.chatService.apiChatConversationPost(
@@ -52,12 +56,17 @@ export class UserChatService {
         );
     }
 
-    public sendMessage(conversationId: number, content: string): Observable<CreateResponse> {
-        const messageToSend: any = {
+    public sendMessage(
+        conversationId: number,
+        content: string,
+        attachments?: Blob[]
+    ): Observable<CreateResponse> {
+        return this.chatService.apiChatMessagePost(
+            1,
             conversationId,
-            content
-        }
-        return this.chatService.apiChatMessagePost(messageToSend);
+            content,
+            null,
+            attachments
+        );
     }
-
 }
