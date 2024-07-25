@@ -86,22 +86,31 @@ export class DispatcherService {
 
         return this.dispatchService.apiDispatchIdDelete(dispatchId).pipe(
             tap(() => {
-                /*  this.dispatcherStore.update((store) => {
+                this.dispatcherStore.update((store) => {
                     console.log('store', store);
                     return {
                         ...store,
-                        dispatchList: store.dispatchList.pagination.data.map(
-                            (dispatchData) => {
-                                return {
-                                    ...dispatchData,
-                                    dispatches: dispatchData.dispatches.filter(
-                                        (dispatch) => dispatch.id !== dispatchId
-                                    ),
-                                };
-                            }
-                        ),
+                        dispatchList: {
+                            ...store.dispatchList,
+                            pagination: {
+                                ...store.dispatchList.pagination,
+                                data: store.dispatchList.pagination.data.map(
+                                    (dispatchData) => {
+                                        return {
+                                            ...dispatchData,
+                                            dispatches:
+                                                dispatchData.dispatches.filter(
+                                                    (dispatch) =>
+                                                        dispatch.id !==
+                                                        dispatchId
+                                                ),
+                                        };
+                                    }
+                                ),
+                            },
+                        },
                     };
-                }); */
+                });
 
                 console.log('UPDATE', this.dispatcherStore);
             })
