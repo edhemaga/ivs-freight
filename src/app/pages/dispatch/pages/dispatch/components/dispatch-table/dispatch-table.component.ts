@@ -246,7 +246,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         event: TruckMinimalResponse | TrailerMinimalResponse;
         index: number;
     }): void {
-        console.log('eventParam', eventParam);
         const { type, event, index } = eventParam;
 
         if (type === DispatchTableStringEnum.TRUCK) {
