@@ -19,5 +19,16 @@ export enum DispatchTableStringEnum {
 
     PARKING = 'parking',
 
+    BOARD = 'Board',
+    BOARD_2 = 'board',
+    DISPATCH_USER_SELECT = 'dispatchUserSelect',
+    TEAM_BOARD = 'Team Board',
+    ALL_BOARDS = 'All Boards',
+    ACTIVE = 'active',
+    DISPATCH = 'Dispatch',
+    TOGGLE_LOCKED = 'toggle-locked',
+    DROPDOWN = 'dropdown',
+    LOAD_DISPATCHER = 'load-dispatcher',
+    DISPATCHER = 'dispatcher',
     OFF = 'Off',
 }

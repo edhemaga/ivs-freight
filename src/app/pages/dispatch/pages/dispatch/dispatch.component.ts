@@ -18,6 +18,13 @@ import { Titles } from '@core/decorators/titles.decorator';
 // Store
 import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
+// Enums
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+//helpers
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+
 @Titles()
 @Component({
     selector: 'app-dispatch',
@@ -28,6 +35,8 @@ import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     tableOptions: any = {};
     tableData: any[] = [];
+    public activeViewMode: string = DispatchTableStringEnum.BOARD_2;
+
     selectedTab = 'active';
     columns: any[] = [];
     dispatchBoardSmallList: Observable<any>;
@@ -38,9 +47,11 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     isBoardLocked = true;
     maxToolbarWidth: number = 0;
 
-    selectedDispatcher = localStorage.getItem('dispatchUserSelect')
-        ? JSON.parse(localStorage.getItem('dispatchUserSelect'))
-        : -1;
+    selectedDispatcher;
+
+    public user = localStorage.getItem(TableStringEnum.USER_1)
+        ? JSON.parse(localStorage.getItem(TableStringEnum.USER_1)).userId
+        : null;
 
     constructor(
         private cd: ChangeDetectorRef,
@@ -67,10 +78,10 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
 
     onToolBarAction(event: any) {
         switch (event.action) {
-            case 'select-action':
+            case TableStringEnum.SELECT_ACTION:
                 this.changeDisparcher(event.data);
                 break;
-            case 'toggle-locked':
+            case DispatchTableStringEnum.TOGGLE_LOCKED:
                 this.isBoardLocked = !this.isBoardLocked;
                 break;
         }
@@ -80,13 +91,14 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
         this.dispatcherItems = JSON.parse(JSON.stringify(result));
 
         let fullDispatchCount = 0;
-        this.dispatcherItems = this.dispatcherItems.map((item) => {
+
+        this.dispatcherItems = this.dispatcherItems.map((item, index) => {
             fullDispatchCount += parseInt(item.dispatchCount);
             if (item.teamBoard) {
                 item = {
                     ...item,
                     avatar: null,
-                    name: 'Team Board',
+                    name: DispatchTableStringEnum.TEAM_BOARD,
                 };
             } else {
                 item = {
@@ -94,6 +106,11 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
                     ...item.dispatcher,
                     name: item.dispatcher.fullName,
                     id: item.id,
+                    avatarColor: AvatarColorsHelper.getAvatarColors(index),
+                    shortName: item.dispatcher.fullName
+                        .split(' ')
+                        .map((part) => part.charAt(0).toUpperCase())
+                        .join(''),
                 };
             }
 
@@ -107,8 +124,18 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
             id: -1,
             selected: true,
             avatar: null,
-            name: 'All Boards',
+            name: DispatchTableStringEnum.ALL_BOARDS,
         });
+
+        this.selectedDispatcher = localStorage.getItem(
+            DispatchTableStringEnum.DISPATCH_USER_SELECT
+        )
+            ? JSON.parse(
+                  localStorage.getItem(
+                      DispatchTableStringEnum.DISPATCH_USER_SELECT
+                  )
+              )
+            : this.dispatcherItems[0];
     }
 
     initTableOptions(): void {
@@ -117,9 +144,21 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
                 showTruckFilter: true,
                 showTrailerFilter: true,
                 hideOpenModalButton: true,
+                showStatusFilter: true,
+                showLocationFilter: true,
                 showDispatchAdd: true,
                 hideListColumn: true,
                 showDispatchSettings: true,
+                showDropdown: true,
+                hideDataCount: true,
+                viewModeOptions: [
+                    {
+                        name: DispatchTableStringEnum.BOARD,
+                        active:
+                            this.activeViewMode ===
+                            DispatchTableStringEnum.BOARD_2,
+                    },
+                ],
             },
         };
     }
@@ -132,7 +171,9 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     getToolbarWidth() {
-        const tableContainer = document.querySelector('.table-container');
+        const tableContainer = document.querySelector(
+            TableStringEnum.TABLE_CONTAINER
+        );
 
         this.maxToolbarWidth = tableContainer.clientWidth;
         this.cd.detectChanges();
@@ -147,10 +188,12 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
             });
         });
 
-        this.resizeObserver.observe(document.querySelector('.table-container'));
+        this.resizeObserver.observe(
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
+        );
     }
 
-    changeDisparcher(dispatcher: { id: number }) {
+    changeDisparcher(dispatcher) {
         const dispatcherId = dispatcher.id;
         if (dispatcherId > -1) {
             this.dispatcherService.getDispatchBoardByDispatcherListAndUpdate(
@@ -161,63 +204,32 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
         }
 
         this.selectedDispatcher = dispatcher;
-        localStorage.setItem('dispatchUserSelect', JSON.stringify(dispatcher));
+        this.selectedDispatcher.canUnlock =
+            dispatcher.name === DispatchTableStringEnum.TEAM_BOARD ||
+            dispatcher?.userId === this.user
+                ? true
+                : false;
+        localStorage.setItem(
+            DispatchTableStringEnum.DISPATCH_USER_SELECT,
+            JSON.stringify(this.selectedDispatcher)
+        );
     }
 
     sendDispatchData() {
         this.initTableOptions();
         this.tableData = [
             {
-                title: 'Team Board',
-                field: 'active',
+                title: DispatchTableStringEnum.TEAM_BOARD,
+                field: TableStringEnum.ACTIVE,
                 length: 0,
                 data: [],
-                gridNameTitle: 'Dispatch Board',
-                type: 'dropdown',
-                template: 'load-dispatcher',
-                actionType: 'dispatcher',
+                gridNameTitle: DispatchTableStringEnum.DISPATCH,
+                type: DispatchTableStringEnum.DROPDOWN,
+                template: DispatchTableStringEnum.LOAD_DISPATCHER,
+                actionType: DispatchTableStringEnum.DISPATCHER,
                 selectedDispatcher: this.selectedDispatcher,
+                isActive: true,
                 dropdownData: this.dispatcherItems,
-                inputConfig: {
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Dispatcher',
-                    hideClear: true,
-                    isDropdown: true,
-                    placeholderInsteadOfLabel: true,
-                    dropdownImageInput: {
-                        withText: true,
-                        svg: false,
-                        image: true,
-                        url: this.selectedDispatcher?.logoName,
-                        nameInitialsInsteadUrl: !this.selectedDispatcher
-                            ?.logoName
-                            ? this.selectedDispatcher?.name
-                            : null,
-                        template: 'user',
-                    },
-                    textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-192',
-                },
-            },
-            {
-                title: 'Active Load',
-                field: 'active',
-                selected: true,
-                tableConfiguration: 'ACTIVE-DISPATCHER',
-                length: 0,
-                data: [],
-                gridNameTitle: 'Dispatch Board',
-                isActive: this.selectedTab === 'active',
-            },
-            {
-                title: 'Dispatch History',
-                field: 'inactive',
-                tableConfiguration: 'DISPATCH-HISTORY',
-                length: 0,
-                data: [],
-                isActive: this.selectedTab === 'history',
-                gridNameTitle: 'Dispatch Board',
             },
         ];
     }
