@@ -164,12 +164,21 @@
                                     "
                                 >
                                     <div
+                                        #documentPreview
                                         class="attachment-preview pointer d-flex"
+                                        [attr.data-id]="ind"
                                         [ngClass]="
                                             !isChatTypingBlurred
                                                 ? 'attachment-preview-dark'
                                                 : 'attachment-preview-light'
                                         "
+                                        (mouseenter)="
+                                            setHoveredAttachment(
+                                                attachment,
+                                                ind
+                                            )
+                                        "
+                                        (mouseleave)="clearHoveredAttachment()"
                                     >
                                         <ng-container
                                             *ngIf="
@@ -218,7 +227,12 @@
                                                 'width.px': 14,
                                                 'height.px': 14
                                             }"
-                                            [src]="ChatSvgRoutes.darkXIcon"
+                                            [src]="
+                                                handleHoveredAttachment(
+                                                    attachment,
+                                                    ind
+                                                )
+                                            "
                                             (click)="
                                                 removeAttachment(attachment)
                                             "

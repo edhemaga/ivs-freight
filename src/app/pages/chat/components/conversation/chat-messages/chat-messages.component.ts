@@ -6,7 +6,10 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  HostListener
+  HostListener,
+  Renderer2,
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -48,6 +51,7 @@ import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.m
 export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContent') messagesContent: ElementRef;
+  @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -76,6 +80,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Attachment upload
   public attachmentUploadActive: boolean = false;
   public attachments: ChatAttachmentForThumbnail[] = [];
+  public hoveredAttachment!: ChatAttachmentForThumbnail;
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
@@ -90,6 +95,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   constructor(
     // Ref
     private cdref: ChangeDetectorRef,
+
+    //Renderer
+    private renderer: Renderer2,
 
     //Router
     private activatedRoute: ActivatedRoute,
@@ -188,6 +196,47 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.attachmentUploadActive = false;
 
     this.enableChatInput();
+  }
+
+  public setHoveredAttachment(attachment: ChatAttachmentForThumbnail): void {
+    this.hoveredAttachment = attachment;
+  }
+
+  public clearHoveredAttachment(): void {
+    this.documentPreview.forEach(
+      (div: ElementRef) =>
+        //TODO change class
+        this.renderer.removeClass(div.nativeElement, 'my-class')
+    );
+
+    this.hoveredAttachment = null;
+  }
+
+  public handleHoveredAttachment(attachment: ChatAttachmentForThumbnail, index: number): string {
+
+    const isSelectedAttachment: boolean = attachment === this.hoveredAttachment;
+
+    const element = this.documentPreview.find(
+      (div: ElementRef) =>
+        div.nativeElement.getAttribute('data-id') == String(index)
+    );
+    if (element && isSelectedAttachment) {
+      //TODO change class
+      this.renderer.addClass(element.nativeElement, 'my-class');
+    }
+
+    if (!this.isChatTypingBlurred && !isSelectedAttachment) return ChatSvgRoutes.darkXIcon;
+    if (!this.isChatTypingBlurred && isSelectedAttachment) return ChatSvgRoutes.darkFocusedXIcon;
+
+    if (this.isChatTypingBlurred && !isSelectedAttachment) return ChatSvgRoutes.lightXIcon;
+    if (this.isChatTypingBlurred && isSelectedAttachment) return ChatSvgRoutes.lightFocusedXIcon;
+
+    if (this.isChatTypingBlurred) {
+      return ChatSvgRoutes.darkXIcon;
+    } else {
+      return ChatSvgRoutes.lightXIcon;
+    }
+
   }
 
   public removeAttachment(attachment: ChatAttachmentForThumbnail): void {
