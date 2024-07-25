@@ -3,34 +3,42 @@ import { Resolve } from '@angular/router';
 
 import { forkJoin, Observable, map } from 'rxjs';
 
-// Services
+// services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+
+// models
+import {
+    DispatchBoardListResponse,
+    DispatchBoardResponse,
+    DispatchModalResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DispatcherResolver implements Resolve<any> {
-    constructor(
-        // Services
-        private dispatcherService: DispatcherService
-    ) {}
-    resolve(): Observable<any> {
+    constructor(private dispatcherService: DispatcherService) {}
+    resolve(): Observable<
+        [
+            DispatchModalResponse,
+            DispatchBoardListResponse | DispatchBoardResponse
+        ]
+    > {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
             ? JSON.parse(localStorage.getItem('dispatchUserSelect')).id
             : -1;
 
         const dispatchList =
-            dispatcherId == -1
+            dispatcherId === -1
                 ? this.dispatcherService.getDispatchboardList()
                 : this.dispatcherService.getDispatchBoardByDispatcherList(
                       dispatcherId
                   );
+
         const modalList = this.dispatcherService.getDispatcherList();
 
-        let join = forkJoin([modalList, dispatchList]).pipe(
-            map((list: any) => {
-                console.log('list', list);
-
+        return forkJoin([modalList, dispatchList]).pipe(
+            map((list) => {
                 list[1] =
                     dispatcherId === -1
                         ? list[1]
@@ -43,7 +51,5 @@ export class DispatcherResolver implements Resolve<any> {
                 return list;
             })
         );
-
-        return join;
     }
 }
