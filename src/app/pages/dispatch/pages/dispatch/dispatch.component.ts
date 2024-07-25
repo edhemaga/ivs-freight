@@ -2,7 +2,6 @@ import {
     Component,
     OnInit,
     AfterViewInit,
-    Input,
     ChangeDetectorRef,
     ViewEncapsulation,
     OnChanges,
@@ -34,7 +33,6 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
     encapsulation: ViewEncapsulation.None,
 })
 export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
-    @Input() test: any = 'test';
     tableOptions: any = {};
     tableData: any[] = [];
     public activeViewMode: string = DispatchTableStringEnum.BOARD_2;
@@ -67,10 +65,6 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     ) {}
 
     ngOnInit(): void {
-        setTimeout(() => {
-            this.test = '333';
-            this.cd.detectChanges();
-        }, 5000);
         this.dispatcherQuery.modalBoardListData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((result) => {
