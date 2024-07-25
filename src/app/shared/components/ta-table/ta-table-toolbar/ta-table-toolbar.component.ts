@@ -104,7 +104,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedTab: string;
     @Input() activeViewMode: string;
     @Input() columns: any[];
-    @Input() set _selectedDispatcher(value) {
+    @Input() set selectedDispatcherData(value) {
         this.selectedDispatcher = value;
     }
     @Input() dispathcboardTableLocked: boolean;

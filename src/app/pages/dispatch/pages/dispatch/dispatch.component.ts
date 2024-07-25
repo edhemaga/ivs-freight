@@ -19,7 +19,7 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
 // Enums
-import { DispatchTableStringEnum } from './components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 //helpers

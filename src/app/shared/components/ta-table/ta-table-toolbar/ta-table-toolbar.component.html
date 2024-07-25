@@ -643,13 +643,12 @@
                                 <div
                                     class="dispatch-dropdown-no-img ta-font-extra-bold d-flex justify-content-center align-items-center"
                                     [ngStyle]="{
-                                        'background-color': option.avatarColor
-                                            ?.background
-                                            ? option.avatarColor.background
-                                            : 'unset',
-                                        color: option.avatarColor?.color
-                                            ? option.avatarColor.color
-                                            : 'unset'
+                                        'background-color':
+                                            option.avatarColor?.background ??
+                                            unset,
+                                        color:
+                                            option.avatarColor?.background ??
+                                            unset
                                     }"
                                 >
                                     {{ option.shortName }}
