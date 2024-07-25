@@ -163,6 +163,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.messageToSend = "";
         this.isMessageSendable = true;
+        this.attachments = [];
       });
 
   }
