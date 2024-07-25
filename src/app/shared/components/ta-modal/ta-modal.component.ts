@@ -51,6 +51,9 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
+// Enums
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+
 @Component({
     selector: 'app-ta-modal',
     templateUrl: './ta-modal.component.html',
@@ -449,6 +452,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'change-status': {
                 this.confirmationAction.emit(this.confirmationData);
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW: {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD: {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES: {
+                this.action.emit({ action: action, bool: false });
                 break;
             }
             default: {

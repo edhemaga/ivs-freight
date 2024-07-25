@@ -634,4 +634,8 @@ export class LoadService {
     public getDispatchModalData(): Observable<AssignLoadModalResponse> {
         return this.loadService.apiLoadModalAssignGet();
     }
+
+    public apiLoadListAssignedIdGet(dispatchId: number) {
+        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+    }
 }

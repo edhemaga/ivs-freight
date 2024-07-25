@@ -3,8 +3,9 @@
     [customClass]="loadModalSize"
     [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
     [isAssignLoadModal]="true"
-    [isModalValid]="true"
+    [isModalValid]="isModalValid"
     (additionalPartVisibility)="additionalPartVisibility($event)"
+    (action)="onModalAction($event)"
 >
     <div origin>
         <div class="dispatch-load">

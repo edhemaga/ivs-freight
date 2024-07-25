@@ -71,27 +71,15 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     }
 
     public onLoadIconClick(): void {
-        this.loadService
-            .apiLoadListAssignedIdGet(this.dispatchId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                // for(let i = 0; i < 15; i++) {
-                //     response.assignedLoads.push(response.assignedLoads[0]);
-                //     // response.unassignedLoads.push(response.unassignedLoads[0]);
-                // }
-                this.modalService.openModal(
-                    AssignDispatchLoadModalComponent,
-                    {
-                        size: TableStringEnum.SMALL,
-                    },
-                    {
-                        data: response,
-                        truck: this.truck,
-                        driver: this.driver,
-                        trailer: this.trailer,
-                    }
-                );
-            });
+        this.modalService.openModal(
+            AssignDispatchLoadModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                dispatchId: this.dispatchId
+            }
+        ); 
     }
 
     ngOnDestroy(): void {

@@ -5,6 +5,7 @@ import {
     CdkDragDrop,
     moveItemInArray,
 } from '@angular/cdk/drag-drop';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // RXJS
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -60,10 +61,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @Input() editData: {
-        data: AssignedLoadListResponse;
-        driver: DriverDispatchResponse;
-        truck: TruckMinimalResponse;
-        trailer: TrailerMinimalResponse;
+        dispatchId: number;
     };
 
     // Form
@@ -95,13 +93,32 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private loadService: LoadService,
         private modalService: ModalService,
-        private dispatchService: DispatcherService
+        private dispatchService: DispatcherService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
+        this.getInitalAssignedLoads();
         this.getModalData();
         this.createForm();
         this.drawAssignedLoadRoutes();
+    }
+
+    private getInitalAssignedLoads() {
+        if(this.editData.dispatchId) {
+            this.getLoadsForDispatchId(this.editData.dispatchId);
+        }
+        this.isAssignLoadCardOpen = false;
+    }
+
+    private getLoadsForDispatchId(dispatchId: number) {
+        this.loadService
+            .apiLoadListAssignedIdGet(dispatchId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: AssignedLoadListResponse) => {
+                this.assignedLoads = res.assignedLoads;
+                this.isAssignLoadCardOpen = !!this.assignedLoads.length;
+            });
     }
 
     private getModalData(): void {
@@ -111,13 +128,8 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     this.unassignedLoads = res.unassignedLoads;
-                    this.mapDispatchers(res.dispatches);
-                    if (this.editData?.data) {
-                        this.assignedLoads = this.editData.data.assignedLoads;
-                    }
-
-                    this.isAssignLoadCardOpen = !!this.assignedLoads.length;
                     this.isUnAssignLoadCardOpen = !!this.unassignedLoads.length;
+                    this.mapDispatchers(res.dispatches); 
                 },
             });
     }
@@ -252,6 +264,8 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
                 customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
             },
         };
+
+        this.getLoadsForDispatchId(this.selectedDispatches.id);
     }
 
     public trackByIdentity(id: number): number {
@@ -395,7 +409,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         const loads = this.assignedLoads.map((load, index) => {
             return {
                 id: load.id,
-                order: index,
+                order: index + 1,
             };
         });
         return {
@@ -404,13 +418,42 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public saveLoads() {
+    public saveLoads(closeModal: boolean) {
         this.dispatchService
             .saveDispatchLoads(this.mapLoadsForRequest())
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {},
+                next: (res) => {
+                    if (closeModal) this.ngbActiveModal.close();
+                },
             });
+    }
+
+    public onModalAction(data: { action: string; bool: boolean }): void {
+        switch (data.action) {
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW:
+                this.saveLoads(false);
+                break;
+            case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD:
+                this.ngbActiveModal.close();
+                this.createNewLoad();
+                break;
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES:
+                this.saveLoads(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private createNewLoad(): void {
+        this.modalService.openModal(LoadModalComponent, {
+            size: TableStringEnum.LOAD,
+        });
+    }
+
+    public get isModalValid(): boolean {
+        return !!this.selectedDispatches;
     }
 
     public ngOnDestroy(): void {
