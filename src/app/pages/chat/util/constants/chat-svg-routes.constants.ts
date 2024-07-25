@@ -11,4 +11,9 @@ export class ChatSvgRoutes {
     static documentIcon: string = 'assets/svg/chat/document-icon.svg';
     static sendMessageIcon: string = 'assets/svg/chat/send-message-icon.svg';
     static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
+    static darkXIcon: string = 'assets/svg/chat/x-icon/dark-x-icon.svg';
+    static darkFocusedXIcon: string = 'assets/svg/chat/x-icon/dark-focused-x-icon.svg';
+    static lightXIcon: string = 'assets/svg/chat/x-icon/light-x-icon.svg';
+    static lightFocusedXIcon: string = 'assets/svg/chat/x-icon/light-focused-x-icon.svg';
+
 }
