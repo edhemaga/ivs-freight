@@ -27,6 +27,7 @@ export enum DispatchTableStringEnum {
     ACTIVE = 'active',
     DISPATCH = 'Dispatch',
     TOGGLE_LOCKED = 'toggle-locked',
+    OPEN_DISPATCH_LOAD_MODAL = 'open-dispatch-load-modal',
     DROPDOWN = 'dropdown',
     LOAD_DISPATCHER = 'load-dispatcher',
     DISPATCHER = 'dispatcher',

@@ -11,6 +11,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -24,6 +25,9 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 //helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+
+// Components
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 @Titles()
 @Component({
@@ -61,7 +65,8 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
 
         // Services
         public dispatcherService: DispatcherService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {
@@ -84,7 +89,25 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
             case DispatchTableStringEnum.TOGGLE_LOCKED:
                 this.isBoardLocked = !this.isBoardLocked;
                 break;
+            case DispatchTableStringEnum.OPEN_DISPATCH_LOAD_MODAL:
+                this.openAssignLoadModal();
+                break;
         }
+    }
+
+    public openAssignLoadModal(): void {
+        this.modalService.openModal(
+            AssignDispatchLoadModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                data: null,
+                truck: null,
+                driver: null,
+                trailer: null,
+            }
+        );
     }
 
     getDispatcherData(result?) {

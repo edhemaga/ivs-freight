@@ -52,7 +52,6 @@ import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -61,7 +60,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TableToolbarConstants } from './utils/constants/table-toolbar.constants';
 
 // models
-import { LoadService, TableType } from 'appcoretruckassist';
+import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 // Pipes
@@ -142,9 +141,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         private tableService: TruckassistTableService,
         private modalService: ModalService,
         private confirmationResetService: ConfirmationResetService,
-        private changeDetectorRef: ChangeDetectorRef,
-
-        private loadService: LoadService
+        private changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -830,21 +827,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.getActiveTableData();
-    }
-
-    public openAssignLoadModal(): void {
-        this.modalService.openModal(
-            AssignDispatchLoadModalComponent,
-            {
-                size: TableStringEnum.SMALL,
-            },
-            {
-                data: null,
-                truck: null,
-                driver: null,
-                trailer: null,
-            }
-        );
     }
 
     // --------------------------------ON DESTROY---------------------------------

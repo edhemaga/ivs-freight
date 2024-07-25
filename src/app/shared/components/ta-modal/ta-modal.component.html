@@ -236,6 +236,7 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
+                            isAssignLoadModal ||
                             mapRouteModal,
                         'justify-content-end': !(
                             editData?.type?.includes('edit') ||
@@ -251,7 +252,8 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
-                            mapRouteModal
+                            mapRouteModal ||
+                            isAssignLoadModal
                         "
                     >
                         <div
@@ -266,7 +268,8 @@
                                     !loadModalTemplate &&
                                     !mapSettingsModal &&
                                     !mapRouteModal &&
-                                    !isFinishOrder
+                                    !isFinishOrder &&
+                                    !isAssignLoadModal
                                 "
                             >
                                 <button
@@ -587,7 +590,8 @@
                                 !mapSettingsModal &&
                                 !mapRouteModal &&
                                 !isStepper &&
-                                !isCardsModal
+                                !isCardsModal &&
+                                !isAssignLoadModal
                             "
                         >
                             <button
@@ -636,7 +640,7 @@
                         <ng-container *ngIf="isAssignLoadModal">
                             <button
                                 (click)="onAction('assign-save-assign')"
-                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
                             >
