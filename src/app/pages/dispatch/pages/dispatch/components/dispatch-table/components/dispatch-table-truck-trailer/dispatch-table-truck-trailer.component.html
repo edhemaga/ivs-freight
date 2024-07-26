@@ -5,8 +5,8 @@
 >
     <ng-container
         *ngIf="
-            (type === 'truck' && openedTruckDropdown !== rowIndex) ||
-                (type === 'trailer' && openedTrailerDropdown !== rowIndex);
+            (type === 'truck' && truckIndex !== rowIndex) ||
+                (type === 'trailer' && trailerIndex !== rowIndex);
             else dropdown
         "
     >
@@ -174,31 +174,9 @@
         <app-ta-input-dropdown
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
-            [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Unit No.',
-                isDropdown: true,
-                placeholderInsteadOfLabel: true,
-                hideDropdownArrow: true,
-                autoFocus: true,
-                blackInput: true,
-                hideRequiredCheck: true,
-                hideDangerMark: true,
-                hideErrorMessage: true,
-                mergeDropdownBodyWithInput: true,
-                dropdownWidthClass:
-                    type === 'truck'
-                        ? hasAdditionalFieldTruck
-                            ? 'w-col-158'
-                            : 'w-col-118'
-                        : hasAdditionalFieldTrailer
-                        ? 'w-col-158'
-                        : 'w-col-130'
-            }"
-            [options]="type === 'truck' ? truckList : trailerList"
+            [inputConfig]="truckTrailerInputConfig"
             [canOpenModal]="true"
-            [activeItem]="null"
+            [options]="type === 'truck' ? truckList : trailerList"
             (selectedItem)="
                 type === 'truck' ? addTruck($event) : addTrailer($event)
             "

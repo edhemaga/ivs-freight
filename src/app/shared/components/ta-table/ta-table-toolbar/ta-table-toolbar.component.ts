@@ -104,12 +104,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedTab: string;
     @Input() activeViewMode: string;
     @Input() columns: any[];
-    @Input() selectedDispatcher: any;
+    @Input() set selectedDispatcherData(value) {
+        this.selectedDispatcher = value;
+    }
     @Input() dispathcboardTableLocked: boolean;
 
     public listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
+    public dispatchPopoup: string | TemplateRef<any>;
+    public dispatchPopoverOpen: boolean = false;
     public optionsPopupOpen: boolean = false;
+    public selectedDispatcher: any;
+
     public tableLocked: boolean = true;
     public optionsPopupContent: OptionsPopupContent[] =
         TableToolbarConstants.optionsPopupContent;
@@ -584,6 +590,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.optionsPopupOpen = optionsPopup.isOpen();
+    }
+
+    public showDispatchList(optionsPopup): void {
+        this.dispatchPopoup = optionsPopup;
+
+        if (optionsPopup.isOpen()) {
+            optionsPopup.close();
+        } else {
+            optionsPopup.open({});
+        }
+
+        this.dispatchPopoverOpen = !this.dispatchPopoverOpen;
     }
 
     //  On Toolbar Option Actions

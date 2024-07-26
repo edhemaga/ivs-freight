@@ -1,12 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // svg routes
@@ -19,22 +11,40 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 // services
 import { ModalService } from '@shared/services/modal.service';
 
+// enums
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+
+// config
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+
+// models
+import {
+    TrailerDispatchModalResponse,
+    TrailerMinimalResponse,
+    TrailerResponse,
+    TruckDispatchModalResponse,
+    TruckMinimalResponse,
+    TruckResponse,
+} from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { OpenModal } from '@shared/models/open-modal.model';
+
 @Component({
     selector: 'app-dispatch-table-truck-trailer',
     templateUrl: './dispatch-table-truck-trailer.component.html',
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
-export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
+export class DispatchTableTruckTrailerComponent {
     @Input() type: string;
 
     @Input() hasAdditionalFieldTruck: boolean = false;
     @Input() hasAdditionalFieldTrailer: boolean = false;
 
-    @Input() truck: any;
-    @Input() trailer: any;
+    @Input() truck: TruckResponse;
+    @Input() trailer: TrailerResponse;
 
-    @Input() truckList: any[];
-    @Input() trailerList: any[];
+    @Input() truckList: TruckDispatchModalResponse[];
+    @Input() trailerList: TrailerDispatchModalResponse[];
 
     @Input() rowIndex: number;
 
@@ -42,111 +52,113 @@ export class DispatchTableTruckTrailerComponent implements OnInit, OnChanges {
     @Input() isDrag: boolean;
     @Input() isActiveLoad: boolean;
 
-    @Output() addTruckTrailerEmitter = new EventEmitter<any>();
+    @Output() addTruckTrailerEmitter = new EventEmitter<{
+        type: string;
+        event: TruckMinimalResponse | TrailerMinimalResponse;
+        index: number;
+    }>();
     @Output() removeTruckTrailerEmitter = new EventEmitter<{
         type: string;
         index: number;
     }>();
 
-    truckTrailerFormControl: UntypedFormControl = new UntypedFormControl();
-
-    openedTruckDropdown: number = -1;
-    openedTrailerDropdown: number = -1;
+    public truckTrailerFormControl: UntypedFormControl =
+        new UntypedFormControl();
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     public hasNoResultsTruck: boolean = false;
     public hasNoResultsTrailer: boolean = false;
 
+    public truckIndex: number = -1;
+    public trailerIndex: number = -1;
+
     constructor(private modalService: ModalService) {}
 
-    ngOnInit(): void {
-        /*   console.log('trailerList', this.trailerList);
-        console.log('trailer', this.trailer); */
+    get truckTrailerInputConfig(): ITaInput {
+        return DispatchConfig.getTruckTrailerInputConfig({
+            type: this.type,
+            hasAdditionalFieldTruck: this.hasAdditionalFieldTruck,
+            hasAdditionalFieldTrailer: this.hasAdditionalFieldTrailer,
+            truck: this.truck,
+            trailer: this.trailer,
+            isBoardLocked: this.isBoardLocked,
+        });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {}
-
-    showTruckDropdown(ind: number) {
-        this.openedTruckDropdown = ind;
-    }
-
-    showTrailerDropdown(ind: number) {
-        this.openedTrailerDropdown = ind;
-    }
-
-    addTruck(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal',
-                        value: null,
-                    },
-                    component: TruckModalComponent,
-                    size: 'small',
-                });
-            } else {
-                this.addTruckTrailerEmitter.emit({
-                    event: e,
-                    truckDropdownIndex: this.openedTruckDropdown,
-                });
-
-                /*  if (this.openedTruckDropdown == -2) this.savedTruckId = e;
-
-                else this.dData.dispatches[this.openedTruckDropdown].truck = e;
-                this.showAddAddressField = this.openedTruckDropdown; */
-            }
-        }
-
-        this.openedTruckDropdown = -1;
-    }
-
-    addTrailer(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal',
-                        value: null,
-                    },
-                    component: TrailerModalComponent,
-                    size: 'small',
-                });
-            } else {
-                /*  this.updateOrAddDispatchBoardAndSend(
-                    'trailerId',
-                    e.id,
-                    this.openedTrailerDropdown
-                ); */
-            }
-        }
-
-        this.openedTrailerDropdown = -1;
-    }
-
-    removeTruck(index) {
-        if (this.isActiveLoad) return;
-
-        this.removeTruckTrailerEmitter.emit({ type: 'truckId', index });
-        /*  this.updateOrAddDispatchBoardAndSend('truckId', null, indx); */
-    }
-
-    removeTrailer(index) {
-        if (this.isActiveLoad) return;
-
-        this.removeTruckTrailerEmitter.emit({ type: 'trailerId', index });
-
-        /*  this.updateOrAddDispatchBoardAndSend('trailerId', null, indx); */
+    public handleTruckTrailerIndex(type: string, index: number): void {
+        type === DispatchTableStringEnum.TRUCK
+            ? (this.truckIndex = index)
+            : (this.trailerIndex = index);
     }
 
     public handleAddClick(isClicked: boolean): void {
-        if (isClicked) {
-            this.type === 'truck'
-                ? this.showTruckDropdown(this.rowIndex)
-                : this.showTrailerDropdown(this.rowIndex);
+        if (isClicked) this.handleTruckTrailerIndex(this.type, this.rowIndex);
+    }
+
+    public addTruck<T extends OpenModal>(event: T): void {
+        if (event) {
+            if (event.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: DispatchTableStringEnum.OPEN,
+                    payload: {
+                        key: DispatchTableStringEnum.TRUCK_MODAL,
+                        value: null,
+                    },
+                    component: TruckModalComponent,
+                    size: DispatchTableStringEnum.SMALL,
+                });
+            } else {
+                this.addTruckTrailerEmitter.emit({
+                    type: DispatchTableStringEnum.TRUCK,
+                    event: event as TruckMinimalResponse,
+                    index: this.truckIndex,
+                });
+            }
         }
+
+        this.truckIndex = -1;
+    }
+
+    public addTrailer<T extends OpenModal>(event: T): void {
+        if (event) {
+            if (event.canOpenModal) {
+                this.modalService.setProjectionModal({
+                    action: DispatchTableStringEnum.OPEN,
+                    payload: {
+                        key: DispatchTableStringEnum.TRAILER_MODAL,
+                        value: null,
+                    },
+                    component: TrailerModalComponent,
+                    size: DispatchTableStringEnum.SMALL,
+                });
+            } else {
+                this.addTruckTrailerEmitter.emit({
+                    type: DispatchTableStringEnum.TRAILER,
+                    event: event as TrailerMinimalResponse,
+                    index: this.trailerIndex,
+                });
+            }
+        }
+
+        this.trailerIndex = -1;
+    }
+
+    public removeTruck(index: number): void {
+        if (this.isActiveLoad) return;
+
+        this.removeTruckTrailerEmitter.emit({
+            type: DispatchTableStringEnum.TRUCK_ID,
+            index,
+        });
+    }
+
+    public removeTrailer(index: number): void {
+        if (this.isActiveLoad) return;
+
+        this.removeTruckTrailerEmitter.emit({
+            type: DispatchTableStringEnum.TRAILER_ID,
+            index,
+        });
     }
 }
