@@ -263,9 +263,9 @@ export class NavigationDataConstants {
             name: 'Chat',
             image: 'ic_chat.svg',
             route: 'chat',
-            isRouteActive: true,
+            isRouteActive: false,
             messages: 5,
-            construction: false,
+            construction: true,
         },
         {
             id: 11,
