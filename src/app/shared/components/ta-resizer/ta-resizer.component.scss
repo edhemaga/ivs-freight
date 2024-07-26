@@ -2,7 +2,6 @@
 
 .ta-resizer {
     &-container {
-
         &-load-list {
             height: 460px;
         }
@@ -21,6 +20,8 @@
 
             path {
                 fill: $bw-9;
+                transition-property: fill;
+                transition-duration: 0.3s;
             }
         }
     }
@@ -38,6 +39,26 @@
             top: calc(50% + 3px);
             height: 1px;
             background-color: $bw-9;
+            transition-property: background-color;
+            transition-duration: 0.3s;
+        }
+
+        &:hover {
+            svg path {
+                fill: $muted;
+            }
+            &:before {
+                background-color: $bw-9;
+            }
+        }
+
+        &-focus {
+            svg path {
+                fill: $ta-black;
+            }
+            &:before {
+                background-color: $ta-light-grey-2;
+            }
         }
     }
 }
