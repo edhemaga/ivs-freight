@@ -24,11 +24,11 @@ import {
 } from 'rxjs';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
-import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/constants/chat-svg-routes.constants';
+import { ChatPngRoutes } from '@pages/chat/utils/constants/chat-png-routes.constants';
 
 // Config
-import { ChatInput } from '@pages/chat/util/config/chat-input.config';
+import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';

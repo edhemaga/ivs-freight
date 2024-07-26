@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Routes
-import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
+import { ChatPngRoutes } from '@pages/chat/utils/constants/chat-png-routes.constants';
 
 @Component({
   selector: 'app-messages-not-selected',

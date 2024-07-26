@@ -43,7 +43,7 @@ import { FileExtensionIllustrationPipe } from "@shared/pipes/file-extension-ilus
 import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
 
 // Directives
-import { DragAndDropDirective } from "./util/directives/drag-and-drop.directive";
+import { DragAndDropDirective } from "./utils/directives/drag-and-drop.directive";
 
 @NgModule({
     declarations: [

@@ -8,10 +8,10 @@ import {
 import { Output } from '@angular/core';
 
 // Assets route
-import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
+import { ChatPngRoutes } from '@pages/chat/utils/constants/chat-png-routes.constants';
 
 // Helpers
-import { checkIfAttachmentExistsAndHandlePreview } from '@pages/chat/util/helpers/file-upload-handler.helper';
+import { checkIfAttachmentExistsAndHandlePreview } from '@pages/chat/utils/helpers/file-upload-handler.helper';
 
 //Models
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';

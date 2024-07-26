@@ -18,10 +18,10 @@ import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/com
 import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
 
 // Constants
-import { ChatToolbarDataConstants } from '@pages/chat/util/constants/chat-toolbar-data.constants';
+import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/constants/chat-svg-routes.constants';
 
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";

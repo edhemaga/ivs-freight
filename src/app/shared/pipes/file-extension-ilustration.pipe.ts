@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Assets
-import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.constants';
+import { ChatPngRoutes } from '@pages/chat/utils/constants/chat-png-routes.constants';
 
 @Pipe({
     name: 'fileExtensionIllustration',

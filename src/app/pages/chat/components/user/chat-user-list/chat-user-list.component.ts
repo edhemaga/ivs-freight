@@ -19,13 +19,13 @@ import {
 } from '@angular/forms';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/constants/chat-svg-routes.constants';
 
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
 // Config
-import { ChatInput } from '@pages/chat/util/config/chat-input.config';
+import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
