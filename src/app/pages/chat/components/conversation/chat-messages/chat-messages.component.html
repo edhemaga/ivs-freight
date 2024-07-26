@@ -184,7 +184,9 @@
                                             *ngIf="
                                                 (attachment.name
                                                     | fileExtension) ===
-                                                    ('jpg' || 'jpeg' || 'png');
+                                                    'png' ||
+                                                    'jpeg' ||
+                                                    'jpg';
                                                 else documentFiles
                                             "
                                         >

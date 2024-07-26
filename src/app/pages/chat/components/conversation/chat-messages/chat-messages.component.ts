@@ -205,8 +205,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public clearHoveredAttachment(): void {
     this.documentPreview.forEach(
       (div: ElementRef) =>
-        //TODO change class
-        this.renderer.removeClass(div.nativeElement, 'my-class')
+      //TODO change class
+      {
+        this.renderer.removeClass(div.nativeElement, 'hovered-overlay-light'),
+          this.renderer.removeClass(div.nativeElement, 'hovered-overlay-dark');
+      }
     );
 
     this.hoveredAttachment = null;
@@ -221,21 +224,30 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         div.nativeElement.getAttribute('data-id') == String(index)
     );
     if (element && isSelectedAttachment) {
-      //TODO change class
-      this.renderer.addClass(element.nativeElement, 'my-class');
+      const classToAdd: string = this.isChatTypingBlurred ?
+        "hovered-overlay-light" :
+        "hovered-overlay-dark";
+      this.renderer.addClass(element.nativeElement, classToAdd);
     }
 
-    if (!this.isChatTypingBlurred && !isSelectedAttachment) return ChatSvgRoutes.darkXIcon;
-    if (!this.isChatTypingBlurred && isSelectedAttachment) return ChatSvgRoutes.darkFocusedXIcon;
+    let icon: string;
 
-    if (this.isChatTypingBlurred && !isSelectedAttachment) return ChatSvgRoutes.lightXIcon;
-    if (this.isChatTypingBlurred && isSelectedAttachment) return ChatSvgRoutes.lightFocusedXIcon;
-
-    if (this.isChatTypingBlurred) {
-      return ChatSvgRoutes.darkXIcon;
-    } else {
-      return ChatSvgRoutes.lightXIcon;
+    switch (true) {
+      case this.isChatTypingBlurred && !isSelectedAttachment:
+        icon = ChatSvgRoutes.darkXIcon;
+        break;
+      case this.isChatTypingBlurred && isSelectedAttachment:
+        icon = ChatSvgRoutes.darkFocusedXIcon;
+        break;
+      case !this.isChatTypingBlurred && !isSelectedAttachment:
+        icon = ChatSvgRoutes.lightXIcon;
+        break;
+      case !this.isChatTypingBlurred && isSelectedAttachment:
+        icon = ChatSvgRoutes.lightFocusedXIcon;
+        break;
     }
+
+    return icon;
 
   }
 

@@ -167,6 +167,13 @@
                             cursor: pointer;
                         }
                     }
+                    .hovered-overlay-dark {
+                        background-color: lighten($bw5, 20%) !important;
+                    }
+
+                    .hovered-overlay-light {
+                        background-color: $ta-black !important;
+                    }
                 }
             }
         }
@@ -202,7 +209,3 @@
 }
 
 //TODO change class
-
-.my-class {
-    background-color: red !important;
-}

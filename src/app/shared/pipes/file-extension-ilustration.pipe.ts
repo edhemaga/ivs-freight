@@ -8,12 +8,14 @@ import { ChatPngRoutes } from '@pages/chat/util/constants/chat-png-routes.consta
     standalone: true
 })
 export class FileExtensionIllustrationPipe implements PipeTransform {
-    transform(filName: string): string {
-        if (!filName) {
+    transform(fileName: string): string {
+        if (!fileName) {
             return null;
         }
 
-        const ext: string[] = filName.split('.');
+        const ext: string[] = fileName.split('.');
+
+        // TODO maybe add handling for images, convert to string?
 
         switch (ext[ext.length - 1]) {
 
