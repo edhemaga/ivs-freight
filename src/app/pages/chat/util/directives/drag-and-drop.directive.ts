@@ -12,8 +12,7 @@ import {
 export class DragAndDropDirective {
     @HostBinding('class.fileover') fileOver: boolean;
 
-    //TODO change type
-    @Output() fileDropped = new EventEmitter<any>();
+    @Output() fileDropped = new EventEmitter<FileList>();
 
     @HostListener('dragOver', ['$event']) onDragOver(event): void {
         event.preventDefault();
