@@ -16,7 +16,7 @@
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
-                    (selectedItem)="selectNewDispatcher($event)" 
+                    (selectedItem)="selectNewDispatcher($event)"
                 ></app-ta-input-dropdown>
             </form>
             <!-- Table header -->
@@ -74,8 +74,12 @@
                         [isCardOpen]="isAssignLoadCardOpen"
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
-                        [hasArrow]="true"
-                        [showReorderButton]="showReorderButton"
+                        [hasArrow]="showReorderButton"
+                        [showReorderButton]="
+                            isAssignLoadCardOpen && assignedLoads.length > 1
+                                ? showReorderButton
+                                : false
+                        "
                         [showFinishReordering]="showFinishReordering"
                         [hasScrollBody]="true"
                         (onOpenCard)="isAssignLoadCardOpen = $event"
@@ -218,10 +222,16 @@
                         [tooltipBackground]="'#424242'"
                         ngbTooltip
                         position="bottom"
-                        class="modal-header-edit-button"
+                        class="modal-header-edit-button d-flex align-items-center justify-content-center"
                         (click)="editLoad()"
                     >
-                        <svg-icon [src]="svgIcons.penIcon"></svg-icon>
+                        <svg-icon
+                            [src]="svgIcons.penIcon"
+                            [svgStyle]="{
+                                'width.px': 16,
+                                'height.px': 16
+                            }"
+                        ></svg-icon>
                     </div>
 
                     <div
@@ -277,6 +287,9 @@
                     [isSmallDesign]="true"
                 >
                 </app-load-deatils-item-stops-main>
+                <app-load-requirement
+                    [load]="selectedLoad"
+                ></app-load-requirement>
             </app-ta-custom-card>
         </ng-container>
 

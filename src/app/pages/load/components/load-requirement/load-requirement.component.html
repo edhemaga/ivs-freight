@@ -1,0 +1,176 @@
+<div class="load-requirement">
+    <app-ta-custom-card
+        [cardName]="load?.loadRequirements ? 'Requirement' : 'No Requirement'"
+        [isCardOpen]="!!load?.loadRequirements"
+        [hasActionSvg]="false"
+        [hasBodyData]="true"
+        [hasArrow]="false"
+        [animationMarginParams]="{
+            marginTop: '10px',
+            marginBottom: '12px'
+        }"
+        [addSpaceToXAsis]="true"
+    >
+        <div class="d-grid load-requirement-grid">
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    TRUCK
+                </span>
+            </div>
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    TRAILER
+                </span>
+            </div>
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    LENGTH
+                </span>
+            </div>
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    DOOR
+                </span>
+            </div>
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    SUSPENSION
+                </span>
+            </div>
+            <div>
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    YEAR
+                </span>
+            </div>
+            <div class="text-right">
+                <span
+                    class="load-requirement-header text-color-muted ta-font-bold"
+                >
+                    LG
+                </span>
+            </div>
+        </div>
+
+        <div class="d-grid load-requirement-grid">
+            <div>
+                <ng-container
+                    *ngIf="truck; else noReq"
+                >
+                    <div
+                        class="truckassist-icon"
+                        ngbTooltip
+                        mainContent
+                        position="bottom"
+                        [tooltipBackground]="truck.color"
+                        [mainTooltip]="truck.name"
+                        tooltipColor="#ffff"
+                        tooltipTextAlign="center"
+                    >
+                        <svg-icon
+                            [src]="truck.icon"
+                            [class]="truck.className"
+                            [svgStyle]="{
+                                'width.px': 44,
+                                'height.px': 16
+                            }"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="trailer; else noReq"
+                >
+                    <div
+                        class="truckassist-icon"
+                        ngbTooltip
+                        mainContent
+                        position="bottom"
+                        [tooltipBackground]="trailer.color"
+                        [mainTooltip]="trailer.name"
+                        tooltipColor="#ffff"
+                        tooltipTextAlign="center"
+                    >
+                        <svg-icon
+                            [class]="trailer.className"
+                            [src]="trailer.icon"
+                            [svgStyle]="{
+                                'width.px': 44,
+                                'height.px': 16
+                            }"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="
+                        load.loadRequirements?.trailerLength?.name;
+                        else noReq
+                    "
+                >
+                    <div class="load-requirement-value">
+                        {{
+                            getNumericValue(
+                                load.loadRequirements?.trailerLength?.name
+                            )
+                        }}
+                        <span class="text-color-muted">ft</span>
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="load.loadRequirements?.doorType?.name; else noReq"
+                >
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.doorType?.name }}
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="load.loadRequirements?.suspension?.name; else noReq"
+                >
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.suspension?.name }}
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container *ngIf="load.loadRequirements?.year; else noReq">
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.year }}+
+                    </div>
+                </ng-container>
+            </div>
+            <div class="text-right">
+                <ng-container
+                    *ngIf="
+                        load.loadRequirements?.liftgate !== undefined &&
+                            load.loadRequirements?.liftgate !== null;
+                        else noReq
+                    "
+                >
+                    <div class="load-requirement-value">Yes</div>
+                </ng-container>
+            </div>
+        </div>
+
+        <ng-template #noReq>
+            <div class="load-requirement-no-req ta-font-medium">No req.</div>
+        </ng-template>
+    </app-ta-custom-card>
+</div>

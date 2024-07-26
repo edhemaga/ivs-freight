@@ -368,6 +368,7 @@
 .stop-items-grid-small {
     grid-template-columns: 18px 125px 135px 125px 128px 60px !important;
     grid-gap: 4px !important;
+    border-bottom: 0;
 
     .stop-box {
         p {

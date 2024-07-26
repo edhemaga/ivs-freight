@@ -32,6 +32,7 @@ import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/compon
 import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
+import { LoadRequirementComponent } from '@pages/load/components/load-requirement/load-requirement.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -91,6 +92,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         LoadDeatilsItemStopsMainComponent,
         TaMapsComponent,
         TaResizerComponent,
+        LoadRequirementComponent,
     ],
     exports: [ColorFinderPipe],
 })

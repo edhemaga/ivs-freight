@@ -121,13 +121,23 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
                         this.onDispatchChange(dispatchIndex);
                         this.getLoadsForDispatchId(this.editData.dispatchId);
                     }
-                } else this.clearInputValue();
+                } else {
+                    this.clearInputValue();
+                    this.assignedLoads = [];
+                    this.closeLoadDetails();
+                }
             });
     }
 
     public selectNewDispatcher(event: { id: number }) {
         this.editData.dispatchId = event?.id ?? null;
         this.loadModalData();
+        this.closeLoadDetails();
+    }
+
+    public closeLoadDetails() {
+        this.additionalPartVisibility({ action: '', isOpen: false });
+        this.selectedLoad = null;
     }
 
     private clearInputValue() {
@@ -361,8 +371,8 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         this.isAssignedLoad = isAssigned;
         this.fetchLoadById(loadId, (load) => {
             this.selectedLoad = load;
-            this.getLoadStopRoutes(load.stops); 
-            this.additionalPartVisibility({action: '', isOpen: true})
+            this.getLoadStopRoutes(load.stops);
+            this.additionalPartVisibility({ action: '', isOpen: true });
         });
     }
 
@@ -421,8 +431,12 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             : LoadModalStringEnum.MODAL_SIZE;
         this.isAdditonalViewOpened = event.isOpen;
 
-        if(this.isAdditonalViewOpened && !this.selectedLoad) {
+        if (this.isAdditonalViewOpened && !this.selectedLoad) {
             this.drawAssignedLoadRoutes();
+        }
+
+        if (!event.isOpen) {
+            this.loadStopRoutes = [];
         }
     }
 
@@ -470,7 +484,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public get isModalValid(): boolean {
-        return !!this.selectedDispatches;
+        return !!this.selectedDispatches && this.showReorderButton;
     }
 
     private drawAssignedLoadRoutes() {

@@ -32,6 +32,10 @@
     }
 }
 
+.modal-header-edit-button {
+    margin-right: 12px !important;
+}
+
 ::ng-deep .cdk-drag-preview {
     background-color: $ta-black !important;
     border-radius: 3px;
