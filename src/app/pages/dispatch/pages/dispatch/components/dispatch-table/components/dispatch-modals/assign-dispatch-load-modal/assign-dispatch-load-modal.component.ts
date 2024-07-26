@@ -26,13 +26,11 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import {
     AssignedLoadListResponse,
     AssignedLoadResponse,
+    AssignLoadModalResponse,
     DispatchLoadModalResponse,
-    DriverDispatchResponse,
     LoadResponse,
     LoadStopResponse,
     ReorderDispatchLoadsCommand,
-    TrailerMinimalResponse,
-    TruckMinimalResponse,
 } from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
@@ -40,10 +38,10 @@ import { MapRoute } from '@shared/models/map-route.model';
 // Services
 import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
-import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 @Component({
     selector: 'app-assign-dispatch-load-modal',
@@ -60,12 +58,10 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     // Destroy
     private destroy$ = new Subject<void>();
 
-    @Input() editData: {
-        dispatchId: number;
-    };
+    @Input() editData: { dispatchId: number };
 
     // Form
-    public assingLoadForm: UntypedFormGroup;
+    public assignLoadForm: UntypedFormGroup;
 
     public loadDispatchesTTDInputConfig =
         AssignDispatchLoadConfig.truckTrailerDriver;
@@ -88,7 +84,9 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     public unassignedLoads: AssignedLoadResponse[] = [];
     public assignedLoads: AssignedLoadResponse[] = [];
     public labelsDispatches: any;
+    public mappedDispatches: any;
     public selectedDispatches: any = null;
+
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
@@ -98,46 +96,69 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.getInitalAssignedLoads();
-        this.getModalData();
-        this.createForm();
-        this.drawAssignedLoadRoutes();
+        this.initializeForm();
+        this.loadModalData();
     }
 
-    private getInitalAssignedLoads() {
-        if(this.editData.dispatchId) {
-            this.getLoadsForDispatchId(this.editData.dispatchId);
-        }
-        this.isAssignLoadCardOpen = false;
+    private initializeForm(): void {
+        this.assignLoadForm = this.formBuilder.group({
+            dispatchId: [null],
+        });
     }
 
-    private getLoadsForDispatchId(dispatchId: number) {
-        this.loadService
-            .apiLoadListAssignedIdGet(dispatchId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: AssignedLoadListResponse) => {
-                this.assignedLoads = res.assignedLoads;
-                this.isAssignLoadCardOpen = !!this.assignedLoads.length;
-            });
-    }
-
-    private getModalData(): void {
+    private loadModalData(): void {
         this.loadService
             .getDispatchModalData()
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    this.unassignedLoads = res.unassignedLoads;
-                    this.isUnAssignLoadCardOpen = !!this.unassignedLoads.length;
-                    this.mapDispatchers(res.dispatches); 
-                },
+            .subscribe((res: AssignLoadModalResponse) => {
+                this.unassignedLoads = res.unassignedLoads;
+                this.mapDispatchers(res.dispatches);
+                if (this.editData?.dispatchId) {
+                    const dispatchIndex = this.labelsDispatches.find(
+                        (dispatch) => dispatch.id === this.editData.dispatchId
+                    );
+                    if (dispatchIndex) {
+                        this.onDispatchChange(dispatchIndex);
+                        this.getLoadsForDispatchId(this.editData.dispatchId);
+                    }
+                } else this.clearInputValue();
             });
     }
 
-    private createForm() {
-        this.assingLoadForm = this.formBuilder.group({
-            dispatchId: [null],
+    public selectNewDispatcher(event: { id: number }) {
+        this.editData.dispatchId = event?.id ?? null;
+        this.loadModalData();
+    }
+
+    private clearInputValue() {
+        this.loadDispatchesTTDInputConfig = {
+            ...this.loadDispatchesTTDInputConfig,
+            multipleLabel: {
+                labels: [
+                    LoadModalStringEnum.TRUCK,
+                    LoadModalStringEnum.TRAILER,
+                    LoadModalStringEnum.DRIVER,
+                    LoadModalStringEnum.DRIVER_PAY,
+                ],
+                customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
+            },
+            multipleInputValues: null,
+        };
+
+        this.selectedDispatches = null;
+    }
+
+    private mapLoadsForRequest(): ReorderDispatchLoadsCommand {
+        const loads = this.assignedLoads.map((load, index) => {
+            return {
+                id: load.id,
+                order: index + 1,
+            };
         });
+        return {
+            dispatchId: this.selectedDispatches.id,
+            loads,
+        };
     }
 
     private mapDispatchers(dispatches: DispatchLoadModalResponse[]): void {
@@ -193,7 +214,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onDispachChange(dispach: any) {
+    public onDispatchChange(dispach: any) {
         this.selectedDispatches = {
             ...dispach,
             name: dispach?.truck?.name
@@ -264,158 +285,10 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
                 customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
             },
         };
-
-        this.getLoadsForDispatchId(this.selectedDispatches.id);
     }
 
     public trackByIdentity(id: number): number {
         return id;
-    }
-
-    public additionalPartVisibility(event: {
-        action: string;
-        isOpen: boolean;
-    }): void {
-        this.loadModalSize = event.isOpen
-            ? LoadModalStringEnum.MODAL_CONTAINER_LOAD
-            : LoadModalStringEnum.MODAL_SIZE;
-        this.isAdditonalViewOpened = event.isOpen;
-    }
-
-    public dropAssigned(event: CdkDragDrop<string[]>): void {
-        if (event.previousIndex === event.currentIndex) {
-            return;
-        }
-        moveItemInArray(
-            this.assignedLoads,
-            event.previousIndex,
-            event.currentIndex
-        );
-    }
-
-    public onReorderAction(data: { action: string }): void {
-        if (data.action === LoadModalStringEnum.REORDERING) {
-            this.showFinishReordering = false;
-            this.showReorderButton = true;
-        } else {
-            this.showFinishReordering = true;
-            this.showReorderButton = false;
-        }
-    }
-
-    public changeLoadList(
-        loadId: number,
-        isAssignedList: boolean,
-        isIconClick?: boolean
-    ) {
-        if (isAssignedList) {
-            const loadIndex = this.assignedLoads.findIndex(
-                (load) => load.id === loadId
-            );
-            const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
-            this.unassignedLoads.push(movedLoad);
-        } else {
-            const loadIndex = this.assignedLoads.findIndex(
-                (load) => load.id === loadId
-            );
-            const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
-            this.assignedLoads.push(movedLoad);
-        }
-
-        if (isIconClick || loadId === this.selectedLoad?.id) {
-            this.isAssignedLoad = !isAssignedList;
-        }
-    }
-
-    public selectLoad(loadId: number, isAssigned: boolean) {
-        this.isAssignedLoad = isAssigned;
-        this.fetchLoadById(loadId, (load) => {
-            this.selectedLoad = load;
-            this.getLoadStopRoutes(load.stops);
-        });
-    }
-
-    private getLoadStopRoutes(stops: LoadStopResponse[]): void {
-        const routes: StopRoutes[] = stops.map((stop, index) => {
-            const { shipper, stopType } = stop;
-
-            return {
-                longitude: shipper.longitude,
-                latitude: shipper.latitude,
-                pickup: stopType.name === LoadDetailsItemStringEnum.PICKUP,
-                delivery: stopType.name === LoadDetailsItemStringEnum.DELIVERY,
-                stopNumber: index,
-            };
-        });
-
-        this.loadStopRoutes.push({
-            routeColor: LoadDetailsItemStringEnum.COLOR_1,
-            stops: routes.map((route, index) => {
-                return {
-                    lat: route.latitude,
-                    long: route.longitude,
-                    stopColor: route.pickup
-                        ? LoadDetailsItemStringEnum.COLOR_2
-                        : route.delivery
-                        ? LoadDetailsItemStringEnum.COLOR_3
-                        : LoadDetailsItemStringEnum.COLOR_1,
-                    stopNumber: route?.stopNumber?.toString(),
-                    zIndex: 99 + index,
-                };
-            }),
-        });
-    }
-
-    private drawAssignedLoadRoutes() {
-        this.assignedLoads.forEach((load) => {
-            this.fetchLoadById(load.id, (loadResponse) => {
-                this.getLoadStopRoutes(loadResponse.stops);
-            });
-        });
-    }
-
-    public editLoad() {
-        this.fetchLoadById(this.selectedLoad.id, (load) => {
-            const editData = {
-                data: {
-                    ...load,
-                },
-                type: TableStringEnum.EDIT,
-                selectedTab: TableStringEnum.PENDING,
-            };
-
-            this.modalService.openModal(
-                LoadModalComponent,
-                { size: TableStringEnum.LOAD },
-                {
-                    ...editData,
-                    disableButton: false,
-                }
-            );
-        });
-    }
-
-    private fetchLoadById(
-        loadId: number,
-        callback: (load: LoadResponse) => void
-    ): void {
-        this.loadService
-            .getLoadById(loadId)
-            .pipe(takeUntil(this.destroy$), tap(callback))
-            .subscribe();
-    }
-
-    private mapLoadsForRequest(): ReorderDispatchLoadsCommand {
-        const loads = this.assignedLoads.map((load, index) => {
-            return {
-                id: load.id,
-                order: index + 1,
-            };
-        });
-        return {
-            dispatchId: this.selectedDispatches.id,
-            loads,
-        };
     }
 
     public saveLoads(closeModal: boolean) {
@@ -452,8 +325,160 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    private getLoadStopRoutes(stops: LoadStopResponse[]): void {
+        this.loadStopRoutes = [];
+        const routes: StopRoutes[] = stops.map((stop, index) => {
+            const { shipper, stopType } = stop;
+
+            return {
+                longitude: shipper.longitude,
+                latitude: shipper.latitude,
+                pickup: stopType.name === LoadDetailsItemStringEnum.PICKUP,
+                delivery: stopType.name === LoadDetailsItemStringEnum.DELIVERY,
+                stopNumber: index,
+            };
+        });
+
+        this.loadStopRoutes.push({
+            routeColor: LoadDetailsItemStringEnum.COLOR_1,
+            stops: routes.map((route, index) => {
+                return {
+                    lat: route.latitude,
+                    long: route.longitude,
+                    stopColor: route.pickup
+                        ? LoadDetailsItemStringEnum.COLOR_2
+                        : route.delivery
+                        ? LoadDetailsItemStringEnum.COLOR_3
+                        : LoadDetailsItemStringEnum.COLOR_1,
+                    stopNumber: route?.stopNumber?.toString(),
+                    zIndex: 99 + index,
+                };
+            }),
+        });
+    }
+
+    public selectLoad(loadId: number, isAssigned: boolean) {
+        this.isAssignedLoad = isAssigned;
+        this.fetchLoadById(loadId, (load) => {
+            this.selectedLoad = load;
+            this.getLoadStopRoutes(load.stops); 
+            this.additionalPartVisibility({action: '', isOpen: true})
+        });
+    }
+
+    private fetchLoadById(
+        loadId: number,
+        callback: (load: LoadResponse) => void
+    ): void {
+        this.loadService
+            .getLoadById(loadId)
+            .pipe(takeUntil(this.destroy$), tap(callback))
+            .subscribe();
+    }
+
+    public changeLoadList(
+        loadId: number,
+        isAssignedList: boolean,
+        isIconClick?: boolean
+    ) {
+        if (isAssignedList) {
+            const loadIndex = this.assignedLoads.findIndex(
+                (load) => load.id === loadId
+            );
+            const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
+            this.unassignedLoads.push(movedLoad);
+        } else {
+            const loadIndex = this.assignedLoads.findIndex(
+                (load) => load.id === loadId
+            );
+            const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
+            this.assignedLoads.push(movedLoad);
+        }
+
+        if (isIconClick || loadId === this.selectedLoad?.id) {
+            this.isAssignedLoad = !isAssignedList;
+        }
+
+        this.drawAssignedLoadRoutes();
+    }
+
+    private getLoadsForDispatchId(dispatchId: number) {
+        this.loadService
+            .apiLoadListAssignedIdGet(dispatchId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: AssignedLoadListResponse) => {
+                this.assignedLoads = res.assignedLoads;
+                this.isAssignLoadCardOpen = !!this.assignedLoads.length;
+            });
+    }
+
+    public additionalPartVisibility(event: {
+        action: string;
+        isOpen: boolean;
+    }): void {
+        this.loadModalSize = event.isOpen
+            ? LoadModalStringEnum.MODAL_CONTAINER_LOAD
+            : LoadModalStringEnum.MODAL_SIZE;
+        this.isAdditonalViewOpened = event.isOpen;
+
+        if(this.isAdditonalViewOpened && !this.selectedLoad) {
+            this.drawAssignedLoadRoutes();
+        }
+    }
+
+    public dropAssigned(event: CdkDragDrop<string[]>): void {
+        if (event.previousIndex === event.currentIndex) {
+            return;
+        }
+        moveItemInArray(
+            this.assignedLoads,
+            event.previousIndex,
+            event.currentIndex
+        );
+    }
+
+    public onReorderAction(data: { action: string }): void {
+        if (data.action === LoadModalStringEnum.REORDERING) {
+            this.showFinishReordering = false;
+            this.showReorderButton = true;
+        } else {
+            this.showFinishReordering = true;
+            this.showReorderButton = false;
+            this.isUnAssignLoadCardOpen = false;
+        }
+    }
+
+    public editLoad() {
+        this.fetchLoadById(this.selectedLoad.id, (load) => {
+            const editData = {
+                data: {
+                    ...load,
+                },
+                type: TableStringEnum.EDIT,
+                selectedTab: TableStringEnum.PENDING,
+            };
+
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: TableStringEnum.LOAD },
+                {
+                    ...editData,
+                    disableButton: false,
+                }
+            );
+        });
+    }
+
     public get isModalValid(): boolean {
         return !!this.selectedDispatches;
+    }
+
+    private drawAssignedLoadRoutes() {
+        this.assignedLoads.forEach((load) => {
+            this.fetchLoadById(load.id, (loadResponse) => {
+                this.getLoadStopRoutes(loadResponse.stops);
+            });
+        });
     }
 
     public ngOnDestroy(): void {

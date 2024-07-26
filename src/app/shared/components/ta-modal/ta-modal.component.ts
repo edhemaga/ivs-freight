@@ -204,7 +204,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     public mapVisibility: boolean = false;
     public hazardousVisibility: boolean = false;
-    public isSidePanelActive: boolean = false;
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
@@ -532,11 +531,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
-            case 'side-panel': {
-                this.isSidePanelActive = !this.isSidePanelActive;
+            case 'side-panel': { 
                 this.additionalPartVisibilityEvent.emit({
                     action: 'side-panel',
-                    isOpen: this.isSidePanelActive,
+                    isOpen: !this.isAdditionalAssignLoadModalVisible,
                 });
                 break;
             }

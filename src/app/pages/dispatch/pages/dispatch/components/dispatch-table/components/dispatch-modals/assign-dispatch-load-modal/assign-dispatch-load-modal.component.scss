@@ -22,9 +22,9 @@
 
     &-map {
         width: auto;
-        // min-height: 480px;
         border-radius: 3px;
-        height: 480px;
+        min-height: 480px;
+        flex: 1;
 
         &-parent {
             height: 100%;

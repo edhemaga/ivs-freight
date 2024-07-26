@@ -8,6 +8,10 @@
     border-radius: 4px;
     transition: background-color 0.3s;
 
+    &-active {
+        background-color: $bw2;
+    }
+
     &-icon {
         display: none;
         svg path {

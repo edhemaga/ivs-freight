@@ -2,6 +2,11 @@
 
 .ta-resizer {
     &-container {
+
+        &-load-list {
+            height: 460px;
+        }
+
         &-icon {
             background: $white;
             height: 16px;

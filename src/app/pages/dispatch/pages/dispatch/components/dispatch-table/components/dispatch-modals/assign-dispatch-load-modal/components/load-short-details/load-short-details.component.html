@@ -1,5 +1,6 @@
 <div
-    class="short-load dispatch-load-grid d-grid align-items-center"
+    [ngClass]="{'short-load-active': load.id === activeLoadId}"
+    class="short-load dispatch-load-grid d-grid align-items-center mouse-pointer"
     (click)="selectLoad()"
 >
     <div
@@ -41,6 +42,7 @@
     <div>
         <div class="text-ellipsis">
             <span class="ta-font-bold mr-1">{{ load.loadNumber }}</span>
+            <!-- TODO: ADD TEMPLATE ICON -->
             <span class="ta-font-medium">{{ load.referenceNumber }}</span>
         </div>
         <p class="ta-font-medium text-color-muted text-ellipsis">

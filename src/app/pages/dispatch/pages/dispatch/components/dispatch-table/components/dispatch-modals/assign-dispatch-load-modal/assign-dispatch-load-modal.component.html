@@ -9,14 +9,14 @@
 >
     <div origin>
         <div class="dispatch-load">
-            <form [formGroup]="assingLoadForm" class="mb-2">
+            <form [formGroup]="assignLoadForm" class="mb-2">
                 <app-ta-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
                     [activeItem]="selectedDispatches"
-                    (selectedItem)="onDispachChange($event)"
+                    (selectedItem)="selectNewDispatcher($event)" 
                 ></app-ta-input-dropdown>
             </form>
             <!-- Table header -->
@@ -59,12 +59,13 @@
             </div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="200"
-                [initialSecondElementHeight]="400"
+                [initialFirstElementHeight]="220"
+                [initialSecondElementHeight]="440"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
+                [isLoadList]="true"
             >
                 <div firstElement class="h-full">
                     <app-ta-custom-card
@@ -95,6 +96,7 @@
                                     let index = index;
                                     trackBy: trackByIdentity
                                 "
+                                [cdkDragDisabled]="!showFinishReordering"
                                 cdkDrag
                             >
                                 <div
@@ -105,6 +107,7 @@
                                     [load]="assignedLoad"
                                     [index]="index + 1"
                                     [isAssigned]="true"
+                                    [activeLoadId]="selectedLoad?.id"
                                     (changeLoadList$)="
                                         changeLoadList(assignedLoad.id, true)
                                     "
@@ -145,6 +148,7 @@
                         [hasBodyData]="true"
                         [hasArrow]="true"
                         [isInheritingParentSize]="true"
+                        [disabledCard]="showFinishReordering"
                         (onOpenCard)="isUnAssignLoadCardOpen = $event"
                     >
                         <ng-container
@@ -164,6 +168,7 @@
                                     [load]="unassignedLoad"
                                     [index]="index + 1"
                                     [isAssigned]="false"
+                                    [activeLoadId]="selectedLoad?.id"
                                     (changeLoadList$)="
                                         changeLoadList(unassignedLoad.id, false)
                                     "
@@ -197,7 +202,7 @@
         </div>
     </div>
 
-    <div assignLoadModal>
+    <div assignLoadModal class="d-flex flex-column h-full">
         <ng-container *ngIf="selectedLoad; else modalTitle">
             <div class="modal-header d-flex justify-content-between">
                 <div class="modal-header-leftside">

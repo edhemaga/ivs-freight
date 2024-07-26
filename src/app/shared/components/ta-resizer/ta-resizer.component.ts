@@ -28,6 +28,9 @@ export class TaResizerComponent implements OnInit {
     @Input() minHeightSecondElement: number = 50;
     @Input() isFirstElementOpen: boolean = true;
     @Input() isSecondElementOpen: boolean = true;
+    
+    // We need to set height or modal footer will move with card when it collapse
+    @Input() isLoadList: boolean = false;
 
     public firstElementHeight: number;
     public secondElementHeight: number;

@@ -15,6 +15,7 @@ export class LoadShortDetailsComponent implements OnInit {
     @Input() load: AssignedLoadResponse;
     @Input() index: number;
     @Input() isAssigned: boolean;
+    @Input() activeLoadId: number;
 
     // Outputs
     @Output() changeLoadList$: EventEmitter<number> = new EventEmitter();
