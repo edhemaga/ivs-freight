@@ -206,7 +206,7 @@
         </div>
     </div>
 
-    <div assignLoadModal class="d-flex flex-column h-full">
+    <div assignLoadModal class="d-flex flex-column h-full position-relative">
         <ng-container *ngIf="selectedLoad; else modalTitle">
             <div class="modal-header d-flex justify-content-between">
                 <div class="modal-header-leftside">
@@ -312,5 +312,32 @@
                 [ngStyle]="{ width: '100%', height: '100%' }"
             ></app-ta-maps>
         </div>
+
+        <ng-container *ngIf="isMapLoaderVisible">
+            <div class="dispatch-load-map-loader position-absolute">
+                <div
+                    class="position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center flex-column gap-2"
+                >
+                    <div
+                        class="dispatch-load-map-loader-box d-flex align-items-center justify-content-center"
+                    >
+                        <svg-icon
+                            class="position-absolute"
+                            [src]="svgIcons.logo"
+                            [svgStyle]="{
+                                'width.px': 60,
+                                'height.px': 60
+                            }"
+                        ></svg-icon>
+                        <div class="dispatch-load-map-loader-box-spinner"></div>
+                    </div>
+
+                    <h5 class="ta-font-semi-bold text-color-blue-13 mb-0">
+                        Recalculating Route
+                    </h5>
+                    <p class="ta-font-medium text-color-blue-13">Please Wait</p>
+                </div>
+            </div>
+        </ng-container>
     </div>
 </app-ta-modal>

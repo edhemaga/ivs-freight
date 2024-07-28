@@ -7,4 +7,5 @@ export class DispatchParkingSvgRoutes {
     static drag = 'assets/svg/dispatchboard/ic_drag.svg';
     static noLoads = 'assets/svg/dispatchboard/ic_no-loads.svg';
     static penIcon = 'assets/svg/common/ic_pen.svg';
+    static logo = 'assets/svg/applicant/logo.svg';
 }

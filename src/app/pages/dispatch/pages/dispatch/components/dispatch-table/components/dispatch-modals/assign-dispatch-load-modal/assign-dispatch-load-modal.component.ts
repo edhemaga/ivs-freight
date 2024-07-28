@@ -86,7 +86,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     public labelsDispatches: any;
     public mappedDispatches: any;
     public selectedDispatches: any = null;
-
+    public isMapLoaderVisible: boolean = false;
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
@@ -156,6 +156,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         };
 
         this.selectedDispatches = null;
+        this.showReorderButton = false;
     }
 
     private mapLoadsForRequest(): ReorderDispatchLoadsCommand {
@@ -409,7 +410,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             this.isAssignedLoad = !isAssignedList;
         }
 
-        this.drawAssignedLoadRoutes();
+        if (!this.selectedLoad) this.drawAssignedLoadRoutes();
     }
 
     private getLoadsForDispatchId(dispatchId: number) {
@@ -449,6 +450,8 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             event.previousIndex,
             event.currentIndex
         );
+
+        this.drawAssignedLoadRoutes();
     }
 
     public onReorderAction(data: { action: string }): void {
@@ -488,9 +491,14 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private drawAssignedLoadRoutes() {
-        this.assignedLoads.forEach((load) => {
+        if (this.assignedLoads.length) this.isMapLoaderVisible = true;
+
+        this.assignedLoads.forEach((load, index) => {
             this.fetchLoadById(load.id, (loadResponse) => {
                 this.getLoadStopRoutes(loadResponse.stops);
+
+                if (index === this.assignedLoads.length - 1)
+                    this.isMapLoaderVisible = false;
             });
         });
     }

@@ -26,6 +26,31 @@
         min-height: 480px;
         flex: 1;
 
+        &-loader {
+            top: 0;
+            height: 100%;
+            width: 100%;
+            backdrop-filter: blur(5px);
+
+            &-box {
+                position: relative;
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                overflow: hidden;
+                &-spinner {
+                    width: 140px;
+                    height: 140px;
+                    border: 5px solid $ta-blue-19;
+                    border-bottom-color: transparent;
+                    border-radius: 50%;
+                    display: inline-block;
+                    box-sizing: border-box;
+                    animation: rotation 1s linear infinite;
+                }
+            }
+        }
+
         &-parent {
             height: 100%;
         }
@@ -55,4 +80,13 @@
 }
 
 ::ng-deep .cdk-drag-placeholder {
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
