@@ -79,9 +79,6 @@
     }
 }
 
-::ng-deep .cdk-drag-placeholder {
-}
-
 @keyframes rotation {
     0% {
         transform: rotate(0deg);
@@ -89,4 +86,8 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.divider {
+    min-height: 1px;
 }

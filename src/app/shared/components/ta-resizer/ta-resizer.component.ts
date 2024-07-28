@@ -3,6 +3,7 @@ import {
     Component,
     HostListener,
     Input,
+    OnChanges,
     OnInit,
     SimpleChanges,
 } from '@angular/core';
@@ -18,7 +19,7 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/h
     standalone: true,
     imports: [CommonModule, AngularSvgIconModule],
 })
-export class TaResizerComponent implements OnInit {
+export class TaResizerComponent implements OnInit, OnChanges {
     // Svg
     public svgRoutes = DispatchParkingSvgRoutes;
 
@@ -28,7 +29,7 @@ export class TaResizerComponent implements OnInit {
     @Input() minHeightSecondElement: number = 50;
     @Input() isFirstElementOpen: boolean = true;
     @Input() isSecondElementOpen: boolean = true;
-    
+
     // We need to set height or modal footer will move with card when it collapse
     @Input() isLoadList: boolean = false;
 

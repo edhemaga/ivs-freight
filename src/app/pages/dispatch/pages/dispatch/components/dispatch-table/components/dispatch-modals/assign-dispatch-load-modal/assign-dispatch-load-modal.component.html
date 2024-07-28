@@ -82,8 +82,9 @@
                         "
                         [showFinishReordering]="showFinishReordering"
                         [hasScrollBody]="true"
-                        (onOpenCard)="isAssignLoadCardOpen = $event"
+                        [hasDivider]="false"
                         [isInheritingParentSize]="true"
+                        (onOpenCard)="isAssignLoadCardOpen = $event"
                         (onActionEvent)="onReorderAction($event)"
                         (cdkDropListDropped)="dropAssigned($event)"
                         cdkDropList
@@ -153,6 +154,7 @@
                         [hasArrow]="true"
                         [isInheritingParentSize]="true"
                         [disabledCard]="showFinishReordering"
+                        [hasDivider]="false"
                         (onOpenCard)="isUnAssignLoadCardOpen = $event"
                     >
                         <ng-container
@@ -260,36 +262,63 @@
                 </div>
             </div>
 
-            <app-ta-custom-card
-                [cardName]="'Stops'"
-                [capsulaText]="
-                    selectedLoad?.stops.length - 2
-                        ? selectedLoad?.stops.length - 2 + ' EXTRA'
-                        : null
-                "
-                [isCardOpen]="true"
-                [hasCounter]="selectedLoad?.stops.length"
-                [hasActionSvg]="false"
-                [hasBodyData]="true"
-                [hasArrow]="false"
-                [animationMarginParams]="{
-                    marginTop: '10px',
-                    marginBottom: '12px'
-                }"
-                [addSpaceToXAsis]="true"
-            >
-                <app-load-deatils-item-stops-main
-                    [stopsData]="{
-                        statusType: selectedLoad?.statusType,
-                        stops: selectedLoad?.stops
-                    }"
-                    [isMapDisplayed]="false"
-                    [isSmallDesign]="true"
-                >
-                </app-load-deatils-item-stops-main>
-            </app-ta-custom-card>
+            <div class="divider"></div>
 
-            <app-load-requirement [load]="selectedLoad"></app-load-requirement>
+            <app-ta-resizer
+                [initialFirstElementHeight]="200"
+                [initialSecondElementHeight]="390"
+                [minHeightFirstElement]="40"
+                [minHeightSecondElement]="40"
+            >
+                <div firstElement class="h-full">
+                    <app-ta-custom-card
+                        [cardName]="'Stops'"
+                        [capsulaText]="
+                            selectedLoad?.stops.length - 2
+                                ? selectedLoad?.stops.length - 2 + ' EXTRA'
+                                : null
+                        "
+                        [isCardOpen]="true"
+                        [hasCounter]="selectedLoad?.stops.length"
+                        [hasActionSvg]="false"
+                        [hasBodyData]="true"
+                        [hasArrow]="false"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '12px'
+                        }"
+                        [addSpaceToXAsis]="true"
+                        [hasDivider]="false"
+                        [hasScrollBody]="true"
+                        [isInheritingParentSize]="true"
+                    >
+                        <app-load-deatils-item-stops-main
+                            [stopsData]="{
+                                statusType: selectedLoad?.statusType,
+                                stops: selectedLoad?.stops
+                            }"
+                            [isMapDisplayed]="false"
+                            [isSmallDesign]="true"
+                        >
+                        </app-load-deatils-item-stops-main>
+                    </app-ta-custom-card>
+                </div>
+                <div secondElement class="h-full">
+                    <app-load-requirement
+                        [load]="selectedLoad"
+                    ></app-load-requirement>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center dispatch-load-map"
+                    >
+                        <app-ta-maps
+                            [mapType]="'routing'"
+                            [routes]="loadStopRoutes"
+                            [ngStyle]="{ width: '100%', height: '540px' }"
+                        ></app-ta-maps>
+                    </div>
+                </div>
+            </app-ta-resizer>
         </ng-container>
 
         <ng-template #modalTitle>
@@ -302,16 +331,17 @@
                     </h5>
                 </div>
             </div>
+
+            <div
+                class="d-flex justify-content-center align-items-center dispatch-load-map"
+            >
+                <app-ta-maps
+                    [mapType]="'routing'"
+                    [routes]="loadStopRoutes"
+                    [ngStyle]="{ width: '100%', height: '100%' }"
+                ></app-ta-maps>
+            </div>
         </ng-template>
-        <div
-            class="d-flex justify-content-center align-items-center dispatch-load-map"
-        >
-            <app-ta-maps
-                [mapType]="'routing'"
-                [routes]="loadStopRoutes"
-                [ngStyle]="{ width: '100%', height: '100%' }"
-            ></app-ta-maps>
-        </div>
 
         <ng-container *ngIf="isMapLoaderVisible">
             <div class="dispatch-load-map-loader position-absolute">

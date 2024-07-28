@@ -10,6 +10,7 @@
             marginBottom: '12px'
         }"
         [addSpaceToXAsis]="true"
+        [hasDivider]="false"
     >
         <div class="d-grid load-requirement-grid">
             <div>
@@ -65,9 +66,7 @@
 
         <div class="d-grid load-requirement-grid">
             <div>
-                <ng-container
-                    *ngIf="truck; else noReq"
-                >
+                <ng-container *ngIf="truck; else noReq">
                     <div
                         class="truckassist-icon"
                         ngbTooltip
@@ -90,9 +89,7 @@
                 </ng-container>
             </div>
             <div>
-                <ng-container
-                    *ngIf="trailer; else noReq"
-                >
+                <ng-container *ngIf="trailer; else noReq">
                     <div
                         class="truckassist-icon"
                         ngbTooltip
