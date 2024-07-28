@@ -19,7 +19,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalService } from '@shared/services/modal.service';
 
 // Components
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 
 // Svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -72,7 +72,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
 
     public onLoadIconClick(): void {
         this.modalService.openModal(
-            AssignDispatchLoadModalComponent,
+            DispatchAssignLoadModalComponent,
             {
                 size: TableStringEnum.SMALL,
             },

@@ -29,7 +29,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // components
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 
 @Titles()
 @Component({
@@ -112,7 +112,7 @@ export class DispatchComponent
 
                 break;
             case DispatchTableStringEnum.STATUS_HISTORY_MODAL:
-                this.modalService.openModal(AssignDispatchLoadModalComponent, {
+                this.modalService.openModal(DispatchAssignLoadModalComponent, {
                     size: TableStringEnum.LARGE,
                 });
 
@@ -132,7 +132,7 @@ export class DispatchComponent
 
     public openAssignLoadModal(): void {
         this.modalService.openModal(
-            AssignDispatchLoadModalComponent,
+            DispatchAssignLoadModalComponent,
             {
                 size: TableStringEnum.SMALL,
             },

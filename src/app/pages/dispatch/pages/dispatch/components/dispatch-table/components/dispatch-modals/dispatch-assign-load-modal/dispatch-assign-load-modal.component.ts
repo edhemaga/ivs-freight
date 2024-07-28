@@ -31,7 +31,7 @@ import {
     LoadResponse,
     LoadStopResponse,
     ReorderDispatchLoadsCommand,
-} from 'appcoretruckassist';
+} from '../../../../../../../../../../../appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
 
@@ -44,14 +44,14 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 @Component({
-    selector: 'app-assign-dispatch-load-modal',
-    templateUrl: './assign-dispatch-load-modal.component.html',
-    styleUrls: ['./assign-dispatch-load-modal.component.scss'],
+    selector: 'app-dispatch-assign-load-modal',
+    templateUrl: './dispatch-assign-load-modal.component.html',
+    styleUrls: ['./dispatch-assign-load-modal.component.scss'],
     providers: [
         { provide: CDK_DRAG_CONFIG, useValue: LoadModalDragAndDrop.Config },
     ],
 })
-export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
+export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     // Svg
     public svgIcons = DispatchParkingSvgRoutes;
 
