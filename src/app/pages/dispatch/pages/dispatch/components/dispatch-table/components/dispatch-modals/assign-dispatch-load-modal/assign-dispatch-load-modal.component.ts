@@ -487,7 +487,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public get isModalValid(): boolean {
-        return !!this.selectedDispatches && this.showReorderButton;
+        return !!this.selectedDispatches && !this.showFinishReordering;
     }
 
     private drawAssignedLoadRoutes() {

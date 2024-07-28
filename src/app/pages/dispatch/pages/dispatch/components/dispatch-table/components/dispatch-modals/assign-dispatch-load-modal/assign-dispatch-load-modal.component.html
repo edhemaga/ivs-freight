@@ -76,9 +76,9 @@
                         [hasBodyData]="true"
                         [hasArrow]="showReorderButton"
                         [showReorderButton]="
-                            isAssignLoadCardOpen && assignedLoads.length > 1
-                                ? showReorderButton
-                                : false
+                            !showFinishReordering &&
+                            assignedLoads.length > 1 &&
+                            isAssignLoadCardOpen
                         "
                         [showFinishReordering]="showFinishReordering"
                         [hasScrollBody]="true"

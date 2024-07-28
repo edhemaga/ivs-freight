@@ -91,3 +91,8 @@
 .divider {
     min-height: 1px;
 }
+
+.cdk-drag-placeholder {
+    background-color: $ta-light-grey-5 !important;
+    box-shadow: 0px 0px 4px 0px $box-shadow-30 inset;
+}
