@@ -107,11 +107,20 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private loadModalData(): void {
+        if (this.showFinishReordering) {
+            // reset reordering
+            this.onReorderAction({
+                action: LoadModalStringEnum.REORDERING,
+            });
+        }
+
         this.loadService
             .getDispatchModalData()
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
                 this.unassignedLoads = res.unassignedLoads;
+                this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+
                 this.mapDispatchers(res.dispatches);
                 if (this.editData?.dispatchId) {
                     const dispatchIndex = this.labelsDispatches.find(
@@ -307,7 +316,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             .saveDispatchLoads(this.mapLoadsForRequest())
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
+                next: () => {
                     if (closeModal) this.ngbActiveModal.close();
                 },
             });
@@ -373,6 +382,8 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
         this.fetchLoadById(loadId, (load) => {
             this.selectedLoad = load;
             this.getLoadStopRoutes(load.stops);
+
+            // Hide right side of modal
             this.additionalPartVisibility({ action: '', isOpen: true });
         });
     }
@@ -410,7 +421,7 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
             this.isAssignedLoad = !isAssignedList;
         }
 
-        if (!this.selectedLoad) this.drawAssignedLoadRoutes();
+        this.drawAssignedLoadRoutes();
     }
 
     private getLoadsForDispatchId(dispatchId: number) {
@@ -491,7 +502,11 @@ export class AssignDispatchLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private drawAssignedLoadRoutes() {
-        if (this.assignedLoads.length) this.isMapLoaderVisible = true;
+        if (this.assignedLoads.length) {
+            this.isMapLoaderVisible = true;
+        } else {
+            this.loadStopRoutes = [];
+        }
 
         this.assignedLoads.forEach((load, index) => {
             this.fetchLoadById(load.id, (loadResponse) => {
