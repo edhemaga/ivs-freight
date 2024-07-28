@@ -31,7 +31,7 @@ import {
     LoadResponse,
     LoadStopResponse,
     ReorderDispatchLoadsCommand,
-} from '../../../../../../../../../../../appcoretruckassist';
+} from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
 
@@ -378,6 +378,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public selectLoad(loadId: number, isAssigned: boolean) {
+        if (!this.isAdditonalViewOpened) {
+            return;
+        }
         this.isAssignedLoad = isAssigned;
         this.fetchLoadById(loadId, (load) => {
             this.selectedLoad = load;
@@ -449,6 +452,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
         if (!event.isOpen) {
             this.loadStopRoutes = [];
+            this.selectedLoad = null;
         }
     }
 

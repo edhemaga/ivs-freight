@@ -1,11 +1,12 @@
 <div
-    [ngClass]="{'short-load-active': load.id === activeLoadId}"
+    [ngClass]="{ 'short-load-active': load.id === activeLoadId }"
     class="short-load dispatch-load-grid d-grid align-items-center mouse-pointer"
     (click)="selectLoad()"
 >
     <div
         class="short-load-index ta-font-semi-bold text-center mouse-pointer"
         [ngClass]="{ 'short-load-index_assigned': isAssigned }"
+        [class.disabled]="isDisabled"
     >
         <span class="short-load-icon-text">
             {{ index }}

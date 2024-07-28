@@ -113,6 +113,7 @@
                                     [index]="index + 1"
                                     [isAssigned]="true"
                                     [activeLoadId]="selectedLoad?.id"
+                                    [isDisabled]="!selectedDispatches"
                                     (changeLoadList$)="
                                         changeLoadList(assignedLoad.id, true)
                                     "
@@ -175,6 +176,7 @@
                                     [index]="index + 1"
                                     [isAssigned]="false"
                                     [activeLoadId]="selectedLoad?.id"
+                                    [isDisabled]="!selectedDispatches"
                                     (changeLoadList$)="
                                         changeLoadList(unassignedLoad.id, false)
                                     "

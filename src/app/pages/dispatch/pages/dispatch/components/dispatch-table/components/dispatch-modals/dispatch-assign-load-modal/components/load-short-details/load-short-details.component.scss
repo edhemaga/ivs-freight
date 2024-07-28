@@ -17,7 +17,7 @@
         svg path {
             transition: fill 0.3s;
             fill: $muted;
-        } 
+        }
     }
 
     &:hover {
@@ -42,10 +42,16 @@
             color: $ta-blue-13;
         }
 
-        &:hover {
-            svg path {
-                fill: $ta-blue-15;
+        &:not(.disabled) {
+            &:hover {
+                svg path {
+                    fill: $ta-blue-15;
+                }
             }
+        }
+
+        &.disabled {
+            pointer-events: none;
         }
     }
 
