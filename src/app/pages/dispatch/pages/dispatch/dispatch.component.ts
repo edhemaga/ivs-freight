@@ -128,7 +128,7 @@ export class DispatchComponent
                             break;
                     }
                 }
-                if (res.action === TableStringEnum.CLEAR)
+                if (res?.action === TableStringEnum.CLEAR)
                     this.dispatchTableList = this.dispatchTableList;
             });
 
