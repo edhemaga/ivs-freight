@@ -478,7 +478,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
                 break;
             default:
-                //this.sendLoadData();
                 break;
         }
     }
