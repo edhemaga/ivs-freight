@@ -5,20 +5,23 @@ import {
     ChangeDetectorRef,
     ViewEncapsulation,
     OnChanges,
+    OnDestroy,
 } from '@angular/core';
+
 import { Observable, Subject, takeUntil } from 'rxjs';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { ModalService } from '@shared/services/modal.service';
 
-// Decorators
+// decorators
 import { Titles } from '@core/decorators/titles.decorator';
 
-// Store
+// store
 import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
-// Enums
+// enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
@@ -26,8 +29,11 @@ import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/tool
 //constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
-//helpers
+// helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+
+// components
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 @Titles()
 @Component({
@@ -36,10 +42,24 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
     styleUrls: ['./dispatch.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
+export class DispatchComponent
+    implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
+    private destroy$ = new Subject<void>();
+
+    public userId: number;
+
+    private resizeObserver: ResizeObserver;
+
+    public activeViewMode: string = DispatchTableStringEnum.BOARD_2;
+
+    public maxToolbarWidth: number = 0;
+
+    public isBoardLocked = true;
+
     tableOptions: any = {};
     tableData: any[] = [];
-    public activeViewMode: string = DispatchTableStringEnum.BOARD_2;
+
     public backFilterQuery = JSON.parse(
         JSON.stringify(TableDropdownComponentConstants.DISPATCH_BACK_FILTER)
     );
@@ -47,27 +67,21 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
     columns: any[] = [];
     dispatchBoardSmallList: Observable<any>;
     dispatchTableList: Observable<number[]>;
-    resizeObserver: ResizeObserver;
-    private destroy$ = new Subject<void>();
+
     dispatcherItems: any[];
-    isBoardLocked = true;
-    maxToolbarWidth: number = 0;
 
     selectedDispatcher;
 
-    public user = localStorage.getItem(TableStringEnum.USER_1)
-        ? JSON.parse(localStorage.getItem(TableStringEnum.USER_1)).userId
-        : null;
-
     constructor(
-        private cd: ChangeDetectorRef,
+        private cdRef: ChangeDetectorRef,
 
-        // Store
+        // store
         private dispatcherQuery: DispatcherQuery,
 
-        // Services
-        public dispatcherService: DispatcherService,
-        private tableService: TruckassistTableService
+        // services
+        private dispatcherService: DispatcherService,
+        private tableService: TruckassistTableService,
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {
@@ -120,15 +134,44 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
                         this.dispatchTableList = this.dispatchTableList;
                 }
             });
+
+        this.getUserId();
+    }
+
+    ngOnChanges() {}
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+
+            this.getToolbarWidth();
+        }, 10);
+    }
+
+    private getUserId(): void {
+        this.userId = localStorage.getItem(TableStringEnum.USER_1)
+            ? JSON.parse(localStorage.getItem(TableStringEnum.USER_1)).userId
+            : null;
     }
 
     onToolBarAction(event: any) {
         switch (event.action) {
             case TableStringEnum.SELECT_ACTION:
                 this.changeDisparcher(event.data);
+
+                break;
+            case DispatchTableStringEnum.STATUS_HISTORY_MODAL:
+                this.modalService.openModal(AssignDispatchLoadModalComponent, {
+                    size: TableStringEnum.LARGE,
+                });
+
                 break;
             case DispatchTableStringEnum.TOGGLE_LOCKED:
                 this.isBoardLocked = !this.isBoardLocked;
+
+                break;
+
+            default:
                 break;
         }
     }
@@ -210,20 +253,13 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
         };
     }
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-            this.getToolbarWidth();
-        }, 10);
-    }
-
     getToolbarWidth() {
         const tableContainer = document.querySelector(
             TableStringEnum.TABLE_CONTAINER
         );
 
         this.maxToolbarWidth = tableContainer.clientWidth;
-        this.cd.detectChanges();
+        this.cdRef.detectChanges();
     }
 
     observTableContainer() {
@@ -253,7 +289,7 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
         this.selectedDispatcher = dispatcher;
         this.selectedDispatcher.canUnlock =
             dispatcher.name === DispatchTableStringEnum.TEAM_BOARD ||
-            dispatcher?.userId === this.user
+            dispatcher?.userId === this.userId
                 ? true
                 : false;
         localStorage.setItem(
@@ -281,7 +317,10 @@ export class DispatchComponent implements OnInit, AfterViewInit, OnChanges {
         ];
     }
 
-    ngOnChanges() {}
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     private dispatchFilters(filter: {
         dispatcherId: number;

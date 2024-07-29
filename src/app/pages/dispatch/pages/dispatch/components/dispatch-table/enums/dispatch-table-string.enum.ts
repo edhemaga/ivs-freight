@@ -19,6 +19,8 @@ export enum DispatchTableStringEnum {
 
     PARKING = 'parking',
 
+    STATUS_HISTORY_MODAL = 'status-history-modal',
+
     BOARD = 'Board',
     BOARD_2 = 'board',
     DISPATCH_USER_SELECT = 'dispatchUserSelect',
