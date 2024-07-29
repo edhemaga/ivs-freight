@@ -24,11 +24,12 @@ import {
 } from 'rxjs';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/utils/constants/chat-svg-routes.constants';
-import { ChatPngRoutes } from '@pages/chat/utils/constants/chat-png-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
 
 // Config
 import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
+import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -41,6 +42,10 @@ import {
   MessageResponse
 } from 'appcoretruckassist';
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+
+// Enums
+import { AttachmentHoveredClass } from '@pages/chat/enums/conversation/attachment-hovered-class.enum';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,14 +77,20 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public ChatSvgRoutes = ChatSvgRoutes;
   public ChatPngRoutes = ChatPngRoutes;
 
+  // Config
+  public ChatDropzone = ChatDropzone;
+
   // Messages
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
 
+  // Emoji
+  public isEmojiSelectionActive: boolean = false;
+
   // Attachment upload
   public attachmentUploadActive: boolean = false;
-  public attachments: ChatAttachmentForThumbnail[] = [];
+  public attachments: UploadFile[] = [];
   public hoveredAttachment!: ChatAttachmentForThumbnail;
 
   // Input toggle
@@ -91,6 +102,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   // Config
   public ChatInput: ChatInput = ChatInput;
+
+  public AttachmentHoveredClass = AttachmentHoveredClass;
 
   constructor(
     // Ref
@@ -186,12 +199,16 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingActivated = true;
   }
 
+  // TODO implement emoji selection
+  public openEmojiSelection(): void {
+    this.isEmojiSelectionActive = true;
+  }
 
   public uploadAttachmentDragAndDrop(): void {
     this.attachmentUploadActive = true;
   }
 
-  public addAttachments(files: ChatAttachmentForThumbnail[]): void {
+  public addAttachments(files: UploadFile[]): void {
     this.attachments = [...this.attachments, ...files];
     this.attachmentUploadActive = false;
 
@@ -204,11 +221,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public clearHoveredAttachment(): void {
     this.documentPreview.forEach(
-      (div: ElementRef) =>
-      //TODO change class
-      {
-        this.renderer.removeClass(div.nativeElement, 'hovered-overlay-light'),
-          this.renderer.removeClass(div.nativeElement, 'hovered-overlay-dark');
+      (div: ElementRef) => {
+        this.renderer.removeClass(div.nativeElement, AttachmentHoveredClass.LIGHT),
+          this.renderer.removeClass(div.nativeElement, AttachmentHoveredClass.DARK);
       }
     );
 
@@ -225,8 +240,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     );
     if (element && isSelectedAttachment) {
       const classToAdd: string = this.isChatTypingBlurred ?
-        "hovered-overlay-light" :
-        "hovered-overlay-dark";
+        AttachmentHoveredClass.LIGHT :
+        AttachmentHoveredClass.DARK;
       this.renderer.addClass(element.nativeElement, classToAdd);
     }
 
@@ -245,21 +260,27 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       case !this.isChatTypingBlurred && isSelectedAttachment:
         icon = ChatSvgRoutes.lightFocusedXIcon;
         break;
+      default:
+        icon = '';
+        this.clearHoveredAttachment();
+        break;
     }
 
     return icon;
 
   }
 
-  public removeAttachment(attachment: ChatAttachmentForThumbnail): void {
+  public removeAttachment(attachment: UploadFile): void {
     this.attachments = [...this.attachments.filter(arg => arg !== attachment)];
   }
 
   public blurInput(): void {
     this.isChatTypingBlurred = false;
+    this.clearHoveredAttachment();
   }
 
   public focusInput(): void {
+    this.clearHoveredAttachment();
     this.isChatTypingBlurred = true;
   }
 

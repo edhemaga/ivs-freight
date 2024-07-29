@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Models
 import {
@@ -11,9 +11,11 @@ import {
     MessageResponse,
     UserType,
 } from 'appcoretruckassist';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
 import { ChatService } from 'appcoretruckassist/api/chat.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 // environment
 import { environment } from 'src/environments/environment';
@@ -22,7 +24,13 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class UserChatService {
-    constructor(public http: HttpClient, private chatService: ChatService) {}
+    constructor(
+        public http: HttpClient,
+
+        // Services
+        private chatService: ChatService,
+        private formDataService: FormDataService,
+    ) { }
 
     public getCompanyUserList(
         userType: UserType,
@@ -40,12 +48,34 @@ export class UserChatService {
         );
     }
 
+    // public getCompanyUserList(
+    //     userType: UserType,
+    //     searchParam?: string
+    // ): Observable<CompanyUserForChatListResponse> {
+    //     const params: HttpParams = new HttpParams({
+    //         fromObject: {
+    //             'CompanyUserChatSpecParams.UserType': userType,
+    //         }
+    //     });
+
+    //     if (searchParam) params.set('CompanyUserChatSpecParams.Search', searchParam);
+
+    //     return this.http.get<CompanyUserForChatListResponse>(`${environment.API_ENDPOINT}/api/chat/user/list`,
+    //         { params });
+    // }
+
     public getConversation(id: number): Observable<ConversationResponse> {
-        return this.chatService.apiChatConversationIdGet(id);
+        return this.http.get<ConversationResponse>(`${environment.API_ENDPOINT}/api/chat/conversation/${id}`);
     }
 
     public getMessages(id: number): Observable<MessageResponse[]> {
-        return this.chatService.apiChatMessageListGet(id);
+        const params: HttpParams = new HttpParams({
+            fromObject: {
+                'MessageSpecParams.ConversationId': id,
+            }
+        });
+        return this.http.get<MessageResponse[]>(`${environment.API_ENDPOINT}/api/chat/message/list`,
+            { params });
     }
 
     public createConversation(
@@ -55,29 +85,20 @@ export class UserChatService {
             participantIds: participants,
         };
 
-        return this.chatService.apiChatConversationPost(
-            conversationParticipants
-        );
+        return this.http.post(`${environment.API_ENDPOINT}/api/chat/conversation`, conversationParticipants)
+
     }
 
     public sendMessage(
         conversationId: number,
         content: string,
-        attachments?: Blob[]
+        attachments?: UploadFile[]
     ): Observable<any> {
         if (!conversationId) return;
 
-        //Data
-        var formData: FormData = new FormData();
+        const data = { conversationId, content, attachments };
 
-        formData.append('MessageType', String(1));
-        formData.append('ConversationId', String(conversationId));
-        formData.append('Content', content);
-
-        if (attachments)
-            attachments.forEach((attachment) => {
-                formData.append('Attachments', attachment);
-            });
+        this.formDataService.extractFormDataFromFunction(data);
 
         // Headers
         const headers = new HttpHeaders({
@@ -86,10 +107,8 @@ export class UserChatService {
 
         return this.http.post(
             `${environment.API_ENDPOINT}/api/chat/message`,
-            formData,
-            {
-                headers,
-            }
+            this.formDataService.formDataValue,
+            { headers }
         );
     }
 }

@@ -114,7 +114,7 @@
             <!-- COMPANY USERS -->
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
-                [type]="'Company'"
+                [type]="'User'"
                 [contactsInfo]="companyUsers"
             >
             </app-chat-user-list>
@@ -137,7 +137,7 @@
             </ng-container>
 
             <ng-template #noConversation>
-                <app-messages-not-selected></app-messages-not-selected>
+                <app-chat-messages-not-selected></app-chat-messages-not-selected>
             </ng-template>
         </div>
 

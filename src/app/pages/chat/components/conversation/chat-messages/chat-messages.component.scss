@@ -84,7 +84,8 @@
 
                 .attachment-list {
                     width: 100%;
-                    height: 46px;
+                    min-height: 46px;
+                    height: fit-content;
                     border-radius: 2px;
                     border-bottom-left-radius: 0;
                     border-bottom-right-radius: 0;
@@ -101,7 +102,17 @@
                         background-color: $bw2;
                     }
 
-                    .attachment-preview {
+                    .attachment-preview-container {
+                        width: fit-content;
+
+                        &-long {
+                            width: 132px;
+                        }
+
+                        &-short {
+                            width: 40px;
+                        }
+
                         margin-right: 8px;
                         padding: 1px;
                         border-radius: 2px;
@@ -160,13 +171,14 @@
                         svg-icon {
                             height: fit-content;
                             position: relative;
-                            top: 0;
-                            right: -6px;
+                            top: -2px;
+                            right: 10px;
                         }
                         &:hover {
                             cursor: pointer;
                         }
                     }
+
                     .hovered-overlay-dark {
                         background-color: lighten($bw5, 20%) !important;
                     }

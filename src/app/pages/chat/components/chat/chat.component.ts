@@ -21,7 +21,7 @@ import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
 import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/utils/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
