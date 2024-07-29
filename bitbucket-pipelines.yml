@@ -26,7 +26,7 @@ pipelines:
             - apt-get update && apt-get install -y openssh-client
             - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
             - chmod 600 ~/.ssh/id_rsa
-            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 rm -rf /home/frontdev/www-tmp
+            - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 '[ -d /home/frontdev/www-tmp ] && rm -rf /home/frontdev/www-tmp'
             - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 mkdir /home/frontdev/www-tmp
             - scp -P29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./dist/carrierassist-fe/* frontdev@208.70.253.204://home/frontdev/www-tmp
             - ssh -p 29879 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null frontdev@208.70.253.204 rm -rf /home/frontdev/www-old
