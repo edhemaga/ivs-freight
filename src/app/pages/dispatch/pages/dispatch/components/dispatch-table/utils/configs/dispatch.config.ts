@@ -45,4 +45,23 @@ export class DispatchConfig {
                     : 'w-col-125',
         };
     }
+
+    static getDriverInputConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver Name',
+            placeholder: 'Driver Name',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-238',
+            placeholderInsteadOfLabel: true,
+            hideDropdownArrow: true,
+            autoFocus: true,
+            blackInput: true,
+            hideRequiredCheck: true,
+            hideDangerMark: true,
+            hideErrorMessage: true,
+            mergeDropdownBodyWithInput: true,
+        };
+    }
 }

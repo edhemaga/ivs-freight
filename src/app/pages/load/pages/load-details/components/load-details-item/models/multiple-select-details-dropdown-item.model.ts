@@ -3,4 +3,5 @@ export interface MultipleSelectDetailsDropdownItem {
     title: string;
     length: number;
     isActive: boolean;
+    hideCount?: boolean;
 }

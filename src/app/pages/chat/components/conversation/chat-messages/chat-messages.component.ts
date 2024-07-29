@@ -45,7 +45,8 @@ import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.m
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
-import { AttachmentHoveredClass } from '@pages/chat/enums/conversation/attachment-hovered-class.enum';
+import { AttachmentHoveredClassStringEnum } from '@pages/chat/enums/conversation/attachment-hovered-class-string.enum';
+import { AttachmentCustomClassEnum } from '@pages/chat/enums/conversation/attachment-custom-classes.enum';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -103,7 +104,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Config
   public ChatInput: ChatInput = ChatInput;
 
-  public AttachmentHoveredClass = AttachmentHoveredClass;
+  // Custom classes
+  public AttachmentHoveredClass = AttachmentHoveredClassStringEnum;
+  public AttachmentCustomClassEnum = AttachmentCustomClassEnum;
 
   constructor(
     // Ref
@@ -222,8 +225,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public clearHoveredAttachment(): void {
     this.documentPreview.forEach(
       (div: ElementRef) => {
-        this.renderer.removeClass(div.nativeElement, AttachmentHoveredClass.LIGHT),
-          this.renderer.removeClass(div.nativeElement, AttachmentHoveredClass.DARK);
+        this.renderer.removeClass(div.nativeElement, AttachmentHoveredClassStringEnum.LIGHT),
+          this.renderer.removeClass(div.nativeElement, AttachmentHoveredClassStringEnum.DARK);
       }
     );
 
@@ -240,8 +243,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     );
     if (element && isSelectedAttachment) {
       const classToAdd: string = this.isChatTypingBlurred ?
-        AttachmentHoveredClass.LIGHT :
-        AttachmentHoveredClass.DARK;
+        AttachmentHoveredClassStringEnum.LIGHT :
+        AttachmentHoveredClassStringEnum.DARK;
       this.renderer.addClass(element.nativeElement, classToAdd);
     }
 

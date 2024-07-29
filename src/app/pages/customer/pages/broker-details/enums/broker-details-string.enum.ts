@@ -23,4 +23,5 @@ export enum BrokerDetailsStringEnum {
     DELIVERY = 'Delivery',
     UNPAID = 'UNPAID',
     PAID = 'PAID',
+    LOAD_SORT_TEXT = 'Load No.',
 }

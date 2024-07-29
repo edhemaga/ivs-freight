@@ -1,0 +1,129 @@
+@import 'src/theme/variables';
+@import '../../dispatch-table.component.scss';
+
+.driver-container {
+    .padding-inside {
+        .info-item {
+            padding-right: 0px;
+
+            .driver-items-hold {
+                flex: 1;
+
+                .owner-circle {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-13;
+                            }
+                        }
+    
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $ta-blue-14;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .remove-icon-container {
+                width: 26px;
+                height: 26px;
+                border-radius: 2px;
+                background: transparent;
+                cursor: pointer;
+                transition: background 0.2s ease-in;
+    
+                &:hover {
+                    background: $ta-red-15;
+    
+                    svg {
+                        path {
+                            fill: $ta-red-14;
+                        }
+                    }
+                }
+    
+                &.disabled {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                        }
+                    }
+    
+                    &:hover {
+                        background: transparent;
+    
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
+                    }
+                }
+    
+                svg {
+                    path {
+                        fill: $bw5;
+                        transition: fill 0.2s ease-in;
+                    }
+                }
+            }
+        }
+
+        .driver-buttons {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 11;
+
+            span {
+                width: 26px;
+                height: 26px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding-left: inherit;
+
+                svg-icon {
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+
+                &:hover {
+                    background-color: $ta-blue-17;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    svg-icon {
+                        path {
+                            fill: $ta-blue-15;
+                        }
+                    }
+                }
+
+                &.only_active_icon {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: #ffffff33;
+                            }
+                        }
+                    }
+                }
+                &.active-icon {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: #ffffff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

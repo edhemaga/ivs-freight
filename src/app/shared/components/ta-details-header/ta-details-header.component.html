@@ -207,6 +207,13 @@
                         </div>
                     </ng-container>
 
+                    <ng-container *ngIf="totalCost">
+                        <div class="border-line-left"></div>
+                        <div class="total-cost ta-font-bold mx-2">
+                            {{ totalCost | formatCurrency }}
+                        </div>
+                    </ng-container>
+
                     <ng-container *ngIf="isSearchBtn && isSearchBtnDisplayed">
                         <div
                             class="d-flex align-items-center search-btn-container"
@@ -230,61 +237,187 @@
                     </ng-container>
                 </div>
 
-                <div *ngIf="hasIcon" class="repair-header-icons">
+                <ng-container *ngIf="hasSearch">
                     <div class="border-line-left"></div>
-                    <span class="ic-hed" *ngIf="timeFilter">
-                        <app-ta-filter
-                            [type]="'timeFilter'"
-                            [icon]="'ic_time'"
-                            [filterTitle]="'Time Filter'"
-                        >
-                        </app-ta-filter>
-                        <div class="border-line-left"></div>
+                    <span class="mx-1">
+                        <app-ta-search
+                            [searchType]="headerText"
+                            [toolbarSearch]="true"
+                            [selectedTabData]="{
+                                gridNameTitle: searchPlaceholder
+                            }"
+                        ></app-ta-search>
                     </span>
-                    <span class="ic-hed" *ngIf="pmFilter">
-                        <app-ta-filter
-                            [type]="'pmFilter'"
-                            [icon]="'default_pm'"
-                            [filterTitle]="'PM Filter'"
-                            [pmSubtype]="'truck'"
-                            [defFilterHolder]="true"
-                            [noLeftIcon]="false"
-                            [leftSideIcon]="true"
-                        >
-                        </app-ta-filter>
-                        <div class="border-line-left"></div>
-                    </span>
-                    <span class="ic-hed" *ngIf="categoryFilter">
-                        <app-ta-filter
-                            [type]="'categoryRepairFilter'"
-                            [icon]="'ic_key-repair'"
-                            [filterTitle]="'Category Repair Filter'"
-                            [defFilterHolder]="true"
-                            [noLeftIcon]="false"
-                            [leftSideIcon]="true"
-                        >
-                        </app-ta-filter>
-                        <div class="border-line-left"></div>
-                    </span>
-                    <span class="ic-hed" *ngIf="moneyFilter">
-                        <app-ta-filter
-                            [type]="'moneyFilter'"
-                            [icon]="'dollar'"
-                            [filterTitle]="'Money Filter'"
-                            [subType]="'no-all'"
-                            [moneyFilter]="true"
-                        >
-                        </app-ta-filter>
-                        <div class="border-line-left"></div>
-                    </span>
+                </ng-container>
 
-                    <div *ngIf="totalCost" class="total-cost">
-                        {{ totalCost | formatCurrency }}
+                <ng-container *ngIf="hasIcon">
+                    <div class="repair-header-icons gap-1">
+                        <div class="border-line-left"></div>
+
+                        <ng-container *ngIf="timeFilter">
+                            <span class="ic-hed">
+                                <app-ta-filter
+                                    [type]="'timeFilter'"
+                                    [icon]="'ic_time'"
+                                    [filterTitle]="'Time Filter'"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="pickupFilter">
+                            <span class="ic-hed">
+                                <app-ta-special-filter
+                                    [type]="'pickupFilter'"
+                                    [icon]="'ic_pickup_filter'"
+                                    [filterTitle]="'Pickup Filter'"
+                                    [dataArray]="pickupFilterData"
+                                    (setFilter)="
+                                        onSpecialFilter($event, 'pickupFilter')
+                                    "
+                                    [selectedFilter]="
+                                        pickupFilterData.selectedFilter
+                                    "
+                                    [isCountHidden]="true"
+                                ></app-ta-special-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="deliveryFilter">
+                            <span class="ic-hed">
+                                <app-ta-special-filter
+                                    [type]="'deliveryFilter'"
+                                    [icon]="'ic_delivery_filter'"
+                                    [filterTitle]="'Delivery Filter'"
+                                    [dataArray]="deliveryFilterData"
+                                    (setFilter)="
+                                        onSpecialFilter(
+                                            $event,
+                                            'deliveryFilter'
+                                        )
+                                    "
+                                    [selectedFilter]="
+                                        deliveryFilterData.selectedFilter
+                                    "
+                                    [isCountHidden]="true"
+                                ></app-ta-special-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="dispatcherFilter">
+                            <span class="ic-hed">
+                                <!-- DISPECHER FILTER -->
+                                <app-ta-filter
+                                    [type]="'userFilter'"
+                                    [searchState]="true"
+                                    [filterTitle]="'Dispatcher Filter'"
+                                    [defFilterHolder]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter
+                            ></span>
+                        </ng-container>
+
+                        <ng-container *ngIf="statusFilter">
+                            <span class="ic-hed">
+                                <!-- STATUS FILTER -->
+                                <app-ta-filter
+                                    [type]="'statusFilter'"
+                                    [icon]="'broker-half-circle'"
+                                    [filterTitle]="'Status Filter'"
+                                    [defFilterHolder]="true"
+                                    [noLeftIcon]="false"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="locationFilter">
+                            <span class="ic-hed">
+                                <!-- LOCATION FILTER -->
+                                <app-ta-filter
+                                    [type]="'locationFilter'"
+                                    [icon]="'address'"
+                                    [filterTitle]="'Area Filter'"
+                                    [areaFilter]="true"
+                                    [locationDefType]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter
+                            ></span>
+                        </ng-container>
+
+                        <ng-container *ngIf="pmFilter">
+                            <span class="ic-hed">
+                                <app-ta-filter
+                                    [type]="'pmFilter'"
+                                    [icon]="'default_pm'"
+                                    [filterTitle]="'PM Filter'"
+                                    [pmSubtype]="'truck'"
+                                    [defFilterHolder]="true"
+                                    [noLeftIcon]="false"
+                                    [leftSideIcon]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="categoryFilter">
+                            <span class="ic-hed">
+                                <app-ta-filter
+                                    [type]="'categoryRepairFilter'"
+                                    [icon]="'ic_key-repair'"
+                                    [filterTitle]="'Category Repair Filter'"
+                                    [defFilterHolder]="true"
+                                    [noLeftIcon]="false"
+                                    [leftSideIcon]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="moneyFilter">
+                            <span class="ic-hed">
+                                <app-ta-filter
+                                    [type]="'moneyFilter'"
+                                    [icon]="'dollar'"
+                                    [filterTitle]="'Money Filter'"
+                                    [subType]="'all'"
+                                    [moneyFilter]="true"
+                                    [loadType]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                >
+                                </app-ta-filter>
+                            </span>
+                        </ng-container>
                     </div>
-                </div>
+                </ng-container>
             </div>
 
             <div class="header-plus-button">
+                <ng-container *ngIf="hasSort">
+                    <div class="sort-container d-flex align-items-center gap-1">
+                        <span class="sort-text ta-font-medium">{{
+                            sortText
+                        }}</span>
+                        <svg-icon
+                            (click)="sortItems()"
+                            class="sort-arrow d-flex align-items-center justify-content-center"
+                            [class.rotate]="!isSortAscending"
+                            src="/assets/svg/common/sortArrow_filter.svg"
+                            [svgStyle]="{
+                                'width.px': '18',
+                                'height.px': '18'
+                            }"
+                        ></svg-icon>
+                    </div>
+                    <div class="border-line-left mx-1"></div>
+                </ng-container>
+
                 <div class="date-arrow-repair">
                     <p *ngIf="customText" class="date-repair">
                         {{ customText }}
@@ -452,13 +585,15 @@
                         {{ dropdownItem.title }}
                     </p>
 
-                    <div
-                        class="d-flex justify-content-center align-items-center counter-container"
-                    >
-                        <p class="m-0">
-                            {{ dropdownItem.length }}
-                        </p>
-                    </div>
+                    <ng-container *ngIf="!dropdownItem?.hideCount">
+                        <div
+                            class="d-flex justify-content-center align-items-center counter-container"
+                        >
+                            <p class="m-0">
+                                {{ dropdownItem.length }}
+                            </p>
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>

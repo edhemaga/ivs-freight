@@ -13,23 +13,20 @@
             <div *ngSwitchCase="'load'" class="load">
                 <div
                     class="repair-container shipper-details-padding"
-                    *ngIf="shipperData?.data?.loadStops?.length"
+                    *ngIf="shipperLoads?.length"
                 >
                     <div class="repair-header">
                         <span class="repaier-headers">LOAD NO</span>
                         <span class="repaier-headers">DRIVER</span>
                         <span class="repaier-headers">TRUCK</span>
                         <span class="repaier-headers">TRAILER</span>
-                        <span class="repaier-headers">ARRIVE</span>
-                        <span class="repaier-headers">DEPART</span>
-                        <span class="repaier-headers">WAIT</span>
+                        <span class="repaier-headers text-right">ARRIVE</span>
+                        <span class="repaier-headers text-right">DEPART</span>
+                        <span class="repaier-headers text-right">WAIT</span>
                     </div>
                     <div class="divider"></div>
                     <ng-container
-                        *ngFor="
-                            let loadStop of shipperData.data.loadStops;
-                            trackBy: identity
-                        "
+                        *ngFor="let loadStop of shipperLoads; trackBy: identity"
                     >
                         <div class="repair-items-wrapper">
                             <div class="repair-items">
@@ -67,8 +64,8 @@
                                     </div>
                                     <span class="date">
                                         {{
-                                            loadStop?.driver?.firstName.length >
-                                            6
+                                            loadStop?.driver?.firstName
+                                                ?.length > 6
                                                 ? loadStop?.driver
                                                       ?.firstName[0] + '.'
                                                 : loadStop?.driver?.firstName
@@ -81,41 +78,61 @@
                                     <span class="date">{{
                                         loadStop?.driver?.trailerNumber
                                     }}</span>
-                                    <div class="time-date">
-                                        <span class="date">{{
-                                            loadStop?.arrive | formatDateP
-                                        }}</span>
-                                        <span class="time">{{
-                                            loadStop?.arrive | formatTime
-                                        }}</span>
+                                    <div class="time-date align-items-end">
+                                        <ng-container *ngIf="loadStop?.arrive">
+                                            <div
+                                                class="d-flex flex-column align-items-center justify-content-center"
+                                            >
+                                                <span class="date">{{
+                                                    loadStop?.arrive
+                                                        | formatDateP
+                                                }}</span>
+                                                <span class="time">{{
+                                                    loadStop?.arrive
+                                                        | formatTime
+                                                }}</span>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                    <div class="time-date">
-                                        <span class="date">{{
-                                            loadStop?.depart | formatDateP
-                                        }}</span>
-                                        <span class="time">{{
-                                            loadStop?.depart | formatTime
-                                        }}</span>
+                                    <div class="time-date align-items-end">
+                                        <ng-container *ngIf="loadStop?.depart">
+                                            <div
+                                                class="d-flex flex-column align-items-center justify-content-center"
+                                            >
+                                                <span class="date">{{
+                                                    loadStop?.depart
+                                                        | formatDateP
+                                                }}</span>
+                                                <span class="time">{{
+                                                    loadStop?.depart
+                                                        | formatTime
+                                                }}</span>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                    <span class="wait-time">
+                                    <span class="wait-time d-flex align-items-center justify-content-end gap-1">
                                         <ng-container
                                             *ngIf="loadStop?.wait?.days > 0"
                                         >
                                             <span class="hours"
-                                                >{{ loadStop?.wait?.days }} d</span
+                                                >{{
+                                                    loadStop?.wait?.days
+                                                }}d</span
                                             >
                                         </ng-container>
                                         <ng-container
                                             *ngIf="loadStop?.wait?.hours > 0"
                                         >
                                             <span class="hours"
-                                                >{{ loadStop?.wait?.hours }} h</span
+                                                >{{
+                                                    loadStop?.wait?.hours
+                                                }}h</span
                                             >
                                         </ng-container>
                                         <ng-container
                                             *ngIf="
-                                            loadStop?.wait?.hours <= 0 &&
-                                            loadStop?.wait?.days <= 0
+                                                loadStop?.wait?.days <= 0 &&
+                                                loadStop?.wait?.minutes
                                             "
                                         >
                                             <span class="hours">

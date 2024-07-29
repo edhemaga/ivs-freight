@@ -16,6 +16,8 @@
                 >
                     <div class="d-flex">
                         <img
+                            width="22px"
+                            height="22px"
                             class="chat-list-item-avatar align-items-center"
                             [src]="remainingParticipants[0]?.avatarFile.url"
                             [alt]="remainingParticipants[0]?.fullName"
@@ -286,7 +288,10 @@
                         >
                             <svg-icon
                                 class="pointer d-flex justify-content-center align-items-center"
-                                [ngClass]="messageToSend && 'blue-icon'"
+                                [ngClass]="
+                                    messageToSend &&
+                                    AttachmentCustomClassEnum.BLUE_ICON
+                                "
                                 [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
                                 [src]="ChatSvgRoutes.sendMessageIcon"
                             ></svg-icon>

@@ -10,6 +10,9 @@ import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
 // Models
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
+// Enums
+import { AttachmentType } from '@pages/chat/enums/conversation/attachment-type.enum';
+
 @Component({
   selector: 'app-chat-message-attachment-preview',
   templateUrl: './chat-message-attachment-preview.component.html',
@@ -30,6 +33,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
   public isDocument!: boolean;
   public isMedia!: boolean;
   public documentIllustrationPath!: string;
+  public AttachmentType = AttachmentType;
 
   public previewWidth: string = 'fit-content';
 
@@ -53,44 +57,36 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
 
     switch (extension) {
 
-      case 'zip': {
+      case AttachmentType.ZIP:
         this.setIllustrationType(ChatPngRoutes.zipFileType);
         break;
-      }
 
-      case 'xls': {
+      case AttachmentType.XLS:
         this.setIllustrationType(ChatPngRoutes.xlsFileType);
         break;
 
-      }
-
-      case 'pdf': {
+      case AttachmentType.PDF:
         this.setIllustrationType(ChatPngRoutes.pdfFileType);
         break;
-      }
 
-      case 'docx': {
+      case AttachmentType.DOCX:
         this.setIllustrationType(ChatPngRoutes.docxFileType);
         break;
-      }
 
-      case 'jpg':
-      case 'jpeg':
-      case 'png': {
+      case AttachmentType.JPG:
+      case AttachmentType.JPEG:
+      case AttachmentType.PNG:
         this.isDocument = false;
         this.isMedia = true;
         if (!this.isInMessage)
           this.previewWidth = '40px';
         break;
-      }
 
-      default: {
+      default:
         this.isDocument = false;
         this.isMedia = false;
         break;
-      }
     }
-
   }
 
   private setIllustrationType(illustrationPath: string): void {

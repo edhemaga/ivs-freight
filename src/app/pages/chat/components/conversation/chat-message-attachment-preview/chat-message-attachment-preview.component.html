@@ -3,7 +3,7 @@
     [ngStyle]="{ width: previewWidth }"
     (click)="isInMessage && downloadFile()"
 >
-    <ng-container *ngIf="isMedia">
+    <ng-container *ngIf="isMedia; else document">
         <img
             [src]="attachment.url"
             [alt]="attachment.fileName"
@@ -12,7 +12,7 @@
             height="40"
         />
     </ng-container>
-    <ng-container *ngIf="isDocument">
+    <ng-template #document>
         <div class="attachment-preview-document d-flex">
             <img
                 [src]="documentIllustrationPath"
@@ -40,5 +40,5 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    </ng-template>
 </div>
