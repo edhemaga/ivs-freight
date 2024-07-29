@@ -37,7 +37,8 @@ export enum DispatchTableStringEnum {
     LOAD_DISPATCHER = 'load-dispatcher',
     DISPATCHER = 'dispatcher',
     OFF = 'Off',
-    OFF_2 = "off",
+    OFF_2 = 'off',
     TEXTAREA = 'textarea',
     COPY = 'copy',
+    VALUE = 'value',
 }

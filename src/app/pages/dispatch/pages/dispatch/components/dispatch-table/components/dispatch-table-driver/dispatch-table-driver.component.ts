@@ -1,9 +1,11 @@
 import {
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     Output,
+    Renderer2,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
@@ -13,6 +15,7 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
 // models
 import { OpenModal } from '@shared/models/open-modal.model';
 import { DriverMinimalResponse, HosResponse } from 'appcoretruckassist';
+import { DriverItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/driver-items.model';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
@@ -78,7 +81,9 @@ export class DispatchTableDriverComponent {
 
     constructor(
         private ref: ChangeDetectorRef,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private renderer: Renderer2,
+        private el: ElementRef
     ) {}
 
     get driverInputConfig(): ITaInput {
@@ -115,12 +120,12 @@ export class DispatchTableDriverComponent {
             this.ref.detectChanges();
         }, 2000);
 
-        const el = document.createElement(DispatchTableStringEnum.TEXTAREA);
-        el.value = text;
-        document.body.appendChild(el);
+        const el = this.renderer.createElement(DispatchTableStringEnum.TEXTAREA);
+        this.renderer.setProperty(el, DispatchTableStringEnum.VALUE, text);
+        this.renderer.appendChild(this.el.nativeElement, el);
         el.select();
         document.execCommand(DispatchTableStringEnum.COPY);
-        document.body.removeChild(el);
+        this.renderer.removeChild(this.el.nativeElement, el);
     }
 
     public addDriver<T extends OpenModal>(event: T): void {
@@ -157,7 +162,7 @@ export class DispatchTableDriverComponent {
     }
 
     public toggleHos(tooltip: NgbTooltip, data: any) {
-        if (!data || data.length === 0)
+        if (!data.length)
             data = [
                 {
                     start: 0,
@@ -175,8 +180,7 @@ export class DispatchTableDriverComponent {
         else tooltip.open();
     }
 
-    public identity(index: number, item: any): number {
-        //leave this any for now
+    public identity<T extends DriverItems>(index: number, item: T): number {
         return item.id;
     }
 }
