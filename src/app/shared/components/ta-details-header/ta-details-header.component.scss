@@ -314,6 +314,46 @@ p {
                 }
             }
         }
+
+        .sort-container {
+            .sort-text {
+                color: $ta-black;
+                font-size: 14px;
+                line-height: 18px;
+            }
+    
+            .sort-arrow {
+                width: 26px;
+                height: 26px;
+                border-radius: 2px;
+                transition: background 0.2s ease-in;
+
+                svg {
+                    transform: rotate(0deg);
+                    transition: transform 0.2s ease-in;
+
+                    path {
+                        transition: fill 0.2s ease-in;
+                    }
+                }
+
+                &.rotate {
+                    svg {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                &:hover {
+                    background: $ta-blue-16;
+
+                    svg {
+                        path {
+                            fill: $ta-blue-15 !important;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 .border-line-left {
@@ -363,9 +403,27 @@ svg {
     user-select: none;
 }
 
+.total-cost {
+    color: $ta-blue-13;
+    font-size: 14px;
+    line-height: 18px;
+
+    &::-moz-selection {
+        color: $ta-blue-13;
+        background: rgba(109, 130, 199, 0.2);
+    }
+
+    &::selection {
+        color: $ta-blue-13;
+        background: rgba(109, 130, 199, 0.2);
+    }
+}
+
 .repair-header-icons {
     display: flex;
     justify-content: center;
+    align-items: center;
+    
     .single-repair-icon {
         padding-left: 7px;
         padding-right: 7px;
@@ -379,22 +437,6 @@ svg {
                     fill: #6c6c6c;
                 }
             }
-        }
-    }
-    .total-cost {
-        font-size: 14px;
-        font-weight: 700;
-        color: #6d82c7;
-        height: 18px;
-        padding-left: 15px;
-        padding-top: 3px;
-        &::-moz-selection {
-            color: #6d82c7;
-            background: rgba(109, 130, 199, 0.2);
-        }
-        &::selection {
-            color: #6d82c7;
-            background: rgba(109, 130, 199, 0.2);
         }
     }
 }

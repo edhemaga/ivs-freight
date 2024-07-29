@@ -7,6 +7,7 @@ export interface FilterOptionsLoad {
     dispatchId: number;
     brokerId: number;
     shipperId: number;
+    loadId?: number;
     dateFrom: string;
     dateTo: string;
     revenueFrom: number;

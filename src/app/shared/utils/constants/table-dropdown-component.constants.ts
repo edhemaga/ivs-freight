@@ -45,6 +45,39 @@ export class TableDropdownComponentConstants {
         searchThree: null,
     };
 
+    
+    static SHIPPER_LOADS_BACK_FILTER: FilterOptionsLoad = {
+        loadType: null,
+        statusType: null,
+        status: null,
+        dispatcherIds: null,
+        dispatcherId: null,
+        dispatchId: null,
+        brokerId: null,
+        shipperId: null,
+        loadId: null,
+        dateFrom: null,
+        dateTo: null,
+        revenueFrom: null,
+        revenueTo: null,
+        truckId: null,
+        pageIndex: null,
+        pageSize: null,
+        companyId: null,
+        rateFrom: null,
+        rateTo: null,
+        paidFrom: null,
+        paidTo: null,
+        dueFrom: null,
+        dueTo: null,
+        pickup: null,
+        delivery: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
+    };
+
     static DROPDOWN_DATA: DropdownItem[] = [
         {
             title: 'Edit',
