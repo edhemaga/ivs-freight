@@ -184,8 +184,15 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.shipperLoads = data?.loadStops;
         this.shipperContacts = data?.shipperContacts;
         this.backLoadFilterQuery.shipperId = this.shipperId;
-        this.pickupFilterData.filteredArray = this.shipperLoads;
-        this.deliveryFilterData.filteredArray = this.shipperLoads;
+        this.pickupFilterData = {
+            selectedFilter: false,
+            filteredArray: this.shipperLoads,
+        };
+        this.deliveryFilterData = {
+            selectedFilter: false,
+            filteredArray: this.shipperLoads,
+        };
+        this.tableService.sendResetSpecialFilters(true);
     }
 
     public deleteShipperById(id: number): void {
