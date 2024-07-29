@@ -16,7 +16,6 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 
 // modules
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Options } from 'ng5-slider';
 
 // pipes
@@ -25,9 +24,6 @@ import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
-
-// components
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
@@ -50,6 +46,7 @@ import {
     TrailerMinimalResponse,
     TruckListResponse,
     TruckMinimalResponse,
+    DriverMinimalResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
@@ -125,11 +122,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     __isBoardLocked: boolean = true;
     __change_in_proggress: boolean = false;
 
-    hosHelper = [];
-
     openedHosData = [];
-
-    tooltip: any;
 
     options: Options = {
         floor: 0,
@@ -492,39 +485,37 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
-    /////////////////////////////////////////// UPDATE
+    public handleAddDriverClick(eventParam: {
+        event: DriverMinimalResponse;
+        index: number;
+    }): void {
+        const { event, index } = eventParam;
 
-    showDriverDropdown(ind: number) {
-        this.openedDriverDropdown = ind;
+        const driverOrCoDriver = !this.dispatchData.dispatches[
+            this.openedDriverDropdown
+        ]?.driver
+            ? DispatchTableStringEnum.DRIVER_ID
+            : DispatchTableStringEnum.CO_DRIVER_ID;
+
+        this.updateOrAddDispatchBoardAndSend(driverOrCoDriver, event.id, index);
     }
 
-    addDriver(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: DriverModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                const driverOrCoDriver = !this.dispatchData.dispatches[
-                    this.openedDriverDropdown
-                ]?.driver
-                    ? 'driverId'
-                    : 'coDriverId';
-                this.updateOrAddDispatchBoardAndSend(
-                    driverOrCoDriver,
-                    e.id,
-                    this.openedDriverDropdown
-                );
-            }
-        }
+    public handleRemoveDriverClick(event: { index: number }) {
+        const { index } = event;
 
-        this.openedDriverDropdown = -1;
+        if (
+            !this.dispatchData.dispatches[index].truck &&
+            !this.dispatchData.dispatches[index].trailer
+        ) {
+            const id = this.dispatchData.dispatches[index].id;
+
+            this.isDispatchBoardChangeInProgress = true;
+            this.checkEmptySet = DispatchTableStringEnum.DRIVER_ID;
+
+            this.deleteDispatchBoardById(id);
+        } else {
+            this.updateOrAddDispatchBoardAndSend(DispatchTableStringEnum.DRIVER_ID, null, index);
+        }
     }
 
     addStatus(e) {
@@ -544,30 +535,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
 
         this.statusOpenedIndex = -1;
-    }
-
-    toggleHos(tooltip: NgbTooltip, data: any) {
-        this.hosHelper = [];
-        if (!data || data.length === 0) {
-            data = [
-                {
-                    start: 0,
-                    end: new Date().getHours() * 60 + new Date().getMinutes(),
-                    flag: 'off',
-                    indx: 0,
-                },
-            ];
-        }
-
-        this.tooltip = tooltip;
-
-        this.openedHosData = data;
-
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
     }
 
     saveHosData(hos, indx) {
