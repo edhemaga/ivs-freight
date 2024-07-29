@@ -12,7 +12,6 @@
         height: 32px;
         padding: 0 4px;
         margin-bottom: 4px;
-        border-bottom: 1px solid $bw-9;
 
         .name {
             padding-left: 4px;
@@ -21,10 +20,18 @@
 
         .right-icons {
             margin: auto 0 auto auto;
+
             svg-icon {
                 padding: 0 4px;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
+    }
+    .messages-header-border-bottom {
+        border-bottom: 1px solid $bw-9;
     }
 
     .border-container {
@@ -40,7 +47,7 @@
     }
 
     .messages-content {
-        height: calc(100% - 75px);
+        height: calc(100% - 79px);
         overflow-y: scroll;
 
         .empty-conversation {
@@ -57,8 +64,9 @@
 
     .chat-footer {
         width: 100%;
-        height: 42px;
+        min-height: 46px;
         border-top: 1px solid $bw-9;
+        margin: 2px;
 
         .left-side {
             width: 100%;
@@ -73,17 +81,139 @@
             .form-wrapper {
                 flex: 1;
                 width: 100%;
+
+                .attachment-list {
+                    width: 100%;
+                    min-height: 46px;
+                    height: fit-content;
+                    border-radius: 2px;
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                    padding: 4px 2px 2px 4px;
+                    margin-top: 8px;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+
+                    &-dark {
+                        background-color: $ta-black-3;
+                    }
+
+                    &-light {
+                        background-color: $bw2;
+                    }
+
+                    .attachment-preview-container {
+                        width: fit-content;
+
+                        &-long {
+                            width: 132px;
+                        }
+
+                        &-short {
+                            width: 40px;
+                        }
+
+                        margin-right: 8px;
+                        padding: 1px;
+                        border-radius: 2px;
+
+                        &-dark {
+                            background-color: $bw2;
+                            color: $ta-black-2 !important;
+                        }
+
+                        &-dark-focused {
+                            background-color: $ta-black;
+                        }
+
+                        &-light {
+                            background-color: $ta-black-2;
+                            color: $white;
+                        }
+
+                        &-light-focused {
+                            background-color: $bw5;
+                        }
+
+                        &-document {
+                            height: 36px;
+                            width: 132px;
+                            padding-left: 6px;
+
+                            &-info {
+                                line-height: 14px;
+                                font-size: 11px;
+                                width: 84px;
+                                height: 14px;
+
+                                .text {
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                }
+
+                                .name {
+                                    padding: 4px;
+                                }
+
+                                .size {
+                                    color: $bw5;
+                                    padding: 0 4px;
+                                }
+                            }
+
+                            &-thumbnail {
+                                height: 40px;
+                                padding-right: 6px;
+                            }
+                        }
+
+                        svg-icon {
+                            height: fit-content;
+                            position: relative;
+                            top: -2px;
+                            right: 10px;
+                        }
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .hovered-overlay-dark {
+                        background-color: lighten($bw5, 20%) !important;
+                    }
+
+                    .hovered-overlay-light {
+                        background-color: $ta-black !important;
+                    }
+                }
             }
         }
 
-        svg-icon {
-            padding: 0 12px;
-        }
+        .right-side {
+            .icon-wrapper {
+                height: 26px;
+                width: 26px;
+                margin: 0 6px;
 
-        .blue-icon {
-            svg {
-                path {
-                    fill: $ta-blue-13;
+                .icon {
+                    width: 100%;
+                    border-radius: 2px;
+                }
+
+                :hover {
+                    background-color: $bw2;
+                }
+                svg-icon:hover {
+                    cursor: pointer;
+                }
+
+                .blue-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
                 }
             }
         }

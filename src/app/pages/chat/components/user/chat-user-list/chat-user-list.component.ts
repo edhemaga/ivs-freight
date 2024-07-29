@@ -19,13 +19,13 @@ import {
 } from '@angular/forms';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
 // Config
-import { ChatInput } from '@pages/chat/util/config/chat-input.config';
+import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -131,7 +131,6 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
 
   private getUpdatedData(searchTerm?: string): Observable<CompanyUserChatResponsePaginationReduced> {
     const castedUserType: UserType = UserType[this.type];
-
     return this.userChatService
       .getCompanyUserList(castedUserType, searchTerm?.trim())
       .pipe(takeUntil(this.destroy$),
