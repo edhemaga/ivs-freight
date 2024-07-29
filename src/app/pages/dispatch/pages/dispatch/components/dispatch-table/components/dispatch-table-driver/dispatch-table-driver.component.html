@@ -1,0 +1,376 @@
+<div
+    class="main_inside driver-container"
+    [class.filled]="driver"
+    [class.default]="!driver && !driverList.length && !isBoardLocked"
+    [class.isDragging]="isDrag && draggingType === 'driver'"
+>
+    <ng-container
+        *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
+    >
+        <ng-container *ngIf="!driver && driverList.length && !isBoardLocked">
+            <app-dispatch-table-add-new
+                [isDrag]="isDrag"
+                (clickValueEmitter)="showDriverDropdown(rowIndex)"
+            ></app-dispatch-table-add-new>
+        </ng-container>
+
+        <ng-container *ngIf="driver">
+            <div class="padding-inside">
+                <div class="info-item">
+                    <div class="driver-buttons">
+                        <ng-container *ngIf="driverHover.txt !== 'email'">
+                            <span
+                                (mouseover)="setMouseOver('phone', rowIndex)"
+                                (mouseout)="setMouseOut()"
+                                (click)="copy(phone, rowIndex, 'phone')"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    copyIndex === rowIndex &&
+                                    driverCopy.txt === 'phone'
+                                        ? 'Copied'
+                                        : 'Copy'
+                                "
+                                [tooltipBackground]="
+                                    copyIndex === rowIndex &&
+                                    driverCopy.txt === 'phone'
+                                        ? '#3B73ED'
+                                        : '#424242'
+                                "
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="dispatchTableSvgRoutes.phone"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                    [fill]="'#ff0000'"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                        <span
+                            (mouseover)="setMouseOver('email', rowIndex)"
+                            (mouseout)="setMouseOut()"
+                            (click)="copy(email, rowIndex, 'email')"
+                            ngbTooltip
+                            [mainTooltip]="
+                                copyIndex === rowIndex &&
+                                driverCopy.txt === 'email'
+                                    ? 'Copied'
+                                    : 'Copy'
+                            "
+                            [tooltipBackground]="
+                                copyIndex === rowIndex &&
+                                driverCopy.txt === 'email'
+                                    ? '#3B73ED'
+                                    : '#424242'
+                            "
+                            position="bottom"
+                        >
+                            <svg-icon
+                                [src]="dispatchTableSvgRoutes.email"
+                                [svgStyle]="{
+                                    'width.px': '18',
+                                    'height.px': '18'
+                                }"
+                                [fill]="'#ff0000'"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                    <div class="driver-items-hold d-flex align-items-center">
+                        <ng-container *ngIf="driverHover.indx !== rowIndex">
+                            <div
+                                #t1="ngbPopover"
+                                (click)="
+                                    toggleHos(t1, hoursOfService, dispatchId)
+                                "
+                                (hidden)="saveHosData(hoursOfService, rowIndex)"
+                                [class.statusOpened]="statusOpenedIndex > -1"
+                                [class.empty-box-field]="true"
+                                [ngbPopover]="hos"
+                                autoClose="outside"
+                                class="hos-column"
+                                [ngClass]="
+                                    hoursOfService &&
+                                    hoursOfService[hoursOfService.length - 1]
+                                        ?.flag.name === 'On'
+                                        ? 'active_hos'
+                                        : 'innactive_hos'
+                                "
+                                placement="bottom"
+                                triggers="manual"
+                                container="body"
+                                popoverClass="hos-ngb-popover"
+                            >
+                                <div
+                                    class="hos-img"
+                                    ngbTooltip
+                                    mainTooltip="HOS"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        [src]="dispatchTableSvgRoutes.hosArrow"
+                                    ></svg-icon>
+                                </div>
+                                <div class="hos-number">
+                                    {{ hoursOfService ?? [] | hosTime }}
+                                </div>
+                            </div>
+                            <span class="dr-span-left"
+                                >{{ driver.firstName }}
+                                {{ driver.lastName }}</span
+                            >
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driverHover.indx === rowIndex &&
+                                driverHover.txt === 'phone'
+                            "
+                        >
+                            <div class="copy_divs">
+                                {{ phone }}
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driverHover.indx === rowIndex &&
+                                driverHover.txt === 'email'
+                            "
+                        >
+                            <div class="copy_divs">
+                                {{ email }}
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                driver.owner && driverHover.indx !== rowIndex
+                            "
+                        >
+                            <span
+                                class="owner-circle"
+                                ngbTooltip
+                                mainTooltip="Owner"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="dispatchTableSvgRoutes.driverOwner"
+                                    [svgStyle]="{
+                                        'width.px': '13',
+                                        'height.px': '13'
+                                    }"
+                                    [fill]="'#ff0000'"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                    </div>
+                    <ng-container *ngIf="!isBoardLocked && !isDrag">
+                        <div
+                            class="d-flex justify-content-center align-items-center remove-icon-container"
+                            [ngClass]="{ disabled: isActiveLoad }"
+                            ngbTooltip
+                            [mainTooltip]="
+                                isActiveLoad ? 'Active Load' : 'Remove'
+                            "
+                            [tooltipBackground]="
+                                isActiveLoad ? '#424242' : '#DF3C3C'
+                            "
+                            tooltipMarginTop="5px"
+                            position="bottom"
+                            (click)="removeDriver(rowIndex)"
+                        >
+                            <svg-icon
+                                class="icon"
+                                [src]="dispatchTableSvgRoutes.closeSvgRoute"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <ng-template #driverDropdown>
+        <app-ta-input-dropdown
+            [formControl]="driverFormControl"
+            [template]="'details-template'"
+            [inputConfig]="driverInputConfig"
+            [options]="driverList"
+            [canAddNew]="true"
+            [canOpenModal]="true"
+            [activeItem]="null"
+            (selectedItem)="addDriver($event)"
+        ></app-ta-input-dropdown>
+    </ng-template>
+</div>
+
+<ng-template #hos>
+    <div class="hos-container">
+        <div class="hos-header">
+            <div class="hos-header-letters">
+                <div>M</div>
+                <div>N</div>
+                <div>M</div>
+            </div>
+            <ng-container
+                *ngFor="
+                    let item of [].constructor(24);
+                    let i = index;
+                    trackBy: identity
+                "
+            >
+                <div class="hos-header-boxes">
+                    <span></span>
+                </div>
+            </ng-container>
+            <div class="middle-border"></div>
+        </div>
+        <div class="hos-body">
+            <div
+                #firstList="cdkDropList"
+                (cdkDropListDropped)="dropHosList($event, data)"
+                [cdkDropListConnectedTo]="[secondList]"
+                [cdkDropListData]="openedHosData | hosFilter : 'off'"
+                cdkDropList
+                class="ngx-slider-list"
+            >
+                <ng-container
+                    *ngFor="
+                        let item of openedHosData | hosFilter : 'off';
+                        let i = index;
+                        trackBy: identity
+                    "
+                >
+                    <div
+                        cdkDrag
+                        cdkDragLockAxis="y"
+                        cdkDragPreviewContainer="parent"
+                        class="ngx-slider-item off-items"
+                    >
+                        <div
+                            cdkDragHandle
+                            style="cursor: grab"
+                            class="ngx-slider-info"
+                            [ngStyle]="{
+                                width: (item | tooltipWidth).width + 'px',
+                                left: (item | tooltipWidth).left + 'px'
+                            }"
+                        >
+                            {{ (item | tooltipWidth).time }}
+                            <ng-container
+                                *ngIf="
+                                    item.indx !== 0 &&
+                                    item.indx === openedHosData.length - 1
+                                "
+                            >
+                                <span class="remove_hos">
+                                    <svg-icon
+                                        (click)="removeHos(item)"
+                                        [src]="
+                                            dispatchTableSvgRoutes.closeSvgRoute
+                                        "
+                                    >
+                                    </svg-icon>
+                                </span>
+                            </ng-container>
+                        </div>
+                        <ngx-slider
+                            [(highValue)]="item.end"
+                            [(value)]="item.start"
+                            [options]="options"
+                            [rightToLeft]="true"
+                            (userChange)="userChangeEnd($event, item)"
+                        ></ngx-slider>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        openedHosData[openedHosData.length - 1].flag.name ===
+                        'On'
+                    "
+                >
+                    <div class="add-new off">
+                        <svg-icon
+                            (click)="addHOS('off')"
+                            [src]="dispatchTableSvgRoutes.pmIncrement"
+                        >
+                        </svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+            <div
+                #secondList="cdkDropList"
+                (cdkDropListDropped)="dropHosList($event, data)"
+                [cdkDropListConnectedTo]="[firstList]"
+                [cdkDropListData]="openedHosData | hosFilter : 'on'"
+                cdkDropList
+                class="ngx-slider-list"
+            >
+                <ng-container
+                    *ngFor="
+                        let item of openedHosData | hosFilter : 'on';
+                        let i = index;
+                        trackBy: identity
+                    "
+                >
+                    <div
+                        cdkDrag
+                        cdkDragLockAxis="y"
+                        cdkDragPreviewContainer="parent"
+                        class="ngx-slider-item on-items"
+                    >
+                        <div
+                            cdkDragHandle
+                            style="cursor: grab"
+                            class="ngx-slider-info"
+                            [ngStyle]="{
+                                width: (item | tooltipWidth).width + 'px',
+                                left: (item | tooltipWidth).left + 'px'
+                            }"
+                        >
+                            {{ (item | tooltipWidth).time }}
+                            <ng-container
+                                *ngIf="
+                                    item.indx !== 0 &&
+                                    item.indx === openedHosData.length - 1
+                                "
+                            >
+                                <span class="remove_hos">
+                                    <svg-icon
+                                        (click)="removeHos(item)"
+                                        [src]="
+                                            dispatchTableSvgRoutes.closeSvgRoute
+                                        "
+                                    >
+                                    </svg-icon>
+                                </span>
+                            </ng-container>
+                        </div>
+                        <ngx-slider
+                            [(highValue)]="item.end"
+                            [(value)]="item.start"
+                            [options]="options"
+                            [rightToLeft]="true"
+                            (userChange)="userChangeEnd($event, item)"
+                        ></ngx-slider>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        openedHosData[openedHosData.length - 1].flag.name ===
+                        'Off'
+                    "
+                >
+                    <div class="add-new on">
+                        <svg-icon
+                            (click)="addHOS('on')"
+                            [src]="dispatchTableSvgRoutes.pmIncrement"
+                        >
+                        </svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>

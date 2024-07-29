@@ -5,4 +5,9 @@ export class DispatchTableSvgRoutes {
     static plusSvgRoute: string =
         'assets/svg/truckassist-table/dropdown/content/add.svg';
     static assignLoad: string = 'assets/svg/common/ic_plus.svg';
+    static hosArrow: string = 'assets/svg/dispatchboard/hos-arrow.svg';
+    static phone: string = 'assets/svg/common/ic_phone.svg';
+    static email: string = 'assets/svg/common/ic_email.svg';
+    static pmIncrement: string = 'assets/svg/common/ic_pm_increment.svg';
+    static driverOwner: string = 'assets/svg/common/ic_driver-owner.svg';
 }
