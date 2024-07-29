@@ -44,7 +44,11 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { LoadListResponse } from 'appcoretruckassist';
+import {
+    LoadListResponse,
+    LoadStatus,
+    LoadTemplateListResponse,
+} from 'appcoretruckassist';
 import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 import { LoadTemplate } from '@pages/load/pages/load-table/models/load-template.model';
 
@@ -80,6 +84,7 @@ import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -116,7 +121,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
-    public selectedTab: string = TableStringEnum.PENDING;
+    public selectedTab: string = TableStringEnum.ACTIVE;
     public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
@@ -219,27 +224,52 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     (item) => item.id === status.id
                 );
 
-                const mappedEvent = {
-                    ...foundObject,
-                    data: {
-                        ...foundObject,
-                        nameBack: status.dataBack,
-                        nameFront: status.dataFront,
-                    },
-                };
+                if ( !foundObject ) return;
 
-                this.modalService.openModal(
-                    ConfirmationActivationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        type: TableStringEnum.STATUS,
-                        template: TableStringEnum.STATUS_2,
-                        subType: TableStringEnum.STATUS_2,
-                        modalTitle: foundObject.loadNumber,
-                        modalSecondTitle: foundObject.driver?.truckNumber,
-                    }
-                );
+                if (
+                    [
+                        LoadStatusEnum[52],
+                        LoadStatusEnum[53],
+                        LoadStatusEnum[54],
+                    ].includes(status.dataBack) ||
+                    (status.dataBack === LoadStatusEnum[44] &&
+                        [
+                            LoadStatusEnum[4],
+                            LoadStatusEnum[5],
+                            LoadStatusEnum[7],
+                            LoadStatusEnum[52],
+                            LoadStatusEnum[53],
+                            LoadStatusEnum[54],
+                        ].includes(foundObject?.status.statusString))
+                ) {
+                    const mappedEvent = {
+                        ...foundObject,
+                        data: {
+                            ...foundObject,
+                            nameBack: status.dataBack,
+                            nameFront: status.dataFront,
+                        },
+                    };
+
+                    this.modalService.openModal(
+                        ConfirmationActivationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...mappedEvent,
+                            type: TableStringEnum.STATUS,
+                            template: TableStringEnum.STATUS_2,
+                            subType: TableStringEnum.STATUS_2,
+                            modalTitle: foundObject.loadNumber,
+                            modalSecondTitle: foundObject.driver?.truckNumber,
+                        }
+                    );
+                } else {
+                    this.updateLoadStatus(
+                        status.id,
+                        status.dataBack,
+                        foundObject.status.statusString
+                    );
+                }
             });
     }
 
@@ -263,14 +293,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((confirmationResponse) => {
-                this.loadServices
-                    .updateLoadStatus(
-                        confirmationResponse.id,
-                        confirmationResponse.data.nameBack,
-                        false
-                    )
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
+                const foundObject = this.viewData.find(
+                    (item) => item.id === confirmationResponse.id
+                );
+
+                if ( !foundObject ) return;
+
+                this.updateLoadStatus(
+                    confirmationResponse.id,
+                    confirmationResponse.data.nameBack,
+                    foundObject.status.statusString
+                );
             });
     }
 
@@ -659,7 +692,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.TEMPLATE_2,
                 field: TableStringEnum.TEMPLATE,
-                length: loadCount.templateCount,
+                length: loadCount?.templateCount,
                 data: loadTemplateData,
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
@@ -685,7 +718,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.PENDING_2,
                 field: TableStringEnum.PENDING,
-                length: loadCount.pendingCount,
+                length: loadCount?.pendingCount,
                 data: loadPendingData,
                 extended: false,
                 moneyCountSelected: false,
@@ -711,7 +744,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.ACTIVE_2,
                 field: TableStringEnum.ACTIVE,
-                length: loadCount.activeCount,
+                length: loadCount?.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
@@ -732,7 +765,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.CLOSED_2,
                 field: TableStringEnum.CLOSED,
-                length: loadCount.closedCount,
+                length: loadCount?.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
                 ftlArray: DataFilterHelper.checkSpecialFilterArray(
@@ -1393,6 +1426,43 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
+    private loadTemplateBackFilter(
+        filter: FilterOptionsLoad,
+        isShowMore?: boolean
+    ): void {
+        this.loadServices
+            .getLoadTemplateList(
+                filter.loadType,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loads: LoadTemplateListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = loads.pagination.data;
+
+                    this.viewData = this.viewData.map((data: LoadModel) => {
+                        return this.mapTemplateData(data);
+                    });
+                } else {
+                    const newData = [...this.viewData];
+                    this.viewData = loads.pagination.data;
+
+                    this.viewData.map((data: LoadModel) => {
+                        newData.push(this.mapTemplateData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
+    }
 
     // ---------------------------- Table Actions ------------------------------
     public onToolBarAction(event: TableToolbarActions): void {
@@ -1437,8 +1507,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
-
-                this.loadBackFilter(this.backLoadFilterQuery);
+                if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    this.loadTemplateBackFilter(this.backLoadFilterQuery);
+                } else {
+                    this.loadBackFilter(this.backLoadFilterQuery);
+                }
             } else {
                 this.sendLoadData();
             }
@@ -1503,7 +1576,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.EDIT) {
             this.loadServices
-                .getLoadById(event.id)
+                .getLoadById(
+                    event.id,
+                    this.selectedTab === TableStringEnum.TEMPLATE
+                )
                 .pipe(
                     takeUntil(this.destroy$),
                     tap((load) => {
@@ -1691,6 +1767,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.tableOptions.toolbarActions.hideDeleteButton =
                         isDeleteHidden;
                 }
+            });
+    }
+
+    private updateLoadStatus(
+        id: number,
+        status: LoadStatus,
+        previousStatus: LoadStatus
+    ): void {
+        this.loadServices
+            .updateLoadStatus(id, status, false)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices.getLoadInsideListById(id).subscribe((res) => {
+                    this.loadServices.updateLoadPartily(res, previousStatus);
+
+                    setTimeout(() => {
+                        this.sendLoadData();
+                    }, 200);
+                });
             });
     }
 

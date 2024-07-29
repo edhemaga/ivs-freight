@@ -7,4 +7,8 @@ export class ChatSvgRoutes {
     static plusIcon: string = 'assets/svg/chat/plus-icon.svg';
     static settingsIcon: string = 'assets/svg/chat/settings-icon.svg';
     static burgerMenuIcon: string = 'assets/svg/chat/burger-menu-icon.svg';
+    static faceEmojiIcon: string = 'assets/svg/chat/face-smile-emoji-icon.svg';
+    static documentIcon: string = 'assets/svg/chat/document-icon.svg';
+    static sendMessageIcon: string = 'assets/svg/chat/send-message-icon.svg';
+    static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
 }

@@ -61,7 +61,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                             JSON.stringify({
                                 pendingCount: loadPagination.pendingCount,
                                 activeCount: loadPagination.activeCount,
-                                closedCount: loadPagination.closedCount,
+                                closedCount: loadPagination.pagination.count,
                                 templateCount: loadPagination.templateCount,
                             })
                         );

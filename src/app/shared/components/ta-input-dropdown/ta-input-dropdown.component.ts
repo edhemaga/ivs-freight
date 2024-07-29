@@ -1180,6 +1180,13 @@ export class TaInputDropdownComponent
                 }
 
                 if (!this._options.length) {
+                    if (this._template === 'svgtext-dispatch-template') {
+                        this._options.push({
+                            id: 7655,
+                            name: 'ADD NEW',
+                        });
+                    }
+
                     this._options.push({
                         id: 7654,
                         name: 'No Results',

@@ -199,6 +199,7 @@ export class LoadService {
             loadType,
             revenueFrom,
             revenueTo,
+            null,
             pageIndex,
             pageSize,
             companyId,
@@ -297,8 +298,21 @@ export class LoadService {
         );
     }
 
-    public getLoadById(id: number): Observable<LoadResponse> {
-        return this.loadService.apiLoadIdGet(id);
+    public getLoadById(id: number, isTemplate?: boolean): Observable<LoadResponse> {
+        if(isTemplate) {
+            return  this.loadService.apiLoadTemplateIdGet(id);
+        }
+
+        return  this.loadService.apiLoadIdGet(id);;
+    }
+
+    public getLoadTemplateInsideListById(id: number): Observable<LoadListResponse> {
+        return this.loadService.apiLoadTemplateListGet(
+            null,
+            null,
+            null,
+            id
+        );
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
@@ -373,6 +387,12 @@ export class LoadService {
         data: CreateLoadTemplateCommand
     ): Observable<CreateResponse> {
         return this.loadService.apiLoadTemplatePost(data);
+    }
+    
+    public updateLoadTemplate(
+        data: CreateLoadTemplateCommand
+    ): Observable<CreateResponse> {
+        return this.loadService.apiLoadTemplatePut(data)
     }
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
@@ -449,6 +469,12 @@ export class LoadService {
             isClosed,
         };
     }
+    public updateLoadTemplatePartily(loadResponse: LoadListResponse): void {
+        const data = loadResponse.pagination.data[0];
+        this.loadTemplateStore.remove(({ id }) => id === data.id);
+        this.loadTemplateStore.add(data);
+        this.triggerModalAction();
+    }
 
     public updateLoadPartily(
         loadResponse: LoadListResponse,
@@ -508,6 +534,7 @@ export class LoadService {
         if (isTemplate) {
             this.loadTemplateStore.add(data.pagination.data[0]);
             loadCount.template++;
+            loadCount.templateCount++;
         } else {
             this.loadPendingStore.add(data.pagination.data[0]);
             loadCount.pendingCount++;

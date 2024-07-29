@@ -365,9 +365,7 @@
                     *ngFor="let option of _options; trackBy: identity"
                     [ngClass]="{
                         disabled: option?.disabled,
-                        'no-result':
-                            _options.length === 1 &&
-                            _options[0].name === 'No Results',
+                        'no-result': option.name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
                         active: option.id === _activeItem?.id,
                         'all-assigned':
@@ -390,16 +388,21 @@
                                 option?.logoName?.includes('hazardous'),
                             'truck-trailer-logo':
                                 inputConfig?.customClass ===
-                                'truck-trailer-dropdown'
+                                'truck-trailer-dropdown',
+                            blue: option.class === 'blue',
+                            yellow: option.class === 'yellow',
+                            green: option.class === 'green',
+                            red: option.class === 'red'
                         }"
                         [src]="
                             option?.logoName
                                 | taSvg : option?.folder : option?.subFolder
                         "
-                        class="svgtext-template-logo {{
+                        class="icon svgtext-template-logo {{
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+
                     <img
                         *ngIf="option.logoName && option?.isDriver"
                         [alt]="option.name"
@@ -412,6 +415,7 @@
                         [ngStyle]="{ 'margin-right': '6px' }"
                         class="svg-template-logo"
                     />
+
                     <div
                         *ngIf="!option.logoName && option?.isDriver"
                         class="no-profile-image"
@@ -425,7 +429,9 @@
                         >
                         </app-ta-profile-images>
                     </div>
+
                     <!-- Text -->
+
                     <div
                         [innerHtml]="
                             option?.number
@@ -454,6 +460,7 @@
                     ></div>
 
                     <!-- Additional Text -->
+
                     <div
                         *ngIf="option?.additionalText"
                         [innerHtml]="
@@ -468,6 +475,19 @@
                         "
                         class="svgtext-template-text additional-text"
                     ></div>
+
+                    <!-- Plus Icon -->
+
+                    <ng-container *ngIf="option.name === 'ADD NEW'">
+                        <svg-icon
+                            class="plus-icon"
+                            src="assets/svg/common/ic_plus.svg"
+                            [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '14'
+                            }"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </ng-container>
 

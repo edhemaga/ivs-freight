@@ -21,6 +21,11 @@
             color: $white;
         }
     }
+
+    &-l {
+        background-color: $ta-green-4;
+        color: $ta-black-2;
+    }
  
     &-f {
         background-color: $ta-purple-1;
@@ -60,12 +65,4 @@
             color: $white;
         }
     }
-}
-
-.mr-1 {
-    margin-right: 0.25rem;
-}
-
-.ml-1 {
-    margin-left: 0.25rem;
 }

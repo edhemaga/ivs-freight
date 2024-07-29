@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchBoardResponsePagination } from './dispatchBoardResponsePagination';
+import { DispatchBoardResponse } from './dispatchBoardResponse';
 
 
 export interface DispatchBoardListResponse { 
-    pagination?: DispatchBoardResponsePagination;
+    dispatchBoards?: Array<DispatchBoardResponse> | null;
     dispatchCount?: number;
     truckCount?: number;
     trailerCount?: number;

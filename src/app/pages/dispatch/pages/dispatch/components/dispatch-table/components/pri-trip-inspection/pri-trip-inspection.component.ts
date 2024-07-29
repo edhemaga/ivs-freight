@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { EnumValue } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-pri-trip-inspection',
@@ -10,11 +11,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     imports: [AngularSvgIconModule, CommonModule],
 })
 export class PriTripInspectionComponent implements OnInit {
-    private _status: number = 0;
-    @Input() set status(value: number | null) {
-        this._status = value !== null ? value : 0;
+    private _status: string = '';
+    @Input() set status(value: EnumValue | null) {
+        this._status = value.name;
     }
-    get status(): number {
+    get status(): string {
         return this._status;
     }
 

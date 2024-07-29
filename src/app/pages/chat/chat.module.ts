@@ -1,10 +1,13 @@
-import { NgModule } from "@angular/core";
+import {
+    ReactiveFormsModule
+} from "@angular/forms";
 
 // Modules
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ChatRoutingModule } from "./chat-routing.module";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from "angular-svg-icon";
-import { SharedModule } from '@shared/shared.module';
+import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
@@ -15,11 +18,15 @@ import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-
 import { MessagesNotSelectedComponent } from "@pages/chat/components/conversation/messages-not-selected/messages-not-selected.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
-import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
 import { UserStatusBadgeComponent } from "@pages/chat/components/user-status-badge/user-status-badge.component";
 
+//Shared components
+import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
+import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
 // Services
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { HubService } from "@pages/chat/services/hub.service";
 
 // Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
@@ -35,16 +42,16 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
     declarations: [
         ChatComponent,
 
-        // CHAT LIST
+        // Chat list
         ChatUserListComponent,
         ChatUserListItemComponent,
 
-        // CONVERSATIONS
+        // Conversations
         ChatMessagesComponent,
         ChatMessageComponent,
         MessagesNotSelectedComponent,
 
-        // AUXILLARY COMPONENTS
+        // Auxillary components
         ChatToolbarComponent,
         ChatNoDataComponent,
         UserStatusBadgeComponent
@@ -54,18 +61,21 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         CommonModule,
         ChatRoutingModule,
         AngularSvgIconModule,
-        SharedModule,
+        ReactiveFormsModule,
+        NgbModule,
+
+        // Shared Components
+        TaInputComponent,
+        TaProfileImagesComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
-
-        // Components
-        TaProfileImagesComponent,
     ],
     providers: [
         // Services
-        UserChatService,
+        HubService,
 
         // Resolvers
         UserResolver,
@@ -74,7 +84,8 @@ import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
         ConversationResolver,
 
         // Pipes
-        NameInitialsPipe
+        NameInitialsPipe,
+
     ]
 })
 export class ChatModule { };

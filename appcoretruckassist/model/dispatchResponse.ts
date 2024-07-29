@@ -43,5 +43,6 @@ export interface DispatchResponse {
     activeLoad?: LoadShortResponse;
     parkingSlot?: ParkingSlotShortResponse;
     loadProgress?: LoadProgressResponse;
+    preTripInspection?: EnumValue;
 }
 
