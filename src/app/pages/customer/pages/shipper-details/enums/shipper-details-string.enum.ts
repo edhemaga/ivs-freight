@@ -9,4 +9,5 @@ export enum ShipperDetailsStringEnum {
     REVIEW = 'Review',
     REVIEW_2 = 'review',
     DATE = 'Date',
+    LOAD_SORT_TEXT = 'Load No.',
 }

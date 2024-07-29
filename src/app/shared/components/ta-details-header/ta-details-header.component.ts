@@ -110,8 +110,19 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() isSearchBtn: boolean;
     @Input() pickupFilter: boolean = false;
     @Input() deliveryFilter: boolean = false;
-    @Input() pickupFilterData: { selectedFilter: boolean; filteredArray: any[] };
-    @Input() deliveryFilterData: { selectedFilter: boolean; filteredArray: any[] };
+    @Input() pickupFilterData: {
+        selectedFilter: boolean;
+        filteredArray: any[];
+    };
+    @Input() deliveryFilterData: {
+        selectedFilter: boolean;
+        filteredArray: any[];
+    };
+    @Input() dispatcherFilter: boolean = false;
+    @Input() statusFilter: boolean = false;
+    @Input() locationFilter: boolean = false;
+    @Input() hasSort: boolean = false;
+    @Input() sortText: string;
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -123,6 +134,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Output() dropActions = new EventEmitter<any>();
     @Output() filterActions = new EventEmitter<any>();
     @Output() specialFilterActions = new EventEmitter<any>();
+    @Output() sortItemsAction = new EventEmitter<boolean>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
@@ -133,6 +145,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public activeTemplate: any = 'All Load';
     public isMapBtnClicked: boolean = true;
     public isSearchBtnDisplayed: boolean = true;
+    public isSortAscending: boolean = true;
 
     constructor() {}
 
@@ -355,5 +368,11 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
 
     public onSpecialFilter(data, type): void {
         this.specialFilterActions.emit({ data, type });
+    }
+
+    public sortItems(): void {
+        this.isSortAscending = !this.isSortAscending;
+
+        this.sortItemsAction.emit(this.isSortAscending);
     }
 }

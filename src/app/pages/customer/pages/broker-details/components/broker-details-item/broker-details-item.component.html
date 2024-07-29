@@ -12,7 +12,7 @@
                 <div *ngSwitchCase="'load'" class="load">
                     <div
                         class="broker-details-table-container"
-                        *ngIf="broker?.data?.loadStops?.loads?.data?.length"
+                        *ngIf="brokerLoads?.length"
                     >
                         <div class="t-headear-broker">
                             <div class="t-head-items">
@@ -47,8 +47,7 @@
                             <div
                                 class="t-body-broker"
                                 *ngFor="
-                                    let loads of broker?.data?.loadStops?.loads
-                                        ?.data;
+                                    let loads of brokerLoads;
                                     trackBy: identity
                                 "
                             >
@@ -95,18 +94,13 @@
                                     <div class="status-wrapper-broker">
                                         <span
                                             class="dispatch-status-text ta-font-bold"
-                                            [ngClass]="{
-                                                assigned:
-                                                    loads.status.name ===
-                                                    'Assigned',
-                                                dispatched:
-                                                    loads.status.name ===
-                                                    'Dispatched',
-                                                booked:
-                                                    loads.status.name ===
-                                                    'Booked'
-                                            }"
-                                            >{{ loads.status.name }}</span
+                                            [ngStyle]="
+                                                loads.status.statusValue.name
+                                                    | loadStatusColor
+                                            "
+                                            >{{
+                                                loads.status.statusString
+                                            }}</span
                                         >
                                         <span class="time ta-font-medium">
                                             <span

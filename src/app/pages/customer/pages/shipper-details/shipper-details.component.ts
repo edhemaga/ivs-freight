@@ -23,7 +23,10 @@ import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
-import { ShipperLoadStopsResponse } from 'appcoretruckassist';
+import {
+    ShipperContactResponse,
+    ShipperLoadStopsResponse,
+} from 'appcoretruckassist';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 
 // Constants
@@ -53,6 +56,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.SHIPPER_LOADS_BACK_FILTER;
     public shipperLoads: ShipperLoadStopsResponse[] = [];
+    public shipperContacts: ShipperContactResponse[] = [];
     public pickupFilterData: { selectedFilter: boolean; filteredArray: any[] } =
         {
             selectedFilter: false,
@@ -142,8 +146,12 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hasArrow: false,
                 hasSearch: true,
                 timeFilter: true,
+                pickupFilter: true,
+                deliveryFilter: true,
                 searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
+                // hasSort: true, - Hide for now, no backend
+                sortText: ShipperDetailsStringEnum.LOAD_SORT_TEXT,
             },
             {
                 id: 2,
@@ -155,7 +163,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 icon: true,
                 hasArrow: false,
-                hasSearch: true,
+                hasSearch: false,
                 searchPlaceholder: ShipperDetailsStringEnum.CONTACTS,
                 data: data,
             },
@@ -168,10 +176,13 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 data: data,
                 hasArrow: false,
+                hasSearch: true,
+                searchPlaceholder: ShipperDetailsStringEnum.REVIEW,
             },
         ];
         this.shipperId = data?.id ? data.id : null;
         this.shipperLoads = data?.loadStops;
+        this.shipperContacts = data?.shipperContacts;
         this.backLoadFilterQuery.shipperId = this.shipperId;
         this.pickupFilterData.filteredArray = this.shipperLoads;
         this.deliveryFilterData.filteredArray = this.shipperLoads;

@@ -207,6 +207,13 @@
                         </div>
                     </ng-container>
 
+                    <ng-container *ngIf="totalCost">
+                        <div class="border-line-left"></div>
+                        <div class="total-cost ta-font-bold mx-2">
+                            {{ totalCost | formatCurrency }}
+                        </div>
+                    </ng-container>
+
                     <ng-container *ngIf="isSearchBtn && isSearchBtnDisplayed">
                         <div
                             class="d-flex align-items-center search-btn-container"
@@ -234,15 +241,18 @@
                     <div class="border-line-left"></div>
                     <span class="mx-1">
                         <app-ta-search
-                            [searchType]="'tabel'"
+                            [searchType]="headerText"
                             [toolbarSearch]="true"
+                            [selectedTabData]="{
+                                gridNameTitle: searchPlaceholder
+                            }"
                         ></app-ta-search>
                     </span>
                 </ng-container>
 
-                <div *ngIf="hasIcon" class="repair-header-icons">
+                <div *ngIf="hasIcon" class="repair-header-icons gap-1">
                     <div class="border-line-left"></div>
-                    <span class="ic-hed ms-1" *ngIf="timeFilter">
+                    <span class="ic-hed" *ngIf="timeFilter">
                         <app-ta-filter
                             [type]="'timeFilter'"
                             [icon]="'ic_time'"
@@ -251,7 +261,7 @@
                         >
                         </app-ta-filter>
                     </span>
-                    <span class="ic-hed ms-1" *ngIf="pickupFilter">
+                    <span class="ic-hed" *ngIf="pickupFilter">
                         <app-ta-special-filter
                             [type]="'pickupFilter'"
                             [icon]="'ic_pickup_filter'"
@@ -264,7 +274,7 @@
                             [isCountHidden]="true"
                         ></app-ta-special-filter>
                     </span>
-                    <span class="ic-hed ms-1" *ngIf="deliveryFilter">
+                    <span class="ic-hed" *ngIf="deliveryFilter">
                         <app-ta-special-filter
                             [type]="'deliveryFilter'"
                             [icon]="'ic_delivery_filter'"
@@ -277,6 +287,45 @@
                             [isCountHidden]="true"
                         ></app-ta-special-filter>
                     </span>
+
+                    <span class="ic-hed" *ngIf="dispatcherFilter">
+                        <!-- DISPECHER FILTER -->
+                        <app-ta-filter
+                            [type]="'userFilter'"
+                            [searchState]="true"
+                            [filterTitle]="'Dispatcher Filter'"
+                            [defFilterHolder]="true"
+                            (setFilter)="setFilterValue($event)"
+                        >
+                        </app-ta-filter
+                    ></span>
+
+                    <span class="ic-hed" *ngIf="statusFilter">
+                        <!-- STATUS FILTER -->
+                        <app-ta-filter
+                            [type]="'statusFilter'"
+                            [icon]="'broker-half-circle'"
+                            [filterTitle]="'Status Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="false"
+                            (setFilter)="setFilterValue($event)"
+                        >
+                        </app-ta-filter>
+                    </span>
+
+                    <span class="ic-hed" *ngIf="locationFilter">
+                        <!-- LOCATION FILTER -->
+                        <app-ta-filter
+                            [type]="'locationFilter'"
+                            [icon]="'address'"
+                            [filterTitle]="'Area Filter'"
+                            [areaFilter]="true"
+                            [locationDefType]="true"
+                            (setFilter)="setFilterValue($event)"
+                        >
+                        </app-ta-filter
+                    ></span>
+
                     <span class="ic-hed" *ngIf="pmFilter">
                         <app-ta-filter
                             [type]="'pmFilter'"
@@ -309,21 +358,38 @@
                             [type]="'moneyFilter'"
                             [icon]="'dollar'"
                             [filterTitle]="'Money Filter'"
-                            [subType]="'no-all'"
+                            [subType]="'all'"
                             [moneyFilter]="true"
+                            [loadType]="true"
                             (setFilter)="setFilterValue($event)"
                         >
                         </app-ta-filter>
-                        <div class="border-line-left"></div>
                     </span>
-
-                    <div *ngIf="totalCost" class="total-cost">
-                        {{ totalCost | formatCurrency }}
-                    </div>
                 </div>
             </div>
 
             <div class="header-plus-button">
+                <ng-container *ngIf="hasSort">
+                    <div
+                        class="sort-container d-flex align-items-center gap-1"
+                    >
+                        <span class="sort-text ta-font-medium">{{
+                            sortText
+                        }}</span>
+                        <svg-icon
+                            (click)="sortItems()"
+                            class="sort-arrow d-flex align-items-center justify-content-center"
+                            [class.rotate]="!isSortAscending"
+                            src="/assets/svg/common/sortArrow_filter.svg"
+                            [svgStyle]="{
+                                'width.px': '18',
+                                'height.px': '18'
+                            }"
+                        ></svg-icon>
+                    </div>
+                    <div class="border-line-left mx-1"></div>
+                </ng-container>
+
                 <div class="date-arrow-repair">
                     <p *ngIf="customText" class="date-repair">
                         {{ customText }}
@@ -491,13 +557,15 @@
                         {{ dropdownItem.title }}
                     </p>
 
-                    <div
-                        class="d-flex justify-content-center align-items-center counter-container"
-                    >
-                        <p class="m-0">
-                            {{ dropdownItem.length }}
-                        </p>
-                    </div>
+                    <ng-container *ngIf="!dropdownItem?.hideCount">
+                        <div
+                            class="d-flex justify-content-center align-items-center counter-container"
+                        >
+                            <p class="m-0">
+                                {{ dropdownItem.length }}
+                            </p>
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>
