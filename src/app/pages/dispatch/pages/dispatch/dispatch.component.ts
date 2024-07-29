@@ -103,36 +103,33 @@ export class DispatchComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (
-                        res.filterType === ToolbarFilterStringEnum.TRUCK_FILTER
-                    ) {
-                        this.backFilterQuery.truckTypes = res.queryParams;
-                        this.dispatchFilters(this.backFilterQuery);
-                    }
-                    if (
-                        res.filterType ===
-                        ToolbarFilterStringEnum.TRAILER_FILTER
-                    ) {
-                        this.backFilterQuery.trailerTypes = res.queryParams;
-                        this.dispatchFilters(this.backFilterQuery);
-                    }
-                    if (
-                        res.filterType === ToolbarFilterStringEnum.STATUS_FILTER
-                    ) {
-                        this.backFilterQuery.statuses = res.queryParams;
-                        this.dispatchFilters(this.backFilterQuery);
-                    }
-                    if (
-                        res.filterType ===
-                        ToolbarFilterStringEnum.PARKING_FILTER
-                    ) {
-                        this.backFilterQuery.parkings = res.queryParams;
-                        this.dispatchFilters(this.backFilterQuery);
-                    }
+                    switch (res.filterType) {
+                        case ToolbarFilterStringEnum.TRUCK_FILTER:
+                            this.backFilterQuery.truckTypes = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
 
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.dispatchTableList = this.dispatchTableList;
+                            break;
+                        case ToolbarFilterStringEnum.TRAILER_FILTER:
+                            this.backFilterQuery.trailerTypes = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        case ToolbarFilterStringEnum.STATUS_FILTER:
+                            this.backFilterQuery.statuses = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        case ToolbarFilterStringEnum.PARKING_FILTER:
+                            this.backFilterQuery.parkings = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                if (res.action === TableStringEnum.CLEAR)
+                    this.dispatchTableList = this.dispatchTableList;
             });
 
         this.getUserId();
