@@ -24,6 +24,11 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class UserChatService {
+
+    // Headers
+    private headers = new HttpHeaders({
+        'skip-form': '1',
+    });
     constructor(
         public http: HttpClient,
 
@@ -48,22 +53,6 @@ export class UserChatService {
         );
     }
 
-    // public getCompanyUserList(
-    //     userType: UserType,
-    //     searchParam?: string
-    // ): Observable<CompanyUserForChatListResponse> {
-    //     const params: HttpParams = new HttpParams({
-    //         fromObject: {
-    //             'CompanyUserChatSpecParams.UserType': userType,
-    //         }
-    //     });
-
-    //     if (searchParam) params.set('CompanyUserChatSpecParams.Search', searchParam);
-
-    //     return this.http.get<CompanyUserForChatListResponse>(`${environment.API_ENDPOINT}/api/chat/user/list`,
-    //         { params });
-    // }
-
     public getConversation(id: number): Observable<ConversationResponse> {
         return this.http.get<ConversationResponse>(`${environment.API_ENDPOINT}/api/chat/conversation/${id}`);
     }
@@ -86,7 +75,6 @@ export class UserChatService {
         };
 
         return this.http.post(`${environment.API_ENDPOINT}/api/chat/conversation`, conversationParticipants)
-
     }
 
     public sendMessage(
@@ -100,15 +88,10 @@ export class UserChatService {
 
         this.formDataService.extractFormDataFromFunction(data);
 
-        // Headers
-        const headers = new HttpHeaders({
-            'skip-form': '1',
-        });
-
         return this.http.post(
             `${environment.API_ENDPOINT}/api/chat/message`,
             this.formDataService.formDataValue,
-            { headers }
+            { headers: this.headers }
         );
     }
 }
