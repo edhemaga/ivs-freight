@@ -1,6 +1,11 @@
 <div class="messages-container">
     <ng-container [ngSwitch]="remainingParticipants?.length">
-        <div class="messages-header d-flex align-items-center">
+        <div
+            class="messages-header d-flex align-items-center"
+            [ngClass]="
+                !attachmentUploadActive ? 'messages-header-border-bottom' : ''
+            "
+        >
             <ng-container *ngSwitchCase="1">
                 <!-- TODO refactor to separate component -->
                 <ng-container
@@ -11,6 +16,8 @@
                 >
                     <div class="d-flex">
                         <img
+                            width="22px"
+                            height="22px"
                             class="chat-list-item-avatar align-items-center"
                             [src]="remainingParticipants[0]?.avatarFile.url"
                             [alt]="remainingParticipants[0]?.fullName"
@@ -71,98 +78,237 @@
         </div>
     </ng-container>
 
-    <div
-        class="messages-content"
-        #messagesContent
-        [scrollTop]="messagesContent?.scrollHeight"
-    >
-        <ng-container *ngIf="messages?.length; else emptyConversation">
-            <ng-container
-                *ngFor="
-                    let message of messages;
-                    let ind = index;
-                    trackBy: trackById
-                "
-            >
-                <ng-container *ngIf="message">
-                    <app-chat-message
-                        [currentUserId]="currentUserId"
-                        [message]="message"
-                    ></app-chat-message>
+    <ng-container *ngIf="!attachmentUploadActive; else upload">
+        <div
+            class="messages-content"
+            [scrollTop]="messagesContent?.scrollHeight"
+            [ngStyle]="
+                isChatTypingActivated &&
+                attachments?.length && { height: 'calc(100% - 117px)' }
+            "
+            #messagesContent
+        >
+            <ng-container *ngIf="messages?.length; else emptyConversation">
+                <ng-container
+                    *ngFor="
+                        let message of messages;
+                        let ind = index;
+                        trackBy: '' | trackByProperty
+                    "
+                >
+                    <ng-container *ngIf="message">
+                        <app-chat-message
+                            [currentUserId]="currentUserId"
+                            [message]="message"
+                            [isDateDisplayed]="
+                                (message.createdAt | formatTime) !==
+                                (messages[ind - 1]?.createdAt | formatTime)
+                            "
+                        ></app-chat-message>
+                    </ng-container>
                 </ng-container>
             </ng-container>
-        </ng-container>
-        <ng-template #emptyConversation>
-            <div class="d-flex justify-content-center">
-                <div class="empty-conversation">
-                    <div class="image-wrapper d-flex justify-content-center">
-                        <img
-                            [src]="ChatPngRoutes.contact"
-                            [alt]="remainingParticipants[0]?.fullName"
-                        />
+            <ng-template #emptyConversation>
+                <div class="d-flex justify-content-center">
+                    <div class="empty-conversation">
+                        <div
+                            class="image-wrapper d-flex justify-content-center"
+                        >
+                            <img
+                                [src]="ChatPngRoutes.contact"
+                                [alt]="remainingParticipants[0]?.fullName"
+                            />
+                        </div>
+                        <div class="fullname ta-font-bold">
+                            {{ remainingParticipants[0]?.fullName }}
+                        </div>
                     </div>
-                    <div class="fullname ta-font-bold">
-                        {{ remainingParticipants[0]?.fullName }}
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-
-    <div class="chat-footer d-flex">
-        <div class="left-side d-flex">
-            <ng-container *ngIf="!isChatTypingActivated; else chatInputField">
-                <div
-                    (click)="enableChatInput()"
-                    class="input-placeholder-not-touched ta-font-regular"
-                >
-                    Type your message here
-                </div>
-            </ng-container>
-            <ng-template #chatInputField>
-                <div class="form-wrapper" [formGroup]="messageForm">
-                    <app-ta-input
-                        formControlName="message"
-                        [inputConfig]="ChatInput.messageInput"
-                        [(ngModel)]="messageToSend"
-                        (keyup.enter)="sendMessage()"
-                    ></app-ta-input>
                 </div>
             </ng-template>
         </div>
 
-        <div class="right-side d-flex">
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.faceEmojiIcon"
-            ></svg-icon>
+        <div
+            class="chat-footer d-flex"
+            [ngStyle]="
+                isChatTypingActivated && attachments?.length
+                    ? { height: '72px' }
+                    : { height: 'fit-content' }
+            "
+        >
+            <div class="left-side d-flex">
+                <ng-container
+                    *ngIf="!isChatTypingActivated; else chatInputField"
+                >
+                    <div
+                        (click)="enableChatInput()"
+                        class="input-placeholder-not-touched ta-font-regular"
+                    >
+                        Type your message here
+                    </div>
+                </ng-container>
 
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
+                <ng-template #chatInputField>
+                    <div class="form-wrapper" [formGroup]="messageForm">
+                        <ng-container *ngIf="attachments?.length">
+                            <div
+                                class="attachment-list d-flex"
+                                [ngClass]="
+                                    isChatTypingBlurred
+                                        ? 'attachment-list-dark'
+                                        : 'attachment-list-light'
+                                "
+                            >
+                                <ng-container
+                                    *ngFor="
+                                        let attachment of attachments;
+                                        let ind = index;
+                                        trackBy: '' | trackByProperty
+                                    "
+                                >
+                                    <div
+                                        #documentPreview
+                                        class="attachment-preview-container pointer d-flex"
+                                        [ngClass]="
+                                            attachment.extension ===
+                                            ('jpg' || 'jpeg' || 'png')
+                                                ? 'attachment-preview-container-short'
+                                                : 'attachment-preview-container-long'
+                                        "
+                                        [attr.data-id]="ind"
+                                        (mouseenter)="
+                                            setHoveredAttachment(attachment)
+                                        "
+                                        (mouseleave)="clearHoveredAttachment()"
+                                    >
+                                        <app-chat-message-attachment-preview
+                                            [isChatTypingBlurred]="
+                                                isChatTypingBlurred
+                                            "
+                                            [index]="ind"
+                                            [attachment]="attachment"
+                                            [isNameReduced]="true"
+                                        ></app-chat-message-attachment-preview>
+                                        <svg-icon
+                                            class="d-flex justify-content-center align-items-center"
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            [src]="
+                                                handleHoveredAttachment(
+                                                    attachment,
+                                                    ind
+                                                )
+                                            "
+                                            (click)="
+                                                removeAttachment(attachment)
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <app-ta-input
+                            #messagesInput
+                            formControlName="message"
+                            [inputConfig]="
+                                ChatInput.messageInput(
+                                    isChatTypingActivated,
+                                    attachments?.length
+                                )
+                            "
+                            [(ngModel)]="messageToSend"
+                            (blurInput)="blurInput()"
+                            (focusInput)="focusInput()"
+                            (keyup.enter)="sendMessage()"
+                        ></app-ta-input>
+                    </div>
+                </ng-template>
             </div>
 
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.documentIcon"
-            ></svg-icon>
-
             <div
-                class="border-container d-flex justify-content-center align-items-center"
+                class="right-side d-flex"
+                [ngClass]="
+                    isChatTypingActivated && attachments?.length
+                        ? 'align-items-end'
+                        : 'align-items-center'
+                "
             >
-                <div class="border"></div>
-            </div>
+                <div
+                    class="d-flex align-items-center"
+                    [ngStyle]="
+                        isChatTypingActivated && attachments?.length
+                            ? { height: '8px' }
+                            : { height: '24px' }
+                    "
+                >
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div
+                            class="d-flex justify-content-center icon"
+                            (click)="openEmojiSelection()"
+                        >
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.faceEmojiIcon"
+                            ></svg-icon>
+                        </div>
+                    </div>
 
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [ngClass]="messageToSend && 'blue-icon'"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                [src]="ChatSvgRoutes.sendMessageIcon"
-                (click)="sendMessage()"
-            ></svg-icon>
+                    <div
+                        class="border-container d-flex justify-content-center align-items-center"
+                    >
+                        <div class="border"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div
+                            (click)="uploadAttachmentDragAndDrop()"
+                            class="d-flex justify-content-center icon"
+                        >
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.documentIcon"
+                            ></svg-icon>
+                        </div>
+                    </div>
+
+                    <div
+                        class="border-container d-flex justify-content-center align-items-center"
+                    >
+                        <div class="border"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-center icon-wrapper">
+                        <div
+                            class="d-flex justify-content-center icon"
+                            (click)="sendMessage()"
+                        >
+                            <svg-icon
+                                class="pointer d-flex justify-content-center align-items-center"
+                                [ngClass]="
+                                    messageToSend &&
+                                    AttachmentCustomClassEnum.BLUE_ICON
+                                "
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                                [src]="ChatSvgRoutes.sendMessageIcon"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-template #upload>
+        <app-ta-upload-files
+            [files]="attachments"
+            [showDropzone]="true"
+            [dropzoneFocus]="false"
+            [dropZoneConfig]="ChatDropzone.inputDropzone"
+            [size]="'large'"
+            (onFileEvent)="addAttachments($event.files)"
+        ></app-ta-upload-files>
+    </ng-template>
 </div>

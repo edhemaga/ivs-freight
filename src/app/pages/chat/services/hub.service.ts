@@ -60,7 +60,7 @@ export class HubService {
                     senderId: number,
                     senderName: string,
                     conversationId: number,
-                    content: string
+                    content: string,
                 ) => {
                     const newMessage: MessageResponse = {
                         id: messageId,

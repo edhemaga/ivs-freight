@@ -33,8 +33,8 @@
         <div
             class="filters-selected-value-holder justify-content-center align-items-center show-number ta-font-extra-bold"
             [ngClass]="{
-                'd-flex': !activeFilter || !hoverFilter,
-                'd-none': activeFilter && hoverFilter
+                'd-flex': (!activeFilter || !hoverFilter) && !isCountHidden,
+                'd-none': (activeFilter && hoverFilter) || isCountHidden
             }"
         >
             {{

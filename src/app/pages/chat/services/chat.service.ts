@@ -1,5 +1,6 @@
-import { Observable } from "rxjs";
-import { Injectable } from "@angular/core";
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Models
 import {
@@ -8,20 +9,38 @@ import {
     CreateConversationCommand,
     CreateResponse,
     MessageResponse,
-    UserType
-} from "appcoretruckassist";
+    UserType,
+} from 'appcoretruckassist';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
-import { ChatService } from "appcoretruckassist/api/chat.service";
+import { ChatService } from 'appcoretruckassist/api/chat.service';
+import { FormDataService } from '@shared/services/form-data.service';
+
+// environment
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UserChatService {
 
-    constructor(private chatService: ChatService) { }
+    // Headers
+    private headers = new HttpHeaders({
+        'skip-form': '1',
+    });
+    constructor(
+        public http: HttpClient,
 
-    public getCompanyUserList(userType: UserType, searchParam?: string): Observable<CompanyUserForChatListResponse> {
+        // Services
+        private chatService: ChatService,
+        private formDataService: FormDataService,
+    ) { }
+
+    public getCompanyUserList(
+        userType: UserType,
+        searchParam?: string
+    ): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
@@ -35,31 +54,44 @@ export class UserChatService {
     }
 
     public getConversation(id: number): Observable<ConversationResponse> {
-        return this.chatService.apiChatConversationIdGet(id);
+        return this.http.get<ConversationResponse>(`${environment.API_ENDPOINT}/api/chat/conversation/${id}`);
     }
 
     public getMessages(id: number): Observable<MessageResponse[]> {
-        return this.chatService.apiChatMessageListGet(id);
+        const params: HttpParams = new HttpParams({
+            fromObject: {
+                'MessageSpecParams.ConversationId': id,
+            }
+        });
+        return this.http.get<MessageResponse[]>(`${environment.API_ENDPOINT}/api/chat/message/list`,
+            { params });
     }
 
-    public createConversation(participants: number[]): Observable<CreateResponse> {
+    public createConversation(
+        participants: number[]
+    ): Observable<CreateResponse> {
         const conversationParticipants: CreateConversationCommand = {
-            participantIds: participants
+            participantIds: participants,
         };
 
-        return this.chatService.apiChatConversationPost(
-            conversationParticipants
-        );
+        return this.http.post(`${environment.API_ENDPOINT}/api/chat/conversation`, conversationParticipants)
     }
 
-    public sendMessage(conversationId: number, content: string, attachments?: Blob[]): Observable<CreateResponse> {
-        return this.chatService.apiChatMessagePost(
-            1,
-            conversationId,
-            content,
-            null,
-            attachments
+    public sendMessage(
+        conversationId: number,
+        content: string,
+        attachments?: UploadFile[]
+    ): Observable<any> {
+        if (!conversationId) return;
+
+        const data = { conversationId, content, attachments };
+
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.http.post(
+            `${environment.API_ENDPOINT}/api/chat/message`,
+            this.formDataService.formDataValue,
+            { headers: this.headers }
         );
     }
-
 }

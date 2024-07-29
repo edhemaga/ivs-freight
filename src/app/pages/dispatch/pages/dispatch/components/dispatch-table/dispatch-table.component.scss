@@ -144,6 +144,7 @@
                         position: relative;
                         height: 26px;
                         width: 26px;
+                        margin-right: 4px;
 
                         .hos-number {
                             position: absolute;
@@ -155,6 +156,7 @@
                             color: #919191;
                             padding-right: 1px;
                             user-select: none;
+                            pointer-events: none;
                         }
 
                         .hos-img {
@@ -288,53 +290,6 @@
                                     svg {
                                         g {
                                             stroke: #3074d3;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .driver-buttons {
-                            display: none;
-                            position: absolute;
-                            right: 0;
-                            top: 0;
-                            z-index: 11;
-
-                            span {
-                                width: 26px;
-                                height: 26px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                padding-left: inherit;
-
-                                &:hover {
-                                    background-color: #3074d333;
-                                    border-radius: 2px;
-                                    cursor: pointer;
-                                    svg-icon {
-                                        path {
-                                            fill: #3074d3;
-                                        }
-                                    }
-                                }
-
-                                &.only_active_icon {
-                                    svg-icon {
-                                        svg {
-                                            path {
-                                                fill: #ffffff33;
-                                            }
-                                        }
-                                    }
-                                }
-                                &.active-icon {
-                                    svg-icon {
-                                        svg {
-                                            path {
-                                                fill: #ffffff;
-                                            }
                                         }
                                     }
                                 }
@@ -660,9 +615,9 @@
             }
 
             &.driver-field {
-                min-width: 200px;
-                max-width: 200px;
-                width: 200px;
+                min-width: 240px;
+                max-width: 240px;
+                width: 240px;
             }
 
             &.location-field {

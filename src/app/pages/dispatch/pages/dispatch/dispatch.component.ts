@@ -24,6 +24,10 @@ import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
+
+//constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
@@ -56,6 +60,11 @@ export class DispatchComponent
     tableOptions: any = {};
     tableData: any[] = [];
 
+    public backFilterQuery = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.DISPATCH_BACK_FILTER)
+    );
+    selectedTab = 'active';
+    columns: any[] = [];
     dispatchBoardSmallList: Observable<any>;
     dispatchTableList: Observable<number[]>;
 
@@ -85,6 +94,43 @@ export class DispatchComponent
         this.dispatchBoardSmallList =
             this.dispatcherQuery.dispatchboardShortList$;
         this.sendDispatchData();
+
+        this.setTableFilter();
+    }
+
+    public setTableFilter(): void {
+        this.tableService.currentSetTableFilter
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.filterType) {
+                    switch (res.filterType) {
+                        case ToolbarFilterStringEnum.TRUCK_FILTER:
+                            this.backFilterQuery.truckTypes = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        case ToolbarFilterStringEnum.TRAILER_FILTER:
+                            this.backFilterQuery.trailerTypes = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        case ToolbarFilterStringEnum.STATUS_FILTER:
+                            this.backFilterQuery.statuses = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        case ToolbarFilterStringEnum.PARKING_FILTER:
+                            this.backFilterQuery.parkings = res.queryParams;
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (res?.action === TableStringEnum.CLEAR)
+                    this.dispatchTableList = this.dispatchTableList;
+            });
 
         this.getUserId();
     }
@@ -181,10 +227,11 @@ export class DispatchComponent
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTruckFilter: true,
-                showTrailerFilter: true,
+                showTruckDispatchFilter: true,
+                showTrailerDispatchFilter: true,
+                showParkingFilter: true,
                 hideOpenModalButton: true,
-                showStatusFilter: true,
+                showStatusDispatchFilter: true,
                 showLocationFilter: true,
                 showDispatchAdd: true,
                 hideListColumn: true,
@@ -270,5 +317,33 @@ export class DispatchComponent
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    private dispatchFilters(filter: {
+        dispatcherId: number;
+        teamBoard: number;
+        truckTypes?: number[] | undefined;
+        trailerTypes?: number[] | undefined;
+        statuses?: number[] | undefined;
+        parkings?: number[] | undefined;
+    }): void {
+        this.dispatcherService
+            .getDispatchBoardFilterList(
+                filter.dispatcherId,
+                filter.teamBoard,
+                filter.truckTypes,
+                filter.trailerTypes,
+                filter.statuses,
+                filter.parkings
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((dispatchers) => {
+                this.dispatcherService.dispatchList = dispatchers;
+                this.backFilterQuery = JSON.parse(
+                    JSON.stringify(
+                        TableDropdownComponentConstants.DISPATCH_BACK_FILTER
+                    )
+                );
+            });
     }
 }
