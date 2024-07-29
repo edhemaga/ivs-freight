@@ -77,4 +77,15 @@ export class HubService {
         });
     }
 
+    public notifyTyping(): Observable<boolean> {
+        return new Observable<boolean>((observer) => {
+            this.hubConnection.on('ReceiveTypingNotification',
+                () => {
+                    console.log(observer);
+                    return observer.next(true);
+                }
+            );
+        });
+    }
+
 }
