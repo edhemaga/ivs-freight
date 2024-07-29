@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchBoardResponse } from './dispatchBoardResponse';
+import { AssignedLoadResponse } from './assignedLoadResponse';
+import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 
 
-export interface DispatchBoardListResponse { 
-    dispatchBoards?: Array<DispatchBoardResponse> | null;
-    dispatchCount?: number;
-    truckCount?: number;
-    trailerCount?: number;
-    driverCount?: number;
+export interface AssignLoadModalResponse { 
+    dispatches?: Array<DispatchLoadModalResponse> | null;
+    unassignedLoadsCount?: number;
+    unassignedLoads?: Array<AssignedLoadResponse> | null;
 }
 

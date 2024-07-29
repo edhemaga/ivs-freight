@@ -18,9 +18,7 @@ import { DispatchParkingConfig } from '@pages/dispatch/pages/dispatch/utils/conf
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
 // Models
-import {
-    DispatchBoardParking,
-} from '@pages/dispatch/models/dispatch-parking.model';
+import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
     ParkingSlotDispatchModalResponse,
@@ -41,7 +39,7 @@ import { ModalService } from '@shared/services/modal.service';
 })
 export class DispatchTableParkingComponent implements OnInit {
     // Inputs
-    @Input() parkingList: Array<DispatchBoardParking>;
+    @Input() parkingList: DispatchBoardParking[];
     @Input() parkingSlot: ParkingSlotShortResponse;
     @Input() isWideTable: boolean;
     @Input() truckId: number;

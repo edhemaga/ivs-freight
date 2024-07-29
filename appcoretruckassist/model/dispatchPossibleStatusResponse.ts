@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchBoardResponse } from './dispatchBoardResponse';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
-export interface DispatchBoardListResponse { 
-    dispatchBoards?: Array<DispatchBoardResponse> | null;
-    dispatchCount?: number;
-    truckCount?: number;
-    trailerCount?: number;
-    driverCount?: number;
+export interface DispatchPossibleStatusResponse { 
+    possibleStatuses?: Array<DispatchStatusResponse> | null;
+    previousStatus?: DispatchStatusResponse;
 }
 
