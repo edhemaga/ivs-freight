@@ -11,9 +11,9 @@
             <img
                 [src]="url"
                 class="profile-image-small"
-                [class.small]="size == 'small'"
-                [class.medium]="size == 'medium'"
-                [class.round]="type == 'user'"
+                [class.small]="size === 'small'"
+                [class.medium]="size === 'medium'"
+                [class.round]="type === 'user'"
                 [class.show_hover_animation]="
                     size == 'small' && showHoverAnimation
                 "
@@ -23,9 +23,9 @@
         <ng-template #default>
             <div
                 class="profile-image-small"
-                [class.small]="size == 'small'"
-                [class.medium]="size == 'medium'"
-                [class.round]="type == 'user'"
+                [class.small]="size === 'small'"
+                [class.medium]="size === 'medium'"
+                [class.round]="type === 'user'"
                 [class.show_hover_animation]="
                     size == 'small' && showHoverAnimation
                 "

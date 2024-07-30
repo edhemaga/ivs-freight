@@ -12,10 +12,14 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // service
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+
+//utils
+import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+
 @Component({
-    selector: 'app-pri-trip-inspection',
-    templateUrl: './dispatch-pri-trip-inspection.component.html',
-    styleUrls: ['./dispatch-pri-trip-inspection.component.scss'],
+    selector: 'app-dispatch-table-pri-trip-inspection',
+    templateUrl: './dispatch-table-pri-trip-inspection.component.html',
+    styleUrls: ['./dispatch-table-pri-trip-inspection.component.scss'],
     standalone: true,
     imports: [
         AngularSvgIconModule,
@@ -26,8 +30,9 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
         TaAppTooltipV2Component,
     ],
 })
-export class PriTripInspectionComponent implements OnInit, OnDestroy {
-    private _status: EnumValue;
+export class DispatchTablePriTripInspectionComponent
+    implements OnInit, OnDestroy
+{
     @Input() set status(value: EnumValue | null) {
         this._status = value;
     }
@@ -35,15 +40,17 @@ export class PriTripInspectionComponent implements OnInit, OnDestroy {
 
     @Input() dispatchId: number;
 
-    get status(): EnumValue {
-        return this._status;
-    }
-
+    private _status: EnumValue;
     private destroy$ = new Subject<void>();
+    public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     constructor(private dispatcherService: DispatcherService) {}
 
     ngOnInit(): void {}
+
+    get status(): EnumValue {
+        return this._status;
+    }
 
     public preTripInspectionDone() {
         this.dispatcherService

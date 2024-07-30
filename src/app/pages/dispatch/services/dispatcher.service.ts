@@ -94,7 +94,7 @@ export class DispatcherService {
         return this.driverService.apiDriverVacationIdPatch(id);
     }
 
-    updatePreTripInspection(id: number) {
+    public updatePreTripInspection(id: number): Observable<number> {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
