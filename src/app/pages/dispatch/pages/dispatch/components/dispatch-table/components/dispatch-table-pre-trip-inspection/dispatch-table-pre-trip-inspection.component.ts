@@ -34,11 +34,13 @@ export class DispatchTablePreTripInspectionComponent
     implements OnInit, OnDestroy
 {
     @Input() set status(value: EnumValue | null) {
-        this._status = value;
+        if (value) {
+            this._status = value;
+        }
     }
-    @Input() dispatchBoardId: number;
+    @Input() dispatchBoardId?: number;
 
-    @Input() dispatchId: number;
+    @Input() dispatchId?: number;
 
     private _status: EnumValue;
     private destroy$ = new Subject<void>();
