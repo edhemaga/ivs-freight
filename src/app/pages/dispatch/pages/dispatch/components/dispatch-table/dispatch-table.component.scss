@@ -614,6 +614,11 @@
                 }
             }
 
+            &.pre-trip {
+                min-width: 34px;
+                max-width: 34px;
+                width: 34px;
+            }
             &.driver-field {
                 min-width: 240px;
                 max-width: 240px;

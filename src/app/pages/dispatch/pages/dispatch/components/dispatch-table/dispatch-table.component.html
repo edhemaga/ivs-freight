@@ -323,14 +323,12 @@
                             </div>
                         </div>
                     </td>
-                    <td class="box-item">
-                        <div class="main_inside filled">
-                            <div class="padding-inside">
-                                <app-pri-trip-inspection
-                                    [status]="item.preTripInspection"
-                                ></app-pri-trip-inspection>
-                            </div>
-                        </div>
+                    <td class="pre-trip">
+                        <app-pri-trip-inspection
+                            [dispatchId]="item.id"
+                            [dispatchBoardId]="item.dispatchBoardId"
+                            [status]="item.preTripInspection"
+                        ></app-pri-trip-inspection>
                     </td>
                     <td class="location-field">
                         <app-dispatch-table-last-location
@@ -645,6 +643,7 @@
                     >
                     </app-dispatch-table-driver>
                 </td>
+
                 <td class="box-item">
                     <div class="main_inside" [class.filled]="item?.driver">
                         <div class="padding-inside">
@@ -678,6 +677,61 @@
                     </div>
                 </td>
 
+                <td class="box-item">
+                    <div class="main_inside filled">
+                        <div class="padding-inside">
+                            <div
+                                #t1="ngbPopover"
+                                (click)="
+                                    toggleHos(t1, item.hoursOfService, item.id)
+                                "
+                                (hidden)="
+                                    saveHosData(item.hoursOfService, rowIndex)
+                                "
+                                [class.statusOpened]="statusOpenedIndex > -1"
+                                [class.empty-box-field]="true"
+                                [ngbPopover]="hos"
+                                autoClose="outside"
+                                class="hos-column"
+                                [ngClass]="
+                                    item.hoursOfService &&
+                                    item.hoursOfService[
+                                        item.hoursOfService.length - 1
+                                    ]?.flag.name === 'On'
+                                        ? 'active_hos'
+                                        : 'innactive_hos'
+                                "
+                                placement="bottom"
+                                triggers="manual"
+                                container="body"
+                                popoverClass="hos-ngb-popover"
+                            >
+                                <div class="hos-img">
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/dispatchboard/hos-arrow.svg'
+                                        "
+                                    ></svg-icon>
+                                </div>
+                                <div class="hos-number">
+                                    {{
+                                        (item.hoursOfService !== null
+                                            ? item.hoursOfService
+                                            : []
+                                        ) | hosTime
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="pre-trip">
+                    <app-pri-trip-inspection
+                        [dispatchId]="item.id"
+                        [dispatchBoardId]="item.dispatchBoardId"
+                        [status]="item.preTripInspection"
+                    ></app-pri-trip-inspection>
+                </td>
                 <td class="location-field">
                     <ng-container *ngIf="showAddAddressFieldIndex === -2">
                         <app-dispatch-table-last-location

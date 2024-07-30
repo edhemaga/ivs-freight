@@ -91,7 +91,6 @@ export class TaProfileImagesComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.url);
         if (changes?.indx) {
             this.getProfileImageColors();
         }

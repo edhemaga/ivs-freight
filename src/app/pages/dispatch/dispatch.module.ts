@@ -30,7 +30,7 @@ import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
-import { PriTripInspectionComponent } from './pages/dispatch/components/dispatch-table/components/pri-trip-inspection/pri-trip-inspection.component';
+import { PriTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-pri-trip-inspection/dispatch-pri-trip-inspection.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
