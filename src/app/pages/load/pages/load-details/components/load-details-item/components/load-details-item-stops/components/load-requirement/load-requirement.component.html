@@ -32,48 +32,18 @@
         <div class="d-grid load-requirement-grid">
             <div>
                 <ng-container *ngIf="truck; else noReq">
-                    <div
-                        class="truckassist-icon"
-                        ngbTooltip
-                        mainContent
-                        position="bottom"
-                        [tooltipBackground]="truck.color"
-                        [mainTooltip]="truck.name"
-                        tooltipColor="#ffff"
-                        tooltipTextAlign="center"
-                    >
-                        <svg-icon
-                            [src]="truck.icon"
-                            [class]="truck.className"
-                            [svgStyle]="{
-                                'width.px': 44,
-                                'height.px': 16
-                            }"
-                        ></svg-icon>
-                    </div>
+                    <app-ta-truck-trailer-icon
+                        [iconType]="'truck'"
+                        [inputData]="truck"
+                    ></app-ta-truck-trailer-icon>
                 </ng-container>
             </div>
             <div>
                 <ng-container *ngIf="trailer; else noReq">
-                    <div
-                        class="truckassist-icon"
-                        ngbTooltip
-                        mainContent
-                        position="bottom"
-                        [tooltipBackground]="trailer.color"
-                        [mainTooltip]="trailer.name"
-                        tooltipColor="#ffff"
-                        tooltipTextAlign="center"
-                    >
-                        <svg-icon
-                            [class]="trailer.className"
-                            [src]="trailer.icon"
-                            [svgStyle]="{
-                                'width.px': 44,
-                                'height.px': 16
-                            }"
-                        ></svg-icon>
-                    </div>
+                    <app-ta-truck-trailer-icon
+                        [iconType]="'trailer'"
+                        [inputData]="trailer"
+                    ></app-ta-truck-trailer-icon>
                 </ng-container>
             </div>
             <div>
