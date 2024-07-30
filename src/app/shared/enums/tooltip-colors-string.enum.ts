@@ -10,4 +10,5 @@ export enum TooltipColorsStringEnum {
     LIGHT_GREEN = '#259F94',
     PINK = '#DF3D85',
     GOLD = '#CF961D',
+    DEFAULT = '#F89B2E',
 }

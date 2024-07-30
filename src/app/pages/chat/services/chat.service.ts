@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Models
 import {
@@ -24,7 +24,6 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class UserChatService {
-
     // Headers
     private headers = new HttpHeaders({
         'skip-form': '1',
@@ -34,8 +33,8 @@ export class UserChatService {
 
         // Services
         private chatService: ChatService,
-        private formDataService: FormDataService,
-    ) { }
+        private formDataService: FormDataService
+    ) {}
 
     public getCompanyUserList(
         userType: UserType,
@@ -54,17 +53,21 @@ export class UserChatService {
     }
 
     public getConversation(id: number): Observable<ConversationResponse> {
-        return this.http.get<ConversationResponse>(`${environment.API_ENDPOINT}/api/chat/conversation/${id}`);
+        return this.http.get<ConversationResponse>(
+            `${environment.API_ENDPOINT}/api/chat/conversation/${id}`
+        );
     }
 
     public getMessages(id: number): Observable<MessageResponse[]> {
         const params: HttpParams = new HttpParams({
             fromObject: {
                 'MessageSpecParams.ConversationId': id,
-            }
+            },
         });
-        return this.http.get<MessageResponse[]>(`${environment.API_ENDPOINT}/api/chat/message/list`,
-            { params });
+        return this.http.get<MessageResponse[]>(
+            `${environment.API_ENDPOINT}/api/chat/message/list`,
+            { params }
+        );
     }
 
     public createConversation(
@@ -74,7 +77,10 @@ export class UserChatService {
             participantIds: participants,
         };
 
-        return this.http.post(`${environment.API_ENDPOINT}/api/chat/conversation`, conversationParticipants)
+        return this.http.post(
+            `${environment.API_ENDPOINT}/api/chat/conversation`,
+            conversationParticipants
+        );
     }
 
     public sendMessage(

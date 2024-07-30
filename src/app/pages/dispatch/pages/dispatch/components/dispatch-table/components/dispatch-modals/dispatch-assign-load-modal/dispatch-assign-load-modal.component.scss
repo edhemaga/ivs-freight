@@ -1,0 +1,98 @@
+@import 'src/theme/variables';
+
+.dispatch-load {
+    margin-top: 22px;
+
+    &-header {
+        font-size: 11px;
+        line-height: 14px;
+    }
+
+    &-no-results {
+        &-title {
+            color: $muted;
+            font-size: 20px;
+            margin: 22px 0 16px;
+        }
+        &-text {
+            font-size: 12px;
+            color: $muted;
+        }
+    }
+
+    &-map {
+        width: auto;
+        border-radius: 3px;
+        min-height: 480px;
+        flex: 1;
+
+        &-loader {
+            top: 0;
+            height: 100%;
+            width: 100%;
+            backdrop-filter: blur(5px);
+
+            &-box {
+                position: relative;
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                overflow: hidden;
+                &-spinner {
+                    width: 140px;
+                    height: 140px;
+                    border: 5px solid $ta-blue-19;
+                    border-bottom-color: transparent;
+                    border-radius: 50%;
+                    display: inline-block;
+                    box-sizing: border-box;
+                    animation: rotation 1s linear infinite;
+                }
+            }
+        }
+
+        &-parent {
+            height: 100%;
+        }
+    }
+}
+
+.modal-header-edit-button {
+    margin-right: 12px !important;
+}
+
+::ng-deep .cdk-drag-preview {
+    background-color: $ta-black !important;
+    border-radius: 3px;
+    div,
+    span {
+        color: $white !important;
+    }
+
+    .short-load-icon {
+        &-text {
+            display: none;
+        }
+        &_drag {
+            display: block !important;
+        }
+    }
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.divider {
+    min-height: 1px;
+}
+
+.cdk-drag-placeholder {
+    background-color: $ta-light-grey-5 !important;
+    box-shadow: 0px 0px 4px 0px $box-shadow-30 inset;
+}
