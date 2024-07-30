@@ -17,6 +17,7 @@ import { ChatMessageComponent } from "@pages/chat/components/conversation/chat-m
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
 import { ChatMessagesNotSelectedComponent } from "@pages/chat/components/conversation/chat-messages-not-selected/chat-messages-not-selected.component";
 import { ChatMessageAttachmentPreviewComponent } from "@pages/chat/components/conversation/chat-message-attachment-preview/chat-message-attachment-preview.component";
+import { ChatUserProfileComponent } from "./components/conversation/chat-user-profile/chat-user-profile.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 
@@ -25,6 +26,7 @@ import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/t
 import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from "@shared/components/ta-upload-files/ta-upload-files.component";
+import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
 
 // Services
 import { HubService } from "@pages/chat/services/hub.service";
@@ -43,7 +45,6 @@ import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
-import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { TaSearchComponent } from "@shared/components/ta-search/ta-search.compon
         ChatMessageComponent,
         ChatMessagesNotSelectedComponent,
         ChatMessageAttachmentPreviewComponent,
+        ChatUserProfileComponent,
 
         // Auxillary components
         ChatToolbarComponent,
