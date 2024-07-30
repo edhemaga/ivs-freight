@@ -3,45 +3,47 @@ import { Resolve } from '@angular/router';
 
 import { forkJoin, Observable, map } from 'rxjs';
 
-// Store
-import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
-
-// Services
+// services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+
+// models
+import {
+    DispatchBoardListResponse,
+    DispatchBoardResponse,
+    DispatchModalResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DispatcherResolver implements Resolve<any> {
-    constructor(
-        // Services
-        private dispatcherService: DispatcherService,
-
-        // Store
-        private dispatcherQuery: DispatcherQuery
-    ) {}
-    resolve(): Observable<any> {
+    constructor(private dispatcherService: DispatcherService) {}
+    resolve(): Observable<
+        [
+            DispatchModalResponse,
+            DispatchBoardListResponse | DispatchBoardResponse
+        ]
+    > {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
             ? JSON.parse(localStorage.getItem('dispatchUserSelect')).id
             : -1;
 
         const dispatchList =
-            dispatcherId == -1
+            dispatcherId === -1
                 ? this.dispatcherService.getDispatchboardList()
                 : this.dispatcherService.getDispatchBoardByDispatcherList(
                       dispatcherId
                   );
+
         const modalList = this.dispatcherService.getDispatcherList();
 
-        let join = forkJoin([modalList, dispatchList]).pipe(
-            map((list: any) => {
+        return forkJoin([modalList, dispatchList]).pipe(
+            map((list) => {
                 list[1] =
-                    dispatcherId == -1
+                    dispatcherId === -1
                         ? list[1]
                         : {
-                              pagination: {
-                                  data: [list[1]],
-                              },
+                              dispatchBoards: [list[1]],
                           };
 
                 this.dispatcherService.dispatcherData = list;
@@ -49,7 +51,5 @@ export class DispatcherResolver implements Resolve<any> {
                 return list;
             })
         );
-
-        return join;
     }
 }

@@ -75,6 +75,7 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
         // pipes
         SafeHtmlPipe,
         TaCommentHighlistComponentPipe,
+
         // components
         TaAppTooltipV2Component,
     ],
@@ -201,12 +202,9 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.commentsService
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.editingCardComment = false;
-                    this.commentCardsDataDropdown.commentContent = editComment;
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.editingCardComment = false;
+                this.commentCardsDataDropdown.commentContent = editComment;
             });
     }
 
@@ -236,11 +234,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.commentsService
                     .deleteCommentById(commentId)
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.loadService.removeComment(comment);
-                        },
-                        error: () => {},
+                    .subscribe(() => {
+                        this.loadService.removeComment(comment);
                     });
         });
     }

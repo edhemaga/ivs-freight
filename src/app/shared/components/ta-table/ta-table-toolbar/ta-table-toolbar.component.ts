@@ -52,6 +52,7 @@ import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -103,12 +104,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedTab: string;
     @Input() activeViewMode: string;
     @Input() columns: any[];
-    @Input() selectedDispatcher: any;
+    @Input() set selectedDispatcherData(value) {
+        this.selectedDispatcher = value;
+    }
     @Input() dispathcboardTableLocked: boolean;
 
     public listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
+    public dispatchPopoup: string | TemplateRef<any>;
+    public dispatchPopoverOpen: boolean = false;
     public optionsPopupOpen: boolean = false;
+    public selectedDispatcher: any;
+
     public tableLocked: boolean = true;
     public optionsPopupContent: OptionsPopupContent[] =
         TableToolbarConstants.optionsPopupContent;
@@ -372,7 +379,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         if (activeCard) {
             this.toolbarWidth = TableStringEnum.NUMBER_100;
-        } else {
+        } else if (this.columns) {
             this.columns.map((column) => {
                 if (!column.hidden) {
                     columnsSumWidth +=
@@ -583,6 +590,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.optionsPopupOpen = optionsPopup.isOpen();
+    }
+
+    public showDispatchList(optionsPopup): void {
+        this.dispatchPopoup = optionsPopup;
+
+        if (optionsPopup.isOpen()) {
+            optionsPopup.close();
+        } else {
+            optionsPopup.open({});
+        }
+
+        this.dispatchPopoverOpen = !this.dispatchPopoverOpen;
     }
 
     //  On Toolbar Option Actions
@@ -809,6 +828,12 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.getActiveTableData();
+    }
+
+    public openAssignLoadModal(): void {
+        this.modalService.openModal(AssignDispatchLoadModalComponent, {
+            size: 'small',
+        });
     }
 
     // --------------------------------ON DESTROY---------------------------------

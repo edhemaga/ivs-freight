@@ -10,6 +10,10 @@ export class TaSvgPipe implements PipeTransform {
             return null;
         }
 
+        if (svgPath.includes('assets/svg/dispatchboard/vacation.svg')) {
+            return `assets/svg/dispatchboard/vacation.svg`;
+        }
+
         if (!svgPath.includes('.svg')) {
             svgPath = svgPath.concat('.svg');
         }

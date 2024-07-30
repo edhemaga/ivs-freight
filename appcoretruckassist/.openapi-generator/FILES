@@ -117,6 +117,7 @@ model/apiBrokerPostRequest.ts
 model/apiBrokerPostRequest1.ts
 model/apiCdlPostRequest.ts
 model/apiCdlPostRequest1.ts
+model/apiChatMessagePostRequest.ts
 model/apiCitationPostRequest.ts
 model/apiCitationPostRequest1.ts
 model/apiCompanyDocumentsGetRequest.ts
@@ -184,6 +185,7 @@ model/archiveMultipleApplicationsCommand.ts
 model/assignGpsDevicesToCompanyCommand.ts
 model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
+model/assignLoadModalResponse.ts
 model/assignedLoadListResponse.ts
 model/assignedLoadResponse.ts
 model/assignedLoadStopResponse.ts
@@ -301,6 +303,7 @@ model/contactEmailResponse.ts
 model/contactEmailType.ts
 model/contactPhoneResponse.ts
 model/contactPhoneType.ts
+model/conversationInfoResponse.ts
 model/conversationResponse.ts
 model/conversationType.ts
 model/counterResponse.ts
@@ -347,7 +350,6 @@ model/createInsurancePolicyAddonCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
-model/createMessageCommand.ts
 model/createMobileAccountCommand.ts
 model/createMvrAuthReviewCommand.ts
 model/createOffDutyLocationCommand.ts
@@ -390,10 +392,10 @@ model/departmentFilterResponse.ts
 model/departmentResponse.ts
 model/departmentShortResponse.ts
 model/disclosureReleaseFeedbackResponse.ts
-model/dispatchAssignedLoadListResponse.ts
+model/dispatchBoardFiltersResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts
-model/dispatchBoardResponsePagination.ts
+model/dispatchGroupedLoadsResponse.ts
 model/dispatchHistoryDriverListResponse.ts
 model/dispatchHistoryGroupItemResponse.ts
 model/dispatchHistoryGroupListResponse.ts
@@ -408,10 +410,13 @@ model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
 model/dispatchLoadModalResponse.ts
 model/dispatchModalResponse.ts
+model/dispatchParkingFilterResponse.ts
+model/dispatchPossibleStatusResponse.ts
 model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
+model/dispatchStatusFilterResponse.ts
 model/dispatchStatusResponse.ts
 model/dispatcherFilterResponse.ts
 model/dispatcherIntervalResponse.ts
@@ -643,12 +648,16 @@ model/medicalResponse.ts
 model/messageResponse.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
+model/milesByUnitPaginatedStopsResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
+model/milesCountByStateResponse.ts
 model/milesInfo.ts
+model/milesStateFilterResponse.ts
 model/milesStopDetailsResponse.ts
+model/milesStopItemResponse.ts
+model/milesStopItemResponsePagination.ts
 model/milesStopPayrollResponse.ts
-model/milesStopResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
 model/mobileFuelStopExpensesResponse.ts
 model/mobileFuelStopListResponse.ts
@@ -870,6 +879,7 @@ model/selectCompanyResponse.ts
 model/serviceType.ts
 model/serviceTypeResponse.ts
 model/setNewPasswordCommand.ts
+model/setPreTripInspectionCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts
 model/shipperAverageWaitingTimeChartResponse.ts
@@ -1092,10 +1102,12 @@ model/updateTrafficViolationReviewCommand.ts
 model/updateTrailerPMUnitCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
+model/updateViolationDescriptionCommand.ts
 model/updateWorkExperienceCommand.ts
 model/updateWorkExperienceItemCommand.ts
 model/updateWorkExperienceItemReviewCommand.ts
 model/updateWorkExperienceReviewCommand.ts
+model/userAdditionalInformationResponse.ts
 model/userResponse.ts
 model/userType.ts
 model/validatePasswordCommand.ts

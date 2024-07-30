@@ -20,9 +20,21 @@ import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
+import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
+import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
+import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
+import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
+import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
+import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
+import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pre-trip-inspection/dispatch-table-pre-trip-inspection.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 // Pipes
-import { ColorFinderPipe } from '@pages/dispatch/pipes/color-finder.pipe';
+import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
@@ -34,11 +46,17 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         // Components
         DispatchComponent,
         DispatchTableComponent,
+        DispatchTableDriverComponent,
+        DispatchTableParkingComponent,
+        DispatchTableTruckTrailerComponent,
+        DispatchTableAddNewComponent,
+        DispatchTableAssignLoadComponent,
+        AssignDispatchLoadModalComponent,
 
         // Pipes
-        ColorFinderPipe,
         HosFilterPipe,
         TooltipWidthPipe,
+        DispatchHistoryModalComponent,
     ],
     imports: [
         // Modules
@@ -54,6 +72,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
+        ColorFinderPipe,
 
         // Components
         TaAppTooltipV2Component,
@@ -64,6 +83,12 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
+        TaInputComponent,
+        DispatchTableLastLocationComponentComponent,
+        TaModalComponent,
+        DispatchTablePreTripInspectionComponent,
+        TaProfileImagesComponent,
     ],
+    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}

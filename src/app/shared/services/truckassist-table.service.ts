@@ -137,7 +137,10 @@ export class TruckassistTableService {
         this.setLoadStatusFilterOptions.asObservable();
 
     // Flip cards
-    private resetSpecialFilters = new BehaviorSubject<boolean>(false);
+    private resetSpecialFilters = new BehaviorSubject<{
+        isReset: boolean;
+        filterType: string;
+    }>({ isReset: false, filterType: '' });
     public isSpecialFiltersReset = this.resetSpecialFilters.asObservable();
 
     /* Set Table Width */
@@ -287,8 +290,14 @@ export class TruckassistTableService {
     }
 
     /* Reset Special Filters */
-    public sendResetSpecialFilters(resetFilters: boolean): void {
-        this.resetSpecialFilters.next(resetFilters);
+    public sendResetSpecialFilters(
+        resetFilters: boolean,
+        filterType?: string
+    ): void {
+        this.resetSpecialFilters.next({
+            isReset: resetFilters,
+            filterType: filterType,
+        });
     }
 
     /* Load Status Filter */

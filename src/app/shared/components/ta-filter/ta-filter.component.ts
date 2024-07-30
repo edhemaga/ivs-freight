@@ -134,6 +134,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
     @Input() isRepairFilter: boolean = false;
+    @Input() isDispatchFilter?: boolean = false;
     @Input() toDoSubType: string =
         ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER;
     @Input() dataArray: any;
@@ -158,6 +159,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         DirectiveConstants.CLOSED_STATUS_ARRAY;
 
     public loadStatusOptionsArray = [];
+    public loadParkingOptionsArray = [];
 
     public pmFilterArray: ArrayStatus[];
     public categoryFuelArray: ArrayStatus[] = JSON.parse(
@@ -716,6 +718,20 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             return item;
                         });
                     } else if (
+                        this.type === ToolbarFilterStringEnum.PARKING_FILTER
+                    ) {
+                        this.loadParkingOptionsArray.map((item) => {
+                            item.hidden = true;
+                            if (
+                                item.name
+                                    .toLowerCase()
+                                    .includes(inputValue.toLowerCase())
+                            ) {
+                                item.hidden = false;
+                            }
+                            return item;
+                        });
+                    } else if (
                         this.type === ToolbarFilterStringEnum.TRUCK_FILTER
                     ) {
                         this.truckArray.map((item) => {
@@ -821,6 +837,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         this.type === ToolbarFilterStringEnum.STATUS_FILTER
                     ) {
                         this.loadStatusOptionsArray.map((item) => {
+                            item.hidden = false;
+                        });
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.PARKING_FILTER
+                    ) {
+                        this.loadParkingOptionsArray.map((item) => {
                             item.hidden = false;
                         });
                     } else if (
@@ -961,6 +983,19 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         }
                     }
                 } else if (
+                    this.type === ToolbarFilterStringEnum.STATUS_FILTER &&
+                    this.isDispatchFilter
+                ) {
+                    if (res?.animation === 'list-update') {
+                        this.loadStatusOptionsArray = res.data.statuses;
+                    }
+                } else if (
+                    this.type === ToolbarFilterStringEnum.PARKING_FILTER
+                ) {
+                    if (res?.animation === 'list-update') {
+                        this.loadParkingOptionsArray = res.data.parkings;
+                    }
+                } else if (
                     this.type === ToolbarFilterStringEnum.PM_FILTER &&
                     this.pmSubtype === 'trailer'
                 ) {
@@ -1010,6 +1045,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             });
                         }
                         this.truckArray = newData;
+                    } else if (res?.animation === 'list-update') {
+                        if (this.isDispatchFilter) {
+                            this.truckArray = res.data.truckTypes.map(
+                                (type: any) => {
+                                    type['name'] = type.truckType.name;
+                                    type['logo'] =
+                                        FilterIconRoutes.truckSVG +
+                                        type.truckType.logoName;
+                                    return type;
+                                }
+                            );
+                        }
                     }
                 } else if (
                     this.type === ToolbarFilterStringEnum.TRAILER_FILTER
@@ -1023,13 +1070,26 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             });
                         } else {
                             newData = res.data?.map((type: any) => {
-                                type['name'] = type.name;
+                                type['name'] = type.trailerType.name;
                                 type['logo'] =
-                                    FilterIconRoutes.trailerSVG + type.logoName;
+                                    FilterIconRoutes.trailerSVG +
+                                    type.trailerType.logoName;
                                 return type;
                             });
                         }
                         this.trailerArray = newData;
+                    } else if (res?.animation === 'list-update') {
+                        if (this.isDispatchFilter) {
+                            this.trailerArray = res.data.trailerTypes.map(
+                                (type: any) => {
+                                    type['name'] = type.trailerType.name;
+                                    type['logo'] =
+                                        FilterIconRoutes.trailerSVG +
+                                        type.trailerType.logoName;
+                                    return type;
+                                }
+                            );
+                        }
                     }
                 }
             });
@@ -1169,6 +1229,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     break;
                 case ToolbarFilterStringEnum.STATUS_FILTER:
                     this.loadStatusOptionsArray.map((item) => {
+                        item.isSelected = false;
+                        item.currentSet = false;
+                    });
+
+                    break;
+                case ToolbarFilterStringEnum.PARKING_FILTER:
+                    this.loadParkingOptionsArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
@@ -1748,6 +1815,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     case ToolbarFilterStringEnum.STATUS_FILTER:
                         mainArray = this.loadStatusOptionsArray;
                         break;
+                    case ToolbarFilterStringEnum.PARKING_FILTER:
+                        mainArray = this.loadParkingOptionsArray;
+                        break;
                 }
 
                 mainArray.map((item) => {
@@ -1768,6 +1838,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.truckType.id);
+                    });
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                ) {
+                    this.filterActiveArray.map((data) => {
+                        selectedUsersIdArray.push(data.trailerType.id);
                     });
                 } else {
                     this.filterActiveArray.map((data) => {
@@ -1792,7 +1868,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 queryParams: queryParams,
                 subType: subType,
             };
-
             if (this.setFilter) {
                 this.setFilter.emit(data);
             }
@@ -2102,6 +2177,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             this.setButtonAvailable = false;
         } else if (this.swipeFilter) {
             this.rangeValue = this.swipeActiveRange;
+        } else if (this.type === ToolbarFilterStringEnum.VACATION_FILTER) {
+            this.setFilter.emit({ vacation: false });
         }
     }
 
@@ -2115,6 +2192,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         filterTextHead?.classList.remove('activeHeader');
         filterTextHead?.classList.remove('inactiveHeader');
+        if (this.type === ToolbarFilterStringEnum.VACATION_FILTER) {
+            this.setFilter.emit({ vacation: true });
+        }
     }
 
     public onTabChange(event: any): void {
@@ -2143,6 +2223,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             case ToolbarFilterStringEnum.STATE_FILTER: {
                 this.filterService.getStateData();
             }
+            case ToolbarFilterStringEnum.STATUS_FILTER: {
+                this.filterService.getDispatchFilterData();
+            }
+            case ToolbarFilterStringEnum.PARKING_FILTER: {
+                this.filterService.getDispatchFilterData();
+            }
             case ToolbarFilterStringEnum.DEPARTMENT_FILTER: {
                 this.filterService.getDepartmentData();
                 break;
@@ -2155,6 +2241,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
+                } else if (this.isDispatchFilter) {
+                    this.filterService.getDispatchFilterData();
                 } else {
                     this.filterService.getTruckData();
                 }
@@ -2164,6 +2252,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTrailerData();
                     this.filterService.getPmData('trailer');
+                } else if (this.isDispatchFilter) {
+                    this.filterService.getDispatchFilterData();
                 } else {
                     this.filterService.getTrailerData();
                 }
@@ -2273,6 +2363,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             case ToolbarFilterStringEnum.STATUS_FILTER:
                 mainArray = this.loadStatusOptionsArray;
+                break;
+            case ToolbarFilterStringEnum.PARKING_FILTER:
+                mainArray = this.loadParkingOptionsArray;
                 break;
             case ToolbarFilterStringEnum.PM_FILTER:
                 mainArray = this.pmFilterArray;

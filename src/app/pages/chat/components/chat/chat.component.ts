@@ -1,5 +1,13 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,14 +18,20 @@ import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/com
 import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
 
 // Constants
-import { ChatToolbarDataConstants } from '@pages/chat/util/constants/chat-toolbar-data.constants';
+import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 import { ChatTab } from '@pages/chat/models/chat-tab.model';
+
+type ChatResolvedData = {
+  title: string;
+  drivers: CompanyUserChatResponsePaginationReduced;
+  users: CompanyUserChatResponsePaginationReduced
+}
 
 @Component({
   selector: 'app-chat',
@@ -34,7 +48,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
   public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
 
-  selectedConversation: number;
+  public unreadCount!: number;
+  public selectedConversation: number;
 
   // Tab and header ribbon configuration
   public tabs: ChatTab[] = ChatToolbarDataConstants.tabs;
@@ -55,14 +70,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   private getResolvedData(): void {
     this.activatedRoute.data
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: res => {
-          this.title = res.title;
-          this.drivers = res.drivers;
-          this.companyUsers = res.users;
-          this.tabs[0].count = this.drivers.count + this.companyUsers.count;
-        }
-      });
+      .subscribe((res: ChatResolvedData) => {
+        this.title = res.title;
+        this.drivers = res.drivers;
+        this.companyUsers = res.users;
+        this.tabs[0].count = this.drivers.count + this.companyUsers.count;
+        this.unreadCount = this.getUnreadCount(this.companyUsers, this.drivers);
+      }
+      );
   }
 
   public trackById(index: number, tab: ChatTab): number {
@@ -91,6 +106,36 @@ export class ChatComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  private getUnreadCount(
+    users: CompanyUserChatResponsePaginationReduced,
+    drivers: CompanyUserChatResponsePaginationReduced,
+    archivedUsers?: CompanyUserChatResponsePaginationReduced,
+    archivedDrivers?: CompanyUserChatResponsePaginationReduced
+  ): number {
+
+    let totalUnreadCount = 0;
+    // Users
+    totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
+      return accumulator + currentObject.unreadCount
+    }, 0);
+
+    if (archivedUsers)
+      totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
+        return accumulator + currentObject.unreadCount
+      }, 0);
+
+    // Drivers
+    totalUnreadCount = drivers.data.reduce((accumulator, currentObject) => {
+      return accumulator + currentObject.unreadCount
+    }, 0);
+
+    if (archivedDrivers) totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
+      return accumulator + currentObject.unreadCount
+    }, 0);
+
+    return totalUnreadCount;
   }
 
   ngOnDestroy(): void {

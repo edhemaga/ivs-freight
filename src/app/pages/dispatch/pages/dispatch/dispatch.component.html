@@ -3,11 +3,12 @@
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
-        [selectedTab]="selectedTab"
-        [columns]="columns"
-        [selectedDispatcher]="selectedDispatcher"
+        [selectedTab]="'active'"
+        [selectedDispatcherData]="selectedDispatcher"
         [dispathcboardTableLocked]="isBoardLocked"
+        [activeViewMode]="'Dispatch'"
     ></app-ta-table-toolbar>
+
     <div
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
@@ -18,10 +19,9 @@
             *ngFor="let item of dispatchTableList | async; let indx = index"
         >
             <app-dispatch-table
-                [_dData]="item"
+                [dispatchTableData]="item"
                 [isBoardLocked]="isBoardLocked"
-                [dDataIndx]="indx"
-                [smallList]="dispatchBoardSmallList | async"
+                [shortLists]="dispatchBoardSmallList | async"
                 [toolbarWidth]="maxToolbarWidth"
             ></app-dispatch-table>
         </div>

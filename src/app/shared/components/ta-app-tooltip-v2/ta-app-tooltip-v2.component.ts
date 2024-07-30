@@ -24,6 +24,7 @@ export class TaAppTooltipV2Component implements AfterViewInit {
     @Input() tooltipBackground: string = 'rgb(40, 82, 159)';
     @Input() tooltipColor: string = '#fff';
     @Input() tooltipTextAlign: string = 'left';
+    @Input() tooltipMarginTop: string;
     @ViewChild(TemplateRef, { static: false }) template: TemplateRef<void>;
 
     ngAfterViewInit() {

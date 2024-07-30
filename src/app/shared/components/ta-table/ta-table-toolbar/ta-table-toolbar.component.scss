@@ -11,11 +11,11 @@
         background: $white;
         padding: 0 4px;
 
-        .border {
+        .border-stick {
             width: 2px;
             height: 18px;
             border-radius: 1px;
-            background: $ta-light-grey-4;
+            background: $ta-light-grey-6;
         }
     }
 
@@ -46,8 +46,22 @@
 
         .tab-container {
             cursor: pointer;
+            display: flex;
             width: fit-content;
+            .tab-input {
+                width: fit-content;
+                flex: 1;
+                padding: 4px;
+            }
+            .dispatch-img {
+                width: 18px;
+                height: 18px;
+            }
 
+            .dispatcer-name {
+                font-size: 18px;
+                color: $ta-black;
+            }
             &.disabled {
                 pointer-events: none;
                 opacity: 0.3;
@@ -124,6 +138,7 @@
                 font-size: 14px;
                 border-radius: 2px;
                 transition: color 0.25s;
+
                 &::selection {
                     color: $white;
                     background: $white-5;
@@ -265,31 +280,34 @@
             width: 36px;
             height: 36px;
             background-color: $ta-blue-5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 3px;
             align-self: center;
             cursor: pointer;
+
+            &-locked {
+                background-color: $ta-light-grey-6;
+                cursor: none;
+                pointer-events: none;
+            }
 
             svg-icon {
                 display: flex;
             }
         }
 
+        .new-load-disabled {
+            background-color: $ta-light-grey-6;
+        }
+
         .settings-dispatch,
         .lock-unlock-dispatch {
             width: 26px;
             height: 26px;
-            display: flex;
-            margin-right: 10px;
-            align-self: center;
-            align-items: center;
-            justify-content: flex-end;
             cursor: pointer;
 
             svg-icon {
                 display: flex;
+
                 svg,
                 path {
                     width: 18px;
@@ -298,9 +316,60 @@
                 }
             }
         }
+
+        .dispatch-online {
+            width: 16px;
+            height: 13px;
+
+            svg-icon {
+                svg,
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+
+        .dispach-history {
+            &:hover {
+                background-color: $bw2 !important;
+
+                svg-icon {
+                    svg,
+                    path {
+                        fill: $ta-black !important;
+                    }
+                }
+            }
+        }
+        .disabled-icon {
+            svg-icon {
+                svg,
+                path {
+                    fill: $ta-light-grey-6 !important;
+                }
+            }
+
+            cursor: disabled;
+        }
+        .unlock-dispatch {
+            background-color: $ta-blue-18;
+
+            svg-icon {
+                display: flex;
+
+                svg,
+                path {
+                    width: 18px;
+                    height: 18px;
+                    fill: $ta-blue-17;
+                }
+            }
+        }
+
         .modal2 {
             height: 36px;
             width: 36px;
+
             &.hover {
                 height: 44px;
                 width: 44px;
@@ -313,6 +382,7 @@
             width: 36px;
             padding: 8px;
             border-radius: 3px;
+
             &:hover {
                 height: 44px;
                 width: 44px;
@@ -330,6 +400,7 @@
             }
         }
     }
+
     // LOCATION FILTER AND OPEN MODAL BUTTON
     .modal-open-container {
         background: $ta-blue-14;
@@ -337,6 +408,7 @@
         width: 36px;
         padding: 8px;
         border-radius: 3px;
+
         &:hover {
             height: 44px;
             width: 44px;
@@ -388,6 +460,35 @@
 }
 
 /* Ng Class */
+.dispatch-dropdown {
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    border-radius: 2px;
+    &:hover {
+        background-color: $bw2 !important;
+        svg {
+            path,
+            rect {
+                fill: $ta-black !important;
+                transition: fill 0.25s;
+            }
+        }
+    }
+    &.dispatch-dropdown-active {
+        background-color: $ta-black !important;
+        svg {
+            transform: rotate(180deg);
+            transition: transform 0.25s;
+
+            path,
+            rect {
+                fill: $bw-9 !important;
+                transition: fill 0.25s;
+            }
+        }
+    }
+}
 
 // Map Style
 .mapToolbarStyle {
@@ -403,6 +504,7 @@
 
 .tab-inactive {
     padding: 4px;
+
     &:hover {
         .tab {
             .data-count,
@@ -421,6 +523,7 @@
     border-radius: 3px;
     padding: 5px 4px;
     align-items: center;
+
     svg-icon {
         svg {
             path {
@@ -428,6 +531,7 @@
             }
         }
     }
+
     &:hover {
         svg-icon {
             svg {
@@ -442,9 +546,68 @@
         color: $white !important;
         transition: color 0.25s;
     }
+
     .data-count {
         background: $white !important;
         color: $ta-black !important;
         transition: 0.25s;
     }
+}
+
+.dispatch-dropdown-container {
+    width: 194px;
+    height: 154px;
+    overflow-y: auto;
+    padding: 4px;
+    border-radius: 3px;
+    background-color: $ta-black-2;
+}
+
+.dispatch-dropdown-container div {
+    cursor: pointer;
+}
+
+.dispatch-dropdown-item {
+    width: 100%;
+    height: 26px;
+    padding: 4px 6px 4px 6px;
+
+    &:hover {
+        background-color: $ta-black;
+    }
+    img {
+        width: 16px;
+    }
+    span {
+        font-size: 14px;
+        color: $white;
+    }
+    .check-icon {
+        width: 12px;
+    }
+
+    .dispatch-dropdown-icon .dispatch-dropdown-icon-inactive {
+        svg {
+            path {
+                fill: $muted !important;
+            }
+        }
+    }
+}
+
+.dispatch-dropdown-item .selected {
+    background-color: $ta-black;
+    font-weight: bold;
+}
+
+.dispatch-dropdown-image img {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+.dispatch-dropdown-no-img {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 7px;
 }
