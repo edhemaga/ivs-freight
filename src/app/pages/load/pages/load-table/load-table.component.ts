@@ -879,7 +879,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return TooltipColorsStringEnum.YELLOW;
         }
     }
-
     private mapTemplateData(data: LoadModel): LoadTemplate {
         const {
             id,

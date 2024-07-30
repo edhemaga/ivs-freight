@@ -30,6 +30,8 @@ import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
+import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pre-trip-inspection/dispatch-table-pre-trip-inspection.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -84,6 +86,8 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         TaInputComponent,
         DispatchTableLastLocationComponentComponent,
         TaModalComponent,
+        DispatchTablePreTripInspectionComponent,
+        TaProfileImagesComponent,
     ],
     exports: [ColorFinderPipe],
 })

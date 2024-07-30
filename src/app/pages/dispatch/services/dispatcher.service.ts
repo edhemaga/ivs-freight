@@ -94,6 +94,10 @@ export class DispatcherService {
         return this.driverService.apiDriverVacationIdPatch(id);
     }
 
+    public updatePreTripInspection(id: number): Observable<number> {
+        return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
+    }
+
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }

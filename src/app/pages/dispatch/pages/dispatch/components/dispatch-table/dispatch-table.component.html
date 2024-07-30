@@ -22,6 +22,15 @@
                 <th>TRAILER</th>
                 <th>DRIVER</th>
                 <th class="empty"></th>
+                <th
+                    class="icon d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_pre_trip_inspenction.svg"
+                    >
+                    </svg-icon>
+                </th>
+
                 <th>LAST LOCATION</th>
                 <th class="text-center p-0">STATUS</th>
                 <th class="pick-delivery">
@@ -30,7 +39,14 @@
                 </th>
                 <th>PROGRESS</th>
                 <th>PARKING</th>
-                <th class="empty"></th>
+                <th
+                    class="icon d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        src="assets/svg/common/ic_dispatch_board_dispatcher_icon.svg"
+                    >
+                    </svg-icon>
+                </th>
                 <th>NOTE</th>
                 <th class="empty"></th>
             </tr>
@@ -248,7 +264,13 @@
                             </div>
                         </div>
                     </td>
-
+                    <td class="pre-trip">
+                        <app-dispatch-table-pre-trip-inspection
+                            [dispatchId]="item.id"
+                            [dispatchBoardId]="item.dispatchBoardId"
+                            [status]="item.preTripInspection"
+                        ></app-dispatch-table-pre-trip-inspection>
+                    </td>
                     <td class="location-field">
                         <app-dispatch-table-last-location
                             [address]="item.location"
@@ -562,6 +584,7 @@
                     >
                     </app-dispatch-table-driver>
                 </td>
+
                 <td class="box-item">
                     <div class="main_inside" [class.filled]="item?.driver">
                         <div class="padding-inside">
@@ -595,6 +618,13 @@
                     </div>
                 </td>
 
+                <td class="pre-trip">
+                    <app-dispatch-table-pre-trip-inspection
+                        [dispatchId]="item.id"
+                        [dispatchBoardId]="item.dispatchBoardId"
+                        [status]="item.preTripInspection"
+                    ></app-dispatch-table-pre-trip-inspection>
+                </td>
                 <td class="location-field">
                     <ng-container *ngIf="showAddAddressFieldIndex === -2">
                         <app-dispatch-table-last-location
