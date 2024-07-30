@@ -43,6 +43,9 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
+// Helpers
+import { DispatchAssignLoadHelper } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-assign-load.helper';
+
 @Component({
     selector: 'app-dispatch-assign-load-modal',
     templateUrl: './dispatch-assign-load-modal.component.html',
@@ -83,10 +86,15 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public loadStopRoutes: MapRoute[] = [];
     public unassignedLoads: AssignedLoadResponse[] = [];
     public assignedLoads: AssignedLoadResponse[] = [];
+
+    // TODO: Create component and use if inside load modal also
     public labelsDispatches: any;
     public mappedDispatches: any;
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
+
+    public tableHeaderItems = DispatchAssignLoadHelper.getTableHeaderItems();
+
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,

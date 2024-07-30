@@ -8,7 +8,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Models
 import { LoadResponse } from 'appcoretruckassist';
 
-
 // Enums
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
@@ -18,6 +17,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { LoadRequirementHelper } from '@pages/load/pages/load-details/components/load-details-item/utils/helpers/load-requirement.helper';
 
 @Component({
     selector: 'app-load-requirement',
@@ -47,6 +47,7 @@ export class LoadRequirementComponent implements OnInit, OnChanges {
         className: string;
     };
 
+    public headerItems = LoadRequirementHelper.getLoadRequirementHeaderItems();
     constructor() {}
 
     ngOnInit(): void {}
@@ -77,7 +78,7 @@ export class LoadRequirementComponent implements OnInit, OnChanges {
             this.trailer = null;
         }
     }
-    
+
     private mapTruck(): void {
         const loadRequirements = this.load?.loadRequirements;
         if (loadRequirements && loadRequirements.truckType) {
@@ -95,7 +96,7 @@ export class LoadRequirementComponent implements OnInit, OnChanges {
             this.truck = null;
         }
     }
-    
+
     private setTrailerTooltipColor(trailerName: string): string {
         if (trailerName === TrailerNameStringEnum.REEFER) {
             return TooltipColorsStringEnum.BLUE;
@@ -144,5 +145,9 @@ export class LoadRequirementComponent implements OnInit, OnChanges {
         } else if (truckName === TruckNameStringEnum.SPOTTER) {
             return TooltipColorsStringEnum.BROWN;
         }
+    }
+
+    public trackByIdentity(id: number): number {
+        return id;
     }
 }

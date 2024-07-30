@@ -19,43 +19,23 @@
                     (selectedItem)="selectNewDispatcher($event)"
                 ></app-ta-input-dropdown>
             </form>
+
             <!-- Table header -->
             <div class="d-grid dispatch-load-grid">
-                <div>
-                    <span
-                        class="dispatch-load-header text-color-muted ta-font-bold"
-                    >
-                        #
-                    </span>
-                </div>
-                <div>
-                    <span
-                        class="dispatch-load-header text-color-muted ta-font-bold"
-                    >
-                        LOAD
-                    </span>
-                </div>
-                <div>
-                    <span
-                        class="dispatch-load-header text-color-green ta-font-bold"
-                    >
-                        PICKUP
-                    </span>
-                </div>
-                <div>
-                    <span
-                        class="dispatch-load-header text-color-red-10 ta-font-bold"
-                    >
-                        DELIVERY
-                    </span>
-                </div>
-                <div class="text-right">
-                    <span
-                        class="dispatch-load-header text-color-muted ta-font-bold"
-                    >
-                        TOTAL
-                    </span>
-                </div>
+                <ng-container
+                    *ngFor="
+                        let headerItem of tableHeaderItems;
+                        let last = last;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div [class.text-right]="last">
+                        <span [ngClass]="headerItem.className">
+                            {{ headerItem.label }}
+                        </span>
+                    </div>
+                </ng-container>
             </div>
 
             <app-ta-resizer
@@ -75,12 +55,12 @@
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
                         [hasArrow]="showReorderButton"
-                        [showReorderButton]="
+                        [isReorderingButtonVisible]="
                             !showFinishReordering &&
                             assignedLoads.length > 1 &&
                             isAssignLoadCardOpen
                         "
-                        [showFinishReordering]="showFinishReordering"
+                        [isFinishReorderingButtonVisible]="showFinishReordering"
                         [hasScrollBody]="true"
                         [hasDivider]="false"
                         [isInheritingParentSize]="true"
@@ -289,7 +269,7 @@
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
-                        [addSpaceToXAsis]="true"
+                        [hasXAxisBottomPadding]="true"
                         [hasDivider]="false"
                         [hasScrollBody]="true"
                         [isInheritingParentSize]="true"

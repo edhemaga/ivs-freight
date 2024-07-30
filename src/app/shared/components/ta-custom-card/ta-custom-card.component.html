@@ -21,7 +21,7 @@
         "
         [class.dropdown-card]="isDropdownCard && !isDropdownModalCard"
         [class.dropdown-modal-card]="isDropdownModalCard"
-        [class.ta-card-spacing-x]="addSpaceToXAsis" 
+        [class.ta-card-spacing-x]="hasXAxisBottomPadding"
         [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
@@ -178,7 +178,7 @@
                 *ngIf="
                     hasActionSvg &&
                     !disableMultipleReviews &&
-                    !showFinishReordering
+                    !isFinishReorderingButtonVisible
                 "
             >
                 <div
@@ -240,16 +240,16 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="showReorderButton">
+            <ng-container *ngIf="isReorderingButtonVisible">
                 <button
-                    class="reodering-button reodering-button-mild ta-font-bold "
+                    class="reodering-button reodering-button-mild ta-font-bold"
                     (click)="onAction($event, 'start-reordering')"
                 >
                     REORDER
                 </button>
             </ng-container>
 
-            <ng-container *ngIf="showFinishReordering">
+            <ng-container *ngIf="isFinishReorderingButtonVisible">
                 <button
                     class="reodering-button ta-font-bold"
                     (click)="onAction($event, 'reordering')"
@@ -309,7 +309,10 @@
             'h-full': isInheritingParentSize && _isCardOpen
         }"
         [ngStyle]="{
-            'scrollbar-width': isInheritingParentSize && _isCardOpen ? 'thin !important' : 'none'
+            'scrollbar-width':
+                isInheritingParentSize && _isCardOpen
+                    ? 'thin !important'
+                    : 'none'
         }"
         [@.disabled]="disableAnimation"
     >

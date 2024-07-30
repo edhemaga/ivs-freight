@@ -9,59 +9,24 @@
             marginTop: '10px',
             marginBottom: '12px'
         }"
-        [addSpaceToXAsis]="true"
+        [hasXAxisBottomPadding]="true"
         [hasDivider]="false"
     >
         <div class="d-grid load-requirement-grid">
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    TRUCK
-                </span>
-            </div>
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    TRAILER
-                </span>
-            </div>
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    LENGTH
-                </span>
-            </div>
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    DOOR
-                </span>
-            </div>
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    SUSPENSION
-                </span>
-            </div>
-            <div>
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    YEAR
-                </span>
-            </div>
-            <div class="text-right">
-                <span
-                    class="load-requirement-header text-color-muted ta-font-bold"
-                >
-                    LG
-                </span>
-            </div>
+            <ng-container
+                *ngFor="
+                    let headerItem of headerItems;
+                    let last = last;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div [class.text-right]="last">
+                    <span [ngClass]="headerItem.className">
+                        {{ headerItem.label }}
+                    </span>
+                </div>
+            </ng-container>
         </div>
 
         <div class="d-grid load-requirement-grid">

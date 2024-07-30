@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
     Component,
-    HostListener,
     Input,
     OnChanges,
     OnInit,
     SimpleChanges,
+    Renderer2,
+    ElementRef,
+    OnDestroy,
 } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -19,8 +21,7 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/h
     standalone: true,
     imports: [CommonModule, AngularSvgIconModule],
 })
-export class TaResizerComponent implements OnInit, OnChanges {
-    // Svg
+export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     public svgRoutes = DispatchParkingSvgRoutes;
 
     @Input() initialFirstElementHeight: number;
@@ -29,22 +30,30 @@ export class TaResizerComponent implements OnInit, OnChanges {
     @Input() minHeightSecondElement: number = 50;
     @Input() isFirstElementOpen: boolean = true;
     @Input() isSecondElementOpen: boolean = true;
-
-    // We need to set height or modal footer will move with card when it collapse
     @Input() isLoadList: boolean = false;
 
     public firstElementHeight: number;
     public secondElementHeight: number;
     public isDragging = false;
 
+    private moveListener: () => void;
+    private upListener: () => void;
+
+    constructor(private renderer: Renderer2, private elRef: ElementRef) {}
+
     ngOnInit(): void {
         this.updateHeights();
+        this.addGlobalEventListeners();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.isFirstElementOpen || changes.isSecondElementOpen) {
             this.updateHeights();
         }
+    }
+
+    ngOnDestroy(): void {
+        this.removeGlobalEventListeners();
     }
 
     private updateHeights(): void {
@@ -58,26 +67,23 @@ export class TaResizerComponent implements OnInit, OnChanges {
 
     public onMouseDown(event: MouseEvent): void {
         this.isDragging = true;
-        document.body.style.cursor = 'row-resize';
+        this.renderer.setStyle(document.body, 'cursor', 'row-resize');
         event.preventDefault();
     }
 
-    @HostListener('document:mousemove', ['$event'])
-    public onMouseMove(event: MouseEvent): void {
+    private onMouseMove(event: MouseEvent): void {
         if (!this.isDragging) return;
 
-        const container = (event.target as HTMLElement).closest(
+        const container = this.elRef.nativeElement.querySelector(
             '.ta-resizer-container'
         );
         if (!container) return;
 
         const containerRect = container.getBoundingClientRect();
         const newFirstElementHeight = event.clientY - containerRect.top;
-        // Adjust for handle height
         const newSecondElementHeight =
             containerRect.bottom - event.clientY - 10;
 
-        // Ensure both divs maintain their respective minimum heights
         if (
             newFirstElementHeight > this.minHeightFirstElement &&
             newSecondElementHeight > this.minHeightSecondElement
@@ -87,9 +93,26 @@ export class TaResizerComponent implements OnInit, OnChanges {
         }
     }
 
-    @HostListener('document:mouseup')
-    public onMouseUp(): void {
-        this.isDragging = false;
-        document.body.style.cursor = 'default';
+    private onMouseUp(): void {
+        if (this.isDragging) {
+            this.isDragging = false;
+            this.renderer.setStyle(document.body, 'cursor', 'default');
+        }
+    }
+
+    private addGlobalEventListeners(): void {
+        this.moveListener = this.renderer.listen(
+            'document',
+            'mousemove',
+            (event: MouseEvent) => this.onMouseMove(event)
+        );
+        this.upListener = this.renderer.listen('document', 'mouseup', () =>
+            this.onMouseUp()
+        );
+    }
+
+    private removeGlobalEventListeners(): void {
+        if (this.moveListener) this.moveListener();
+        if (this.upListener) this.upListener();
     }
 }

@@ -121,11 +121,11 @@ export class DispatchComponent
                 this.isBoardLocked = !this.isBoardLocked;
 
                 break;
-
-            default:
-                break;
             case DispatchTableStringEnum.OPEN_DISPATCH_LOAD_MODAL:
                 this.openAssignLoadModal();
+
+                break;
+            default:
                 break;
         }
     }
