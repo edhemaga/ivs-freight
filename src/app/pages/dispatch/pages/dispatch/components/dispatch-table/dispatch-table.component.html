@@ -266,9 +266,9 @@
                     </td>
                     <td class="pre-trip">
                         <app-dispatch-table-pre-trip-inspection
-                            [dispatchId]="item.id"
-                            [dispatchBoardId]="item.dispatchBoardId"
-                            [status]="item.preTripInspection"
+                            [dispatchId]="item?.id"
+                            [dispatchBoardId]="item?.dispatchBoardId"
+                            [status]="item?.preTripInspection"
                         ></app-dispatch-table-pre-trip-inspection>
                     </td>
                     <td class="location-field">
@@ -619,11 +619,7 @@
                 </td>
 
                 <td class="pre-trip">
-                    <app-dispatch-table-pre-trip-inspection
-                        [dispatchId]="item.id"
-                        [dispatchBoardId]="item.dispatchBoardId"
-                        [status]="item.preTripInspection"
-                    ></app-dispatch-table-pre-trip-inspection>
+                    <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
                 </td>
                 <td class="location-field">
                     <ng-container *ngIf="showAddAddressFieldIndex === -2">
