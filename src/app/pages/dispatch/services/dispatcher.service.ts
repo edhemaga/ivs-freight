@@ -20,6 +20,7 @@ import {
     DispatchService,
     DriverService,
     ReorderDispatchesCommand,
+    ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
@@ -92,6 +93,10 @@ export class DispatcherService {
 
     changeDriverVacation(id: number) {
         return this.driverService.apiDriverVacationIdPatch(id);
+    }
+
+    public updatePreTripInspection(id: number): Observable<number> {
+        return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {
@@ -316,5 +321,9 @@ export class DispatcherService {
                 }),
             },
         }));
+    }
+
+    public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
+        return this.dispatchService.apiDispatchReorderLoadsPut(loads);
     }
 }

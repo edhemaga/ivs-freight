@@ -83,6 +83,7 @@ export class TaProfileImagesComponent implements OnChanges {
     @Input() type: string = 'driver';
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
+    @Input() url?: string = null;
 
     public profileImageColor: string;
     public profileImageBackgroundColor: string;

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Models
 import {
@@ -39,7 +39,7 @@ export class UserChatService {
 
         // Services
         private chatService: ChatService,
-        private formDataService: FormDataService,
+        private formDataService: FormDataService
     ) { }
 
     public getCompanyUserList(
@@ -71,7 +71,7 @@ export class UserChatService {
         const params: HttpParams = new HttpParams({
             fromObject: {
                 'MessageSpecParams.ConversationId': id,
-            }
+            },
         });
         return this.http.get<MessageResponse[]>
             (`${environment.API_ENDPOINT}/api/chat/message/list`,

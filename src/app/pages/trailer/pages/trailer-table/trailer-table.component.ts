@@ -50,7 +50,7 @@ import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/uti
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
@@ -731,10 +731,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDeactivated: deactivatedAt ? this.datePipe.transform(
-                updatedAt,
-                TableStringEnum.DATE_FORMAT
-            ) : null,
+            tableDeactivated: deactivatedAt
+                ? this.datePipe.transform(
+                      updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
             tableAttachments: files ? files : [],
             fileCount: fileCount,
             tableDropdownContent: {

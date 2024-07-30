@@ -46,7 +46,7 @@ import { PMTrailerFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // Store
