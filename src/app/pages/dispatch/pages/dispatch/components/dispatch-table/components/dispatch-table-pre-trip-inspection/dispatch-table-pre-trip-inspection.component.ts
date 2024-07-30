@@ -17,9 +17,9 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 
 @Component({
-    selector: 'app-dispatch-table-pri-trip-inspection',
-    templateUrl: './dispatch-table-pri-trip-inspection.component.html',
-    styleUrls: ['./dispatch-table-pri-trip-inspection.component.scss'],
+    selector: 'app-dispatch-table-pre-trip-inspection',
+    templateUrl: './dispatch-table-pre-trip-inspection.component.html',
+    styleUrls: ['./dispatch-table-pre-trip-inspection.component.scss'],
     standalone: true,
     imports: [
         AngularSvgIconModule,
@@ -30,7 +30,7 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
         TaAppTooltipV2Component,
     ],
 })
-export class DispatchTablePriTripInspectionComponent
+export class DispatchTablePreTripInspectionComponent
     implements OnInit, OnDestroy
 {
     @Input() set status(value: EnumValue | null) {

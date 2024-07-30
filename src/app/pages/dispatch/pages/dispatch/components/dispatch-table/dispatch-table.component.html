@@ -265,11 +265,11 @@
                         </div>
                     </td>
                     <td class="pre-trip">
-                        <app-dispatch-table-pri-trip-inspection
+                        <app-dispatch-table-pre-trip-inspection
                             [dispatchId]="item.id"
                             [dispatchBoardId]="item.dispatchBoardId"
                             [status]="item.preTripInspection"
-                        ></app-dispatch-table-pri-trip-inspection>
+                        ></app-dispatch-table-pre-trip-inspection>
                     </td>
                     <td class="location-field">
                         <app-dispatch-table-last-location
@@ -619,11 +619,11 @@
                 </td>
 
                 <td class="pre-trip">
-                    <app-dispatch-table-pri-trip-inspection
+                    <app-dispatch-table-pre-trip-inspection
                         [dispatchId]="item.id"
                         [dispatchBoardId]="item.dispatchBoardId"
                         [status]="item.preTripInspection"
-                    ></app-dispatch-table-pri-trip-inspection>
+                    ></app-dispatch-table-pre-trip-inspection>
                 </td>
                 <td class="location-field">
                     <ng-container *ngIf="showAddAddressFieldIndex === -2">
