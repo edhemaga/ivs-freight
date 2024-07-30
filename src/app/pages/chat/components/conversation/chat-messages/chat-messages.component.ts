@@ -20,6 +20,7 @@ import {
 } from '@angular/forms';
 import {
   BehaviorSubject,
+  debounceTime,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -86,7 +87,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
-  public currentUserTypingName: BehaviorSubject<string> = new BehaviorSubject('');
+  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
 
   // Emoji
   public isEmojiSelectionActive: boolean = false;
@@ -132,7 +133,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
-    this.resetTypingStatus();
   }
 
   ngAfterContentChecked(): void {
@@ -171,18 +171,26 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                 }
               }
             );
+
           this.chatHubService
             .receiveTypingNotification()
             .pipe(
-              takeUntil(this.destroy$))
+              debounceTime(250),
+              takeUntil(this.destroy$),
+            )
             .subscribe((companyUserId: number) => {
+
               const filteredUser: CompanyUserShortResponse =
                 this.remainingParticipants
                   .find(user =>
                     user.id === companyUserId
                   );
-              this.currentUserTypingName.next(filteredUser.fullName);
-              clearInterval(this.resetTypingStatus());
+              this.currentUserTypingName.next(filteredUser?.fullName);
+
+              setTimeout(() => {
+                this.currentUserTypingName.next(null);
+              }, 1000);
+
             })
         }
       );
@@ -306,13 +314,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public notifyTyping(): void {
     if (!this.messageToSend) return;
     this.chatHubService.notifyTyping(this.conversation.id);
-  }
-
-  public resetTypingStatus() {
-    const interval = setInterval(() => {
-      this.currentUserTypingName.next('');
-    }, 1500);
-    return interval;
   }
 
   ngOnDestroy(): void {
