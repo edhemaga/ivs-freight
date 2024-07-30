@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil, take } from 'rxjs';
+import { Subject, takeUntil, take, forkJoin } from 'rxjs';
 
 // Services
 import { BrokerService } from '@pages/customer/services/broker.service';
@@ -11,6 +11,8 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { LoadService } from '@shared/services/load.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Store
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
@@ -22,14 +24,27 @@ import { BrokerDetailsListQuery } from '@pages/customer/state/broker-details-sta
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 // Models
-import { BrokerResponse } from 'appcoretruckassist';
+import { BrokerResponse, LoadBrokerDetailsResponse } from 'appcoretruckassist';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Svg Routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+
+// Helpers
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { BrokerDetailsHelper } from '@pages/customer/pages/broker-details/utils/helpers/broker-details.helper';
+
+// Constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+
+// Components
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 @Component({
     selector: 'app-broker-details',
@@ -48,6 +63,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public newBrokerId: any = 0;
     public brokerConfData: any;
     public businessOpen: boolean;
+    public backLoadFilterQuery: FilterOptionsLoad =
+        TableDropdownComponentConstants.SHIPPER_LOADS_BACK_FILTER;
+    public brokerLoads: LoadBrokerDetailsResponse[] = [];
 
     constructor(
         // Router
@@ -63,6 +81,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
+        private loadService: LoadService,
+        private modalService: ModalService,
 
         // Store
         private brokerMinimalStore: BrokerMinimalListStore,
@@ -93,6 +113,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.detailsPageChange();
 
         this.getBrokerStoreData();
+
+        this.loadsSearchListener();
+
+        this.getLoadStatusFilter();
+
+        this.getLoadDispatcherFilter();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -134,103 +160,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
         this.businessOpen = data?.status ? true : false;
 
-        let totalCost;
         this.DetailsDataService.setNewData(data);
-        if (data?.loads?.length) {
-            totalCost = this.sumArr.transform(
-                data?.loads.map((item) => {
-                    return {
-                        id: item.id,
-                        value: item.totalRate,
-                    };
-                })
-            );
-        }
 
-        this.brokerConfig = [
-            {
-                id: 0,
-                nameDefault: BrokerDetailsStringEnum.BROKER_DETAIL,
-                template: BrokerDetailsStringEnum.GENERAL,
-                data: data,
-            },
-            {
-                id: 1,
-                nameDefault: BrokerDetailsStringEnum.LOAD,
-                template: BrokerDetailsStringEnum.LOAD_2,
-                icon: true,
-                hasArrowDown: false,
-                length: data?.loadStops?.loads?.data?.length ?? 0,
-                hasCost: true,
-                hide: true,
-                hasArrow: false,
-                brokerLoadDrop: false,
-                customText: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                total: totalCost,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.clockIcon,
-                        name: BrokerDetailsStringEnum.CLOCK,
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.searchIcon,
-                        name: BrokerDetailsStringEnum.SEARCH,
-                    },
+        this.brokerConfig = BrokerDetailsHelper.getBrokerDetailsConfig(
+            this.brokerConfData,
+            4
+        );
 
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.brokerUserIcon,
-                        name: BrokerDetailsStringEnum.BROKER_USER,
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.halfCircleIcon,
-                        name: BrokerDetailsStringEnum.HALF_CIRCLE,
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.locationIcon,
-                        name: BrokerDetailsStringEnum.LOCATION,
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.dollarIcon,
-                        name: BrokerDetailsStringEnum.DOLLAR,
-                    },
-                ],
-                data: data,
-            },
-            {
-                id: 2,
-                nameDefault: BrokerDetailsStringEnum.CONTACT,
-                template: BrokerDetailsStringEnum.CONTACT_2,
-                length: data?.brokerContacts?.length ?? 0,
-                hide: false,
-                icon: true,
-                hasCost: false,
-                hasArrow: false,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: BrokerDetailsSvgRoutes.searchIcon,
-                    },
-                ],
-                data: data,
-            },
-            {
-                id: 3,
-                nameDefault: BrokerDetailsStringEnum.REVIEW,
-                template: BrokerDetailsStringEnum.REVIEW_2,
-                length: data?.ratingReviews?.length ?? 0,
-                hasCost: false,
-                hide: false,
-                data: data,
-                hasArrow: false,
-            },
-        ];
         this.brokerId = data?.id ? data.id : null;
+        this.brokerLoads = data?.loadStops?.loads?.data;
+        this.backLoadFilterQuery.brokerId = this.brokerId;
     }
 
     public getBrokerById(id: number) {
@@ -411,22 +350,25 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
     public onModalAction(event: any) {
         if (event == BrokerDetailsStringEnum.LOAD) {
-            return false;
-        }
-        let eventObject = {
-            data: undefined,
-            id: this.brokerId,
-            type: TableStringEnum.EDIT,
-            openedTab: event,
-        };
+            this.modalService.openModal(LoadModalComponent, {
+                size: TableStringEnum.LOAD,
+            });
+        } else {
+            let eventObject = {
+                data: undefined,
+                id: this.brokerId,
+                type: TableStringEnum.EDIT,
+                openedTab: event,
+            };
 
-        setTimeout(() => {
-            this.dropDownService.dropActionsHeaderShipperBroker(
-                eventObject,
-                this.brokerObject,
-                TableStringEnum.BROKER
-            );
-        }, 100);
+            setTimeout(() => {
+                this.dropDownService.dropActionsHeaderShipperBroker(
+                    eventObject,
+                    this.brokerObject,
+                    TableStringEnum.BROKER
+                );
+            }, 100);
+        }
     }
 
     /**Function return id */
@@ -509,7 +451,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.animation) {
+                if (
+                    res?.animation &&
+                    res.animation !== LoadFilterStringEnum.DISPATCH_DATA_UPDATE
+                ) {
                     this.brokerInitConfig(res.data);
                     this.cdRef.detectChanges();
                 }
@@ -550,6 +495,226 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             ...this.BrokerItemStore?.getValue()?.entities[brokerId],
         };
         this.brokerInitConfig(brokerData);
+    }
+
+    public setFilter(data): void {
+        switch (data?.filterType) {
+            case LoadFilterStringEnum.USER_FILTER:
+                this.backLoadFilterQuery.dispatcherIds =
+                    data.queryParams ?? null;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            case LoadFilterStringEnum.STATUS_FILTER:
+                this.backLoadFilterQuery.status = data.queryParams ?? null;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            case LoadFilterStringEnum.TIME_FILTER:
+                if (data.queryParams?.timeSelected) {
+                    const { fromDate, toDate } =
+                        RepairTableDateFormaterHelper.getDateRange(
+                            data.queryParams?.timeSelected,
+                            data.queryParams.year ?? null
+                        );
+
+                    this.backLoadFilterQuery.dateTo = toDate;
+                    this.backLoadFilterQuery.dateFrom = fromDate;
+                } else {
+                    this.backLoadFilterQuery.dateTo = null;
+                    this.backLoadFilterQuery.dateFrom = null;
+                }
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            case LoadFilterStringEnum.MONEY_FILTER:
+                this.backLoadFilterQuery.rateFrom =
+                    data.queryParams?.firstFormFrom ?? null;
+                this.backLoadFilterQuery.rateTo =
+                    data.queryParams?.firstFormTo ?? null;
+
+                this.backLoadFilterQuery.paidFrom =
+                    data.queryParams?.secondFormFrom ?? null;
+                this.backLoadFilterQuery.paidTo =
+                    data.queryParams?.secondFormTo ?? null;
+
+                this.backLoadFilterQuery.dueFrom =
+                    data.queryParams?.thirdFormFrom ?? null;
+                this.backLoadFilterQuery.dueTo =
+                    data.queryParams?.thirdFormTo ?? null;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private loadBackFilter(
+        filter: FilterOptionsLoad,
+        loadTypeId?: number
+    ): void {
+        this.brokerService
+            .getBrokerLoads(
+                filter.loadType,
+                filter.statusType,
+                filter.status,
+                filter.dispatcherIds,
+                filter.dispatcherId,
+                filter.dispatchId,
+                filter.brokerId,
+                filter.shipperId,
+                filter.loadId,
+                filter.dateFrom,
+                filter.dateTo,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.truckId,
+                filter.rateFrom,
+                filter.rateTo,
+                filter.paidFrom,
+                filter.paidTo,
+                filter.dueFrom,
+                filter.dueTo,
+                filter.pickup,
+                filter.delivery,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.brokerLoads = res.loads.data;
+                    this.brokerConfData.loadStops = res;
+
+                    if (loadTypeId)
+                        this.brokerConfig =
+                            BrokerDetailsHelper.getBrokerDetailsConfig(
+                                this.brokerConfData,
+                                loadTypeId
+                            );
+                }
+            });
+    }
+
+    private loadsSearchListener(): void {
+        this.tableService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backLoadFilterQuery
+                    );
+
+                    if (searchEvent) {
+                        if (searchEvent.action === TableStringEnum.API) {
+                            this.loadBackFilter(searchEvent.query);
+                        } else if (
+                            searchEvent.action === TableStringEnum.STORE
+                        ) {
+                            this.backLoadFilterQuery.searchOne = null;
+                            this.backLoadFilterQuery.searchTwo = null;
+                            this.backLoadFilterQuery.searchThree = null;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+                        }
+                    }
+                }
+            });
+    }
+
+    private getLoadStatusFilter(): void {
+        forkJoin([
+            this.loadService.getLoadStatusFilter(
+                LoadFilterStringEnum.PENDING_2
+            ),
+            this.loadService.getLoadStatusFilter(LoadFilterStringEnum.ACTIVE_2),
+            this.loadService.getLoadStatusFilter(LoadFilterStringEnum.CLOSED_2),
+        ])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: ([
+                    pendingStatusList,
+                    activeStatusList,
+                    closedStatusList,
+                ]) => {
+                    const allStatusList = [
+                        ...pendingStatusList,
+                        ...activeStatusList,
+                        ...closedStatusList,
+                    ];
+
+                    const filterOptionsData = {
+                        options: allStatusList,
+                    };
+
+                    this.tableService.sendLoadStatusFilter(filterOptionsData);
+                },
+            });
+    }
+
+    private getLoadDispatcherFilter(): void {
+        forkJoin([
+            this.loadService.getLoadDispatcherFilter(
+                LoadFilterStringEnum.PENDING_2
+            ),
+            this.loadService.getLoadDispatcherFilter(
+                LoadFilterStringEnum.ACTIVE_2
+            ),
+            this.loadService.getLoadDispatcherFilter(
+                LoadFilterStringEnum.CLOSED_2
+            ),
+        ])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: ([
+                    pendingDispatchers,
+                    activeDispatchers,
+                    closedDispatchers,
+                ]) => {
+                    let allDispatchers = [
+                        ...pendingDispatchers,
+                        ...activeDispatchers,
+                        ...closedDispatchers,
+                    ];
+
+                    allDispatchers = allDispatchers.filter(
+                        (item, index, array) =>
+                            array.findIndex((item2) => item2.id === item.id) ===
+                            index
+                    );
+
+                    this.tableService.sendActionAnimation({
+                        animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
+                        data: allDispatchers,
+                        id: null,
+                    });
+                },
+            });
+    }
+
+    public onDetailsSelectClick(id: number): void {
+        if (id) {
+            this.backLoadFilterQuery.statusType = id !== 4 ? id : null;
+
+            this.loadBackFilter(this.backLoadFilterQuery, id);
+        }
+    }
+
+    public sortItems(): void {
+        // this.backLoadFilterQuery.sort = data ? 'loadNumberAsc' : 'loadNumberDesc'; - waiting for backend
+        
+        this.loadBackFilter(this.backLoadFilterQuery);
     }
 
     ngOnDestroy(): void {

@@ -10,6 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 // Models
 import {
     ShipperContactGroupResponse,
+    ShipperLoadStopsResponse,
     ShipperResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
@@ -34,6 +35,7 @@ import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-detai
 })
 export class ShipperDetailsItemComponent implements OnChanges {
     @Input() shipper: ShipperResponse;
+    @Input() shipperLoads: ShipperLoadStopsResponse[];
     public shipperContacts: ShipperContactGroupResponse[];
     public shipperLikes: number;
     public shipperDislike: number;

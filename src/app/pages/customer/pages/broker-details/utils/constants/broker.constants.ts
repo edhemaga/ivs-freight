@@ -1,5 +1,6 @@
 //Models
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
 //Enums
 import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
@@ -259,4 +260,35 @@ export class BrokerConstants {
             elementId: 0,
         },
     ];
+
+    static MULTIPLE_SELECT_DETAILS_DROPDOWN: MultipleSelectDetailsDropdownItem[] =
+        [
+            {
+                id: 4,
+                title: 'All Load',
+                length: null,
+                isActive: true,
+            },
+            {
+                id: 1,
+                title: 'Pending',
+                length: null,
+                isActive: false,
+                hideCount: true,
+            },
+            {
+                id: 2,
+                title: 'Active',
+                length: null,
+                isActive: false,
+                hideCount: true,
+            },
+            {
+                id: 3,
+                title: 'Closed',
+                length: null,
+                isActive: false,
+                hideCount: true,
+            },
+        ];
 }

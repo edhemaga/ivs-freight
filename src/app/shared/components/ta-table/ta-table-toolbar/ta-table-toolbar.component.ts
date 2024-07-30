@@ -378,7 +378,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         if (activeCard) {
             this.toolbarWidth = TableStringEnum.NUMBER_100;
-        } else {
+        } else if (this.columns) {
             this.columns.map((column) => {
                 if (!column.hidden) {
                     columnsSumWidth +=

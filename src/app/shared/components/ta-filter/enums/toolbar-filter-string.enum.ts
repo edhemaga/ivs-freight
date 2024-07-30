@@ -24,7 +24,8 @@ export enum ToolbarFilterStringEnum {
     MONEY_FILTER = 'moneyFilter',
     MILES_FILTER = 'milesFilter',
     PAY_FILTER = 'payFilter',
-
+    PARKING_FILTER = 'parkingFilter',
+    VACATION_FILTER = 'vacationFilter',
     // State Filter
     CANADA = 'canada',
     CANADA_2 = 'Canada',

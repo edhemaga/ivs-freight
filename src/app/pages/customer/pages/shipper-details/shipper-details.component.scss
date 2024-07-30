@@ -2,8 +2,8 @@
 
 app-shipper-details {
     .items-header {
-        grid-template-columns: 89px 117px 72px 93px 78px 66px !important ;
-        column-gap: 20px;
+        grid-template-columns: 120px 144px 80px 92px 67px 67px 84px !important;
+        column-gap: 4px !important;
     }
     .arrow-le {
         margin-right: 6px;
@@ -27,8 +27,7 @@ app-shipper-details {
     .time-date {
         display: flex;
         flex-direction: column;
-
-        width: fit-content;
+        
         .time {
             font-size: 11px;
             font-weight: 800;

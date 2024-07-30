@@ -20,6 +20,7 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import {
     BrokerContactResponse,
     BrokerResponse,
+    LoadBrokerDetailsResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
@@ -45,6 +46,7 @@ import { BrokerLoadDropdownActionsConstants } from '@pages/customer/pages/broker
 export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     private destroy$ = new Subject<void>();
     @Input() brokerData: BrokerResponse;
+    @Input() brokerLoads: LoadBrokerDetailsResponse[] = [];
     public brokerContacts: BrokerContactResponse[];
     public brokerLikes: number;
     public brokerDislike: number;

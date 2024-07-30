@@ -38,7 +38,15 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
 
         const brokerData$ = this.brokerService.getBrokerById(ids);
 
-        const brokerLoads$ = this.brokerService.getBrokerLoads(ids);
+        const brokerLoads$ = this.brokerService.getBrokerLoads(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            ids
+        );
 
         const brokerPaidInvoiceAging$ =
             this.brokerService.getBrokerInvoiceAging(ids, true);

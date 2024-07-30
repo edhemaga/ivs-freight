@@ -2,6 +2,7 @@ export enum DispatchTableStringEnum {
     TRUCK = 'truck',
     TRAILER = 'trailer',
     LOCATION = 'location',
+    DRIVER = 'driver',
 
     COMMON = 'common',
     COLORS = 'colors',
@@ -10,9 +11,12 @@ export enum DispatchTableStringEnum {
     SMALL = 'small',
     TRUCK_MODAL = 'truck-modal',
     TRAILER_MODAL = 'trailer-modal',
+    DRIVER_MODAL = 'driver-modal',
 
     TRUCK_ID = 'truckId',
     TRAILER_ID = 'trailerId',
+    DRIVER_ID = 'driverId',
+    CO_DRIVER_ID = 'coDriverId',
 
     CIRCLE_ROUTE = 'ic_circle.svg',
     OWNER_STATUS_ROUTE = 'ic_owner-status.svg',
@@ -34,4 +38,8 @@ export enum DispatchTableStringEnum {
     LOAD_DISPATCHER = 'load-dispatcher',
     DISPATCHER = 'dispatcher',
     OFF = 'Off',
+    OFF_2 = 'off',
+    TEXTAREA = 'textarea',
+    COPY = 'copy',
+    VALUE = 'value',
 }

@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { mergeMap, delay, of, map, BehaviorSubject, tap } from 'rxjs';
+import {
+    mergeMap,
+    delay,
+    of,
+    map,
+    BehaviorSubject,
+    tap,
+    Observable,
+} from 'rxjs';
 
 // Store
 import { DispatcherStore } from '@pages/dispatch/state/dispatcher.store';
@@ -41,6 +49,24 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchBoardListGet();
     }
 
+    public getDispatchBoardFilterList(
+        dispatcherId?: number,
+        teamBoard?: number,
+        truckTypes?: Array<number>,
+        trailerTypes?: Array<number>,
+        statuses?: Array<number>,
+        parkings?: Array<number>
+    ): Observable<DispatchBoardListResponse> {
+        return this.dispatchService.apiDispatchBoardListGet(
+            dispatcherId,
+            teamBoard,
+            truckTypes,
+            trailerTypes,
+            statuses,
+            parkings
+        );
+    }
+
     getDispatchBoardByDispatcherList(id: number) {
         return this.dispatchService.apiDispatchBoardGet(id);
     }
@@ -67,6 +93,10 @@ export class DispatcherService {
 
     changeDriverVacation(id: number) {
         return this.driverService.apiDriverVacationIdPatch(id);
+    }
+
+    public updatePreTripInspection(id: number): Observable<number> {
+        return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {
@@ -102,7 +132,6 @@ export class DispatcherService {
                         },
                     };
                 });
-
             })
         );
     }

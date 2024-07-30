@@ -81,7 +81,7 @@
                     *ngFor="
                         let contact of contactsInfo?.data;
                         let ind = index;
-                        trackBy: trackById
+                        trackBy: '' | trackByProperty
                     "
                 >
                     <div

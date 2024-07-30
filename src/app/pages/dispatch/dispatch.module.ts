@@ -20,6 +20,7 @@ import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
+import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
 import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
@@ -34,6 +35,8 @@ import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { LoadRequirementComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-requirement/load-requirement.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
+import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pre-trip-inspection/dispatch-table-pre-trip-inspection.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -49,8 +52,8 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         // Components
         DispatchComponent,
         DispatchTableComponent,
+        DispatchTableDriverComponent,
         DispatchTableParkingComponent,
-
         DispatchTableTruckTrailerComponent,
         DispatchTableAddNewComponent,
         DispatchTableAssignLoadComponent,
@@ -95,6 +98,8 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaMapsComponent,
         TaResizerComponent,
         LoadRequirementComponent,
+        DispatchTablePreTripInspectionComponent,
+        TaProfileImagesComponent,
     ],
     exports: [ColorFinderPipe],
 })

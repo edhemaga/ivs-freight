@@ -27,6 +27,7 @@ import {
     BrokerAvailableCreditCommand,
     BrokerAvailableCreditResponse,
     BrokerInvoiceAgeingResponse,
+    BrokerLoadsResponse,
 } from 'appcoretruckassist';
 
 // Enums
@@ -576,15 +577,67 @@ export class BrokerService implements OnDestroy {
         });
     }
 
-    public getBrokerLoads(brokerId: number) {
+    public getBrokerLoads(
+        loadType?: number,
+        statusType?: number,
+        status?: Array<number>,
+        dispatcherIds?: Array<number>,
+        dispatcherId?: number,
+        dispatchId?: number,
+        brokerId?: number,
+        shipperId?: number,
+        loadId?: number,
+        dateFrom?: string,
+        dateTo?: string,
+        revenueFrom?: number,
+        revenueTo?: number,
+        truckId?: number,
+        rateFrom?: number,
+        rateTo?: number,
+        paidFrom?: number,
+        paidTo?: number,
+        dueFrom?: number,
+        dueTo?: number,
+        pickup?: boolean,
+        delivery?: boolean,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<BrokerLoadsResponse> {
         return this.brokerService.apiBrokerLoadsGet(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            brokerId
+            loadType,
+            statusType,
+            status,
+            dispatcherIds,
+            dispatcherId,
+            dispatchId,
+            brokerId,
+            shipperId,
+            loadId,
+            dateFrom,
+            dateTo,
+            revenueFrom,
+            revenueTo,
+            truckId,
+            rateFrom,
+            rateTo,
+            paidFrom,
+            paidTo,
+            dueFrom,
+            dueTo,
+            pickup,
+            delivery,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 
