@@ -19,6 +19,7 @@ import {
   UntypedFormBuilder,
 } from '@angular/forms';
 import {
+  BehaviorSubject,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -85,6 +86,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
+  public currentUserTypingName: BehaviorSubject<string> = new BehaviorSubject('');
 
   // Emoji
   public isEmojiSelectionActive: boolean = false;
@@ -130,6 +132,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
+    this.resetTypingStatus();
   }
 
   ngAfterContentChecked(): void {
@@ -156,8 +159,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.chatHubService
       .connect()
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
+      .subscribe(
+        () => {
           this.chatHubService
             .receiveMessage()
             .pipe(takeUntil(this.destroy$))
@@ -168,8 +171,21 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                 }
               }
             );
+          this.chatHubService
+            .receiveTypingNotification()
+            .pipe(
+              takeUntil(this.destroy$))
+            .subscribe((companyUserId: number) => {
+              const filteredUser: CompanyUserShortResponse =
+                this.remainingParticipants
+                  .find(user =>
+                    user.id === companyUserId
+                  );
+              this.currentUserTypingName.next(filteredUser.fullName);
+              clearInterval(this.resetTypingStatus());
+            })
         }
-      });
+      );
   }
 
   public sendMessage(): void {
@@ -287,13 +303,16 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingBlurred = true;
   }
 
-  // Trackers
-  public trackById(index: number, item: MessageResponse): number {
-    return item.id;
+  public notifyTyping(): void {
+    if (!this.messageToSend) return;
+    this.chatHubService.notifyTyping(this.conversation.id);
   }
 
-  public trackByAttachmentName(index: number, attachment: ChatAttachmentForThumbnail): string {
-    return attachment.name;
+  public resetTypingStatus() {
+    const interval = setInterval(() => {
+      this.currentUserTypingName.next('');
+    }, 1500);
+    return interval;
   }
 
   ngOnDestroy(): void {

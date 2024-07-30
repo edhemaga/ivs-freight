@@ -84,7 +84,7 @@
             [scrollTop]="messagesContent?.scrollHeight"
             [ngStyle]="
                 isChatTypingActivated &&
-                attachments?.length && { height: 'calc(100% - 117px)' }
+                attachments?.length && { height: 'calc(100% - 131px)' }
             "
             #messagesContent
         >
@@ -125,6 +125,14 @@
                     </div>
                 </div>
             </ng-template>
+        </div>
+
+        <div class="typing-placeholder-wrapper">
+            <ng-container *ngIf="currentUserTypingName | async">
+                <div class="typing-placeholder ta-font-bold">
+                    {{ currentUserTypingName | async }} is typing...
+                </div>
+            </ng-container>
         </div>
 
         <div
@@ -219,6 +227,7 @@
                                 )
                             "
                             [(ngModel)]="messageToSend"
+                            (change)="notifyTyping()"
                             (blurInput)="blurInput()"
                             (focusInput)="focusInput()"
                             (keyup.enter)="sendMessage()"
@@ -308,6 +317,8 @@
             [dropzoneFocus]="false"
             [dropZoneConfig]="ChatDropzone.inputDropzone"
             [size]="'large'"
+            [customClass]="'large'"
+            [dontUseSlider]="false"
             (onFileEvent)="addAttachments($event.files)"
         ></app-ta-upload-files>
     </ng-template>
