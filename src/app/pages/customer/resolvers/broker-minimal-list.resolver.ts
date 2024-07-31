@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // Services
@@ -15,7 +15,7 @@ import { BrokerMinimalListResponse } from 'appcoretruckassist';
     providedIn: 'root',
 })
 export class BrokerMinimalListResolver
-    implements Resolve<BrokerMinimalListResponse>
+    
 {
     pageIndex: number = 1;
     pageSize: number = 25;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { ContactsTableData } from '@pages/contacts/pages/contacts-table/models/c
 @Injectable({
     providedIn: 'root',
 })
-export class ContactsResolver implements Resolve<ContactState> {
+export class ContactsResolver  {
     constructor(
         private contactService: ContactsService,
         private contactStore: ContactStore,

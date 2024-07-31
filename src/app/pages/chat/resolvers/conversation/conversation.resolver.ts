@@ -1,5 +1,5 @@
 import { inject } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
+import { ActivatedRouteSnapshot } from "@angular/router";
 import { Observable } from "rxjs";
 
 // Models
@@ -8,7 +8,7 @@ import { MessageResponse } from "appcoretruckassist";
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 
-export class ConversationResolver implements Resolve<MessageResponse[]> {
+export class ConversationResolver  {
 
     private userChatService = inject(UserChatService);
 

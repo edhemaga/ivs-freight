@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, tap } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { IntegrationService } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class CompanyIntegrationsResolver implements Resolve<any> {
+export class CompanyIntegrationsResolver  {
     constructor(
         private integrationService: IntegrationService,
         private integrationStore: IntegrationStore

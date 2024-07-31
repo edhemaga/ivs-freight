@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { FuelItemStore } from '@pages/fuel/state/fuel-details-state/fuel-details
 @Injectable({
     providedIn: 'root',
 })
-export class FuelDetailsResolver implements Resolve<FuelStopResponse[]> {
+export class FuelDetailsResolver  {
     pageIndex: number = 1;
     pageSize: number = 25;
     constructor(

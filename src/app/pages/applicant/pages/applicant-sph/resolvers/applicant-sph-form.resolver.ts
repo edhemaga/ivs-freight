@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { forkJoin, Observable, throwError, catchError, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class ApplicantSphFormResolver implements Resolve<ApplicantState> {
+export class ApplicantSphFormResolver  {
     constructor(
         private applicantSphService: ApplicantSphService,
         private applicantActionsService: ApplicantService,

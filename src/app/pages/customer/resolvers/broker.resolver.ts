@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerResolver implements Resolve<BrokerState> {
+export class BrokerResolver  {
     constructor(
         // Services
         private brokerService: BrokerService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
+export class TrailerActiveResolver  {
     constructor(
         private trailerService: TrailerService,
         private trailerStore: TrailerActiveStore,

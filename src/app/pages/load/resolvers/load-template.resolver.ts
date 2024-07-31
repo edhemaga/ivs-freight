@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
+export class LoadTemplateResolver  {
     constructor(
         private loadService: LoadService,
         private loadTemplateStore: LoadTemplateStore,

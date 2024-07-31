@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { AccountState, AccountStore } from '@pages/account/state/account.store';
 @Injectable({
     providedIn: 'root',
 })
-export class AccountResolver implements Resolve<AccountState> {
+export class AccountResolver  {
     constructor(
         private accountService: AccountService,
         private accountStore: AccountStore,
