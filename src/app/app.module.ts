@@ -6,14 +6,11 @@ import {
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
-import { NgIdleModule } from '@ng-idle/core';
-import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -44,8 +41,12 @@ import { WebsiteUserLoggedService } from '@pages/website/services/website-user-l
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
+// import { CaComponentsLibModule } from 'ca-components';
+
 // lottie
 import player from 'lottie-web';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgIdleModule } from '@ng-idle/core';
 function playerFactory() {
     return player;
 }
@@ -61,10 +62,10 @@ function playerFactory() {
         SharedModule,
         TaTooltipSlideComponent,
         LottieModule.forRoot({ player: playerFactory }),
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
-            libraries: ['geometry', 'places'],
-        }),
+        // AgmCoreModule.forRoot({
+        //     apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
+        //     libraries: ['geometry', 'places'],
+        // }),
         ToastrModule.forRoot({
             preventDuplicates: true,
             enableHtml: true,
@@ -84,6 +85,7 @@ function playerFactory() {
 
         // routing
         AppRoutingModule,
+       // CaComponentsLibModule,
     ],
     providers: [
         {
@@ -107,7 +109,7 @@ function playerFactory() {
             },
         ],
         EncryptionDecryptionService,
-        GoogleMapsAPIWrapper,
+       // GoogleMapsAPIWrapper,
         StaticInjectorService,
         DatePipe,
         CurrencyPipe,

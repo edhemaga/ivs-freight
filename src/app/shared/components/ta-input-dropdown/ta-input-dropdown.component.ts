@@ -1,9 +1,3 @@
-import {
-    ControlValueAccessor,
-    NgControl,
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
     AfterViewInit,
@@ -60,15 +54,16 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directives
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
+import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-input-dropdown',
     templateUrl: './ta-input-dropdown.component.html',
     styleUrls: ['./ta-input-dropdown.component.scss'],
+    standalone: true,
     providers: [FormControlPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [inputDropdownAnimation('showHideDropdownOptions')],
-    standalone: true,
     imports: [
         // Module
         CommonModule,

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgmCoreModule } from '@agm/core';
+//import { AgmCoreModule } from '@agm/core';
 
 // Modules
 import { SharedModule } from '@shared/shared.module';
@@ -41,7 +41,7 @@ import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/compo
         AccountingRoutingModule,
         SharedModule,
         AngularSvgIconModule,
-        AgmCoreModule,
+        //AgmCoreModule,
         TaTableToolbarComponent,
         TaInputComponent,
         TaProfileImagesComponent,

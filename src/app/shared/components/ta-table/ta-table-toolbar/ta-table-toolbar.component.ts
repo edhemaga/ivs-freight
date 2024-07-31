@@ -11,11 +11,7 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core';
-import {
-    UntypedFormControl,
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
+
 import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -65,6 +61,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
 
 // Pipes
 import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 
 @Titles()
 @Component({

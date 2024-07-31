@@ -1,7 +1,7 @@
 // Modules
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,7 +31,7 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/components/load-short-details/load-short-details.component';
 import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { LoadRequirementComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-requirement/load-requirement.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
@@ -95,7 +95,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaModalComponent,
         TaCustomCardComponent,
         LoadDeatilsItemStopsMainComponent,
-        TaMapsComponent,
+      //  TaMapsComponent,
         TaResizerComponent,
         LoadRequirementComponent,
         DispatchTablePreTripInspectionComponent,
