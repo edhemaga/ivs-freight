@@ -500,6 +500,10 @@
                 </tr>
             </ng-container>
 
+            <!-- <ng-container *ngIf="!dispatchData?.dispatchCount">
+                <tr class="dummy-row"></tr>
+            </ng-container> -->
+
             <tr *ngIf="!isDispatchBoardLocked">
                 <td
                     class="truck-field"
@@ -655,57 +659,65 @@
         </tbody>
     </table>
 
-    <div
-        class="d-flex justify-content-between table-info"
-        [ngStyle]="{ 'width.px': toolbarWidth }"
-    >
-        <div class="d-flex align-items-center table-inside-info">
-            <div
-                class="table-info-field truck-field"
-                [ngStyle]="{
-                    width: hasAdditionalFieldTruck ? '160px' : '120px'
-                }"
-            >
-                <span class="ta-font-bold">
-                    {{ dispatchData.truckCount }}
-                    {{ dispatchData.truckCount === 1 ? 'TRUCK' : 'TRUCKS' }}
-                </span>
+    <ng-container *ngIf="dispatchData?.dispatchCount">
+        <div
+            class="d-flex justify-content-between table-info"
+            [ngStyle]="{ 'width.px': toolbarWidth }"
+        >
+            <div class="d-flex align-items-center table-inside-info">
+                <div
+                    class="table-info-field truck-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTruck ? '160px' : '120px'
+                    }"
+                >
+                    <span class="ta-font-bold">
+                        {{ dispatchData.truckCount }}
+                        {{ dispatchData.truckCount === 1 ? 'TRUCK' : 'TRUCKS' }}
+                    </span>
+                </div>
+
+                <div
+                    class="table-info-field trailer-field"
+                    [ngStyle]="{
+                        width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                    }"
+                >
+                    <span class="ta-font-bold">
+                        {{ dispatchData.trailerCount }}
+                        {{
+                            dispatchData.trailerCount === 1
+                                ? 'TRAILER'
+                                : 'TRAILERS'
+                        }}
+                    </span>
+                </div>
+
+                <div class="table-info-field driver-field">
+                    <span class="ta-font-bold">
+                        {{ dispatchData.driverCount }}
+                        {{
+                            dispatchData.driverCount === 1
+                                ? 'DRIVER'
+                                : 'DRIVERS'
+                        }}
+                    </span>
+                </div>
             </div>
 
-            <div
-                class="table-info-field trailer-field"
-                [ngStyle]="{
-                    width: hasAdditionalFieldTrailer ? '160px' : '120px'
-                }"
-            >
-                <span class="ta-font-bold">
-                    {{ dispatchData.trailerCount }}
-                    {{
-                        dispatchData.trailerCount === 1 ? 'TRAILER' : 'TRAILERS'
-                    }}
-                </span>
-            </div>
+            <div class="d-flex align-items-center table-inside-info">
+                <div class="table-info-field">
+                    <span class="ta-font-bold">2 of 24</span>
+                </div>
 
-            <div class="table-info-field driver-field">
-                <span class="ta-font-bold">
-                    {{ dispatchData.driverCount }}
-                    {{ dispatchData.driverCount === 1 ? 'DRIVER' : 'DRIVERS' }}
-                </span>
+                <div class="table-info-field dispatcher-field">
+                    <span class="ta-font-bold">
+                        {{ dispatchData?.dispatcher?.fullName ?? 'Team Board' }}
+                    </span>
+                </div>
             </div>
         </div>
-
-        <div class="d-flex align-items-center table-inside-info">
-            <div class="table-info-field">
-                <span class="ta-font-bold">2 of 24</span>
-            </div>
-
-            <div class="table-info-field dispatcher-field">
-                <span class="ta-font-bold">
-                    {{ dispatchData?.dispatcher?.fullName ?? 'Team Board' }}
-                </span>
-            </div>
-        </div>
-    </div>
+    </ng-container>
 </div>
 
 <!-- Pickup and Delivery popover -->

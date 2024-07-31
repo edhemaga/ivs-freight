@@ -164,6 +164,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+
+        console.log('dispatchData', this.dispatchData);
     }
 
     private getConstantData(): void {
