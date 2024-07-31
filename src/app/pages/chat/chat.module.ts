@@ -43,6 +43,7 @@ import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
+import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
 
         // Shared Components
         TaInputComponent,
+        TaSearchComponent,
         TaProfileImagesComponent,
         TaAppTooltipV2Component,
         TaUploadFilesComponent,

@@ -77,4 +77,22 @@ export class HubService {
         });
     }
 
+    public notifyTyping(conversationId: number): void {
+        // If function within a hub is called 'invoke' is a must
+        // invoke(name of the function, arguments)
+        // Send would not work
+        this.hubConnection.invoke(`NotifyTyping`, conversationId);
+    }
+
+    public receiveTypingNotification(): Observable<number> {
+        return new Observable<number>((observer) => {
+            this.hubConnection.on('ReceiveTypingNotification',
+                (companyUserId: number) => {
+                    observer.next(companyUserId);
+                });
+            observer.next(0);
+        })
+    }
+
+
 }
