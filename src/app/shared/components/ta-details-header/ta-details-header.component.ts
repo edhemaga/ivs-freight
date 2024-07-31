@@ -36,6 +36,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // models
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
+import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -121,8 +122,9 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() dispatcherFilter: boolean = false;
     @Input() statusFilter: boolean = false;
     @Input() locationFilter: boolean = false;
+    @Input() areaFilter: boolean = false;
     @Input() hasSort: boolean = false;
-    @Input() sortText: string;
+    @Input() sortDropdown: LoadsSortDropdownModel[];
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -134,7 +136,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Output() dropActions = new EventEmitter<any>();
     @Output() filterActions = new EventEmitter<any>();
     @Output() specialFilterActions = new EventEmitter<any>();
-    @Output() sortItemsAction = new EventEmitter<boolean>();
+    @Output() sortItemsAction = new EventEmitter<{
+        column: LoadsSortDropdownModel;
+        sortDirection: string;
+    }>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
@@ -145,7 +150,15 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public activeTemplate: any = 'All Load';
     public isMapBtnClicked: boolean = true;
     public isSearchBtnDisplayed: boolean = true;
-    public isSortAscending: boolean = true;
+    public sortDirection: string = 'desc';
+    public selectedSort: LoadsSortDropdownModel = null;
+    public sortPopover: NgbPopover;
+    public isSortDropdownOpen: boolean = false;
+
+    private rotate: { [key: string]: string } = {
+        asc: 'desc',
+        desc: 'asc',
+    };
 
     constructor() {}
 
@@ -157,6 +170,15 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
             changes?.isMapDisplayed?.previousValue
         ) {
             this.isMapBtnClicked = changes?.isMapDisplayed?.currentValue;
+        }
+
+        if (
+            changes?.sortDropdown?.currentValue !==
+            changes?.sortDropdown?.previousValue
+        ) {
+            this.selectedSort = changes.sortDropdown.currentValue.find(
+                (item) => item.active
+            );
         }
     }
 
@@ -370,9 +392,38 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.specialFilterActions.emit({ data, type });
     }
 
-    public sortItems(): void {
-        this.isSortAscending = !this.isSortAscending;
+    public sortItems(
+        column: LoadsSortDropdownModel,
+        changeDirection?: boolean
+    ): void {
+        if (changeDirection)
+            this.sortDirection = this.rotate[this.sortDirection];
 
-        this.sortItemsAction.emit(this.isSortAscending);
+        const directionSort = this.sortDirection
+            ? column.sortName +
+              (this.sortDirection[0]?.toUpperCase() +
+                  this.sortDirection?.substr(1).toLowerCase())
+            : '';
+
+        this.sortItemsAction.emit({ column, sortDirection: directionSort });
+
+        if (this.sortPopover?.isOpen()) {
+            this.showSortDropdown(this.sortPopover);
+        }
+    }
+
+    public showSortDropdown(popover: NgbPopover): void {
+        this.sortPopover = popover;
+        if (popover.isOpen()) {
+            popover.close();
+        } else {
+            popover.open();
+        }
+        this.isSortDropdownOpen = !this.isSortDropdownOpen;
+    }
+
+    public sortDropdownClosed(): void {
+        this.sortPopover?.close();
+        this.isSortDropdownOpen = false;
     }
 }

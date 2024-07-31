@@ -24,17 +24,23 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class UserChatService {
+    private token: string = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user')).token
+        : 0;
+
     // Headers
     private headers = new HttpHeaders({
         'skip-form': '1',
+        'Authorization': `Bearer ${this.token}`
     });
+
     constructor(
         public http: HttpClient,
 
         // Services
         private chatService: ChatService,
         private formDataService: FormDataService
-    ) {}
+    ) { }
 
     public getCompanyUserList(
         userType: UserType,
@@ -54,7 +60,10 @@ export class UserChatService {
 
     public getConversation(id: number): Observable<ConversationResponse> {
         return this.http.get<ConversationResponse>(
-            `${environment.API_ENDPOINT}/api/chat/conversation/${id}`
+            `${environment.API_ENDPOINT}/api/chat/conversation/${id}`,
+            {
+                headers: this.headers
+            }
         );
     }
 
@@ -64,10 +73,13 @@ export class UserChatService {
                 'MessageSpecParams.ConversationId': id,
             },
         });
-        return this.http.get<MessageResponse[]>(
-            `${environment.API_ENDPOINT}/api/chat/message/list`,
-            { params }
-        );
+        return this.http.get<MessageResponse[]>
+            (`${environment.API_ENDPOINT}/api/chat/message/list`,
+                {
+                    params,
+                    headers: this.headers
+                }
+            );
     }
 
     public createConversation(
@@ -79,8 +91,9 @@ export class UserChatService {
 
         return this.http.post(
             `${environment.API_ENDPOINT}/api/chat/conversation`,
-            conversationParticipants
-        );
+            conversationParticipants,
+            { headers: this.headers }
+        )
     }
 
     public sendMessage(

@@ -47,7 +47,7 @@
     }
 
     .messages-content {
-        height: calc(100% - 79px);
+        height: calc(100% - 93px);
         overflow-y: scroll;
 
         .empty-conversation {
@@ -59,6 +59,17 @@
             padding-top: 12px;
             font-size: 20px;
             line-height: 25px;
+        }
+    }
+
+    .typing-placeholder-wrapper {
+        margin: auto 12px;
+        height: 14px;
+
+        .typing-placeholder {
+            line-height: 14px;
+            font-size: 11px;
+            color: $bw6-2;
         }
     }
 

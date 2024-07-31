@@ -161,6 +161,33 @@
                             </span>
                         </ng-container>
                     </div>
+                    <ng-container *ngIf="!isBoardLocked">
+                        <div
+                            class="driver-vacation d-flex justify-content-center align-items-center c-pointer"
+                            [class.driver-on-vacation]="driver.vacation"
+                            [class.driver-not-on-vacation]="
+                                !driver.vacation && !isActiveLoad
+                            "
+                            [class.driver-active-load]="
+                                !driver.vacation && isActiveLoad
+                            "
+                            (click)="handleDriverVacation()"
+                            [mainTooltip]="
+                                driver.vacation
+                                    ? 'Remove Vacation'
+                                    : isActiveLoad
+                                    ? 'Active Load'
+                                    : 'Send to Vacation'
+                            "
+                            [tooltipBackground]="'#424242'"
+                            ngbTooltip
+                            position="bottom"
+                        >
+                            <svg-icon
+                                [src]="dispatchTableSvgRoutes.vacation"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                     <ng-container *ngIf="!isBoardLocked && !isDrag">
                         <div
                             class="d-flex justify-content-center align-items-center remove-icon-container"
