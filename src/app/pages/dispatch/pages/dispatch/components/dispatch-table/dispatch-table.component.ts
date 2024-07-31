@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
-import { catchError, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 
 // animations
 import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-background.animation';
@@ -47,6 +47,7 @@ import {
     TruckListResponse,
     TruckMinimalResponse,
     DriverMinimalResponse,
+    DispatchResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
@@ -515,7 +516,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.deleteDispatchBoardById(id);
         } else {
-            this.updateOrAddDispatchBoardAndSend(DispatchTableStringEnum.DRIVER_ID, null, index);
+            this.updateOrAddDispatchBoardAndSend(
+                DispatchTableStringEnum.DRIVER_ID,
+                null,
+                index
+            );
         }
     }
 
@@ -597,22 +602,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.statusOpenedIndex = indx;
     }
 
-    changeDriverVacation(data) {
+    public changeDriverVacation(data: DispatchResponse): void {
         this.isDispatchBoardChangeInProgress = true;
-
         this.dispatcherService
             .changeDriverVacation(data.driver.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                switchMap(() =>
-                    this.dispatcherService.updateDispatchboardRowById(
-                        data.id,
-                        this.dispatchData.id
-                    )
-                );
-                tap(() => {
-                    this.isDispatchBoardChangeInProgress = false;
-                });
+                this.dispatcherService
+                    .updateDispatchboardRowById(data.id, this.dispatchData.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.isDispatchBoardChangeInProgress = false;
+                    });
             });
     }
 
