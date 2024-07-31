@@ -61,6 +61,8 @@ export class DispatchTableDriverComponent {
         index: number;
     }>();
 
+    @Output() driverVacationEmitter = new EventEmitter<{}>();
+
     public driverFormControl: UntypedFormControl = new UntypedFormControl();
 
     public driverHover: { indx: number; txt: string } = {
@@ -120,7 +122,9 @@ export class DispatchTableDriverComponent {
             this.ref.detectChanges();
         }, 2000);
 
-        const el = this.renderer.createElement(DispatchTableStringEnum.TEXTAREA);
+        const el = this.renderer.createElement(
+            DispatchTableStringEnum.TEXTAREA
+        );
         this.renderer.setProperty(el, DispatchTableStringEnum.VALUE, text);
         this.renderer.appendChild(this.el.nativeElement, el);
         el.select();
@@ -161,7 +165,7 @@ export class DispatchTableDriverComponent {
         this.openedDriverDropdown = ind;
     }
 
-    public toggleHos(tooltip: NgbTooltip, data: any) {
+    public toggleHos(tooltip: NgbTooltip, data: any): void {
         if (!data.length)
             data = [
                 {
@@ -178,6 +182,10 @@ export class DispatchTableDriverComponent {
 
         if (tooltip.isOpen()) tooltip.close();
         else tooltip.open();
+    }
+
+    public handleDriverVacation(): void {
+        this.driverVacationEmitter.emit();
     }
 
     public identity<T extends DriverItems>(index: number, item: T): number {

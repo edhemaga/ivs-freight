@@ -409,27 +409,6 @@
                             cursor: pointer;
                         }
 
-                        &.driver-on-vacation {
-                            svg-icon {
-                                svg {
-                                    path {
-                                        fill: #3074d3;
-                                    }
-                                }
-                            }
-
-                            &:hover {
-                                background-color: #ef535033 !important;
-                                svg-icon {
-                                    svg {
-                                        path {
-                                            fill: #ef5350;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
                         .remove-item {
                             position: absolute;
                             height: 26px;
