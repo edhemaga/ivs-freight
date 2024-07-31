@@ -1,0 +1,24 @@
+@import '/src/theme/variables.scss';
+
+.load-requirement {
+    &-grid {
+        padding: 0 15px;
+        grid-template-columns: 70px 80px 95px 105px 120px 75px 40px;
+        gap: 4px;
+    }
+
+    &-header {
+        font-size: 11px;
+        line-height: 15px;
+    }
+
+    &-no-req {
+        font-size: 11px;
+        text-decoration: line-through;
+        color: $ta-light-grey-2;
+    }
+
+    &-value {
+        font-size: 14px;
+    }
+}

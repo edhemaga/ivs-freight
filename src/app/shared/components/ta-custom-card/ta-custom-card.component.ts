@@ -109,7 +109,11 @@ export class TaCustomCardComponent implements OnInit {
         this._isCardOpen = value;
     }
     @Input() hasHistoryButton: boolean = false;
-    @Input() showFinishReordering: boolean = false;
+    @Input() isFinishReorderingButtonVisible: boolean = false;
+    @Input() isReorderingButtonVisible: boolean = false;
+    @Input() hasXAxisBottomPadding: boolean = false;
+    @Input() isInheritingParentSize: boolean = false;
+
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
@@ -195,6 +199,14 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
+            case LoadModalStringEnum.START_REORDER:
+                this.onActionEvent.emit({
+                    check: true,
+                    action,
+                });
+
+                break;
+
             default:
                 break;
         }

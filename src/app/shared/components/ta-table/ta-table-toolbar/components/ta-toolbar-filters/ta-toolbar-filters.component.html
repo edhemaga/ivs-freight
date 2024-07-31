@@ -191,7 +191,8 @@
     <app-ta-filter
         *ngIf="
             options.toolbarActions.showTruckFilter ||
-            options.toolbarActions.showTruckPmFilter
+            options.toolbarActions.showTruckPmFilter ||
+            options.toolbarActions.showTruckDispatchFilter
         "
         [type]="'truckFilter'"
         [icon]="'truck'"
@@ -200,6 +201,17 @@
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
+        [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
+    >
+    </app-ta-filter>
+
+    <!-- VACATION FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTruckDispatchFilter"
+        [type]="'vacationFilter'"
+        [icon]="'assets/svg/dispatchboard/vacation.svg'"
+        [filterTitle]="'Vacation Filter'"
+        (setFilter)="onFilter($event)"
     >
     </app-ta-filter>
 
@@ -207,7 +219,8 @@
     <app-ta-filter
         *ngIf="
             options.toolbarActions.showTrailerFilter ||
-            options.toolbarActions.showTrailerPmFilter
+            options.toolbarActions.showTrailerPmFilter ||
+            options.toolbarActions.showTrailerDispatchFilter
         "
         [type]="'trailerFilter'"
         [icon]="'trailer'"
@@ -216,6 +229,7 @@
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
+        [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
     >
     </app-ta-filter>
 
@@ -284,12 +298,28 @@
 
     <!-- STATUS FILTER -->
     <app-ta-filter
-        *ngIf="options.toolbarActions.showStatusFilter"
+        *ngIf="
+            options.toolbarActions.showStatusFilter ||
+            options.toolbarActions.showStatusDispatchFilter
+        "
         [type]="'statusFilter'"
         [icon]="'broker-half-circle'"
         [filterTitle]="'Status Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="false"
+        (setFilter)="onFilter($event)"
+        [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
+    >
+    </app-ta-filter>
+
+    <!-- PARKING FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showParkingFilter"
+        [type]="'parkingFilter'"
+        [icon]="'parking'"
+        [filterTitle]="'Parking Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
     >
     </app-ta-filter>

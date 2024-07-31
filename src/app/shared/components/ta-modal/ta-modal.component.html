@@ -128,6 +128,23 @@
                         </div>
                     </ng-container>
 
+                    <!-- Assign load modal on dispatch board -->
+                    <ng-container *ngIf="isAssignLoadModal">
+                        <div
+                            ngbTooltip
+                            mainTooltip="Side Panel"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                            [ngClass]="{ active: isAdditionalAssignLoadModalVisible }"
+                            (click)="toggleAdditionalPart('side-panel')"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/load/ic_side-panel.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
                     <!-- Stepper -->
 
                     <ng-container *ngIf="isStepper">
@@ -219,6 +236,7 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
+                            isAssignLoadModal ||
                             mapRouteModal,
                         'justify-content-end': !(
                             editData?.type?.includes('edit') ||
@@ -234,7 +252,8 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
-                            mapRouteModal
+                            mapRouteModal ||
+                            isAssignLoadModal
                         "
                     >
                         <div
@@ -249,7 +268,8 @@
                                     !loadModalTemplate &&
                                     !mapSettingsModal &&
                                     !mapRouteModal &&
-                                    !isFinishOrder
+                                    !isFinishOrder &&
+                                    !isAssignLoadModal
                                 "
                             >
                                 <button
@@ -415,6 +435,16 @@
                                     Finish Order
                                 </button>
                             </ng-container>
+
+                            <ng-container *ngIf="isAssignLoadModal">
+                                <button
+                                    (click)="onAction('assign-create-load')"
+                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
+                                    type="button"
+                                >
+                                    Create load
+                                </button>
+                            </ng-container>
                         </div>
                     </ng-container>
 
@@ -560,7 +590,8 @@
                                 !mapSettingsModal &&
                                 !mapRouteModal &&
                                 !isStepper &&
-                                !isCardsModal
+                                !isCardsModal &&
+                                !isAssignLoadModal
                             "
                         >
                             <button
@@ -603,6 +634,25 @@
                                         ></app-ta-spinner>
                                     </div>
                                 </ng-container>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="isAssignLoadModal">
+                            <button
+                                (click)="onAction('assign-save-and-assign-new')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save & Assign New
+                            </button>
+                            <button
+                                (click)="onAction('assign-save-changes')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save Changes
                             </button>
                         </ng-container>
                     </div>
@@ -947,6 +997,12 @@
         >
             <div class="modal-additional-part">
                 <ng-content select="[additional]"></ng-content>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="isAdditionalAssignLoadModalVisible">
+            <div class="modal-additional-part modal-additional-part-load">
+                <ng-content select="[assignLoadModal]"></ng-content>
             </div>
         </ng-container>
     </div>

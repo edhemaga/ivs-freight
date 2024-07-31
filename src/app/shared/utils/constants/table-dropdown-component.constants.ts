@@ -72,7 +72,10 @@ export class TableDropdownComponentConstants {
         dueTo: null,
         pickup: null,
         delivery: null,
-        sort: null,
+        longitude: null,
+        latitude: null,
+        distance: null,
+        sort: 'loadNumberDesc',
         searchOne: null,
         searchTwo: null,
         searchThree: null,
@@ -164,6 +167,15 @@ export class TableDropdownComponentConstants {
         searchOne: null,
         searchTwo: null,
         searchThree: null,
+    };
+
+    static DISPATCH_BACK_FILTER = {
+        dispatcherId: null,
+        teamBoard: null,
+        truckTypes: null,
+        trailerTypes: null,
+        statuses: null,
+        parkings: null,
     };
 
     static SHIPPER_BACK_FILTER: FilterOptionShipper = {

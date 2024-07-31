@@ -103,6 +103,16 @@
 
         .modal-additional-part {
             width: 640px;
+
+            &-load {
+                background-color: $ta-light-grey-5;
+                height: 650px;
+
+                .divider {
+                    background-color: $bw-9;
+                    height: 1px;
+                }
+            }
         }
     }
 

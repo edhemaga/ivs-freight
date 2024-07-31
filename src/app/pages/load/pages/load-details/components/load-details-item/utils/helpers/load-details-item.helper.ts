@@ -9,7 +9,21 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
 import { StopItemsHeaderItem } from '@pages/load/pages/load-details/components/load-details-item/models/stop-items-header-item.model';
 
 export class LoadDetailsItemHelper {
-    static getStopHeaderItems(loadStatus: string): string[] {
+    static getStopHeaderItems(
+        loadStatus: string,
+        isSmallDesign: boolean
+    ): string[] {
+        if (isSmallDesign) {
+            return [
+                '#',
+                'LOCATION',
+                'SHIPPER',
+                'CONTACT',
+                'DATE & TIME',
+                loadStatus !== 'Pending' ? 'CHECK-IN' : null,
+                'LEG',
+            ].filter((headerItemText) => headerItemText);
+        }
         return [
             '#',
             'LOCATION, TYPE',

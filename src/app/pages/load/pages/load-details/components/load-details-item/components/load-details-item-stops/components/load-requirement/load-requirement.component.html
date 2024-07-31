@@ -1,0 +1,108 @@
+<div class="load-requirement">
+    <app-ta-custom-card
+        [cardName]="load?.loadRequirements ? 'Requirement' : 'No Requirement'"
+        [isCardOpen]="!!load?.loadRequirements"
+        [hasActionSvg]="false"
+        [hasBodyData]="true"
+        [hasArrow]="false"
+        [animationMarginParams]="{
+            marginTop: '10px',
+            marginBottom: '12px'
+        }"
+        [hasXAxisBottomPadding]="true"
+        [hasDivider]="false"
+    >
+        <div class="d-grid load-requirement-grid">
+            <ng-container
+                *ngFor="
+                    let headerItem of headerItems;
+                    let last = last;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div [class.text-right]="last">
+                    <span [ngClass]="headerItem.className">
+                        {{ headerItem.label }}
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="d-grid load-requirement-grid">
+            <div>
+                <ng-container *ngIf="truck; else noReq">
+                    <app-ta-truck-trailer-icon
+                        [iconType]="'truck'"
+                        [inputData]="truck"
+                    ></app-ta-truck-trailer-icon>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container *ngIf="trailer; else noReq">
+                    <app-ta-truck-trailer-icon
+                        [iconType]="'trailer'"
+                        [inputData]="trailer"
+                    ></app-ta-truck-trailer-icon>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="
+                        load.loadRequirements?.trailerLength?.name;
+                        else noReq
+                    "
+                >
+                    <div class="load-requirement-value">
+                        {{
+                            getNumericValue(
+                                load.loadRequirements?.trailerLength?.name
+                            )
+                        }}
+                        <span class="text-color-muted">ft</span>
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="load.loadRequirements?.doorType?.name; else noReq"
+                >
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.doorType?.name }}
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container
+                    *ngIf="load.loadRequirements?.suspension?.name; else noReq"
+                >
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.suspension?.name }}
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <ng-container *ngIf="load.loadRequirements?.year; else noReq">
+                    <div class="load-requirement-value">
+                        {{ load.loadRequirements?.year }}+
+                    </div>
+                </ng-container>
+            </div>
+            <div class="text-right">
+                <ng-container
+                    *ngIf="
+                        load.loadRequirements?.liftgate !== undefined &&
+                            load.loadRequirements?.liftgate !== null;
+                        else noReq
+                    "
+                >
+                    <div class="load-requirement-value">Yes</div>
+                </ng-container>
+            </div>
+        </div>
+
+        <ng-template #noReq>
+            <div class="load-requirement-no-req ta-font-medium">No req.</div>
+        </ng-template>
+    </app-ta-custom-card>
+</div>
