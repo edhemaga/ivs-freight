@@ -11,14 +11,14 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 
 //import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+//import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-import { Ng5SliderModule } from 'ng5-slider';
+//import { Ng5SliderModule } from 'ng5-slider';
 //import { CroppieModule } from 'angular-croppie-module';
 
 //import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -44,11 +44,11 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         }),
         //AgmDirectionModule,
         NgxSliderModule,
-        GooglePlaceModule,
+        //GooglePlaceModule,
         DragDropModule,
         ScrollingModule,
         NgxMaskModule.forRoot(),
-        Ng5SliderModule,
+        //Ng5SliderModule,
         // NgxDropzoneModule,
         // CroppieModule,
         // PdfViewerModule,
@@ -64,11 +64,11 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         NgSelectModule,
         AngularSvgIconModule,
         NgbModule,
-        GooglePlaceModule,
+        //GooglePlaceModule,
         DragDropModule,
         ScrollingModule,
         NgxMaskModule,
-        Ng5SliderModule,
+       // Ng5SliderModule,
         // NgxDropzoneModule,
         // CroppieModule,
         NgxSliderModule,

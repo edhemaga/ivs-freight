@@ -12,7 +12,7 @@ import { FormsModule, UntypedFormGroup } from '@angular/forms';
 //import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+//import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 // import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 // import { AgmDirectionModule } from 'agm-direction';
 import { Subject, takeUntil } from 'rxjs';
@@ -60,7 +60,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         // AgmCoreModule,
         // AgmSnazzyInfoWindowModule,
         // AgmDirectionModule,
-        GooglePlaceModule,
+        //GooglePlaceModule,
         AngularSvgIconModule,
 
         // Components

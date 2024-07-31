@@ -1,8 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import {
-    BrowserModule,
-    BrowserTransferStateModule,
-} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,7 +38,7 @@ import { WebsiteUserLoggedService } from '@pages/website/services/website-user-l
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
-// import { CaComponentsLibModule } from 'ca-components';
+import { CaComponentsLibModule } from 'ca-components';
 
 // lottie
 import player from 'lottie-web';
@@ -56,7 +53,7 @@ function playerFactory() {
     imports: [
         BrowserModule,
         CommonModule,
-        BrowserTransferStateModule,
+        //BrowserTransferStateModule,
         BrowserAnimationsModule,
         HttpClientModule,
         SharedModule,
@@ -85,7 +82,7 @@ function playerFactory() {
 
         // routing
         AppRoutingModule,
-       // CaComponentsLibModule,
+        CaComponentsLibModule,
     ],
     providers: [
         {
@@ -109,7 +106,7 @@ function playerFactory() {
             },
         ],
         EncryptionDecryptionService,
-       // GoogleMapsAPIWrapper,
+        // GoogleMapsAPIWrapper,
         StaticInjectorService,
         DatePipe,
         CurrencyPipe,
