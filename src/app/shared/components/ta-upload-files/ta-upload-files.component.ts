@@ -85,7 +85,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     @Input() dropZoneIndex: number = 0;
 
     //Carousel
-    @Input() dontUseSlider: boolean = false;
+    @Input() hasSlider: boolean = false;
     @Input() hasCarouselBottomTabs: boolean;
 
     //Tags
@@ -110,7 +110,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     public currentSlide: number = 0;
     private destroy$ = new Subject<void>();
 
-    constructor(private uploadFileService: TaUploadFileService) {}
+    constructor(private uploadFileService: TaUploadFileService) { }
 
     ngOnInit(): void {
         this.uploadFileService.uploadedFiles$
@@ -186,19 +186,19 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                         this.modalCarousel.customClass == 'large'
                             ? 3
                             : this.modalCarousel.customClass == 'medium'
-                            ? 2
-                            : 1;
+                                ? 2
+                                : 1;
                     const allowSlide =
                         this.modalCarousel.customClass == 'large' &&
-                        this._files.length > 2
+                            this._files.length > 2
                             ? true
                             : this.modalCarousel.customClass == 'medium' &&
-                              this._files.length > 1
-                            ? true
-                            : this.modalCarousel.customClass == 'small' &&
-                              this._files.length > 0
-                            ? true
-                            : false;
+                                this._files.length > 1
+                                ? true
+                                : this.modalCarousel.customClass == 'small' &&
+                                    this._files.length > 0
+                                    ? true
+                                    : false;
                     if (allowSlide) {
                         this.modalCarousel.slideToFile(
                             this._files.length - slideTo
@@ -276,19 +276,19 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                     this.modalCarousel?.customClass == 'large'
                         ? 3
                         : this.modalCarousel?.customClass == 'medium'
-                        ? 2
-                        : 1;
+                            ? 2
+                            : 1;
                 const allowSlide =
                     this.modalCarousel?.customClass == 'large' &&
-                    this._files.length > 2
+                        this._files.length > 2
                         ? true
                         : this.modalCarousel?.customClass == 'medium' &&
-                          this._files.length > 1
-                        ? true
-                        : this.modalCarousel?.customClass == 'small' &&
-                          this._files.length > 0
-                        ? true
-                        : false;
+                            this._files.length > 1
+                            ? true
+                            : this.modalCarousel?.customClass == 'small' &&
+                                this._files.length > 0
+                                ? true
+                                : false;
                 if (allowSlide) {
                     this.modalCarousel?.slideToFile(
                         this._files.length - slideTo
