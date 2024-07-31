@@ -28,9 +28,11 @@ import {
     ShipperLoadStopsResponse,
 } from 'appcoretruckassist';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants/shipper-loads-sort-dropdown.constants';
 
 // Helpers
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
@@ -150,8 +152,9 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 deliveryFilter: true,
                 searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
-                // hasSort: true, - Hide for now, no backend
-                sortText: ShipperDetailsStringEnum.LOAD_SORT_TEXT,
+                hasSort: true,
+                sortDropdown:
+                    ShipperLoadsSortDropdownConstants.SHIPPER_LOADS_SORT_DROPDOWN,
             },
             {
                 id: 2,
@@ -604,6 +607,25 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 this.loadBackFilter(this.backLoadFilterQuery);
             }
         }
+    }
+
+    public onSortAction(event: {
+        column: LoadsSortDropdownModel;
+        sortDirection: string;
+    }): void {
+        const loadConfig = this.shipperConfig.find((item) => item.hasSort);
+
+        if (loadConfig) {
+            loadConfig.sortDropdown = loadConfig.sortDropdown.map((item) => {
+                item.active = item.id === event.column.id;
+
+                return item;
+            });
+        }
+
+        this.backLoadFilterQuery.sort = event.sortDirection;
+
+        this.loadBackFilter(this.backLoadFilterQuery);
     }
 
     ngOnDestroy(): void {

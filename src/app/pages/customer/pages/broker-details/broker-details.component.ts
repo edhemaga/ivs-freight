@@ -26,6 +26,7 @@ import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 // Models
 import { BrokerResponse, LoadBrokerDetailsResponse } from 'appcoretruckassist';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -164,7 +165,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
         this.brokerConfig = BrokerDetailsHelper.getBrokerDetailsConfig(
             this.brokerConfData,
-            4
+            4,
+            1
         );
 
         this.brokerId = data?.id ? data.id : null;
@@ -453,7 +455,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 if (
                     res?.animation &&
-                    res.animation !== LoadFilterStringEnum.DISPATCH_DATA_UPDATE
+                    res.animation === LoadFilterStringEnum.UPDATE
                 ) {
                     this.brokerInitConfig(res.data);
                     this.cdRef.detectChanges();
@@ -545,6 +547,17 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     data.queryParams?.thirdFormFrom ?? null;
                 this.backLoadFilterQuery.dueTo =
                     data.queryParams?.thirdFormTo ?? null;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            case LoadFilterStringEnum.LOCATION_FILTER:
+                this.backLoadFilterQuery.longitude =
+                    data.queryParams?.longValue ?? null;
+                this.backLoadFilterQuery.latitude =
+                    data.queryParams?.latValue ?? null;
+                this.backLoadFilterQuery.distance =
+                    data.queryParams?.rangeValue ?? null;
 
                 this.loadBackFilter(this.backLoadFilterQuery);
 
@@ -711,9 +724,18 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    public sortItems(): void {
-        // this.backLoadFilterQuery.sort = data ? 'loadNumberAsc' : 'loadNumberDesc'; - waiting for backend
-        
+    public onSortAction(event: {
+        column: LoadsSortDropdownModel;
+        sortDirection: string;
+    }): void {
+        this.brokerConfig = BrokerDetailsHelper.getBrokerDetailsConfig(
+            this.brokerConfData,
+            this.backLoadFilterQuery.statusType,
+            event.column.id
+        );
+
+        this.backLoadFilterQuery.sort = event.sortDirection;
+
         this.loadBackFilter(this.backLoadFilterQuery);
     }
 

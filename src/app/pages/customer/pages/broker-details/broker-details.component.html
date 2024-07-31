@@ -38,8 +38,8 @@
                 onDetailsSelectClick($event)
             "
             [hasSort]="item.hasSort"
-            [sortText]="item.sortText"
-            (sortItemsAction)="sortItems($event)"
+            [sortDropdown]="item.sortDropdown"
+            (sortItemsAction)="onSortAction($event)"
         >
         </app-ta-details-header>
     </div>
