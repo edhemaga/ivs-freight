@@ -25,6 +25,67 @@
             font-size: 14px;
             line-height: 18px;
             line-break: anywhere;
+
+            .attachment-list {
+                width: 100%;
+                height: 46px;
+                border-radius: 2px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                padding: 4px 2px 2px 4px;
+                margin-top: 8px;
+
+                &-dark {
+                    background-color: $ta-black-3;
+                }
+
+                &-light {
+                    background-color: $bw2;
+                }
+
+                .attachment-preview {
+                    position: relative;
+                    left: -10px;
+                    margin-right: 6px;
+                    padding: 1px;
+                    border-radius: 2px;
+
+                    &-dark {
+                        background-color: $bw2;
+                        color: $white;
+                    }
+
+                    &-light {
+                        background-color: $ta-black-2;
+                        color: $ta-black-2 !important;
+                    }
+
+                    &-document {
+                        height: 36px;
+                        width: fit-content;
+
+                        &-info {
+                            line-height: 14px;
+                            font-size: 11px;
+                            height: 14px;
+
+                            .name {
+                                padding: 4px;
+                            }
+
+                            .size {
+                                color: $bw5;
+                                padding: 0 4px;
+                            }
+                        }
+
+                        &-thumbnail {
+                            height: 40px;
+                            padding-right: 6px;
+                        }
+                    }
+                }
+            }
         }
 
         .current-user {

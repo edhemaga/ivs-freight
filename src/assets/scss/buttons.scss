@@ -885,3 +885,31 @@
         }
     }
 }
+
+.dispatch-table-driver_hover {
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 3px;
+    padding: 4px;
+    height: 26px;
+    width: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        height: 16px;
+        path {
+            transition: fill .3s;
+            fill: $ta-blue-13;
+        }
+    }
+
+    &:hover {
+        background-color: $ta-blue-15;
+
+        svg path {
+            fill: $white !important;
+        }
+    }
+}

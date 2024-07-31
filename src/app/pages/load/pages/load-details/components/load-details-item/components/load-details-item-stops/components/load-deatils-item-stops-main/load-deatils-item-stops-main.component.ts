@@ -56,6 +56,7 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
 export class LoadDeatilsItemStopsMainComponent implements OnChanges {
     @Input() stopsData: LoadResponse;
     @Input() isMapDisplayed: boolean;
+    @Input() isSmallDesign: boolean;
 
     public loadDetailsItemSvgRoutes = LoadDetailsItemSvgRoutes;
 
@@ -88,7 +89,8 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
 
     private getConstantData(): void {
         this.stopHeaderItems = LoadDetailsItemHelper.getStopHeaderItems(
-            this.stopsData?.statusType?.name
+            this.stopsData?.statusType?.name,
+            this.isSmallDesign
         );
 
         this.stopItemsHeaderItems =
@@ -122,6 +124,7 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
                     id,
                     description,
                     quantity,
+                    units,
                     temperature,
                     weight,
                     length,
@@ -139,6 +142,7 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
                     id,
                     description,
                     quantity,
+                    units: units?.name,
                     tmp: temperature,
                     weight,
                     length,

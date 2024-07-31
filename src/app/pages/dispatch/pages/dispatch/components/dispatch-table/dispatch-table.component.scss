@@ -96,7 +96,9 @@
 
     table {
         width: 100%;
-
+        th.icon {
+            padding-left: 0;
+        }
         th.pick-delivery {
             display: flex;
             div {
@@ -612,6 +614,11 @@
                 }
             }
 
+            &.pre-trip {
+                min-width: 34px;
+                max-width: 34px;
+                width: 34px;
+            }
             &.driver-field {
                 min-width: 240px;
                 max-width: 240px;

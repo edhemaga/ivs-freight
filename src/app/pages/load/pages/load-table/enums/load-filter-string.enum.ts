@@ -11,6 +11,7 @@ export enum LoadFilterStringEnum {
     LOAD_TYPE_FILTER = 'loadTypeFilter',
     PICKUP_FILTER = 'pickupFilter',
     DELIVERY_FILTER = 'deliveryFilter',
+    LOCATION_FILTER = 'locationFilter',
 
     // Load Tabs
     PENDING = 'pending',
@@ -28,4 +29,5 @@ export enum LoadFilterStringEnum {
 
     // Other
     DISPATCH_DATA_UPDATE = 'dispatch-data-update',
+    UPDATE = 'update',
 }

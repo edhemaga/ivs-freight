@@ -2,6 +2,7 @@
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 import { BrokerResponseData } from '@pages/customer/pages/broker-details/models/broker-response-data.model';
+import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 
 // Enums
 import { BrokerDetailsStringEnum } from '../../enums/broker-details-string.enum';
@@ -14,7 +15,8 @@ import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/cons
 export class BrokerDetailsHelper {
     static getBrokerDetailsConfig(
         data: BrokerResponseData,
-        dropdownItemId: number = 1
+        dropdownItemId: number = 1,
+        loadSortId: number = 1
     ): DetailsConfig[] {
         return [
             {
@@ -48,14 +50,14 @@ export class BrokerDetailsHelper {
                 timeFilter: true,
                 dispatcherFilter: true,
                 statusFilter: true,
-                // locationFilter: true, - Hide for now, no backend
+                locationFilter: true,
                 moneyFilter: true,
                 data: data,
                 hasMultipleDetailsSelectDropdown: true,
                 multipleDetailsSelectDropdown:
                     this.getMultipleSelectDetailsDropdown(data, dropdownItemId),
-                // hasSort: true, - Hide for now, no backend
-                sortText: BrokerDetailsStringEnum.LOAD_SORT_TEXT,
+                hasSort: true,
+                sortDropdown: this.getLoadSortDropdown(loadSortId),
             },
             {
                 id: 2,
@@ -107,5 +109,24 @@ export class BrokerDetailsHelper {
                 length: data?.loadStops?.totalLoad,
             };
         });
+    }
+
+    static getLoadSortDropdown(
+        activeSortId?: number
+    ): LoadsSortDropdownModel[] {
+        let loadSortDropdown: LoadsSortDropdownModel[] = JSON.parse(
+            JSON.stringify(BrokerConstants.BROKER_LOADS_SORT_DROPDOWN)
+        );
+
+        if (activeSortId) {
+            loadSortDropdown = loadSortDropdown.map((dropdownItem) => {
+                return {
+                    ...dropdownItem,
+                    active: dropdownItem.id === activeSortId,
+                };
+            });
+        }
+
+        return loadSortDropdown;
     }
 }

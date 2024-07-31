@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { LoadDriverInfo } from './loadDriverInfo';
 
 
 export interface ShipperLoadStopsResponse { 
     loadNumber?: string | null;
+    stopType?: EnumValue;
     driver?: LoadDriverInfo;
     arrive?: string | null;
     depart?: string | null;

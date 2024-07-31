@@ -7,11 +7,13 @@
         "
         class="content-wrapper d-flex justify-content-end"
     >
-        <div
-            class="message-time d-flex justify-content-center align-items-center"
-        >
-            {{ message.createdAt | formatTime }}
-        </div>
+        <ng-container *ngIf="isDateDisplayed">
+            <div
+                class="message-time d-flex justify-content-center align-items-center"
+            >
+                {{ message.createdAt | formatTime }}
+            </div>
+        </ng-container>
 
         <div
             [ngClass]="
@@ -20,6 +22,44 @@
             class="content ta-font-regular"
         >
             {{ message.content }}
+            <ng-container *ngIf="message.attachments?.length">
+                <div class="attachment-list d-flex">
+                    <ng-container
+                        *ngFor="
+                            let attachment of message.attachments;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <ng-container
+                            *ngIf="
+                                (attachment.fileName | fileExtension) ===
+                                    ('jpg' || 'jpeg' || 'png');
+                                else mediaFiles
+                            "
+                        >
+                            <div class="attachment-preview d-flex">
+                                <img
+                                    [src]="attachment.url"
+                                    [alt]="attachment.fileName"
+                                    class="attachment-preview-thumbnail"
+                                />
+                            </div>
+                        </ng-container>
+
+                        <ng-template #mediaFiles>
+                            <div class="attachment-preview d-flex">
+                                <app-chat-message-attachment-preview
+                                    [index]="ind"
+                                    [attachment]="attachment"
+                                    [isNameReduced]="false"
+                                    [isInMessage]="true"
+                                ></app-chat-message-attachment-preview>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

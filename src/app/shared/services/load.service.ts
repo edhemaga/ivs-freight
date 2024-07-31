@@ -42,6 +42,7 @@ import {
     LoadStatus,
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
+    AssignLoadModalResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -116,12 +117,13 @@ export class LoadService {
     public getLoadList(
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
-        status?: number[],
+        status?: Array<number>,
         dispatcherIds?: Array<number>,
         dispatcherId?: number,
         dispatchId?: number,
         brokerId?: number,
         shipperId?: number,
+        loadId?: number,
         dateFrom?: string,
         dateTo?: string,
         revenueFrom?: number,
@@ -135,6 +137,9 @@ export class LoadService {
         dueTo?: number,
         pickup?: boolean,
         delivery?: boolean,
+        longitude?: number,
+        latitude?: number,
+        distance?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -152,7 +157,7 @@ export class LoadService {
             dispatchId,
             brokerId,
             shipperId,
-            null,
+            loadId,
             dateFrom,
             dateTo,
             revenueFrom,
@@ -166,6 +171,9 @@ export class LoadService {
             dueTo,
             pickup,
             delivery,
+            longitude,
+            latitude,
+            distance,
             pageIndex,
             pageSize,
             companyId,
@@ -298,21 +306,21 @@ export class LoadService {
         );
     }
 
-    public getLoadById(id: number, isTemplate?: boolean): Observable<LoadResponse> {
-        if(isTemplate) {
-            return  this.loadService.apiLoadTemplateIdGet(id);
+    public getLoadById(
+        id: number,
+        isTemplate?: boolean
+    ): Observable<LoadResponse> {
+        if (isTemplate) {
+            return this.loadService.apiLoadTemplateIdGet(id);
         }
 
-        return  this.loadService.apiLoadIdGet(id);;
+        return this.loadService.apiLoadIdGet(id);
     }
 
-    public getLoadTemplateInsideListById(id: number): Observable<LoadListResponse> {
-        return this.loadService.apiLoadTemplateListGet(
-            null,
-            null,
-            null,
-            id
-        );
+    public getLoadTemplateInsideListById(
+        id: number
+    ): Observable<LoadListResponse> {
+        return this.loadService.apiLoadTemplateListGet(null, null, null, id);
     }
 
     public getLoadInsideListById(id: number): Observable<LoadListResponse> {
@@ -388,11 +396,11 @@ export class LoadService {
     ): Observable<CreateResponse> {
         return this.loadService.apiLoadTemplatePost(data);
     }
-    
+
     public updateLoadTemplate(
         data: CreateLoadTemplateCommand
     ): Observable<CreateResponse> {
-        return this.loadService.apiLoadTemplatePut(data)
+        return this.loadService.apiLoadTemplatePut(data);
     }
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
@@ -628,5 +636,13 @@ export class LoadService {
                 }
             }
         });
+    }
+
+    public getDispatchModalData(): Observable<AssignLoadModalResponse> {
+        return this.loadService.apiLoadModalAssignGet();
+    }
+
+    public apiLoadListAssignedIdGet(dispatchId: number) {
+        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
     }
 }
