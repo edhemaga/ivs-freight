@@ -40,6 +40,7 @@ import { HubService } from '@pages/chat/services/hub.service';
 // Models
 import {
   CompanyUserShortResponse,
+  ConversationInfoResponse,
   ConversationResponse,
   MessageResponse
 } from 'appcoretruckassist';
@@ -227,8 +228,19 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingActivated = true;
   }
 
-  public displayProfileDetails(): void {
-    this.isProfileDetailsDisplayed = true;
+  public displayProfileDetails(value: boolean): void {
+    if (value) {
+      this.isProfileDetailsDisplayed = false;
+      return;
+    }
+
+    if (this.conversation?.id) {
+      this.chatService
+        .getAllConversationFiles(this.conversation.id)
+        .subscribe((data: ConversationInfoResponse) => {
+          this.isProfileDetailsDisplayed = true;
+        })
+    }
   }
 
   // TODO implement emoji selection

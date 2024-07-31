@@ -18,7 +18,8 @@ export class ChatSvgRoutes {
     static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
     static dropZoneIcon: string = 'assets/svg/chat/drop-zone-focus.svg';
 
-    // Cancle
+    // Cancel
+    static noBorderXIcon: string = 'assets/svg/chat/x-icon/no-border-x-icon.svg';
     static darkXIcon: string = 'assets/svg/chat/x-icon/dark-x-icon.svg';
     static darkFocusedXIcon: string = 'assets/svg/chat/x-icon/dark-focused-x-icon.svg';
     static lightXIcon: string = 'assets/svg/chat/x-icon/light-x-icon.svg';

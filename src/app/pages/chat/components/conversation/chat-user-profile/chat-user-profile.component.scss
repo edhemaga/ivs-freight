@@ -1,4 +1,48 @@
+@import 'src/theme/variables';
+
 .user-profile-wrapper {
     width: 318px;
-    height: 100%;
+
+    div {
+        height: 100%;
+    }
+
+    .horizontal-border {
+        margin-top: 6px;
+        width: auto;
+        margin: 6px 2px 4px 2px;
+        border-bottom: 1px solid $bw-9;
+    }
+
+    .header {
+        padding-left: 6px;
+        padding-right: 6px;
+
+        &-text {
+            margin: auto auto auto 0;
+        }
+        &-close-icon {
+            margin: auto 2px auto auto;
+        }
+    }
+
+    .basic-info {
+        height: 88px;
+    }
+
+    .additional-info {
+        height: 86px;
+    }
+
+    .media {
+        height: 244px;
+    }
+
+    .files {
+        height: 226px;
+    }
+
+    .links {
+        height: 226px;
+    }
 }

@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output
+} from '@angular/core';
+
+// Assets routes
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 @Component({
   selector: 'app-chat-user-profile',
@@ -7,9 +15,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatUserProfileComponent implements OnInit {
 
+  @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  // Assets route
+  public ChatSvgRoutes = ChatSvgRoutes;
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  public closeProfileDetails(): void {
+    this.isProfileDetailsClosed.emit(false);
   }
 
 }

@@ -58,7 +58,7 @@
                         <div class="right-icons d-flex">
                             <div
                                 class="icon-wrapper d-flex justify-content-center align-items-center"
-                                (click)="displayProfileDetails()"
+                                (click)="displayProfileDetails(true)"
                             >
                                 <svg-icon
                                     [svgStyle]="{
@@ -346,6 +346,13 @@
         </ng-template>
     </div>
     <ng-container *ngIf="!attachmentUploadActive && isProfileDetailsDisplayed">
-        <app-chat-user-profile></app-chat-user-profile>
+        <div class="d-flex">
+            <app-chat-vertical-divider
+                [verticalOffset]="8"
+            ></app-chat-vertical-divider>
+            <app-chat-user-profile
+                (isProfileDetailsClosed)="displayProfileDetails($event)"
+            ></app-chat-user-profile>
+        </div>
     </ng-container>
 </div>

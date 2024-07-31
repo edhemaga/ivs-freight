@@ -1,1 +1,36 @@
-<div classs="user-profile-wrapper">Profile</div>
+<div class="user-profile-wrapper">
+    <app-chat-header>
+        <div class="d-flex">
+            <div class="header-text ta-font-extra-bold">Profile</div>
+            <div
+                class="d-flex header-close-icon"
+                (click)="closeProfileDetails()"
+            >
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="ChatSvgRoutes.noBorderXIcon"
+                >
+                </svg-icon>
+            </div>
+        </div>
+    </app-chat-header>
+
+    <div class="basic-info">
+        <div class="horizontal-border"></div>
+    </div>
+
+    <div class="additional-info">
+        <div class="horizontal-border"></div>
+    </div>
+
+    <div class="media">
+        <div class="horizontal-border"></div>
+    </div>
+
+    <div class="files">
+        <div class="horizontal-border"></div>
+    </div>
+
+    <div class="links"></div>
+</div>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatVerticalDividerComponent } from './chat-vertical-divider.component';
+import { ChatVerticalDividerComponent } from '@pages/chat/components/chat-vertical-divider/chat-vertical-divider.component';
 
 describe('ChatVerticalDividerComponent', () => {
   let component: ChatVerticalDividerComponent;
@@ -8,9 +8,9 @@ describe('ChatVerticalDividerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatVerticalDividerComponent ]
+      declarations: [ChatVerticalDividerComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ChatVerticalDividerComponent);
     component = fixture.componentInstance;
