@@ -20,6 +20,8 @@ import { ChatMessageAttachmentPreviewComponent } from "@pages/chat/components/co
 import { ChatUserProfileComponent } from "./components/conversation/chat-user-profile/chat-user-profile.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
+import { ChatHeaderComponent } from "@pages/chat/components/chat-header/chat-header.component";
+import { ChatVerticalDividerComponent } from "@pages/chat/components/chat-vertical-divider/chat-vertical-divider.component";
 
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
@@ -64,6 +66,8 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         // Auxillary components
         ChatToolbarComponent,
         ChatNoDataComponent,
+        ChatHeaderComponent,
+        ChatVerticalDividerComponent,
 
         // Directives
         DragAndDropDirective

@@ -75,6 +75,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
+  public isProfileDetailsDisplayed: boolean = false;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -224,6 +225,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public enableChatInput(): void {
     this.isChatTypingActivated = true;
+  }
+
+  public displayProfileDetails(): void {
+    this.isProfileDetailsDisplayed = true;
   }
 
   // TODO implement emoji selection

@@ -1,77 +1,69 @@
 <div class="user-list-container">
     <div class="chat-header-wrapper">
-        <div class="chat-header d-flex align-items-center">
-            <div class="chat-header-type ta-font-extra-bold">
-                {{ type }}
-            </div>
+        <app-chat-header [isBottomBorderDisplayed]="!isSearchActive">
+            <div class="chat-header d-flex align-items-center">
+                <div class="chat-header-type ta-font-extra-bold">
+                    {{ type }}
+                </div>
 
-            <div class="chat-header-message-count ta-font-extra-bold">
-                {{ contactsInfo?.count }}
-            </div>
+                <div class="chat-header-message-count ta-font-extra-bold">
+                    {{ contactsInfo?.count }}
+                </div>
 
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+                <app-chat-vertical-divider></app-chat-vertical-divider>
 
-            <ng-container *ngIf="!isSearchActive">
-                <svg-icon
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="ChatSvgRoutes.searchIcon"
-                    (click)="toggleSearch()"
-                ></svg-icon>
+                <ng-container *ngIf="!isSearchActive">
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.searchIcon"
+                        (click)="toggleSearch()"
+                    ></svg-icon>
+
+                    <app-chat-vertical-divider></app-chat-vertical-divider>
+                </ng-container>
 
                 <div
-                    class="border-container d-flex justify-content-center align-items-center"
+                    ngbTooltip
+                    mainTooltip="Online Users"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                    class="status-icon"
                 >
-                    <div class="border"></div>
+                    <svg-icon
+                        (click)="showOnlineUsers()"
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.contactStatusIcon"
+                    ></svg-icon>
+                </div>
+
+                <div
+                    ngbTooltip
+                    mainTooltip="Department Filter"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                    class="department-icon"
+                >
+                    <svg-icon
+                        (click)="filterByDepartment()"
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="ChatSvgRoutes.departmentIcon"
+                    ></svg-icon>
+                </div>
+            </div>
+
+            <ng-container *ngIf="isSearchActive">
+                <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
+                    <app-ta-input
+                        formControlName="searchTerm"
+                        [inputConfig]="ChatInput.userSearchInput"
+                        (clear)="toggleSearch(false)"
+                    ></app-ta-input>
                 </div>
             </ng-container>
-
-            <div
-                ngbTooltip
-                mainTooltip="Online Users"
-                tooltipBackground="#424242"
-                position="bottom"
-                class="status-icon"
-            >
-                <svg-icon
-                    (click)="showOnlineUsers()"
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="ChatSvgRoutes.contactStatusIcon"
-                ></svg-icon>
-            </div>
-
-            <div
-                ngbTooltip
-                mainTooltip="Department Filter"
-                tooltipBackground="#424242"
-                position="bottom"
-                class="department-icon"
-            >
-                <svg-icon
-                    (click)="filterByDepartment()"
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                    [src]="ChatSvgRoutes.departmentIcon"
-                ></svg-icon>
-            </div>
-        </div>
-        <ng-container *ngIf="!isSearchActive; else searchBlock">
-            <div class="horizontal-border"></div>
-        </ng-container>
-        <ng-template #searchBlock>
-            <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
-                <app-ta-input
-                    formControlName="searchTerm"
-                    [inputConfig]="ChatInput.userSearchInput"
-                    (clear)="toggleSearch(false)"
-                ></app-ta-input>
-            </div>
-        </ng-template>
+        </app-chat-header>
     </div>
 
     <ng-container *ngIf="contactsInfo?.count; else noData">

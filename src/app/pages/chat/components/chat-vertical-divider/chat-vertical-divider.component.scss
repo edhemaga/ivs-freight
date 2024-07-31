@@ -1,0 +1,13 @@
+@import 'src/theme/variables';
+
+.border-container {
+    height: 100%;
+    padding: 0 4px;
+
+    .border {
+        width: 2px;
+        height: 18px;
+        border-radius: 1px;
+        background: $ta-light-grey-4;
+    }
+}

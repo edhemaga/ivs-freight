@@ -41,11 +41,7 @@
         </div>
 
         <ng-container *ngIf="unreadCount">
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+            <app-chat-vertical-divider></app-chat-vertical-divider>
 
             <div class="d-flex unread-messages-wrapper">
                 <div
@@ -81,11 +77,7 @@
                 </svg-icon>
             </div>
 
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+            <app-chat-vertical-divider></app-chat-vertical-divider>
 
             <div
                 class="settings-icon action-div active-options d-flex align-items-center"
@@ -118,8 +110,6 @@
                 [contactsInfo]="companyUsers"
             >
             </app-chat-user-list>
-
-            <div class="divider"></div>
 
             <!-- DRIVERS -->
             <app-chat-user-list
