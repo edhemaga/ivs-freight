@@ -610,6 +610,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.dispatcherService
                     .updateDispatchboardRowById(data.id, this.dispatchData.id)
+                    .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
                         this.isDispatchBoardChangeInProgress = false;
                     });
