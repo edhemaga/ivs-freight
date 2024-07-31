@@ -24,6 +24,9 @@ export interface FilterOptionsLoad {
     dueTo?: number;
     pickup?: boolean;
     delivery?: boolean;
+    longitude?: number;
+    latitude?: number;
+    distance?: number;
     sort: string;
     searchOne: string;
     searchTwo: string;

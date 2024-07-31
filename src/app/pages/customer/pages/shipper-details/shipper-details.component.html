@@ -30,7 +30,8 @@
                 (filterActions)="setFilter($event)"
                 (specialFilterActions)="setSpecialFilter($event)"
                 [hasSort]="item.hasSort"
-                [sortText]="item.sortText"
+                [sortDropdown]="item.sortDropdown"
+                (sortItemsAction)="onSortAction($event)"
             >
             </app-ta-details-header>
         </ng-container>
