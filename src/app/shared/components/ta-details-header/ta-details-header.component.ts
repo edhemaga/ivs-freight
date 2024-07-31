@@ -149,7 +149,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public activeTemplate: any = 'All Load';
     public isMapBtnClicked: boolean = true;
     public isSearchBtnDisplayed: boolean = true;
-    public sortDirection: string = 'asc';
+    public sortDirection: string = 'desc';
     public selectedSort: LoadsSortDropdownModel = null;
     public sortPopover: NgbPopover;
     public isSortDropdownOpen: boolean = false;

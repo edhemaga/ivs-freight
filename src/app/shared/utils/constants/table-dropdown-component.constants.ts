@@ -75,7 +75,7 @@ export class TableDropdownComponentConstants {
         longitude: null,
         latitude: null,
         distance: null,
-        sort: 'loadNumberAsc',
+        sort: 'loadNumberDesc',
         searchOne: null,
         searchTwo: null,
         searchThree: null,
