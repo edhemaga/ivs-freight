@@ -122,6 +122,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() dispatcherFilter: boolean = false;
     @Input() statusFilter: boolean = false;
     @Input() locationFilter: boolean = false;
+    @Input() areaFilter: boolean = false;
     @Input() hasSort: boolean = false;
     @Input() sortDropdown: LoadsSortDropdownModel[];
 

@@ -38,6 +38,7 @@ export interface DetailsConfig {
     dispatcherFilter?: boolean;
     statusFilter?: boolean;
     locationFilter?: boolean;
+    areaFilter?: boolean;
     moneyFilter?: boolean;
     hasSort?: boolean;
     sortDropdown?: LoadsSortDropdownModel[];

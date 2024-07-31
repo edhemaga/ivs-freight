@@ -117,12 +117,13 @@ export class LoadService {
     public getLoadList(
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
-        status?: number[],
+        status?: Array<number>,
         dispatcherIds?: Array<number>,
         dispatcherId?: number,
         dispatchId?: number,
         brokerId?: number,
         shipperId?: number,
+        loadId?: number,
         dateFrom?: string,
         dateTo?: string,
         revenueFrom?: number,
@@ -136,6 +137,9 @@ export class LoadService {
         dueTo?: number,
         pickup?: boolean,
         delivery?: boolean,
+        longitude?: number,
+        latitude?: number,
+        distance?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -153,7 +157,7 @@ export class LoadService {
             dispatchId,
             brokerId,
             shipperId,
-            null,
+            loadId,
             dateFrom,
             dateTo,
             revenueFrom,
@@ -167,13 +171,16 @@ export class LoadService {
             dueTo,
             pickup,
             delivery,
+            longitude,
+            latitude,
+            distance,
             pageIndex,
             pageSize,
-            companyId
-            /*   sort,
+            companyId,
+            sort,
             search,
             search1,
-            search2 */
+            search2
         );
     }
 
