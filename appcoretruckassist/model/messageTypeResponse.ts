@@ -10,15 +10,9 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { LoadDriverInfo } from './loadDriverInfo';
 
 
-export interface ShipperLoadStopsResponse { 
-    loadNumber?: string | null;
-    stopType?: EnumValue;
-    driver?: LoadDriverInfo;
-    arrive?: string | null;
-    depart?: string | null;
-    wait?: { [key: string]: number; } | null;
+export interface MessageTypeResponse { 
+    messageTypes?: Array<EnumValue> | null;
 }
 
