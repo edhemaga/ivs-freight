@@ -169,11 +169,11 @@ export class LoadService {
             delivery,
             pageIndex,
             pageSize,
-            companyId,
-            sort,
+            companyId
+            /*   sort,
             search,
             search1,
-            search2
+            search2 */
         );
     }
 

@@ -477,11 +477,11 @@ export class ShipperService implements OnDestroy {
             delivery,
             pageIndex,
             pageSize,
-            companyId,
-            sort,
+            companyId
+            /*    sort,
             search,
             search1,
-            search2
+            search2 */
         );
     }
 
