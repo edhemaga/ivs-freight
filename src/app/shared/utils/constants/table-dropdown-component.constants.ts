@@ -169,6 +169,15 @@ export class TableDropdownComponentConstants {
         searchThree: null,
     };
 
+    static DISPATCH_BACK_FILTER = {
+        dispatcherId: null,
+        teamBoard: null,
+        truckTypes: null,
+        trailerTypes: null,
+        statuses: null,
+        parkings: null,
+    };
+
     static SHIPPER_BACK_FILTER: FilterOptionShipper = {
         stateIds: null,
         long: null,

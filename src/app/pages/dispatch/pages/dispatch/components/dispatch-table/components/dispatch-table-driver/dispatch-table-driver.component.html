@@ -81,10 +81,6 @@
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <div
                                 #t1="ngbPopover"
-                                (click)="
-                                    toggleHos(t1, hoursOfService, dispatchId)
-                                "
-                                (hidden)="saveHosData(hoursOfService, rowIndex)"
                                 [class.statusOpened]="statusOpenedIndex > -1"
                                 [class.empty-box-field]="true"
                                 [ngbPopover]="hos"
@@ -183,6 +179,10 @@
                             <svg-icon
                                 class="icon"
                                 [src]="dispatchTableSvgRoutes.closeSvgRoute"
+                                [svgStyle]="{
+                                    'width.px': '18',
+                                    'height.px': '18'
+                                }"
                             ></svg-icon>
                         </div>
                     </ng-container>

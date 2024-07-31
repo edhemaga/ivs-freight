@@ -294,7 +294,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private handleHoursOfService() {
         const mappedDispatches = this.dispatchData.dispatches.map(
             (dispatch) => {
-                const hoursOfService = dispatch.hoursOfService
+                dispatch.hoursOfService = dispatch.hoursOfService ?? [];
+                const hoursOfService = dispatch?.hoursOfService
                     .sort((a, b) => a.id - b.id)
                     .map((dispatch, index) => ({ ...dispatch, index }));
                 return {

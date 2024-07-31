@@ -52,7 +52,6 @@ import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -379,8 +378,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         if (activeCard) {
             this.toolbarWidth = TableStringEnum.NUMBER_100;
-        } else {
-            this.columns?.map((column) => {
+        } else if (this.columns) {
+            this.columns.map((column) => {
                 if (!column.hidden) {
                     columnsSumWidth +=
                         column.width < column.minWidth
@@ -828,12 +827,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.getActiveTableData();
-    }
-
-    public openAssignLoadModal(): void {
-        this.modalService.openModal(AssignDispatchLoadModalComponent, {
-            size: 'small',
-        });
     }
 
     // --------------------------------ON DESTROY---------------------------------

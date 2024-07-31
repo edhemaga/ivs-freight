@@ -33,7 +33,11 @@ import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applica
 import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
 import { Store, select } from '@ngrx/store';
-import { selectActiveTabCards, selectDriverApplicantTabCards, selectInactiveTabCards } from '@pages/driver/pages/driver-card-modal/state/driver-card-modal.selectors';
+import {
+    selectActiveTabCards,
+    selectDriverApplicantTabCards,
+    selectInactiveTabCards,
+} from '@pages/driver/pages/driver-card-modal/state/driver-card-modal.selectors';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -48,7 +52,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 
 // constants
@@ -157,7 +161,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -790,7 +794,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapDriverData(data: any): any {
-
         const {
             id,
             status,
@@ -890,8 +893,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                    twicExpirationDate
-                )
+                      twicExpirationDate
+                  )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -940,26 +943,32 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${general?.mail
-                ? TableStringEnum.EMAIL
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${general?.push
+            tabelNotificationGeneral: `${
+                general?.mail
+                    ? TableStringEnum.EMAIL
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${general?.sms
+            }${
+                general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }`,
-            tabelNotificationPayroll: `${payroll?.mail
-                ? TableStringEnum.EMAIL
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${payroll?.push
+            }`,
+            tabelNotificationPayroll: `${
+                payroll?.mail
+                    ? TableStringEnum.EMAIL
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+            }${
+                payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }${payroll?.sms
+            }${
+                payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                }`,
+            }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:
@@ -1669,7 +1678,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(interval);
                     }, 900);
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 
