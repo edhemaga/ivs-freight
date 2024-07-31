@@ -329,30 +329,12 @@
                 [files]="attachments"
                 [showDropzone]="true"
                 [dropzoneFocus]="false"
-                [dropZoneConfig]="{
-                    dropZoneType: 'image',
-                    dropZoneSvg: ChatDropzone.inputDropzone,
-                    dropZoneAvailableFiles:
-                        'application/pdf, application/zip, image/png, image/jpeg, image/jpg',
-                    multiple: true,
-                    globalDropZone: false
-                }"
+                [dropZoneConfig]="ChatDropzone.inputDropzone"
                 [size]="'large'"
                 [customClass]="'large'"
-                [dontUseSlider]="true"
-                [isReview]="false"
+                [hasSlider]="false"
                 (onFileEvent)="addAttachments($event.files)"
             ></app-ta-upload-files>
         </ng-template>
     </div>
-    <ng-container *ngIf="!attachmentUploadActive && isProfileDetailsDisplayed">
-        <div class="d-flex">
-            <app-chat-vertical-divider
-                [verticalOffset]="8"
-            ></app-chat-vertical-divider>
-            <app-chat-user-profile
-                (isProfileDetailsClosed)="displayProfileDetails($event)"
-            ></app-chat-user-profile>
-        </div>
-    </ng-container>
 </div>
