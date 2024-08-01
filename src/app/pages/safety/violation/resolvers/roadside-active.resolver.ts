@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
+export class RoadsideActiveResolver  {
     constructor(
         private roadsideService: RoadsideService,
         private roadsideStore: RoadsideActiveStore,

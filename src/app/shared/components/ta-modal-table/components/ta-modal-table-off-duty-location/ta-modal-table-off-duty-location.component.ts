@@ -10,7 +10,6 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
@@ -22,6 +21,7 @@ import { AddressEntity } from 'appcoretruckassist';
 
 // pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-ta-modal-table-off-duty-location',
@@ -36,8 +36,8 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
         // components
         TaInputComponent,
-        TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
+        TaInputDropdownComponent,
 
         // pipes
         TrackByPropertyPipe,

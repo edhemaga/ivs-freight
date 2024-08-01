@@ -15,20 +15,17 @@ import {
     ViewEncapsulation,
     AfterContentInit,
 } from '@angular/core';
-import {
-    FormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
+
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { Subject, takeUntil } from 'rxjs';
 
 // modules
-import { AgmCoreModule } from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmCoreModule } from '@agm/core';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // icon
@@ -40,6 +37,8 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 
 // component
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -52,10 +51,10 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        AgmCoreModule,
+       // AgmCoreModule,
         AngularSvgIconModule,
         NgbPopoverModule,
-        AgmSnazzyInfoWindowModule,
+       // AgmSnazzyInfoWindowModule,
 
         // Components
         TaInputComponent,

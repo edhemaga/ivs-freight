@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -19,7 +19,7 @@ import {
     providedIn: 'root',
 })
 export class RoadsideMinimalResolver
-    implements Resolve<RoadsideMinimalListState>
+    
 {
     pageIndex: number = 1;
     pageSize: number = 25;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -18,7 +18,7 @@ import { TerminalListResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class CompanyTerminalResolver implements Resolve<TerminalState> {
+export class CompanyTerminalResolver  {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

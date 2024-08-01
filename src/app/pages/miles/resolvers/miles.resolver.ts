@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, map } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { MilesTableStore } from '@pages/miles/state/miles.store';
 @Injectable({
     providedIn: 'root',
 })
-export class MilesResolver implements Resolve<any> {
+export class MilesResolver  {
     constructor(
         private milesStoreService: MilesStoreService,
         private store: MilesTableStore

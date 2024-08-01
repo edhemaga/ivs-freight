@@ -323,7 +323,8 @@
                 _inputConfig.name === 'timepicker' ||
                 _inputConfig.name == 'datepickerBankCard') &&
                 !_inputConfig.incorrectInput &&
-                !_inputConfig.isDisabled)
+                !_inputConfig.isDisabled &&
+                !_inputConfig.hideDropdownArrow)
         "
         [ngClass]="{
             focus: focusInput,
@@ -638,6 +639,9 @@
         (paste)="onDatePaste($event)"
         (blur)="onBlur()"
         (keydown)="changeSelection($event, true)"
+        [ngStyle]="{
+            'padding-left': _inputConfig.isIconHidden ? '2px' : '27px'
+        }"
         [ngClass]="{
             focus: focusInput,
             'valid-focus-in':

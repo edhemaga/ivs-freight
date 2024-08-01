@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { forkJoin, Observable, tap } from 'rxjs';
 
 // Services
@@ -21,7 +21,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class PmTruckResolver implements Resolve<PmTruckState> {
+export class PmTruckResolver  {
     constructor(
         // Store
         private pmTruckStore: PmTruckStore,

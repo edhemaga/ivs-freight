@@ -55,7 +55,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
@@ -166,7 +166,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadModalFinancialComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaMapsComponent,
+        //TaMapsComponent,
         TaCommentComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
@@ -4229,23 +4229,27 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createNewLoad(): void {
-        const isTemplate = this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+        const isTemplate =
+            this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+
         this.loadService
-        .createLoad(this.generateLoadModel(true))
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-            next: (data) => {
-                const loadServiceObservable = !isTemplate
-                    ? this.loadService.getLoadInsideListById(data.id)
-                    : this.loadService.getLoadTemplateInsideListById(data.id);
-    
-                loadServiceObservable.subscribe((newLoadData) => {
-                    this.loadService.addNewLoad(newLoadData, isTemplate);
-                    this.setModalSpinner(null, true, true);
-                });
-            },
-            error: () => this.setModalSpinner(null, false, false),
-        });
+            .createLoad(this.generateLoadModel(true))
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data) => {
+                    const loadServiceObservable = !isTemplate
+                        ? this.loadService.getLoadInsideListById(data.id)
+                        : this.loadService.getLoadTemplateInsideListById(
+                              data.id
+                          );
+
+                    loadServiceObservable.subscribe((newLoadData) => {
+                        this.loadService.addNewLoad(newLoadData, isTemplate);
+                        this.setModalSpinner(null, true, true);
+                    });
+                },
+                error: () => this.setModalSpinner(null, false, false),
+            });
     }
 
     public updateLoadTemplate() {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { RoadsideInspectionResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class RoadsideDetailsResolver implements Resolve<RoadItemState> {
+export class RoadsideDetailsResolver  {
     constructor(
         private roadService: RoadsideService,
         private roadDetailsStore: RoadItemStore,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { Observable, tap } from 'rxjs';
 
 // Services
@@ -8,7 +8,7 @@ import { PayrollService } from '@pages/accounting/services/payroll.service';
 @Injectable({
     providedIn: 'root',
 })
-export class PayrolldResolver implements Resolve<any> {
+export class PayrolldResolver  {
     constructor(private payrollService: PayrollService) {}
 
     resolve(): Observable<any> {

@@ -1,5 +1,5 @@
 import { inject } from "@angular/core";
-import { Resolve } from "@angular/router";
+
 import { map, Observable } from "rxjs";
 
 // Models
@@ -8,7 +8,7 @@ import { CompanyUserChatResponsePagination } from "appcoretruckassist";
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 
-export class DriverResolver implements Resolve<CompanyUserChatResponsePagination> {
+export class DriverResolver  {
 
     private userChatService = inject(UserChatService);
 
