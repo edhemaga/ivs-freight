@@ -29,6 +29,7 @@ import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch
 import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/components/load-short-details/load-short-details.component';
 import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
 //import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
@@ -49,7 +50,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
 
 @NgModule({
     declarations: [
-        // Components
+        // components
         DispatchComponent,
         DispatchTableComponent,
         DispatchTableDriverComponent,
@@ -59,14 +60,14 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         DispatchTableAssignLoadComponent,
         DispatchAssignLoadModalComponent,
 
-        // Pipes
+        // pipes
         HosFilterPipe,
         TooltipWidthPipe,
         LoadShortDetailsComponent,
         DispatchHistoryModalComponent,
     ],
     imports: [
-        // Modules
+        // modules
         AngularSvgIconModule,
         CommonModule,
         DispatchRoutingModule,
@@ -75,13 +76,13 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         SharedModule,
         NgbModule,
 
-        // Pipes
+        // pipes
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
         ColorFinderPipe,
 
-        // Components
+        // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
         TaInputDropdownComponent,
@@ -91,15 +92,19 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaNoteComponent,
         TaPickupDeliveryComponent,
         TaInputComponent,
-        DispatchTableLastLocationComponentComponent,
         TaModalComponent,
         TaCustomCardComponent,
-        LoadDeatilsItemStopsMainComponent,
-      //  TaMapsComponent,
         TaResizerComponent,
-        LoadRequirementComponent,
-        DispatchTablePreTripInspectionComponent,
         TaProfileImagesComponent,
+
+        DispatchTableLastLocationComponentComponent,
+        DispatchTablePreTripInspectionComponent,
+
+        LoadDeatilsItemStopsMainComponent,
+        LoadStatusStringComponent,
+        LoadRequirementComponent,
+
+        //  TaMapsComponent,
     ],
     exports: [ColorFinderPipe],
 })

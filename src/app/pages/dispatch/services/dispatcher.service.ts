@@ -17,6 +17,9 @@ import {
     CreateDispatchCommand,
     DispatchBoardListResponse,
     DispatchBoardResponse,
+    DispatchHistoryGroupListResponse,
+    DispatchHistoryListResponse,
+    DispatchHistoryModalResponse,
     DispatchService,
     DriverService,
     ReorderDispatchesCommand,
@@ -24,6 +27,7 @@ import {
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
+import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
 @Injectable({ providedIn: 'root' })
 export class DispatcherService {
@@ -321,6 +325,49 @@ export class DispatcherService {
                 }),
             },
         }));
+    }
+
+    public getDispatchHistoryModalDropdownLists(): Observable<DispatchHistoryModalResponse> {
+        return this.dispatchService.apiDispatchBoardHistoryModalGet();
+    }
+
+    public getDispatchHistory(
+        data: GetDispatchHistoryData
+    ): Observable<DispatchHistoryListResponse> {
+        const {
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+        } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryGet(
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId
+        );
+    }
+    public getDispatchHistoryGroups(
+        data: GetDispatchHistoryData
+    ): Observable<DispatchHistoryGroupListResponse> {
+        const {
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+        } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryGroupsGet(
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId
+        );
     }
 
     public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
