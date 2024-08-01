@@ -77,6 +77,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
   public isProfileDetailsDisplayed: boolean = false;
+  public userProfile!: ConversationInfoResponse | null;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -240,6 +241,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         .getAllConversationFiles(this.conversation.id)
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
+          this.userProfile = data;
         })
     }
   }
@@ -336,6 +338,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.remainingParticipants = [];
+    this.userProfile = null;
     this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();

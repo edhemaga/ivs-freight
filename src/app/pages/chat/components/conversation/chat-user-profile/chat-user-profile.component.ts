@@ -1,12 +1,17 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output
 } from '@angular/core';
 
+// Models
+import { ConversationInfoResponse } from 'appcoretruckassist';
+
 // Assets routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+
 
 @Component({
   selector: 'app-chat-user-profile',
@@ -14,6 +19,8 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
   styleUrls: ['./chat-user-profile.component.scss']
 })
 export class ChatUserProfileComponent implements OnInit {
+
+  @Input() data: ConversationInfoResponse;
 
   @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
 

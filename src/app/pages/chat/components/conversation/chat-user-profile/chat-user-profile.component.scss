@@ -3,14 +3,10 @@
 .user-profile-wrapper {
     width: 318px;
 
-    div {
-        height: 100%;
-    }
-
     .horizontal-border {
-        margin-top: 6px;
+        height: 8px;
         width: auto;
-        margin: 6px 2px 4px 2px;
+        margin: 4px 2px;
         border-bottom: 1px solid $bw-9;
     }
 
@@ -27,11 +23,46 @@
     }
 
     .basic-info {
-        height: 88px;
+        min-height: 88px;
+        height: fit-content;
+
+        .text {
+            padding-left: 12px;
+            color: $ta-black;
+
+            &-name {
+                height: 28px;
+                line-height: 20px;
+                font-size: 16px;
+            }
+
+            &-type {
+                height: 26px;
+                line-height: 18px;
+                font-size: 14px;
+            }
+        }
     }
 
     .additional-info {
-        height: 86px;
+        min-height: 86px;
+        height: fit-content;
+
+        .title {
+            line-height: 18px;
+            font-size: 14px;
+            padding: 4px 6px;
+        }
+
+        &-row {
+            line-height: 18px;
+            font-size: 14px;
+            padding: 4px 6px;
+
+            svg-icon {
+                margin-right: 4px;
+            }
+        }
     }
 
     .media {

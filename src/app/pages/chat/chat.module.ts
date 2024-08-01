@@ -45,6 +45,7 @@ import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
 import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
+import { FullnamePipe } from "@pages/chat/utils/pipes/fullname.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
@@ -52,26 +53,34 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
 @NgModule({
     declarations: [
         ChatComponent,
-
         // Chat list
         ChatUserListComponent,
         ChatUserListItemComponent,
-
         // Conversations
         ChatMessagesComponent,
         ChatMessageComponent,
         ChatMessagesNotSelectedComponent,
         ChatMessageAttachmentPreviewComponent,
         ChatUserProfileComponent,
-
         // Auxillary components
         ChatToolbarComponent,
         ChatNoDataComponent,
         ChatHeaderComponent,
         ChatVerticalDividerComponent,
-
         // Directives
-        DragAndDropDirective
+        DragAndDropDirective,
+    ],
+    providers: [
+        // Services
+        HubService,
+        // Resolvers
+        UserResolver,
+        DriverResolver,
+        ConversationInformationResolver,
+        ConversationResolver,
+        // Pipes
+        NameInitialsPipe,
+        FullnamePipe,
     ],
     imports: [
         // Modules
@@ -80,7 +89,6 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         AngularSvgIconModule,
         ReactiveFormsModule,
         NgbModule,
-
         // Shared Components
         TaInputComponent,
         TaSearchComponent,
@@ -88,26 +96,12 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         TaProfileImagesComponent,
         TaAppTooltipV2Component,
         TaUploadFilesComponent,
-
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
         FileExtensionPipe,
-        TrackByPropertyPipe
-    ],
-    providers: [
-        // Services
-        HubService,
-
-        // Resolvers
-        UserResolver,
-        DriverResolver,
-        ConversationInformationResolver,
-        ConversationResolver,
-
-        // Pipes
-        NameInitialsPipe,
-
+        TrackByPropertyPipe,
+        FullnamePipe
     ]
 })
 export class ChatModule { };

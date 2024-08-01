@@ -24,4 +24,9 @@ export class ChatSvgRoutes {
     static darkFocusedXIcon: string = 'assets/svg/chat/x-icon/dark-focused-x-icon.svg';
     static lightXIcon: string = 'assets/svg/chat/x-icon/light-x-icon.svg';
     static lightFocusedXIcon: string = 'assets/svg/chat/x-icon/light-focused-x-icon.svg';
+
+    // Profile details
+    static phoneIcon: string = 'assets/svg/chat/phone-icon.svg';
+    static emailIcon: string = 'assets/svg/chat/email-icon.svg';
+    static companyIcon: string = 'assets/svg/chat/company-icon.svg';
 }

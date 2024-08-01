@@ -17,10 +17,69 @@
     </app-chat-header>
 
     <div class="basic-info">
+        <div class="d-flex">
+            <app-ta-profile-images
+                [indx]="data.userAdditionalInformation?.userId"
+                [showHoverAnimation]="false"
+                [withTooltip]="false"
+                [size]="'large'"
+                [type]="
+                    (data.userAdditionalInformation?.userType?.name
+                        | lowercase) || 'driver'
+                "
+                [name]="
+                    [
+                        data.userAdditionalInformation?.firstName,
+                        data.userAdditionalInformation?.lastName
+                    ] | fullName
+                "
+                [url]="data.userAdditionalInformation?.avatarFile?.url"
+            >
+            </app-ta-profile-images>
+            <div class="text">
+                <div class="text-name ta-font-semi-bold">
+                    {{ data.userAdditionalInformation?.firstName }}
+                    {{ data.userAdditionalInformation?.lastName }}
+                </div>
+                <div class="text-type ta-font-medium">
+                    {{ data.userAdditionalInformation?.userType?.name }}
+                </div>
+                <div>status</div>
+            </div>
+        </div>
         <div class="horizontal-border"></div>
     </div>
 
     <div class="additional-info">
+        <div class="title ta-font-extra-bold">Additional info</div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.phoneIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.phone }}
+        </div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.emailIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.email }}
+        </div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.companyIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.userType?.name }}
+        </div>
+
         <div class="horizontal-border"></div>
     </div>
 
