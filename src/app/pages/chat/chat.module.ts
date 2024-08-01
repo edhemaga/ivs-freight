@@ -43,12 +43,13 @@ import { ConversationResolver } from "@pages/chat/resolvers/conversation/convers
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
+import { FormatDatePipe } from "@shared/pipes/format-date.pipe";
 import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
 import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
-import { FullnamePipe } from "@pages/chat/utils/pipes/fullname.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
+import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
 
 @NgModule({
     declarations: [
@@ -80,7 +81,6 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         ConversationResolver,
         // Pipes
         NameInitialsPipe,
-        FullnamePipe,
     ],
     imports: [
         // Modules
@@ -99,9 +99,10 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
+        FormatDatePipe,
         FileExtensionPipe,
         TrackByPropertyPipe,
-        FullnamePipe
+        FormatPhonePipe
     ]
 })
 export class ChatModule { };

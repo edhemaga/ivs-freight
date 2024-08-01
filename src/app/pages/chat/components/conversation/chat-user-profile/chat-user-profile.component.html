@@ -27,12 +27,7 @@
                     (data.userAdditionalInformation?.userType?.name
                         | lowercase) || 'driver'
                 "
-                [name]="
-                    [
-                        data.userAdditionalInformation?.firstName,
-                        data.userAdditionalInformation?.lastName
-                    ] | fullName
-                "
+                [name]="data.userAdditionalInformation?.firstName"
                 [url]="data.userAdditionalInformation?.avatarFile?.url"
             >
             </app-ta-profile-images>
@@ -59,7 +54,10 @@
                 [src]="ChatSvgRoutes.phoneIcon"
             >
             </svg-icon>
-            {{ data.userAdditionalInformation?.phone }}
+            {{
+                data.userAdditionalInformation?.phone ?? '(123) 456-7890'
+                    | formatPhoneP
+            }}
         </div>
         <div class="additional-info-row d-flex ta-font-regular">
             <svg-icon
@@ -77,17 +75,62 @@
                 [src]="ChatSvgRoutes.companyIcon"
             >
             </svg-icon>
-            {{ data.userAdditionalInformation?.userType?.name }}
+            {{ data.userAdditionalInformation?.companyName }}
         </div>
 
         <div class="horizontal-border"></div>
     </div>
 
     <div class="media">
+        <div class="d-flex align-items-center">
+            <div class="title ta-font-extra-bold">Media</div>
+            <div class="data-count">
+                {{ data.mediaCount }}
+            </div>
+            <div class="show-all ta-font-bold">Show all</div>
+        </div>
+        <div class="media-content">
+            <ng-container
+                *ngFor="
+                    let item of data.media;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
+            >
+                <img [src]="item?.url" [alt]="item?.fileName" />
+            </ng-container>
+        </div>
         <div class="horizontal-border"></div>
     </div>
 
     <div class="files">
+        <div class="d-flex align-items-center">
+            <div class="title ta-font-extra-bold">Media</div>
+            <div class="data-count">
+                {{ data.filesCount }}
+            </div>
+            <div class="show-all ta-font-bold">Show all</div>
+        </div>
+        <div class="files-content">
+            <ng-container
+                *ngFor="
+                    let item of data.files;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
+            >
+                <div class="attachment-wrapper">
+                    <app-chat-message-attachment-preview
+                        [index]="ind"
+                        [attachment]="item"
+                        [isNameReduced]="false"
+                        [isInMessage]="true"
+                        [isDateDisplayed]="true"
+                        [isSizeDisplayed]="false"
+                    ></app-chat-message-attachment-preview>
+                </div>
+            </ng-container>
+        </div>
         <div class="horizontal-border"></div>
     </div>
 

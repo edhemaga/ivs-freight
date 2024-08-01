@@ -13,6 +13,15 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 // Enums
 import { AttachmentType } from '@pages/chat/enums/conversation/attachment-type.enum';
 
+interface ExtendedUploadFile extends UploadFile {
+  fileId?: number;
+  fileName?: string | null;
+  fileSize?: number | null;
+  tags?: Array<string> | null;
+  tagGeneratedByUser?: boolean;
+  updatedAt?: string | null; F
+}
+
 @Component({
   selector: 'app-chat-message-attachment-preview',
   templateUrl: './chat-message-attachment-preview.component.html',
@@ -22,9 +31,11 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
 
   @Input() public index: number;
   @Input() public isNameReduced: boolean = false;
-  @Input() public attachment!: UploadFile;
+  @Input() public attachment!: ExtendedUploadFile;
   @Input() public isChatTypingBlurred: boolean = false;
   @Input() public isInMessage: boolean = false;
+  @Input() public isSizeDisplayed: boolean = true;
+  @Input() public isDateDisplayed: boolean = false;
 
   // Assets route
   public ChatPngRoutes = ChatPngRoutes;
