@@ -2,9 +2,11 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -78,6 +80,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() toolbarWidth: number = 0;
 
+    @Input() isAllBoardsList: boolean;
+
+    @Output() onTableUnlock: EventEmitter<any> = new EventEmitter();
+
     private destroy$ = new Subject<void>();
 
     public checkForEmpty: string;
@@ -135,6 +141,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     };
 
     isDrag: boolean = false;
+    parkingCount: number = 0;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -165,7 +172,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
 
-        console.log('dispatchData', this.dispatchData);
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     private getConstantData(): void {
@@ -249,6 +258,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     ),
                 };
 
+                this.parkingCount = this.dispatchData?.dispatches?.filter(
+                    (item) => item.parkingSlot
+                )?.length;
+
                 this.showAddAddressFieldIndex = index;
             } else {
                 this.addNewTruckData = event;
@@ -311,6 +324,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ...this.dispatchData,
             dispatches: mappedDispatches,
         };
+
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     public onHideDropdown(): void {
@@ -517,7 +534,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.deleteDispatchBoardById(id);
         } else {
-            this.updateOrAddDispatchBoardAndSend(DispatchTableStringEnum.DRIVER_ID, null, index);
+            this.updateOrAddDispatchBoardAndSend(
+                DispatchTableStringEnum.DRIVER_ID,
+                null,
+                index
+            );
         }
     }
 
@@ -800,6 +821,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     trailerPositionPrediction = () => {
         return true;
     };
+
+    public unlockTable(): void {
+        this.onTableUnlock.emit({
+            action: DispatchTableStringEnum.TOGGLE_LOCKED,
+        });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

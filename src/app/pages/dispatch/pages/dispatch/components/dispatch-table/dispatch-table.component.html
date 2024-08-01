@@ -523,9 +523,36 @@
                 </tr>
             </ng-container>
 
-            <!-- <ng-container *ngIf="!dispatchData?.dispatchCount">
-                <tr class="dummy-row"></tr>
-            </ng-container> -->
+            <ng-container
+                *ngIf="
+                    !dispatchData?.dispatches?.length &&
+                    !isAllBoardsList &&
+                    isDispatchBoardLocked
+                "
+            >
+                <ng-container
+                    *ngFor="
+                        let row of [].constructor(3);
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <tr
+                        class="no-data-table-row"
+                        [ngClass]="{
+                            'first-row': i === 0,
+                            'second-row': i === 1,
+                            'third-row': i === 2
+                        }"
+                    >
+                        <ng-container *ngFor="let field of [].constructor(13)">
+                            <td>
+                                <div></div>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-container>
+            </ng-container>
 
             <tr *ngIf="!isDispatchBoardLocked">
                 <td
@@ -684,63 +711,111 @@
                 </td>
             </tr>
         </tbody>
+
+        <ng-container *ngIf="dispatchData?.dispatches?.length">
+            <tfoot>
+                <tr>
+                    <td>
+                        <div class="table-inside-info">
+                            <div class="table-info-field">
+                                <span class="ta-font-bold">
+                                    {{ dispatchData.truckCount }}
+                                    {{
+                                        dispatchData.truckCount === 1
+                                            ? 'TRUCK'
+                                            : 'TRUCKS'
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-inside-info">
+                            <div class="table-info-field">
+                                <span class="ta-font-bold">
+                                    {{ dispatchData.trailerCount }}
+                                    {{
+                                        dispatchData.trailerCount === 1
+                                            ? 'TRAILER'
+                                            : 'TRAILERS'
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-inside-info">
+                            <div class="table-info-field">
+                                <span class="ta-font-bold">
+                                    {{ dispatchData.driverCount }}
+                                    {{
+                                        dispatchData.driverCount === 1
+                                            ? 'DRIVER'
+                                            : 'DRIVERS'
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="table-inside-info">
+                            <div class="table-info-field">
+                                <span class="ta-font-bold">
+                                    {{ parkingCount ?? 0 }} of
+                                    {{ dispatchData.dispatches.length }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </ng-container>
     </table>
 
-    <ng-container *ngIf="dispatchData?.dispatchCount">
-        <div
-            class="d-flex justify-content-between table-info"
-            [ngStyle]="{ 'width.px': toolbarWidth }"
-        >
-            <div class="d-flex align-items-center table-inside-info">
-                <div
-                    class="table-info-field truck-field"
-                    [ngStyle]="{
-                        width: hasAdditionalFieldTruck ? '160px' : '120px'
-                    }"
+    <ng-container
+        *ngIf="
+            !dispatchData?.dispatches?.length &&
+            !isAllBoardsList &&
+            isDispatchBoardLocked
+        "
+    >
+        <div class="d-flex align-items-center justify-content-center">
+            <div
+                class="no-data-container d-flex flex-column align-items-center"
+            >
+                <svg-icon
+                    src="assets/svg/dispatchboard/dispatch_board_no_data.svg"
                 >
-                    <span class="ta-font-bold">
-                        {{ dispatchData.truckCount }}
-                        {{ dispatchData.truckCount === 1 ? 'TRUCK' : 'TRUCKS' }}
-                    </span>
-                </div>
-
+                </svg-icon>
                 <div
-                    class="table-info-field trailer-field"
-                    [ngStyle]="{
-                        width: hasAdditionalFieldTrailer ? '160px' : '120px'
-                    }"
+                    class="no-data-text-container d-flex flex-column align-items-center"
                 >
-                    <span class="ta-font-bold">
-                        {{ dispatchData.trailerCount }}
-                        {{
-                            dispatchData.trailerCount === 1
-                                ? 'TRAILER'
-                                : 'TRAILERS'
-                        }}
-                    </span>
+                    <div class="no-data-text ta-font-extra-bold">
+                        No Data Found
+                    </div>
+                    <div class="no-data-description ta-font-medium text-center">
+                        There are no entries. To manage your board, unlock the
+                        table and start <br />
+                        adding new records.
+                    </div>
                 </div>
-
-                <div class="table-info-field driver-field">
-                    <span class="ta-font-bold">
-                        {{ dispatchData.driverCount }}
-                        {{
-                            dispatchData.driverCount === 1
-                                ? 'DRIVER'
-                                : 'DRIVERS'
-                        }}
-                    </span>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center table-inside-info">
-                <div class="table-info-field">
-                    <span class="ta-font-bold">2 of 24</span>
-                </div>
-
-                <div class="table-info-field dispatcher-field">
-                    <span class="ta-font-bold">
-                        {{ dispatchData?.dispatcher?.fullName ?? 'Team Board' }}
-                    </span>
+                <div>
+                    <button
+                        type="button"
+                        class="d-flex justify-content-center align-items-center unlock-table-button"
+                        (click)="unlockTable()"
+                    >
+                        <p class="m-0 ta-font-bold">Unlock Table</p>
+                    </button>
                 </div>
             </div>
         </div>
