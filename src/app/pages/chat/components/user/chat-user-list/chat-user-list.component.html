@@ -68,7 +68,19 @@
 
     <ng-container *ngIf="contactsInfo?.count; else noData">
         <div class="contact-container">
-            <div class="contact-wrapper">
+            <div
+                class="contact-wrapper"
+                [ngStyle]="
+                    isSearchActive
+                        ? {
+                              height: 'calc(100% - 58px)',
+                              marginTop: '6px',
+                              position: 'relative',
+                              top: '-6px'
+                          }
+                        : {}
+                "
+            >
                 <ng-container
                     *ngFor="
                         let contact of contactsInfo?.data;

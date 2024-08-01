@@ -229,16 +229,17 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public displayProfileDetails(value: boolean): void {
-    if (value) {
-      this.isProfileDetailsDisplayed = false;
+
+    if (this.isProfileDetailsDisplayed && !value) {
+      this.isProfileDetailsDisplayed = value;
       return;
     }
 
-    if (this.conversation?.id) {
+    if (this.conversation?.id && value) {
       this.chatService
         .getAllConversationFiles(this.conversation.id)
         .subscribe((data: ConversationInfoResponse) => {
-          this.isProfileDetailsDisplayed = true;
+          this.isProfileDetailsDisplayed = value;
         })
     }
   }

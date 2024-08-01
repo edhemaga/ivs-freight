@@ -26,6 +26,7 @@ import { ChatVerticalDividerComponent } from "@pages/chat/components/chat-vertic
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
 import { TaInputComponent } from "@shared/components/ta-input/ta-input.component";
+import { TaSearchV2Component } from "@shared/components/ta-search-v2/ta-search-v2.component";
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from "@shared/components/ta-upload-files/ta-upload-files.component";
 import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
@@ -83,6 +84,7 @@ import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop
         // Shared Components
         TaInputComponent,
         TaSearchComponent,
+        TaSearchV2Component,
         TaProfileImagesComponent,
         TaAppTooltipV2Component,
         TaUploadFilesComponent,

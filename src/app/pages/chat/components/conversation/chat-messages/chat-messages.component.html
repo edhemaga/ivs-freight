@@ -10,38 +10,17 @@
                 <div class="messages-header d-flex align-items-center">
                     <ng-container *ngSwitchCase="1">
                         <!-- TODO refactor to separate component -->
-                        <ng-container
-                            *ngIf="
-                                remainingParticipants[0]?.avatarFile?.url;
-                                else noAvatar
-                            "
-                        >
-                            <div class="d-flex">
-                                <img
-                                    width="22px"
-                                    height="22px"
-                                    class="chat-list-item-avatar align-items-center"
-                                    [src]="
-                                        remainingParticipants[0]?.avatarFile.url
-                                    "
-                                    [alt]="remainingParticipants[0]?.fullName"
-                                />
-                            </div>
-                        </ng-container>
 
-                        <ng-template #noAvatar>
-                            <app-ta-profile-images
-                                [indx]="remainingParticipants[0]?.id"
-                                [showHoverAnimation]="false"
-                                [withTooltip]="false"
-                                [size]="'small'"
-                                [type]="
-                                    remainingParticipants[0]?.name | lowercase
-                                "
-                                [name]="remainingParticipants[0]?.fullName"
-                            >
-                            </app-ta-profile-images>
-                        </ng-template>
+                        <app-ta-profile-images
+                            [indx]="remainingParticipants[0]?.id"
+                            [showHoverAnimation]="false"
+                            [withTooltip]="false"
+                            [size]="'small'"
+                            [type]="remainingParticipants[0]?.name | lowercase"
+                            [name]="remainingParticipants[0]?.fullName"
+                            [url]="remainingParticipants[0]?.avatarFile?.url"
+                        >
+                        </app-ta-profile-images>
                         <div class="name ta-font-extra-bold">
                             {{ remainingParticipants[0].fullName }}
                         </div>
@@ -96,7 +75,7 @@
                 [scrollTop]="messagesContent?.scrollHeight"
                 [ngStyle]="
                     isChatTypingActivated &&
-                    attachments?.length && { height: 'calc(100% - 131px)' }
+                    attachments?.length && { height: 'calc(100% - 145px)' }
                 "
                 #messagesContent
             >
@@ -337,4 +316,14 @@
             ></app-ta-upload-files>
         </ng-template>
     </div>
+    <ng-container *ngIf="!attachmentUploadActive && isProfileDetailsDisplayed">
+        <div class="d-flex">
+            <app-chat-vertical-divider
+                [verticalOffset]="8"
+            ></app-chat-vertical-divider>
+            <app-chat-user-profile
+                (isProfileDetailsClosed)="displayProfileDetails($event)"
+            ></app-chat-user-profile>
+        </div>
+    </ng-container>
 </div>
