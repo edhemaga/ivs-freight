@@ -26,8 +26,8 @@ import {
     ChartType,
     GridLineOptions,
 } from 'chart.js';
-import { ChartsModule } from 'ng2-charts';
-import { BaseChartDirective, Color, Label } from 'ng2-charts';
+// import { ChartsModule } from 'ng2-charts';
+// import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 
 // helpers
@@ -62,7 +62,7 @@ import { ChartConstants } from '@shared/components/ta-chart/utils/constants/char
         CommonModule,
         AngularSvgIconModule,
         FormsModule,
-        ChartsModule,
+       // ChartsModule,
         NFormatterPipe,
     ],
 })
@@ -73,7 +73,7 @@ export class TaChartComponent implements OnInit, OnChanges {
     @Input() public multipleVerticalLeftAxes: number[];
     @Input() public annotationConfig: AnnotationConfig;
 
-    @ViewChild(BaseChartDirective) public chart: BaseChartDirective;
+   // @ViewChild(BaseChartDirective) public chart: BaseChartDirective;
     @ViewChild('hoverDataHolder') public hoverDataHolder: ElementRef;
     @ViewChild('baseChart') public baseChart: Element;
     @ViewChild('chartToolTip') public chartToolTip: Element;
@@ -89,9 +89,9 @@ export class TaChartComponent implements OnInit, OnChanges {
 
     //chart configuration
     public lineChartData: ChartDataSets[] = [];
-    public lineChartLabels: Label[] = [];
-    public lineChartOptions: ChartOptions = {};
-    public lineChartColors: Color[] = [];
+    // public lineChartLabels: Label[] = [];
+    // public lineChartOptions: ChartOptions = {};
+    // public lineChartColors: Color[] = [];
     public lineChartLegend: boolean = false;
     public lineChartType: ChartType = 'bar';
     public lineChartPlugins = [];
@@ -154,262 +154,262 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (this.chart) {
-            this.chart.chart.config.data.datasets[0] =
-                changes.chartConfig.currentValue.dataProperties[0].defaultConfig;
+        // if (this.chart) {
+        //     this.chart.chart.config.data.datasets[0] =
+        //         changes.chartConfig.currentValue.dataProperties[0].defaultConfig;
 
-            if (changes.chartConfig.currentValue.dataProperties.length > 1) {
-                this.chart.chart.config.data.datasets[1] =
-                    changes.chartConfig.currentValue.dataProperties[1]?.defaultConfig;
-            }
+        //     if (changes.chartConfig.currentValue.dataProperties.length > 1) {
+        //         this.chart.chart.config.data.datasets[1] =
+        //             changes.chartConfig.currentValue.dataProperties[1]?.defaultConfig;
+        //     }
 
-            this.driversList = changes.chartConfig.currentValue.driversList;
-            this.saveChartProperties =
-                changes.chartConfig.currentValue.chartInnitProperties;
+        //     this.driversList = changes.chartConfig.currentValue.driversList;
+        //     this.saveChartProperties =
+        //         changes.chartConfig.currentValue.chartInnitProperties;
 
-            this.lineChartLabels = changes.chartConfig.currentValue.dataLabels;
+        //     this.lineChartLabels = changes.chartConfig.currentValue.dataLabels;
 
-            this.setChartOptions();
+        //     this.setChartOptions();
 
-            this.ref.detectChanges();
-        }
+        //     this.ref.detectChanges();
+        // }
     }
 
     public trackByIdentity = (index: number): number => index;
 
     private setChartOptions(): void {
-        this.lineChartOptions = {
-            responsive: this.chartConfig['dontUseResponsive'] ? false : true,
-            maintainAspectRatio: false,
-            cutoutPercentage: 90,
-            animation: {
-                duration: this.chartConfig['allowAnimation']
-                    ? this.animationDuration
-                    : 0,
-            },
-            onHover: (evt, elements: any) => {
-                if (elements?.length) {
-                    this.hoveringStatus = true;
-                    this.animationDuration = 0;
-                    this.lastHoveredIndex = elements[0]['_index'];
-                    if (this.toolTipData?.length) {
-                        this.setToolTipTitle(this.lastHoveredIndex);
-                    }
-                    if (this.legendAttributes?.length) {
-                        this.setChartLegendData(elements);
-                    }
+        // this.lineChartOptions = {
+        //     responsive: this.chartConfig['dontUseResponsive'] ? false : true,
+        //     maintainAspectRatio: false,
+        //     cutoutPercentage: 90,
+        //     animation: {
+        //         duration: this.chartConfig['allowAnimation']
+        //             ? this.animationDuration
+        //             : 0,
+        //     },
+        //     onHover: (evt, elements: any) => {
+        //         if (elements?.length) {
+        //             this.hoveringStatus = true;
+        //             this.animationDuration = 0;
+        //             this.lastHoveredIndex = elements[0]['_index'];
+        //             if (this.toolTipData?.length) {
+        //                 this.setToolTipTitle(this.lastHoveredIndex);
+        //             }
+        //             if (this.legendAttributes?.length) {
+        //                 this.setChartLegendData(elements);
+        //             }
 
-                    if (
-                        this.lineChartType == 'doughnut' &&
-                        this.driversList?.length
-                    ) {
-                        this.hoverDoughnut(elements, 'object');
-                    }
-                } else {
-                    if (!this.chartConfig['animationOnlyOnLoad']) {
-                        this.animationDuration = 1000;
-                    }
+        //             if (
+        //                 this.lineChartType == 'doughnut' &&
+        //                 this.driversList?.length
+        //             ) {
+        //                 this.hoverDoughnut(elements, 'object');
+        //             }
+        //         } else {
+        //             if (!this.chartConfig['animationOnlyOnLoad']) {
+        //                 this.animationDuration = 1000;
+        //             }
 
-                    if (
-                        this.lineChartType == 'doughnut' &&
-                        this.driversList?.length
-                    ) {
-                        this.hoverDoughnut(null);
-                    }
+        //             if (
+        //                 this.lineChartType == 'doughnut' &&
+        //                 this.driversList?.length
+        //             ) {
+        //                 this.hoverDoughnut(null);
+        //             }
 
-                    setTimeout(() => {
-                        if (!this.hoveringStatus) {
-                            this.legendAttributes = JSON.parse(
-                                JSON.stringify(this.saveValues)
-                            );
-                        }
-                        this.ref.detectChanges();
-                    }, 500);
-                }
-            },
-            annotation: {
-                drawTime: 'beforeDatasetsDraw',
-                annotations: [
-                    {
-                        id: 'a-line-1',
-                        type: 'line',
-                        mode: 'horizontal',
-                        scaleID: 'y-axis-0',
-                        value: this.chartConfig['annotation']
-                            ? this.chartConfig['annotation']
-                            : null,
-                        borderColor: '#E57373',
-                        borderWidth: 1,
-                    },
-                    {
-                        id: 'a-line-2',
-                        type: 'line',
-                        mode:
-                            this.annotationConfig &&
-                            [
-                                ChartAnnotationPositionStringEnum.HORIZONTAL as string,
-                                ChartAnnotationPositionStringEnum.VERTICAL,
-                            ].includes(this.annotationConfig.type)
-                                ? (this.annotationConfig.type as
-                                      | ChartAnnotationPositionStringEnum.HORIZONTAL
-                                      | ChartAnnotationPositionStringEnum.VERTICAL)
-                                : ChartAnnotationPositionStringEnum.VERTICAL,
-                        scaleID: this.annotationConfig
-                            ? this.annotationConfig.axis
-                            : 'x-axis-0',
-                        value: this.annotationHovered,
-                        borderColor: this.annotationConfig
-                            ? this.annotationConfig.color
-                            : '#DADADA',
-                        borderWidth: 2,
-                        borderDash:
-                            this.annotationConfig &&
-                            Array.isArray(this.annotationConfig.dash)
-                                ? this.annotationConfig.dash
-                                : this.annotationConfig &&
-                                  typeof this.annotationConfig.dash === 'number'
-                                ? [this.annotationConfig.dash]
-                                : [],
-                    },
-                ],
-            },
-            tooltips: {
-                enabled: false,
-                mode: 'x-axis',
-                position: 'average',
-                intersect: false,
-                custom: (tooltipModel) => {
-                    if (tooltipModel?.dataPoints?.[0]) {
-                        this.showChartTooltip(tooltipModel.dataPoints[0].index);
+        //             setTimeout(() => {
+        //                 if (!this.hoveringStatus) {
+        //                     this.legendAttributes = JSON.parse(
+        //                         JSON.stringify(this.saveValues)
+        //                     );
+        //                 }
+        //                 this.ref.detectChanges();
+        //             }, 500);
+        //         }
+        //     },
+        //     annotation: {
+        //         drawTime: 'beforeDatasetsDraw',
+        //         annotations: [
+        //             {
+        //                 id: 'a-line-1',
+        //                 type: 'line',
+        //                 mode: 'horizontal',
+        //                 scaleID: 'y-axis-0',
+        //                 value: this.chartConfig['annotation']
+        //                     ? this.chartConfig['annotation']
+        //                     : null,
+        //                 borderColor: '#E57373',
+        //                 borderWidth: 1,
+        //             },
+        //             {
+        //                 id: 'a-line-2',
+        //                 type: 'line',
+        //                 mode:
+        //                     this.annotationConfig &&
+        //                     [
+        //                         ChartAnnotationPositionStringEnum.HORIZONTAL as string,
+        //                         ChartAnnotationPositionStringEnum.VERTICAL,
+        //                     ].includes(this.annotationConfig.type)
+        //                         ? (this.annotationConfig.type as
+        //                               | ChartAnnotationPositionStringEnum.HORIZONTAL
+        //                               | ChartAnnotationPositionStringEnum.VERTICAL)
+        //                         : ChartAnnotationPositionStringEnum.VERTICAL,
+        //                 scaleID: this.annotationConfig
+        //                     ? this.annotationConfig.axis
+        //                     : 'x-axis-0',
+        //                 value: this.annotationHovered,
+        //                 borderColor: this.annotationConfig
+        //                     ? this.annotationConfig.color
+        //                     : '#DADADA',
+        //                 borderWidth: 2,
+        //                 borderDash:
+        //                     this.annotationConfig &&
+        //                     Array.isArray(this.annotationConfig.dash)
+        //                         ? this.annotationConfig.dash
+        //                         : this.annotationConfig &&
+        //                           typeof this.annotationConfig.dash === 'number'
+        //                         ? [this.annotationConfig.dash]
+        //                         : [],
+        //             },
+        //         ],
+        //     },
+        //     tooltips: {
+        //         enabled: false,
+        //         mode: 'x-axis',
+        //         position: 'average',
+        //         intersect: false,
+        //         custom: (tooltipModel) => {
+        //             if (tooltipModel?.dataPoints?.[0]) {
+        //                 this.showChartTooltip(tooltipModel.dataPoints[0].index);
 
-                        if (this.chartConfig.showHoverTooltip) {
-                            this.calculateTooltipPosition(tooltipModel.caretX);
-                        }
-                    }
-                },
-            },
-            plugins: {
-                datalabels: {
-                    formatter: () => {
-                        return null;
-                    },
-                },
-            },
-            elements: {
-                point: {
-                    radius: 3,
-                    borderWidth: 2,
-                    backgroundColor: '#fff',
-                },
-                line: {
-                    borderWidth: 3,
-                    fill: false,
-                },
-            },
-            scales: {
-                yAxes: this.setChartAxis(),
-                xAxes: [
-                    {
-                        type: 'category',
-                        time: {
-                            unit: 'month',
-                            unitStepSize: 1,
-                            displayFormats: {
-                                month: 'MMM',
-                            },
-                        },
-                        stacked: this.chartConfig['stacked']
-                            ? this.chartConfig['stacked']
-                            : false,
-                        offset: this.chartConfig['offset']
-                            ? this.chartConfig['offset']
-                            : false,
-                        display: this.axesProperties['horizontalAxes']
-                            ? this.axesProperties['horizontalAxes']['visible']
-                            : false,
-                        position:
-                            this.axesProperties['horizontalAxes'] &&
-                            this.axesProperties['horizontalAxes']['position']
-                                ? this.axesProperties['horizontalAxes'][
-                                      'position'
-                                  ]
-                                : 'bottom',
-                        gridLines: {
-                            display: true,
-                            borderDash: [2, 3],
-                            zeroLineColor: 'rgba(0, 0, 0, 0)',
-                            color:
-                                this.axesProperties['horizontalAxes'] &&
-                                this.axesProperties['horizontalAxes'][
-                                    'showGridLines'
-                                ]
-                                    ? '#DADADA'
-                                    : 'rgba(0, 0, 0, 0)',
-                        },
-                        ticks: {
-                            fontColor:
-                                this.axesProperties['horizontalAxes'] &&
-                                this.axesProperties['horizontalAxes'][
-                                    'removeColor'
-                                ]
-                                    ? 'rgba(0, 0, 0, 0)'
-                                    : '#919191',
-                            fontSize: 11,
-                            fontFamily: 'Montserrat',
-                            fontStyle: '500',
-                            autoSkip: true,
-                            autoSkipPadding: 12,
-                            maxRotation: 0,
-                            minRotation: 0,
-                        },
-                    },
-                ],
-            },
-        };
+        //                 if (this.chartConfig.showHoverTooltip) {
+        //                     this.calculateTooltipPosition(tooltipModel.caretX);
+        //                 }
+        //             }
+        //         },
+        //     },
+        //     plugins: {
+        //         datalabels: {
+        //             formatter: () => {
+        //                 return null;
+        //             },
+        //         },
+        //     },
+        //     elements: {
+        //         point: {
+        //             radius: 3,
+        //             borderWidth: 2,
+        //             backgroundColor: '#fff',
+        //         },
+        //         line: {
+        //             borderWidth: 3,
+        //             fill: false,
+        //         },
+        //     },
+        //     scales: {
+        //         yAxes: this.setChartAxis(),
+        //         xAxes: [
+        //             {
+        //                 type: 'category',
+        //                 time: {
+        //                     unit: 'month',
+        //                     unitStepSize: 1,
+        //                     displayFormats: {
+        //                         month: 'MMM',
+        //                     },
+        //                 },
+        //                 stacked: this.chartConfig['stacked']
+        //                     ? this.chartConfig['stacked']
+        //                     : false,
+        //                 offset: this.chartConfig['offset']
+        //                     ? this.chartConfig['offset']
+        //                     : false,
+        //                 display: this.axesProperties['horizontalAxes']
+        //                     ? this.axesProperties['horizontalAxes']['visible']
+        //                     : false,
+        //                 position:
+        //                     this.axesProperties['horizontalAxes'] &&
+        //                     this.axesProperties['horizontalAxes']['position']
+        //                         ? this.axesProperties['horizontalAxes'][
+        //                               'position'
+        //                           ]
+        //                         : 'bottom',
+        //                 gridLines: {
+        //                     display: true,
+        //                     borderDash: [2, 3],
+        //                     zeroLineColor: 'rgba(0, 0, 0, 0)',
+        //                     color:
+        //                         this.axesProperties['horizontalAxes'] &&
+        //                         this.axesProperties['horizontalAxes'][
+        //                             'showGridLines'
+        //                         ]
+        //                             ? '#DADADA'
+        //                             : 'rgba(0, 0, 0, 0)',
+        //                 },
+        //                 ticks: {
+        //                     fontColor:
+        //                         this.axesProperties['horizontalAxes'] &&
+        //                         this.axesProperties['horizontalAxes'][
+        //                             'removeColor'
+        //                         ]
+        //                             ? 'rgba(0, 0, 0, 0)'
+        //                             : '#919191',
+        //                     fontSize: 11,
+        //                     fontFamily: 'Montserrat',
+        //                     fontStyle: '500',
+        //                     autoSkip: true,
+        //                     autoSkipPadding: 12,
+        //                     maxRotation: 0,
+        //                     minRotation: 0,
+        //                 },
+        //             },
+        //         ],
+        //     },
+        // };
     }
 
     public setChartData(): void {
-        this.chartConfig['dataProperties'].map((item) => {
-            const currentChartConfig = item['defaultConfig'];
+        // this.chartConfig['dataProperties'].map((item) => {
+        //     const currentChartConfig = item['defaultConfig'];
 
-            if (item['defaultConfig']['hasGradiendBackground']) {
-                this.setGradientBackground();
-            }
+        //     if (item['defaultConfig']['hasGradiendBackground']) {
+        //         this.setGradientBackground();
+        //     }
 
-            this.lineChartData.push(currentChartConfig);
-            this.lineChartLegend =
-                this.chartConfig['defaultType'] != 'doughnut'
-                    ? this.chartConfig['showLegend']
-                    : false;
-            this.doughnutChartLegend = this.chartConfig['showLegend'];
-            this.lineChartType = this.chartConfig['defaultType'];
-            this.lineChartLabels = this.chartConfig['dataLabels'];
+        //     this.lineChartData.push(currentChartConfig);
+        //     this.lineChartLegend =
+        //         this.chartConfig['defaultType'] != 'doughnut'
+        //             ? this.chartConfig['showLegend']
+        //             : false;
+        //     this.doughnutChartLegend = this.chartConfig['showLegend'];
+        //     this.lineChartType = this.chartConfig['defaultType'];
+        //     this.lineChartLabels = this.chartConfig['dataLabels'];
 
-            this.selectedDrivers = this.chartConfig.driversList;
+        //     this.selectedDrivers = this.chartConfig.driversList;
 
-            this.chartWidth = this.chartConfig['chartWidth'];
-            this.chartHeight = this.chartConfig['chartHeight'];
-            this.dottedBackground = this.chartConfig['dottedBackground'];
-            this.noChartImage = this.chartConfig['noChartImage'];
-            this.removeChartMargin = this.chartConfig['removeChartMargin'];
-            this.saveChartProperties = this.chartConfig['chartInnitProperties'];
-            this.chartInnitProperties =
-                this.chartConfig['chartInnitProperties'];
-            this.allowAnimation = this.chartConfig['allowAnimation'];
-            this.driversList = this.chartConfig['driversList'];
-            this.gridHoverBackground = this.chartConfig['gridHoverBackground'];
-            this.hoverTimeDisplay = this.chartConfig['hoverTimeDisplay'];
-            if (this.chartConfig['dataMaxRows']) {
-                this.dataMaxRows = this.chartConfig['dataMaxRows'];
-            }
-            this.chartDataCheck(this.chartConfig['chartValues']);
-        });
+        //     this.chartWidth = this.chartConfig['chartWidth'];
+        //     this.chartHeight = this.chartConfig['chartHeight'];
+        //     this.dottedBackground = this.chartConfig['dottedBackground'];
+        //     this.noChartImage = this.chartConfig['noChartImage'];
+        //     this.removeChartMargin = this.chartConfig['removeChartMargin'];
+        //     this.saveChartProperties = this.chartConfig['chartInnitProperties'];
+        //     this.chartInnitProperties =
+        //         this.chartConfig['chartInnitProperties'];
+        //     this.allowAnimation = this.chartConfig['allowAnimation'];
+        //     this.driversList = this.chartConfig['driversList'];
+        //     this.gridHoverBackground = this.chartConfig['gridHoverBackground'];
+        //     this.hoverTimeDisplay = this.chartConfig['hoverTimeDisplay'];
+        //     if (this.chartConfig['dataMaxRows']) {
+        //         this.dataMaxRows = this.chartConfig['dataMaxRows'];
+        //     }
+        //     this.chartDataCheck(this.chartConfig['chartValues']);
+        // });
     }
 
     public updateChartData(hideAnimation: boolean): void {
         this.chartConfig['dataProperties'].map(() => {
             this.lineChartType = this.chartConfig['defaultType'];
-            this.lineChartLabels = this.chartConfig['dataLabels'];
+            //this.lineChartLabels = this.chartConfig['dataLabels'];
         });
 
         this.animationDuration = !hideAnimation ? 1000 : 0;
@@ -591,78 +591,78 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     public changeChartFillProperty(type: string, color: string): void {
-        let updateChart = false;
-        let startcolorRGBA, endColorRGBA, lineHovered;
+        // let updateChart = false;
+        // let startcolorRGBA, endColorRGBA, lineHovered;
 
-        if (color) {
-            startcolorRGBA = ChartHelper.hexToRgbA('#' + color, 0.4);
-            endColorRGBA = ChartHelper.hexToRgbA('#' + color, 0);
-        }
+        // if (color) {
+        //     startcolorRGBA = ChartHelper.hexToRgbA('#' + color, 0.4);
+        //     endColorRGBA = ChartHelper.hexToRgbA('#' + color, 0);
+        // }
 
-        let averageAnnotation = 0;
+        // let averageAnnotation = 0;
 
-        this.chart.chart.config.data.datasets.map((item) => {
-            if (item['id'] == type && color && color != '') {
-                item['fill'] = true;
-                item['colors'] = [startcolorRGBA, endColorRGBA];
-                updateChart = true;
-                let colorProp = item['borderColor']?.toString();
-                item['borderColor'] = colorProp?.slice(0, 7);
-                lineHovered = item['borderColor'];
-                item['data'].map((val: number | number[] | ChartPoint) => {
-                    if (typeof val === 'number') {
-                        averageAnnotation += val;
-                    } else if (Array.isArray(val)) {
-                        averageAnnotation += val.reduce(
-                            (acc, curr) => acc + curr,
-                            0
-                        );
-                    }
-                });
-            } else if (item['id'] == type && color == '') {
-                item['fill'] = false;
-                updateChart = true;
-                let colorProp = item['borderColor']?.toString();
-                item['borderColor'] = colorProp?.slice(0, 7);
-            } else if (item['id'] != type && color && color != '') {
-                item['fill'] = false;
-                let colorProp = item['borderColor'] + '33';
-                item['borderColor'] = colorProp?.slice(0, 9);
-                updateChart = true;
-            }
-            if (color == '') {
-                let colorProp = item['borderColor']?.toString();
-                item['borderColor'] = colorProp?.slice(0, 7);
-            }
-        });
+        // this.chart.chart.config.data.datasets.map((item) => {
+        //     if (item['id'] == type && color && color != '') {
+        //         item['fill'] = true;
+        //         item['colors'] = [startcolorRGBA, endColorRGBA];
+        //         updateChart = true;
+        //         let colorProp = item['borderColor']?.toString();
+        //         item['borderColor'] = colorProp?.slice(0, 7);
+        //         lineHovered = item['borderColor'];
+        //         item['data'].map((val: number | number[] | ChartPoint) => {
+        //             if (typeof val === 'number') {
+        //                 averageAnnotation += val;
+        //             } else if (Array.isArray(val)) {
+        //                 averageAnnotation += val.reduce(
+        //                     (acc, curr) => acc + curr,
+        //                     0
+        //                 );
+        //             }
+        //         });
+        //     } else if (item['id'] == type && color == '') {
+        //         item['fill'] = false;
+        //         updateChart = true;
+        //         let colorProp = item['borderColor']?.toString();
+        //         item['borderColor'] = colorProp?.slice(0, 7);
+        //     } else if (item['id'] != type && color && color != '') {
+        //         item['fill'] = false;
+        //         let colorProp = item['borderColor'] + '33';
+        //         item['borderColor'] = colorProp?.slice(0, 9);
+        //         updateChart = true;
+        //     }
+        //     if (color == '') {
+        //         let colorProp = item['borderColor']?.toString();
+        //         item['borderColor'] = colorProp?.slice(0, 7);
+        //     }
+        // });
 
-        if (updateChart) {
-            this.animationDuration = 0;
-            this.setChartOptions();
-        } else {
-            this.animationDuration = 1000;
-        }
-        if (lineHovered) {
-            this.focusCardHovered = true;
-            this.averageLineCover = lineHovered;
-        } else {
-            this.focusCardHovered = false;
-        }
+        // if (updateChart) {
+        //     this.animationDuration = 0;
+        //     this.setChartOptions();
+        // } else {
+        //     this.animationDuration = 1000;
+        // }
+        // if (lineHovered) {
+        //     this.focusCardHovered = true;
+        //     this.averageLineCover = lineHovered;
+        // } else {
+        //     this.focusCardHovered = false;
+        // }
     }
 
     public insertNewChartData(mod: string, type: string, color: number): void {
-        this.chart.chart.config.data.datasets.map((item) => {
-            if (item['id'] == type) {
-                if (mod == 'add') {
-                    item['hidden'] = false;
-                    item['borderColor'] = '#' + color;
-                    item['pointHoverBorderColor'] = '#' + color;
-                }
-                if (mod == 'remove') {
-                    item['hidden'] = true;
-                }
-            }
-        });
+        // this.chart.chart.config.data.datasets.map((item) => {
+        //     if (item['id'] == type) {
+        //         if (mod == 'add') {
+        //             item['hidden'] = false;
+        //             item['borderColor'] = '#' + color;
+        //             item['pointHoverBorderColor'] = '#' + color;
+        //         }
+        //         if (mod == 'remove') {
+        //             item['hidden'] = true;
+        //         }
+        //     }
+        // });
 
         this.animationDuration = 1000;
 
@@ -672,88 +672,88 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     public resetLineChartData(): void {
-        for (let i = 0; i < this.chart.chart.config.data.datasets.length; i++) {
-            this.chart.chart.config.data.datasets[i].hidden = true;
+        // for (let i = 0; i < this.chart.chart.config.data.datasets.length; i++) {
+        //     this.chart.chart.config.data.datasets[i].hidden = true;
 
-            this.setChartOptions();
+        //     this.setChartOptions();
 
-            this.ref.detectChanges();
-        }
+        //     this.ref.detectChanges();
+        // }
     }
 
     public hoverDoughnut(elements: number, type?: string): void {
-        let driverDetails, dataIndex, showOthers;
-        this.animationDuration = 0;
-        if (type == 'object' && elements && elements[0]) {
-            driverDetails = this.driversList[elements[0]['_index']];
-            dataIndex = elements[0]['_index'];
-        } else if (type == 'number') {
-            driverDetails = this.driversList[elements];
-            dataIndex = elements;
-        }
+        // let driverDetails, dataIndex, showOthers;
+        // this.animationDuration = 0;
+        // if (type == 'object' && elements && elements[0]) {
+        //     driverDetails = this.driversList[elements[0]['_index']];
+        //     dataIndex = elements[0]['_index'];
+        // } else if (type == 'number') {
+        //     driverDetails = this.driversList[elements];
+        //     dataIndex = elements;
+        // }
 
-        let dataLength = this.chart.chart.config.data.datasets[0].data.length;
+        // let dataLength = this.chart.chart.config.data.datasets[0].data.length;
 
-        if (dataIndex >= dataLength - 1) {
-            showOthers = true;
-        }
+        // if (dataIndex >= dataLength - 1) {
+        //     showOthers = true;
+        // }
 
-        this.chart.chart.config.data.datasets[0].data.map(
-            (item: number | number[] | ChartPoint, i: number) => {
-                if (i === dataIndex || !elements) {
-                    const color =
-                        this.chart.chart.config.data.datasets[0]
-                            .backgroundColor[i];
+        // this.chart.chart.config.data.datasets[0].data.map(
+        //     (item: number | number[] | ChartPoint, i: number) => {
+        //         if (i === dataIndex || !elements) {
+        //             const color =
+        //                 this.chart.chart.config.data.datasets[0]
+        //                     .backgroundColor[i];
 
-                    let colorProp = color;
-                    this.chart.chart.config.data.datasets[0].backgroundColor[
-                        i
-                    ] = colorProp.slice(0, 7);
-                } else {
-                    const color =
-                        this.chart.chart.config.data.datasets[0]
-                            .backgroundColor[i];
-                    let colorProp = color + '33';
-                    this.chart.chart.config.data.datasets[0].backgroundColor[
-                        i
-                    ] = colorProp.slice(0, 9);
-                }
-            }
-        );
+        //             let colorProp = color;
+        //             this.chart.chart.config.data.datasets[0].backgroundColor[
+        //                 i
+        //             ] = colorProp.slice(0, 7);
+        //         } else {
+        //             const color =
+        //                 this.chart.chart.config.data.datasets[0]
+        //                     .backgroundColor[i];
+        //             let colorProp = color + '33';
+        //             this.chart.chart.config.data.datasets[0].backgroundColor[
+        //                 i
+        //             ] = colorProp.slice(0, 9);
+        //         }
+        //     }
+        // );
 
         this.setChartOptions();
 
-        if (driverDetails) {
-            this.chartInnitProperties = [
-                {
-                    percent: driverDetails.percent,
-                    value: driverDetails.value,
-                    name: driverDetails.name,
-                },
-            ];
-        } else {
-            const anySelected = this.selectedDrivers.some(
-                (item) => item.isSelected
-            );
+        // if (driverDetails) {
+        //     this.chartInnitProperties = [
+        //         {
+        //             percent: driverDetails.percent,
+        //             value: driverDetails.value,
+        //             name: driverDetails.name,
+        //         },
+        //     ];
+        // } else {
+        //     const anySelected = this.selectedDrivers.some(
+        //         (item) => item.isSelected
+        //     );
 
-            if (!showOthers) {
-                if (anySelected) {
-                    this.chartInnitProperties = [
-                        {
-                            value: this.chartConfig.chartInnitProperties[0]
-                                .value,
-                            name: this.chartConfig.chartInnitProperties[0].name,
-                        },
-                    ];
-                } else {
-                    this.chartInnitProperties = this.saveChartProperties;
-                }
-            } else {
-                let innitProp = [];
-                innitProp.push(this.saveChartProperties[1]);
-                this.chartInnitProperties = innitProp;
-            }
-        }
+        //     if (!showOthers) {
+        //         if (anySelected) {
+        //             this.chartInnitProperties = [
+        //                 {
+        //                     value: this.chartConfig.chartInnitProperties[0]
+        //                         .value,
+        //                     name: this.chartConfig.chartInnitProperties[0].name,
+        //                 },
+        //             ];
+        //         } else {
+        //             this.chartInnitProperties = this.saveChartProperties;
+        //         }
+        //     } else {
+        //         let innitProp = [];
+        //         innitProp.push(this.saveChartProperties[1]);
+        //         this.chartInnitProperties = innitProp;
+        //     }
+        // }
 
         this.animationDuration = 1000;
 
@@ -763,65 +763,65 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     private updateHoverData(value: number): void {
-        if (this.chartConfig.dataTooltipLabels)
-            this.barChartTooltipDateTitle =
-                this.chartConfig.dataTooltipLabels[value];
+        // if (this.chartConfig.dataTooltipLabels)
+        //     this.barChartTooltipDateTitle =
+        //         this.chartConfig.dataTooltipLabels[value];
 
-        let dataValues = [];
-        this.chart.chart.config.data.datasets.map((item) => {
-            const color = Array.isArray(item['borderColor'])
-                ? item['borderColor']
-                : item['borderColor'];
-            const dataProp: OnHoverProperties = {
-                name: item['label'],
-                value:
-                    (this.chartConfig.selectedTab === 'Revenue' ||
-                    this.chartConfig.selectedTab === 'Cost'
-                        ? '$'
-                        : '') + item['data'][value],
-                percent: item['dataPercentages']?.length
-                    ? item['dataPercentages'][value] + '%'
-                    : null,
-                color: color as ChartColor | ChartColor[],
-            };
-            if (!item['hidden']) {
-                dataValues.push(dataProp);
-            }
-        });
+        // let dataValues = [];
+        // this.chart.chart.config.data.datasets.map((item) => {
+        //     const color = Array.isArray(item['borderColor'])
+        //         ? item['borderColor']
+        //         : item['borderColor'];
+        //     const dataProp: OnHoverProperties = {
+        //         name: item['label'],
+        //         value:
+        //             (this.chartConfig.selectedTab === 'Revenue' ||
+        //             this.chartConfig.selectedTab === 'Cost'
+        //                 ? '$'
+        //                 : '') + item['data'][value],
+        //         percent: item['dataPercentages']?.length
+        //             ? item['dataPercentages'][value] + '%'
+        //             : null,
+        //         color: color as ChartColor | ChartColor[],
+        //     };
+        //     if (!item['hidden']) {
+        //         dataValues.push(dataProp);
+        //     }
+        // });
 
-        if (this.chartConfig['multiHoverData']) {
-            let dataPropMulti = [
-                {
-                    name: 'Price per Gallon',
-                    value: '$' + this.chartConfig.pricePerGallonValue[value],
-                    percent: null,
-                    color: '#AAAAAA',
-                },
-                {
-                    name: 'Load Rate per Mile',
-                    value: '$' + this.chartConfig.loadRatePerMileValue[value],
-                    percent: null,
-                    color: '#DADADA',
-                },
-            ];
+        // if (this.chartConfig['multiHoverData']) {
+        //     let dataPropMulti = [
+        //         {
+        //             name: 'Price per Gallon',
+        //             value: '$' + this.chartConfig.pricePerGallonValue[value],
+        //             percent: null,
+        //             color: '#AAAAAA',
+        //         },
+        //         {
+        //             name: 'Load Rate per Mile',
+        //             value: '$' + this.chartConfig.loadRatePerMileValue[value],
+        //             percent: null,
+        //             color: '#DADADA',
+        //         },
+        //     ];
 
-            dataPropMulti.map((item) => {
-                dataValues.push(item);
-            });
-        }
+        //     dataPropMulti.map((item) => {
+        //         dataValues.push(item);
+        //     });
+        // }
 
-        this.selectedDataRows = dataValues;
+        // this.selectedDataRows = dataValues;
 
-        const allItemsWithoutValue = this.selectedDataRows.every(
-            (dataRow) => !+dataRow.value
-        );
+        // const allItemsWithoutValue = this.selectedDataRows.every(
+        //     (dataRow) => !+dataRow.value
+        // );
 
-        this.showHoverData = !allItemsWithoutValue;
+        // this.showHoverData = !allItemsWithoutValue;
     }
 
     public chartUpdated(data: number[]): void {
-        this.chart.chart.config.data.datasets[0].data = data;
-        this.setChartOptions();
+        // this.chart.chart.config.data.datasets[0].data = data;
+        // this.setChartOptions();
     }
 
     public updateMuiliBar(
@@ -857,22 +857,22 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     private updateMultiBarDataInsert(updateData: ChartDataProperties[]): void {
-        updateData.map((item) => {
-            let sameFound = false;
-            this.chart.chart.config.data.datasets.map((ch) => {
-                if (ch['id'] == 'top10' || ch['id'] == 'allOthers') {
-                    ch.hidden = true;
-                }
-                if (item['id'] == ch['id']) {
-                    sameFound = true;
-                }
-            });
+        // updateData.map((item) => {
+        //     let sameFound = false;
+        //     this.chart.chart.config.data.datasets.map((ch) => {
+        //         if (ch['id'] == 'top10' || ch['id'] == 'allOthers') {
+        //             ch.hidden = true;
+        //         }
+        //         if (item['id'] == ch['id']) {
+        //             sameFound = true;
+        //         }
+        //     });
 
-            if (!sameFound) {
-                this.chart.chart.config.data.datasets.push(item);
-            }
-        });
-        this.setChartOptions();
+        //     if (!sameFound) {
+        //         this.chart.chart.config.data.datasets.push(item);
+        //     }
+        // });
+        // this.setChartOptions();
     }
 
     public removeMultiBarData(
@@ -881,45 +881,45 @@ export class TaChartComponent implements OnInit, OnChanges {
     ): void {
         this.animationDuration = 1000;
 
-        this.chart.chart.config.data.datasets.map((ch, a) => {
-            if (ch['id'] == removedData['id']) {
-                this.chart.chart.config.data.datasets.splice(a, 1);
-            }
+        // this.chart.chart.config.data.datasets.map((ch, a) => {
+        //     if (ch['id'] == removedData['id']) {
+        //         this.chart.chart.config.data.datasets.splice(a, 1);
+        //     }
 
-            if (showDefault && ch.hidden == true) {
-                ch.hidden = false;
-            }
-        });
+        //     if (showDefault && ch.hidden == true) {
+        //         ch.hidden = false;
+        //     }
+        // });
 
-        this.setChartOptions();
+        // this.setChartOptions();
 
-        for (let i = 2; i < this.chart.chart.config.data.datasets.length; i++) {
-            this.chart.chart.config.data.datasets[i].backgroundColor =
-                this.selectedColors[i - 2];
+        // for (let i = 2; i < this.chart.chart.config.data.datasets.length; i++) {
+        //     this.chart.chart.config.data.datasets[i].backgroundColor =
+        //         this.selectedColors[i - 2];
 
-            this.chart.chart.config.data.datasets[i].borderColor =
-                this.selectedColors[i - 2];
+        //     this.chart.chart.config.data.datasets[i].borderColor =
+        //         this.selectedColors[i - 2];
 
-            this.chart.chart.config.data.datasets[i].hoverBackgroundColor =
-                this.selectedHoverColors[i - 2];
-        }
+        //     this.chart.chart.config.data.datasets[i].hoverBackgroundColor =
+        //         this.selectedHoverColors[i - 2];
+        // }
     }
 
     public hoverBarChart(hoveredData: ByStateListItem) {
         this.animationDuration = 0;
 
-        this.chart.chart.config.data.datasets.map((item, index) => {
-            let color = item.backgroundColor;
-            let colorProp = color.toString();
+        // this.chart.chart.config.data.datasets.map((item, index) => {
+        //     let color = item.backgroundColor;
+        //     let colorProp = color.toString();
 
-            if (hoveredData == null || item['id'] == hoveredData['id']) {
-                item.backgroundColor = colorProp.slice(0, 7);
-            } else {
-                if (index !== 0 && index !== 1) {
-                    item.backgroundColor = colorProp + '33';
-                }
-            }
-        });
+        //     if (hoveredData == null || item['id'] == hoveredData['id']) {
+        //         item.backgroundColor = colorProp.slice(0, 7);
+        //     } else {
+        //         if (index !== 0 && index !== 1) {
+        //             item.backgroundColor = colorProp + '33';
+        //         }
+        //     }
+        // });
 
         this.setChartOptions();
     }
@@ -1010,175 +1010,175 @@ export class TaChartComponent implements OnInit, OnChanges {
             }
         }
 
-        this.chart.chart.config.data.labels.map((item: string, i) => {
-            this.chart.chart.config.data.labels.splice(
-                i,
-                this.chart.chart.config.data.labels.length
-            );
-        });
+        // this.chart.chart.config.data.labels.map((item: string, i) => {
+        //     this.chart.chart.config.data.labels.splice(
+        //         i,
+        //         this.chart.chart.config.data.labels.length
+        //     );
+        // });
 
-        value.map((item) => {
-            let timePeriodCheck = moment(item).format('LT').split(' ')[1];
-            let finalFormat = format;
-            finalFormat =
-                period == 'Semi-Daily' && timePeriodCheck == 'AM'
-                    ? 'DD MMM'
-                    : format;
+        // value.map((item) => {
+        //     let timePeriodCheck = moment(item).format('LT').split(' ')[1];
+        //     let finalFormat = format;
+        //     finalFormat =
+        //         period == 'Semi-Daily' && timePeriodCheck == 'AM'
+        //             ? 'DD MMM'
+        //             : format;
 
-            item = item.format(finalFormat).toUpperCase();
-            let weekDaySep = item.split(' ');
-            removeIndex++;
-            if (value.length > rangeIndicator && removeIndex == removeEvery) {
-                removeIndex = 0;
-                weekDaySep[0] = '';
-                weekDaySep[1] = '';
-            }
-            if (ev == 'Today') {
-                this.chart.chart.config.data.labels.push(
-                    weekDaySep[0] + ' ' + weekDaySep[1]
-                );
-            } else if (
-                ev == 'WTD' ||
-                ev == 'MTD' ||
-                ev == 'Custom Set' ||
-                (ev == 'YTD' &&
-                    (period == 'Weekly' || period == 'Semi-Monthly'))
-            ) {
-                this.chart.chart.config.data.labels.push([
-                    weekDaySep[0],
-                    weekDaySep[1],
-                ]);
-            } else {
-                let insertData =
-                    weekDaySep?.length > 1 && weekDaySep[0] == 'JAN'
-                        ? weekDaySep[1]
-                        : weekDaySep[0];
-                periodIndex = 0;
-                this.chart.chart.config.data.labels.push(insertData);
-            }
-        });
+        //     item = item.format(finalFormat).toUpperCase();
+        //     let weekDaySep = item.split(' ');
+        //     removeIndex++;
+        //     if (value.length > rangeIndicator && removeIndex == removeEvery) {
+        //         removeIndex = 0;
+        //         weekDaySep[0] = '';
+        //         weekDaySep[1] = '';
+        //     }
+        //     if (ev == 'Today') {
+        //         this.chart.chart.config.data.labels.push(
+        //             weekDaySep[0] + ' ' + weekDaySep[1]
+        //         );
+        //     } else if (
+        //         ev == 'WTD' ||
+        //         ev == 'MTD' ||
+        //         ev == 'Custom Set' ||
+        //         (ev == 'YTD' &&
+        //             (period == 'Weekly' || period == 'Semi-Monthly'))
+        //     ) {
+        //         this.chart.chart.config.data.labels.push([
+        //             weekDaySep[0],
+        //             weekDaySep[1],
+        //         ]);
+        //     } else {
+        //         let insertData =
+        //             weekDaySep?.length > 1 && weekDaySep[0] == 'JAN'
+        //                 ? weekDaySep[1]
+        //                 : weekDaySep[0];
+        //         periodIndex = 0;
+        //         this.chart.chart.config.data.labels.push(insertData);
+        //     }
+        // });
 
         this.setChartOptions();
     }
 
     public showChartTooltip(value: number) {
-        if (this.toolTipData?.length) {
-            this.setToolTipTitle(value);
-            this.setChartLegendData(this.chart.chart['tooltip']._active);
-        }
-        if (this.chartConfig['hoverOtherChart']) {
-            this.hoverOtherChart.emit(value);
-            return false;
-        }
-        this.animationDuration = 0;
-        this.hoveringStatus = true;
-        this.chartHovered.emit(true);
-        const canvas = this.chart.chart.canvas;
+        // if (this.toolTipData?.length) {
+        //     this.setToolTipTitle(value);
+        //     this.setChartLegendData(this.chart.chart['tooltip']._active);
+        // }
+        // if (this.chartConfig['hoverOtherChart']) {
+        //     this.hoverOtherChart.emit(value);
+        //     return false;
+        // }
+        // this.animationDuration = 0;
+        // this.hoveringStatus = true;
+        // this.chartHovered.emit(true);
+        // const canvas = this.chart.chart.canvas;
 
-        let xPoint1 = 0;
-        let xPoint2 = 0;
+        // let xPoint1 = 0;
+        // let xPoint2 = 0;
 
-        const xAxis = this.chart.chart['scales']['x-axis-0'];
-        const yAxis = this.chart.chart['scales']['y-axis-0'];
+        // const xAxis = this.chart.chart['scales']['x-axis-0'];
+        // const yAxis = this.chart.chart['scales']['y-axis-0'];
 
-        if (xAxis['_gridLineItems']) {
-            xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-            xPoint2 = xAxis['_gridLineItems'][0]['x2'];
-            const elWidth = xPoint1 - xPoint2;
+        // if (xAxis['_gridLineItems']) {
+        //     xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+        //     xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+        //     const elWidth = xPoint1 - xPoint2;
 
-            if (this.axesProperties?.horizontalAxes?.showGridLines) {
-                xAxis['_gridLineItems'].map(
-                    (item: GridLineOptions, i: number) => {
-                        if (i && i != xAxis['_gridLineItems'].length - 1) {
-                            xAxis['_gridLineItems'][i].color = '#DADADA';
-                        }
-                        if (
-                            i == value ||
-                            i == value + 1 ||
-                            i == xAxis['_gridLineItems'].length - 1
-                        ) {
-                            xAxis['_gridLineItems'][i].color = 'transparent';
-                        }
-                    }
-                );
-            }
+        //     if (this.axesProperties?.horizontalAxes?.showGridLines) {
+        //         xAxis['_gridLineItems'].map(
+        //             (item: GridLineOptions, i: number) => {
+        //                 if (i && i != xAxis['_gridLineItems'].length - 1) {
+        //                     xAxis['_gridLineItems'][i].color = '#DADADA';
+        //                 }
+        //                 if (
+        //                     i == value ||
+        //                     i == value + 1 ||
+        //                     i == xAxis['_gridLineItems'].length - 1
+        //                 ) {
+        //                     xAxis['_gridLineItems'][i].color = 'transparent';
+        //                 }
+        //             }
+        //         );
+        //     }
 
-            if (
-                xAxis['_gridLineItems'][value] &&
-                this.chartConfig['hasHoverData']
-            ) {
-                this.updateHoverData(value);
-                let oversizedHover = false;
-                this.hoverColumnWidth = elWidth + 1;
-                this.hoverChartLeft =
-                    xAxis['_gridLineItems'][value]['x2'] -
-                    1 -
-                    this.hoverColumnWidth / 2;
+        //     if (
+        //         xAxis['_gridLineItems'][value] &&
+        //         this.chartConfig['hasHoverData']
+        //     ) {
+        //         this.updateHoverData(value);
+        //         let oversizedHover = false;
+        //         this.hoverColumnWidth = elWidth + 1;
+        //         this.hoverChartLeft =
+        //             xAxis['_gridLineItems'][value]['x2'] -
+        //             1 -
+        //             this.hoverColumnWidth / 2;
 
-                let clientWidth = this.hoverDataHolder
-                    ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                    : 0;
+        //         let clientWidth = this.hoverDataHolder
+        //             ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+        //             : 0;
 
-                if (!clientWidth && this.chartConfig['tooltipOffset']) {
-                    if (this.selectedDataRows.length > this.dataMaxRows) {
-                        clientWidth = this.chartConfig['tooltipOffset']['max'];
-                    } else {
-                        clientWidth = this.chartConfig['tooltipOffset']['min'];
-                    }
-                }
+        //         if (!clientWidth && this.chartConfig['tooltipOffset']) {
+        //             if (this.selectedDataRows.length > this.dataMaxRows) {
+        //                 clientWidth = this.chartConfig['tooltipOffset']['max'];
+        //             } else {
+        //                 clientWidth = this.chartConfig['tooltipOffset']['min'];
+        //             }
+        //         }
 
-                this.hoverColumnHeight = this.chartConfig[
-                    'startGridBackgroundFromZero'
-                ]
-                    ? yAxis.height
-                    : this.chartConfig['multiChartHover']
-                    ? yAxis.height + xAxis.height + 18
-                    : yAxis.height + xAxis.height;
+        //         this.hoverColumnHeight = this.chartConfig[
+        //             'startGridBackgroundFromZero'
+        //         ]
+        //             ? yAxis.height
+        //             : this.chartConfig['multiChartHover']
+        //             ? yAxis.height + xAxis.height + 18
+        //             : yAxis.height + xAxis.height;
 
-                let xPos = this.chartConfig['offset']
-                    ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                    : xAxis['_gridLineItems'][value]['x2'];
+        //         let xPos = this.chartConfig['offset']
+        //             ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+        //             : xAxis['_gridLineItems'][value]['x2'];
 
-                if (xPos + clientWidth > canvas.width) {
-                    oversizedHover = true;
-                }
-                if (oversizedHover) {
-                    this.hoverDataPosition =
-                        xPos -
-                        clientWidth -
-                        elWidth -
-                        this.hoverColumnWidth / 2 +
-                        3;
-                } else {
-                    this.hoverDataPosition =
-                        xPos - this.hoverColumnWidth / 2 + 4;
-                }
+        //         if (xPos + clientWidth > canvas.width) {
+        //             oversizedHover = true;
+        //         }
+        //         if (oversizedHover) {
+        //             this.hoverDataPosition =
+        //                 xPos -
+        //                 clientWidth -
+        //                 elWidth -
+        //                 this.hoverColumnWidth / 2 +
+        //                 3;
+        //         } else {
+        //             this.hoverDataPosition =
+        //                 xPos - this.hoverColumnWidth / 2 + 4;
+        //         }
 
-                this.ref.detectChanges();
-            }
-        }
+        //         this.ref.detectChanges();
+        //     }
+        // }
     }
 
     public chartHoverOut() {
-        this.showHoverData = false;
-        this.hoveringStatus = false;
+        // this.showHoverData = false;
+        // this.hoveringStatus = false;
 
-        const xAxis = this.chart?.chart['scales']['x-axis-0'];
+        // const xAxis = this.chart?.chart['scales']['x-axis-0'];
 
-        if (
-            xAxis &&
-            xAxis['_gridLineItems'] &&
-            this.axesProperties?.horizontalAxes?.showGridLines
-        ) {
-            xAxis['_gridLineItems'].map((item: GridLineOptions, i: number) => {
-                if (i) {
-                    xAxis['_gridLineItems'][i].color = '#DADADA';
-                }
-                if (i == xAxis['_gridLineItems'].length - 1) {
-                    xAxis['_gridLineItems'][i].color = 'transparent';
-                }
-            });
-        }
+        // if (
+        //     xAxis &&
+        //     xAxis['_gridLineItems'] &&
+        //     this.axesProperties?.horizontalAxes?.showGridLines
+        // ) {
+        //     xAxis['_gridLineItems'].map((item: GridLineOptions, i: number) => {
+        //         if (i) {
+        //             xAxis['_gridLineItems'][i].color = '#DADADA';
+        //         }
+        //         if (i == xAxis['_gridLineItems'].length - 1) {
+        //             xAxis['_gridLineItems'][i].color = 'transparent';
+        //         }
+        //     });
+        // }
     }
 
     private setToolTipTitle(index: number) {
@@ -1360,13 +1360,13 @@ export class TaChartComponent implements OnInit, OnChanges {
     }
 
     private calculateTooltipPosition(xPos: number): void {
-        const x = xPos;
-        const chartEl = this.chart.chart;
-        const chartRect = chartEl.canvas.getBoundingClientRect();
-        const topY = chartRect.top;
-        const bottomY = chartRect.bottom;
+        // const x = xPos;
+        // const chartEl = this.chart.chart;
+        // const chartRect = chartEl.canvas.getBoundingClientRect();
+        // const topY = chartRect.top;
+        // const bottomY = chartRect.bottom;
 
-        this.tooltipHeight = bottomY - topY - 35;
-        this.tooltipLeft = x - 1;
+        // this.tooltipHeight = bottomY - topY - 35;
+        // this.tooltipLeft = x - 1;
     }
 }

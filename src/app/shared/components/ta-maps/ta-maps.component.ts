@@ -9,12 +9,12 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
-import { AgmCoreModule } from '@agm/core';
+//import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { AgmDirectionModule } from 'agm-direction';
+//import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmDirectionModule } from 'agm-direction';
 import { Subject, takeUntil } from 'rxjs';
 
 // const
@@ -57,10 +57,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         FormsModule,
         NgbModule,
-        AgmCoreModule,
-        AgmSnazzyInfoWindowModule,
-        AgmDirectionModule,
-        GooglePlaceModule,
+        // AgmCoreModule,
+        // AgmSnazzyInfoWindowModule,
+        // AgmDirectionModule,
+        //GooglePlaceModule,
         AngularSvgIconModule,
 
         // Components

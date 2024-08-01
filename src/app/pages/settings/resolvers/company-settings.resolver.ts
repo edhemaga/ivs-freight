@@ -1,4 +1,4 @@
-import { Resolve } from '@angular/router';
+
 import { Injectable } from '@angular/core';
 
 import { catchError, Observable, of, tap } from 'rxjs';
@@ -14,7 +14,7 @@ import { CompanyQuery } from '@pages/settings/state/company-state/company-settin
 import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
 
 @Injectable({ providedIn: 'root' })
-export class CompanySettingsResolver implements Resolve<CompanyResponse[]> {
+export class CompanySettingsResolver  {
     public showNoDataComponent: boolean;
     constructor(
         private settingsCompanyService: SettingsCompanyService,

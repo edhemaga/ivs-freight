@@ -8,6 +8,8 @@ export class DispatchTableSvgRoutes {
     static hosArrow: string = 'assets/svg/dispatchboard/hos-arrow.svg';
     static phone: string = 'assets/svg/common/ic_phone.svg';
     static email: string = 'assets/svg/common/ic_email.svg';
+    static antQuestionSvgRoute: string =
+        'assets/svg/common/ic_ant-question.svg';
     static pmIncrement: string = 'assets/svg/common/ic_pm_increment.svg';
     static driverOwner: string = 'assets/svg/common/ic_driver-owner.svg';
     static vacation: string = 'assets/svg/dispatchboard/vacation.svg';

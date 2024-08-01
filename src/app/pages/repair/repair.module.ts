@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { RepairRoutingModule } from '@pages/repair/repair-routing.module';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmCoreModule } from '@agm/core';
+// import { AgmDirectionModule } from 'agm-direction';
 import { SharedModule } from '@shared/shared.module';
 
 // Components
@@ -14,7 +14,7 @@ import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-ta
 import { RepairCardComponent } from '@pages/repair/pages/repair-card/repair-card.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
@@ -40,15 +40,15 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         RepairRoutingModule,
         AngularSvgIconModule,
         SharedModule,
-        AgmCoreModule,
-        AgmSnazzyInfoWindowModule,
-        AgmDirectionModule,
+        // AgmCoreModule,
+        // AgmSnazzyInfoWindowModule,
+        // AgmDirectionModule,
 
         // Components
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-        TaMapsComponent,
+       // TaMapsComponent,
         TaMapListCardComponent,
         TaMapListComponent,
         TaNoteComponent,

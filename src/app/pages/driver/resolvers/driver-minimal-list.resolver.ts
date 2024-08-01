@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -18,7 +18,7 @@ import { DriverMinimalListResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class DriverMinimalResolver implements Resolve<DriverMinimalListState> {
+export class DriverMinimalResolver  {
     private pageIndex: number = 1;
     private pageSize: number = 25;
 

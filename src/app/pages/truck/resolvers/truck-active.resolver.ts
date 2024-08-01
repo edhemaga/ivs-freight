@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class TruckActiveResolver implements Resolve<TruckActiveState> {
+export class TruckActiveResolver  {
     constructor(
         private truckService: TruckService,
         private truckStore: TruckActiveStore,

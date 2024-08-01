@@ -38,11 +38,11 @@
                     ></svg-icon>
 
                     <app-load-status-string
+                        [isDetailsLayout]="true"
                         [status]="{
                             name: cardData.status.statusString,
                             valueForRequest: cardData.status.statusValue.name
                         }"
-                        [isDetailsLayout]="true"
                         [statusOrder]="{
                             type: statusOrder?.type,
                             stopOrder: statusOrder?.stopOrder

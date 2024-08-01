@@ -26,6 +26,7 @@ export class LoadStatusStringComponent implements OnInit, OnChanges {
     @Input() status: SelectedStatus;
     @Input() justifyStart: boolean;
     @Input() isDetailsLayout?: boolean;
+    @Input() isDispatchHistoryModalLayout?: boolean;
     @Input() isDropdownColor?: boolean;
     @Input() statusOrder?: StatusOrder;
 

@@ -16,7 +16,7 @@ import {
 
 // Modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Ng5SliderModule } from 'ng5-slider';
+//import { Ng5SliderModule } from 'ng5-slider';
 
 // Enums
 import { SliderTemplateEnum } from '@shared/components/ta-ngx-slider/enums/slider-template.enum';
@@ -33,7 +33,7 @@ import { SliderTemplateEnum } from '@shared/components/ta-ngx-slider/enums/slide
         FormsModule,
         ReactiveFormsModule,
         NgxSliderModule,
-        Ng5SliderModule,
+        //Ng5SliderModule,
     ],
 })
 export class TaNgxSliderComponent implements AfterViewInit {

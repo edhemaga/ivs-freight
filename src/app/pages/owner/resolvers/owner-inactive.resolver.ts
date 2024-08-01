@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum'
 @Injectable({
     providedIn: 'root',
 })
-export class OwnerInactiveResolver implements Resolve<OwnerInactiveState> {
+export class OwnerInactiveResolver  {
     constructor(
         private ownerService: OwnerService,
         private ownerStore: OwnerInactiveStore,

@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 
 // Modules
 import { FuelRoutingModule } from '@pages/fuel/fuel-routing.module';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { AgmCoreModule } from '@agm/core';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '@shared/shared.module';
 
 // Components
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
@@ -23,15 +23,15 @@ import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.comp
         // Modules
         CommonModule,
         FuelRoutingModule,
-        AgmSnazzyInfoWindowModule,
-        AgmCoreModule,
+        // AgmSnazzyInfoWindowModule,
+        // AgmCoreModule,
         SharedModule,
 
         // Components
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-        TaMapsComponent,
+        // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
     ],

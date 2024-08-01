@@ -8,7 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { LoadDetailsItemSvgRoutes } from '@pages/load/pages/load-details/components/load-details-item/utils/svg-routes/load-details-item-svg.routes';
 
 // components
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 // helpers
 import { LoadDetailsItemHelper } from '@pages/load/pages/load-details/components/load-details-item/utils/helpers/load-details-item.helper';
@@ -45,7 +45,7 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
         AngularSvgIconModule,
 
         // components
-        TaMapsComponent,
+       // TaMapsComponent,
 
         // pipes
         FormatDatePipe,

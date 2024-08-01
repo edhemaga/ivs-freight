@@ -1,6 +1,6 @@
 import { TrailerService } from '@shared/services/trailer.service';
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { TrailerMinimalListResponse } from 'appcoretruckassist';
     providedIn: 'root',
 })
 export class TrailerMinimalResolver
-    implements Resolve<TrailerMinimalListResponse>
+    
 {
     pageIndex: number = 1;
     pageSize: number = 25;

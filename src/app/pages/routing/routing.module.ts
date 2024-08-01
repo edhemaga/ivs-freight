@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 // modules
-import { AgmCoreModule } from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmCoreModule } from '@agm/core';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routes
@@ -31,12 +31,12 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
         CommonModule,
         RoutingRoutingModule,
         DragDropModule,
-        AgmCoreModule,
+      //  AgmCoreModule,
         NgbModule,
         NgbPopoverModule,
         FormsModule,
         ReactiveFormsModule,
-        AgmSnazzyInfoWindowModule,
+       // AgmSnazzyInfoWindowModule,
         AngularSvgIconModule,
 
         // Components

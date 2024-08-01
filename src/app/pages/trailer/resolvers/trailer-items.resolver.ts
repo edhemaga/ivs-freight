@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable, tap, forkJoin } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { TrailerDetailsListStore } from '@pages/trailer/state/trailer-details-li
 @Injectable({
     providedIn: 'root',
 })
-export class TrailerItemsResolver implements Resolve<TrailerItemState> {
+export class TrailerItemsResolver  {
     constructor(
         private trailerService: TrailerService,
         private trailerDetailStore: TrailerItemStore,

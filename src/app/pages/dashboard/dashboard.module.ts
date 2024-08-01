@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardRoutingModule } from '@pages/dashboard//dashboard-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { AgmCoreModule } from '@agm/core';
+//import { AgmCoreModule } from '@agm/core';
 
 // directives
 import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/click-outside-custom-range.directive';
@@ -55,7 +55,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
         NgbModule,
         DashboardRoutingModule,
         AngularSvgIconModule,
-        AgmCoreModule.forRoot(),
+        //AgmCoreModule.forRoot(),
 
         // directives
         ClickOutsideCustomRangeDirective,

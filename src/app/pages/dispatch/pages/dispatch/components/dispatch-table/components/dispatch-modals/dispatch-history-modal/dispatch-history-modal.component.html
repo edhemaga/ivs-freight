@@ -1,3 +1,580 @@
-<app-ta-modal [modalTitle]="'Dispatch History'">
-    <div origin>aaa</div>
+<app-ta-modal
+    [modalTitle]="'Dispatch History'"
+    [customClass]="'modal-container-XL-2'"
+    [disableFooter]="true"
+>
+    <div origin [formGroup]="dispatchHistoryForm">
+        <div
+            class="d-flex flex-column dispatch-history-modal"
+            [ngStyle]="{ 'padding-bottom': hasContent ? '8px' : '22px' }"
+        >
+            <!-- Inputs -->
+
+            <div
+                class="align-items-center dispatch-history-modal-inputs-container"
+            >
+                <!-- Time -->
+
+                <app-ta-input-dropdown
+                    formControlName="time"
+                    [inputConfig]="dispatchHistoryTimeConfig"
+                    [options]="timesDropdownList"
+                    [activeItem]="selectedTime"
+                    (selectedItem)="onSelectDropdown($event, 'time')"
+                ></app-ta-input-dropdown>
+
+                <!-- Dispatch Board -->
+
+                <app-ta-input-dropdown
+                    formControlName="dispatchBoard"
+                    [inputConfig]="dispatchHistoryDispatchBoardConfig"
+                    [options]="dispatchBoardsDropdownList"
+                    [activeItem]="selectedDispatchBoard"
+                    (selectedItem)="onSelectDropdown($event, 'dispatch-board')"
+                ></app-ta-input-dropdown>
+
+                <!-- Truck -->
+
+                <app-ta-input-dropdown
+                    formControlName="truck"
+                    [inputConfig]="dispatchHistoryTruckConfig"
+                    [options]="trucksDropdownList"
+                    [activeItem]="selectedTruck"
+                    (selectedItem)="onSelectDropdown($event, 'truck')"
+                ></app-ta-input-dropdown>
+
+                <!-- Trailer -->
+
+                <app-ta-input-dropdown
+                    formControlName="trailer"
+                    [inputConfig]="dispatchHistoryTrailerConfig"
+                    [options]="trailersDropdownList"
+                    [activeItem]="selectedTrailer"
+                    (selectedItem)="onSelectDropdown($event, 'trailer')"
+                ></app-ta-input-dropdown>
+
+                <!-- Driver -->
+
+                <app-ta-input-dropdown
+                    formControlName="driver"
+                    [inputConfig]="dispatchHistoryDriverConfig"
+                    [options]="driversDropdownList"
+                    [activeItem]="selectedDriver"
+                    (selectedItem)="onSelectDropdown($event, 'driver')"
+                ></app-ta-input-dropdown>
+            </div>
+
+            <!-- Content -->
+
+            <div
+                class="d-flex flex-column dispatch-history-modal-main-container"
+            >
+                <!-- Has Content -->
+
+                <ng-container *ngIf="hasContent; else noContent">
+                    <div
+                        class="d-flex dispatch-history-modal-main-container-content"
+                    >
+                        <!-- Group -->
+
+                        <ng-container *ngIf="isGroup; else noGroup">
+                            <div class="d-flex flex-column group-container">
+                                <!-- Group Header -->
+
+                                <div
+                                    class="align-items-center group-container-header"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let groupHeaderItem of groupHeaderItems;
+                                            let last = last;
+                                            trackBy: trackByIdentity
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center group-container-header-box"
+                                            [ngClass]="{
+                                                'justify-content-end': last
+                                            }"
+                                        >
+                                            <p class="m-0 ta-font-bold">
+                                                {{ groupHeaderItem }}
+                                            </p>
+                                        </div>
+                                    </ng-container>
+                                </div>
+
+                                <!-- Group Main -->
+
+                                <div
+                                    class="d-flex flex-column group-container-main"
+                                    formArrayName="dispatchHistoryGroupItems"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let group of groupData;
+                                            let groupIndex = index;
+                                            trackBy: trackByIdentity
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex group-container-main-card"
+                                            [formGroupName]="groupIndex"
+                                        >
+                                            <app-ta-custom-card
+                                                [cardName]="
+                                                    group?.isIdle
+                                                        ? 'Idle Time'
+                                                        : 'Load ' +
+                                                          group?.loadNumber
+                                                "
+                                                [hasCounter]="group?.count"
+                                                [subText]="group?.interval"
+                                                [bodyTemplate]="'card'"
+                                                [isExtraLargeLayout]="true"
+                                                [isCardOpen]="true"
+                                                [disabledCard]="true"
+                                                [hasArrow]="false"
+                                                [animationMarginParams]="{
+                                                    marginTop: '8px',
+                                                    marginBottom: '8px'
+                                                }"
+                                            >
+                                                <ng-container
+                                                    *ngFor="
+                                                        let groupItem of getDispatchHistoryGroup(
+                                                            groupIndex
+                                                        ).controls;
+                                                        let itemIndex = index;
+                                                        trackBy: trackByIdentity
+                                                    "
+                                                >
+                                                    <div
+                                                        class="align-items-center group-container-main-card-item"
+                                                        [formGroupName]="
+                                                            itemIndex
+                                                        "
+                                                        [ngClass]="{
+                                                            hovering:
+                                                                isHoveringGroupItemIndex ===
+                                                                itemIndex +
+                                                                    groupIndex
+                                                        }"
+                                                        (mouseenter)="
+                                                            isHoveringGroupItemIndex =
+                                                                itemIndex +
+                                                                groupIndex
+                                                        "
+                                                        (mouseleave)="
+                                                            isHoveringGroupItemIndex =
+                                                                -1
+                                                        "
+                                                    >
+                                                        <!-- Status -->
+
+                                                        <div
+                                                            class="d-flex item-box"
+                                                            [ngClass]="
+                                                                isHoveringGroupItemIndex ===
+                                                                itemIndex +
+                                                                    groupIndex
+                                                                    ? 'flex-column align-items-start'
+                                                                    : 'flex-row align-items-center'
+                                                            "
+                                                        >
+                                                            <app-load-status-string
+                                                                [isDispatchHistoryModalLayout]="
+                                                                    true
+                                                                "
+                                                                [status]="{
+                                                                    name: group
+                                                                        ?.items[
+                                                                        itemIndex
+                                                                    ]?.status
+                                                                        ?.statusString,
+                                                                    valueForRequest:
+                                                                        group
+                                                                            ?.items[
+                                                                            itemIndex
+                                                                        ]
+                                                                            ?.status
+                                                                            ?.statusValue
+                                                                            ?.name
+                                                                }"
+                                                            ></app-load-status-string>
+                                                            <!--  [statusOrder]="{
+                                                        type: statusOrder?.type,
+                                                        stopOrder: statusOrder?.stopOrder
+                                                    }" -->
+                                                            <ng-container
+                                                                *ngIf="
+                                                                    isHoveringGroupItemIndex ===
+                                                                    itemIndex +
+                                                                        groupIndex
+                                                                "
+                                                            >
+                                                                <span>
+                                                                    {{
+                                                                        group
+                                                                            ?.items[
+                                                                            itemIndex
+                                                                        ]
+                                                                            ?.location
+                                                                            ?.city +
+                                                                            ', ' +
+                                                                            group
+                                                                                ?.items[
+                                                                                itemIndex
+                                                                            ]
+                                                                                ?.location
+                                                                                ?.stateShortName
+                                                                    }}
+                                                                </span>
+                                                            </ng-container>
+                                                        </div>
+
+                                                        <!-- Date Start -->
+
+                                                        <div
+                                                            class="d-flex align-items-center item-box"
+                                                        >
+                                                            <app-ta-input
+                                                                formControlName="dateStart"
+                                                                [inputConfig]="{
+                                                                    name: 'datepicker',
+                                                                    type: 'text',
+                                                                    isDropdown: true,
+                                                                    isIconHidden: true,
+                                                                    hideClear: true,
+                                                                    hideDropdownArrow:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][0],
+                                                                    isInputBackgroundRemoved:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][0],
+                                                                    blackInput:
+                                                                        groupItem.get(
+                                                                            'dateStart'
+                                                                        )
+                                                                            .value &&
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][0],
+                                                                    customClass:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][0]
+                                                                            ? ''
+                                                                            : 'datetimeclass'
+                                                                }"
+                                                                (mouseenter)="
+                                                                    handleInputHover(
+                                                                        true,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        0
+                                                                    )
+                                                                "
+                                                                (mouseleave)="
+                                                                    handleInputHover(
+                                                                        false,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        0
+                                                                    )
+                                                                "
+                                                            ></app-ta-input>
+                                                        </div>
+
+                                                        <!-- Time Start -->
+
+                                                        <div
+                                                            class="d-flex align-items-center item-box"
+                                                        >
+                                                            <app-ta-input
+                                                                formControlName="timeStart"
+                                                                [inputConfig]="{
+                                                                    name: 'timepicker',
+                                                                    type: 'text',
+                                                                    isDropdown: true,
+                                                                    isIconHidden: true,
+                                                                    hideClear: true,
+                                                                    hideDropdownArrow:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][1],
+                                                                    isInputBackgroundRemoved:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][1],
+                                                                    blackInput:
+                                                                        groupItem.get(
+                                                                            'timeStart'
+                                                                        )
+                                                                            .value &&
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][1],
+                                                                    customClass:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][1]
+                                                                            ? ''
+                                                                            : 'datetimeclass'
+                                                                }"
+                                                                (mouseenter)="
+                                                                    handleInputHover(
+                                                                        true,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        1
+                                                                    )
+                                                                "
+                                                                (mouseleave)="
+                                                                    handleInputHover(
+                                                                        false,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        1
+                                                                    )
+                                                                "
+                                                            ></app-ta-input>
+                                                        </div>
+
+                                                        <!-- Date End -->
+
+                                                        <div
+                                                            class="d-flex align-items-center item-box"
+                                                        >
+                                                            <app-ta-input
+                                                                formControlName="dateEnd"
+                                                                [inputConfig]="{
+                                                                    name: 'datepicker',
+                                                                    type: 'text',
+                                                                    isDropdown: true,
+                                                                    isIconHidden: true,
+                                                                    hideClear: true,
+                                                                    hideDropdownArrow:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][2],
+                                                                    isInputBackgroundRemoved:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][2],
+                                                                    blackInput:
+                                                                        groupItem.get(
+                                                                            'dateEnd'
+                                                                        )
+                                                                            .value &&
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][2],
+                                                                    customClass:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][2]
+                                                                            ? ''
+                                                                            : 'datetimeclass'
+                                                                }"
+                                                                (mouseenter)="
+                                                                    handleInputHover(
+                                                                        true,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        2
+                                                                    )
+                                                                "
+                                                                (mouseleave)="
+                                                                    handleInputHover(
+                                                                        false,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        2
+                                                                    )
+                                                                "
+                                                            ></app-ta-input>
+                                                        </div>
+
+                                                        <!-- Time End -->
+
+                                                        <div
+                                                            class="d-flex align-items-center item-box"
+                                                        >
+                                                            <app-ta-input
+                                                                formControlName="timeEnd"
+                                                                [inputConfig]="{
+                                                                    name: 'timepicker',
+                                                                    type: 'text',
+                                                                    isDropdown: true,
+                                                                    isIconHidden: true,
+                                                                    hideClear: true,
+                                                                    hideDropdownArrow:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][3],
+                                                                    isInputBackgroundRemoved:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][3],
+                                                                    blackInput:
+                                                                        groupItem.get(
+                                                                            'timeEnd'
+                                                                        )
+                                                                            .value &&
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][3],
+                                                                    customClass:
+                                                                        !isInputHoverRows[
+                                                                            groupIndex
+                                                                        ][
+                                                                            itemIndex
+                                                                        ][3]
+                                                                            ? ''
+                                                                            : 'datetimeclass'
+                                                                }"
+                                                                (mouseenter)="
+                                                                    handleInputHover(
+                                                                        true,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        3
+                                                                    )
+                                                                "
+                                                                (mouseleave)="
+                                                                    handleInputHover(
+                                                                        false,
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        3
+                                                                    )
+                                                                "
+                                                            ></app-ta-input>
+                                                        </div>
+
+                                                        <!-- Total -->
+
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-end item-box"
+                                                        >
+                                                            <p
+                                                                class="m-0 ta-font-medium"
+                                                            >
+                                                                {{
+                                                                    !!group
+                                                                        ?.items[
+                                                                        itemIndex
+                                                                    ]?.endDate
+                                                                        ? 'Ongoing'
+                                                                        : !group
+                                                                              ?.items[
+                                                                              itemIndex
+                                                                          ]
+                                                                              ?.totalTime
+                                                                }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </app-ta-custom-card>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- No Group -->
+
+                        <ng-template #noGroup>
+                            <div
+                                class="d-flex align-items-center no-group-container"
+                            >
+                                NO GROUP
+                            </div>
+                        </ng-template>
+                    </div>
+                </ng-container>
+
+                <!-- No Content -->
+
+                <ng-template #noContent>
+                    <div
+                        class="d-flex justify-content-center align-items-center dispatch-history-modal-main-container-no-content"
+                    >
+                        <div class="d-flex flex-column align-items-center">
+                            <svg-icon
+                                class="icon"
+                                [src]="
+                                    dispatchTableSvgRoutes.antQuestionSvgRoute
+                                "
+                            ></svg-icon>
+
+                            <p class="m-0 ta-font-bold">
+                                {{
+                                    hasNoneSelected
+                                        ? 'Pick something!'
+                                        : 'No Results'
+                                }}
+                            </p>
+
+                            <span>
+                                {{
+                                    hasNoneSelected
+                                        ? 'Select one unit or driver to see history'
+                                        : 'No entries match your criteria.'
+                                }}
+                            </span>
+
+                            <ng-container *ngIf="!hasNoneSelected">
+                                <span>
+                                    Please revise your filters and search again.
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="d-flex justify-content-center align-items-center ta-font-bold reset-btn"
+                                    (click)="handleResetFiltersClick()"
+                                >
+                                    Reset Filters
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 </app-ta-modal>

@@ -1,10 +1,10 @@
 import { inject } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
+import { ActivatedRouteSnapshot } from "@angular/router";
 
 // Services
 import { UserChatService } from "@pages/chat/services/chat.service";
 
-export class ConversationInformationResolver implements Resolve<any> {
+export class ConversationInformationResolver  {
     private userChatService = inject(UserChatService);
 
     resolve(route: ActivatedRouteSnapshot) {

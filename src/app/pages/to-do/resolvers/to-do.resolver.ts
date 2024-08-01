@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, map } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { TodoService } from '@pages/to-do/services/to-do.service';
 @Injectable({
     providedIn: 'root',
 })
-export class TodoResolver implements Resolve<any> {
+export class TodoResolver  {
     constructor(
         private todoService: TodoService,
         private todoQuery: TodoQuery

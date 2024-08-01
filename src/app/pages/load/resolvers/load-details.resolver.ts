@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // models
@@ -15,7 +15,7 @@ import { LoadItemStore } from '@pages/load/state/load-details-state/load-details
 @Injectable({
     providedIn: 'root',
 })
-export class LoadDetailsResolver implements Resolve<LoadResponse[]> {
+export class LoadDetailsResolver  {
     constructor(
         private router: Router,
 

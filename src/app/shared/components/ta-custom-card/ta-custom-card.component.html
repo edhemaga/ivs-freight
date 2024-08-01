@@ -12,7 +12,10 @@
     </ng-container>
 
     <div
-        [ngClass]="{ 'has-counter': hasCounter }"
+        [ngClass]="{
+            'has-counter': hasCounter,
+            'width-xxl': isExtraLargeLayout
+        }"
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
         [class.disabled]="disabledCard"
@@ -88,6 +91,7 @@
             <ng-container *ngIf="subText">
                 <div
                     class="d-flex align-items-center subtext-container"
+                    [ngStyle]="{ 'margin-left': !capsulaText ? 0 : '4px' }"
                     [ngClass]="subTextClass"
                 >
                     <p class="m-0 ta-font-medium">

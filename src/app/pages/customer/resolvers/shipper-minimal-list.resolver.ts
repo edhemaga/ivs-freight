@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { Observable, of, catchError, tap } from 'rxjs';
 import {} from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { ShipperMinimalListResponse } from 'appcoretruckassist';
     providedIn: 'root',
 })
 export class ShipperMinimalListResolver
-    implements Resolve<ShipperMinimalListResponse>
+    
 {
     pageIndex: number = 1;
     pageSize: number = 25;
