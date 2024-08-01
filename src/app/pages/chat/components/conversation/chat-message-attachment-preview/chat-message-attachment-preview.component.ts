@@ -98,7 +98,6 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
   }
 
   public downloadFile(): void {
-    console.log(this.attachment);
     const a = document.createElement('a');
     a.href = this.attachment.url;
     a.setAttribute('download', this.attachment.fileName);
