@@ -17,37 +17,44 @@
 
     <table>
         <thead>
-            <tr>
-                <th>TRUCK</th>
-                <th>TRAILER</th>
-                <th>DRIVER</th>
-                <th
-                    class="icon d-flex justify-content-center align-items-center"
-                >
-                    <svg-icon
-                        src="assets/svg/common/ic_pre_trip_inspenction.svg"
+            <ng-container
+                *ngIf="
+                    !isAllBoardsList ||
+                    (isAllBoardsList && dispatchData?.dispatches?.length)
+                "
+            >
+                <tr>
+                    <th>TRUCK</th>
+                    <th>TRAILER</th>
+                    <th>DRIVER</th>
+                    <th
+                        class="icon d-flex justify-content-center align-items-center"
                     >
-                    </svg-icon>
-                </th>
-                <th>LAST LOCATION</th>
-                <th class="text-center p-0">STATUS</th>
-                <th class="pick-delivery">
-                    <div>PICKUP</div>
-                    <div>DELIVERY</div>
-                </th>
-                <th>PROGRESS</th>
-                <th>PARKING</th>
-                <th
-                    class="icon d-flex justify-content-center align-items-center"
-                >
-                    <svg-icon
-                        src="assets/svg/common/ic_dispatch_board_dispatcher_icon.svg"
+                        <svg-icon
+                            src="assets/svg/common/ic_pre_trip_inspenction.svg"
+                        >
+                        </svg-icon>
+                    </th>
+                    <th>LAST LOCATION</th>
+                    <th class="text-center p-0">STATUS</th>
+                    <th class="pick-delivery">
+                        <div>PICKUP</div>
+                        <div>DELIVERY</div>
+                    </th>
+                    <th>PROGRESS</th>
+                    <th>PARKING</th>
+                    <th
+                        class="icon d-flex justify-content-center align-items-center"
                     >
-                    </svg-icon>
-                </th>
-                <th>NOTE</th>
-                <th class="empty"></th>
-            </tr>
+                        <svg-icon
+                            src="assets/svg/common/ic_dispatch_board_dispatcher_icon.svg"
+                        >
+                        </svg-icon>
+                    </th>
+                    <th>NOTE</th>
+                    <th class="empty"></th>
+                </tr>
+            </ng-container>
         </thead>
 
         <tbody>
