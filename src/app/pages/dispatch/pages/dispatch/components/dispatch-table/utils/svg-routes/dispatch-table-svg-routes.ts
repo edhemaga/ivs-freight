@@ -10,6 +10,7 @@ export class DispatchTableSvgRoutes {
     static email: string = 'assets/svg/common/ic_email.svg';
     static pmIncrement: string = 'assets/svg/common/ic_pm_increment.svg';
     static driverOwner: string = 'assets/svg/common/ic_driver-owner.svg';
+    static vacation: string = 'assets/svg/dispatchboard/vacation.svg';
     static preTripInspection: string =
         'assets/svg/common/ic_pre_trip_inspenction.svg';
 }
