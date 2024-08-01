@@ -4229,23 +4229,27 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createNewLoad(): void {
-        const isTemplate = this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+        const isTemplate =
+            this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+
         this.loadService
-        .createLoad(this.generateLoadModel(true))
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-            next: (data) => {
-                const loadServiceObservable = !isTemplate
-                    ? this.loadService.getLoadInsideListById(data.id)
-                    : this.loadService.getLoadTemplateInsideListById(data.id);
-    
-                loadServiceObservable.subscribe((newLoadData) => {
-                    this.loadService.addNewLoad(newLoadData, isTemplate);
-                    this.setModalSpinner(null, true, true);
-                });
-            },
-            error: () => this.setModalSpinner(null, false, false),
-        });
+            .createLoad(this.generateLoadModel(true))
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data) => {
+                    const loadServiceObservable = !isTemplate
+                        ? this.loadService.getLoadInsideListById(data.id)
+                        : this.loadService.getLoadTemplateInsideListById(
+                              data.id
+                          );
+
+                    loadServiceObservable.subscribe((newLoadData) => {
+                        this.loadService.addNewLoad(newLoadData, isTemplate);
+                        this.setModalSpinner(null, true, true);
+                    });
+                },
+                error: () => this.setModalSpinner(null, false, false),
+            });
     }
 
     public updateLoadTemplate() {

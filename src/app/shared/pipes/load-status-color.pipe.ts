@@ -11,8 +11,14 @@ export class LoadStatusColorPipe implements PipeTransform {
     ): { color: string; backgroundColor?: string } {
         const adjustedStatus = status.replace(/\s+/g, '');
 
-        const statusGreyColorCondition = adjustedStatus === 'Booked';
-        const statusDarkGreyColorCondition = adjustedStatus === 'Unassigned';
+        const statusGreyColorCondition = ['Booked', 'Off'].includes(
+            adjustedStatus
+        );
+        const statusDarkGreyColorCondition = [
+            'Unassigned',
+            'Deadhead',
+            'DeadHead',
+        ].includes(adjustedStatus);
         const statusDarkGrey2ColorCondition = [
             'InvoicedHold',
             'Hold',
@@ -20,11 +26,13 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Revised',
             'RevisedFactoring',
         ].includes(adjustedStatus);
-        const statusGreenColorCondition = status === 'Assigned';
+        const statusGreenColorCondition = ['Assigned', 'Available'].includes(
+            adjustedStatus
+        );
         const statusBlueColorCondition = [
             'RepairDispatched',
             'Dispatched',
-        ].includes(status);
+        ].includes(adjustedStatus);
         const statusTurquoiseColorCondition = [
             'Arrived',
             'ArrivedPickup',
@@ -41,17 +49,21 @@ export class LoadStatusColorPipe implements PipeTransform {
             'CheckedInDelivery',
             'Offloading',
             'Checked-In',
-        ].includes(status);
+        ].includes(adjustedStatus);
         const statusDarkRedColorCondition = [
             'Tonu',
             'Offloaded',
             'RepairOffloaded',
-        ].includes(status);
-        const statusDarkRed2ColorCondition = ['Cancelled', 'Split', 'LoadCancelled'].includes(
-            status
+        ].includes(adjustedStatus);
+        const statusDarkRed2ColorCondition = [
+            'Cancelled',
+            'Split',
+            'LoadCancelled',
+        ].includes(adjustedStatus);
+        const statusDarkRed3ColorCondition = adjustedStatus === 'Tonu';
+        const statusOrangeColorCondition = ['Delivered', 'Empty'].includes(
+            adjustedStatus
         );
-        const statusDarkRed3ColorCondition = status === 'Tonu';
-        const statusOrangeColorCondition = status === 'Delivered';
         const statusYellowColorCondition = [
             'Invoiced',
             'Paid',

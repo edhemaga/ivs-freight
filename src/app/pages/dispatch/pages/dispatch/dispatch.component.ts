@@ -34,6 +34,7 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // components
 import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
+import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
 
 @Titles()
 @Component({
@@ -57,14 +58,13 @@ export class DispatchComponent
 
     public isBoardLocked = true;
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-
     public backFilterQuery = JSON.parse(
         JSON.stringify(TableDropdownComponentConstants.DISPATCH_BACK_FILTER)
     );
-    selectedTab = 'active';
-    columns: any[] = [];
+
+    tableOptions: any = {};
+    tableData: any[] = [];
+
     dispatchBoardSmallList: Observable<any>;
     dispatchTableList: Observable<number[]>;
 
@@ -78,7 +78,7 @@ export class DispatchComponent
         // store
         private dispatcherQuery: DispatcherQuery,
 
-        // Services
+        // services
         public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
         private modalService: ModalService
@@ -96,6 +96,16 @@ export class DispatchComponent
         this.sendDispatchData();
 
         this.setTableFilter();
+    }
+
+    ngOnChanges() {}
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+
+            this.getToolbarWidth();
+        }, 10);
     }
 
     public setTableFilter(): void {
@@ -128,21 +138,12 @@ export class DispatchComponent
                             break;
                     }
                 }
+
                 if (res?.action === TableStringEnum.CLEAR)
                     this.dispatchTableList = this.dispatchTableList;
             });
 
         this.getUserId();
-    }
-
-    ngOnChanges() {}
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-
-            this.getToolbarWidth();
-        }, 10);
     }
 
     private getUserId(): void {
@@ -158,9 +159,7 @@ export class DispatchComponent
 
                 break;
             case DispatchTableStringEnum.STATUS_HISTORY_MODAL:
-                this.modalService.openModal(DispatchAssignLoadModalComponent, {
-                    size: TableStringEnum.LARGE,
-                });
+                this.openDispatchHistoryModal();
 
                 break;
             case DispatchTableStringEnum.TOGGLE_LOCKED:
@@ -176,7 +175,7 @@ export class DispatchComponent
         }
     }
 
-    public openAssignLoadModal(): void {
+    private openAssignLoadModal(): void {
         this.modalService.openModal(
             DispatchAssignLoadModalComponent,
             {
@@ -189,6 +188,12 @@ export class DispatchComponent
                 trailer: null,
             }
         );
+    }
+
+    private openDispatchHistoryModal(): void {
+        this.modalService.openModal(DispatchHistoryModalComponent, {
+            size: TableStringEnum.LARGE,
+        });
     }
 
     getDispatcherData(result?) {

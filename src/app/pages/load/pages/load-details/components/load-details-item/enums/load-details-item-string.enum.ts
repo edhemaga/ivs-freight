@@ -9,7 +9,7 @@ export enum LoadDetailsItemStringEnum {
 
     DATE_FORMAT = 'MM/DD/YY, hh:mm A',
 
-    ON_GOING = 'On Going',
+    ON_GOING = 'Ongoing',
 
     HOURS = 'h',
     DAYS = 'd',

@@ -9,6 +9,14 @@
         }
     }
 
+    &.dispatch-history-modal-layout {
+        font-size: 11px;
+
+        &.load-status-badge {
+            font-size: 11px;
+        }
+    }
+
     &-r {
         background-color: $bw6-2;
         color: $white;
@@ -26,7 +34,7 @@
         background-color: $ta-green-4;
         color: $ta-black-2;
     }
- 
+
     &-f {
         background-color: $ta-purple-1;
         color: $white;

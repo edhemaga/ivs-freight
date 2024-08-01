@@ -29,8 +29,12 @@
         user-select: none;
         max-width: 616px;
 
+        &.width-xxl {
+            max-width: unset;
+        }
+
         &.ta-card-spacing-x {
-            margin: 10px 0 ;
+            margin: 10px 0;
             padding: 0 15px;
         }
 
@@ -84,8 +88,6 @@
             }
 
             .subtext-container {
-                margin-left: 4px;
-
                 &.red {
                     p {
                         color: $ta-red-10;
