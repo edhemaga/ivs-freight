@@ -316,10 +316,39 @@ p {
         }
 
         .sort-container {
-            .sort-text {
-                color: $ta-black;
-                font-size: 14px;
-                line-height: 18px;
+            .sort-text-container {
+                padding: 1px 4px;
+                border-radius: 2px;
+                transition: background 0.2s ease-in-out;
+
+                .sort-text {
+                    color: $ta-black;
+                    font-size: 14px;
+                    line-height: 18px;
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                &.active-dropdown {
+                    background: $ta-black !important;
+
+                    .sort-text {
+                        color: $white;
+                    }
+                }
+
+                &:hover {
+                    background: $bw2;
+                    cursor: pointer;
+                }
             }
     
             .sort-arrow {

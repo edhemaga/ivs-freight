@@ -15,18 +15,4 @@
             fill: $ta-blue-13;
         }
     }
-
-    &_hover {
-        cursor: pointer;
-        transition: background-color .3s;
-        border-radius: 3px;
-
-        &:hover {
-            background-color: $ta-blue-15;
-
-            svg path {
-                fill: $white;
-            }
-        }
-    }
 }

@@ -5,6 +5,10 @@
     border-radius: 3px;
     background: $white;
 
+    &-grey {
+        background-color: $ta-light-grey-5;
+    }
+
     &-header {
         display: grid;
         grid-template-columns: 18px 1.5fr 1.5fr 1.2fr 1fr 76px;
@@ -280,6 +284,11 @@
                     }
                 }
             }
+
+            &-scroll {
+                overflow-x: scroll;
+                scrollbar-width: thin !important;
+            }
         }
     }
 }
@@ -352,6 +361,18 @@
             &.includes-check-in-grid {
                 grid-template-columns: 18px 1.5fr 1fr 1fr 76px;
             }
+        }
+    }
+}
+
+.stop-items-grid-small {
+    grid-template-columns: 18px 125px 135px 125px 128px 60px !important;
+    grid-gap: 4px !important;
+    border-bottom: 0;
+
+    .stop-box {
+        p {
+            font-size: 11px;
         }
     }
 }

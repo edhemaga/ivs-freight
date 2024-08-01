@@ -79,7 +79,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
@@ -224,7 +224,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     (item) => item.id === status.id
                 );
 
-                if ( !foundObject ) return;
+                if (!foundObject) return;
 
                 if (
                     [
@@ -297,7 +297,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     (item) => item.id === confirmationResponse.id
                 );
 
-                if ( !foundObject ) return;
+                if (!foundObject) return;
 
                 this.updateLoadStatus(
                     confirmationResponse.id,
@@ -1386,6 +1386,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.dispatchId,
                 filter.brokerId,
                 filter.shipperId,
+                null,
                 filter.dateFrom,
                 filter.dateTo,
                 filter.revenueFrom,
@@ -1399,6 +1400,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.dueTo,
                 filter.pickup,
                 filter.delivery,
+                filter.longitude,
+                filter.latitude,
+                filter.distance,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,

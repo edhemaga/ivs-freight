@@ -28,6 +28,7 @@
             [dispatcherFilter]="item.dispatcherFilter"
             [statusFilter]="item.statusFilter"
             [locationFilter]="item.locationFilter"
+            [areaFilter]="item.areaFilter"
             [moneyFilter]="item.moneyFilter"
             (filterActions)="setFilter($event)"
             [hasMultipleDetailsSelectDropdown]="
@@ -38,8 +39,8 @@
                 onDetailsSelectClick($event)
             "
             [hasSort]="item.hasSort"
-            [sortText]="item.sortText"
-            (sortItemsAction)="sortItems($event)"
+            [sortDropdown]="item.sortDropdown"
+            (sortItemsAction)="onSortAction($event)"
         >
         </app-ta-details-header>
     </div>

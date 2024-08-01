@@ -33,7 +33,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // components
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 
 @Titles()
 @Component({
@@ -78,8 +78,8 @@ export class DispatchComponent
         // store
         private dispatcherQuery: DispatcherQuery,
 
-        // services
-        private dispatcherService: DispatcherService,
+        // Services
+        public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
         private modalService: ModalService
     ) {}
@@ -158,7 +158,7 @@ export class DispatchComponent
 
                 break;
             case DispatchTableStringEnum.STATUS_HISTORY_MODAL:
-                this.modalService.openModal(AssignDispatchLoadModalComponent, {
+                this.modalService.openModal(DispatchAssignLoadModalComponent, {
                     size: TableStringEnum.LARGE,
                 });
 
@@ -167,10 +167,28 @@ export class DispatchComponent
                 this.isBoardLocked = !this.isBoardLocked;
 
                 break;
+            case DispatchTableStringEnum.OPEN_DISPATCH_LOAD_MODAL:
+                this.openAssignLoadModal();
 
+                break;
             default:
                 break;
         }
+    }
+
+    public openAssignLoadModal(): void {
+        this.modalService.openModal(
+            DispatchAssignLoadModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                data: null,
+                truck: null,
+                driver: null,
+                trailer: null,
+            }
+        );
     }
 
     getDispatcherData(result?) {

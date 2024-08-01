@@ -21,7 +21,6 @@
                 <th>TRUCK</th>
                 <th>TRAILER</th>
                 <th>DRIVER</th>
-                <th class="empty"></th>
                 <th
                     class="icon d-flex justify-content-center align-items-center"
                 >
@@ -30,7 +29,6 @@
                     >
                     </svg-icon>
                 </th>
-
                 <th>LAST LOCATION</th>
                 <th class="text-center p-0">STATUS</th>
                 <th class="pick-delivery">
@@ -226,44 +224,15 @@
                                     (removeDriverEmitter)="
                                         handleRemoveDriverClick($event)
                                     "
+                                    (driverVacationEmitter)="
+                                        changeDriverVacation(item)
+                                    "
                                 >
                                 </app-dispatch-table-driver>
                             </div>
                         </div>
                     </td>
 
-                    <td class="box-item">
-                        <div class="main_inside" [class.filled]="item?.driver">
-                            <div class="padding-inside">
-                                <div
-                                    *ngIf="item?.driver"
-                                    class="info-item c-pointer"
-                                    [class.driver-on-vacation]="
-                                        item?.driver.vacation
-                                    "
-                                    (click)="changeDriverVacation(item)"
-                                    [mainTooltip]="
-                                        item?.driver.vacation
-                                            ? 'Remove from Vacation'
-                                            : 'Send to Vacation'
-                                    "
-                                    [tooltipBackground]="
-                                        item?.driver.vacation
-                                            ? '#EF5350'
-                                            : '#2F2F2F'
-                                    "
-                                    ngbTooltip
-                                    position="right"
-                                >
-                                    <svg-icon
-                                        [src]="
-                                            'assets/svg/dispatchboard/vacation.svg'
-                                        "
-                                    ></svg-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
                     <td class="pre-trip">
                         <app-dispatch-table-pre-trip-inspection
                             [dispatchId]="item?.id"
@@ -515,6 +484,7 @@
                                     [truck]="item.truck"
                                     [trailer]="item.driver"
                                     [isActiveLoad]="item.activeLoad"
+                                    [dispatchId]="item.id"
                                 ></app-dispatch-table-assign-load>
                             </div>
                         </div>
@@ -581,40 +551,14 @@
                         [statusOpenedIndex]="statusOpenedIndex"
                         (addDriverEmitter)="handleAddDriverClick($event)"
                         (removeDriverEmitter)="handleRemoveDriverClick($event)"
+                        (driverVacationEmitter)="changeDriverVacation($event)"
                     >
                     </app-dispatch-table-driver>
                 </td>
 
                 <td class="box-item">
                     <div class="main_inside" [class.filled]="item?.driver">
-                        <div class="padding-inside">
-                            <div
-                                *ngIf="item?.driver"
-                                class="info-item c-pointer"
-                                [class.driver-on-vacation]="
-                                    item?.driver.vacation
-                                "
-                                (click)="changeDriverVacation(item)"
-                                [mainTooltip]="
-                                    item?.driver.vacation
-                                        ? 'Remove from Vacation'
-                                        : 'Send to Vacation'
-                                "
-                                [tooltipBackground]="
-                                    item?.driver.vacation
-                                        ? '#EF5350'
-                                        : '#2F2F2F'
-                                "
-                                ngbTooltip
-                                position="right"
-                            >
-                                <svg-icon
-                                    [src]="
-                                        'assets/svg/dispatchboard/vacation.svg'
-                                    "
-                                ></svg-icon>
-                            </div>
-                        </div>
+                        <div class="padding-inside"></div>
                     </div>
                 </td>
 

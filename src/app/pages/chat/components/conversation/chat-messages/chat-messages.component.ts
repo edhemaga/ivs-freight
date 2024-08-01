@@ -19,6 +19,8 @@ import {
   UntypedFormBuilder,
 } from '@angular/forms';
 import {
+  BehaviorSubject,
+  debounceTime,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -85,6 +87,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
+  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
 
   // Emoji
   public isEmojiSelectionActive: boolean = false;
@@ -156,8 +159,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.chatHubService
       .connect()
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
+      .subscribe(
+        () => {
           this.chatHubService
             .receiveMessage()
             .pipe(takeUntil(this.destroy$))
@@ -168,8 +171,29 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                 }
               }
             );
+
+          this.chatHubService
+            .receiveTypingNotification()
+            .pipe(
+              debounceTime(250),
+              takeUntil(this.destroy$),
+            )
+            .subscribe((companyUserId: number) => {
+
+              const filteredUser: CompanyUserShortResponse =
+                this.remainingParticipants
+                  .find(user =>
+                    user.id === companyUserId
+                  );
+              this.currentUserTypingName.next(filteredUser?.fullName);
+
+              setTimeout(() => {
+                this.currentUserTypingName.next(null);
+              }, 1000);
+
+            })
         }
-      });
+      );
   }
 
   public sendMessage(): void {
@@ -287,13 +311,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingBlurred = true;
   }
 
-  // Trackers
-  public trackById(index: number, item: MessageResponse): number {
-    return item.id;
-  }
-
-  public trackByAttachmentName(index: number, attachment: ChatAttachmentForThumbnail): string {
-    return attachment.name;
+  public notifyTyping(): void {
+    if (!this.messageToSend) return;
+    this.chatHubService.notifyTyping(this.conversation.id);
   }
 
   ngOnDestroy(): void {

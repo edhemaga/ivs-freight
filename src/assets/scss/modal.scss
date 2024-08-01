@@ -90,6 +90,13 @@ ngb-modal-window[aria-hidden='true'] {
                 cursor: -webkit-grab;
                 cursor: grab;
 
+                &-absolute {
+                    position: absolute;
+                    top: 0;
+                    left: inherit;
+                    z-index: 2;
+                }
+
                 .modal-header-leftside {
                     display: flex;
                     align-items: center;
@@ -299,6 +306,7 @@ ngb-modal-window[aria-hidden='true'] {
                         position: relative;
                     }
 
+                    .modal-header-edit-button,
                     .modal-header-load-map-button {
                         height: 26px;
                         width: 26px;
