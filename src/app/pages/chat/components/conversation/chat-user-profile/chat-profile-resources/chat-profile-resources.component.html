@@ -14,6 +14,7 @@
 </div>
 <div
     [className]="customClass"
+    [ngClass]="isExpanded ? customClass + '-not-empty' : ''"
     [ngStyle]="
         isExpanded && {
             height: 'fit-content',

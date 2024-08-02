@@ -47,7 +47,9 @@
     padding: 0 6px;
 
     &-content {
-        height: 208px;
+        &-not-expanded {
+            height: 208px;
+        }
         overflow-y: scroll;
         padding-left: 6px;
         padding-right: 6px;
@@ -71,8 +73,11 @@
     padding: 0 6px;
 
     &-content {
-        height: 192px;
         overflow-y: scroll;
+
+        &-not-empty {
+            height: 192px;
+        }
 
         .attachment-wrapper {
             margin: 4px auto;
