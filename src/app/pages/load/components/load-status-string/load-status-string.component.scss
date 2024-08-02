@@ -1,6 +1,11 @@
 @import '/src/theme/variables.scss';
 
 .load-status {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
     &.details-layout {
         font-size: 14px;
 

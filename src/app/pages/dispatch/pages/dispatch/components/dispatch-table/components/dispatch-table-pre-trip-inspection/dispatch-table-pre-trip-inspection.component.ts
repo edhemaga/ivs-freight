@@ -20,15 +20,6 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
     selector: 'app-dispatch-table-pre-trip-inspection',
     templateUrl: './dispatch-table-pre-trip-inspection.component.html',
     styleUrls: ['./dispatch-table-pre-trip-inspection.component.scss'],
-    standalone: true,
-    imports: [
-        AngularSvgIconModule,
-        CommonModule,
-        NgbModule,
-
-        //Components
-        TaAppTooltipV2Component,
-    ],
 })
 export class DispatchTablePreTripInspectionComponent
     implements OnInit, OnDestroy

@@ -4,6 +4,7 @@ import {
     UntypedFormGroup,
     UntypedFormArray,
     Validators,
+    UntypedFormControl,
 } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -40,7 +41,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public dispatchHistoryForm: UntypedFormGroup;
+
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+
     public hasContent: boolean = false;
     public hasNoneSelected: boolean = true;
     public isGroup: boolean = false;
@@ -101,6 +104,66 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     get dispatchHistoryDriverConfig(): ITaInput {
         return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig();
+    }
+
+    get dispatchHistoryDateStartConfig() {
+        return (
+            groupIndex: number,
+            itemIndex: number,
+            groupItem: UntypedFormControl
+        ): ITaInput => {
+            return DispatchHistoryModalConfig.getDispatchHistoryDateStartConfig(
+                this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem
+            );
+        };
+    }
+
+    get dispatchHistoryTimeStartConfig() {
+        return (
+            groupIndex: number,
+            itemIndex: number,
+            groupItem: UntypedFormControl
+        ): ITaInput => {
+            return DispatchHistoryModalConfig.getDispatchHistoryTimeStartConfig(
+                this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem
+            );
+        };
+    }
+
+    get dispatchHistoryDateEndConfig() {
+        return (
+            groupIndex: number,
+            itemIndex: number,
+            groupItem: UntypedFormControl
+        ): ITaInput => {
+            return DispatchHistoryModalConfig.getDispatchHistoryDateEndConfig(
+                this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem
+            );
+        };
+    }
+
+    get dispatchHistoryTimeEndConfig() {
+        return (
+            groupIndex: number,
+            itemIndex: number,
+            groupItem: UntypedFormControl
+        ): ITaInput => {
+            return DispatchHistoryModalConfig.getDispatchHistoryTimeEndConfig(
+                this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem
+            );
+        };
     }
 
     public trackByIdentity = (index: number): number => index;
@@ -189,15 +252,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
             itemsArray.push(itemsGroup);
         });
-
-        console.log('form', this.dispatchHistoryForm);
-        console.log('items', this.getDispatchHistoryGroupItems());
-        console.log('group', this.getDispatchHistoryGroup(1));
     }
 
     private createIsHoverRow(): boolean[] {
         const isInputHoverRow =
             DispatchTableConstants.IS_INPUT_HOVER_ROW_DISPATCH;
+
         return JSON.parse(JSON.stringify(isInputHoverRow));
     }
 
@@ -216,8 +276,10 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.selectedTruck = null;
         this.selectedTrailer = null;
         this.selectedDriver = null;
+
         this.hasNoneSelected = true;
         this.isGroup = false;
+
         this.dispatchHistoryForm.reset();
     }
 
@@ -318,9 +380,16 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private getDispatchHistory(): void {
         this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
         this.selectedTime = { name: 'This year', id: 12 };
+        this.selectedTruck = { name: '1826', id: 13 };
+        this.selectedTrailer = { name: 'A012102', id: 13 };
+        this.selectedDriver = { name: 'Sara Key', id: 279 };
+
+        /*
+        this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
+        this.selectedTime = { name: 'This year', id: 12 };
         this.selectedTruck = { name: '0258', id: 61 };
         this.selectedTrailer = { name: '12345678', id: 107 };
-        this.selectedDriver = { name: 'Douglas Gunnoe', id: 54 };
+         this.selectedDriver = { name: 'Douglas Gunnoe', id: 54 }; */
 
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,

@@ -1,4 +1,4 @@
-<div class="table-container dispatch-board-mai">
+<div class="table-container dispatch-board-main">
     <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
@@ -14,9 +14,7 @@
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
         [ngStyle]="{ 'max-width.px': maxToolbarWidth }"
     >
-        <ng-container
-            *ngFor="let item of dispatchTableList | async; let indx = index"
-        >
+        <ng-container *ngFor="let item of dispatchTableList | async">
             <div class="dipsatch-groups">
                 <app-dispatch-table
                     [dispatchTableData]="item"

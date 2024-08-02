@@ -1,3 +1,4 @@
+import { UntypedFormControl } from '@angular/forms';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeConfig(): ITaInput {
@@ -47,6 +48,102 @@ export class DispatchHistoryModalConfig {
             label: 'Driver',
             isDropdown: true,
             dropdownWidthClass: 'w-col-192',
+        };
+    }
+
+    static getDispatchHistoryDateStartConfig(
+        isInputHoverRows: boolean[][][],
+        groupIndex: number,
+        itemIndex: number,
+        groupItem?: UntypedFormControl
+    ): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            isIconHidden: true,
+            hideClear: true,
+            hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][0],
+            isInputBackgroundRemoved:
+                !isInputHoverRows[groupIndex][itemIndex][0],
+            blackInput:
+                groupItem?.get('dateStart').value &&
+                !isInputHoverRows[groupIndex][itemIndex][0],
+            customClass: !isInputHoverRows[groupIndex][itemIndex][0]
+                ? ''
+                : 'datetimeclass',
+        };
+    }
+
+    static getDispatchHistoryTimeStartConfig(
+        isInputHoverRows: boolean[][][],
+        groupIndex: number,
+        itemIndex: number,
+        groupItem?: UntypedFormControl
+    ): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            isDropdown: true,
+            isIconHidden: true,
+            hideClear: true,
+            hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][1],
+            isInputBackgroundRemoved:
+                !isInputHoverRows[groupIndex][itemIndex][1],
+            blackInput:
+                groupItem.get('timeStart').value &&
+                !isInputHoverRows[groupIndex][itemIndex][1],
+            customClass: !isInputHoverRows[groupIndex][itemIndex][1]
+                ? ''
+                : 'datetimeclass',
+        };
+    }
+
+    static getDispatchHistoryDateEndConfig(
+        isInputHoverRows: boolean[][][],
+        groupIndex: number,
+        itemIndex: number,
+        groupItem?: UntypedFormControl
+    ): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            isIconHidden: true,
+            hideClear: true,
+            hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][2],
+            isInputBackgroundRemoved:
+                !isInputHoverRows[groupIndex][itemIndex][2],
+            blackInput:
+                groupItem.get('dateEnd').value &&
+                !isInputHoverRows[groupIndex][itemIndex][2],
+            customClass: !isInputHoverRows[groupIndex][itemIndex][2]
+                ? ''
+                : 'datetimeclass',
+        };
+    }
+
+    static getDispatchHistoryTimeEndConfig(
+        isInputHoverRows: boolean[][][],
+        groupIndex: number,
+        itemIndex: number,
+        groupItem?: UntypedFormControl
+    ): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            isDropdown: true,
+            isIconHidden: true,
+            hideClear: true,
+            hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][3],
+            isInputBackgroundRemoved:
+                !isInputHoverRows[groupIndex][itemIndex][3],
+            blackInput:
+                groupItem.get('timeEnd').value &&
+                !isInputHoverRows[groupIndex][itemIndex][3],
+            customClass: !isInputHoverRows[groupIndex][itemIndex][3]
+                ? ''
+                : 'datetimeclass',
         };
     }
 }
