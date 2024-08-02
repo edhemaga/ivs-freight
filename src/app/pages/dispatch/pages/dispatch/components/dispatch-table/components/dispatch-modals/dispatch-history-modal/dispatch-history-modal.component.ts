@@ -3,7 +3,6 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     UntypedFormArray,
-    Validators,
     UntypedFormControl,
 } from '@angular/forms';
 
@@ -24,6 +23,7 @@ import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/c
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
@@ -31,6 +31,7 @@ import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/component
 // models
 import { DispatchHistoryGroupResponse, EnumValue } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params';
 
 @Component({
     selector: 'app-dispatch-history-modal',
@@ -107,11 +108,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     get dispatchHistoryDateStartConfig() {
-        return (
-            groupIndex: number,
-            itemIndex: number,
-            groupItem: UntypedFormControl
-        ): ITaInput => {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
             return DispatchHistoryModalConfig.getDispatchHistoryDateStartConfig(
                 {
                     isInputHoverRows: this.isInputHoverRows,
@@ -124,11 +123,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     get dispatchHistoryTimeStartConfig() {
-        return (
-            groupIndex: number,
-            itemIndex: number,
-            groupItem: UntypedFormControl
-        ): ITaInput => {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
             return DispatchHistoryModalConfig.getDispatchHistoryTimeStartConfig(
                 {
                     isInputHoverRows: this.isInputHoverRows,
@@ -141,11 +138,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     get dispatchHistoryDateEndConfig() {
-        return (
-            groupIndex: number,
-            itemIndex: number,
-            groupItem: UntypedFormControl
-        ): ITaInput => {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
             return DispatchHistoryModalConfig.getDispatchHistoryDateEndConfig({
                 isInputHoverRows: this.isInputHoverRows,
                 groupIndex,
@@ -156,11 +151,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     get dispatchHistoryTimeEndConfig() {
-        return (
-            groupIndex: number,
-            itemIndex: number,
-            groupItem: UntypedFormControl
-        ): ITaInput => {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
             return DispatchHistoryModalConfig.getDispatchHistoryTimeEndConfig({
                 isInputHoverRows: this.isInputHoverRows,
                 groupIndex,
@@ -214,6 +207,15 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
             const itemsGroup = this.formBuilder.array(
                 group.items.map((item) => {
+                    const roundedTimeStart =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.startDate
+                        );
+                    const roundedTimeEnd =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.endDate
+                        );
+
                     const newIsInputHoverRow = this.createIsHoverRow();
 
                     this.isInputHoverRows[index] = [
@@ -226,30 +228,16 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                             MethodsCalculationsHelper.convertDateFromBackend(
                                 item.startDate
                             ),
-                            Validators.required,
                         ],
-                        timeStart: [
-                            MethodsCalculationsHelper.convertDateFromBackendToTime(
-                                item.startDate
-                            ),
-                            Validators.required,
-                        ],
+                        timeStart: [roundedTimeStart],
                         dateEnd: [
                             item.endDate
                                 ? MethodsCalculationsHelper.convertDateFromBackend(
                                       item.endDate
                                   )
                                 : null,
-                            item.endDate ? Validators.required : null,
                         ],
-                        timeEnd: [
-                            item.endDate
-                                ? MethodsCalculationsHelper.convertDateFromBackendToTime(
-                                      item.endDate
-                                  )
-                                : null,
-                            item.endDate ? Validators.required : null,
-                        ],
+                        timeEnd: [roundedTimeEnd],
                     });
                 })
             );
@@ -320,7 +308,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         data: DispatchHistoryGroupResponse[]
     ): void {
         this.hasContent = !!data?.length;
-        this.groupData = data || [];
+        this.groupData = data;
 
         this.createDispatchHistoryGroupItemRows(data);
     }

@@ -1,7 +1,7 @@
 import { UntypedFormControl } from '@angular/forms';
 
 // models
-import { GetDispatchInputConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-input-config.model';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class DispatchHistoryModalConfig {
@@ -56,7 +56,7 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryDateStartConfig(
-        configData: GetDispatchInputConfig
+        configData: DispatchInputConfigParams
     ): ITaInput {
         const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
             configData;
@@ -80,7 +80,7 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryTimeStartConfig(
-        configData: GetDispatchInputConfig
+        configData: DispatchInputConfigParams
     ): ITaInput {
         const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
             configData;
@@ -104,7 +104,7 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryDateEndConfig(
-        configData: GetDispatchInputConfig
+        configData: DispatchInputConfigParams
     ): ITaInput {
         const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
             configData;
@@ -128,7 +128,7 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryTimeEndConfig(
-        configData: GetDispatchInputConfig
+        configData: DispatchInputConfigParams
     ): ITaInput {
         const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
             configData;
