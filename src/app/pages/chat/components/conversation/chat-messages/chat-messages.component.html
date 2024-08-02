@@ -321,14 +321,16 @@
             !attachmentUploadActive && isProfileDetailsDisplayed && userProfile
         "
     >
-        <div class="d-flex">
+        <div class="profile-details-wrapper d-flex">
             <app-chat-vertical-divider
                 [verticalOffset]="8"
             ></app-chat-vertical-divider>
-            <app-chat-user-profile
-                [data]="userProfile"
-                (isProfileDetailsClosed)="displayProfileDetails($event)"
-            ></app-chat-user-profile>
+            <div class="profile-details">
+                <app-chat-user-profile
+                    [data]="userProfile"
+                    (isProfileDetailsClosed)="displayProfileDetails($event)"
+                ></app-chat-user-profile>
+            </div>
         </div>
     </ng-container>
 </div>

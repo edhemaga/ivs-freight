@@ -1,12 +1,14 @@
 @import 'src/theme/variables';
 
 .messages-container {
-    //TODO CHANGE HEIGHT VALUE
+    height: 100%;
     width: 100%;
     background: $white;
     border-radius: 3px;
 
     .messages-wrapper {
+        height: 100%;
+
         .messages-header {
             width: 100%;
             margin-left: 6px;
@@ -36,8 +38,9 @@
         }
 
         .messages-content {
-            height: 100%;
+            height: calc(100% - 106px);
             overflow-y: scroll;
+            margin: auto 6px;
 
             .empty-conversation {
                 margin-top: 54px;
@@ -63,14 +66,13 @@
         }
 
         .chat-footer {
-            width: 100%;
             min-height: 46px;
             border-top: 1px solid $bw-9;
-            margin: 2px;
+            margin: 2px 6px;
 
             .left-side {
                 width: 100%;
-                margin: auto auto auto 0;
+                margin: auto auto auto 6px;
 
                 .input-placeholder-not-touched {
                     padding-left: 12px;
@@ -217,6 +219,15 @@
                     }
                 }
             }
+        }
+    }
+
+    .profile-details-wrapper {
+        height: 100%;
+
+        .profile-details {
+            height: 100%;
+            overflow-y: scroll;
         }
     }
 }

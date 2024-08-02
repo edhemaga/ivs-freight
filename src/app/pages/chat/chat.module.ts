@@ -22,6 +22,7 @@ import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-t
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { ChatHeaderComponent } from "@pages/chat/components/chat-header/chat-header.component";
 import { ChatVerticalDividerComponent } from "@pages/chat/components/chat-vertical-divider/chat-vertical-divider.component";
+import { ChatProfileResourcesComponent } from "@pages/chat/components/conversation/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
 
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
@@ -68,6 +69,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         ChatNoDataComponent,
         ChatHeaderComponent,
         ChatVerticalDividerComponent,
+        ChatProfileResourcesComponent,
         // Directives
         DragAndDropDirective,
     ],

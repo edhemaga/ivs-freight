@@ -4,13 +4,6 @@
     width: 318px;
     overflow-y: scroll;
 
-    .horizontal-border {
-        height: 8px;
-        width: auto;
-        margin: 4px 2px;
-        border-bottom: 1px solid $bw-9;
-    }
-
     .header {
         padding-left: 6px;
         padding-right: 6px;
@@ -52,23 +45,11 @@
         margin: auto 0 auto 0;
     }
 
-    .data-count {
-        font-size: 11px;
-        line-height: 18px;
-        height: 18px;
-        min-width: 18px;
-        border-radius: 50px;
-        background: $bw5;
-        color: $white;
-        padding: 0px 5px;
-        margin: auto auto auto 0;
-    }
-
-    .show-all {
-        line-height: 14px;
-        font-size: 11px;
-        color: $bw6-2;
-        margin: auto 6px auto auto;
+    .horizontal-border {
+        height: 8px;
+        width: auto;
+        margin: 4px 2px;
+        border-bottom: 1px solid $bw-9;
     }
 
     .additional-info {
@@ -84,38 +65,5 @@
                 margin-right: 4px;
             }
         }
-    }
-
-    .media {
-        min-height: 244px;
-
-        .media-content {
-            padding-left: 6px;
-            padding-right: 6px;
-            display: grid;
-
-            grid-template-columns: 98px 98px 98px;
-            column-gap: 6px;
-            row-gap: 6px;
-
-            img {
-                height: 98px;
-                width: 98px;
-                object-fit: cover;
-                border-radius: 3px;
-            }
-        }
-    }
-
-    .files {
-        min-height: 226px;
-
-        .attachment-wrapper {
-            margin: 4px auto;
-        }
-    }
-
-    .links {
-        height: 226px;
     }
 }
