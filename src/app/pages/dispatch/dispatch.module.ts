@@ -59,6 +59,8 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         DispatchTableAddNewComponent,
         DispatchTableAssignLoadComponent,
         DispatchAssignLoadModalComponent,
+        DispatchTableLastLocationComponentComponent,
+        DispatchTablePreTripInspectionComponent,
 
         // pipes
         HosFilterPipe,
@@ -96,9 +98,6 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaCustomCardComponent,
         TaResizerComponent,
         TaProfileImagesComponent,
-
-        DispatchTableLastLocationComponentComponent,
-        DispatchTablePreTripInspectionComponent,
 
         LoadDeatilsItemStopsMainComponent,
         LoadStatusStringComponent,

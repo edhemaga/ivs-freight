@@ -240,43 +240,13 @@
                                                         >
                                                             <app-ta-input
                                                                 formControlName="dateStart"
-                                                                [inputConfig]="{
-                                                                    name: 'datepicker',
-                                                                    type: 'text',
-                                                                    isDropdown: true,
-                                                                    isIconHidden: true,
-                                                                    hideClear: true,
-                                                                    hideDropdownArrow:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][0],
-                                                                    isInputBackgroundRemoved:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][0],
-                                                                    blackInput:
-                                                                        groupItem.get(
-                                                                            'dateStart'
-                                                                        )
-                                                                            .value &&
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][0],
-                                                                    customClass:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][0]
-                                                                            ? ''
-                                                                            : 'datetimeclass'
-                                                                }"
+                                                                [inputConfig]="
+                                                                    dispatchHistoryDateStartConfig(
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        groupItem
+                                                                    )
+                                                                "
                                                                 (mouseenter)="
                                                                     handleInputHover(
                                                                         true,
@@ -303,43 +273,13 @@
                                                         >
                                                             <app-ta-input
                                                                 formControlName="timeStart"
-                                                                [inputConfig]="{
-                                                                    name: 'timepicker',
-                                                                    type: 'text',
-                                                                    isDropdown: true,
-                                                                    isIconHidden: true,
-                                                                    hideClear: true,
-                                                                    hideDropdownArrow:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][1],
-                                                                    isInputBackgroundRemoved:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][1],
-                                                                    blackInput:
-                                                                        groupItem.get(
-                                                                            'timeStart'
-                                                                        )
-                                                                            .value &&
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][1],
-                                                                    customClass:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][1]
-                                                                            ? ''
-                                                                            : 'datetimeclass'
-                                                                }"
+                                                                [inputConfig]="
+                                                                    dispatchHistoryTimeStartConfig(
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        groupItem
+                                                                    )
+                                                                "
                                                                 (mouseenter)="
                                                                     handleInputHover(
                                                                         true,
@@ -366,43 +306,13 @@
                                                         >
                                                             <app-ta-input
                                                                 formControlName="dateEnd"
-                                                                [inputConfig]="{
-                                                                    name: 'datepicker',
-                                                                    type: 'text',
-                                                                    isDropdown: true,
-                                                                    isIconHidden: true,
-                                                                    hideClear: true,
-                                                                    hideDropdownArrow:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][2],
-                                                                    isInputBackgroundRemoved:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][2],
-                                                                    blackInput:
-                                                                        groupItem.get(
-                                                                            'dateEnd'
-                                                                        )
-                                                                            .value &&
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][2],
-                                                                    customClass:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][2]
-                                                                            ? ''
-                                                                            : 'datetimeclass'
-                                                                }"
+                                                                [inputConfig]="
+                                                                    dispatchHistoryDateEndConfig(
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        groupItem
+                                                                    )
+                                                                "
                                                                 (mouseenter)="
                                                                     handleInputHover(
                                                                         true,
@@ -429,43 +339,13 @@
                                                         >
                                                             <app-ta-input
                                                                 formControlName="timeEnd"
-                                                                [inputConfig]="{
-                                                                    name: 'timepicker',
-                                                                    type: 'text',
-                                                                    isDropdown: true,
-                                                                    isIconHidden: true,
-                                                                    hideClear: true,
-                                                                    hideDropdownArrow:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][3],
-                                                                    isInputBackgroundRemoved:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][3],
-                                                                    blackInput:
-                                                                        groupItem.get(
-                                                                            'timeEnd'
-                                                                        )
-                                                                            .value &&
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][3],
-                                                                    customClass:
-                                                                        !isInputHoverRows[
-                                                                            groupIndex
-                                                                        ][
-                                                                            itemIndex
-                                                                        ][3]
-                                                                            ? ''
-                                                                            : 'datetimeclass'
-                                                                }"
+                                                                [inputConfig]="
+                                                                    dispatchHistoryTimeEndConfig(
+                                                                        groupIndex,
+                                                                        itemIndex,
+                                                                        groupItem
+                                                                    )
+                                                                "
                                                                 (mouseenter)="
                                                                     handleInputHover(
                                                                         true,
@@ -494,12 +374,12 @@
                                                                 class="m-0 ta-font-medium"
                                                             >
                                                                 {{
-                                                                    !!group
+                                                                    !group
                                                                         ?.items[
                                                                         itemIndex
                                                                     ]?.endDate
                                                                         ? 'Ongoing'
-                                                                        : !group
+                                                                        : group
                                                                               ?.items[
                                                                               itemIndex
                                                                           ]
