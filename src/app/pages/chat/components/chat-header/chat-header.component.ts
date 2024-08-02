@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ChatHeaderComponent implements OnInit {
 
-  @Input() isBottomBorderDisplayed: boolean = true;
+  @Input() public isBottomBorderDisplayed: boolean = true;
 
   constructor() { }
 

@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ChatVerticalDividerComponent implements OnInit {
 
-  @Input() verticalOffset: number = 0;
+  @Input() public verticalOffset: number = 0;
 
   constructor() { }
 

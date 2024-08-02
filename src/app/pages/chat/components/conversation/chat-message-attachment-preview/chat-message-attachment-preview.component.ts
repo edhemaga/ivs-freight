@@ -8,19 +8,10 @@ import {
 import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
 
 // Models
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { ExtendedUploadFile } from '@pages/chat/models/extended-upload-file.model';
 
 // Enums
 import { AttachmentType } from '@pages/chat/enums/conversation/attachment-type.enum';
-
-interface ExtendedUploadFile extends UploadFile {
-  fileId?: number;
-  fileName?: string | null;
-  fileSize?: number | null;
-  tags?: Array<string> | null;
-  tagGeneratedByUser?: boolean;
-  updatedAt?: string | null; F
-}
 
 @Component({
   selector: 'app-chat-message-attachment-preview',
