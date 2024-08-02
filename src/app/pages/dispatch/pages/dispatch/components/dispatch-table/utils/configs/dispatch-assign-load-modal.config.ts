@@ -1,6 +1,6 @@
-import { ITaInput } from "@shared/components/ta-input/config/ta-input.config";
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
-export class AssignDispatchLoadConfig {
+export class DispatchAssignLoadModalConfig {
     static truckTrailerDriver: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',

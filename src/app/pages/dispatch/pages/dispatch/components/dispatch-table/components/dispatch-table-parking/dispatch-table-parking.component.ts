@@ -9,10 +9,10 @@ import {
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 // Svg routes
-import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
+import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchParkingConfig } from '@pages/dispatch/pages/dispatch/utils/config/dispatch-parking.config';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
 
 // Enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
@@ -38,6 +38,8 @@ import { ModalService } from '@shared/services/modal.service';
     styleUrls: ['./dispatch-table-parking.component.scss'],
 })
 export class DispatchTableParkingComponent implements OnInit {
+    @ViewChild('t2') public popoverRef: NgbPopover;
+
     // Inputs
     @Input() parkingList: DispatchBoardParking[];
     @Input() parkingSlot: ParkingSlotShortResponse;
@@ -56,9 +58,6 @@ export class DispatchTableParkingComponent implements OnInit {
     // Form
     public parkingForm: UntypedFormGroup;
 
-    // Popover
-    @ViewChild('t2') public popoverRef: NgbPopover;
-
     // Use to show on frontend so we don't change orginal data
     public filteredParkingList: Array<DispatchBoardParking>;
 
@@ -66,11 +65,14 @@ export class DispatchTableParkingComponent implements OnInit {
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
 
-    public parkingConfig = DispatchParkingConfig.parking;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private modalService: ModalService
     ) {}
+
+    get getParkingConfig() {
+        return DispatchConfig.getDispatchParkingConfig();
+    }
 
     ngOnInit(): void {
         this.createForm();

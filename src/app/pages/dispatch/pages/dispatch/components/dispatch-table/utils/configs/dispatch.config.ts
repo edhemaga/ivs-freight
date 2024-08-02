@@ -64,4 +64,17 @@ export class DispatchConfig {
             mergeDropdownBodyWithInput: true,
         };
     }
+
+    static getDispatchParkingConfig(): ITaInput {
+        return {
+            name: 'Spot',
+            type: 'text',
+            autoFocus: true,
+            placeholder: 'Spot',
+            label: 'Spot',
+            blackInput: true,
+            placeholderInsteadOfLabel: true,
+            hideRequiredCheck: true,
+        };
+    }
 }

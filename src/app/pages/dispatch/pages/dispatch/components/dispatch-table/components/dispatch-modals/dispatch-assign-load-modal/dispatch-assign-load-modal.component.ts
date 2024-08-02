@@ -11,10 +11,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // Svg routes
-import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
+import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { AssignDispatchLoadConfig } from '@pages/dispatch/pages/dispatch/utils/config/assign-dispatch-load.config';
+import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-assign-load-modal.config';
 import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
 
 // Enum
@@ -44,7 +44,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // Helpers
-import { DispatchAssignLoadHelper } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-assign-load.helper';
+import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
@@ -67,7 +67,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public assignLoadForm: UntypedFormGroup;
 
     public loadDispatchesTTDInputConfig =
-        AssignDispatchLoadConfig.truckTrailerDriver;
+        DispatchAssignLoadModalConfig.truckTrailerDriver;
 
     public loadModalSize: string = LoadModalStringEnum.MODAL_SIZE;
 
@@ -93,7 +93,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
 
-    public tableHeaderItems = DispatchAssignLoadHelper.getTableHeaderItems();
+    public tableHeaderItems =
+        DispatchAssignLoadModalHelper.getTableHeaderItems();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -106,6 +107,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initializeForm();
         this.loadModalData();
+    }
+
+    public get isModalValid(): boolean {
+        return !!this.selectedDispatches && !this.showFinishReordering;
     }
 
     private initializeForm(): void {
@@ -148,12 +153,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public selectNewDispatcher(event: { id: number }) {
         this.editData.dispatchId = event?.id ?? null;
+
         this.loadModalData();
         this.closeLoadDetails();
     }
 
     public closeLoadDetails() {
         this.additionalPartVisibility({ action: '', isOpen: false });
+
         this.selectedLoad = null;
     }
 
@@ -183,6 +190,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 order: index + 1,
             };
         });
+
         return {
             dispatchId: this.selectedDispatches.id,
             loads,
@@ -242,17 +250,17 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onDispatchChange(dispach: any) {
+    public onDispatchChange(dispatch: any) {
         this.selectedDispatches = {
-            ...dispach,
-            name: dispach?.truck?.name
+            ...dispatch,
+            name: dispatch?.truck?.name
                 ?.concat(
                     LoadModalStringEnum.EMPTY_SPACE_STRING,
-                    dispach?.trailer?.name
+                    dispatch?.trailer?.name
                 )
                 .concat(
                     LoadModalStringEnum.EMPTY_SPACE_STRING,
-                    dispach?.driver?.name
+                    dispatch?.driver?.name
                 ),
         };
 
@@ -263,45 +271,45 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     LoadModalStringEnum.TRUCK,
                     LoadModalStringEnum.TRAILER,
                     LoadModalStringEnum.DRIVER,
-                    dispach?.payType ? LoadModalStringEnum.DRIVER_PAY : null,
+                    dispatch?.payType ? LoadModalStringEnum.DRIVER_PAY : null,
                 ],
                 customClass: LoadModalStringEnum.LOAD_DISPATCHES_TTD,
             },
             multipleInputValues: {
                 options: [
                     {
-                        id: dispach?.truck?.id,
-                        value: dispach?.truck?.name,
-                        logoName: dispach?.truck?.logoName,
+                        id: dispatch?.truck?.id,
+                        value: dispatch?.truck?.name,
+                        logoName: dispatch?.truck?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
                         subFolder: LoadModalStringEnum.TRUCKS,
-                        logoType: dispach?.truck?.logoType,
+                        logoType: dispatch?.truck?.logoType,
                     },
                     {
-                        value: dispach?.trailer?.name,
-                        logoName: dispach?.trailer?.logoName,
+                        value: dispatch?.trailer?.name,
+                        logoName: dispatch?.trailer?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
                         subFolder: LoadModalStringEnum.TRAILERS,
-                        logoType: dispach?.trailer?.logoType,
+                        logoType: dispatch?.trailer?.logoType,
                     },
                     {
-                        value: dispach?.driver?.name,
-                        logoName: dispach?.driver?.logoName
-                            ? dispach?.driver?.logoName
+                        value: dispatch?.driver?.name,
+                        logoName: dispatch?.driver?.logoName
+                            ? dispatch?.driver?.logoName
                             : LoadModalStringEnum.NO_URL,
                         isImg: true,
                         isSvg: false,
                         folder: null,
                         subFolder: null,
-                        isOwner: dispach?.driver?.owner,
+                        isOwner: dispatch?.driver?.owner,
                         logoType: null,
                     },
                     {
-                        value: dispach?.payType,
+                        value: dispatch?.payType,
                         logoName: null,
                         isImg: false,
                         isSvg: false,
@@ -323,10 +331,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         this.dispatchService
             .saveDispatchLoads(this.mapLoadsForRequest())
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (closeModal) this.ngbActiveModal.close();
-                },
+            .subscribe(() => {
+                if (closeModal) this.ngbActiveModal.close();
             });
     }
 
@@ -334,13 +340,16 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         switch (data.action) {
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW:
                 this.saveLoads(false);
+
                 break;
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD:
                 this.ngbActiveModal.close();
+
                 this.createNewLoad();
                 break;
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES:
                 this.saveLoads(true);
+
                 break;
             default:
                 break;
@@ -355,6 +364,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     private getLoadStopRoutes(stops: LoadStopResponse[]): void {
         this.loadStopRoutes = [];
+
         const routes: StopRoutes[] = stops.map((stop, index) => {
             const { shipper, stopType } = stop;
 
@@ -386,10 +396,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public selectLoad(loadId: number, isAssigned: boolean) {
-        if (!this.isAdditonalViewOpened) {
-            return;
-        }
+        if (!this.isAdditonalViewOpened) return;
+
         this.isAssignedLoad = isAssigned;
+
         this.fetchLoadById(loadId, (load) => {
             this.selectedLoad = load;
             this.getLoadStopRoutes(load.stops);
@@ -418,19 +428,22 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
             );
+
             const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
+
             this.unassignedLoads.push(movedLoad);
         } else {
             const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
             );
+
             const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
+
             this.assignedLoads.push(movedLoad);
         }
 
-        if (isIconClick || loadId === this.selectedLoad?.id) {
+        if (isIconClick || loadId === this.selectedLoad?.id)
             this.isAssignedLoad = !isAssignedList;
-        }
 
         this.drawAssignedLoadRoutes();
     }
@@ -441,6 +454,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignedLoadListResponse) => {
                 this.assignedLoads = res.assignedLoads;
+
                 this.isAssignLoadCardOpen = !!this.assignedLoads.length;
             });
     }
@@ -452,11 +466,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         this.loadModalSize = event.isOpen
             ? LoadModalStringEnum.MODAL_CONTAINER_LOAD
             : LoadModalStringEnum.MODAL_SIZE;
+
         this.isAdditonalViewOpened = event.isOpen;
 
-        if (this.isAdditonalViewOpened && !this.selectedLoad) {
+        if (this.isAdditonalViewOpened && !this.selectedLoad)
             this.drawAssignedLoadRoutes();
-        }
 
         if (!event.isOpen) {
             this.loadStopRoutes = [];
@@ -468,6 +482,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         if (event.previousIndex === event.currentIndex) {
             return;
         }
+
         moveItemInArray(
             this.assignedLoads,
             event.previousIndex,
@@ -507,10 +522,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 }
             );
         });
-    }
-
-    public get isModalValid(): boolean {
-        return !!this.selectedDispatches && !this.showFinishReordering;
     }
 
     private drawAssignedLoadRoutes() {

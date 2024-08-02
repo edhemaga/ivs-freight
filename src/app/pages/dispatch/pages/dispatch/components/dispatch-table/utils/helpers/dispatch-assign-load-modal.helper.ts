@@ -1,4 +1,4 @@
-export class DispatchAssignLoadHelper {
+export class DispatchAssignLoadModalHelper {
     static getTableHeaderItems(): {
         label: string;
         className: string;

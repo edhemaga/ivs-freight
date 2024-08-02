@@ -62,6 +62,8 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         DispatchTableAssignLoadComponent,
         DispatchAssignLoadModalComponent,
         DispatchTableInfoComponent,
+        DispatchTableLastLocationComponentComponent,
+        DispatchTablePreTripInspectionComponent,
 
         // pipes
         HosFilterPipe,
@@ -100,9 +102,6 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         TaCustomCardComponent,
         TaResizerComponent,
         TaProfileImagesComponent,
-
-        DispatchTableLastLocationComponentComponent,
-        DispatchTablePreTripInspectionComponent,
 
         LoadDeatilsItemStopsMainComponent,
         LoadStatusStringComponent,

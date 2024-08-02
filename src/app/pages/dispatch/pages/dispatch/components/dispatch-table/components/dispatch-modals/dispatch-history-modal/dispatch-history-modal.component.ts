@@ -3,7 +3,7 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     UntypedFormArray,
-    Validators,
+    UntypedFormControl,
 } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -23,6 +23,7 @@ import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/c
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
@@ -30,6 +31,7 @@ import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/component
 // models
 import { DispatchHistoryGroupResponse, EnumValue } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params';
 
 @Component({
     selector: 'app-dispatch-history-modal',
@@ -40,7 +42,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public dispatchHistoryForm: UntypedFormGroup;
+
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+
     public hasContent: boolean = false;
     public hasNoneSelected: boolean = true;
     public isGroup: boolean = false;
@@ -103,6 +107,62 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig();
     }
 
+    get dispatchHistoryDateStartConfig() {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
+            return DispatchHistoryModalConfig.getDispatchHistoryDateStartConfig(
+                {
+                    isInputHoverRows: this.isInputHoverRows,
+                    groupIndex,
+                    itemIndex,
+                    groupItem,
+                }
+            );
+        };
+    }
+
+    get dispatchHistoryTimeStartConfig() {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
+            return DispatchHistoryModalConfig.getDispatchHistoryTimeStartConfig(
+                {
+                    isInputHoverRows: this.isInputHoverRows,
+                    groupIndex,
+                    itemIndex,
+                    groupItem,
+                }
+            );
+        };
+    }
+
+    get dispatchHistoryDateEndConfig() {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
+            return DispatchHistoryModalConfig.getDispatchHistoryDateEndConfig({
+                isInputHoverRows: this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem,
+            });
+        };
+    }
+
+    get dispatchHistoryTimeEndConfig() {
+        return (configData: DispatchInputConfigParams): ITaInput => {
+            const { groupIndex, itemIndex, groupItem } = configData;
+
+            return DispatchHistoryModalConfig.getDispatchHistoryTimeEndConfig({
+                isInputHoverRows: this.isInputHoverRows,
+                groupIndex,
+                itemIndex,
+                groupItem,
+            });
+        };
+    }
+
     public trackByIdentity = (index: number): number => index;
 
     private createForm(): void {
@@ -147,6 +207,15 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
             const itemsGroup = this.formBuilder.array(
                 group.items.map((item) => {
+                    const roundedTimeStart =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.startDate
+                        );
+                    const roundedTimeEnd =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.endDate
+                        );
+
                     const newIsInputHoverRow = this.createIsHoverRow();
 
                     this.isInputHoverRows[index] = [
@@ -159,45 +228,28 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                             MethodsCalculationsHelper.convertDateFromBackend(
                                 item.startDate
                             ),
-                            Validators.required,
                         ],
-                        timeStart: [
-                            MethodsCalculationsHelper.convertDateFromBackendToTime(
-                                item.startDate
-                            ),
-                            Validators.required,
-                        ],
+                        timeStart: [roundedTimeStart],
                         dateEnd: [
                             item.endDate
                                 ? MethodsCalculationsHelper.convertDateFromBackend(
                                       item.endDate
                                   )
                                 : null,
-                            item.endDate ? Validators.required : null,
                         ],
-                        timeEnd: [
-                            item.endDate
-                                ? MethodsCalculationsHelper.convertDateFromBackendToTime(
-                                      item.endDate
-                                  )
-                                : null,
-                            item.endDate ? Validators.required : null,
-                        ],
+                        timeEnd: [roundedTimeEnd],
                     });
                 })
             );
 
             itemsArray.push(itemsGroup);
         });
-
-        console.log('form', this.dispatchHistoryForm);
-        console.log('items', this.getDispatchHistoryGroupItems());
-        console.log('group', this.getDispatchHistoryGroup(1));
     }
 
     private createIsHoverRow(): boolean[] {
         const isInputHoverRow =
             DispatchTableConstants.IS_INPUT_HOVER_ROW_DISPATCH;
+
         return JSON.parse(JSON.stringify(isInputHoverRow));
     }
 
@@ -216,8 +268,10 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.selectedTruck = null;
         this.selectedTrailer = null;
         this.selectedDriver = null;
+
         this.hasNoneSelected = true;
         this.isGroup = false;
+
         this.dispatchHistoryForm.reset();
     }
 
@@ -254,7 +308,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         data: DispatchHistoryGroupResponse[]
     ): void {
         this.hasContent = !!data?.length;
-        this.groupData = data || [];
+        this.groupData = data;
 
         this.createDispatchHistoryGroupItemRows(data);
     }
@@ -318,9 +372,16 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private getDispatchHistory(): void {
         this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
         this.selectedTime = { name: 'This year', id: 12 };
+        this.selectedTruck = { name: '1826', id: 13 };
+        this.selectedTrailer = { name: 'A012102', id: 13 };
+        this.selectedDriver = { name: 'Sara Key', id: 279 };
+
+        /*
+        this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
+        this.selectedTime = { name: 'This year', id: 12 };
         this.selectedTruck = { name: '0258', id: 61 };
         this.selectedTrailer = { name: '12345678', id: 107 };
-        this.selectedDriver = { name: 'Douglas Gunnoe', id: 54 };
+         this.selectedDriver = { name: 'Douglas Gunnoe', id: 54 }; */
 
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,
