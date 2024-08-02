@@ -113,10 +113,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             groupItem: UntypedFormControl
         ): ITaInput => {
             return DispatchHistoryModalConfig.getDispatchHistoryDateStartConfig(
-                this.isInputHoverRows,
-                groupIndex,
-                itemIndex,
-                groupItem
+                {
+                    isInputHoverRows: this.isInputHoverRows,
+                    groupIndex,
+                    itemIndex,
+                    groupItem,
+                }
             );
         };
     }
@@ -128,10 +130,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             groupItem: UntypedFormControl
         ): ITaInput => {
             return DispatchHistoryModalConfig.getDispatchHistoryTimeStartConfig(
-                this.isInputHoverRows,
-                groupIndex,
-                itemIndex,
-                groupItem
+                {
+                    isInputHoverRows: this.isInputHoverRows,
+                    groupIndex,
+                    itemIndex,
+                    groupItem,
+                }
             );
         };
     }
@@ -142,12 +146,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             itemIndex: number,
             groupItem: UntypedFormControl
         ): ITaInput => {
-            return DispatchHistoryModalConfig.getDispatchHistoryDateEndConfig(
-                this.isInputHoverRows,
+            return DispatchHistoryModalConfig.getDispatchHistoryDateEndConfig({
+                isInputHoverRows: this.isInputHoverRows,
                 groupIndex,
                 itemIndex,
-                groupItem
-            );
+                groupItem,
+            });
         };
     }
 
@@ -157,12 +161,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             itemIndex: number,
             groupItem: UntypedFormControl
         ): ITaInput => {
-            return DispatchHistoryModalConfig.getDispatchHistoryTimeEndConfig(
-                this.isInputHoverRows,
+            return DispatchHistoryModalConfig.getDispatchHistoryTimeEndConfig({
+                isInputHoverRows: this.isInputHoverRows,
                 groupIndex,
                 itemIndex,
-                groupItem
-            );
+                groupItem,
+            });
         };
     }
 
