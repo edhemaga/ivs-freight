@@ -1,5 +1,9 @@
 import { UntypedFormControl } from '@angular/forms';
+
+// models
+import { GetDispatchInputConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-input-config.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
 export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeConfig(): ITaInput {
         return {
@@ -52,11 +56,11 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryDateStartConfig(
-        isInputHoverRows: boolean[][][],
-        groupIndex: number,
-        itemIndex: number,
-        groupItem?: UntypedFormControl
+        configData: GetDispatchInputConfig
     ): ITaInput {
+        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
+            configData;
+
         return {
             name: 'datepicker',
             type: 'text',
@@ -76,11 +80,11 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryTimeStartConfig(
-        isInputHoverRows: boolean[][][],
-        groupIndex: number,
-        itemIndex: number,
-        groupItem?: UntypedFormControl
+        configData: GetDispatchInputConfig
     ): ITaInput {
+        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
+            configData;
+
         return {
             name: 'timepicker',
             type: 'text',
@@ -100,11 +104,11 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryDateEndConfig(
-        isInputHoverRows: boolean[][][],
-        groupIndex: number,
-        itemIndex: number,
-        groupItem?: UntypedFormControl
+        configData: GetDispatchInputConfig
     ): ITaInput {
+        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
+            configData;
+
         return {
             name: 'datepicker',
             type: 'text',
@@ -124,11 +128,11 @@ export class DispatchHistoryModalConfig {
     }
 
     static getDispatchHistoryTimeEndConfig(
-        isInputHoverRows: boolean[][][],
-        groupIndex: number,
-        itemIndex: number,
-        groupItem?: UntypedFormControl
+        configData: GetDispatchInputConfig
     ): ITaInput {
+        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
+            configData;
+
         return {
             name: 'timepicker',
             type: 'text',
