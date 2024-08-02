@@ -17,7 +17,7 @@ import { ChatMessageComponent } from "@pages/chat/components/conversation/chat-m
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
 import { ChatMessagesNotSelectedComponent } from "@pages/chat/components/conversation/chat-messages-not-selected/chat-messages-not-selected.component";
 import { ChatMessageAttachmentPreviewComponent } from "@pages/chat/components/conversation/chat-message-attachment-preview/chat-message-attachment-preview.component";
-import { ChatUserProfileComponent } from "./components/conversation/chat-user-profile/chat-user-profile.component";
+import { ChatUserProfileComponent } from "@pages/chat/components/conversation/chat-user-profile/chat-user-profile.component";
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { ChatHeaderComponent } from "@pages/chat/components/chat-header/chat-header.component";
@@ -38,6 +38,7 @@ import { HubService } from "@pages/chat/services/hub.service";
 // Resolvers
 import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
 import { DriverResolver } from "@pages/chat/resolvers/driver/driver.resolver";
+import { CompanyChannelResolver } from "@pages/chat/resolvers/company-channel/company-channel.resolvers";
 import { ConversationInformationResolver } from "@pages/chat/resolvers/conversation/conversation-information.resolver";
 import { ConversationResolver } from "@pages/chat/resolvers/conversation/conversation.resolver";
 
@@ -79,6 +80,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         // Resolvers
         UserResolver,
         DriverResolver,
+        CompanyChannelResolver,
         ConversationInformationResolver,
         ConversationResolver,
         // Pipes
