@@ -1,7 +1,7 @@
 import { UntypedFormControl } from '@angular/forms';
 
-export interface GetDispatchInputConfig {
-    isInputHoverRows: boolean[][][];
+export interface DispatchInputConfigParams {
+    isInputHoverRows?: boolean[][][];
     groupIndex: number;
     itemIndex: number;
     groupItem?: UntypedFormControl;

@@ -242,9 +242,9 @@
                                                                 formControlName="dateStart"
                                                                 [inputConfig]="
                                                                     dispatchHistoryDateStartConfig(
-                                                                        groupIndex,
+                                                                      {  groupIndex,
                                                                         itemIndex,
-                                                                        groupItem
+                                                                        groupItem}
                                                                     )
                                                                 "
                                                                 (mouseenter)="
@@ -275,9 +275,9 @@
                                                                 formControlName="timeStart"
                                                                 [inputConfig]="
                                                                     dispatchHistoryTimeStartConfig(
-                                                                        groupIndex,
+                                                                       { groupIndex,
                                                                         itemIndex,
-                                                                        groupItem
+                                                                        groupItem}
                                                                     )
                                                                 "
                                                                 (mouseenter)="
@@ -304,32 +304,40 @@
                                                         <div
                                                             class="d-flex align-items-center item-box"
                                                         >
-                                                            <app-ta-input
-                                                                formControlName="dateEnd"
-                                                                [inputConfig]="
-                                                                    dispatchHistoryDateEndConfig(
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        groupItem
-                                                                    )
+                                                            <ng-container
+                                                                *ngIf="
+                                                                    groupItem?.get(
+                                                                        'dateEnd'
+                                                                    ).value
                                                                 "
-                                                                (mouseenter)="
-                                                                    handleInputHover(
-                                                                        true,
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        2
-                                                                    )
-                                                                "
-                                                                (mouseleave)="
-                                                                    handleInputHover(
-                                                                        false,
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        2
-                                                                    )
-                                                                "
-                                                            ></app-ta-input>
+                                                            >
+                                                                <app-ta-input
+                                                                    formControlName="dateEnd"
+                                                                    [inputConfig]="
+                                                                        dispatchHistoryDateEndConfig(
+                                                                           { groupIndex,
+                                                                            itemIndex,
+                                                                            groupItem}
+                                                                        )
+                                                                    "
+                                                                    (mouseenter)="
+                                                                        handleInputHover(
+                                                                            true,
+                                                                            groupIndex,
+                                                                            itemIndex,
+                                                                            2
+                                                                        )
+                                                                    "
+                                                                    (mouseleave)="
+                                                                        handleInputHover(
+                                                                            false,
+                                                                            groupIndex,
+                                                                            itemIndex,
+                                                                            2
+                                                                        )
+                                                                    "
+                                                                ></app-ta-input>
+                                                            </ng-container>
                                                         </div>
 
                                                         <!-- Time End -->
@@ -337,32 +345,40 @@
                                                         <div
                                                             class="d-flex align-items-center item-box"
                                                         >
-                                                            <app-ta-input
-                                                                formControlName="timeEnd"
-                                                                [inputConfig]="
-                                                                    dispatchHistoryTimeEndConfig(
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        groupItem
-                                                                    )
+                                                            <ng-container
+                                                                *ngIf="
+                                                                    groupItem?.get(
+                                                                        'dateEnd'
+                                                                    ).value
                                                                 "
-                                                                (mouseenter)="
-                                                                    handleInputHover(
-                                                                        true,
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        3
-                                                                    )
-                                                                "
-                                                                (mouseleave)="
-                                                                    handleInputHover(
-                                                                        false,
-                                                                        groupIndex,
-                                                                        itemIndex,
-                                                                        3
-                                                                    )
-                                                                "
-                                                            ></app-ta-input>
+                                                            >
+                                                                <app-ta-input
+                                                                    formControlName="timeEnd"
+                                                                    [inputConfig]="
+                                                                        dispatchHistoryTimeEndConfig(
+                                                                            {groupIndex,
+                                                                            itemIndex,
+                                                                            groupItem}
+                                                                        )
+                                                                    "
+                                                                    (mouseenter)="
+                                                                        handleInputHover(
+                                                                            true,
+                                                                            groupIndex,
+                                                                            itemIndex,
+                                                                            3
+                                                                        )
+                                                                    "
+                                                                    (mouseleave)="
+                                                                        handleInputHover(
+                                                                            false,
+                                                                            groupIndex,
+                                                                            itemIndex,
+                                                                            3
+                                                                        )
+                                                                    "
+                                                                ></app-ta-input>
+                                                            </ng-container>
                                                         </div>
 
                                                         <!-- Total -->
@@ -374,10 +390,9 @@
                                                                 class="m-0 ta-font-medium"
                                                             >
                                                                 {{
-                                                                    !group
-                                                                        ?.items[
-                                                                        itemIndex
-                                                                    ]?.endDate
+                                                                    !groupItem?.get(
+                                                                        'dateEnd'
+                                                                    ).value
                                                                         ? 'Ongoing'
                                                                         : group
                                                                               ?.items[
