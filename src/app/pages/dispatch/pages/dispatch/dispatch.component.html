@@ -1,4 +1,4 @@
-<div class="table-container dispatch-board-mai">
+<div class="table-container dispatch-board-main">
     <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
@@ -17,7 +17,7 @@
         <ng-container
             *ngFor="let item of dispatchTableList | async; let indx = index"
         >
-            <div class="dipsatch-groups">
+            <div class="dispatch-groups">
                 <app-dispatch-table
                     [dispatchTableData]="item"
                     [isBoardLocked]="isBoardLocked"

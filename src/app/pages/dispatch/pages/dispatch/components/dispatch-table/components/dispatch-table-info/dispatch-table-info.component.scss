@@ -1,0 +1,29 @@
+@import '/src/theme/variables';
+
+.table-inside-info {
+    margin-top: 2px;
+    padding: 0 10px;
+
+    &.right-side {
+        padding: 0 8px;
+    }
+}
+
+.table-info-field {
+    span {
+        font-size: 11px;
+        line-height: 14px;
+        text-transform: uppercase;
+        color: $bw6-2;
+
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+    }
+}

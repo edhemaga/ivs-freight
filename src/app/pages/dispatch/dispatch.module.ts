@@ -38,6 +38,8 @@ import { LoadRequirementComponent } from '@pages/load/pages/load-details/compone
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
 import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pre-trip-inspection/dispatch-table-pre-trip-inspection.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
+import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -46,7 +48,7 @@ import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
-import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
+import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/pipes/dispatch-table-info-text.pipe';
 
 @NgModule({
     declarations: [
@@ -59,6 +61,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         DispatchTableAddNewComponent,
         DispatchTableAssignLoadComponent,
         DispatchAssignLoadModalComponent,
+        DispatchTableInfoComponent,
 
         // pipes
         HosFilterPipe,
@@ -81,6 +84,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         CdkConnectPipe,
         HosTimePipe,
         ColorFinderPipe,
+        DispatchTableInfoTextPipe,
 
         // components
         TaAppTooltipV2Component,

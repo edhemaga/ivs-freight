@@ -20,7 +20,7 @@
             <ng-container
                 *ngIf="
                     !isAllBoardsList ||
-                    (isAllBoardsList && dispatchData?.dispatches?.length)
+                    (isAllBoardsList && dispatchData?.teamBoard)
                 "
             >
                 <tr>
@@ -500,6 +500,74 @@
             </ng-container>
 
             <ng-container
+                *ngIf="isAllBoardsList && !dispatchData?.dispatches?.length"
+            >
+                <tr class="reorder-row fake-row">
+                    <td
+                        class="truck-field"
+                        [ngStyle]="{
+                            width: hasAdditionalFieldTruck ? '160px' : '120px'
+                        }"
+                    >
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td
+                        class="trailer-field"
+                        [ngStyle]="{
+                            width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                        }"
+                    >
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="driver-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="pre-trip">
+                        <div class="main_inside"></div>
+                    </td>
+                    <td class="location-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="status-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="pickup-delivery-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="progress-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td
+                        class="parking-field"
+                        [ngClass]="{
+                            'parking-field-large': hasLargeFieldParking
+                        }"
+                    >
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="box-item">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="note-field">
+                        <div class="main_inside"></div>
+                    </td>
+
+                    <td class="box-item">
+                        <div class="main_inside"></div>
+                    </td>
+                </tr>
+            </ng-container>
+
+            <ng-container
                 *ngIf="
                     !dispatchData?.dispatches?.length &&
                     !isAllBoardsList &&
@@ -662,50 +730,28 @@
             </tr>
         </tbody>
 
-        <ng-container *ngIf="dispatchData?.dispatches?.length">
+        <ng-container
+            *ngIf="isAllBoardsList || dispatchData?.dispatches?.length"
+        >
             <tfoot>
                 <tr>
                     <td>
-                        <div class="table-inside-info">
-                            <div class="table-info-field">
-                                <span class="ta-font-bold">
-                                    {{ dispatchData.truckCount }}
-                                    {{
-                                        dispatchData.truckCount === 1
-                                            ? 'TRUCK'
-                                            : 'TRUCKS'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
+                        <app-dispatch-table-info
+                            [type]="'truck'"
+                            [count]="dispatchData.truckCount"
+                        ></app-dispatch-table-info>
                     </td>
                     <td>
-                        <div class="table-inside-info">
-                            <div class="table-info-field">
-                                <span class="ta-font-bold">
-                                    {{ dispatchData.trailerCount }}
-                                    {{
-                                        dispatchData.trailerCount === 1
-                                            ? 'TRAILER'
-                                            : 'TRAILERS'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
+                        <app-dispatch-table-info
+                            [type]="'trailer'"
+                            [count]="dispatchData.trailerCount"
+                        ></app-dispatch-table-info>
                     </td>
                     <td>
-                        <div class="table-inside-info">
-                            <div class="table-info-field">
-                                <span class="ta-font-bold">
-                                    {{ dispatchData.driverCount }}
-                                    {{
-                                        dispatchData.driverCount === 1
-                                            ? 'DRIVER'
-                                            : 'DRIVERS'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
+                        <app-dispatch-table-info
+                            [type]="'driver'"
+                            [count]="dispatchData.driverCount"
+                        ></app-dispatch-table-info>
                     </td>
                     <td></td>
                     <td></td>
@@ -713,18 +759,25 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <div class="table-inside-info">
-                            <div class="table-info-field">
-                                <span class="ta-font-bold">
-                                    {{ parkingCount ?? 0 }} of
-                                    {{ dispatchData.dispatches.length }}
-                                </span>
-                            </div>
-                        </div>
+                        <app-dispatch-table-info
+                            [type]="'parking'"
+                            [count]="parkingCount"
+                            [totalCount]="dispatchData.dispatches.length"
+                        ></app-dispatch-table-info>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="3">
+                        <ng-container *ngIf="isAllBoardsList">
+                            <app-dispatch-table-info
+                                [type]="'board'"
+                                [name]="
+                                    dispatchData?.teamBoard
+                                        ? 'Team Board'
+                                        : dispatchData?.dispatcher?.fullName
+                                "
+                                [alignRight]="true"
+                            ></app-dispatch-table-info>
+                        </ng-container>
+                    </td>
                 </tr>
             </tfoot>
         </ng-container>

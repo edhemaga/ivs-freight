@@ -98,6 +98,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
+    public hasLargeFieldParking: boolean = false;
 
     public truckList: TruckListResponse[];
     public trailerList: TrailerListResponse[];
@@ -158,6 +159,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getConstantData();
+
+        this.getMainBoardColumnWidths();
     }
 
     set checkEmptySet(value: string) {
@@ -229,6 +232,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         });
 
         this.parkingList = JSON.parse(JSON.stringify(parkings));
+
+        this.hasLargeFieldParking = this.parkingList?.length > 1;
+
+        if (this.dispatchData?.teamBoard) {
+            this.dispatcherService.updateMainBoardColumnWidths(
+                this.hasAdditionalFieldTruck,
+                this.hasAdditionalFieldTrailer,
+                this.hasLargeFieldParking
+            );
+        }
     }
 
     private handleTruckTrailerAdditionalFields(): void {
@@ -238,6 +251,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
             (dispatch) => !!dispatch?.trailer?.year
         );
+
+        if (this.dispatchData?.teamBoard) {
+            this.dispatcherService.updateMainBoardColumnWidths(
+                this.hasAdditionalFieldTruck,
+                this.hasAdditionalFieldTrailer,
+                this.parkingList?.length > 1
+            );
+        }
     }
 
     public handleAddTruckTrailerClick(eventParam: {
@@ -822,6 +843,20 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public unlockTable(): void {
         this.onTableUnlock.emit({
             action: DispatchTableStringEnum.TOGGLE_LOCKED,
+        });
+    }
+
+    public getMainBoardColumnWidths(): void {
+        this.dispatcherService.mainBoardColumnsExpanded$.subscribe((res) => {
+            if (
+                res &&
+                !this.dispatchData?.teamBoard &&
+                !this.dispatchData?.dispatches?.length
+            ) {
+                this.hasAdditionalFieldTruck = res.isTruckExpanded;
+                this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
+                this.hasLargeFieldParking = res.isParkingExpanded;
+            }
         });
     }
 

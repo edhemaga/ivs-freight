@@ -639,37 +639,13 @@
                     width: 150px;
                 }
             }
-        }
-    }
 
-    .table-info {
-        margin-top: 2px;
-
-        .table-inside-info {
-            padding: 0 10px;
-        }
-
-        .table-info-field {
-            span {
-                font-size: 11px;
-                line-height: 14px;
-                text-transform: uppercase;
-                color: $bw6-2;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
+            &.truck-field, &.trailer-field {
+                min-width: 140px;
             }
 
-            &.dispatcher-field {
-                width: 300px;
-                text-align: right;
+            &.note-field {
+                min-width: 194px;
             }
         }
     }
@@ -740,8 +716,8 @@
 
             div {
                 height: 34px;
+                background: $ta-light-grey-5;
                 border-radius: 3px;
-                opacity: 0.7;
             }
 
             &:nth-child(1), &:nth-child(2) {
@@ -785,18 +761,21 @@
         &.first-row {
             div {
                 background: linear-gradient(180deg, #F7F7F7 0%, rgba(247, 247, 247, 0.66) 100%);
+                opacity: 0.7;
             }
         }
 
         &.second-row {
             div {
                 background: linear-gradient(180deg, rgba(247, 247, 247, 0.66) 0%, rgba(247, 247, 247, 0.33) 100%);
+                opacity: 0.7;
             }
         }
 
         &.third-row {
             div {
                 background: linear-gradient(180deg, rgba(247, 247, 247, 0.33) 0%, rgba(247, 247, 247, 0) 100%);
+                opacity: 0.7;
             }
         }
     }
@@ -838,32 +817,6 @@
 
             &:hover {
                 background: $ta-blue-15;
-            }
-        }
-    }
-
-    tfoot {
-        .table-inside-info {
-            margin-top: 2px;
-            padding: 0 10px;
-        }
-
-        .table-info-field {
-            span {
-                font-size: 11px;
-                line-height: 14px;
-                text-transform: uppercase;
-                color: $bw6-2;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
             }
         }
     }
