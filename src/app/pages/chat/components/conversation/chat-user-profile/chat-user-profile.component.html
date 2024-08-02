@@ -87,7 +87,15 @@
             <div class="data-count">
                 {{ data.mediaCount }}
             </div>
-            <div class="show-all ta-font-bold">Show all</div>
+            <div
+                class="show-all ta-font-bold"
+                [ngStyle]="{ color: isMediaExpanded && '#0B49D1' }"
+            >
+                <ng-container *ngIf="isMediaExpanded; else showAll"
+                    >Show less</ng-container
+                >
+                <ng-template #showAll>Show all</ng-template>
+            </div>
         </div>
         <div class="media-content">
             <ng-container
@@ -105,11 +113,19 @@
 
     <div class="files">
         <div class="d-flex align-items-center">
-            <div class="title ta-font-extra-bold">Media</div>
+            <div class="title ta-font-extra-bold">Files</div>
             <div class="data-count">
                 {{ data.filesCount }}
             </div>
-            <div class="show-all ta-font-bold">Show all</div>
+            <div
+                class="show-all ta-font-bold"
+                [ngStyle]="{ color: isFileExpanded && '#0B49D1' }"
+            >
+                <ng-container *ngIf="isFileExpanded; else showAll"
+                    >Show less</ng-container
+                >
+                <ng-template #showAll>Show all</ng-template>
+            </div>
         </div>
         <div class="files-content">
             <ng-container

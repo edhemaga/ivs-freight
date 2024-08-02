@@ -27,6 +27,9 @@ export class ChatUserProfileComponent implements OnInit {
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
 
+  public isMediaExpanded: boolean = false;
+  public isFileExpanded: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void { }
