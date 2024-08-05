@@ -100,9 +100,9 @@
     <app-chat-profile-resources
         [title]="'Links'"
         [customClass]="'links-content'"
-        [count]="links?.linksCount ?? 0"
-        [resources]="links?.links ?? []"
+        [count]="links?.linksCount"
+        [resources]="links?.links"
         [type]="UserProfileResourceType.LINKS"
-        [showHorizontalBorder]="false"
+        [hasHorizontalBorder]="false"
     ></app-chat-profile-resources>
 </div>
