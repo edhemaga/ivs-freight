@@ -35,13 +35,6 @@ import { TaSearchComponent } from "@shared/components/ta-search/ta-search.compon
 // Services
 import { HubService } from "@pages/chat/services/hub.service";
 
-// Resolvers
-import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
-import { DriverResolver } from "@pages/chat/resolvers/driver/driver.resolver";
-import { CompanyChannelResolver } from "@pages/chat/resolvers/company-channel/company-channel.resolvers";
-import { ConversationInformationResolver } from "@pages/chat/resolvers/conversation/conversation-information.resolver";
-import { ConversationResolver } from "@pages/chat/resolvers/conversation/conversation.resolver";
-
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
@@ -77,12 +70,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
     providers: [
         // Services
         HubService,
-        // Resolvers
-        UserResolver,
-        DriverResolver,
-        CompanyChannelResolver,
-        ConversationInformationResolver,
-        ConversationResolver,
+
         // Pipes
         NameInitialsPipe,
     ],

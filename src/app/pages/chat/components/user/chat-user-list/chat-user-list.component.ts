@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -149,6 +150,7 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
     this.isSearchActive = false;
   }
 
+  @HostListener('unloaded')
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

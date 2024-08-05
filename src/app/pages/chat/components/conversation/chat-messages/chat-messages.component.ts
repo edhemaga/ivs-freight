@@ -77,7 +77,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
   public isProfileDetailsDisplayed: boolean = false;
-  public userProfile!: ConversationInfoResponse | null;
+  public userProfile: BehaviorSubject<ConversationInfoResponse | null> =
+    new BehaviorSubject(null);
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -143,7 +144,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   private getResolvedData(): void {
-    this.activatedRoute.data
+    this.activatedRoute
+      .data
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -237,11 +239,12 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     }
 
     if (this.conversation?.id && value) {
+
       this.chatService
         .getAllConversationFiles(this.conversation.id)
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
-          this.userProfile = data;
+          this.userProfile.next(data);
         })
     }
   }
@@ -338,7 +341,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.remainingParticipants = [];
-    this.userProfile = null;
+    this.userProfile.next(null);
     this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();

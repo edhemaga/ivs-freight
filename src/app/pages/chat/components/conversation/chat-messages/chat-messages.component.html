@@ -327,7 +327,7 @@
             ></app-chat-vertical-divider>
             <div class="profile-details">
                 <app-chat-user-profile
-                    [data]="userProfile"
+                    [data]="userProfile | async"
                     (isProfileDetailsClosed)="displayProfileDetails($event)"
                 ></app-chat-user-profile>
             </div>
