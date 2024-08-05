@@ -22,7 +22,7 @@
                     [shortLists]="dispatchBoardSmallList | async"
                     [toolbarWidth]="maxToolbarWidth"
                     [isAllBoardsList]="selectedDispatcher?.name === 'All Boards'"
-                    (onTableUnlock)="onToolBarAction($event)"
+                    (onTableUnlockEmitter)="onToolBarAction($event)"
                 ></app-dispatch-table>
             </div>
         </ng-container>

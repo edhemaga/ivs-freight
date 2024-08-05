@@ -1,5 +1,5 @@
-<div class="table-inside-info" [class.right-side]="alignRight">
-    <div class="table-info-field" [class.text-right]="alignRight">
+<div class="table-inside-info" [class.right-side]="hasAlignRight">
+    <div class="table-info-field" [class.text-right]="hasAlignRight">
         <span class="ta-font-bold">
             {{ type | dispatchTableInfoText : count : totalCount : name }}
         </span>

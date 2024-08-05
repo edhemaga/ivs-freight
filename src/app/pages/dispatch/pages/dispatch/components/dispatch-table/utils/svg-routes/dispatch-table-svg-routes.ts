@@ -15,4 +15,8 @@ export class DispatchTableSvgRoutes {
     static vacation: string = 'assets/svg/dispatchboard/vacation.svg';
     static preTripInspection: string =
         'assets/svg/common/ic_pre_trip_inspenction.svg';
+    static noDispatchDataRoute: string =
+        'assets/svg/dispatchboard/dispatch_board_no_data.svg';
+    static toolbarDispatchIcon: string =
+        'assets/svg/common/ic_dispatch_board_dispatcher_icon.svg';
 }

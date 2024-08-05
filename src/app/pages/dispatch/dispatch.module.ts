@@ -48,7 +48,7 @@ import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
-import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/pipes/dispatch-table-info-text.pipe';
+import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
 
 @NgModule({
     declarations: [

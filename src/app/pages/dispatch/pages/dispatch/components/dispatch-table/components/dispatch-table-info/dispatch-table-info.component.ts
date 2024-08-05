@@ -10,7 +10,7 @@ export class DispatchTableInfoComponent {
     @Input() totalCount: number;
     @Input() type: string;
     @Input() name: string;
-    @Input() alignRight: boolean = false;
+    @Input() hasAlignRight: boolean = false;
 
     constructor() {}
 }

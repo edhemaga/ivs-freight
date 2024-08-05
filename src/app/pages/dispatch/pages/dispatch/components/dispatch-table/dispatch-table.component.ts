@@ -53,6 +53,9 @@ import {
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
+// svg routes
+import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+
 @Component({
     selector: 'app-dispatch-table',
     templateUrl: './dispatch-table.component.html',
@@ -83,7 +86,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() isAllBoardsList: boolean;
 
-    @Output() onTableUnlock: EventEmitter<any> = new EventEmitter();
+    @Output() onTableUnlockEmitter: EventEmitter<{ action: string }> =
+        new EventEmitter();
+
+    public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
@@ -143,7 +149,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     };
 
     isDrag: boolean = false;
-    parkingCount: number = 0;
+    public parkingCount: number = 0;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -841,7 +847,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     };
 
     public unlockTable(): void {
-        this.onTableUnlock.emit({
+        this.onTableUnlockEmitter.emit({
             action: DispatchTableStringEnum.TOGGLE_LOCKED,
         });
     }
