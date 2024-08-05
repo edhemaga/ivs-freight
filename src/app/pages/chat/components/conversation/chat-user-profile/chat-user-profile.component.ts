@@ -25,13 +25,16 @@ export class ChatUserProfileComponent implements OnInit {
 
   @Input() data: ConversationInfoResponse;
 
+  @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   //TODO remap to response when it's expanded
   public links: {
     links?: Array<string> | null;
     linksCount?: number;
-  }
-
-  @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  } = {
+      links: [],
+      linksCount: 0
+    }
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;

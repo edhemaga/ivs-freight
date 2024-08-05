@@ -219,7 +219,6 @@
                                         attachments?.length
                                     )
                                 "
-                                [(ngModel)]="messageToSend"
                                 (change)="notifyTyping()"
                                 (blurInput)="blurInput()"
                                 (focusInput)="focusInput()"
@@ -288,7 +287,7 @@
                                 <svg-icon
                                     class="pointer d-flex justify-content-center align-items-center"
                                     [ngClass]="
-                                        messageToSend &&
+                                        isMessageSendable &&
                                         AttachmentCustomClassEnum.BLUE_ICON
                                     "
                                     [svgStyle]="{

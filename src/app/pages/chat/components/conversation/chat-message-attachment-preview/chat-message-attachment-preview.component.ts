@@ -38,11 +38,13 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
   public AttachmentType = AttachmentType;
 
   public previewWidth: string = 'fit-content';
+  public displayMode: 'size' | 'date';
 
   constructor() { }
 
   ngOnInit(): void {
     this.checkAttachmentExtension(this.attachment.extension, this.attachment.fileName);
+    this.setDisplayMode();
   }
 
   private checkAttachmentExtension(extension: string, fileName?: string): void {
@@ -97,6 +99,14 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
     this.documentIllustrationPath = illustrationPath;
     if (!this.isInMessage)
       this.previewWidth = '132px';
+  }
+
+  private setDisplayMode(): void {
+    if (this.isSizeDisplayed) {
+      this.displayMode = 'size';
+    } else if (this.isDateDisplayed) {
+      this.displayMode = 'date';
+    }
   }
 
   public downloadFile(): void {

@@ -35,13 +35,15 @@
                     {{ attachment.fileName }}
                 </div>
                 <div class="text info">
-                    <!-- TODO convert to switch? -->
-                    <ng-container *ngIf="isSizeDisplayed">
-                        {{ attachment.size }}
-                        kB
-                    </ng-container>
-                    <ng-container *ngIf="isDateDisplayed">
-                        {{ attachment.updatedAt | formatDateP : 'date-time' }}
+                    <ng-container [ngSwitch]="displayMode">
+                        <ng-container *ngSwitchCase="'size'">
+                            {{ attachment.size }} kB
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                            {{
+                                attachment.updatedAt | formatDateP : 'date-time'
+                            }}
+                        </ng-container>
                     </ng-container>
                 </div>
             </div>

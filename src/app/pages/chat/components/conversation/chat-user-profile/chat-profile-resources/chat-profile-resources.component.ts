@@ -18,15 +18,15 @@ import { UserProfileResourceType } from '@pages/chat/enums/conversation/user-pro
 export class ChatProfileResourcesComponent implements OnInit {
 
   @Input() public title!: string;
-  @Input() public showHorizontalBorder: boolean = true;
+  @Input() public hasHorizontalBorder: boolean = true;
   @Input() public customClass!: string;
-  public isExpanded: boolean = false;
-
   @Input() public count: number = 0;
   @Input() public type: UserProfileResourceType;
 
   // Resources
   @Input() resources: Array<FileResponse | string | null>;
+
+  public isExpanded: boolean = false;
 
   constructor() { }
 

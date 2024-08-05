@@ -77,7 +77,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
   public isProfileDetailsDisplayed: boolean = false;
-  public userProfile!: ConversationInfoResponse | null;
+  public userProfile!: ConversationInfoResponse;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -87,7 +87,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public ChatDropzone = ChatDropzone;
 
   // Messages
-  public messageToSend: string = "";
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
   public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
@@ -200,23 +199,27 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public sendMessage(): void {
+    const message = this.messageForm.value?.message;
 
-    if (!this.messageToSend || !this.conversation?.id || !this.isMessageSendable) return;
+    if (!message || !this.conversation?.id || !this.isMessageSendable) return;
 
     this.isMessageSendable = false;
 
     this.chatService
       .sendMessage(
         this.conversation.id,
-        this.messageToSend,
+        message,
         this.attachments)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.messageToSend = "";
-        this.isMessageSendable = true;
-        this.attachments = [];
-      });
-
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        () => {
+          this.isMessageSendable = true;
+          this.attachments = [];
+          this.messageForm.reset();
+        }
+      );
   }
 
   private creteForm(): void {
@@ -239,6 +242,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     if (this.conversation?.id && value) {
       this.chatService
         .getAllConversationFiles(this.conversation.id)
+        .pipe(takeUntil(this.destroy$))
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
           this.userProfile = data;
@@ -332,13 +336,17 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public notifyTyping(): void {
-    if (!this.messageToSend) return;
-    this.chatHubService.notifyTyping(this.conversation.id);
+
+    this.messageForm.valueChanges
+      .pipe(
+        debounceTime(350),
+        takeUntil(this.destroy$))
+      .subscribe(arg => {
+        if (arg.message) this.chatHubService.notifyTyping(this.conversation.id);
+      })
   }
 
   ngOnDestroy(): void {
-    this.remainingParticipants = [];
-    this.userProfile = null;
     this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();
