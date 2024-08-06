@@ -8,7 +8,7 @@ import {
 import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
 
 // Models
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { ExtendedUploadFile } from '@pages/chat/models/extended-upload-file.model';
 
 // Enums
 import { AttachmentType } from '@pages/chat/enums/conversation/attachment-type.enum';
@@ -22,9 +22,11 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
 
   @Input() public index: number;
   @Input() public isNameReduced: boolean = false;
-  @Input() public attachment!: UploadFile;
+  @Input() public attachment!: ExtendedUploadFile;
   @Input() public isChatTypingBlurred: boolean = false;
   @Input() public isInMessage: boolean = false;
+  @Input() public isSizeDisplayed: boolean = true;
+  @Input() public isDateDisplayed: boolean = false;
 
   // Assets route
   public ChatPngRoutes = ChatPngRoutes;
@@ -36,11 +38,13 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
   public AttachmentType = AttachmentType;
 
   public previewWidth: string = 'fit-content';
+  public displayMode: 'size' | 'date';
 
   constructor() { }
 
   ngOnInit(): void {
     this.checkAttachmentExtension(this.attachment.extension, this.attachment.fileName);
+    this.setDisplayMode();
   }
 
   private checkAttachmentExtension(extension: string, fileName?: string): void {
@@ -97,8 +101,15 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
       this.previewWidth = '132px';
   }
 
+  private setDisplayMode(): void {
+    if (this.isSizeDisplayed) {
+      this.displayMode = 'size';
+    } else if (this.isDateDisplayed) {
+      this.displayMode = 'date';
+    }
+  }
+
   public downloadFile(): void {
-    console.log(this.attachment);
     const a = document.createElement('a');
     a.href = this.attachment.url;
     a.setAttribute('download', this.attachment.fileName);

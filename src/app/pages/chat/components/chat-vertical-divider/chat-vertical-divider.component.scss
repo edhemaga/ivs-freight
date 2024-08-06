@@ -1,0 +1,15 @@
+@import 'src/theme/variables';
+
+.border-container {
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 4px;
+
+    .border {
+        width: 1px;
+        height: 100%;
+        min-height: 18px;
+        border-radius: 1px;
+        background: $ta-light-grey-4;
+    }
+}

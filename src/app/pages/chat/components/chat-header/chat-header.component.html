@@ -1,0 +1,14 @@
+<div class="header-wrapper">
+    <div
+        class="header-content"
+        [ngStyle]="{
+            height: !isBottomBorderDisplayed ? 'fit-content' : '26px'
+        }"
+    >
+        <ng-content></ng-content>
+    </div>
+
+    <ng-container *ngIf="isBottomBorderDisplayed">
+        <div class="horizontal-border"></div>
+    </ng-container>
+</div>

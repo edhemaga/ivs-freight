@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Models
 import {
     CompanyUserForChatListResponse,
+    ConversationInfoResponse,
     ConversationResponse,
     CreateConversationCommand,
     CreateResponse,
@@ -110,6 +111,13 @@ export class UserChatService {
         return this.http.post(
             `${environment.API_ENDPOINT}/api/chat/message`,
             this.formDataService.formDataValue,
+            { headers: this.headers }
+        );
+    }
+
+    public getAllConversationFiles(conversationId: number): Observable<ConversationInfoResponse> {
+        return this.http.get<ConversationInfoResponse>(
+            `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
             { headers: this.headers }
         );
     }
