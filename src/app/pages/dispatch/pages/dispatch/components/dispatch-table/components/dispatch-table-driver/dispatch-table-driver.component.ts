@@ -163,6 +163,8 @@ export class DispatchTableDriverComponent {
                 });
             }
         }
+
+        this.openedDriverDropdown = -1;
     }
 
     public removeDriver(index: number): void {
