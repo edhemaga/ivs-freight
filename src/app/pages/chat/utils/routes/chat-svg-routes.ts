@@ -18,9 +18,15 @@ export class ChatSvgRoutes {
     static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
     static dropZoneIcon: string = 'assets/svg/chat/drop-zone-focus.svg';
 
-    // Cancle
+    // Cancel
+    static noBorderXIcon: string = 'assets/svg/chat/x-icon/no-border-x-icon.svg';
     static darkXIcon: string = 'assets/svg/chat/x-icon/dark-x-icon.svg';
     static darkFocusedXIcon: string = 'assets/svg/chat/x-icon/dark-focused-x-icon.svg';
     static lightXIcon: string = 'assets/svg/chat/x-icon/light-x-icon.svg';
     static lightFocusedXIcon: string = 'assets/svg/chat/x-icon/light-focused-x-icon.svg';
+
+    // Profile details
+    static phoneIcon: string = 'assets/svg/chat/phone-icon.svg';
+    static emailIcon: string = 'assets/svg/chat/email-icon.svg';
+    static companyIcon: string = 'assets/svg/chat/company-icon.svg';
 }

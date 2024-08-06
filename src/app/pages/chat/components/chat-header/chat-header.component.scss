@@ -1,0 +1,15 @@
+@import 'src/theme/variables';
+
+.header-wrapper {
+    min-width: 318px;
+    min-height: 36px;
+    height: fit-content;
+    padding: 6px 6px 0 6px;
+
+    .horizontal-border {
+        margin-top: 6px;
+        width: auto;
+        margin: 6px 2px 4px 2px;
+        border-bottom: 1px solid $bw-9;
+    }
+}

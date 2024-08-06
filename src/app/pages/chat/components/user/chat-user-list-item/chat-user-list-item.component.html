@@ -1,26 +1,14 @@
 <div class="chat-list-item d-flex">
-    <!-- TODO refactor to separate component -->
-    <ng-container *ngIf="contact.companyUser?.avatarFile?.url; else noAvatar">
-        <div class="d-flex">
-            <img
-                class="chat-list-item-avatar align-items-center"
-                [src]="contact.companyUser.avatarFile.url"
-                [alt]="contact.companyUser?.fullName"
-            />
-        </div>
-    </ng-container>
-
-    <ng-template #noAvatar>
-        <app-ta-profile-images
-            [indx]="contact.companyUser?.id"
-            [showHoverAnimation]="false"
-            [withTooltip]="false"
-            [size]="'medium'"
-            [type]="contact.userType?.name | lowercase"
-            [name]="contact.companyUser?.fullName"
-        >
-        </app-ta-profile-images>
-    </ng-template>
+    <!-- TODO remove user type -->
+    <app-ta-profile-images
+        [indx]="contact.companyUser?.id"
+        [withTooltip]="true"
+        [size]="'medium'"
+        [type]="(contact.userType?.name | lowercase) || 'user'"
+        [name]="contact.companyUser?.fullName"
+        [url]="contact.companyUser?.avatarFile?.url"
+    >
+    </app-ta-profile-images>
 
     <div class="chat-list-item-text-wrapper">
         <!-- TODO Change into lastMessage -->
