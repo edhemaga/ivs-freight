@@ -361,7 +361,25 @@ export class DispatchComponent
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((dispatchers) => {
-                this.dispatcherService.dispatchList = dispatchers;
+                let dispatchersList = {
+                    ...dispatchers,
+                };
+
+                if (
+                    this.selectedDispatcher?.name !==
+                    DispatchTableStringEnum.ALL_BOARDS
+                ) {
+                    const currentDispatcher = dispatchers.dispatchBoards.find(
+                        (item) => item.id === this.selectedDispatcher.id
+                    );
+                    dispatchersList = {
+                        ...dispatchers,
+                        dispatchBoards: [currentDispatcher],
+                    };
+                }
+
+                this.dispatcherService.dispatchList = dispatchersList;
+
                 this.backFilterQuery = JSON.parse(
                     JSON.stringify(
                         TableDropdownComponentConstants.DISPATCH_BACK_FILTER

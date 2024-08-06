@@ -2,9 +2,11 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -51,6 +53,9 @@ import {
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
+// svg routes
+import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+
 @Component({
     selector: 'app-dispatch-table',
     templateUrl: './dispatch-table.component.html',
@@ -79,6 +84,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() toolbarWidth: number = 0;
 
+    @Input() isAllBoardsList: boolean;
+
+    @Output() onTableUnlockEmitter: EventEmitter<{ action: string }> =
+        new EventEmitter();
+
+    public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+
     private destroy$ = new Subject<void>();
 
     public checkForEmpty: string;
@@ -92,6 +104,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
+    public hasLargeFieldParking: boolean = false;
 
     public truckList: TruckListResponse[];
     public trailerList: TrailerListResponse[];
@@ -136,6 +149,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     };
 
     isDrag: boolean = false;
+    public parkingCount: number = 0;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -151,6 +165,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getConstantData();
+
+        this.getMainBoardColumnWidths();
     }
 
     set checkEmptySet(value: string) {
@@ -165,6 +181,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     private getConstantData(): void {
@@ -218,6 +238,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         });
 
         this.parkingList = JSON.parse(JSON.stringify(parkings));
+
+        this.hasLargeFieldParking = this.parkingList?.length > 1;
+
+        if (this.dispatchData?.teamBoard) {
+            this.dispatcherService.updateMainBoardColumnWidths(
+                this.hasAdditionalFieldTruck,
+                this.hasAdditionalFieldTrailer,
+                this.hasLargeFieldParking
+            );
+        }
     }
 
     private handleTruckTrailerAdditionalFields(): void {
@@ -227,6 +257,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
             (dispatch) => !!dispatch?.trailer?.year
         );
+
+        if (this.dispatchData?.teamBoard) {
+            this.dispatcherService.updateMainBoardColumnWidths(
+                this.hasAdditionalFieldTruck,
+                this.hasAdditionalFieldTrailer,
+                this.parkingList?.length > 1
+            );
+        }
     }
 
     public handleAddTruckTrailerClick(eventParam: {
@@ -247,6 +285,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                 : dispatch
                     ),
                 };
+
+                this.parkingCount = this.dispatchData?.dispatches?.filter(
+                    (item) => item.parkingSlot
+                )?.length;
 
                 this.showAddAddressFieldIndex = index;
             } else {
@@ -310,6 +352,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ...this.dispatchData,
             dispatches: mappedDispatches,
         };
+
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     public onHideDropdown(): void {
@@ -799,6 +845,26 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     trailerPositionPrediction = () => {
         return true;
     };
+
+    public unlockTable(): void {
+        this.onTableUnlockEmitter.emit({
+            action: DispatchTableStringEnum.TOGGLE_LOCKED,
+        });
+    }
+
+    public getMainBoardColumnWidths(): void {
+        this.dispatcherService.mainBoardColumnsExpanded$.subscribe((res) => {
+            if (
+                res &&
+                !this.dispatchData?.teamBoard &&
+                !this.dispatchData?.dispatches?.length
+            ) {
+                this.hasAdditionalFieldTruck = res.isTruckExpanded;
+                this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
+                this.hasLargeFieldParking = res.isParkingExpanded;
+            }
+        });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

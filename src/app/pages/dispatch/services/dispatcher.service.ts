@@ -34,6 +34,22 @@ export class DispatcherService {
     public parkingOpened: boolean = false;
     public newParkingSubject = new BehaviorSubject<boolean>(false);
 
+    private mainBoardColumnExpandedWidths: BehaviorSubject<{
+        isTruckExpanded: boolean;
+        isTrailerExpanded: boolean;
+        isParkingExpanded: boolean;
+    }> = new BehaviorSubject({
+        isTruckExpanded: false,
+        isTrailerExpanded: false,
+        isParkingExpanded: false,
+    });
+
+    public mainBoardColumnsExpanded$: Observable<{
+        isTruckExpanded: boolean;
+        isTrailerExpanded: boolean;
+        isParkingExpanded: boolean;
+    }> = this.mainBoardColumnExpandedWidths.asObservable();
+
     constructor(
         private dispatcherStore: DispatcherStore,
         private dispatchService: DispatchService,
@@ -372,5 +388,17 @@ export class DispatcherService {
 
     public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
         return this.dispatchService.apiDispatchReorderLoadsPut(loads);
+    }
+
+    public updateMainBoardColumnWidths(
+        isTruckExpanded: boolean,
+        isTrailerExpanded: boolean,
+        isParkingExpanded: boolean
+    ): void {
+        this.mainBoardColumnExpandedWidths.next({
+            isTruckExpanded,
+            isTrailerExpanded,
+            isParkingExpanded,
+        });
     }
 }
