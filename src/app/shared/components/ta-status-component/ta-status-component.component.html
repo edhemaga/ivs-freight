@@ -1,5 +1,19 @@
 <ng-container *ngIf="statusDetails">
-    <div class="status-node">
+    <div class="status-node" [ngClass]="{ dropdownOpen: isDispatch }">
+        <ng-container *ngIf="isDispatch">
+            <div class="status-dispatch justify-content-center d-flex">
+                <app-load-status-string
+                    [status]="{
+                        name: status.statusString,
+                        valueForRequest: status.statusValue.name
+                    }"
+                    [justifyStart]="true"
+                ></app-load-status-string>
+                <div class="status-time">
+                    {{ time }}
+                </div>
+            </div>
+        </ng-container>
         <ng-container *ngIf="statusDetails?.possibleStatuses?.length">
             <div class="status-next">
                 <ng-container
@@ -16,7 +30,11 @@
                     >
                         <app-load-status-string
                             [status]="{
-                                name: item.statusString,
+                                name: item.statusCheckInNumber
+                                    ? item.statusString +
+                                      ' ' +
+                                      item.statusCheckInNumber
+                                    : item.statusString,
                                 valueForRequest: item.statusValue.name
                             }"
                             [justifyStart]="true"
@@ -41,6 +59,15 @@
                     >
                         <app-load-status-string
                             [status]="{
+                                name: statusDetails.previousStatus
+                                    ?.statusCheckInNumber
+                                    ? statusDetails.previousStatus
+                                          .statusString +
+                                      ' ' +
+                                      statusDetails.previousStatus
+                                          .statusCheckInNumber
+                                    : statusDetails.previousStatus.statusString,
+
                                 name: statusDetails.previousStatus.statusString,
                                 valueForRequest:
                                     statusDetails.previousStatus.statusValue

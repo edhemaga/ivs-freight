@@ -284,45 +284,14 @@
                         </td>
 
                         <td class="status-field">
-                            <div
-                                class="main_inside"
-                                [class.filled]="
-                                    item?.driver &&
-                                    item.trailer &&
-                                    item.location.address
-                                "
+                            <app-dispatch-table-status
+                                [time]="item.lastStatusDateTime"
+                                [status]="item.status"
+                                [dispatchId]="item.id"
+                                [dispatchBoardId]="item?.dispatchBoardId"
+                                [dispatcher]="item"
                             >
-                                <div class="padding-inside">
-                                    <app-ta-status-switch
-                                        *ngIf="
-                                            item?.driver &&
-                                            item.trailer &&
-                                            item.location.address
-                                        "
-                                        (changeStatus)="addStatus($event)"
-                                        (openIndex)="openIndex($event)"
-                                        [openedStatus]="statusOpenedIndex"
-                                        [dispatchboardId]="item.id"
-                                        [statusHeight]="32"
-                                        [status]="item.status"
-                                        [dispatchId]="item.id"
-                                        [statusMainIndex]="rowIndex"
-                                        [statusTypes]="'dispatch'"
-                                        [withStatusAgo]="true"
-                                        [pickupCount]="
-                                            item.activeLoad?.pickupCount
-                                        "
-                                        [deliveryCount]="
-                                            item.activeLoad?.deliveryCount
-                                        "
-                                        [possibleNextStatuses]="
-                                            item.possibleNextStatuses
-                                        "
-                                        [nextStopType]="item.nextStopType"
-                                        [currentStopType]="item.currentStopType"
-                                    ></app-ta-status-switch>
-                                </div>
-                            </div>
+                            </app-dispatch-table-status>
                         </td>
 
                         <td class="pickup-delivery-field">
@@ -697,12 +666,6 @@
                         (driverVacationEmitter)="changeDriverVacation($event)"
                     >
                     </app-dispatch-table-driver>
-                </td>
-
-                <td class="box-item">
-                    <div class="main_inside" [class.filled]="item?.driver">
-                        <div class="padding-inside"></div>
-                    </div>
                 </td>
 
                 <td class="pre-trip">

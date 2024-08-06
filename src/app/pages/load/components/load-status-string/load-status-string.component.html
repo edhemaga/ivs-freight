@@ -14,6 +14,7 @@
         "
     >
         <!-- ' load-status-' + value.toLowerCase() is use for one letters, R,T,F -->
+
         <span
             [ngStyle]="
                 value.length > 1
@@ -42,7 +43,9 @@
                 'ml-1':
                     value.length === 1 && index === displayString.length - 1,
                 'details-layout': isDetailsLayout,
-                'dispatch-history-modal-layout': isDispatchHistoryModalLayout
+                'dispatch-history-modal-layout': isDispatchHistoryModalLayout,
+                'd-repair': displayString.length > 1 && displayString[0] === 'D',
+                'l-repair': displayString.length > 1 && displayString[0] === 'L',
             }"
         >
             {{ value }}

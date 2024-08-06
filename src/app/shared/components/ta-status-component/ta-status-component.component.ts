@@ -5,6 +5,8 @@ import {
     OnInit,
     ViewEncapsulation,
     OnDestroy,
+    Output,
+    EventEmitter,
 } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,9 +16,15 @@ import { LoadStatusStringComponent } from '@pages/load/components/load-status-st
 
 //services
 import { LoadService } from '@shared/services/load.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 //models
-import { LoadPossibleStatusesResponse, LoadStatus } from 'appcoretruckassist';
+import {
+    LoadPossibleStatusesResponse,
+    LoadStatus,
+    type DispatchStatus,
+    type DispatchStatusResponse,
+} from 'appcoretruckassist';
 
 // Utils
 import { StatusComponentSvgRoutes } from '@shared/components/ta-status-component/utils/status-component-svg-routes';
@@ -36,14 +44,30 @@ import { StatusComponentSvgRoutes } from '@shared/components/ta-status-component
 })
 export class TaStatusComponentComponent implements OnInit, OnDestroy {
     @Input() statusId: number;
+    @Input() isDispatch?: boolean = false;
+    @Input() time?: string;
+    @Input() status?: DispatchStatusResponse;
+
     public statusDetails: LoadPossibleStatusesResponse;
     private destroy$ = new Subject<void>();
     public backStatus = StatusComponentSvgRoutes.backStatusImg;
+    @Output() onRouteEvent? = new EventEmitter<{
+        id: number;
+        status: DispatchStatus;
+        dataFront: DispatchStatus;
+    }>();
 
-    constructor(private loadService: LoadService) {}
+    constructor(
+        private loadService: LoadService,
+        private dispatchService: DispatcherService
+    ) {}
 
     ngOnInit(): void {
-        this.getLoadStatus();
+        if (this.isDispatch) {
+            this.getDispatchStatus();
+        } else {
+            this.getLoadStatus();
+        }
     }
 
     public getLoadStatus(): void {
@@ -56,12 +80,31 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
             });
     }
 
-    public sendStatus(item: LoadStatus, statusName: LoadStatus): void {
-        this.loadService.updateStatus({
-            id: this.statusId,
-            dataBack: item as LoadStatus,
-            dataFront: statusName as LoadStatus,
-        });
+    public getDispatchStatus(): void {
+        this.dispatchService
+            .apiDispatchNextstatusesIdGet(this.statusId)
+            .subscribe((res) => {
+                this.statusDetails = res;
+            });
+    }
+
+    public sendStatus(
+        item: LoadStatus | DispatchStatus,
+        statusName: LoadStatus | DispatchStatus
+    ): void {
+        if (this.isDispatch) {
+            this.onRouteEvent.emit({
+                id: this.statusId,
+                status: item as DispatchStatus,
+                dataFront: statusName as DispatchStatus,
+            });
+        } else {
+            this.loadService.updateStatus({
+                id: this.statusId,
+                dataBack: item as LoadStatus,
+                dataFront: statusName as LoadStatus,
+            });
+        }
     }
 
     public ngOnDestroy(): void {

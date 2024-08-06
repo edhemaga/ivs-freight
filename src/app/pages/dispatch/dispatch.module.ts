@@ -40,6 +40,7 @@ import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/d
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
+import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -108,6 +109,7 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         LoadRequirementComponent,
 
         //  TaMapsComponent,
+        DispatchTableStatusComponent,
     ],
     exports: [ColorFinderPipe],
 })
