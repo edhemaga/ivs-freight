@@ -80,15 +80,17 @@
         &.d-repair {
             width: 12px;
             height: 12px;
-            border-radius: 1px 0px 0px 0px;
+            border-radius: 1px;
             background-color: $ta-blue-19;
+            color: $white;
         }
 
         &.l-repair {
             width: 12px;
             height: 12px;
-            border-radius: 1px 0px 0px 0px;
-            background-color: $ta-green-2;
+            border-radius: 1px;
+            color: rgba(0, 0, 0, 0);
+            color: $white;
         }
     }
 }

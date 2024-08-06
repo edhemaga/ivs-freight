@@ -32,7 +32,9 @@
                 [class.confirmation]="size === 'confirmation'"
                 [ngStyle]="{
                     'background-color': backgroundColors[indx],
-                    color: textColors[indx]
+                    color: idDispatch
+                        ? dispatchTextColors[indx]
+                        : textColors[indx]
                 }"
             >
                 {{ name | nameInitials }}

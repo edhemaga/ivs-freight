@@ -440,14 +440,21 @@
                                     <div
                                         class="info-item justify-content-center"
                                     >
-                                        <app-ta-profile-images
-                                            [indx]="rowIndex"
-                                            [name]="'Slavisa Markovic'"
-                                            [size]="'small'"
-                                            [type]="'user'"
-                                            [withTooltip]="true"
+                                        <ng-container
+                                            *ngIf="item.dispatcher?.fullName"
                                         >
-                                        </app-ta-profile-images>
+                                            <app-ta-profile-images
+                                                [indx]="rowIndex"
+                                                [name]="
+                                                    item.dispatcher?.fullName
+                                                "
+                                                [size]="'small'"
+                                                [type]="'user'"
+                                                [withTooltip]="true"
+                                                [idDispatch]="true"
+                                            >
+                                            </app-ta-profile-images>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
