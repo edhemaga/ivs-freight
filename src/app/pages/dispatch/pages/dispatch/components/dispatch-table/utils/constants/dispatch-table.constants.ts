@@ -19,18 +19,4 @@ export class DispatchTableConstants {
             icon: 'assets/svg/truckassist-table/note/Note-hover.svg',
         },
     ];
-
-    static DISPATCH_HISTORY_GROUP_HEADER_ITEMS: string[] = [
-        'STATUS',
-        'START',
-        'END',
-        'TOTAL',
-    ];
-
-    static IS_INPUT_HOVER_ROW_DISPATCH: boolean[] = [
-        false,
-        false,
-        false,
-        false,
-    ];
 }

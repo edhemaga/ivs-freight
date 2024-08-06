@@ -10,4 +10,6 @@ export enum DispatchHistoryModalStringEnum {
     DRIVER = 'driver',
 
     DISPATCH_HISTORY_GROUP_ITEMS = 'dispatchHistoryGroupItems',
+
+    CUSTOM = 'Custom',
 }

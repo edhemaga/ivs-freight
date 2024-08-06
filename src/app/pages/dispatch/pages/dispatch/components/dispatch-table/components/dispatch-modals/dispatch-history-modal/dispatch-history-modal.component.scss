@@ -8,25 +8,29 @@
         grid-template-columns: 132px 192px 112px 132px 192px;
         grid-gap: 4px;
         margin-bottom: 22px;
+
+        .time-container {
+            position: relative;
+
+            .custom-period-range-container {
+                position: absolute;
+                top: 30px;
+                left: 0;
+                width: 292px;
+            }
+        }
     }
 
     &-main-container {
         /* Content */
 
         &-content {
-            /* No Group Container */
+            /* Headers */
 
-            .no-group-container {
-            }
-
-            /* Group Container */
-
+            .no-group-container,
             .group-container {
-                /* Group Container Header */
-
                 &-header {
                     display: grid;
-                    grid-template-columns: 146px repeat(2, 250px) 124px;
                     grid-gap: 2px;
                     margin-bottom: 8px;
 
@@ -53,6 +57,87 @@
                             }
                         }
                     }
+                }
+            }
+
+            /* No Group Container */
+
+            .no-group-container {
+                /* No Group Container Header */
+
+                &-header,
+                &-main-item {
+                    &.layout-1 {
+                        grid-template-columns: 140px 78px 100px 206px repeat(
+                                3,
+                                80px
+                            );
+                    }
+
+                    &.layout-2 {
+                        grid-template-columns: 108px 128px 220px repeat(
+                                3,
+                                103px
+                            );
+                    }
+
+                    &.layout-3 {
+                        grid-template-columns:
+                            104px 196px repeat(2, 188px)
+                            92px;
+                    }
+
+                    &.layout-4 {
+                        grid-template-columns: 216px repeat(2, 222px) 110px;
+                    }
+                }
+
+                /* No Group Container Main */
+
+                &-main {
+                    &-item {
+                        display: grid;
+                        grid-gap: 2px;
+                        margin-bottom: 2px;
+
+                        .item-box {
+                            border-radius: 2px;
+                            padding: 4px 6px;
+                            background: $ta-light-grey-5;
+                            cursor: pointer;
+                            transition: background 0.2s ease-in-out;
+
+                            &:hover {
+                                background: $bw2;
+                            }
+
+                            p {
+                                font-size: 14px;
+                                line-height: 18px;
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Group Container */
+
+            .group-container {
+                /* Group Container Header */
+
+                &-header {
+                    grid-template-columns: 146px repeat(2, 250px) 124px;
                 }
 
                 /* Group Container Main */

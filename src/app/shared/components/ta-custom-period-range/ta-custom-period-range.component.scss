@@ -34,8 +34,6 @@
         border-bottom: 1px solid $ta-white-4;
 
         &-date-inputs {
-            margin-bottom: 42px;
-
             &-input {
                 max-width: 144px;
 
@@ -58,6 +56,7 @@
             width: 100%;
             padding: 4px 0;
             border-radius: 2px;
+            transition: background 0.2s ease-in-out;
 
             &.disabled {
                 pointer-events: none !important;
@@ -72,6 +71,7 @@
                 font-size: 11px;
                 line-height: 14px;
                 color: $white;
+                transition: color 0.2s ease-in-out;
 
                 -webkit-user-select: none !important;
                 -moz-user-select: none !important;
@@ -81,11 +81,27 @@
 
             &:first-child {
                 margin-right: 4px;
-                background: $ta-black;
+                background: $dark-2;
+
+                &:hover {
+                    background: $bw2;
+
+                    p {
+                        color: $ta-black;
+                    }
+                }
+
+                p {
+                    color: $bw-9;
+                }
             }
 
             &:last-child {
                 background: $ta-blue-14;
+
+                &:hover {
+                    background: $ta-blue-15;
+                }
             }
         }
     }

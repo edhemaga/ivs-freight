@@ -340,6 +340,8 @@ export class DispatcherService {
             truckId,
             trailerId,
             driverId,
+            customDateFrom,
+            customDateTo,
         } = data;
 
         return this.dispatchService.apiDispatchBoardHistoryGet(
@@ -347,9 +349,13 @@ export class DispatcherService {
             dispatchHistoryTime,
             truckId,
             trailerId,
-            driverId
+            driverId,
+            null,
+            customDateFrom,
+            customDateTo
         );
     }
+
     public getDispatchHistoryGroups(
         data: GetDispatchHistoryData
     ): Observable<DispatchHistoryGroupListResponse> {
@@ -359,6 +365,8 @@ export class DispatcherService {
             truckId,
             trailerId,
             driverId,
+            customDateFrom,
+            customDateTo,
         } = data;
 
         return this.dispatchService.apiDispatchBoardHistoryGroupsGet(
@@ -366,7 +374,10 @@ export class DispatcherService {
             dispatchHistoryTime,
             truckId,
             trailerId,
-            driverId
+            driverId,
+            null,
+            customDateFrom,
+            customDateTo
         );
     }
 

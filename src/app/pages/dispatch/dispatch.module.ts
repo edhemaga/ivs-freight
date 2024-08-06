@@ -18,6 +18,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-status-switch.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
+import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
@@ -98,6 +99,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
         TaCustomCardComponent,
         TaResizerComponent,
         TaProfileImagesComponent,
+        TaCustomPeriodRangeComponent,
 
         LoadDeatilsItemStopsMainComponent,
         LoadStatusStringComponent,
