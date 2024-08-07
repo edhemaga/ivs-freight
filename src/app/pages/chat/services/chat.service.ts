@@ -31,7 +31,7 @@ export class UserChatService {
 
     // Headers
     private headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,
+        'Authorization': `bearer ${this.token}`,
     });
 
     constructor(
@@ -58,8 +58,8 @@ export class UserChatService {
         );
     }
 
-    public getCompanyChannels(): Observable<ConversationResponse> {
-        return this.http.get<ConversationResponse>(`${environment.API_ENDPOINT}/api/chat/companychannels`,
+    public getCompanyChannels(): Observable<ConversationResponse[]> {
+        return this.http.get<ConversationResponse[]>(`${environment.API_ENDPOINT}/api/chat/companychannels`,
             {
                 headers: this.headers
             }

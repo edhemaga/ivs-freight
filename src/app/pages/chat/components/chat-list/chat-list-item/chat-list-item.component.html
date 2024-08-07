@@ -1,0 +1,94 @@
+<div class="chat-list-item d-flex">
+    <!-- TODO change to new component when available -->
+    <ng-container [ngSwitch]="item?.assetExtension">
+        <ng-container *ngSwitchCase="AttachmentType.JPG">
+            <app-ta-profile-images
+                [indx]="item.id"
+                [withTooltip]="true"
+                [size]="'medium'"
+                [type]="(item?.iconShape | lowercase) || 'user'"
+                [name]="item.name"
+                [url]="item?.pathToAsset ?? ''"
+            ></app-ta-profile-images>
+        </ng-container>
+        <ng-container *ngSwitchCase="AttachmentType.JPEG">
+            <app-ta-profile-images
+                [indx]="item.id"
+                [withTooltip]="true"
+                [size]="'medium'"
+                [type]="(item?.iconShape | lowercase) || 'user'"
+                [name]="item.name"
+                [url]="item?.pathToAsset ?? ''"
+            ></app-ta-profile-images>
+        </ng-container>
+        <ng-container *ngSwitchCase="AttachmentType.PNG">
+            <app-ta-profile-images
+                [indx]="item.id"
+                [withTooltip]="true"
+                [size]="'medium'"
+                [type]="(item?.iconShape | lowercase) || 'user'"
+                [name]="item.name"
+                [url]="item?.pathToAsset ?? ''"
+            ></app-ta-profile-images>
+        </ng-container>
+        <ng-container *ngSwitchCase="AttachmentType.SVG">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="item?.pathToAsset"
+            >
+            </svg-icon>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <app-ta-profile-images
+                [indx]="item.id"
+                [withTooltip]="true"
+                [size]="'medium'"
+                [type]="(item?.iconShape | lowercase) ?? 'user'"
+                [name]="item.name"
+            ></app-ta-profile-images>
+        </ng-container>
+    </ng-container>
+
+    <div class="chat-list-item-text-wrapper">
+        <ng-container *ngIf="!item?.lastContent?.content; else messageData">
+            <div class="chat-list-item-name-no-data d-flex align-items-center">
+                {{ item.name }}
+            </div>
+        </ng-container>
+
+        <ng-template #messageData>
+            <div class="chat-list-item-top d-flex">
+                <div class="chat-list-item-name ta-font-medium">
+                    {{ item.name }}
+                </div>
+                <ng-container *ngIf="contact?.unreadCount">
+                    <div class="chat-list-item-text-count ta-font-semi-bold">
+                        {{ item.notificationCount }}
+                    </div>
+                </ng-container>
+            </div>
+            <div class="chat-list-item-text-content d-flex">
+                <ng-container [ngSwitch]="status">
+                    <ng-container *ngSwitchCase="ConversationStatus.TYPING">
+                        <div class="chat-list-item-message ta-font-bold">
+                            Typing...
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="ConversationStatus.UNREAD">
+                        {{ item.lastContent?.content }}</ng-container
+                    >
+                    <ng-container *ngSwitchCase="ConversationStatus.READ">
+                        {{ item.lastContent?.content }}</ng-container
+                    >
+                    <ng-container *ngSwitchDefault></ng-container>
+                </ng-container>
+
+                <div class="chat-list-item-text-time ta-font-regular">
+                    {{ item.lastContent?.createdAt | formatTime }}
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>
