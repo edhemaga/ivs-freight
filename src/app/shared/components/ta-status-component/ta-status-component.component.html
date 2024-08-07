@@ -1,13 +1,17 @@
 <ng-container *ngIf="statusDetails">
     <div class="status-node" [ngClass]="{ dropdownOpen: isDispatch }">
         <ng-container *ngIf="isDispatch">
-            <div class="status-dispatch justify-content-center d-flex">
+            <div
+                class="status-dispatch flex-column justify-content-center d-flex"
+            >
                 <app-load-status-string
                     [status]="{
                         name: status.statusString,
                         valueForRequest: status.statusValue.name
                     }"
                     [justifyStart]="true"
+                    [isDarkColor]="isDispatch"
+                    [isDispatch]="isDispatch"
                 ></app-load-status-string>
                 <div class="status-time">
                     {{ time }}
@@ -38,6 +42,8 @@
                                 valueForRequest: item.statusValue.name
                             }"
                             [justifyStart]="true"
+                            [isDispatch]="isDispatch"
+                            [isDarkColor]="isDispatch"
                         ></app-load-status-string>
                     </div>
                 </ng-container>
@@ -74,6 +80,8 @@
                                         .name
                             }"
                             [justifyStart]="true"
+                            [isDispatch]="isDispatch"
+                            [isDarkColor]="isDispatch"
                         ></app-load-status-string>
                     </div>
                     <img [src]="backStatus" />

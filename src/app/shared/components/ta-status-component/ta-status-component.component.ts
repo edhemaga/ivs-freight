@@ -48,14 +48,15 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
     @Input() time?: string;
     @Input() status?: DispatchStatusResponse;
 
-    public statusDetails: LoadPossibleStatusesResponse;
-    private destroy$ = new Subject<void>();
-    public backStatus = StatusComponentSvgRoutes.backStatusImg;
-    @Output() onRouteEvent? = new EventEmitter<{
+    @Output() onRouteEventEmmitter? = new EventEmitter<{
         id: number;
         status: DispatchStatus;
         dataFront: DispatchStatus;
     }>();
+
+    public statusDetails: LoadPossibleStatusesResponse;
+    private destroy$ = new Subject<void>();
+    public backStatus = StatusComponentSvgRoutes.backStatusImg;
 
     constructor(
         private loadService: LoadService,
@@ -63,6 +64,9 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.checkIsDispathcStatus();
+    }
+    public checkIsDispathcStatus(): void {
         if (this.isDispatch) {
             this.getDispatchStatus();
         } else {
@@ -83,6 +87,7 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
     public getDispatchStatus(): void {
         this.dispatchService
             .apiDispatchNextstatusesIdGet(this.statusId)
+            .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.statusDetails = res;
             });
@@ -93,7 +98,7 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
         statusName: LoadStatus | DispatchStatus
     ): void {
         if (this.isDispatch) {
-            this.onRouteEvent.emit({
+            this.onRouteEventEmmitter.emit({
                 id: this.statusId,
                 status: item as DispatchStatus,
                 dataFront: statusName as DispatchStatus,

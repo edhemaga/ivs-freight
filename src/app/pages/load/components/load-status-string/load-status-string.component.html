@@ -20,11 +20,17 @@
                 value.length > 1
                     ? isDropdownColor
                         ? (status.valueForRequest | dropdownLoadStatusColor)
+                        : isDispatch
+                        ? (status.valueForRequest
+                          | dispatchStatusColor : isDarkColor)
                         : (status.valueForRequest | loadStatusColor)
                     : value.length === 1 && index === displayString.length - 1
                     ? isDropdownColor
                         ? (status.valueForRequest
                           | dropdownLoadStatusColor : true)
+                        : isDispatch
+                        ? (status.valueForRequest
+                          | dispatchStatusColor : isDarkColor)
                         : (status.valueForRequest | loadStatusColor : true)
                     : {}
             "

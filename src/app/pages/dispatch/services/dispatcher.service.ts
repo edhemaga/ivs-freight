@@ -27,6 +27,7 @@ import {
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
     UpdateDispatchStatusCommand,
+    DispatchPossibleStatusResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
@@ -90,7 +91,9 @@ export class DispatcherService {
     getDispatchBoardByDispatcherList(id: number) {
         return this.dispatchService.apiDispatchBoardGet(id);
     }
-    apiDispatchNextstatusesIdGet(id: number) {
+    public apiDispatchNextstatusesIdGet(
+        id: number
+    ): Observable<DispatchPossibleStatusResponse> {
         return this.dispatchService.apiDispatchNextstatusesIdGet(id);
     }
 

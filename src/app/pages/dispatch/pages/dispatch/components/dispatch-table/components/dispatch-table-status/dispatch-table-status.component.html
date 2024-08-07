@@ -1,7 +1,7 @@
 <div class="main_inside filled">
     <div class="padding-inside">
         <div
-            class="status-container justify-content-center"
+            class="status-container d-flex flex-column justify-content-center"
             ngbTooltip
             mainContent
             [mainTooltip]="'Change Status'"
@@ -12,7 +12,7 @@
             (click)="getStatusDropdonw(ngbStatus)"
         >
             <div
-                class="status"
+                class="status ta-font-bold"
                 #ngbStatus="ngbPopover"
                 [autoClose]="true"
                 [ngbPopover]="statusPopover"
@@ -27,9 +27,10 @@
                         valueForRequest: status.statusValue.name
                     }"
                     [justifyStart]="true"
+                    [isDispatch]="true"
                 ></app-load-status-string>
             </div>
-            <div class="status-time">
+            <div class="status-time ta-font-bold">
                 {{ showTime }}
             </div>
         </div>
@@ -42,7 +43,7 @@
         [time]="showTime"
         [statusId]="dispatchId"
         [isDispatch]="true"
-        (onRouteEvent)="upadateStatus($event)"
+        (onRouteEventEmmitter)="upadateStatus($event)"
     >
     </app-ta-status-component>
 </ng-template>

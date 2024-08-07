@@ -98,7 +98,7 @@ export class TaProfileImagesComponent implements OnChanges {
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
     @Input() url?: string = null;
-    @Input() idDispatch?: boolean = false;
+    @Input() isDispatch?: boolean = false;
 
     public profileImageColor: string;
     public profileImageBackgroundColor: string;

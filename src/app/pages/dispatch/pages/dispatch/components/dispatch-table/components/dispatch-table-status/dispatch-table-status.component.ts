@@ -21,6 +21,7 @@ import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/d
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DispatchStatusEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-status.enum';
 
 //models
 import {
@@ -38,13 +39,15 @@ import {
         AngularSvgIconModule,
         CommonModule,
         NgbModule,
+
+        //components
         LoadStatusStringComponent,
         TaStatusComponentComponent,
         TaAppTooltipV2Component,
     ],
 })
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
-    @Input() set time(value: string | null) {
+    @Input() set time(value: string) {
         if (value) {
             this.showTime = DispatchTableHelper.calculateDateDifference(value);
         }
@@ -84,14 +87,14 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     }): void {
         if (
             [
-                'DeadHeading',
-                'Off',
-                'Repair',
-                'DispatchedRepair',
-                'LoadedRepair',
-                'Towing',
-                'Canceled',
-                'Available',
+                DispatchStatusEnum[1],
+                DispatchStatusEnum[2],
+                DispatchStatusEnum[3],
+                DispatchStatusEnum[4],
+                DispatchStatusEnum[5],
+                DispatchStatusEnum[6],
+                DispatchStatusEnum[7],
+                DispatchStatusEnum[8],
             ].includes(e.status)
         ) {
             const mappedEvent = {
@@ -121,8 +124,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confirmationActivationService.getConfirmationActivationData$
-            .pipe(takeUntil(this.destroy$))
             .pipe(
+                takeUntil(this.destroy$),
                 filter(
                     (confirmationResponse) =>
                         confirmationResponse.id === this.dispatchId
@@ -136,7 +139,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             });
     }
 
-    updateStatus(statusId: number, statusName: DispatchStatus): void {
+    public updateStatus(statusId: number, statusName: DispatchStatus): void {
         this.dispatchService
             .updateDispatchStatus({
                 id: statusId,
@@ -153,6 +156,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             )
             .subscribe();
     }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

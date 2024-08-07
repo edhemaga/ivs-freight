@@ -11,23 +11,14 @@ export class LoadStatusColorPipe implements PipeTransform {
     ): { color: string; backgroundColor?: string } {
         const adjustedStatus = status.replace(/\s+/g, '');
 
-        const statusGreyColorCondition = adjustedStatus === 'Booked';
+        const statusGreyColorCondition = ['Booked', 'Off'].includes(
+            adjustedStatus
+        );
         const statusDarkGreyColorCondition = [
             'Unassigned',
-            'DeadHeading',
-            'Off',
+            'Deadhead',
+            'DeadHead',
         ].includes(adjustedStatus);
-
-        const statusLightPurpleColorCondition = adjustedStatus === 'Towing';
-        const statusLightYellowColorCondition = adjustedStatus === 'Empty';
-
-        const statusLightRedColorCondition = adjustedStatus === 'Cancel';
-        const statusLightOrangeColorCondition = [
-            'Repair',
-            'DispatchedRepair',
-        ].includes(adjustedStatus);
-
-        const statusLightGreenColorCondition = adjustedStatus === 'Available';
         const statusDarkGrey2ColorCondition = [
             'InvoicedHold',
             'Hold',
@@ -63,14 +54,16 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Tonu',
             'Offloaded',
             'RepairOffloaded',
-        ].includes(status);
+        ].includes(adjustedStatus);
         const statusDarkRed2ColorCondition = [
             'Cancelled',
             'Split',
             'LoadCancelled',
-        ].includes(status);
-        const statusDarkRed3ColorCondition = status === 'Tonu';
-        const statusOrangeColorCondition = status === 'Delivered';
+        ].includes(adjustedStatus);
+        const statusDarkRed3ColorCondition = adjustedStatus === 'Tonu';
+        const statusOrangeColorCondition = ['Delivered', 'Empty'].includes(
+            adjustedStatus
+        );
         const statusYellowColorCondition = [
             'Invoiced',
             'Paid',
@@ -166,26 +159,6 @@ export class LoadStatusColorPipe implements PipeTransform {
             return isBadge
                 ? { color: '#fff', backgroundColor: '#CDB255' }
                 : { color: '#CDB255' };
-        } else if (statusLightGreenColorCondition) {
-            return isBadge
-                ? { color: '#fff', backgroundColor: '#9ED186' }
-                : { color: '#9ED186' };
-        } else if (statusLightPurpleColorCondition) {
-            return isBadge
-                ? { color: '#fff', backgroundColor: '#C999F4' }
-                : { color: '#C999F4' };
-        } else if (statusLightRedColorCondition) {
-            return isBadge
-                ? { color: '#fff', backgroundColor: '#F4BEBE' }
-                : { color: '#F4BEBE' };
-        } else if (statusLightOrangeColorCondition) {
-            return isBadge
-                ? { color: '#fff', backgroundColor: '#FF7043' }
-                : { color: '#FF7043' };
-        } else if (statusLightYellowColorCondition) {
-            return isBadge
-                ? { color: '#fff', backgroundColor: '#FAB15C' }
-                : { color: '#FAB15C' };
         }
     }
 }
