@@ -108,9 +108,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
   }
 
-  public searchDepartment(searchTerm: string): void {
-    console.log(searchTerm)
-  }
+  public searchDepartment(searchTerm: string): void { }
 
   private getUnreadCount(
     users: CompanyUserChatResponsePaginationReduced,
