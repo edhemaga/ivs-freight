@@ -14,8 +14,14 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
 
 // models
 import { OpenModal } from '@shared/models/open-modal.model';
-import { DriverMinimalResponse, HosResponse } from 'appcoretruckassist';
-import { DriverItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/driver-items.model';
+import {
+    DriverListItemResponse,
+    DriverMinimalResponse,
+    DriverResponse,
+    EnumValue,
+    HosResponse,
+} from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
@@ -30,7 +36,6 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // config
 import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-dispatch-table-driver',
@@ -38,9 +43,9 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
     styleUrls: ['./dispatch-table-driver.component.scss'],
 })
 export class DispatchTableDriverComponent {
-    @Input() public driver: any;
+    @Input() public driver: DriverResponse;
     @Input() public rowIndex: number;
-    @Input() public driverList: any;
+    @Input() public driverList: DriverListItemResponse[];
     @Input() public isBoardLocked: boolean;
     @Input() public phone: string;
     @Input() public email: string;
@@ -92,6 +97,10 @@ export class DispatchTableDriverComponent {
         return DispatchConfig.getDriverInputConfig();
     }
 
+    public identity(_: number, item: EnumValue): number {
+        return item.id;
+    }
+
     public setMouseOver(txt: string, indx: number) {
         this.driverHover = {
             indx: indx,
@@ -125,10 +134,13 @@ export class DispatchTableDriverComponent {
         const el = this.renderer.createElement(
             DispatchTableStringEnum.TEXTAREA
         );
+
         this.renderer.setProperty(el, DispatchTableStringEnum.VALUE, text);
         this.renderer.appendChild(this.el.nativeElement, el);
+
         el.select();
         document.execCommand(DispatchTableStringEnum.COPY);
+
         this.renderer.removeChild(this.el.nativeElement, el);
     }
 
@@ -151,6 +163,8 @@ export class DispatchTableDriverComponent {
                 });
             }
         }
+
+        this.openedDriverDropdown = -1;
     }
 
     public removeDriver(index: number): void {
@@ -186,9 +200,5 @@ export class DispatchTableDriverComponent {
 
     public handleDriverVacation(): void {
         this.driverVacationEmitter.emit();
-    }
-
-    public identity<T extends DriverItems>(index: number, item: T): number {
-        return item.id;
     }
 }

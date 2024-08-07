@@ -593,6 +593,12 @@
                 }
             }
 
+            &.truck-field,
+            &.trailer-field {
+                min-width: 160px;
+                max-width: 160px;
+            }
+
             &.pre-trip {
                 min-width: 34px;
                 max-width: 34px;
@@ -639,37 +645,13 @@
                     width: 150px;
                 }
             }
-        }
-    }
 
-    .table-info {
-        margin-top: 2px;
-
-        .table-inside-info {
-            padding: 0 10px;
-        }
-
-        .table-info-field {
-            span {
-                font-size: 11px;
-                line-height: 14px;
-                text-transform: uppercase;
-                color: $bw6-2;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
+            &.truck-field, &.trailer-field {
+                min-width: 140px;
             }
 
-            &.dispatcher-field {
-                width: 300px;
-                text-align: right;
+            &.note-field {
+                min-width: 194px;
             }
         }
     }
@@ -730,5 +712,118 @@
 
     .cdk-drag-placeholder {
         opacity: 0;
+    }
+
+    .no-data-table-row {
+        margin-bottom: 2px;
+
+        td {
+            padding: 1px;
+
+            div {
+                height: 34px;
+                background: $ta-light-grey-5;
+                border-radius: 3px;
+            }
+
+            &:nth-child(1), &:nth-child(2) {
+                width: 160px;
+            }
+
+            &:nth-child(3) {
+                width: 240px;
+            }
+
+            &:nth-child(4), &:nth-child(10), &:nth-child(12) {
+                min-width: 34px;
+                width: 34px;
+            }
+
+            &:nth-child(5) {
+                width: 160px;
+            }
+
+            &:nth-child(6) {
+                width: 140px;
+            }
+
+            &:nth-child(7) {
+                width: 340px;
+            }
+
+            &:nth-child(8) {
+                width: 226px;
+            }
+
+            &:nth-child(9) {
+                width: 100px;
+            }
+
+            &:nth-child(11) {
+                width: 236px;
+            }
+        }
+
+        &.first-row {
+            div {
+                background: linear-gradient(180deg, #F7F7F7 0%, rgba(247, 247, 247, 0.66) 100%);
+                opacity: 0.7;
+            }
+        }
+
+        &.second-row {
+            div {
+                background: linear-gradient(180deg, rgba(247, 247, 247, 0.66) 0%, rgba(247, 247, 247, 0.33) 100%);
+                opacity: 0.7;
+            }
+        }
+
+        &.third-row {
+            div {
+                background: linear-gradient(180deg, rgba(247, 247, 247, 0.33) 0%, rgba(247, 247, 247, 0) 100%);
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .no-data-container {
+        gap: 32px;
+
+        .no-data-text-container {
+            gap: 12px;
+            
+            .no-data-text {
+                font-size: 26px;
+                line-height: 32px;
+                color: $bw5;
+            }
+
+            .no-data-description {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+            }
+        }
+
+        .unlock-table-button {
+            width: 150px;
+            height: 32px;
+            border: none;
+            background: $ta-blue-13;
+            border-radius: 2px;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+            user-select: none;
+
+            p {
+                font-size: 14px;
+                line-height: 20px;
+                color: $white;
+            }
+
+            &:hover {
+                background: $ta-blue-15;
+            }
+        }
     }
 }

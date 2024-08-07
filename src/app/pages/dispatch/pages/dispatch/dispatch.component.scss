@@ -6,9 +6,12 @@
 
 .multiple-tables {
     .table-info {
-        background-color: #3074d333;
         margin-bottom: 12px;
         border-radius: 3px;
+    }
+
+    .dispatch-groups {
+        margin-bottom: 12px;
     }
 
     .dispatch-groups:not(.dispatch-groups:first-child) {
@@ -18,6 +21,7 @@
             }
         }
     }
+
     .dispatcher-field {
         visibility: visible !important;
     }

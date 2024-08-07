@@ -22,16 +22,6 @@ import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.mo
     selector: 'app-dispatch-table-last-location',
     templateUrl: './dispatch-table-last-location.component.html',
     styleUrls: ['./dispatch-table-last-location.component.scss'],
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-
-        //components
-        TaInputAddressDropdownComponent,
-        TaInputDropdownComponent,
-    ],
 })
 export class DispatchTableLastLocationComponentComponent {
     @Input() address?: AddressEntity = null;

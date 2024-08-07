@@ -12,7 +12,7 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Svg routes
-import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/utils/helpers/dispatch-parking-svg-routes';
+import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 @Component({
     selector: 'app-ta-resizer',
