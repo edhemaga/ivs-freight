@@ -13,14 +13,14 @@ export class CustomPeriodRangeConfig {
         };
     }
 
-    static getToDateConfig(isOnlyInputsLayout: boolean): ITaInput {
+    static getToDateConfig(): ITaInput {
         return {
             name: 'datepicker',
             type: 'text',
             label: 'To',
             isDropdown: true,
             placeholderIcon: 'date',
-            isRequired: !isOnlyInputsLayout,
+            isRequired: true,
             customClass: 'datetimeclass dark',
         };
     }

@@ -17,7 +17,7 @@
         <div
             class="d-flex align-items-center custom-period-range-form-date-inputs"
             [ngStyle]="{
-                'margin-bottom': !isOnlyInputsLayout ? '42px' : '24px'
+                'margin-bottom': !isOnlyDateInputsLayout ? '42px' : '24px'
             }"
         >
             <div class="custom-period-range-form-date-inputs-input">
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <ng-container *ngIf="!isOnlyInputsLayout">
+        <ng-container *ngIf="!isOnlyDateInputsLayout">
             <div class="custom-period-range-form-subperiod-input">
                 <app-ta-input-dropdown
                     formControlName="subPeriod"
@@ -51,22 +51,21 @@
     <!-- Buttons -->
 
     <div class="d-flex align-items-center custom-period-range-buttons">
-        <div (click)="handleCancelOrSetClick(true, false)">asd</div>
         <button
             class="custom-period-range-buttons-btn"
             type="button"
-            (click)="handleCancelOrSetClick(true, isOnlyInputsLayout)"
+            (click)="handleCancelOrSetClick(true)"
         >
-            <p class="m-0 ta-font-extra-bold">
-                {{ !isOnlyInputsLayout ? 'CANCEL' : 'CLEAR ALL' }}
-            </p>
+            <p class="m-0 ta-font-extra-bold">CANCEL</p>
         </button>
 
         <button
             class="custom-period-range-buttons-btn"
             type="button"
-            [disabled]="customPeriodRangeForm.invalid"
-            [ngClass]="{ disabled: customPeriodRangeForm.invalid }"
+            [disabled]="customPeriodRangeForm.invalid || !isFormDirty"
+            [ngClass]="{
+                disabled: customPeriodRangeForm.invalid || !isFormDirty
+            }"
             (click)="handleCancelOrSetClick(false)"
         >
             <p class="m-0 ta-font-extra-bold">SET</p>

@@ -299,34 +299,20 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public handleSetCustomPeriodRangeClick(
         customPeriodRange: CustomPeriodRange
     ): void {
-        this.selectedCustomPeriodRange = customPeriodRange;
-
         this.isDisplayingCustomPeriodRange = false;
         this.isCustomTimeSelected = false;
 
         if (!customPeriodRange) {
-            if (
-                this.previousSelectedTime?.name ===
-                    DispatchHistoryModalStringEnum.CUSTOM &&
-                !this.selectedDispatchBoard &&
-                !this.selectedTruck &&
-                !this.selectedTrailer &&
-                !this.selectedDriver
-            ) {
-                this.previousSelectedTime = null;
-            }
-
             this.selectedTime = this.previousSelectedTime;
 
             this.dispatchHistoryForm
                 .get(DispatchHistoryModalStringEnum.TIME)
                 .patchValue(this.previousSelectedTime?.name ?? null);
+        } else {
+            this.selectedCustomPeriodRange = customPeriodRange;
         }
 
-        this.onSelectDropdown(
-            this.selectedTime,
-            DispatchHistoryModalStringEnum.TIME
-        );
+        this.getDispatchHistory();
     }
 
     public onSelectDropdown(event: EnumValue, type: string): void {
@@ -340,12 +326,15 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     this.selectedTime?.name ===
                     DispatchHistoryModalStringEnum.CUSTOM
                 ) {
-                    if (!this.selectedCustomPeriodRange) {
-                        this.isDisplayingCustomPeriodRange = true;
-                        this.isCustomTimeSelected = true;
+                    this.isDisplayingCustomPeriodRange = true;
+                    this.isCustomTimeSelected = true;
 
-                        return;
-                    }
+                    return;
+                } else {
+                    this.isDisplayingCustomPeriodRange = false;
+                    this.isCustomTimeSelected = false;
+
+                    this.selectedCustomPeriodRange = null;
                 }
 
                 break;
@@ -370,22 +359,11 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         }
 
         if (
-            !this.selectedTime &&
-            !this.selectedDispatchBoard &&
-            !this.selectedTruck &&
-            !this.selectedTrailer &&
-            !this.selectedDriver
-        ) {
-            this.selectedCustomPeriodRange = null;
-        }
-
-        if (
             this.selectedTime?.name !== DispatchHistoryModalStringEnum.CUSTOM ||
-            this.selectedCustomPeriodRange
+            (this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM &&
+                this.selectedCustomPeriodRange)
         ) {
-            this.isDisplayingCustomPeriodRange = false;
-            this.isCustomTimeSelected = false;
-
             this.getDispatchHistory();
         }
     }
@@ -482,22 +460,23 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.selectedTrailer = { name: 'A012102', id: 13 };
         this.selectedDriver = { name: 'Sara Key', id: 279 }; */
 
-        console.log(
-            'this.selectedCustomPeriodRange',
-            this.selectedCustomPeriodRange
-        );
-
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,
             dispatchHistoryTime: this.selectedTime?.id,
             truckId: this.selectedTruck?.id,
             trailerId: this.selectedTrailer?.id,
             driverId: this.selectedDriver?.id,
-            customDateFrom: this.selectedCustomPeriodRange?.fromDate,
-            customDateTo: this.selectedCustomPeriodRange?.toDate,
+            customDateFrom:
+                this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM
+                    ? this.selectedCustomPeriodRange?.fromDate
+                    : null,
+            customDateTo:
+                this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM
+                    ? this.selectedCustomPeriodRange?.toDate
+                    : null,
         };
-
-        console.log('data', data);
 
         this.isGroup =
             MethodsGlobalHelper.checkIfEveryPropertyInObjectHasValue(data);

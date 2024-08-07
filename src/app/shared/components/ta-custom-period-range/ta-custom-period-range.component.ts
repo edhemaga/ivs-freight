@@ -24,6 +24,9 @@ import moment from 'moment';
 // config
 import { CustomPeriodRangeConfig } from '@shared/components/ta-custom-period-range/utils/config/custom-period-range.config';
 
+// services
+import { FormService } from '@shared/services/form.service';
+
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -53,8 +56,9 @@ export class TaCustomPeriodRangeComponent
 {
     @Input() subPeriodDropdownList: DropdownListItem[] = [];
     @Input() selectedSubPeriod: DropdownListItem;
+    @Input() selectedCustomPeriodRange: CustomPeriodRange;
     @Input() clearCustomPeriodRangeValue?: boolean = false;
-    @Input() isOnlyInputsLayout?: boolean = false;
+    @Input() isOnlyDateInputsLayout?: boolean = false;
 
     @Output() customPeriodRangeValuesEmitter =
         new EventEmitter<CustomPeriodRange>();
@@ -62,18 +66,23 @@ export class TaCustomPeriodRangeComponent
 
     private destroy$ = new Subject<void>();
 
+    public isFormDirty: boolean = true;
+
     public customPeriodRangeForm: UntypedFormGroup;
 
     public isSubPeriodDisabled: boolean = true;
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private formService: FormService
+    ) {}
 
     get fromDateConfig(): ITaInput {
         return CustomPeriodRangeConfig.getFromDateConfig();
     }
 
     get toDateConfig(): ITaInput {
-        return CustomPeriodRangeConfig.getToDateConfig(this.isOnlyInputsLayout);
+        return CustomPeriodRangeConfig.getToDateConfig();
     }
 
     get subPeriodConfig(): ITaInput {
@@ -96,10 +105,31 @@ export class TaCustomPeriodRangeComponent
 
     private createForm(): void {
         this.customPeriodRangeForm = this.formBuilder.group({
-            fromDate: [null, Validators.required],
-            toDate: [null, !this.isOnlyInputsLayout && Validators.required],
-            subPeriod: [null, !this.isOnlyInputsLayout && Validators.required],
+            fromDate: [
+                this.selectedCustomPeriodRange?.fromDate ?? null,
+                Validators.required,
+            ],
+            toDate: [
+                this.selectedCustomPeriodRange?.toDate ?? null,
+                Validators.required,
+            ],
+            subPeriod: [
+                null,
+                !this.isOnlyDateInputsLayout && Validators.required,
+            ],
         });
+
+        if (this.selectedCustomPeriodRange) this.startFormChanges();
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.customPeriodRangeForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public handleInputSelect(dropdownListItem: DropdownListItem): void {
@@ -110,16 +140,7 @@ export class TaCustomPeriodRangeComponent
         });
     }
 
-    public handleCancelOrSetClick(
-        isCancelBtnClick: boolean,
-        isClearClick: boolean = false
-    ): void {
-        if (isClearClick) {
-            this.resetCustomPeriodRangeForm();
-
-            return;
-        }
-
+    public handleCancelOrSetClick(isCancelBtnClick: boolean): void {
         if (isCancelBtnClick) {
             this.customPeriodRangeValuesEmitter.emit(null);
         } else {

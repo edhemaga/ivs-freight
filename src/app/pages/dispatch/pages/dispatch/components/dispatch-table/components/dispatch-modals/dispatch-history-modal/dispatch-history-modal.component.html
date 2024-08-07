@@ -33,7 +33,10 @@
                     <ng-container *ngIf="isDisplayingCustomPeriodRange">
                         <div class="custom-period-range-container">
                             <app-ta-custom-period-range
-                                [isOnlyInputsLayout]="true"
+                                [isOnlyDateInputsLayout]="true"
+                                [selectedCustomPeriodRange]="
+                                    selectedCustomPeriodRange
+                                "
                                 (customPeriodRangeValuesEmitter)="
                                     handleSetCustomPeriodRangeClick($event)
                                 "

@@ -100,7 +100,11 @@
                 background: $ta-blue-14;
 
                 &:hover {
-                    background: $ta-blue-15;
+                    background: $ta-blue-16;
+
+                    p {
+                        color: $ta-blue-15;
+                    }
                 }
             }
         }
