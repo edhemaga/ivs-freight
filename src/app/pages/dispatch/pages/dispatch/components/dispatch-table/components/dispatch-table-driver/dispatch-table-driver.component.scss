@@ -16,7 +16,7 @@
                                 fill: $ta-blue-13;
                             }
                         }
-    
+
                         &:hover {
                             svg {
                                 path {
@@ -33,7 +33,7 @@
                 height: 26px;
                 border-radius: 2px;
                 margin-right: 2px;
-                
+
                 &.driver-not-on-vacation {
                     svg-icon {
                         svg {
@@ -67,6 +67,7 @@
 
                     &:hover {
                         background-color: $ta-blue-17 !important;
+
                         svg-icon {
                             svg {
                                 path {
@@ -107,27 +108,27 @@
                 background: transparent;
                 cursor: pointer;
                 transition: background 0.2s ease-in;
-    
+
                 &:hover {
                     background: $ta-red-15;
-    
+
                     svg {
                         path {
                             fill: $ta-red-14;
                         }
                     }
                 }
-    
+
                 &.disabled {
                     svg {
                         path {
                             fill: $ta-light-grey-6;
                         }
                     }
-    
+
                     &:hover {
                         background: transparent;
-    
+
                         svg {
                             path {
                                 fill: $ta-light-grey-6;
@@ -135,7 +136,7 @@
                         }
                     }
                 }
-    
+
                 svg {
                     path {
                         fill: $bw5;

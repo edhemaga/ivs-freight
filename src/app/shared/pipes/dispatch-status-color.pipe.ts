@@ -9,7 +9,6 @@ export class dispatchStatusColorPipe implements PipeTransform {
         status: string,
         isDarkColor: boolean
     ): { color: string; backgroundColor?: string } {
-        console.log(isDarkColor);
         const adjustedStatus = status.replace(/\s+/g, '');
 
         const statusDarkGreyColorCondition = ['DeadHeading', 'Off'].includes(

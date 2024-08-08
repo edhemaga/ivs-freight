@@ -3,7 +3,6 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     UntypedFormArray,
-    UntypedFormControl,
 } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -26,12 +25,17 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
 
 // constants
-import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
+import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
 
 // models
-import { DispatchHistoryGroupResponse, EnumValue } from 'appcoretruckassist';
+import {
+    DispatchHistoryGroupResponse,
+    DispatchHistoryResponse,
+    EnumValue,
+} from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params.model';
+import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 
 @Component({
     selector: 'app-dispatch-history-modal',
@@ -44,10 +48,17 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public dispatchHistoryForm: UntypedFormGroup;
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+    public dispatchHistoryModalStringEnum = DispatchHistoryModalStringEnum;
 
     public hasContent: boolean = false;
     public hasNoneSelected: boolean = true;
     public isGroup: boolean = false;
+
+    // non group
+    public noGroupHeaderItems: string[] = [];
+    public noGroupClass: string;
+
+    public noGroupData: string[][] = [];
 
     // group
     public groupHeaderItems: string[] = [];
@@ -56,6 +67,12 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public isInputHoverRows: boolean[][][] = [];
 
     public isHoveringGroupItemIndex: number = -1;
+
+    // custom period - date range
+    public isDisplayingCustomPeriodRange: boolean = false;
+    public isCustomTimeSelected: boolean = false;
+
+    private selectedCustomPeriodRange: CustomPeriodRange;
 
     // dropdown lists
     public timesDropdownList: EnumValue[] = [];
@@ -70,6 +87,8 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public selectedTrailer: EnumValue;
     public selectedDriver: EnumValue;
 
+    public previousSelectedTime: EnumValue;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -83,8 +102,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         this.getConstantData();
-
-        this.getDispatchHistory();
     }
 
     get dispatchHistoryTimeConfig(): ITaInput {
@@ -178,7 +195,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     private getConstantData(): void {
         this.groupHeaderItems =
-            DispatchTableConstants.DISPATCH_HISTORY_GROUP_HEADER_ITEMS;
+            DispatchHistoryModalConstants.DISPATCH_HISTORY_GROUP_HEADER_ITEMS;
     }
 
     private getDispatchHistoryGroupItems(): UntypedFormArray {
@@ -196,11 +213,13 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private createDispatchHistoryGroupItemRows(
         data: DispatchHistoryGroupResponse[]
     ): void {
-        console.log('data', data);
-
         const itemsArray = this.dispatchHistoryForm.get(
             DispatchHistoryModalStringEnum.DISPATCH_HISTORY_GROUP_ITEMS
         ) as UntypedFormArray;
+
+        this.isInputHoverRows = [];
+
+        itemsArray.clear();
 
         data.forEach((group, index) => {
             this.isInputHoverRows = [...this.isInputHoverRows, []];
@@ -248,7 +267,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     private createIsHoverRow(): boolean[] {
         const isInputHoverRow =
-            DispatchTableConstants.IS_INPUT_HOVER_ROW_DISPATCH;
+            DispatchHistoryModalConstants.IS_INPUT_HOVER_ROW_DISPATCH;
 
         return JSON.parse(JSON.stringify(isInputHoverRow));
     }
@@ -275,10 +294,52 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.dispatchHistoryForm.reset();
     }
 
+    public handleTimeDropdown(isClick: boolean): void {
+        this.isDisplayingCustomPeriodRange = isClick
+            ? false
+            : this.isCustomTimeSelected;
+    }
+
+    public handleSetCustomPeriodRangeClick(
+        customPeriodRange: CustomPeriodRange
+    ): void {
+        this.isDisplayingCustomPeriodRange = false;
+        this.isCustomTimeSelected = false;
+
+        if (!customPeriodRange) {
+            this.selectedTime = this.previousSelectedTime;
+
+            this.dispatchHistoryForm
+                .get(DispatchHistoryModalStringEnum.TIME)
+                .patchValue(this.previousSelectedTime?.name ?? null);
+        } else {
+            this.selectedCustomPeriodRange = customPeriodRange;
+        }
+
+        this.getDispatchHistory();
+    }
+
     public onSelectDropdown(event: EnumValue, type: string): void {
         switch (type) {
             case DispatchHistoryModalStringEnum.TIME:
+                this.previousSelectedTime = this.selectedTime;
+
                 this.selectedTime = event;
+
+                if (
+                    this.selectedTime?.name ===
+                    DispatchHistoryModalStringEnum.CUSTOM
+                ) {
+                    this.isDisplayingCustomPeriodRange = true;
+                    this.isCustomTimeSelected = true;
+
+                    return;
+                } else {
+                    this.isDisplayingCustomPeriodRange = false;
+                    this.isCustomTimeSelected = false;
+
+                    this.selectedCustomPeriodRange = null;
+                }
 
                 break;
             case DispatchHistoryModalStringEnum.DISPATCH_BOARD:
@@ -301,16 +362,74 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 break;
         }
 
-        this.getDispatchHistory();
+        if (
+            this.selectedTime?.name !== DispatchHistoryModalStringEnum.CUSTOM ||
+            (this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM &&
+                this.selectedCustomPeriodRange)
+        ) {
+            if (
+                type === DispatchHistoryModalStringEnum.TRAILER &&
+                this.selectedDispatchBoard &&
+                this.selectedTruck &&
+                this.selectedTrailer &&
+                !this.selectedDriver
+            ) {
+                this.getDispatchHistoryDriver();
+            } else {
+                this.getDispatchHistory();
+            }
+        }
     }
 
     private createDispatchHistoryGroupData(
         data: DispatchHistoryGroupResponse[]
     ): void {
+        console.log('group data', data);
+
         this.hasContent = !!data?.length;
-        this.groupData = data;
+
+        this.groupData = data.map((group) => {
+            return {
+                ...group,
+                items: group.items.map((item) => {
+                    return {
+                        ...item,
+                        stopOrder: null,
+                        type: DispatchHistoryModalHelper.createStatusOrderValues(
+                            item.status.statusValue.name
+                        ),
+                    };
+                }),
+            };
+        });
 
         this.createDispatchHistoryGroupItemRows(data);
+    }
+
+    private createDispatchHistoryData(data: DispatchHistoryResponse[]): void {
+        console.log('no group data', data);
+
+        const layoutParams = {
+            isTimeSelected: !!this.selectedTime,
+            isDispatchBoardSelected: !!this.selectedDispatchBoard,
+            isTruckSelected: !!this.selectedTruck,
+            isTrailerSelected: !!this.selectedTrailer,
+            isDriverSelected: !!this.selectedDriver,
+        };
+
+        const { headerItems, noGroupClass, noGroupData } =
+            DispatchHistoryModalHelper.getDispatchHistoryLayoutItems(
+                layoutParams,
+                data
+            );
+
+        this.hasContent = !!data?.length;
+
+        this.noGroupData = noGroupData;
+
+        this.noGroupHeaderItems = headerItems;
+        this.noGroupClass = noGroupClass;
     }
 
     private getModalDropdowns(): void {
@@ -370,34 +489,41 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
-        this.selectedTime = { name: 'This year', id: 12 };
-        this.selectedTruck = { name: '1826', id: 13 };
-        this.selectedTrailer = { name: 'A012102', id: 13 };
-        this.selectedDriver = { name: 'Sara Key', id: 279 };
-
-        /*
-        this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
-        this.selectedTime = { name: 'This year', id: 12 };
-        this.selectedTruck = { name: '0258', id: 61 };
-        this.selectedTrailer = { name: '12345678', id: 107 };
-         this.selectedDriver = { name: 'Douglas Gunnoe', id: 54 }; */
-
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,
             dispatchHistoryTime: this.selectedTime?.id,
             truckId: this.selectedTruck?.id,
             trailerId: this.selectedTrailer?.id,
             driverId: this.selectedDriver?.id,
+            customDateFrom:
+                this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM
+                    ? this.selectedCustomPeriodRange?.fromDate
+                    : null,
+            customDateTo:
+                this.selectedTime?.name ===
+                DispatchHistoryModalStringEnum.CUSTOM
+                    ? this.selectedCustomPeriodRange?.toDate
+                    : null,
         };
 
+        const { customDateFrom, customDateTo, ...filteredData } = data;
+
         this.isGroup =
-            MethodsGlobalHelper.checkIfEveryPropertyInObjectHasValue(data);
+            MethodsGlobalHelper.checkIfEveryPropertyInObjectHasValue(
+                filteredData
+            );
 
         this.hasNoneSelected =
-            MethodsGlobalHelper.checkIfEveryPropertyInObjectHasNoValue(data);
+            MethodsGlobalHelper.checkIfEveryPropertyInObjectHasNoValue(
+                filteredData
+            );
 
-        if (this.hasNoneSelected) return;
+        if (this.hasNoneSelected) {
+            this.hasContent = false;
+
+            return;
+        }
 
         if (this.isGroup) {
             this.dispatcherService
@@ -407,16 +533,43 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     this.createDispatchHistoryGroupData(data)
                 );
         } else {
-            /* TODO */
-            this.hasContent = false;
-
             this.dispatcherService
                 .getDispatchHistory(data)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((dispatchHistory) => {
-                    console.log('dispatchHistory', dispatchHistory);
+                .subscribe(({ pagination: { data } }) => {
+                    this.createDispatchHistoryData(data);
                 });
         }
+    }
+
+    private getDispatchHistoryDriver(): void {
+        const data = {
+            truckId: this.selectedTruck?.id,
+            trailerId: this.selectedTrailer?.id,
+            dispatchBoardId: this.selectedDispatchBoard?.id,
+        };
+
+        this.dispatcherService
+            .getDispatchHistoryDriver(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ drivers }) => {
+                if (drivers.length === 1) {
+                    const driver = {
+                        ...drivers[0],
+                        name:
+                            drivers[0].firstName +
+                            DispatchHistoryModalStringEnum.EMPTY_STRING +
+                            drivers[0].lastName,
+                    };
+
+                    this.onSelectDropdown(
+                        driver,
+                        DispatchHistoryModalStringEnum.DRIVER
+                    );
+                } else {
+                    this.getDispatchHistory();
+                }
+            });
     }
 
     ngOnDestroy(): void {

@@ -546,12 +546,14 @@
                 }
 
                 &.filled {
-                    background-color: #fff;
+                    background: #fff;
 
                     .padding-inside {
-                        &:hover {
+                        &:hover,
+                        &.hovering {
                             .info-item {
-                                background-color: #eeeeee;
+                                transition: background 0.2s ease-in;
+                                background: #eeeeee;
 
                                 .driver-buttons {
                                     display: flex;
@@ -646,7 +648,8 @@
                 }
             }
 
-            &.truck-field, &.trailer-field {
+            &.truck-field,
+            &.trailer-field {
                 min-width: 140px;
             }
 
@@ -726,7 +729,8 @@
                 border-radius: 3px;
             }
 
-            &:nth-child(1), &:nth-child(2) {
+            &:nth-child(1),
+            &:nth-child(2) {
                 width: 160px;
             }
 
@@ -734,7 +738,9 @@
                 width: 240px;
             }
 
-            &:nth-child(4), &:nth-child(10), &:nth-child(12) {
+            &:nth-child(4),
+            &:nth-child(10),
+            &:nth-child(12) {
                 min-width: 34px;
                 width: 34px;
             }
@@ -766,21 +772,33 @@
 
         &.first-row {
             div {
-                background: linear-gradient(180deg, #F7F7F7 0%, rgba(247, 247, 247, 0.66) 100%);
+                background: linear-gradient(
+                    180deg,
+                    #f7f7f7 0%,
+                    rgba(247, 247, 247, 0.66) 100%
+                );
                 opacity: 0.7;
             }
         }
 
         &.second-row {
             div {
-                background: linear-gradient(180deg, rgba(247, 247, 247, 0.66) 0%, rgba(247, 247, 247, 0.33) 100%);
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.66) 0%,
+                    rgba(247, 247, 247, 0.33) 100%
+                );
                 opacity: 0.7;
             }
         }
 
         &.third-row {
             div {
-                background: linear-gradient(180deg, rgba(247, 247, 247, 0.33) 0%, rgba(247, 247, 247, 0) 100%);
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.33) 0%,
+                    rgba(247, 247, 247, 0) 100%
+                );
                 opacity: 0.7;
             }
         }
@@ -791,7 +809,7 @@
 
         .no-data-text-container {
             gap: 12px;
-            
+
             .no-data-text {
                 font-size: 26px;
                 line-height: 32px;

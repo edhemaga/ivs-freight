@@ -21,7 +21,7 @@ import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-perio
 
 // models
 import { Tabs } from '@shared/models/tabs.model';
-import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
+import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 
 @Component({

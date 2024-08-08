@@ -461,6 +461,7 @@ model/driverPayrollResponse.ts
 model/driverResponse.ts
 model/driverRightsFeedbackResponse.ts
 model/driverShortResponse.ts
+model/driversForDispatchHistoryModalResponse.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
@@ -542,6 +543,7 @@ model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
 model/getRouteListResponse.ts
+model/getRoutePolygonQuery.ts
 model/getSearchFileManagerQuery.ts
 model/getStopListResponse.ts
 model/getTestModalResponse.ts
