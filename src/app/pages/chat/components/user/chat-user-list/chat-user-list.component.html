@@ -87,16 +87,13 @@
                                 content: contact?.lastMessage?.content,
                                 createdAt: contact?.lastMessage?.createdAt
                             },
-                            notificationCount: unreadCount ?? 0,
+                            notificationCount: unreadCount,
                             pathToAsset: contact.companyUser?.avatarFile?.url,
                             assetExtension:
                                 contact.companyUser?.avatarFile?.extension ??
                                 (contact.companyUser?.avatarFile?.url
                                     | fileExtension),
-                            iconShape:
-                                contact.companyUser?.userType?.name === 'driver'
-                                    ? 'rectangular'
-                                    : 'round'
+                            isRound: type === 'User'
                         }"
                     ></app-chat-list-item>
                 </div>
