@@ -255,11 +255,20 @@
                                                                             ?.statusValue
                                                                             ?.name
                                                                 }"
+                                                                [statusOrder]="{
+                                                                    type: group
+                                                                        ?.items[
+                                                                        itemIndex
+                                                                    ]?.type,
+                                                                    stopOrder:
+                                                                        group
+                                                                            ?.items[
+                                                                            itemIndex
+                                                                        ]
+                                                                            ?.stopOrder
+                                                                }"
                                                             ></app-load-status-string>
-                                                            <!--  [statusOrder]="{
-                                                        type: statusOrder?.type,
-                                                        stopOrder: statusOrder?.stopOrder
-                                                    }" -->
+
                                                             <ng-container
                                                                 *ngIf="
                                                                     isHoveringGroupItemIndex ===

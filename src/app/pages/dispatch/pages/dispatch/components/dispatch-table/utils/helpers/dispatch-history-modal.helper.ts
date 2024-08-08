@@ -3,6 +3,10 @@ import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/co
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
+// enums
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
+import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-history-modal-string.enum';
+
 // models
 import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-layout-params.model';
 
@@ -680,5 +684,29 @@ export class DispatchHistoryModalHelper {
             default:
                 return;
         }
+    }
+
+    static createStatusOrderValues(statusString: string): string {
+        const pickupStatus = [
+            LoadStatusEnum[4],
+            LoadStatusEnum[46],
+            LoadStatusEnum[48],
+            LoadStatusEnum[50],
+            LoadStatusEnum[53],
+        ];
+
+        const deliveryStatus = [
+            LoadStatusEnum[5],
+            LoadStatusEnum[47],
+            LoadStatusEnum[49],
+            LoadStatusEnum[51],
+            LoadStatusEnum[54],
+        ];
+
+        return pickupStatus.includes(statusString)
+            ? DispatchHistoryModalStringEnum.PICKUP
+            : deliveryStatus.includes(statusString)
+            ? DispatchHistoryModalStringEnum.DELIVERY
+            : DispatchHistoryModalStringEnum.EMPTY_STRING;
     }
 }

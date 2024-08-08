@@ -28,6 +28,7 @@ import {
     UpdateDispatchCommand,
     UpdateDispatchStatusCommand,
     DispatchPossibleStatusResponse,
+    DriversForDispatchHistoryModalResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
@@ -409,7 +410,21 @@ export class DispatcherService {
         );
     }
 
-    public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
+    public getDispatchHistoryDriver(
+        data: GetDispatchHistoryData
+    ): Observable<DriversForDispatchHistoryModalResponse> {
+        const { truckId, trailerId, dispatchBoardId } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryModalDriverGet(
+            truckId,
+            trailerId,
+            dispatchBoardId
+        );
+    }
+
+    public saveDispatchLoads(
+        loads: ReorderDispatchLoadsCommand
+    ): Observable<any> {
         return this.dispatchService.apiDispatchReorderLoadsPut(loads);
     }
 

@@ -3,7 +3,6 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     UntypedFormArray,
-    UntypedFormControl,
 } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -35,7 +34,7 @@ import {
     EnumValue,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 
 @Component({
@@ -217,6 +216,11 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             DispatchHistoryModalStringEnum.DISPATCH_HISTORY_GROUP_ITEMS
         ) as UntypedFormArray;
 
+        this.groupData = [];
+        this.isInputHoverRows = [];
+
+        itemsArray.clear();
+
         data.forEach((group, index) => {
             this.isInputHoverRows = [...this.isInputHoverRows, []];
 
@@ -364,7 +368,17 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 DispatchHistoryModalStringEnum.CUSTOM &&
                 this.selectedCustomPeriodRange)
         ) {
-            this.getDispatchHistory();
+            if (
+                type === DispatchHistoryModalStringEnum.TRAILER &&
+                this.selectedDispatchBoard &&
+                this.selectedTruck &&
+                this.selectedTrailer &&
+                !this.selectedDriver
+            ) {
+                this.getDispatchHistoryDriver();
+            } else {
+                this.getDispatchHistory();
+            }
         }
     }
 
@@ -372,7 +386,21 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         data: DispatchHistoryGroupResponse[]
     ): void {
         this.hasContent = !!data?.length;
-        this.groupData = data;
+
+        this.groupData = data.map((group) => {
+            return {
+                ...group,
+                items: group.items.map((item) => {
+                    return {
+                        ...item,
+                        stopOrder: null,
+                        type: DispatchHistoryModalHelper.createStatusOrderValues(
+                            item.status.statusValue.name
+                        ),
+                    };
+                }),
+            };
+        });
 
         this.createDispatchHistoryGroupItemRows(data);
     }
@@ -514,6 +542,36 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     this.createDispatchHistoryData(data);
                 });
         }
+    }
+
+    private getDispatchHistoryDriver(): void {
+        const data = {
+            truckId: this.selectedTruck?.id,
+            trailerId: this.selectedTrailer?.id,
+            dispatchBoardId: this.selectedDispatchBoard?.id,
+        };
+
+        this.dispatcherService
+            .getDispatchHistoryDriver(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ drivers }) => {
+                if (drivers.length === 1) {
+                    const driver = {
+                        ...drivers[0],
+                        name:
+                            drivers[0].firstName +
+                            DispatchHistoryModalStringEnum.EMPTY_STRING +
+                            drivers[0].lastName,
+                    };
+
+                    this.onSelectDropdown(
+                        driver,
+                        DispatchHistoryModalStringEnum.DRIVER
+                    );
+                } else {
+                    this.getDispatchHistory();
+                }
+            });
     }
 
     ngOnDestroy(): void {

@@ -12,4 +12,7 @@ export enum DispatchHistoryModalStringEnum {
     DISPATCH_HISTORY_GROUP_ITEMS = 'dispatchHistoryGroupItems',
 
     CUSTOM = 'Custom',
+
+    PICKUP = 'Pickup',
+    DELIVERY = 'Delivery',
 }
