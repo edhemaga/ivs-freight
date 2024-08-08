@@ -26,6 +26,8 @@ import {
     ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
+    UpdateDispatchStatusCommand,
+    DispatchPossibleStatusResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
@@ -58,7 +60,6 @@ export class DispatcherService {
     getDispatcherList() {
         return this.dispatchService.apiDispatchModalGet();
     }
-
     updateModalList() {
         this.dispatchService.apiDispatchModalGet().subscribe((modal) => {
             this.modalList = modal;
@@ -90,6 +91,11 @@ export class DispatcherService {
     getDispatchBoardByDispatcherList(id: number) {
         return this.dispatchService.apiDispatchBoardGet(id);
     }
+    public apiDispatchNextstatusesIdGet(
+        id: number
+    ): Observable<DispatchPossibleStatusResponse> {
+        return this.dispatchService.apiDispatchNextstatusesIdGet(id);
+    }
 
     getDispatchboardAllListAndUpdate() {
         this.getDispatchboardList().subscribe(
@@ -117,6 +123,12 @@ export class DispatcherService {
 
     public updatePreTripInspection(id: number): Observable<number> {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
+    }
+
+    public updateDispatchStatus(
+        data: UpdateDispatchStatusCommand
+    ): Observable<number> {
+        return this.dispatchService.apiDispatchStatusPut(data);
     }
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {
