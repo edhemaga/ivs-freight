@@ -509,31 +509,40 @@
                                 <div
                                     class="d-flex flex-column no-group-container-main"
                                 >
-                                    <div
-                                        class="align-items-center no-group-container-main-item"
-                                        [ngClass]="noGroupClass"
+                                    <ng-container
+                                        *ngFor="
+                                            let noGroupItemData of noGroupData;
+                                            trackBy: trackByIdentity
+                                        "
                                     >
-                                        <ng-container
-                                            *ngFor="
-                                                let noGroupItem of noGroupHeaderItems;
-                                                let last = last;
-                                                trackBy: trackByIdentity
-                                            "
+                                        <div
+                                            class="align-items-center no-group-container-main-item"
+                                            [ngClass]="noGroupClass"
                                         >
-                                            <div
-                                                class="d-flex align-items-center item-box"
-                                                [ngClass]="{
-                                                    'justify-content-end': last
-                                                }"
+                                            <ng-container
+                                                *ngFor="
+                                                    let noGroupItem of noGroupItemData;
+                                                    let last = last;
+                                                    trackBy: trackByIdentity
+                                                "
                                             >
-                                                <p class="m-0">
-                                                    {{
-                                                        noGroupItem.toLowerCase()
-                                                    }}
-                                                </p>
-                                            </div>
-                                        </ng-container>
-                                    </div>
+                                                <div
+                                                    class="d-flex align-items-center item-box"
+                                                    [ngClass]="{
+                                                        'justify-content-end':
+                                                            last
+                                                    }"
+                                                >
+                                                    <p class="m-0">
+                                                        {{
+                                                            noGroupItem ??
+                                                                '\u00A0'
+                                                        }}
+                                                    </p>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </ng-template>

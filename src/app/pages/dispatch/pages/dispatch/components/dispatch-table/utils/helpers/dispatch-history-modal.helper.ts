@@ -1,5 +1,8 @@
 import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
 
+// moment
+import moment from 'moment';
+
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
@@ -9,6 +12,7 @@ import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/c
 
 // models
 import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-layout-params.model';
+import { DispatchHistoryResponse } from 'appcoretruckassist';
 
 export class DispatchHistoryModalHelper {
     static roundToNearestQuarterHour(time: string): string {
@@ -35,9 +39,16 @@ export class DispatchHistoryModalHelper {
     }
 
     static getDispatchHistoryLayoutItems(
-        layoutParams: GetDispatchHistoryLayoutParams
-    ): { headerItems: string[]; noGroupClass: string } {
+        layoutParams: GetDispatchHistoryLayoutParams,
+        data: DispatchHistoryResponse[]
+    ): {
+        headerItems: string[];
+        noGroupClass: string;
+        noGroupData: string[][];
+    } {
         const layout = this.createDispatchHistoryLayout(layoutParams);
+
+        const noGroupData = this.createDispatchHistoryData(layout, data);
 
         const dispatchHistoryHeaderItems = [
             ...DispatchHistoryModalConstants.DISPATCH_HISTORY_HEADER_ITEMS,
@@ -64,10 +75,11 @@ export class DispatchHistoryModalHelper {
             case 'layout-3':
                 const headerLayout3 = dispatchHistoryHeaderItems.slice(2);
 
-                headerLayout3.splice(3, 0, '');
-                headerLayout3.splice(5, 0, '');
-
-                headerItems = headerLayout3;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout3,
+                    3,
+                    5
+                );
 
                 noGroupClass = layout;
 
@@ -75,10 +87,11 @@ export class DispatchHistoryModalHelper {
             case 'layout-4':
                 const headerLayout4 = dispatchHistoryHeaderItems.slice(3);
 
-                headerLayout4.splice(2, 0, '');
-                headerLayout4.splice(4, 0, '');
-
-                headerItems = headerLayout4;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout4,
+                    2,
+                    4
+                );
 
                 noGroupClass = layout;
 
@@ -89,10 +102,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout5.splice(2, 0, '');
-                headerLayout5.splice(4, 0, '');
-
-                headerItems = headerLayout5;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout5,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -103,10 +117,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout6.splice(2, 0, '');
-                headerLayout6.splice(4, 0, '');
-
-                headerItems = headerLayout6;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout6,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -117,10 +132,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout7.splice(2, 0, '');
-                headerLayout7.splice(4, 0, '');
-
-                headerItems = headerLayout7;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout7,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -131,10 +147,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout8.splice(3, 0, '');
-                headerLayout8.splice(5, 0, '');
-
-                headerItems = headerLayout8;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout8,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-5';
 
@@ -146,10 +163,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout9.splice(3, 0, '');
-                headerLayout9.splice(5, 0, '');
-
-                headerItems = headerLayout9;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout9,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-5';
 
@@ -161,10 +179,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout10.splice(3, 0, '');
-                headerLayout10.splice(5, 0, '');
-
-                headerItems = headerLayout10;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout10,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-6';
 
@@ -176,10 +195,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout11.splice(3, 0, '');
-                headerLayout11.splice(5, 0, '');
-
-                headerItems = headerLayout11;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout11,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-3';
 
@@ -190,10 +210,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout12.splice(3, 0, '');
-                headerLayout12.splice(5, 0, '');
-
-                headerItems = headerLayout12;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout12,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-6';
 
@@ -242,10 +263,11 @@ export class DispatchHistoryModalHelper {
             case 'layout-17':
                 const headerLayout17 = dispatchHistoryHeaderItems.slice(2);
 
-                headerLayout17.splice(3, 0, '');
-                headerLayout17.splice(5, 0, '');
-
-                headerItems = headerLayout17;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout17,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-3';
 
@@ -256,10 +278,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(3),
                 ];
 
-                headerLayout18.splice(3, 0, '');
-                headerLayout18.splice(5, 0, '');
-
-                headerItems = headerLayout18;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout18,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-3';
 
@@ -270,10 +293,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout19.splice(3, 0, '');
-                headerLayout19.splice(5, 0, '');
-
-                headerItems = headerLayout19;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout19,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-6';
 
@@ -281,10 +305,11 @@ export class DispatchHistoryModalHelper {
             case 'layout-20':
                 const headerLayout20 = dispatchHistoryHeaderItems.slice(3);
 
-                headerLayout20.splice(2, 0, '');
-                headerLayout20.splice(4, 0, '');
-
-                headerItems = headerLayout20;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout20,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -295,10 +320,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout21.splice(2, 0, '');
-                headerLayout21.splice(4, 0, '');
-
-                headerItems = headerLayout21;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout21,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -309,10 +335,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout22.splice(2, 0, '');
-                headerLayout22.splice(4, 0, '');
-
-                headerItems = headerLayout22;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout22,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -323,10 +350,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout23.splice(2, 0, '');
-                headerLayout23.splice(4, 0, '');
-
-                headerItems = headerLayout23;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout23,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -348,10 +376,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(3),
                 ];
 
-                headerLayout25.splice(3, 0, '');
-                headerLayout25.splice(5, 0, '');
-
-                headerItems = headerLayout25;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout25,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-6';
 
@@ -363,10 +392,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout26.splice(3, 0, '');
-                headerLayout26.splice(5, 0, '');
-
-                headerItems = headerLayout26;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout26,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-5';
 
@@ -377,10 +407,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout27.splice(2, 0, '');
-                headerLayout27.splice(4, 0, '');
-
-                headerItems = headerLayout27;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout27,
+                    2,
+                    4
+                );
 
                 noGroupClass = 'layout-4';
 
@@ -402,10 +433,11 @@ export class DispatchHistoryModalHelper {
                     ...dispatchHistoryHeaderItems.slice(4),
                 ];
 
-                headerLayout29.splice(3, 0, '');
-                headerLayout29.splice(5, 0, '');
-
-                headerItems = headerLayout29;
+                headerItems = this.addExtraItemsInDispatchHistoryHeader(
+                    headerLayout29,
+                    3,
+                    5
+                );
 
                 noGroupClass = 'layout-5';
 
@@ -425,7 +457,322 @@ export class DispatchHistoryModalHelper {
                 break;
         }
 
-        return { headerItems, noGroupClass };
+        return { headerItems, noGroupClass, noGroupData };
+    }
+
+    static createDispatchHistoryData(
+        layout: string,
+        data: DispatchHistoryResponse[]
+    ): string[][] {
+        const dataItems = data.map((dataItem) => {
+            const { dispatcher, truck, trailer, driver, dateFrom, dateTo } =
+                dataItem;
+
+            const dataArray = [
+                dispatcher?.fullName ?? null,
+                truck?.truckNumber ?? null,
+                trailer?.trailerNumber ?? null,
+                driver?.firstName
+                    ? driver?.firstName + ' ' + driver?.lastName
+                    : null,
+                MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
+                dateTo
+                    ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
+                    : null,
+                this.createTotalColumnValue(dateFrom, dateTo),
+            ];
+
+            switch (layout) {
+                case 'layout-1':
+                    return dataArray;
+                case 'layout-2':
+                    const dataArray2 = dataArray.slice(1);
+
+                    return dataArray2;
+                case 'layout-3':
+                    const dataArray3 = dataArray.slice(2);
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray3,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-4':
+                    const dataArray4 = dataArray.slice(3);
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray4,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-5':
+                    const dataArray5 = [dataArray[0], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray5,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-6':
+                    const dataArray6 = [dataArray[1], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray6,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-7':
+                    const dataArray7 = [dataArray[2], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray7,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-8':
+                    const dataArray8 = [
+                        ...dataArray.slice(0, 2),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray8,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-9':
+                    const dataArray9 = [
+                        dataArray[0],
+                        dataArray[2],
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray9,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-10':
+                    const dataArray10 = [
+                        dataArray[0],
+                        dataArray[3],
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray10,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-11':
+                    const dataArray11 = [
+                        dataArray[1],
+                        dataArray[3],
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray11,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-12':
+                    const dataArray12 = [
+                        ...dataArray.slice(1, 3),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray12,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-13':
+                    const dataArray13 = [dataArray[0], ...dataArray.slice(2)];
+
+                    return dataArray13;
+                case 'layout-14':
+                    const dataArray14 = [
+                        ...dataArray.slice(0, 2),
+                        ...dataArray.slice(3),
+                    ];
+
+                    return dataArray14;
+                case 'layout-15':
+                    const dataArray15 = [
+                        ...dataArray.slice(0, 3),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return dataArray15;
+                case 'layout-16':
+                    const dataArray16 = dataArray.slice(1);
+
+                    return dataArray16;
+                case 'layout-17':
+                    const dataArray17 = dataArray.slice(2);
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray17,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-18':
+                    const dataArray18 = [dataArray[1], ...dataArray.slice(3)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray18,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-19':
+                    const dataArray19 = [
+                        ...dataArray.slice(1, 3),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray19,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-20':
+                    const dataArray20 = dataArray.slice(3);
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray20,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-21':
+                    const dataArray21 = [dataArray[2], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray21,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-22':
+                    const dataArray22 = [dataArray[1], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray22,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-23':
+                    const dataArray23 = [dataArray[1], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray23,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-24':
+                    const dataArray24 = [dataArray[0], ...dataArray.slice(2)];
+
+                    return dataArray24;
+                case 'layout-25':
+                    const dataArray25 = [dataArray[0], ...dataArray.slice(3)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray25,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-26':
+                    const dataArray26 = [
+                        dataArray[0],
+                        dataArray[2],
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray26,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-27':
+                    const dataArray27 = [dataArray[0], ...dataArray.slice(4)];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray27,
+                        dateFrom,
+                        dateTo,
+                        2,
+                        4
+                    );
+                case 'layout-28':
+                    const dataArray28 = [
+                        ...dataArray.slice(0, 2),
+                        ...dataArray.slice(3),
+                    ];
+
+                    return dataArray28;
+                case 'layout-29':
+                    const dataArray29 = [
+                        ...dataArray.slice(0, 2),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return this.addExtraItemsInDispatchHistoryData(
+                        dataArray29,
+                        dateFrom,
+                        dateTo,
+                        3,
+                        5
+                    );
+                case 'layout-30':
+                    const dataArray30 = [
+                        ...dataArray.slice(0, 3),
+                        ...dataArray.slice(4),
+                    ];
+
+                    return dataArray30;
+                default:
+                    break;
+            }
+        });
+
+        return dataItems;
     }
 
     static createDispatchHistoryLayout(
@@ -708,5 +1055,79 @@ export class DispatchHistoryModalHelper {
             : deliveryStatus.includes(statusString)
             ? DispatchHistoryModalStringEnum.DELIVERY
             : DispatchHistoryModalStringEnum.EMPTY_STRING;
+    }
+
+    static createTotalColumnValue(dateFrom: string, dateTo: string): string {
+        if (!dateTo) {
+            return 'Ongoing';
+        } else {
+            const from = moment(dateFrom);
+            const to = moment(dateTo);
+
+            const years = to.diff(from, 'years');
+            from.add(years, 'years');
+
+            const days = to.diff(from, 'days');
+            from.add(days, 'days');
+
+            const hours = to.diff(from, 'hours');
+            from.add(hours, 'hours');
+
+            const minutes = to.diff(from, 'minutes');
+
+            if (!years && !days && !hours && !minutes) {
+                return null;
+            } else {
+                const totalResult = `${years ? years + 'y' : ''} ${
+                    days ? days + 'd' : ''
+                } ${hours ? hours + 'h' : ''} ${
+                    minutes ? minutes + 'm' : ''
+                }`.trim();
+
+                const matches = totalResult.match(/(\d+\w)\s*/g);
+
+                return matches ? matches.slice(0, 2).join(' ') : '';
+            }
+        }
+    }
+
+    static addExtraItemsInDispatchHistoryHeader(
+        headerItemsArray: string[],
+        startIndex: number,
+        endIndex: number
+    ) {
+        const newHeaderItemsArray = [...headerItemsArray];
+
+        newHeaderItemsArray.splice(startIndex, 0, '');
+        newHeaderItemsArray.splice(endIndex, 0, '');
+
+        return newHeaderItemsArray;
+    }
+
+    static addExtraItemsInDispatchHistoryData(
+        dataArray: string[],
+        dateFrom: string,
+        dateTo: string,
+        startIndex: number,
+        endIndex: number
+    ) {
+        const newDataArray = [...dataArray];
+
+        const timeFrom = MethodsCalculationsHelper.convertDateToTimeFromBackend(
+            dateFrom,
+            true
+        );
+
+        const timeTo = dateTo
+            ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                  dateTo,
+                  true
+              )
+            : null;
+
+        newDataArray.splice(startIndex, 0, timeFrom);
+        newDataArray.splice(endIndex, 0, timeTo);
+
+        return newDataArray;
     }
 }

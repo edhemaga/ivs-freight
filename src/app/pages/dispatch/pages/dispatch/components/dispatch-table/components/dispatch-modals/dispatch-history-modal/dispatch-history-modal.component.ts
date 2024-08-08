@@ -58,6 +58,8 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     public noGroupHeaderItems: string[] = [];
     public noGroupClass: string;
 
+    public noGroupData: string[][] = [];
+
     // group
     public groupHeaderItems: string[] = [];
     public groupData: DispatchHistoryGroupResponse[] = [];
@@ -66,6 +68,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     public isHoveringGroupItemIndex: number = -1;
 
+    // custom period - date range
     public isDisplayingCustomPeriodRange: boolean = false;
     public isCustomTimeSelected: boolean = false;
 
@@ -210,13 +213,10 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private createDispatchHistoryGroupItemRows(
         data: DispatchHistoryGroupResponse[]
     ): void {
-        console.log('group data', data);
-
         const itemsArray = this.dispatchHistoryForm.get(
             DispatchHistoryModalStringEnum.DISPATCH_HISTORY_GROUP_ITEMS
         ) as UntypedFormArray;
 
-        this.groupData = [];
         this.isInputHoverRows = [];
 
         itemsArray.clear();
@@ -385,6 +385,8 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private createDispatchHistoryGroupData(
         data: DispatchHistoryGroupResponse[]
     ): void {
+        console.log('group data', data);
+
         this.hasContent = !!data?.length;
 
         this.groupData = data.map((group) => {
@@ -407,7 +409,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     private createDispatchHistoryData(data: DispatchHistoryResponse[]): void {
         console.log('no group data', data);
-        this.hasContent = !!data?.length;
 
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
@@ -417,10 +418,15 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             isDriverSelected: !!this.selectedDriver,
         };
 
-        const { headerItems, noGroupClass } =
+        const { headerItems, noGroupClass, noGroupData } =
             DispatchHistoryModalHelper.getDispatchHistoryLayoutItems(
-                layoutParams
+                layoutParams,
+                data
             );
+
+        this.hasContent = !!data?.length;
+
+        this.noGroupData = noGroupData;
 
         this.noGroupHeaderItems = headerItems;
         this.noGroupClass = noGroupClass;
@@ -524,8 +530,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
             return;
         }
-
-        console.log('this.isGroup', this.isGroup);
 
         if (this.isGroup) {
             this.dispatcherService
