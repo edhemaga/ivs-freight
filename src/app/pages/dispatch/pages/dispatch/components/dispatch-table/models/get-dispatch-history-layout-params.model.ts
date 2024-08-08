@@ -3,4 +3,5 @@ export interface GetDispatchHistoryLayoutParams {
     isDispatchBoardSelected: boolean;
     isTruckSelected: boolean;
     isTrailerSelected: boolean;
+    isDriverSelected: boolean;
 }
