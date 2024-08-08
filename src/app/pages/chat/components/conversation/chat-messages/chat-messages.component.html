@@ -9,18 +9,22 @@
             <ng-container [ngSwitch]="remainingParticipants?.length">
                 <div class="messages-header d-flex align-items-center">
                     <ng-container *ngSwitchCase="1">
-                        <!-- TODO refactor to separate component -->
-
-                        <app-ta-profile-images
-                            [indx]="remainingParticipants[0]?.id"
-                            [showHoverAnimation]="false"
-                            [withTooltip]="false"
-                            [size]="'small'"
-                            [type]="remainingParticipants[0]?.name | lowercase"
-                            [name]="remainingParticipants[0]?.fullName"
-                            [url]="remainingParticipants[0]?.avatarFile?.url"
-                        >
-                        </app-ta-profile-images>
+                        <app-ca-profile-image
+                            [avatarImg]="
+                                remainingParticipants[0]?.avatarFile?.url
+                            "
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="
+                                remainingParticipants[0]?.fullName
+                                    | nameInitials
+                            "
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                        ></app-ca-profile-image>
                         <div class="name ta-font-extra-bold">
                             {{ remainingParticipants[0].fullName }}
                         </div>
@@ -304,12 +308,12 @@
         </ng-container>
         <ng-template #upload>
             <app-ta-upload-files
-                [files]="attachments"
+                [files]="[]"
                 [showDropzone]="true"
                 [dropzoneFocus]="false"
                 [dropZoneConfig]="ChatDropzone.inputDropzone"
                 [size]="'large'"
-                [customClass]="'large'"
+                [customClassName]="'large no-background-color'"
                 [hasSlider]="false"
                 (onFileEvent)="addAttachments($event.files)"
             ></app-ta-upload-files>

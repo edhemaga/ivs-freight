@@ -13,5 +13,5 @@ export interface ChatListItem {
     status: ConversationStatus;
     pathToAsset: string;
     assetExtension: AttachmentType;
-    iconShape?: 'round' | 'rectangular'
+    isRound?: boolean
 }

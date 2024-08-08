@@ -350,8 +350,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.remainingParticipants = [];
-    this.userProfile.next(null);
     this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();

@@ -18,6 +18,9 @@ import {
 // Assets routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
+// Constants
+import { NoDataConfig } from '@pages/chat/utils/config/no-data.config';
+
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
 
@@ -40,8 +43,9 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   @Output() selectedUser = new EventEmitter<number>();
   public selectedUserId: number = 0;
 
-  // Assets
+  // Assets and constants
   public ChatSvgRoutes = ChatSvgRoutes;
+  public noDataConfig = NoDataConfig;
 
   // Search
   public isSearchActive: boolean = false;
