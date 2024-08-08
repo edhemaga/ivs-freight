@@ -8,7 +8,11 @@ import { MessageResponse } from 'appcoretruckassist';
 
 // Env
 import { environment } from 'src/environments/environment';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class HubService {
     private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
@@ -16,6 +20,7 @@ export class HubService {
     private hubConnection!: signalR.HubConnection;
 
     private establishInitialConnection(): void {
+        if (!this.token) return;
         this.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
