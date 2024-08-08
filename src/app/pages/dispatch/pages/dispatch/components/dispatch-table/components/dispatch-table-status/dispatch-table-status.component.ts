@@ -48,9 +48,8 @@ import {
 })
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() set time(value: string) {
-        if (value) {
+        if (value)
             this.showTime = DispatchTableHelper.calculateDateDifference(value);
-        }
     }
     @Input() status?: DispatchStatusResponse;
 
@@ -58,8 +57,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatcher?: DispatchResponse;
     @Input() dispatchBoardId?: number;
 
-    public showTime: string;
+    @Input() isHoveringRow: boolean;
+
     private destroy$ = new Subject<void>();
+
+    public showTime: string;
 
     constructor(
         public datePipe: DatePipe,

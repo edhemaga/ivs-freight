@@ -489,12 +489,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        /*  this.selectedDispatchBoard = { name: 'Team Board', id: 15 };
-        this.selectedTime = { name: 'This year', id: 12 };
-        this.selectedTruck = { name: '1826', id: 13 };
-        this.selectedTrailer = { name: 'A012102', id: 13 };
-        this.selectedDriver = { name: 'Sara Key', id: 279 };
- */
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,
             dispatchHistoryTime: this.selectedTime?.id,

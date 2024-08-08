@@ -2,6 +2,7 @@
     <div class="padding-inside">
         <div
             class="status-container d-flex flex-column justify-content-center"
+            [ngClass]="{ hovering: isHoveringRow }"
             ngbTooltip
             mainContent
             [mainTooltip]="'Change Status'"
