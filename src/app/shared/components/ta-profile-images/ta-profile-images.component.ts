@@ -32,6 +32,21 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
     ],
 })
 export class TaProfileImagesComponent implements OnChanges {
+    dispatchTextColors: string[] = [
+        '#6A698C',
+        '#688891',
+        '#6A8985',
+        '#72826A',
+        '#957070',
+        '#997973',
+        '#7E7594',
+        '#95717D',
+        '#99775F',
+        '#897D64',
+        '#7A726C',
+        '#7A7A7A',
+    ];
+
     textColors: string[] = [
         '#6D82C7',
         '#4DB6A2',
@@ -46,7 +61,6 @@ export class TaProfileImagesComponent implements OnChanges {
         '#A1887F',
         '#919191',
     ];
-
     imageColor: string[] = [
         '#2724D666',
         '#1AB5E666',
@@ -84,6 +98,7 @@ export class TaProfileImagesComponent implements OnChanges {
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
     @Input() url?: string = null;
+    @Input() isDispatch?: boolean = false;
 
     public profileImageColor: string;
     public profileImageBackgroundColor: string;

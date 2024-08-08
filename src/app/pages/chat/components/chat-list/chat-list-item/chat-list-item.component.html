@@ -1,54 +1,39 @@
 <div class="chat-list-item d-flex">
-    <!-- TODO change to new component when available -->
-    <ng-container [ngSwitch]="item?.assetExtension">
-        <ng-container *ngSwitchCase="AttachmentType.JPG">
-            <app-ta-profile-images
-                [indx]="item.id"
-                [withTooltip]="true"
-                [size]="'medium'"
-                [type]="(item?.iconShape | lowercase) || 'user'"
-                [name]="item.name"
-                [url]="item?.pathToAsset ?? ''"
-            ></app-ta-profile-images>
-        </ng-container>
-        <ng-container *ngSwitchCase="AttachmentType.JPEG">
-            <app-ta-profile-images
-                [indx]="item.id"
-                [withTooltip]="true"
-                [size]="'medium'"
-                [type]="(item?.iconShape | lowercase) || 'user'"
-                [name]="item.name"
-                [url]="item?.pathToAsset ?? ''"
-            ></app-ta-profile-images>
-        </ng-container>
-        <ng-container *ngSwitchCase="AttachmentType.PNG">
-            <app-ta-profile-images
-                [indx]="item.id"
-                [withTooltip]="true"
-                [size]="'medium'"
-                [type]="(item?.iconShape | lowercase) || 'user'"
-                [name]="item.name"
-                [url]="item?.pathToAsset ?? ''"
-            ></app-ta-profile-images>
-        </ng-container>
-        <ng-container *ngSwitchCase="AttachmentType.SVG">
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="item?.pathToAsset"
+    <div class="d-flex align-items-center justify-content-center">
+        <ng-container [ngSwitch]="true">
+            <ng-container
+                *ngSwitchCase="
+                    item?.assetExtension === attachmentType.JPG ||
+                    item?.assetExtension === attachmentType.JPEG ||
+                    item?.assetExtension === attachmentType.PNG ||
+                    !item?.assetExtension
+                "
             >
-            </svg-icon>
+                <app-ca-profile-image
+                    [avatarImg]="item?.pathToAsset"
+                    [avatarColor]="{
+                        background: '#DFC2F9',
+                        color: '#9E47EC66'
+                    }"
+                    [textShortName]="item?.name | nameInitials"
+                    [size]="30"
+                    [fontSize]="9"
+                    [isHoverEffect]="false"
+                    [isRound]="item?.isRound"
+                ></app-ca-profile-image>
+            </ng-container>
+            <ng-container
+                *ngSwitchCase="item?.assetExtension === attachmentType.SVG"
+            >
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="item?.pathToAsset"
+                >
+                </svg-icon>
+            </ng-container>
         </ng-container>
-        <ng-container *ngSwitchDefault>
-            <app-ta-profile-images
-                [indx]="item.id"
-                [withTooltip]="true"
-                [size]="'medium'"
-                [type]="(item?.iconShape | lowercase) ?? 'user'"
-                [name]="item.name"
-            ></app-ta-profile-images>
-        </ng-container>
-    </ng-container>
+    </div>
 
     <div class="chat-list-item-text-wrapper">
         <ng-container *ngIf="!item?.lastContent?.content; else messageData">
@@ -70,16 +55,20 @@
             </div>
             <div class="chat-list-item-text-content d-flex">
                 <ng-container [ngSwitch]="status">
-                    <ng-container *ngSwitchCase="ConversationStatus.TYPING">
+                    <ng-container
+                        *ngSwitchCase="status === ConversationStatus.TYPING"
+                    >
                         <div class="chat-list-item-message ta-font-bold">
                             Typing...
                         </div>
                     </ng-container>
 
-                    <ng-container *ngSwitchCase="ConversationStatus.UNREAD">
-                        {{ item.lastContent?.content }}</ng-container
+                    <ng-container
+                        *ngSwitchCase="
+                            status === ConversationStatus.UNREAD ||
+                            status === ConversationStatus.READ
+                        "
                     >
-                    <ng-container *ngSwitchCase="ConversationStatus.READ">
                         {{ item.lastContent?.content }}</ng-container
                     >
                     <ng-container *ngSwitchDefault></ng-container>

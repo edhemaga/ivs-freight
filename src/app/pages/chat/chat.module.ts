@@ -33,6 +33,7 @@ import { TaSearchV2Component } from "@shared/components/ta-search-v2/ta-search-v
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from "@shared/components/ta-upload-files/ta-upload-files.component";
 import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
+import { CaProfileImageComponent } from "ca-components";
 
 // Services
 import { HubService } from "@pages/chat/services/hub.service";
@@ -89,6 +90,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         TaProfileImagesComponent,
         TaAppTooltipV2Component,
         TaUploadFilesComponent,
+        CaProfileImageComponent,
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
