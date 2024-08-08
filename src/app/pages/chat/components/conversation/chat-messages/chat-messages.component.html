@@ -321,7 +321,9 @@
     </div>
     <ng-container
         *ngIf="
-            !attachmentUploadActive && isProfileDetailsDisplayed && userProfile
+            !attachmentUploadActive &&
+            isProfileDetailsDisplayed &&
+            (userProfileService.getProfile() | async)
         "
     >
         <div class="profile-details-wrapper d-flex">
@@ -330,7 +332,7 @@
             ></app-chat-vertical-divider>
             <div class="profile-details">
                 <app-chat-user-profile
-                    [data]="userProfile | async"
+                    [data]="userProfileService.getProfile() | async"
                     (isProfileDetailsClosed)="displayProfileDetails($event)"
                 ></app-chat-user-profile>
             </div>
