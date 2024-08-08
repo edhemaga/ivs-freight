@@ -72,9 +72,6 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         DragAndDropDirective,
     ],
     providers: [
-        // Services
-        HubService,
-
         // Pipes
         NameInitialsPipe,
     ],

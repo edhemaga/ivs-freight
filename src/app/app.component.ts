@@ -14,6 +14,7 @@ import {
 
 // services
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
+import { HubService } from '@pages/chat/services/hub.service';
 
 @Component({
     selector: 'app-root',
@@ -29,7 +30,7 @@ import { StaticInjectorService } from '@core/decorators/titles.decorator';
 })
 export class AppComponent implements OnInit {
     public showScrollButton = false;
-    
+
 
     public currentPage: string = 'login';
 
@@ -39,8 +40,9 @@ export class AppComponent implements OnInit {
         private router: Router,
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
+        private hubService: HubService,
         private _: StaticInjectorService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.router.events
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit {
                     'CarrierAssist' + ' | ' + event.title
                 );
             });
+        this.hubService.connect();
     }
 
     public top(): void {
