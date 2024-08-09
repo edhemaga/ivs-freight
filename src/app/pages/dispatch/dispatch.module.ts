@@ -51,6 +51,7 @@ import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
+import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 
 @NgModule({
     declarations: [
@@ -66,12 +67,13 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         DispatchTableInfoComponent,
         DispatchTableLastLocationComponentComponent,
         DispatchTablePreTripInspectionComponent,
+        DispatchHistoryModalComponent,
+        DispatchTableStatusComponent,
+        LoadShortDetailsComponent,
 
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        LoadShortDetailsComponent,
-        DispatchHistoryModalComponent,
     ],
     imports: [
         // modules
@@ -105,13 +107,13 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         TaResizerComponent,
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
+        TaStatusComponentComponent,
 
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
 
         //  TaMapsComponent,
-        DispatchTableStatusComponent,
     ],
     exports: [ColorFinderPipe],
 })

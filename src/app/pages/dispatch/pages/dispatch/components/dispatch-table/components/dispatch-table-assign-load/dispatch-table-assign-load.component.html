@@ -3,7 +3,8 @@
         <div
             [ngClass]="{
                 ' dispatch-table-driver_unassigned': isButtonDisabled,
-                ' dispatch-table-driver_hover': !isButtonDisabled
+                ' dispatch-table-driver_hover': !isButtonDisabled,
+                hovering: isHoveringRow
             }"
         >
             <div
