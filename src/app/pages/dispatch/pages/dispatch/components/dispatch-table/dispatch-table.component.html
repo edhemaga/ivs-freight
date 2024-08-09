@@ -135,7 +135,6 @@
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
                                 [isHoveringRow]="
-                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                                 (addTruckTrailerEmitter)="
@@ -210,7 +209,6 @@
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
                                         [isHoveringRow]="
-                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addTruckTrailerEmitter)="
@@ -291,7 +289,6 @@
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
-                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addDriverEmitter)="
@@ -469,7 +466,7 @@
                 </ng-container>
             </ng-container>
 
-            <!-- Unlocked Table -->
+            <!-- Unlocked Table - Extra Row - Add -->
 
             <ng-container *ngIf="!isDispatchBoardLocked">
                 <tr>
