@@ -53,7 +53,17 @@
                                     [src]="tableHeaderItem?.icon"
                                 ></svg-icon>
 
-                                {{ tableHeaderItem?.title }}
+                                <ng-container
+                                    *ngIf="
+                                        tableHeaderItem?.title !==
+                                            'INSPECTION' &&
+                                        tableHeaderItem?.title !==
+                                            'DISPATCHER' &&
+                                        tableHeaderItem?.title !== 'NOTE'
+                                    "
+                                >
+                                    {{ tableHeaderItem?.title }}
+                                </ng-container>
                             </div>
 
                             <ng-container *ngIf="tableHeaderItem?.secondIcon">
