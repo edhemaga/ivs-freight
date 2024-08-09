@@ -220,11 +220,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         this.hasLargeFieldParking = this.parkingList?.length > 1;
 
-        if (this.dispatchData?.teamBoard) {
+        if (this.hasLargeFieldParking) {
+            let currentAdditionalFieldValues = {
+                ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
+            };
+
             this.dispatcherService.updateMainBoardColumnWidths(
-                this.hasAdditionalFieldTruck,
-                this.hasAdditionalFieldTrailer,
-                this.hasLargeFieldParking
+                currentAdditionalFieldValues.isTruckExpanded,
+                currentAdditionalFieldValues.isTrailerExpanded,
+                true
             );
         }
     }
@@ -237,11 +241,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             (dispatch) => !!dispatch?.trailer?.year
         );
 
-        if (this.dispatchData?.teamBoard) {
+        if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
+            let currentAdditionalFieldValues = {
+                ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
+            };
+
+            let hasAdditionalTruck = this.hasAdditionalFieldTruck
+                ? true
+                : currentAdditionalFieldValues.isTruckExpanded;
+            let hasAdditionalTrailer = this.hasAdditionalFieldTrailer
+                ? true
+                : currentAdditionalFieldValues.isTruckExpanded;
+
             this.dispatcherService.updateMainBoardColumnWidths(
-                this.hasAdditionalFieldTruck,
-                this.hasAdditionalFieldTrailer,
-                this.parkingList?.length > 1
+                hasAdditionalTruck,
+                hasAdditionalTrailer,
+                currentAdditionalFieldValues.isParkingExpanded
             );
         }
     }
@@ -811,11 +826,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.dispatcherService.mainBoardColumnsExpanded$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (
-                    res &&
-                    !this.dispatchData?.teamBoard &&
-                    !this.dispatchData?.dispatches?.length
-                ) {
+                if (res && this.isAllBoardsList) {
                     this.hasAdditionalFieldTruck = res.isTruckExpanded;
                     this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
                     this.hasLargeFieldParking = res.isParkingExpanded;
