@@ -74,6 +74,21 @@
                             {{ confirmationData.array.length }}
                         </div>
                     </ng-container>
+
+                    <ng-container *ngIf="hasSearch">
+                        <div class="d-flex align-items-center">
+                            <div class="modal-date-border"></div>
+                            <span>
+                                <app-ta-search
+                                    [searchType]="'tabel'"
+                                    [toolbarSearch]="true"
+                                    [selectedTabData]="{
+                                        gridNameTitle: modalTitle
+                                    }"
+                                ></app-ta-search>
+                            </span>
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
@@ -128,6 +143,75 @@
                         </div>
                     </ng-container>
 
+                    <ng-container *ngIf="hasTimeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'timeFilter'"
+                                [icon]="'ic_time'"
+                                [filterTitle]="'Time Filter'"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasDispatcherFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'userFilter'"
+                                [searchState]="true"
+                                [filterTitle]="'Dispatcher Filter'"
+                                [defFilterHolder]="true"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasTruckTypeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'truckFilter'"
+                                [icon]="'truck'"
+                                [filterTitle]="'Truck Type Filter'"
+                                [defFilterHolder]="true"
+                                [noLeftIcon]="true"
+                                (setFilter)="setFilterValue($event)"
+                                [isDispatchFilter]="true"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasTrailerTypeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'trailerFilter'"
+                                [icon]="'trailer'"
+                                [filterTitle]="'Trailer Type Filter'"
+                                [defFilterHolder]="true"
+                                [noLeftIcon]="true"
+                                (setFilter)="setFilterValue($event)"
+                                [isDispatchFilter]="true"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasLocationFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'locationFilter'"
+                                [icon]="'address'"
+                                [filterTitle]="'Area Filter'"
+                                [areaFilter]="areaFilter"
+                                [locationDefType]="true"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
                     <!-- Assign load modal on dispatch board -->
                     <ng-container *ngIf="isAssignLoadModal">
                         <div
@@ -136,7 +220,9 @@
                             tooltipBackground="#424242"
                             position="bottom"
                             class="d-flex align-items-center justify-content-center modal-header-load-map-button"
-                            [ngClass]="{ active: isAdditionalAssignLoadModalVisible }"
+                            [ngClass]="{
+                                active: isAdditionalAssignLoadModalVisible
+                            }"
                             (click)="toggleAdditionalPart('side-panel')"
                         >
                             <svg-icon
@@ -442,7 +528,7 @@
                                     class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
                                     type="button"
                                 >
-                                    Create load
+                                    Create Load
                                 </button>
                             </ng-container>
                         </div>

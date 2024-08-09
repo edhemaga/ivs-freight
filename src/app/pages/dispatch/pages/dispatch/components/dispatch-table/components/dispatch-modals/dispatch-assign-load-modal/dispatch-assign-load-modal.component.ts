@@ -21,6 +21,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
 import {
@@ -539,6 +540,58 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.isMapLoaderVisible = false;
             });
         });
+    }
+
+    public setFilter(data): void {
+        // switch (data?.filterType) {
+        //     case LoadFilterStringEnum.USER_FILTER:
+        //         break;
+        //     case LoadFilterStringEnum.TIME_FILTER:
+        //         // if (data.queryParams?.timeSelected) {
+        //         //     const { fromDate, toDate } =
+        //         //         RepairTableDateFormaterHelper.getDateRange(
+        //         //             data.queryParams?.timeSelected,
+        //         //             data.queryParams.year ?? null
+        //         //         );
+        //         //     this.backLoadFilterQuery.dateTo = toDate;
+        //         //     this.backLoadFilterQuery.dateFrom = fromDate;
+        //         // } else {
+        //         //     this.backLoadFilterQuery.dateTo = null;
+        //         //     this.backLoadFilterQuery.dateFrom = null;
+        //         // }
+        //         // this.loadBackFilter(this.backLoadFilterQuery);
+        //         break;
+        //     case LoadFilterStringEnum.MONEY_FILTER:
+        //         // this.backLoadFilterQuery.rateFrom =
+        //         //     data.queryParams?.firstFormFrom ?? null;
+        //         // this.backLoadFilterQuery.rateTo =
+        //         //     data.queryParams?.firstFormTo ?? null;
+        //         // this.backLoadFilterQuery.paidFrom =
+        //         //     data.queryParams?.secondFormFrom ?? null;
+        //         // this.backLoadFilterQuery.paidTo =
+        //         //     data.queryParams?.secondFormTo ?? null;
+        //         // this.backLoadFilterQuery.dueFrom =
+        //         //     data.queryParams?.thirdFormFrom ?? null;
+        //         // this.backLoadFilterQuery.dueTo =
+        //         //     data.queryParams?.thirdFormTo ?? null;
+        //         // this.loadBackFilter(this.backLoadFilterQuery);
+        //         break;
+        //     case LoadFilterStringEnum.LOCATION_FILTER:
+        //         // this.backLoadFilterQuery.longitude =
+        //         //     data.queryParams?.longValue ?? null;
+        //         // this.backLoadFilterQuery.latitude =
+        //         //     data.queryParams?.latValue ?? null;
+        //         // this.backLoadFilterQuery.distance =
+        //         //     data.queryParams?.rangeValue ?? null;
+        //         // this.loadBackFilter(this.backLoadFilterQuery);
+        //         break;
+        //     case LoadFilterStringEnum.TRUCK_FILTER:
+        //         break;
+        //     case LoadFilterStringEnum.TRAILER_FILTER:
+        //         break;
+        //     default:
+        //         break;
+        // } - Waiting for backend
     }
 
     public ngOnDestroy(): void {

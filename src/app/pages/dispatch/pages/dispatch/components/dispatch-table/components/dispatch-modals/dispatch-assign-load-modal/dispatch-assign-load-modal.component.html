@@ -4,8 +4,15 @@
     [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
     [isAssignLoadModal]="true"
     [isModalValid]="isModalValid"
+    [hasTimeFilter]="true"
+    [hasDispatcherFilter]="true"
+    [hasTruckTypeFilter]="true"
+    [hasTrailerTypeFilter]="true"
+    [hasLocationFilter]="true"
+    [hasSearch]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
+    (filterActions)="setFilter($event)"
 >
     <div origin>
         <div class="dispatch-load">
@@ -31,6 +38,18 @@
                     "
                 >
                     <div [class.text-right]="last">
+                        <ng-container *ngIf="headerItem.svgIcon">
+                            <span>
+                                <svg-icon
+                                    [ngClass]="headerItem.iconClassName"
+                                    [src]="headerItem.svgIcon"
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14
+                                    }"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
                         <span [ngClass]="headerItem.className">
                             {{ headerItem.label }}
                         </span>
@@ -94,6 +113,7 @@
                                     [isAssigned]="true"
                                     [activeLoadId]="selectedLoad?.id"
                                     [isDisabled]="!selectedDispatches"
+                                    [isReorderingActive]="showFinishReordering"
                                     (changeLoadList$)="
                                         changeLoadList(assignedLoad.id, true)
                                     "
@@ -304,15 +324,17 @@
         </ng-container>
 
         <ng-template #modalTitle>
-            <div
-                class="modal-header modal-header-absolute d-flex justify-content-between"
-            >
-                <div class="modal-header-leftside">
-                    <h5 class="modal-title">
-                        Assigned ({{ assignedLoads.length }})
-                    </h5>
+            <ng-container *ngIf="selectedDispatches">
+                <div
+                    class="modal-header modal-header-absolute d-flex justify-content-between"
+                >
+                    <div class="modal-header-leftside">
+                        <h5 class="modal-title">
+                            Assigned ({{ assignedLoads.length }})
+                        </h5>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
 
             <div
                 class="d-flex justify-content-center align-items-center dispatch-load-map"

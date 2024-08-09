@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -45,7 +51,7 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
         AngularSvgIconModule,
 
         // components
-       // TaMapsComponent,
+        // TaMapsComponent,
 
         // pipes
         FormatDatePipe,
@@ -72,6 +78,10 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
     public itemHoveringIndex: number = -1;
 
     constructor() {}
+
+    ngAfterViewInit(): void {
+        this.addScrollEventListeners();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.stopsData?.currentValue) {
@@ -255,5 +265,20 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
 
         this.stopItemDropdownIndex =
             this.stopItemDropdownIndex === index ? -1 : index;
+    }
+
+    public addScrollEventListeners(): void {
+        const columnsScrollElements =
+            document.querySelectorAll('.columns-scroll');
+
+        columnsScrollElements.forEach((element, index) => {
+            element.addEventListener('scroll', () => {
+                columnsScrollElements.forEach((element2, index2) => {
+                    if (index2 !== index) {
+                        element2.scrollLeft = element.scrollLeft;
+                    }
+                });
+            });
+        });
     }
 }
