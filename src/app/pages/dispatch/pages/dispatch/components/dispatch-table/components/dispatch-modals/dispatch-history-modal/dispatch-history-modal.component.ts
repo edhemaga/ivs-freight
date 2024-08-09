@@ -489,9 +489,22 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
+        const layoutParams = {
+            isTimeSelected: !!this.selectedTime,
+            isDispatchBoardSelected: !!this.selectedDispatchBoard,
+            isTruckSelected: !!this.selectedTruck,
+            isTrailerSelected: !!this.selectedTrailer,
+            isDriverSelected: !!this.selectedDriver,
+        };
+
+        const { selectedTimeId, isGroupWithoutTime } =
+            DispatchHistoryModalHelper.checkIsGroupWithoutTime(layoutParams);
+
         const data = {
             dispatchBoardId: this.selectedDispatchBoard?.id,
-            dispatchHistoryTime: this.selectedTime?.id,
+            dispatchHistoryTime: isGroupWithoutTime
+                ? selectedTimeId
+                : this.selectedTime?.id,
             truckId: this.selectedTruck?.id,
             trailerId: this.selectedTrailer?.id,
             driverId: this.selectedDriver?.id,
@@ -512,7 +525,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.isGroup =
             MethodsGlobalHelper.checkIfEveryPropertyInObjectHasValue(
                 filteredData
-            );
+            ) || isGroupWithoutTime;
 
         this.hasNoneSelected =
             MethodsGlobalHelper.checkIfEveryPropertyInObjectHasNoValue(

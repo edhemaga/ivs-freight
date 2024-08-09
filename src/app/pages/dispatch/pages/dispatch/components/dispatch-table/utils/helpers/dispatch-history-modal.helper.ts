@@ -1130,4 +1130,35 @@ export class DispatchHistoryModalHelper {
 
         return newDataArray;
     }
+
+    static checkIsGroupWithoutTime(
+        layoutParams: GetDispatchHistoryLayoutParams
+    ): {
+        selectedTimeId: number;
+        isGroupWithoutTime: boolean;
+    } {
+        // if all inputs are selected except time, call group api with time selected as All Time
+
+        const {
+            isTimeSelected,
+            isDispatchBoardSelected,
+            isTruckSelected,
+            isTrailerSelected,
+            isDriverSelected,
+        } = layoutParams;
+
+        const isGroupWithoutTime =
+            !isTimeSelected &&
+            isDispatchBoardSelected &&
+            isTruckSelected &&
+            isTrailerSelected &&
+            isDriverSelected;
+
+        const selectedTimeId = isGroupWithoutTime ? 100 : null;
+
+        return {
+            selectedTimeId,
+            isGroupWithoutTime,
+        };
+    }
 }
