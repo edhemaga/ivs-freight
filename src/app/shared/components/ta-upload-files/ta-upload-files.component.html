@@ -95,8 +95,8 @@
             </div>
         </ng-container>
     </div>
-
     <app-ta-upload-dropzone
+        [ngClass]="customClassName"
         *ngIf="showDropzone && !hasSlider"
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"

@@ -61,6 +61,10 @@
             }
         }
 
+        .upload-wrapper {
+            height: calc(100% - 38px);
+        }
+
         .chat-footer {
             min-height: 46px;
             border-top: 1px solid $bw-9;

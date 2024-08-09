@@ -35,9 +35,6 @@ import { TaUploadFilesComponent } from "@shared/components/ta-upload-files/ta-up
 import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
 import { CaProfileImageComponent } from "ca-components";
 
-// Services
-import { HubService } from "@pages/chat/services/hub.service";
-
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";

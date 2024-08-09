@@ -2,7 +2,10 @@
     <div
         class="messages-wrapper"
         [ngStyle]="{
-            width: isProfileDetailsDisplayed ? 'calc(100% - 318px)' : '100%'
+            width:
+                isProfileDetailsDisplayed && !attachmentUploadActive
+                    ? 'calc(100% - 318px)'
+                    : '100%'
         }"
     >
         <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
@@ -79,7 +82,9 @@
                 [scrollTop]="messagesContent?.scrollHeight"
                 [ngStyle]="
                     isChatTypingActivated &&
-                    attachments?.length && { height: 'calc(100% - 160px)' }
+                    (attachments$ | async)?.length && {
+                        height: 'calc(100% - 160px)'
+                    }
                 "
                 #messagesContent
             >
@@ -133,7 +138,7 @@
             <div
                 class="chat-footer d-flex"
                 [ngStyle]="
-                    isChatTypingActivated && attachments?.length
+                    isChatTypingActivated && (attachments$ | async)?.length
                         ? { height: '72px' }
                         : { height: 'fit-content' }
                 "
@@ -152,7 +157,9 @@
 
                     <ng-template #chatInputField>
                         <div class="form-wrapper" [formGroup]="messageForm">
-                            <ng-container *ngIf="attachments?.length">
+                            <ng-container
+                                *ngIf="(attachments$ | async)?.length"
+                            >
                                 <div
                                     class="attachment-list d-flex"
                                     [ngClass]="
@@ -163,9 +170,11 @@
                                 >
                                     <ng-container
                                         *ngFor="
-                                            let attachment of attachments;
+                                            let attachment of attachments$
+                                                | async;
                                             let ind = index;
-                                            trackBy: '' | trackByProperty
+                                            trackBy: 'fileName'
+                                                | trackByProperty
                                         "
                                     >
                                         <div
@@ -220,7 +229,7 @@
                                 [inputConfig]="
                                     ChatInput.messageInput(
                                         isChatTypingActivated,
-                                        attachments?.length
+                                        (attachments$ | async)?.length
                                     )
                                 "
                                 (change)="notifyTyping()"
@@ -235,7 +244,7 @@
                 <div
                     class="right-side d-flex"
                     [ngClass]="
-                        isChatTypingActivated && attachments?.length
+                        isChatTypingActivated && (attachments$ | async)?.length
                             ? 'align-items-end'
                             : 'align-items-center'
                     "
@@ -243,7 +252,8 @@
                     <div
                         class="d-flex align-items-center"
                         [ngStyle]="
-                            isChatTypingActivated && attachments?.length
+                            isChatTypingActivated &&
+                            (attachments$ | async)?.length
                                 ? { height: '8px' }
                                 : { height: '24px' }
                         "
@@ -307,16 +317,19 @@
             </div>
         </ng-container>
         <ng-template #upload>
-            <app-ta-upload-files
-                [files]="[]"
-                [showDropzone]="true"
-                [dropzoneFocus]="false"
-                [dropZoneConfig]="ChatDropzone.inputDropzone"
-                [size]="'large'"
-                [customClassName]="'large no-background-color'"
-                [hasSlider]="false"
-                (onFileEvent)="addAttachments($event.files)"
-            ></app-ta-upload-files>
+            <div class="upload-wrapper">
+                <app-ta-upload-files
+                    #filesUpload
+                    [files]="[]"
+                    [showDropzone]="true"
+                    [dropzoneFocus]="false"
+                    [dropZoneConfig]="ChatDropzone.inputDropzone"
+                    [size]="'large'"
+                    [customClassName]="'no-background-color full-height expand'"
+                    [hasSlider]="false"
+                    (onFileEvent)="addAttachments($event.files)"
+                ></app-ta-upload-files>
+            </div>
         </ng-template>
     </div>
     <ng-container
