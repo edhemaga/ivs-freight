@@ -11,13 +11,12 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-    HttpClient, HttpHeaders, HttpParams,
-    HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
 import { CreateDispatchCommand } from '../model/createDispatchCommand';
@@ -46,6 +45,8 @@ import { DispatchPossibleStatusResponse } from '../model/dispatchPossibleStatusR
 // @ts-ignore
 import { DispatchResponse } from '../model/dispatchResponse';
 // @ts-ignore
+import { DriversForDispatchHistoryModalResponse } from '../model/driversForDispatchHistoryModalResponse';
+// @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { ReorderDispatchLoadsCommand } from '../model/reorderDispatchLoadsCommand';
@@ -63,13 +64,13 @@ import { UpdateDispatchCommand } from '../model/updateDispatchCommand';
 import { UpdateDispatchStatusCommand } from '../model/updateDispatchStatusCommand';
 
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
 
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class DispatchService {
 
@@ -78,7 +79,7 @@ export class DispatchService {
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string | string[], @Optional() configuration: Configuration) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
             this.configuration = configuration;
         }
@@ -113,15 +114,15 @@ export class DispatchService {
 
         if (typeof value === "object") {
             if (Array.isArray(value)) {
-                (value as any[]).forEach(elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
             } else if (value instanceof Date) {
                 if (key != null) {
                     httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
                 } else {
-                    throw Error("key may not be null if value is Date");
+                   throw Error("key may not be null if value is Date");
                 }
             } else {
-                Object.keys(value).forEach(k => httpParams = this.addToHttpParamsRecursive(
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
                     httpParams, value[k], key != null ? `${key}.${k}` : k));
             }
         } else if (key != null) {
@@ -137,15 +138,15 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchGroupedLoadsResponse>;
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchGroupedLoadsResponse>>;
-    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchGroupedLoadsResponse>>;
-    public apiDispatchAssignedloadsIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchGroupedLoadsResponse>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchGroupedLoadsResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchGroupedLoadsResponse>>;
+    public apiDispatchAssignedloadsIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchAssignedloadsIdGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -193,7 +194,7 @@ export class DispatchService {
             }
         }
 
-        let localVarPath = `/api/dispatch/assignedloads/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/dispatch/assignedloads/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<DispatchGroupedLoadsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -212,15 +213,15 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchBoardFiltersResponse>;
-    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchBoardFiltersResponse>>;
-    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchBoardFiltersResponse>>;
-    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchBoardFiltersResponse>;
+    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchBoardFiltersResponse>>;
+    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchBoardFiltersResponse>>;
+    public apiDispatchBoardFiltersGet(dispatchBoardId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchBoardId, 'DispatchBoardId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -289,42 +290,52 @@ export class DispatchService {
      * @param trailerTypes 
      * @param statuses 
      * @param parkings 
+     * @param vacation 
+     * @param search 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchBoardResponse>;
-    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchBoardResponse>>;
-    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchBoardResponse>>;
-    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchBoardResponse>;
+    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchBoardResponse>>;
+    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchBoardResponse>>;
+    public apiDispatchBoardGet(id?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>id, 'Id');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
         }
         if (truckTypes) {
             truckTypes.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'TruckTypes');
+                  <any>element, 'TruckTypes');
             })
         }
         if (trailerTypes) {
             trailerTypes.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'TrailerTypes');
+                  <any>element, 'TrailerTypes');
             })
         }
         if (statuses) {
             statuses.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'Statuses');
+                  <any>element, 'Statuses');
             })
         }
         if (parkings) {
             parkings.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'Parkings');
+                  <any>element, 'Parkings');
             })
+        }
+        if (vacation !== undefined && vacation !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>vacation, 'Vacation');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -401,51 +412,51 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchHistoryDriverListResponse>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchHistoryDriverListResponse>>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchHistoryDriverListResponse>>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryDriverListResponse>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryDriverListResponse>>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryDriverListResponse>>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (truckId !== undefined && truckId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>truckId, 'TruckId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>truckId, 'TruckId');
         }
         if (trailerId !== undefined && trailerId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>trailerId, 'TrailerId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>trailerId, 'TrailerId');
         }
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchBoardId, 'DispatchBoardId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sort, 'Sort');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search1, 'Search1');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search2, 'Search2');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -527,71 +538,71 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchHistoryListResponse>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryListResponse>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchBoardId, 'DispatchBoardId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
         }
         if (dispatchHistoryTime !== undefined && dispatchHistoryTime !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchHistoryTime, 'DispatchHistoryTime');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchHistoryTime, 'DispatchHistoryTime');
         }
         if (truckId !== undefined && truckId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>truckId, 'TruckId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>truckId, 'TruckId');
         }
         if (trailerId !== undefined && trailerId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>trailerId, 'TrailerId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>trailerId, 'TrailerId');
         }
         if (driverId !== undefined && driverId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>driverId, 'DriverId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>driverId, 'DriverId');
         }
         if (coDriverId !== undefined && coDriverId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>coDriverId, 'CoDriverId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>coDriverId, 'CoDriverId');
         }
         if (customDateFrom !== undefined && customDateFrom !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>customDateFrom, 'CustomDateFrom');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateFrom, 'CustomDateFrom');
         }
         if (customDateTo !== undefined && customDateTo !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>customDateTo, 'CustomDateTo');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateTo, 'CustomDateTo');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sort, 'Sort');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search1, 'Search1');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search2, 'Search2');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -673,71 +684,71 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchHistoryGroupListResponse>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchHistoryGroupListResponse>>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchHistoryGroupListResponse>>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryGroupListResponse>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchBoardId, 'DispatchBoardId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
         }
         if (dispatchHistoryTime !== undefined && dispatchHistoryTime !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatchHistoryTime, 'DispatchHistoryTime');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchHistoryTime, 'DispatchHistoryTime');
         }
         if (truckId !== undefined && truckId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>truckId, 'TruckId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>truckId, 'TruckId');
         }
         if (trailerId !== undefined && trailerId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>trailerId, 'TrailerId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>trailerId, 'TrailerId');
         }
         if (driverId !== undefined && driverId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>driverId, 'DriverId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>driverId, 'DriverId');
         }
         if (coDriverId !== undefined && coDriverId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>coDriverId, 'CoDriverId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>coDriverId, 'CoDriverId');
         }
         if (customDateFrom !== undefined && customDateFrom !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>customDateFrom, 'CustomDateFrom');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateFrom, 'CustomDateFrom');
         }
         if (customDateTo !== undefined && customDateTo !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>customDateTo, 'CustomDateTo');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateTo, 'CustomDateTo');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageIndex, 'PageIndex');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
         }
         if (pageSize !== undefined && pageSize !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>pageSize, 'PageSize');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
         }
         if (companyId !== undefined && companyId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>companyId, 'CompanyId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
         }
         if (sort !== undefined && sort !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>sort, 'Sort');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
         }
         if (search !== undefined && search !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search, 'Search');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
         if (search1 !== undefined && search1 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search1, 'Search1');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
         }
         if (search2 !== undefined && search2 !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>search2, 'Search2');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -801,15 +812,101 @@ export class DispatchService {
     }
 
     /**
+     * @param truckId 
+     * @param trailerId 
+     * @param dispatchBoardId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryModalGet(observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchHistoryModalResponse>;
-    public apiDispatchBoardHistoryModalGet(observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchHistoryModalResponse>>;
-    public apiDispatchBoardHistoryModalGet(observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchHistoryModalResponse>>;
-    public apiDispatchBoardHistoryModalGet(observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardHistoryModalDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DriversForDispatchHistoryModalResponse>;
+    public apiDispatchBoardHistoryModalDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DriversForDispatchHistoryModalResponse>>;
+    public apiDispatchBoardHistoryModalDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DriversForDispatchHistoryModalResponse>>;
+    public apiDispatchBoardHistoryModalDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (truckId !== undefined && truckId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>truckId, 'TruckId');
+        }
+        if (trailerId !== undefined && trailerId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>trailerId, 'TrailerId');
+        }
+        if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatchBoardId, 'DispatchBoardId');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dispatch/board/history/modal/driver`;
+        return this.httpClient.request<DriversForDispatchHistoryModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDispatchBoardHistoryModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryModalResponse>;
+    public apiDispatchBoardHistoryModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryModalResponse>>;
+    public apiDispatchBoardHistoryModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryModalResponse>>;
+    public apiDispatchBoardHistoryModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -878,46 +975,56 @@ export class DispatchService {
      * @param trailerTypes 
      * @param statuses 
      * @param parkings 
+     * @param vacation 
+     * @param search 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchBoardListResponse>;
-    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchBoardListResponse>>;
-    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchBoardListResponse>>;
-    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchBoardListResponse>;
+    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchBoardListResponse>>;
+    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchBoardListResponse>>;
+    public apiDispatchBoardListGet(dispatcherId?: number, teamBoard?: number, truckTypes?: Array<number>, trailerTypes?: Array<number>, statuses?: Array<number>, parkings?: Array<number>, vacation?: boolean, search?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatcherId !== undefined && dispatcherId !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>dispatcherId, 'DispatcherId');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatcherId, 'DispatcherId');
         }
         if (teamBoard !== undefined && teamBoard !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                <any>teamBoard, 'TeamBoard');
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>teamBoard, 'TeamBoard');
         }
         if (truckTypes) {
             truckTypes.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'TruckTypes');
+                  <any>element, 'TruckTypes');
             })
         }
         if (trailerTypes) {
             trailerTypes.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'TrailerTypes');
+                  <any>element, 'TrailerTypes');
             })
         }
         if (statuses) {
             statuses.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'Statuses');
+                  <any>element, 'Statuses');
             })
         }
         if (parkings) {
             parkings.forEach((element) => {
                 localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                    <any>element, 'Parkings');
+                  <any>element, 'Parkings');
             })
+        }
+        if (vacation !== undefined && vacation !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>vacation, 'Vacation');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -985,15 +1092,15 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchIdDelete.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1041,7 +1148,7 @@ export class DispatchService {
             }
         }
 
-        let localVarPath = `/api/dispatch/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/dispatch/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1060,15 +1167,15 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchResponse>;
-    public apiDispatchIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchResponse>>;
-    public apiDispatchIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchResponse>>;
-    public apiDispatchIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchResponse>;
+    public apiDispatchIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchResponse>>;
+    public apiDispatchIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchResponse>>;
+    public apiDispatchIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchIdGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1116,7 +1223,7 @@ export class DispatchService {
             }
         }
 
-        let localVarPath = `/api/dispatch/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/dispatch/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<DispatchResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1134,12 +1241,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchModalGet(observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchModalResponse>;
-    public apiDispatchModalGet(observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchModalResponse>>;
-    public apiDispatchModalGet(observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchModalResponse>>;
-    public apiDispatchModalGet(observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchModalResponse>;
+    public apiDispatchModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchModalResponse>>;
+    public apiDispatchModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchModalResponse>>;
+    public apiDispatchModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1206,15 +1313,15 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<DispatchPossibleStatusResponse>;
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<DispatchPossibleStatusResponse>>;
-    public apiDispatchNextstatusesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<DispatchPossibleStatusResponse>>;
-    public apiDispatchNextstatusesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchPossibleStatusResponse>;
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchPossibleStatusResponse>>;
+    public apiDispatchNextstatusesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchPossibleStatusResponse>>;
+    public apiDispatchNextstatusesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiDispatchNextstatusesIdGet.');
         }
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1262,7 +1369,7 @@ export class DispatchService {
             }
         }
 
-        let localVarPath = `/api/dispatch/nextstatuses/${this.configuration.encodeParam({ name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32" })}`;
+        let localVarPath = `/api/dispatch/nextstatuses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<DispatchPossibleStatusResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1281,12 +1388,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<CreateResponse>;
-    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<CreateResponse>>;
-    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<CreateResponse>>;
-    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiDispatchPost(createDispatchCommand?: CreateDispatchCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1365,12 +1472,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchPreTripInspectionPatch(setPreTripInspectionCommand?: SetPreTripInspectionCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1449,12 +1556,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchPut(updateDispatchCommand?: UpdateDispatchCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1533,12 +1640,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchReorderLoadsPut(reorderDispatchLoadsCommand?: ReorderDispatchLoadsCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1617,12 +1724,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchReorderPut(reorderDispatchesCommand?: ReorderDispatchesCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1701,12 +1808,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchStatusPut(updateDispatchStatusCommand?: UpdateDispatchStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1785,12 +1892,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchStatusRevertPatch(revertDispatchStatusCommand?: RevertDispatchStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1869,12 +1976,12 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any>;
-    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpResponse<any>>;
-    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<HttpEvent<any>>;
-    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe: any = 'body', reportProgress: boolean = false, options?: { httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext }): Observable<any> {
+    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiDispatchSwitchPut(switchDispatchesCommand?: SwitchDispatchesCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 

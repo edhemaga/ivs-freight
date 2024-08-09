@@ -102,6 +102,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public isDispatchBoardLocked: boolean = true;
     public isDispatchBoardChangeInProgress: boolean = false;
 
+    public isHoveringRowIndex: number = -1;
+
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
     public hasLargeFieldParking: boolean = false;

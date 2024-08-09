@@ -4,4 +4,6 @@ export interface GetDispatchHistoryData {
     truckId?: number;
     trailerId?: number;
     driverId?: number;
+    customDateFrom?: string;
+    customDateTo?: string;
 }

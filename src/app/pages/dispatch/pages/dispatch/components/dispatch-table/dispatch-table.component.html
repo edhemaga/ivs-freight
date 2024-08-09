@@ -78,6 +78,8 @@
                         cdkDragPreviewContainer="parent"
                         cdkDragBoundary=".dispatch-table"
                         [cdkDragDisabled]="isDispatchBoardLocked || !item.truck"
+                        (mouseenter)="isHoveringRowIndex = rowIndex"
+                        (mouseleave)="isHoveringRowIndex = -1"
                     >
                         <td
                             cdkDragHandle
@@ -99,6 +101,9 @@
                                 [isBoardLocked]="isDispatchBoardLocked"
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
+                                [isHoveringRow]="
+                                    isHoveringRowIndex === rowIndex
+                                "
                                 (addTruckTrailerEmitter)="
                                     handleAddTruckTrailerClick($event)
                                 "
@@ -170,6 +175,9 @@
                                         [isBoardLocked]="isDispatchBoardLocked"
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
+                                        [isHoveringRow]="
+                                            isHoveringRowIndex === rowIndex
+                                        "
                                         (addTruckTrailerEmitter)="
                                             handleAddTruckTrailerClick($event)
                                         "
@@ -231,6 +239,7 @@
                                         *cdkDragPlaceholder
                                         class="custom-dispatch-placeholder"
                                     ></div>
+
                                     <app-dispatch-table-driver
                                         [driver]="item?.driver"
                                         [driverList]="driverList"
@@ -247,6 +256,9 @@
                                         [statusOpenedIndex]="statusOpenedIndex"
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
+                                        [isHoveringRow]="
+                                            isHoveringRowIndex === rowIndex
+                                        "
                                         (addDriverEmitter)="
                                             handleAddDriverClick($event)
                                         "
@@ -267,14 +279,21 @@
                                 [dispatchId]="item?.id"
                                 [dispatchBoardId]="item?.dispatchBoardId"
                                 [status]="item?.preTripInspection"
+                                [isHoveringRow]="
+                                    isHoveringRowIndex === rowIndex
+                                "
                             ></app-dispatch-table-pre-trip-inspection>
                         </td>
+
                         <td class="location-field">
                             <app-dispatch-table-last-location
                                 [address]="item.location"
                                 [rowIndex]="rowIndex"
                                 [showAddAddressField]="showAddAddressFieldIndex"
                                 [parkingList]="parkingList"
+                                [isHoveringRow]="
+                                    isHoveringRowIndex === rowIndex
+                                "
                                 (updateLastLocationEmit)="
                                     handleUpdateLastLocationEmit($event)
                                 "
@@ -284,160 +303,20 @@
                         </td>
 
                         <td class="status-field">
-                            <div
-                                class="main_inside"
-                                [class.filled]="
-                                    item?.driver &&
-                                    item.trailer &&
-                                    item.location.address
+                            <app-dispatch-table-status
+                                [time]="item.lastStatusDateTime"
+                                [status]="item.status"
+                                [dispatchId]="item.id"
+                                [dispatchBoardId]="item?.dispatchBoardId"
+                                [dispatcher]="item"
+                                [isHoveringRow]="
+                                    isHoveringRowIndex === rowIndex
                                 "
                             >
-                                <div class="padding-inside">
-                                    <app-ta-status-switch
-                                        *ngIf="
-                                            item?.driver &&
-                                            item.trailer &&
-                                            item.location.address
-                                        "
-                                        (changeStatus)="addStatus($event)"
-                                        (openIndex)="openIndex($event)"
-                                        [openedStatus]="statusOpenedIndex"
-                                        [dispatchboardId]="item.id"
-                                        [statusHeight]="32"
-                                        [status]="item.status"
-                                        [dispatchId]="item.id"
-                                        [statusMainIndex]="rowIndex"
-                                        [statusTypes]="'dispatch'"
-                                        [withStatusAgo]="true"
-                                        [pickupCount]="
-                                            item.activeLoad?.pickupCount
-                                        "
-                                        [deliveryCount]="
-                                            item.activeLoad?.deliveryCount
-                                        "
-                                        [possibleNextStatuses]="
-                                            item.possibleNextStatuses
-                                        "
-                                        [nextStopType]="item.nextStopType"
-                                        [currentStopType]="item.currentStopType"
-                                    ></app-ta-status-switch>
-                                </div>
-                            </div>
+                            </app-dispatch-table-status>
                         </td>
 
-                        <td class="pickup-delivery-field">
-                            <!--   <div
-                    class="main_inside"
-                    [class.filled]="
-                        item.driver &&
-                        item.trailer &&
-                        item.truck &&
-                        item.location.address
-                    "
-                >
-                    <div class="padding-inside">
-                        <div
-                            class="info-item pickup-dev-popover-hold"
-                            *ngIf="
-                                item.driver && item.trailer && item.truck
-                            "
-                            #t3="ngbPopover"
-                            [ngbPopover]="pickupPopover"
-                            [autoClose]="'outside'"
-                            container="body"
-                            [placement]="'bottom'"
-                            popoverClass="pickup-delivery-popover"
-                            triggers="manual"
-                            (click)="showPickupDelivery(t3)"
-                        >
-                            <div
-                                class="no-delpickup"
-                                *ngIf="!item.activeLoad"
-                            >
-                                No Active or Pending Load
-                            </div>
-
-                            <div
-                                class="load-items-hold"
-                                *ngIf="item.activeLoad"
-                            >
-                                <div class="pick-load-box pickup-box">
-                                    <svg-icon
-                                        *ngIf="
-                                            item.activeLoad.pickupCount < 9
-                                        "
-                                        src="
-                                            assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                            item.activeLoad.pickupCount
-                                        }}.svg
-                                        "
-                                    ></svg-icon>
-                                    <svg-icon
-                                        *ngIf="
-                                            item.activeLoad.pickupCount > 9
-                                        "
-                                        src="assets/svg/svg_numbers/svg_num_over.svg
-                                    "
-                                    ></svg-icon>
-                                    <div class="pick-load-info">
-                                        <div class="pick-load-info-address">
-                                            {{
-                                                item.activeLoad.pickup
-                                                    .shipper.address.city
-                                            }},
-                                            {{
-                                                item.activeLoad.pickup
-                                                    .shipper.address
-                                                    .stateShortName
-                                            }}
-                                        </div>
-                                        <div class="pick-load-info-time">
-                                            05/09/21
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pick-load-box delivery-box">
-                                    <svg-icon
-                                        *ngIf="
-                                            item.activeLoad.deliveryCount <
-                                            9
-                                        "
-                                        src="
-                                            assets/svg/svg_numbers/olddash/svg_num_box_{{
-                                            item.activeLoad.deliveryCount
-                                        }}.svg
-                                        "
-                                    ></svg-icon>
-                                    <svg-icon
-                                        *ngIf="
-                                            item.activeLoad.deliveryCount >
-                                            9
-                                        "
-                                        src="assets/svg/svg_numbers/svg_num_over.svg
-                                    "
-                                    ></svg-icon>
-                                    <div class="pick-load-info">
-                                        <div class="pick-load-info-address">
-                                            {{
-                                                item.activeLoad.delivery
-                                                    .shipper.address.city
-                                            }},
-                                            {{
-                                                item.activeLoad.delivery
-                                                    .shipper.address
-                                                    .stateShortName
-                                            }}
-                                        </div>
-                                        <div class="pick-load-info-time">
-                                            05/09/21
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                        </td>
+                        <td class="pickup-delivery-field"></td>
 
                         <td class="progress-field">
                             <div class="main_inside filled">
@@ -461,24 +340,37 @@
                                 [isWideTable]="parkingList?.length > 1"
                                 [truckId]="item.truck?.id"
                                 [trailerId]="item.trailer?.id"
+                                [isHoveringRow]="
+                                    isHoveringRowIndex === rowIndex
+                                "
                                 (updateParking)="updateParking($event, item.id)"
                             ></app-dispatch-table-parking>
                         </td>
 
                         <td class="box-item">
                             <div class="main_inside filled">
-                                <div class="padding-inside">
+                                <div
+                                    class="padding-inside"
+                                    [ngClass]="{ hovering: isHoveringRow }"
+                                >
                                     <div
                                         class="info-item justify-content-center"
                                     >
-                                        <app-ta-profile-images
-                                            [indx]="rowIndex"
-                                            [name]="'Slavisa Markovic'"
-                                            [size]="'small'"
-                                            [type]="'user'"
-                                            [withTooltip]="true"
+                                        <ng-container
+                                            *ngIf="item.dispatcher?.fullName"
                                         >
-                                        </app-ta-profile-images>
+                                            <app-ta-profile-images
+                                                [indx]="rowIndex"
+                                                [name]="
+                                                    item.dispatcher?.fullName
+                                                "
+                                                [size]="'small'"
+                                                [type]="'user'"
+                                                [withTooltip]="true"
+                                                [isDispatch]="true"
+                                            >
+                                            </app-ta-profile-images>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
@@ -697,12 +589,6 @@
                         (driverVacationEmitter)="changeDriverVacation($event)"
                     >
                     </app-dispatch-table-driver>
-                </td>
-
-                <td class="box-item">
-                    <div class="main_inside" [class.filled]="item?.driver">
-                        <div class="padding-inside"></div>
-                    </div>
                 </td>
 
                 <td class="pre-trip">

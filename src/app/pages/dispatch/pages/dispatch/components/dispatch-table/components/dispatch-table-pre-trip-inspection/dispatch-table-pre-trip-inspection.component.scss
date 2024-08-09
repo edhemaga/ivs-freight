@@ -1,43 +1,51 @@
 @import '../../dispatch-table.component.scss';
 
-.status-disabled {
-    svg {
-        path {
-            fill: $ta-light-grey-6;
-        }
-    }
-    &:hover {
+.pre-trip-inspection-container {
+    &:hover,
+    &.hovering {
         background-color: $bw2;
     }
-}
-.status-enabled {
-    svg {
-        path {
-            fill: $bw5;
-        }
-    }
-    &:hover {
-        cursor: pointer;
-        background-color: $bw2;
+
+    &.status-disabled {
         svg {
             path {
-                fill: $ta-black;
+                fill: $ta-light-grey-6;
             }
         }
     }
-}
-.status-done {
-    svg {
-        path {
-            fill: $ta-blue-13;
-        }
-    }
-    &:hover {
-        cursor: pointer;
-        background-color: $bw2;
+
+    &.status-enabled {
         svg {
             path {
-                fill: $ta-blue-15;
+                fill: $bw5;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
+    }
+
+    &.status-done {
+        svg {
+            path {
+                fill: $ta-blue-13;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: $ta-blue-15;
+                }
             }
         }
     }

@@ -15,53 +15,107 @@
             >
                 <!-- Time -->
 
-                <app-ta-input-dropdown
-                    formControlName="time"
-                    [inputConfig]="dispatchHistoryTimeConfig"
-                    [options]="timesDropdownList"
-                    [activeItem]="selectedTime"
-                    (selectedItem)="onSelectDropdown($event, 'time')"
-                ></app-ta-input-dropdown>
+                <div class="time-container" (click)="handleTimeDropdown(true)">
+                    <app-ta-input-dropdown
+                        formControlName="time"
+                        [inputConfig]="dispatchHistoryTimeConfig"
+                        [options]="timesDropdownList"
+                        [activeItem]="selectedTime"
+                        (selectedItem)="
+                            onSelectDropdown(
+                                $event,
+                                dispatchHistoryModalStringEnum.TIME
+                            )
+                        "
+                        (closeDropdown)="handleTimeDropdown(false)"
+                    ></app-ta-input-dropdown>
+
+                    <ng-container *ngIf="isDisplayingCustomPeriodRange">
+                        <div class="custom-period-range-container">
+                            <app-ta-custom-period-range
+                                [isOnlyDateInputsLayout]="true"
+                                [selectedCustomPeriodRange]="
+                                    selectedCustomPeriodRange
+                                "
+                                (customPeriodRangeValuesEmitter)="
+                                    handleSetCustomPeriodRangeClick($event)
+                                "
+                            ></app-ta-custom-period-range>
+                        </div>
+                    </ng-container>
+                </div>
 
                 <!-- Dispatch Board -->
 
-                <app-ta-input-dropdown
-                    formControlName="dispatchBoard"
-                    [inputConfig]="dispatchHistoryDispatchBoardConfig"
-                    [options]="dispatchBoardsDropdownList"
-                    [activeItem]="selectedDispatchBoard"
-                    (selectedItem)="onSelectDropdown($event, 'dispatch-board')"
-                ></app-ta-input-dropdown>
+                <div (click)="handleTimeDropdown(true)">
+                    <app-ta-input-dropdown
+                        formControlName="dispatchBoard"
+                        [inputConfig]="dispatchHistoryDispatchBoardConfig"
+                        [options]="dispatchBoardsDropdownList"
+                        [activeItem]="selectedDispatchBoard"
+                        (selectedItem)="
+                            onSelectDropdown(
+                                $event,
+                                dispatchHistoryModalStringEnum.DISPATCH_BOARD
+                            )
+                        "
+                        (closeDropdown)="handleTimeDropdown(false)"
+                    ></app-ta-input-dropdown>
+                </div>
 
                 <!-- Truck -->
 
-                <app-ta-input-dropdown
-                    formControlName="truck"
-                    [inputConfig]="dispatchHistoryTruckConfig"
-                    [options]="trucksDropdownList"
-                    [activeItem]="selectedTruck"
-                    (selectedItem)="onSelectDropdown($event, 'truck')"
-                ></app-ta-input-dropdown>
+                <div (click)="handleTimeDropdown(true)">
+                    <app-ta-input-dropdown
+                        formControlName="truck"
+                        [inputConfig]="dispatchHistoryTruckConfig"
+                        [options]="trucksDropdownList"
+                        [activeItem]="selectedTruck"
+                        (selectedItem)="
+                            onSelectDropdown(
+                                $event,
+                                dispatchHistoryModalStringEnum.TRUCK
+                            )
+                        "
+                        (closeDropdown)="handleTimeDropdown(false)"
+                    ></app-ta-input-dropdown>
+                </div>
 
                 <!-- Trailer -->
 
-                <app-ta-input-dropdown
-                    formControlName="trailer"
-                    [inputConfig]="dispatchHistoryTrailerConfig"
-                    [options]="trailersDropdownList"
-                    [activeItem]="selectedTrailer"
-                    (selectedItem)="onSelectDropdown($event, 'trailer')"
-                ></app-ta-input-dropdown>
+                <div (click)="handleTimeDropdown(true)">
+                    <app-ta-input-dropdown
+                        formControlName="trailer"
+                        [inputConfig]="dispatchHistoryTrailerConfig"
+                        [options]="trailersDropdownList"
+                        [activeItem]="selectedTrailer"
+                        (selectedItem)="
+                            onSelectDropdown(
+                                $event,
+                                dispatchHistoryModalStringEnum.TRAILER
+                            )
+                        "
+                        (closeDropdown)="handleTimeDropdown(false)"
+                    ></app-ta-input-dropdown>
+                </div>
 
                 <!-- Driver -->
 
-                <app-ta-input-dropdown
-                    formControlName="driver"
-                    [inputConfig]="dispatchHistoryDriverConfig"
-                    [options]="driversDropdownList"
-                    [activeItem]="selectedDriver"
-                    (selectedItem)="onSelectDropdown($event, 'driver')"
-                ></app-ta-input-dropdown>
+                <div (click)="handleTimeDropdown(true)">
+                    <app-ta-input-dropdown
+                        formControlName="driver"
+                        [inputConfig]="dispatchHistoryDriverConfig"
+                        [options]="driversDropdownList"
+                        [activeItem]="selectedDriver"
+                        (selectedItem)="
+                            onSelectDropdown(
+                                $event,
+                                dispatchHistoryModalStringEnum.DRIVER
+                            )
+                        "
+                        (closeDropdown)="handleTimeDropdown(false)"
+                    ></app-ta-input-dropdown>
+                </div>
             </div>
 
             <!-- Content -->
@@ -201,11 +255,20 @@
                                                                             ?.statusValue
                                                                             ?.name
                                                                 }"
+                                                                [statusOrder]="{
+                                                                    type: group
+                                                                        ?.items[
+                                                                        itemIndex
+                                                                    ]?.type,
+                                                                    stopOrder:
+                                                                        group
+                                                                            ?.items[
+                                                                            itemIndex
+                                                                        ]
+                                                                            ?.stopOrder
+                                                                }"
                                                             ></app-load-status-string>
-                                                            <!--  [statusOrder]="{
-                                                        type: statusOrder?.type,
-                                                        stopOrder: statusOrder?.stopOrder
-                                                    }" -->
+
                                                             <ng-container
                                                                 *ngIf="
                                                                     isHoveringGroupItemIndex ===
@@ -241,11 +304,11 @@
                                                             <app-ta-input
                                                                 formControlName="dateStart"
                                                                 [inputConfig]="
-                                                                    dispatchHistoryDateStartConfig(
-                                                                      {  groupIndex,
+                                                                    dispatchHistoryDateStartConfig({  
+                                                                        groupIndex,
                                                                         itemIndex,
-                                                                        groupItem}
-                                                                    )
+                                                                        groupItem
+                                                                    })
                                                                 "
                                                                 (mouseenter)="
                                                                     handleInputHover(
@@ -274,11 +337,11 @@
                                                             <app-ta-input
                                                                 formControlName="timeStart"
                                                                 [inputConfig]="
-                                                                    dispatchHistoryTimeStartConfig(
-                                                                       { groupIndex,
+                                                                    dispatchHistoryTimeStartConfig({   
+                                                                        groupIndex,
                                                                         itemIndex,
-                                                                        groupItem}
-                                                                    )
+                                                                        groupItem
+                                                                    })
                                                                 "
                                                                 (mouseenter)="
                                                                     handleInputHover(
@@ -314,11 +377,11 @@
                                                                 <app-ta-input
                                                                     formControlName="dateEnd"
                                                                     [inputConfig]="
-                                                                        dispatchHistoryDateEndConfig(
-                                                                           { groupIndex,
+                                                                        dispatchHistoryDateEndConfig({ 
+                                                                            groupIndex,
                                                                             itemIndex,
-                                                                            groupItem}
-                                                                        )
+                                                                            groupItem
+                                                                        })
                                                                     "
                                                                     (mouseenter)="
                                                                         handleInputHover(
@@ -355,11 +418,11 @@
                                                                 <app-ta-input
                                                                     formControlName="timeEnd"
                                                                     [inputConfig]="
-                                                                        dispatchHistoryTimeEndConfig(
-                                                                            {groupIndex,
+                                                                        dispatchHistoryTimeEndConfig({
+                                                                            groupIndex,
                                                                             itemIndex,
-                                                                            groupItem}
-                                                                        )
+                                                                            groupItem
+                                                                        })
                                                                     "
                                                                     (mouseenter)="
                                                                         handleInputHover(
@@ -414,10 +477,73 @@
                         <!-- No Group -->
 
                         <ng-template #noGroup>
-                            <div
-                                class="d-flex align-items-center no-group-container"
-                            >
-                                NO GROUP
+                            <div class="d-flex flex-column no-group-container">
+                                <!-- No Group Header -->
+
+                                <div
+                                    class="align-items-center no-group-container-header"
+                                    [ngClass]="noGroupClass"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let noGroupHeaderItem of noGroupHeaderItems;
+                                            let last = last;
+                                            trackBy: trackByIdentity
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center no-group-container-header-box"
+                                            [ngClass]="{
+                                                'justify-content-end': last
+                                            }"
+                                        >
+                                            <p class="m-0 ta-font-bold">
+                                                {{ noGroupHeaderItem }}
+                                            </p>
+                                        </div>
+                                    </ng-container>
+                                </div>
+
+                                <!-- No Group Main -->
+
+                                <div
+                                    class="d-flex flex-column no-group-container-main"
+                                >
+                                    <ng-container
+                                        *ngFor="
+                                            let noGroupItemData of noGroupData;
+                                            trackBy: trackByIdentity
+                                        "
+                                    >
+                                        <div
+                                            class="align-items-center no-group-container-main-item"
+                                            [ngClass]="noGroupClass"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let noGroupItem of noGroupItemData;
+                                                    let last = last;
+                                                    trackBy: trackByIdentity
+                                                "
+                                            >
+                                                <div
+                                                    class="d-flex align-items-center item-box"
+                                                    [ngClass]="{
+                                                        'justify-content-end':
+                                                            last
+                                                    }"
+                                                >
+                                                    <p class="m-0">
+                                                        {{
+                                                            noGroupItem ??
+                                                                '\u00A0'
+                                                        }}
+                                                    </p>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
                             </div>
                         </ng-template>
                     </div>

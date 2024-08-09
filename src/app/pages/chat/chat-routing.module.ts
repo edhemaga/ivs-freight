@@ -10,6 +10,7 @@ import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
 import { DriverResolver } from "@pages/chat/resolvers/driver/driver.resolver";
 import { ConversationResolver } from "@pages/chat/resolvers/conversation/conversation.resolver";
 import { ConversationInformationResolver } from "@pages/chat/resolvers/conversation/conversation-information.resolver";
+import { CompanyChannelResolver } from '@pages/chat/resolvers/company-channel/company-channel.resolvers';
 
 const routes: Routes = [
     {
@@ -17,7 +18,8 @@ const routes: Routes = [
         component: ChatComponent,
         resolve: {
             users: UserResolver,
-            drivers: DriverResolver
+            drivers: DriverResolver,
+            companyChannels: CompanyChannelResolver
         },
         data: {
             title: 'Chat'

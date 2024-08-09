@@ -33,7 +33,7 @@ import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
-import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
+import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
     BarChart,
     BarChartAxes,

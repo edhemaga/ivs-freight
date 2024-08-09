@@ -15,7 +15,7 @@
         </ng-container>
 
         <ng-container *ngIf="driver">
-            <div class="padding-inside">
+            <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
                 <div class="info-item">
                     <div class="driver-buttons">
                         <ng-container *ngIf="driverHover.txt !== 'email'">

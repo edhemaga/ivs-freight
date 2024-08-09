@@ -46,6 +46,7 @@ export class DispatchTableParkingComponent implements OnInit {
     @Input() isWideTable: boolean;
     @Input() truckId: number;
     @Input() trailerId: number;
+    @Input() isHoveringRow: boolean;
 
     // Ouputs
     @Output()

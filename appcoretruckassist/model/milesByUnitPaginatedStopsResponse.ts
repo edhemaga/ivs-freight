@@ -39,8 +39,6 @@ export interface MilesByUnitPaginatedStopsResponse {
     loadedMiles?: number;
     emptyMiles?: number;
     totalMiles?: number;
-    createdAt?: string;
-    updatedAt?: string;
     stops?: MilesStopItemResponsePagination;
 }
 
