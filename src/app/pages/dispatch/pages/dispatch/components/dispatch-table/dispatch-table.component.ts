@@ -221,7 +221,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.hasLargeFieldParking = this.parkingList?.length > 1;
 
         if (this.hasLargeFieldParking) {
-            let currentAdditionalFieldValues = {
+            const currentAdditionalFieldValues = {
                 ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
             };
 
@@ -242,16 +242,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
 
         if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
-            let currentAdditionalFieldValues = {
+            const currentAdditionalFieldValues = {
                 ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
             };
 
-            let hasAdditionalTruck = this.hasAdditionalFieldTruck
-                ? true
-                : currentAdditionalFieldValues.isTruckExpanded;
-            let hasAdditionalTrailer = this.hasAdditionalFieldTrailer
-                ? true
-                : currentAdditionalFieldValues.isTruckExpanded;
+            const hasAdditionalTruck =
+                this.hasAdditionalFieldTruck ||
+                currentAdditionalFieldValues.isTruckExpanded;
+            const hasAdditionalTrailer =
+                this.hasAdditionalFieldTrailer ||
+                currentAdditionalFieldValues.isTrailerExpanded;
 
             this.dispatcherService.updateMainBoardColumnWidths(
                 hasAdditionalTruck,
