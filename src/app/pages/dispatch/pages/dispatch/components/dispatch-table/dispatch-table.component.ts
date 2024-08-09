@@ -30,6 +30,9 @@ import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/component
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
 
+// svg routes
+import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+
 // models
 import {
     CreateDispatchCommand,
@@ -49,9 +52,6 @@ import {
     DispatchResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
-
-// svg routes
-import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
 
 @Component({
@@ -73,7 +73,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     @Input() set shortLists(lists: DispatchModalResponse) {
-        this.handleTruckTrailerDriverLists(lists);
+        this.handleTruckTrailerDriverParkingLists(lists);
     }
 
     @Input() set isBoardLocked(isLocked: boolean) {
@@ -168,7 +168,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.dispatchTableHeaderItems = DispatchTableConstants.HEADER_ITEMS;
     }
 
-    private handleTruckTrailerDriverLists(lists: DispatchModalResponse): void {
+    private handleTruckTrailerDriverParkingLists(
+        lists: DispatchModalResponse
+    ): void {
         const { trucks, trailers, drivers, parkings } = lists;
 
         const trucksList = JSON.parse(JSON.stringify(trucks));
@@ -489,21 +491,24 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         parkingSlot: DispatchBoardParkingEmiter,
         id: number
     ): void {
+        const data = {
+            id: parkingSlot.parking,
+            trailerId: parkingSlot.trailerId,
+            truckId: parkingSlot.truckId,
+            dispatchId: id,
+        };
+
         this.isDispatchBoardChangeInProgress = true;
 
         this.parkingService
-            .apiParkingParkingslotPut({
-                id: parkingSlot.parking,
-                trailerId: parkingSlot.trailerId,
-                truckId: parkingSlot.truckId,
-                dispatchId: id,
-            })
+            .apiParkingParkingslotPut(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.dispatcherService
                     .updateDispatchboardRowById(id, this.dispatchData.id)
                     .subscribe(() => {
                         this.dispatcherService.updateModalList();
+
                         this.checkEmptySet = '';
                         this.isDispatchBoardChangeInProgress = false;
                     });
@@ -791,10 +796,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.draggingType = '';
     }
 
-    showPickupDelivery(popup: any) {
-        popup.open();
-    }
-
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
     trailerPositionPrediction = () => {
         return true;
@@ -807,17 +808,19 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public getMainBoardColumnWidths(): void {
-        this.dispatcherService.mainBoardColumnsExpanded$.subscribe((res) => {
-            if (
-                res &&
-                !this.dispatchData?.teamBoard &&
-                !this.dispatchData?.dispatches?.length
-            ) {
-                this.hasAdditionalFieldTruck = res.isTruckExpanded;
-                this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
-                this.hasLargeFieldParking = res.isParkingExpanded;
-            }
-        });
+        this.dispatcherService.mainBoardColumnsExpanded$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (
+                    res &&
+                    !this.dispatchData?.teamBoard &&
+                    !this.dispatchData?.dispatches?.length
+                ) {
+                    this.hasAdditionalFieldTruck = res.isTruckExpanded;
+                    this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
+                    this.hasLargeFieldParking = res.isParkingExpanded;
+                }
+            });
     }
 
     ngOnDestroy(): void {
