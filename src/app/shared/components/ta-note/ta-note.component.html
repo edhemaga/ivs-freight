@@ -1,7 +1,7 @@
 <div
     class="all_note_holder"
-    [class.closed_main_holder]="!openedAll && noteOpened"
-    [class.opened_main_all_holder]="openedAll"
+    [class.closed_main_holder]="!_openedAll && noteOpened"
+    [class.opened_main_all_holder]="_openedAll"
     #t2="ngbPopover"
     [ngbPopover]="note_popover"
     [autoClose]="'outside'"
@@ -9,14 +9,14 @@
     [placement]="'left-top'"
     popoverClass="my-note-popover"
     triggers="manual"
-    (click)="openedAll ? toggleNote(_note, t2) : ''"
+    (click)="_openedAll ? toggleNote(_note, t2) : ''"
 >
     <div
         class="note_button_hold"
-        *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
+        *ngIf="!_openedAll && (noteOpened || (!noteOpened && !savingNote))"
         [ngClass]="{
-            'note-normal-icon': !openedAll,
-            'note-note-empty': !_note && !openedAll,
+            'note-normal-icon': !_openedAll,
+            'note-note-empty': !_note && !_openedAll,
             'note-all-expanded': noteOpened
         }"
         [tooltipBackground]="'#424242'"
@@ -40,11 +40,11 @@
         >
         </svg-icon>
     </div>
-    <div class="spinner" *ngIf="!openedAll && !noteOpened && savingNote">
+    <div class="spinner" *ngIf="!_openedAll && !noteOpened && savingNote">
         <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
     </div>
     <div
-        *ngIf="openedAll"
+        *ngIf="_openedAll"
         [innerHTML]="_note | safeHtml"
         class="note_inner_text"
     ></div>
@@ -53,8 +53,8 @@
 <ng-template #note_popover let-data="data">
     <div
         class="kendo-editor-note-wrapper"
-        [class.opened_all_hold]="openedAll"
-        [class.closed_note_hold]="!openedAll && noteOpened"
+        [class.opened_all_hold]="_openedAll"
+        [class.closed_note_hold]="!_openedAll && noteOpened"
         [class.dispatch]="isDispatch"
     >
         <div
@@ -69,10 +69,10 @@
                 (focus)="checkFocus($event)"
                 (input)="valueChange($event.target.innerHTML)"
                 @noteLongAnimation
-                [@.disabled]="openedAll || parking || noteOpened"
+                [@.disabled]="_openedAll || parking || noteOpened"
                 [class.not_expanded]="!isExpanded"
                 [class.parking_text_hold]="parking"
-                [class.opened_all_editor]="openedAll"
+                [class.opened_all_editor]="_openedAll"
                 [innerHTML]="_note | safeHtml"
                 class="editor"
                 (keydown)="maxLimitForContenteditableDiv($event, 250)"

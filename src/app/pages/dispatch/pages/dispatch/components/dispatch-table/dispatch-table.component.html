@@ -51,7 +51,19 @@
                         >
                         </svg-icon>
                     </th>
-                    <th>NOTE</th>
+                    <th class="note-header" [class.expanded]="noteExpandedView">
+                        <svg-icon
+                            [ngStyle]="{
+                                'margin-right': noteExpandedView ? '4px' : '0px'
+                            }"
+                            [src]="dispatchTableSvgRoutes.toolbarNoteIcon"
+                            (click)="noteExpandedView = !noteExpandedView"
+                        >
+                        </svg-icon>
+                        <ng-container *ngIf="noteExpandedView"
+                            >NOTE</ng-container
+                        >
+                    </th>
                     <th class="empty"></th>
                 </tr>
             </ng-container>
@@ -484,27 +496,35 @@
                             </div>
                         </td>
 
-                        <td class="note-field">
+                        <td
+                            class="note-field"
+                            [class.expanded]="noteExpandedView"
+                        >
                             <div
                                 class="main_inside"
                                 [class.filled]="item.truck"
                             >
-                                <div
-                                    class="dispatcher-table-cell-container note-container"
-                                    [class.empty-box-field]="!item.note"
-                                >
-                                    <app-ta-note
-                                        [note]="item.note"
-                                        [openedAll]="true"
-                                        [dispatchIndex]="rowIndex"
-                                        [parking]="false"
-                                        [noteWidth]="213"
-                                        [parentWidth]="'.note-field'"
-                                        [type]="'dark'"
-                                        [isDispatch]="true"
-                                        (saveNoteValue)="saveNoteValue($event)"
+                                <div class="padding-inside">
+                                    <div
+                                        class="dispatcher-table-cell-container note-container"
+                                        [class.empty-box-field]="!item.note"
+                                        [class.expanded]="noteExpandedView"
                                     >
-                                    </app-ta-note>
+                                        <app-ta-note
+                                            [note]="item.note"
+                                            [openedAll]="noteExpandedView"
+                                            [dispatchIndex]="rowIndex"
+                                            [parking]="false"
+                                            [noteWidth]="234"
+                                            [parentWidth]="'.note-field'"
+                                            [type]="'dark'"
+                                            [isDispatch]="true"
+                                            (saveNoteValue)="
+                                                saveNoteValue($event)
+                                            "
+                                        >
+                                        </app-ta-note>
+                                    </div>
                                 </div>
                             </div>
                         </td>

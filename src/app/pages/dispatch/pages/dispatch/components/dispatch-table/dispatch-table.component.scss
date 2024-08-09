@@ -117,6 +117,32 @@
             font-weight: 700;
             user-select: none;
 
+            &.note-header {
+                cursor: pointer;
+                svg-icon {
+                    width: 14px;
+                    height: 14px;
+
+                    svg {
+                        width: 14px;
+                        height: 14px;
+
+                        path {
+                            fill: $bw6-2;
+                        }
+                    }
+                }
+                &.expanded {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-13;
+                            }
+                        }
+                    }
+                }
+            }
+
             &::selection,
             ::selection {
                 background-color: $ta-black-2;
@@ -480,9 +506,22 @@
                         &.note-container {
                             display: block;
                             height: 100%;
+                            width: 26px;
 
                             border-radius: 3px;
-                            padding-left: 6px;
+                            padding-left: 0px;
+
+                            &.expanded {
+                                padding-left: 6px;
+                                width: auto;
+                                
+                                &:hover {
+                                    cursor: pointer;
+                                    &:hover {
+                                        background-color: $bw2;
+                                    }
+                                }
+                            }
                         }
 
                         .dispatcher-table-cell-holder {
@@ -646,12 +685,21 @@
                 }
             }
 
-            &.truck-field, &.trailer-field {
+            &.truck-field,
+            &.trailer-field {
                 min-width: 140px;
             }
 
             &.note-field {
-                min-width: 194px;
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
+
+                &.expanded {
+                    width: 236px !important;
+                    max-width: 236px !important;
+                    min-width: 236px !important;
+                }
             }
         }
     }
@@ -726,7 +774,8 @@
                 border-radius: 3px;
             }
 
-            &:nth-child(1), &:nth-child(2) {
+            &:nth-child(1),
+            &:nth-child(2) {
                 width: 160px;
             }
 
@@ -734,7 +783,9 @@
                 width: 240px;
             }
 
-            &:nth-child(4), &:nth-child(10), &:nth-child(12) {
+            &:nth-child(4),
+            &:nth-child(10),
+            &:nth-child(12) {
                 min-width: 34px;
                 width: 34px;
             }
@@ -766,21 +817,33 @@
 
         &.first-row {
             div {
-                background: linear-gradient(180deg, #F7F7F7 0%, rgba(247, 247, 247, 0.66) 100%);
+                background: linear-gradient(
+                    180deg,
+                    #f7f7f7 0%,
+                    rgba(247, 247, 247, 0.66) 100%
+                );
                 opacity: 0.7;
             }
         }
 
         &.second-row {
             div {
-                background: linear-gradient(180deg, rgba(247, 247, 247, 0.66) 0%, rgba(247, 247, 247, 0.33) 100%);
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.66) 0%,
+                    rgba(247, 247, 247, 0.33) 100%
+                );
                 opacity: 0.7;
             }
         }
 
         &.third-row {
             div {
-                background: linear-gradient(180deg, rgba(247, 247, 247, 0.33) 0%, rgba(247, 247, 247, 0) 100%);
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.33) 0%,
+                    rgba(247, 247, 247, 0) 100%
+                );
                 opacity: 0.7;
             }
         }
@@ -791,7 +854,7 @@
 
         .no-data-text-container {
             gap: 12px;
-            
+
             .no-data-text {
                 font-size: 26px;
                 line-height: 32px;

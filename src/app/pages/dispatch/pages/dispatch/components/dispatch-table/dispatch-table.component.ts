@@ -115,6 +115,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public showAddAddressFieldIndex: number = -1;
 
+    public noteExpandedView: boolean = false;
+
     /////////////////////////////////////////// UPDATE
 
     truckFormControll: UntypedFormControl = new UntypedFormControl();
@@ -636,7 +638,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    saveNoteValue(item: any) {
+    public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
         this.updateOrAddDispatchBoardAndSend(
             'note',
             item.note,
