@@ -71,8 +71,8 @@ export class TaStatusSwitchComponent implements OnInit, OnDestroy {
     statusMainSignal = 0;
     @Input() possibleNextStatuses: any;
 
-    @Output() openIndex: EventEmitter<any> = new EventEmitter();
-    @Output() changeStatus: EventEmitter<any> = new EventEmitter();
+    @Output() openIndex: EventEmitter<number> = new EventEmitter();
+    @Output() changeStatus: EventEmitter<boolean> = new EventEmitter();
 
     constructor(
         private cdr: ChangeDetectorRef,
