@@ -1,14 +1,15 @@
 <div class="chat-list-item d-flex">
-    <!-- TODO remove user type -->
-    <app-ta-profile-images
-        [indx]="contact.companyUser?.id"
-        [withTooltip]="true"
-        [size]="'medium'"
-        [type]="(contact.userType?.name | lowercase) || 'user'"
-        [name]="contact.companyUser?.fullName"
-        [url]="contact.companyUser?.avatarFile?.url"
-    >
-    </app-ta-profile-images>
+    <app-ca-profile-image
+        [avatarImg]="contact.companyUser?.avatarFile?.url"
+        [avatarColor]="{
+            background: '#DFC2F9',
+            color: '#9E47EC66'
+        }"
+        [textShortName]="contact.companyUser?.fullName | nameInitials"
+        [size]="30"
+        [fontSize]="9"
+        [isHoverEffect]="false"
+    ></app-ca-profile-image>
 
     <div class="chat-list-item-text-wrapper">
         <!-- TODO Change into lastMessage -->
@@ -47,7 +48,7 @@
                             contact.companyUser.lastMessage?.content
                         }}</ng-container
                     >
-                    <ng-container *ngSwitchDefault> </ng-container>
+                    <ng-container *ngSwitchDefault></ng-container>
                 </ng-container>
 
                 <div class="chat-list-item-text-time ta-font-regular">

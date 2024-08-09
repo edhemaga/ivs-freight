@@ -31,8 +31,7 @@ export class UserChatService {
 
     // Headers
     private headers = new HttpHeaders({
-        'skip-form': '1',
-        'Authorization': `Bearer ${this.token}`
+        'Authorization': `bearer ${this.token}`,
     });
 
     constructor(
@@ -56,6 +55,14 @@ export class UserChatService {
             null,
             searchParam ?? null,
             null
+        );
+    }
+
+    public getCompanyChannels(): Observable<ConversationResponse[]> {
+        return this.http.get<ConversationResponse[]>(`${environment.API_ENDPOINT}/api/chat/companychannels`,
+            {
+                headers: this.headers
+            }
         );
     }
 
@@ -100,9 +107,13 @@ export class UserChatService {
     public sendMessage(
         conversationId: number,
         content: string,
-        attachments?: UploadFile[]
+        attachmentsList?: UploadFile[]
     ): Observable<any> {
         if (!conversationId) return;
+
+        const attachments: File[] = attachmentsList.map(item => {
+            return item.realFile
+        })
 
         const data = { conversationId, content, attachments };
 
@@ -116,9 +127,12 @@ export class UserChatService {
     }
 
     public getAllConversationFiles(conversationId: number): Observable<ConversationInfoResponse> {
+
         return this.http.get<ConversationInfoResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
-            { headers: this.headers }
+            {
+                headers: this.headers
+            }
         );
     }
 }

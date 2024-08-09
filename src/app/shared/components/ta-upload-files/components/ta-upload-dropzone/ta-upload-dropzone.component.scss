@@ -172,7 +172,7 @@
 
         &.ta-upload-dropzone-column {
             flex-direction: column;
-            
+
             .ta-upload-dropzone-text {
                 margin-left: unset;
                 left: unset;
@@ -196,7 +196,7 @@
         }
     }
 
-    &:hover {
+    &:hover:not(.no-background-color) {
         .ta-upload-dropzone-label {
             transition: all 0.3 ease-in-out;
             background-color: #eeeeee;
