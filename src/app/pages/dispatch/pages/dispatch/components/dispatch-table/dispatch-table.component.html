@@ -102,6 +102,7 @@
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
                                 [isHoveringRow]="
+                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                                 (addTruckTrailerEmitter)="
@@ -176,6 +177,7 @@
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
                                         [isHoveringRow]="
+                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addTruckTrailerEmitter)="
@@ -257,6 +259,7 @@
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
+                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addDriverEmitter)="
@@ -280,6 +283,7 @@
                                 [dispatchBoardId]="item?.dispatchBoardId"
                                 [status]="item?.preTripInspection"
                                 [isHoveringRow]="
+                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                             ></app-dispatch-table-pre-trip-inspection>
@@ -292,6 +296,7 @@
                                 [showAddAddressField]="showAddAddressFieldIndex"
                                 [parkingList]="parkingList"
                                 [isHoveringRow]="
+                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                                 (updateLastLocationEmit)="
@@ -310,6 +315,7 @@
                                 [dispatchBoardId]="item?.dispatchBoardId"
                                 [dispatcher]="item"
                                 [isHoveringRow]="
+                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                             >
@@ -341,6 +347,7 @@
                                 [truckId]="item.truck?.id"
                                 [trailerId]="item.trailer?.id"
                                 [isHoveringRow]="
+                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                                 (updateParking)="updateParking($event, item.id)"
@@ -351,7 +358,12 @@
                             <div class="main_inside filled">
                                 <div
                                     class="padding-inside"
-                                    [ngClass]="{ hovering: isHoveringRow }"
+                                    [ngClass]="{
+                                        hovering:
+                                            isDispatchBoardLocked &&
+                                            item.dispatcher?.fullName &&
+                                            isHoveringRowIndex === rowIndex
+                                    }"
                                 >
                                     <div
                                         class="info-item justify-content-center"
@@ -413,6 +425,10 @@
                                         [trailer]="item.driver"
                                         [isActiveLoad]="item.activeLoad"
                                         [dispatchId]="item.id"
+                                        [isHoveringRow]="
+                                            isDispatchBoardLocked &&
+                                            isHoveringRowIndex === rowIndex
+                                        "
                                     ></app-dispatch-table-assign-load>
                                 </div>
                             </div>
@@ -542,6 +558,7 @@
                         [rowIndex]="rowIndex"
                         [isBoardLocked]="isDispatchBoardLocked"
                         [isDrag]="isDrag"
+                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
                         (addTruckTrailerEmitter)="
                             handleAddTruckTrailerClick($event)
                         "
@@ -565,6 +582,7 @@
                         [rowIndex]="rowIndex"
                         [isBoardLocked]="isDispatchBoardLocked"
                         [isDrag]="isDrag"
+                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
                         (addTruckTrailerEmitter)="
                             handleAddTruckTrailerClick($event)
                         "
@@ -584,6 +602,7 @@
                         [draggingType]="draggingType"
                         [openedDriverDropdown]="openedDriverDropdown"
                         [statusOpenedIndex]="statusOpenedIndex"
+                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
                         (addDriverEmitter)="handleAddDriverClick($event)"
                         (removeDriverEmitter)="handleRemoveDriverClick($event)"
                         (driverVacationEmitter)="changeDriverVacation($event)"

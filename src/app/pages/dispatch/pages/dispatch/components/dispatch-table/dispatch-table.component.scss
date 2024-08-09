@@ -96,11 +96,14 @@
 
     table {
         width: 100%;
+
         th.icon {
             padding-left: 0;
         }
+
         th.pick-delivery {
             display: flex;
+
             div {
                 flex: 1;
                 display: flex;
@@ -126,6 +129,7 @@
 
         td {
             padding: 1px;
+
             .main_inside {
                 height: 34px;
                 background-color: #f7f7f7;
@@ -243,6 +247,7 @@
                         height: 100%;
                         align-items: center;
                         border-radius: 2px;
+                        transition: background 0.2s ease-in;
 
                         svg-icon {
                             display: flex;
@@ -549,11 +554,16 @@
                     background: #fff;
 
                     .padding-inside {
-                        &:hover,
                         &.hovering {
                             .info-item {
                                 transition: background 0.2s ease-in;
-                                background: #eeeeee;
+                                background: $bw2;
+                            }
+                        }
+
+                        &:hover {
+                            .info-item {
+                                background: $bw2;
 
                                 .driver-buttons {
                                     display: flex;
