@@ -52,6 +52,7 @@ import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-park
 
 // svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -94,7 +95,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public checkForEmpty: string;
 
-    public dispatchTableHeaderItems: { title?: string; icon?: string }[] = [];
+    public dispatchTableHeaderItems: DispatchTableHeaderItems[] = [];
 
     public dispatchData: DispatchBoardResponse;
 

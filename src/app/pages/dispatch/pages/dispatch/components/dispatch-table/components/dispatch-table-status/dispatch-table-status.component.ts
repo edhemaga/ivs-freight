@@ -34,17 +34,6 @@ import {
     selector: 'app-dispatch-table-status',
     templateUrl: './dispatch-table-status.component.html',
     styleUrls: ['./dispatch-table-status.component.scss'],
-    standalone: true,
-    imports: [
-        AngularSvgIconModule,
-        CommonModule,
-        NgbModule,
-
-        //components
-        LoadStatusStringComponent,
-        TaStatusComponentComponent,
-        TaAppTooltipV2Component,
-    ],
 })
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() set time(value: string) {

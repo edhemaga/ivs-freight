@@ -1,10 +1,7 @@
+import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
+
 export class DispatchTableConstants {
-    static HEADER_ITEMS: {
-        title?: string;
-        secondTitle?: string;
-        icon?: string;
-        secondIcon?: string;
-    }[] = [
+    static HEADER_ITEMS: DispatchTableHeaderItems[] = [
         { title: 'TRUCK' },
         { title: 'TRAILER' },
         { title: 'DRIVER' },
