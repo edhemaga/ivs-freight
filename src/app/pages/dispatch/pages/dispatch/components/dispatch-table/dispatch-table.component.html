@@ -726,20 +726,25 @@
                         No Data Found
                     </div>
                     <div class="no-data-description ta-font-medium text-center">
-                        There are no entries. To manage your board, unlock the
-                        table and start <br />
-                        adding new records.
+                        There are no entries.
+                        <ng-container *ngIf="dispatchData?.canUnlock">
+                            To manage your board, unlock the table and start
+                            <br />
+                            adding new records.
+                        </ng-container>
                     </div>
                 </div>
-                <div>
-                    <button
-                        type="button"
-                        class="d-flex justify-content-center align-items-center unlock-table-button"
-                        (click)="unlockTable()"
-                    >
-                        <p class="m-0 ta-font-bold">Unlock Table</p>
-                    </button>
-                </div>
+                <ng-container *ngIf="dispatchData?.canUnlock">
+                    <div>
+                        <button
+                            type="button"
+                            class="d-flex justify-content-center align-items-center unlock-table-button"
+                            (click)="unlockTable()"
+                        >
+                            <p class="m-0 ta-font-bold">Unlock Table</p>
+                        </button>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </ng-container>
