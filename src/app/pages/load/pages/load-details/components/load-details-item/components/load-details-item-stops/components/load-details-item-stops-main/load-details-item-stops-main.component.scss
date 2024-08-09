@@ -206,14 +206,20 @@
         &.expanded {
             max-height: 610px;
             transition: max-height 0.1s ease-in;
+            margin-bottom: 2px;
+        }
+
+        &.assign-load-item {
+            background: $bw2;
         }
 
         &-inner {
             border-top: 1px $bw-9 solid;
             margin: 0 4px;
-            padding: 4px;
+            padding: 4px 4px 6px 4px;
 
             .stop-items-item {
+                height: 24px;
                 padding: 4px 0;
                 border-radius: 1px;
                 transition: background 0.2s ease-in;
@@ -225,18 +231,49 @@
 
             .stop-items-header,
             .stop-items-item {
-                display: grid;
-                grid-template-columns: 170px 74px 34px 50px repeat(4, 34px) 56px 80px 90px repeat(
-                        2,
-                        60px
-                    );
-                grid-gap: 17.33px;
-                margin-bottom: 2px;
+                display: flex;
+                align-items: center;
 
                 .first-box {
                     display: grid;
                     grid-template-columns: 18px 1fr;
                     grid-gap: 12px;
+                    width: 160px;
+                    min-width: 160px;
+                }
+
+                .columns-scroll {
+                    display: grid;
+                    grid-template-columns: 74px 34px 50px repeat(4, 34px) 56px 80px 90px repeat(
+                        2,
+                        60px
+                    );
+                    grid-gap: 17.33px;
+                    overflow-x: auto;
+
+                    &.items-scroll {
+                        padding-bottom: 6px;
+
+                        &::-webkit-scrollbar {
+                            height: 4px;
+                        }
+                    
+                        &::-webkit-scrollbar-thumb {
+                            background-color: $bw-9;
+                            border: 0px;
+                            border-radius: 1px;
+                            height: 4px;
+
+                            &:hover {
+                                background-color: $bw4;
+                            }
+                        }
+                    
+                        &::-webkit-scrollbar-track {
+                            background: transparent;
+                            height: 4px;
+                        }
+                    }
                 }
 
                 .box {
@@ -374,5 +411,21 @@
         p {
             font-size: 11px;
         }
+    }
+
+    &.active {
+        background: $bw2 !important;
+    }
+}
+
+.text-color-muted {
+    &::-moz-selection {
+        color: $muted;
+        background: rgb(145, 145, 145, 0.2);
+    }
+
+    &::selection {
+        color: $muted;
+        background: rgb(145, 145, 145, 0.2);
     }
 }

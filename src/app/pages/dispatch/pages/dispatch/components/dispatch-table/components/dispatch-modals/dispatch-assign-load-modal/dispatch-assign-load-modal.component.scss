@@ -13,10 +13,30 @@
             color: $muted;
             font-size: 20px;
             margin: 22px 0 16px;
+
+            &::-moz-selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
+    
+            &::selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
         }
         &-text {
             font-size: 12px;
             color: $muted;
+
+            &::-moz-selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
+    
+            &::selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
         }
     }
 
@@ -95,4 +115,32 @@
 .cdk-drag-placeholder {
     background-color: $ta-light-grey-5 !important;
     box-shadow: 0px 0px 4px 0px $box-shadow-30 inset;
+}
+
+.pickup-arrow {
+    margin-right: 2px;
+
+    &.arrow-right {
+        svg {
+            path {
+                fill: $ta-red;
+            }
+        }
+    }
+}
+
+.dispatch-load-header, .edit-name {
+    user-select: none;
+}
+
+.modal-title {
+    &::-moz-selection {
+        color: $ta-black;
+        background: rgb(66, 66, 66, 0.2);
+    }
+
+    &::selection {
+        color: $ta-black;
+        background: rgb(66, 66, 66, 0.2);
+    }
 }
