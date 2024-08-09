@@ -16,7 +16,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-status-switch.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
@@ -97,7 +96,6 @@ import { TaStatusComponentComponent } from '@shared/components/ta-status-compone
         TaTableToolbarComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
-        TaStatusSwitchComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
