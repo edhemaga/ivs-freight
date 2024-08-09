@@ -49,15 +49,16 @@
             <span class="ta-font-bold mr-1">{{ load.loadNumber }}</span>
             <!-- TODO: ADD TEMPLATE ICON -->
 
-            <svg-icon
-                *ngIf="load.type?.name === 'LTL'"
-                class="mr-1"
-                [src]="'assets/svg/truckassist-table/load-ltl.svg'"
-                [svgStyle]="{
-                    'width.px': '14',
-                    'height.px': '14'
-                }"
-            ></svg-icon>
+            <ng-container *ngIf="load.type?.name === 'LTL'">
+                <svg-icon
+                    class="mr-1"
+                    [src]="svgIcons.iconLtl"
+                    [svgStyle]="{
+                        'width.px': '14',
+                        'height.px': '14'
+                    }"
+                ></svg-icon>
+            </ng-container>
 
             <span class="ta-font-medium">{{ load.referenceNumber }}</span>
         </div>

@@ -74,7 +74,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     // Reordering
     public showReorderButton: boolean = true;
-    public showFinishReordering: boolean = false;
+    public isReorderingActive: boolean = false;
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
@@ -111,7 +111,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public get isModalValid(): boolean {
-        return !!this.selectedDispatches && !this.showFinishReordering;
+        return !!this.selectedDispatches && !this.isReorderingActive;
     }
 
     private initializeForm(): void {
@@ -121,7 +121,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private loadModalData(): void {
-        if (this.showFinishReordering) {
+        if (this.isReorderingActive) {
             // reset reordering
             this.onReorderAction({
                 action: LoadModalStringEnum.REORDERING,
@@ -495,10 +495,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public onReorderAction(data: { action: string }): void {
         if (data.action === LoadModalStringEnum.REORDERING) {
-            this.showFinishReordering = false;
+            this.isReorderingActive = false;
             this.showReorderButton = true;
         } else {
-            this.showFinishReordering = true;
+            this.isReorderingActive = true;
             this.showReorderButton = false;
             this.isUnAssignLoadCardOpen = false;
         }
@@ -543,6 +543,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public setFilter(data): void {
+        // In progress, waiting for backend
+
         // switch (data?.filterType) {
         //     case LoadFilterStringEnum.USER_FILTER:
         //         break;

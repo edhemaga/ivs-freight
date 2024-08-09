@@ -3,9 +3,11 @@ import {
     ElementRef,
     Input,
     OnChanges,
+    OnDestroy,
     SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -41,9 +43,9 @@ import { StopRoutes } from '@shared/models/stop-routes.model';
 import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-last-status.model';
 
 @Component({
-    selector: 'app-load-deatils-item-stops-main',
-    templateUrl: './load-deatils-item-stops-main.component.html',
-    styleUrls: ['./load-deatils-item-stops-main.component.scss'],
+    selector: 'app-load-details-item-stops-main',
+    templateUrl: './load-details-item-stops-main.component.html',
+    styleUrls: ['./load-details-item-stops-main.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -59,10 +61,12 @@ import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/lo
         KeyValuePairsPipe,
     ],
 })
-export class LoadDeatilsItemStopsMainComponent implements OnChanges {
+export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
     @Input() stopsData: LoadResponse;
     @Input() isMapDisplayed: boolean;
     @Input() isSmallDesign: boolean;
+
+    private destroy$ = new Subject<void>();
 
     public loadDetailsItemSvgRoutes = LoadDetailsItemSvgRoutes;
 
@@ -90,6 +94,12 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
             this.getStopsData(changes?.stopsData?.currentValue?.stops);
 
             this.getLoadStopRoutes(changes?.stopsData?.currentValue?.stops);
+
+            this.stopItemDropdownIndex = -1;
+
+            setTimeout(() => {
+                this.addScrollEventListeners();
+            }, 500);
         }
     }
 
@@ -268,10 +278,12 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
     }
 
     public addScrollEventListeners(): void {
+        this.removeScrollEventListeners();
+
         const columnsScrollElements =
             document.querySelectorAll('.columns-scroll');
 
-        columnsScrollElements.forEach((element, index) => {
+        columnsScrollElements?.forEach((element, index) => {
             element.addEventListener('scroll', () => {
                 columnsScrollElements.forEach((element2, index2) => {
                     if (index2 !== index) {
@@ -280,5 +292,21 @@ export class LoadDeatilsItemStopsMainComponent implements OnChanges {
                 });
             });
         });
+    }
+
+    public removeScrollEventListeners(): void {
+        const columnsScrollElements =
+            document.querySelectorAll('.columns-scroll');
+
+        columnsScrollElements?.forEach((element) => {
+            element.removeAllListeners('scroll');
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.removeScrollEventListeners();
+
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
