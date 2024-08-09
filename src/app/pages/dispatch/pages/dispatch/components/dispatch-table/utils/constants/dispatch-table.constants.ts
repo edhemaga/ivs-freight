@@ -6,6 +6,7 @@ export class DispatchTableConstants {
         { title: 'TRAILER' },
         { title: 'DRIVER' },
         {
+            title: 'INSPECTION',
             icon: 'assets/svg/common/ic_pm-filled.svg',
         },
         { title: 'LAST LOCATION' },
@@ -18,8 +19,9 @@ export class DispatchTableConstants {
         },
         { title: 'PROGRESS' },
         { title: 'PARKING' },
-        { icon: 'assets/svg/common/ic_user.svg' },
+        { title: 'DISPATCHER', icon: 'assets/svg/common/ic_user.svg' },
         {
+            title: 'NOTE',
             icon: 'assets/svg/truckassist-table/note/Note-hover.svg',
         },
     ];
