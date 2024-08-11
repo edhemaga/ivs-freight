@@ -1,0 +1,48 @@
+@import '/src/theme/variables';
+@import '../../dispatch-table.component.scss';
+
+.status-container {
+    height: 26px;
+    cursor: pointer;
+    padding: 0 4px 0 6px;
+
+    .status,
+    .status-time {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    .status {
+        user-select: none;
+        height: 14px;
+        line-height: 14px;
+        font-size: 11px;
+    }
+
+    &:hover {
+        background: $dark-2 !important;
+
+        .status-time {
+            display: flex;
+        }
+    }
+
+    &.hovering {
+        background: $dark-2 !important;
+    }
+
+    .status-time {
+        font-size: 10px;
+        display: none;
+        color: $muted;
+        height: 12px;
+        line-height: 12px;
+
+        &::selection {
+            color: $muted;
+            background: $dark-4;
+        }
+    }
+}

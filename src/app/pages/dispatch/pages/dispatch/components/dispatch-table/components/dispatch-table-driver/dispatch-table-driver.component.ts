@@ -53,9 +53,9 @@ export class DispatchTableDriverComponent {
     @Input() public draggingType: string;
     @Input() public openedDriverDropdown: number;
     @Input() public isActiveLoad: boolean;
-    @Input() public statusOpenedIndex: number;
     @Input() public hoursOfService: HosResponse;
     @Input() public dispatchId: number;
+    @Input() public isHoveringRow: boolean;
 
     @Output() addDriverEmitter = new EventEmitter<{
         event: DriverMinimalResponse;

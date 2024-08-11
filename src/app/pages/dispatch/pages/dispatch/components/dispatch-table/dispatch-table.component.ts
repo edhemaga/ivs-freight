@@ -9,7 +9,6 @@ import {
     Output,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
 
 import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 
@@ -18,14 +17,12 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 
 // modules
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { Options } from 'ng5-slider';
 
 // pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { ModalService } from '@shared/services/modal.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
@@ -93,6 +90,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public isDrag: boolean = false;
+
     public checkForEmpty: string;
 
     public dispatchTableHeaderItems: { title?: string; icon?: string }[] = [];
@@ -101,6 +100,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public isDispatchBoardLocked: boolean = true;
     public isDispatchBoardChangeInProgress: boolean = false;
+
+    public isHoveringRowIndex: number = -1;
 
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
@@ -116,42 +117,17 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public showAddAddressFieldIndex: number = -1;
 
     public noteExpandedView: boolean = false;
+    public parkingCount: number = 0;
 
     /////////////////////////////////////////// UPDATE
 
-    truckFormControll: UntypedFormControl = new UntypedFormControl();
-    truckAddress: UntypedFormControl = new UntypedFormControl(null);
     testTimeout: any;
     startIndexTrailer: number;
     startIndexDriver: number;
     draggingType: string = '';
 
-    public selectedColor: any = {};
-
-    openedTruckDropdown: number = -1;
-    openedTrailerDropdown: number = -1;
-
     openedDriverDropdown: number = -1;
-    statusOpenedIndex: number = -1;
-    showAddAddressField: number = -1;
-    savedTruckId: any;
-    __isBoardLocked: boolean = true;
-    __change_in_proggress: boolean = false;
-
     openedHosData = [];
-
-    options: Options = {
-        floor: 0,
-        ceil: 1440,
-        showSelectionBar: false,
-        noSwitching: true,
-        hideLimitLabels: true,
-        animate: false,
-        maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
-    };
-
-    isDrag: boolean = false;
-    public parkingCount: number = 0;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -161,15 +137,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Services
         private dispatcherService: DispatcherService,
-        private modalService: ModalService,
         private parkingService: ParkingService
     ) {}
-
-    ngOnInit(): void {
-        this.getConstantData();
-
-        this.getMainBoardColumnWidths();
-    }
 
     set checkEmptySet(value: string) {
         setTimeout(() => {
@@ -177,6 +146,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.cdRef.detectChanges();
         }, 300);
+    }
+
+    ngOnInit(): void {
+        this.getConstantData();
+
+        this.getMainBoardColumnWidths();
     }
 
     public trackByIdentity = (index: number): number => index;
@@ -572,25 +547,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    addStatus(e) {
-        if (e) {
-            if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
-                this.dispatchData.dispatches[this.statusOpenedIndex].status = e;
-                this.showAddAddressFieldIndex = this.statusOpenedIndex;
-                this.addNewTruckData =
-                    this.dispatchData.dispatches[this.statusOpenedIndex].truck;
-            } else {
-                this.updateOrAddDispatchBoardAndSend(
-                    'status',
-                    e.statusValue.name,
-                    this.statusOpenedIndex
-                );
-            }
-        }
-
-        this.statusOpenedIndex = -1;
-    }
-
     saveHosData(hos, indx) {
         this.openedHosData = this.openedHosData.map((item) => {
             item.flag = item.flag?.name ? item.flag.name : item.flag;
@@ -644,10 +600,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             item.note,
             item.dispatchIndex
         );
-    }
-
-    openIndex(indx: number) {
-        this.statusOpenedIndex = indx;
     }
 
     public changeDriverVacation(data: DispatchResponse): void {

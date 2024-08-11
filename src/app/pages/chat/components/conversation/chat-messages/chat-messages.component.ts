@@ -36,6 +36,7 @@ import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
 import { HubService } from '@pages/chat/services/hub.service';
+import { UserProfileService } from '@pages/chat/services/user-profile.service';
 
 // Models
 import {
@@ -77,7 +78,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
   public isProfileDetailsDisplayed: boolean = false;
-  public userProfile!: ConversationInfoResponse;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -129,6 +129,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     // Services
     private chatService: UserChatService,
     private chatHubService: HubService,
+    public userProfileService: UserProfileService
   ) { }
 
   ngOnInit(): void {
@@ -142,7 +143,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   private getResolvedData(): void {
-    this.activatedRoute.data
+    this.activatedRoute
+      .data
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -240,12 +242,13 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     }
 
     if (this.conversation?.id && value) {
+
       this.chatService
         .getAllConversationFiles(this.conversation.id)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
-          this.userProfile = data;
+          this.userProfileService.setProfile(data);
         })
     }
   }

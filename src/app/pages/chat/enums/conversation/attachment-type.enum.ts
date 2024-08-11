@@ -5,5 +5,6 @@ export enum AttachmentType {
     XLS = 'xls',
     JPG = 'jpg',
     JPEG = 'jpeg',
-    PNG = 'png'
+    PNG = 'png',
+    SVG = 'svg'
 }

@@ -177,7 +177,7 @@
 
     .chat-main-content {
         display: grid;
-        grid-template-columns: auto 1150px auto;
+        grid-template-columns: 318px auto 318px;
         gap: 12px;
         margin-top: 12px;
         height: calc(100dvh - 75px);
@@ -185,10 +185,6 @@
         .chat-lists {
             overflow-y: scroll;
             width: max-content;
-
-            .divider {
-                height: 8px;
-            }
 
             .driver-list {
                 margin-top: 8px;
@@ -199,5 +195,29 @@
             width: 100%;
             overflow: hidden;
         }
+
+        .group-wrapper {
+            height: fit-content;
+        }
     }
+}
+
+.chat-header-message-count {
+    font-size: 11px;
+    line-height: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 50px;
+    background: $bw5;
+    color: $white;
+    padding: 0px 6px;
+    margin: auto 5px;
+}
+
+.selected-contact {
+    background-color: $ta-light-grey;
+}
+
+.divider {
+    height: 8px;
 }

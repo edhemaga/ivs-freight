@@ -1,4 +1,7 @@
-<div class="d-flex flex-column custom-period-range">
+<div
+    class="d-flex flex-column custom-period-range"
+    (click)="handleContainerClick($event)"
+>
     <!-- Header -->
 
     <div class="d-flex align-items-center custom-period-range-header">
@@ -13,58 +16,36 @@
     >
         <div
             class="d-flex align-items-center custom-period-range-form-date-inputs"
+            [ngStyle]="{
+                'margin-bottom': !isOnlyDateInputsLayout ? '42px' : '24px'
+            }"
         >
             <div class="custom-period-range-form-date-inputs-input">
                 <app-ta-input
                     formControlName="fromDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'From',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass dark'
-                    }"
+                    [inputConfig]="fromDateConfig"
                 ></app-ta-input>
             </div>
 
             <div class="custom-period-range-form-date-inputs-input">
                 <app-ta-input
                     formControlName="toDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'To',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass dark'
-                    }"
+                    [inputConfig]="toDateConfig"
                 ></app-ta-input>
             </div>
         </div>
 
-        <div class="custom-period-range-form-subperiod-input">
-            <app-ta-input-dropdown
-                formControlName="subPeriod"
-                [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Period View',
-                    isDisabled: isSubPeriodDisabled,
-                    isRequired: true,
-                    isDropdown: true,
-                    hideClear: true,
-                    hideColorValidations: true,
-                    isInputBackgroundRemoved: true,
-                    dropdownWidthClass: 'w-col-292'
-                }"
-                [options]="subPeriodDropdownList"
-                [activeItem]="selectedSubPeriod"
-                (selectedItem)="handleInputSelect($event)"
-            ></app-ta-input-dropdown>
-        </div>
+        <ng-container *ngIf="!isOnlyDateInputsLayout">
+            <div class="custom-period-range-form-subperiod-input">
+                <app-ta-input-dropdown
+                    formControlName="subPeriod"
+                    [inputConfig]="subPeriodConfig"
+                    [options]="subPeriodDropdownList"
+                    [activeItem]="selectedSubPeriod"
+                    (selectedItem)="handleInputSelect($event)"
+                ></app-ta-input-dropdown>
+            </div>
+        </ng-container>
     </div>
 
     <!-- Buttons -->
@@ -73,7 +54,7 @@
         <button
             class="custom-period-range-buttons-btn"
             type="button"
-            (click)="handleCancelOrSetClick()"
+            (click)="handleCancelOrSetClick(true)"
         >
             <p class="m-0 ta-font-extra-bold">CANCEL</p>
         </button>
@@ -81,8 +62,10 @@
         <button
             class="custom-period-range-buttons-btn"
             type="button"
-            [disabled]="customPeriodRangeForm.invalid"
-            [ngClass]="{ disabled: customPeriodRangeForm.invalid }"
+            [disabled]="customPeriodRangeForm.invalid || !isFormDirty"
+            [ngClass]="{
+                disabled: customPeriodRangeForm.invalid || !isFormDirty
+            }"
             (click)="handleCancelOrSetClick(false)"
         >
             <p class="m-0 ta-font-extra-bold">SET</p>

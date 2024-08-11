@@ -39,14 +39,6 @@
                         }
                     }
 
-                    .info-item {
-                        &:hover {
-                            .remove-item {
-                                display: flex;
-                            }
-                        }
-                    }
-
                     .padding-inside {
                         .driver-buttons {
                             display: none !important;
@@ -96,26 +88,12 @@
 
     table {
         width: 100%;
-        th.icon {
-            padding-left: 0;
-        }
-        th.pick-delivery {
-            display: flex;
-            div {
-                flex: 1;
-                display: flex;
-                align-items: center;
-            }
-        }
 
         th {
-            height: 31px;
+            height: 30px;
             padding-left: 10px;
-
-            color: $ta-black-2;
             font-size: 11px;
-            font-weight: 700;
-            user-select: none;
+            color: $bw6-2;
 
             &.note-header {
                 cursor: pointer;
@@ -148,10 +126,51 @@
                 background-color: $ta-black-2;
                 color: $ta-black-2;
             }
+
+            &.pickup-delivery {
+                div {
+                    flex: 1;
+                }
+
+                .icon {
+                    &.delivery {
+                        svg {
+                            path {
+                                fill: $ta-red-10;
+                            }
+                        }
+                    }
+
+                    svg {
+                        path {
+                            fill: $ta-green;
+                        }
+                    }
+                }
+            }
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            .icon {
+                svg {
+                    path {
+                        fill: $bw6-2;
+                    }
+                }
+            }
         }
 
         td {
             padding: 1px;
+
             .main_inside {
                 height: 34px;
                 background-color: #f7f7f7;
@@ -233,35 +252,6 @@
                         padding: 4px;
                     }
 
-                    .add_new {
-                        height: 100%;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding-left: 6px;
-                        padding-right: 6px;
-
-                        &.parking-field {
-                            padding-left: 0px;
-                        }
-
-                        .text {
-                            color: #ffffff;
-                            font-size: 14px;
-                            user-select: none;
-                        }
-
-                        svg-icon {
-                            display: flex;
-
-                            svg {
-                                path {
-                                    fill: #3074d3;
-                                }
-                            }
-                        }
-                    }
-
                     .info-item {
                         position: relative;
                         display: flex;
@@ -269,19 +259,10 @@
                         height: 100%;
                         align-items: center;
                         border-radius: 2px;
+                        transition: background 0.2s ease-in;
 
                         svg-icon {
                             display: flex;
-                        }
-
-                        &.pickup-dev-popover-hold {
-                            padding: 0 2px;
-                        }
-
-                        .truck-trailer {
-                            width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
                         }
 
                         span {
@@ -333,81 +314,6 @@
                             display: flex;
                             width: 100%;
                         }
-                        .no-delpickup {
-                            padding-left: 4px;
-
-                            font-size: 11px;
-                            color: #919191;
-                            font-weight: 500;
-                            text-transform: uppercase;
-                            user-select: none;
-                        }
-
-                        .load-items-hold {
-                            display: flex;
-                            width: 100%;
-
-                            .pick-load-box {
-                                flex: 1;
-                                display: flex;
-                                align-items: center;
-
-                                .pick-load-info {
-                                    margin-left: 6px;
-                                    line-height: 1;
-                                    .pick-load-info-address {
-                                        font-size: 11px;
-                                        font-weight: 700;
-                                        color: $ta-black-2;
-
-                                        &::selection {
-                                            background-color: $ta-black-2;
-                                            color: $ta-black-2;
-                                        }
-                                    }
-                                    .pick-load-info-time {
-                                        font-size: 11px;
-                                        color: #919191;
-
-                                        &::selection {
-                                            background-color: #91919133;
-                                            color: #919191;
-                                        }
-                                    }
-                                }
-
-                                svg-icon {
-                                    user-select: none;
-                                }
-
-                                &.delivery-box {
-                                    svg-icon {
-                                        svg {
-                                            rect {
-                                                fill: #ef5350;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .driver-copy {
-                            position: absolute;
-                            display: flex;
-                            align-items: center;
-                            padding-left: 6px;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background-color: $ta-blue-5;
-                            color: $ta-black;
-                            font-weight: 700;
-                            font-size: 11px;
-                            border-radius: 2px;
-                            z-index: 10;
-                        }
 
                         app-ta-gps-progressbar {
                             width: 100%;
@@ -422,6 +328,7 @@
                                     }
                                 }
                             }
+
                             .parking-number {
                                 font-size: 11px;
                                 color: #919191;
@@ -435,101 +342,6 @@
 
                         &.c-pointer {
                             cursor: pointer;
-                        }
-
-                        .remove-item {
-                            position: absolute;
-                            height: 26px;
-                            min-width: 26px;
-                            top: 50%;
-                            right: 0px;
-                            max-width: 85%;
-                            transform: translateY(-50%);
-                            display: none;
-                            justify-content: flex-end;
-                            align-items: center;
-                            transition: all 0.3s;
-                            z-index: 999;
-
-                            svg-icon {
-                                left: auto;
-                                right: 4px;
-                                svg {
-                                    width: 18px;
-                                    height: 18px;
-                                }
-                            }
-                            &:hover {
-                                cursor: pointer;
-                                width: 86px;
-                                background-color: #ef5350;
-                                border-radius: 2px;
-                                transition: all 0.3s;
-
-                                &::after {
-                                    content: 'REMOVE';
-                                    position: absolute;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    left: 6px;
-                                    color: #fff;
-                                }
-
-                                svg-icon {
-                                    svg {
-                                        path {
-                                            fill: #ffffff !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .driver-remove-item {
-                        svg-icon {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 6px;
-                            z-index: 300;
-                            display: flex;
-                        }
-                    }
-
-                    .dispatcher-table-cell-container {
-                        display: flex;
-                        height: 26px;
-                        align-items: center;
-                        line-height: 1;
-
-                        &.note-container {
-                            display: block;
-                            height: 100%;
-                            width: 26px;
-
-                            border-radius: 3px;
-                            padding-left: 0px;
-
-                            &.expanded {
-                                padding-left: 6px;
-                                width: auto;
-                                
-                                &:hover {
-                                    cursor: pointer;
-                                    &:hover {
-                                        background-color: $bw2;
-                                    }
-                                }
-                            }
-                        }
-
-                        .dispatcher-table-cell-holder {
-                            display: flex;
-                            height: 28px;
-                            width: 100%;
-                            align-items: center;
-                            padding-left: 6px;
                         }
                     }
                 }
@@ -557,40 +369,20 @@
                     }
                 }
 
-                &.addNew {
-                    background-color: #f7f7f7;
-
-                    .text {
-                        color: $ta-black-2 !important;
-                    }
-
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #3074d3;
-
-                        .text {
-                            color: #fff !important;
-                        }
-
-                        .add_new {
-                            svg-icon {
-                                svg {
-                                    path {
-                                        fill: #fff !important;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
                 &.filled {
-                    background-color: #fff;
+                    background: #fff;
 
                     .padding-inside {
+                        &.hovering {
+                            .info-item {
+                                transition: background 0.2s ease-in;
+                                background: $bw2;
+                            }
+                        }
+
                         &:hover {
                             .info-item {
-                                background-color: #eeeeee;
+                                background: $bw2;
 
                                 .driver-buttons {
                                     display: flex;
@@ -619,17 +411,10 @@
 
         th,
         td {
-            &.empty,
             &.box-item {
                 min-width: 34px;
                 max-width: 34px;
                 width: 34px;
-
-                &.box-item {
-                    min-width: 36px;
-                    max-width: 36px;
-                    width: 36px;
-                }
             }
 
             &.truck-field,
@@ -704,6 +489,12 @@
         }
     }
 
+    /* Drag */
+
+    .cdk-drag {
+        position: relative;
+    }
+
     .cdk-drag-animating {
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
@@ -713,8 +504,8 @@
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    .cdk-drag {
-        position: relative;
+    .cdk-drag-placeholder {
+        opacity: 0;
     }
 
     .reorder-row.cdk-drag-preview {
@@ -758,9 +549,7 @@
         }
     }
 
-    .cdk-drag-placeholder {
-        opacity: 0;
-    }
+    /* No Data */
 
     .no-data-table-row {
         margin-bottom: 2px;
