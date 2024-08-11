@@ -37,7 +37,7 @@ export class DispatcherService {
     public parkingOpened: boolean = false;
     public newParkingSubject = new BehaviorSubject<boolean>(false);
 
-    private mainBoardColumnExpandedWidths: BehaviorSubject<{
+    public mainBoardColumnExpandedWidths: BehaviorSubject<{
         isTruckExpanded: boolean;
         isTrailerExpanded: boolean;
         isParkingExpanded: boolean;

@@ -53,7 +53,17 @@
                                     [src]="tableHeaderItem?.icon"
                                 ></svg-icon>
 
-                                {{ tableHeaderItem?.title }}
+                                <ng-container
+                                    *ngIf="
+                                        tableHeaderItem?.title !==
+                                            'INSPECTION' &&
+                                        tableHeaderItem?.title !==
+                                            'DISPATCHER' &&
+                                        tableHeaderItem?.title !== 'NOTE'
+                                    "
+                                >
+                                    {{ tableHeaderItem?.title }}
+                                </ng-container>
                             </div>
 
                             <ng-container *ngIf="tableHeaderItem?.secondIcon">
@@ -72,13 +82,15 @@
                             </ng-container>
                         </th>
                     </ng-container>
-                </tr></ng-container
-            >
+                </tr>
+            </ng-container>
         </thead>
 
-        <!-- Locked Table -->
+        <!-- Table -->
 
         <tbody>
+            <!-- Locked Table -->
+
             <ng-container
                 *ngIf="
                     dispatchData?.dispatches?.length;
@@ -123,7 +135,6 @@
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
                                 [isHoveringRow]="
-                                    isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
                                 "
                                 (addTruckTrailerEmitter)="
@@ -198,7 +209,6 @@
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
                                         [isHoveringRow]="
-                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addTruckTrailerEmitter)="
@@ -279,7 +289,6 @@
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
-                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addDriverEmitter)="
@@ -465,134 +474,154 @@
                 </ng-container>
             </ng-container>
 
-            <!-- Unlocked Table -->
+            <!-- Unlocked Table - Extra Row - Add -->
 
-            <tr *ngIf="!isDispatchBoardLocked">
-                <td
-                    class="truck-field"
-                    [ngStyle]="{
-                        width: hasAdditionalFieldTruck ? '160px' : '120px'
-                    }"
-                >
-                    <app-dispatch-table-truck-trailer
-                        [type]="'truck'"
-                        [truck]="addNewTruckData"
-                        [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
-                        [truckList]="truckList"
-                        [rowIndex]="rowIndex"
-                        [isBoardLocked]="isDispatchBoardLocked"
-                        [isDrag]="isDrag"
-                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
-                        (addTruckTrailerEmitter)="
-                            handleAddTruckTrailerClick($event)
-                        "
-                        (removeTruckTrailerEmitter)="
-                            handleRemoveTruckTrailerClick($event)
-                        "
+            <ng-container *ngIf="!isDispatchBoardLocked">
+                <tr>
+                    <td
+                        class="truck-field"
+                        [ngStyle]="{
+                            width: hasAdditionalFieldTruck ? '160px' : '120px'
+                        }"
                     >
-                    </app-dispatch-table-truck-trailer>
-                </td>
-
-                <td
-                    class="trailer-field"
-                    [ngStyle]="{
-                        width: hasAdditionalFieldTrailer ? '160px' : '120px'
-                    }"
-                >
-                    <app-dispatch-table-truck-trailer
-                        [type]="'trailer'"
-                        [hasAdditionalFieldTrailer]="hasAdditionalFieldTrailer"
-                        [trailerList]="trailerList"
-                        [rowIndex]="rowIndex"
-                        [isBoardLocked]="isDispatchBoardLocked"
-                        [isDrag]="isDrag"
-                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
-                        (addTruckTrailerEmitter)="
-                            handleAddTruckTrailerClick($event)
-                        "
-                        (removeTruckTrailerEmitter)="
-                            handleRemoveTruckTrailerClick($event)
-                        "
-                    >
-                    </app-dispatch-table-truck-trailer>
-                </td>
-
-                <td class="driver-field">
-                    <app-dispatch-table-driver
-                        [driverList]="driverList"
-                        [rowIndex]="rowIndex"
-                        [isBoardLocked]="isDispatchBoardLocked"
-                        [isDrag]="isDrag"
-                        [draggingType]="draggingType"
-                        [openedDriverDropdown]="openedDriverDropdown"
-                        [isHoveringRow]="isHoveringRowIndex === rowIndex"
-                        (addDriverEmitter)="handleAddDriverClick($event)"
-                        (removeDriverEmitter)="handleRemoveDriverClick($event)"
-                        (driverVacationEmitter)="changeDriverVacation($event)"
-                    >
-                    </app-dispatch-table-driver>
-                </td>
-
-                <td class="pre-trip">
-                    <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
-                </td>
-                <td class="location-field">
-                    <ng-container *ngIf="showAddAddressFieldIndex === -2">
-                        <app-dispatch-table-last-location
-                            [rowIndex]="showAddAddressFieldIndex"
-                            [showAddAddressField]="showAddAddressFieldIndex"
-                            [parkingList]="parkingList"
-                            (updateLastLocationEmit)="
-                                handleUpdateLastLocationEmit($event)
+                        <app-dispatch-table-truck-trailer
+                            [type]="'truck'"
+                            [truck]="addNewTruckData"
+                            [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
+                            [truckList]="truckList"
+                            [rowIndex]="rowIndex"
+                            [isBoardLocked]="isDispatchBoardLocked"
+                            [isDrag]="isDrag"
+                            [isHoveringRow]="isHoveringRowIndex === rowIndex"
+                            (addTruckTrailerEmitter)="
+                                handleAddTruckTrailerClick($event)
                             "
-                            (isDropdownHidden)="onHideDropdown()"
+                            (removeTruckTrailerEmitter)="
+                                handleRemoveTruckTrailerClick($event)
+                            "
                         >
-                        </app-dispatch-table-last-location>
-                    </ng-container>
-                </td>
+                        </app-dispatch-table-truck-trailer>
+                    </td>
 
-                <td class="status-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                    <td
+                        class="trailer-field"
+                        [ngStyle]="{
+                            width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                        }"
+                    >
+                        <app-dispatch-table-truck-trailer
+                            [type]="'trailer'"
+                            [hasAdditionalFieldTrailer]="
+                                hasAdditionalFieldTrailer
+                            "
+                            [trailerList]="trailerList"
+                            [rowIndex]="rowIndex"
+                            [isBoardLocked]="isDispatchBoardLocked"
+                            [isDrag]="isDrag"
+                            [isHoveringRow]="isHoveringRowIndex === rowIndex"
+                            (addTruckTrailerEmitter)="
+                                handleAddTruckTrailerClick($event)
+                            "
+                            (removeTruckTrailerEmitter)="
+                                handleRemoveTruckTrailerClick($event)
+                            "
+                        >
+                        </app-dispatch-table-truck-trailer>
+                    </td>
 
-                <td class="pickup-delivery-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                    <td class="driver-field">
+                        <app-dispatch-table-driver
+                            [driverList]="driverList"
+                            [rowIndex]="rowIndex"
+                            [isBoardLocked]="isDispatchBoardLocked"
+                            [isDrag]="isDrag"
+                            [draggingType]="draggingType"
+                            [openedDriverDropdown]="openedDriverDropdown"
+                            [isHoveringRow]="isHoveringRowIndex === rowIndex"
+                            (addDriverEmitter)="handleAddDriverClick($event)"
+                            (removeDriverEmitter)="
+                                handleRemoveDriverClick($event)
+                            "
+                            (driverVacationEmitter)="
+                                changeDriverVacation($event)
+                            "
+                        >
+                        </app-dispatch-table-driver>
+                    </td>
 
-                <td class="progress-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                    <td class="pre-trip">
+                        <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
+                    </td>
 
-                <td class="parking-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                    <td class="location-field">
+                        <ng-container
+                            *ngIf="
+                                showAddAddressFieldIndex === -2;
+                                else emptyElement
+                            "
+                        >
+                            <app-dispatch-table-last-location
+                                [rowIndex]="showAddAddressFieldIndex"
+                                [showAddAddressField]="showAddAddressFieldIndex"
+                                [parkingList]="parkingList"
+                                (updateLastLocationEmit)="
+                                    handleUpdateLastLocationEmit($event)
+                                "
+                                (isDropdownHidden)="onHideDropdown()"
+                            >
+                            </app-dispatch-table-last-location>
+                        </ng-container>
 
-                <td class="box-item">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                        <ng-template #emptyElement>
+                            <div class="main_inside">
+                                <div class="padding-inside"></div>
+                            </div>
+                        </ng-template>
+                    </td>
 
-                <td class="note-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
+                    <td class="status-field">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
 
-                <td class="box-item">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
-                    </div>
-                </td>
-            </tr>
+                    <td class="pickup-delivery-field">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+
+                    <td class="progress-field">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+
+                    <td class="parking-field">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+
+                    <td class="box-item">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+
+                    <td class="note-field">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+
+                    <td class="box-item">
+                        <div class="main_inside">
+                            <div class="padding-inside"></div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
 
             <!-- Empty Rows Placeholders -->
 
@@ -633,6 +662,7 @@
                         <td class="pre-trip">
                             <div class="main_inside"></div>
                         </td>
+
                         <td class="location-field">
                             <div class="main_inside"></div>
                         </td>
@@ -691,7 +721,10 @@
                             }"
                         >
                             <ng-container
-                                *ngFor="let field of [].constructor(12)"
+                                *ngFor="
+                                    let field of [].constructor(12);
+                                    trackBy: trackByIdentity
+                                "
                             >
                                 <td>
                                     <div></div>
@@ -731,11 +764,14 @@
                         ></app-dispatch-table-info>
                     </td>
 
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <ng-container
+                        *ngFor="
+                            let field of [].constructor(5);
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <td></td>
+                    </ng-container>
 
                     <td>
                         <app-dispatch-table-info
@@ -787,21 +823,25 @@
                     </div>
 
                     <div class="no-data-description ta-font-medium text-center">
-                        There are no entries. To manage your board, unlock the
-                        table and start <br />
-                        adding new records.
+                        There are no entries.
+                        <ng-container *ngIf="dispatchData?.canUnlock">
+                            To manage your board, unlock the table and start
+                            <br />
+                            adding new records.
+                        </ng-container>
                     </div>
                 </div>
-
-                <div>
-                    <button
-                        type="button"
-                        class="d-flex justify-content-center align-items-center unlock-table-button"
-                        (click)="unlockTable()"
-                    >
-                        <p class="m-0 ta-font-bold">Unlock Table</p>
-                    </button>
-                </div>
+                <ng-container *ngIf="dispatchData?.canUnlock">
+                    <div>
+                        <button
+                            type="button"
+                            class="d-flex justify-content-center align-items-center unlock-table-button"
+                            (click)="unlockTable()"
+                        >
+                            <p class="m-0 ta-font-bold">Unlock Table</p>
+                        </button>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </ng-container>

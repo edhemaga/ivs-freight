@@ -16,7 +16,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-status-switch.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
@@ -32,7 +31,7 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/components/load-short-details/load-short-details.component';
-import { LoadDeatilsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-deatils-item-stops-main/load-deatils-item-stops-main.component';
+import { LoadDetailsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-details-item-stops-main/load-details-item-stops-main.component';
 //import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { LoadRequirementComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-requirement/load-requirement.component';
@@ -51,6 +50,7 @@ import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
+import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 
 @NgModule({
     declarations: [
@@ -66,12 +66,13 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         DispatchTableInfoComponent,
         DispatchTableLastLocationComponentComponent,
         DispatchTablePreTripInspectionComponent,
+        DispatchHistoryModalComponent,
+        DispatchTableStatusComponent,
+        LoadShortDetailsComponent,
 
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        LoadShortDetailsComponent,
-        DispatchHistoryModalComponent,
     ],
     imports: [
         // modules
@@ -95,7 +96,6 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         TaTableToolbarComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
-        TaStatusSwitchComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
@@ -105,13 +105,13 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
         TaResizerComponent,
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
+        TaStatusComponentComponent,
 
-        LoadDeatilsItemStopsMainComponent,
+        LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
 
         //  TaMapsComponent,
-        DispatchTableStatusComponent,
     ],
     exports: [ColorFinderPipe],
 })

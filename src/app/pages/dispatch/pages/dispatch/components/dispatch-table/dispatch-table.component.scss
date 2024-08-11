@@ -14,9 +14,11 @@
                                 cursor: grabbing;
                             }
                         }
+
                         &.default {
                             pointer-events: none;
                         }
+
                         &.dragging {
                             box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
                         }
@@ -133,6 +135,8 @@
                 }
 
                 .icon {
+                    margin-right: 2px;
+
                     &.delivery {
                         svg {
                             path {
@@ -508,44 +512,43 @@
         opacity: 0;
     }
 
-    .reorder-row.cdk-drag-preview {
-        position: relative;
-        background-color: $ta-black-2;
-        border-radius: 3px;
-        z-index: 9999999 !important;
-        cursor: grabbing !important;
+    .reorder-row {
+        &.cdk-drag-preview {
+            position: relative;
+            border-radius: 3px;
 
-        .cdk-drag-handle {
+            background-color: $ta-black-2 !important;
+            z-index: 9999999 !important;
             cursor: grabbing !important;
-        }
 
-        .main_inside {
-            background-color: transparent !important;
-
-            *:not(.switch_statuses) {
-                color: #fff !important;
+            .cdk-drag-handle {
+                cursor: grabbing !important;
             }
-        }
 
-        .padding-inside {
+            .main_inside {
+                background-color: transparent !important;
+            }
+
+            .padding-inside {
+                &:after {
+                    display: none !important;
+                }
+            }
+
             &:after {
-                display: none !important;
+                content: '';
+                width: 18px;
+                height: 18px;
+                position: absolute;
+                right: 10px;
+                top: 50%;
+
+                transform: translateY(-50%);
+                background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
+                background-size: 20px 17px;
+                background-repeat: no-repeat;
+                background-position: center;
             }
-        }
-
-        &:after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-
-            transform: translateY(-50%);
-            background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
-            background-size: 20px 17px;
-            background-repeat: no-repeat;
-            background-position: center;
         }
     }
 
