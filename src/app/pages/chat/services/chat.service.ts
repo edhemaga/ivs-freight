@@ -107,7 +107,8 @@ export class UserChatService {
     public sendMessage(
         conversationId: number,
         content: string,
-        attachmentsList?: UploadFile[]
+        attachmentsList?: UploadFile[],
+        linksList?: string[]
     ): Observable<any> {
         if (!conversationId) return;
 
@@ -115,7 +116,18 @@ export class UserChatService {
             return item.realFile
         })
 
-        const data = { conversationId, content, attachments };
+
+        let links;
+
+        if (linksList) {
+            links = linksList.map(link => {
+                return {
+                    url: link
+                }
+            })
+        }
+
+        const data = { conversationId, content, attachments, links };
 
         this.formDataService.extractFormDataFromFunction(data);
 

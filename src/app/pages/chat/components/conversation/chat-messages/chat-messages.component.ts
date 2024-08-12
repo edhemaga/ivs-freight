@@ -222,7 +222,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .sendMessage(
         this.conversation.id,
         message,
-        this.attachments$.value)
+        this.attachments$.value,
+        this.links)
       .pipe(
         takeUntil(this.destroy$)
       )
@@ -402,7 +403,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       const lastTyped: string = wordsList.slice(-1)[0];
 
       if (lastTyped) {
-        console.log(lastTyped)
 
         const isLink: boolean = checkForLink(lastTyped);
 
@@ -414,7 +414,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     }
 
     this.currentMessage = message;
-    console.log(this.links);
   }
 
   ngOnDestroy(): void {
