@@ -3179,8 +3179,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         item.get(LoadModalStringEnum.TIME_TO).value
                     ),
                     timeType:
-                        this.stopTimeTabsPickup.find((item) => item.checked)
-                            .name === LoadModalStringEnum.APPOINTMENT
+                        this.stopTimeTabsExtraStops[index].find(
+                            (item) => item.checked
+                        ).name === LoadModalStringEnum.APPOINTMENT
                             ? 2
                             : 1,
                     timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
