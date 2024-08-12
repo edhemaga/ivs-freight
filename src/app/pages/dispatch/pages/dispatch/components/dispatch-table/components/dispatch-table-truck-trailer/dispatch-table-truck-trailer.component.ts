@@ -35,10 +35,14 @@ import { OpenModal } from '@shared/models/open-modal.model';
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
 export class DispatchTableTruckTrailerComponent {
-    @Input() type: string;
+    @Input() set hasAdditionalFieldTruck(hasAdditionalField: boolean) {
+        this._hasAdditionalFieldTruck = hasAdditionalField;
+    }
+    @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
+        this._hasAdditionalFieldTrailer = hasAdditionalField;
+    }
 
-    @Input() hasAdditionalFieldTruck: boolean = false;
-    @Input() hasAdditionalFieldTrailer: boolean = false;
+    @Input() type: string;
 
     @Input() truck: TruckResponse;
     @Input() trailer: TrailerResponse;
@@ -67,6 +71,9 @@ export class DispatchTableTruckTrailerComponent {
     public truckTrailerFormControl: UntypedFormControl =
         new UntypedFormControl();
 
+    public _hasAdditionalFieldTruck: boolean = false;
+    public _hasAdditionalFieldTrailer: boolean = false;
+
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     public hasNoResultsTruck: boolean = false;
@@ -80,11 +87,8 @@ export class DispatchTableTruckTrailerComponent {
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
             type: this.type,
-            hasAdditionalFieldTruck: this.hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer: this.hasAdditionalFieldTrailer,
-            truck: this.truck,
-            trailer: this.trailer,
-            isBoardLocked: this.isBoardLocked,
+            hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
+            hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
         });
     }
 
@@ -101,15 +105,15 @@ export class DispatchTableTruckTrailerComponent {
     public addTruck<T extends OpenModal>(event: T): void {
         if (event) {
             if (event.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: DispatchTableStringEnum.OPEN,
-                    payload: {
-                        key: DispatchTableStringEnum.TRUCK_MODAL,
-                        value: null,
+                this.modalService.openModal(
+                    TruckModalComponent,
+                    {
+                        size: DispatchTableStringEnum.SMALL,
                     },
-                    component: TruckModalComponent,
-                    size: DispatchTableStringEnum.SMALL,
-                });
+                    {
+                        isDispatchCall: true,
+                    }
+                );
             } else {
                 this.addTruckTrailerEmitter.emit({
                     type: DispatchTableStringEnum.TRUCK,
@@ -125,15 +129,15 @@ export class DispatchTableTruckTrailerComponent {
     public addTrailer<T extends OpenModal>(event: T): void {
         if (event) {
             if (event.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: DispatchTableStringEnum.OPEN,
-                    payload: {
-                        key: DispatchTableStringEnum.TRAILER_MODAL,
-                        value: null,
+                this.modalService.openModal(
+                    TrailerModalComponent,
+                    {
+                        size: DispatchTableStringEnum.SMALL,
                     },
-                    component: TrailerModalComponent,
-                    size: DispatchTableStringEnum.SMALL,
-                });
+                    {
+                        isDispatchCall: true,
+                    }
+                );
             } else {
                 this.addTruckTrailerEmitter.emit({
                     type: DispatchTableStringEnum.TRAILER,
