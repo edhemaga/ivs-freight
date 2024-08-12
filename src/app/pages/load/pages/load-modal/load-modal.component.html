@@ -517,6 +517,10 @@
                                         disabled: selectedStopTimePickup === 6
                                     }"
                                     (click)="pickupDateRange = true"
+                                    mainTooltip="Date Range"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                 >
                                     <svg-icon
                                         class="plus-icon"
@@ -880,6 +884,12 @@
                                                 "
                                             >
                                                 <div
+                                                    mainTooltip="Date Range"
+                                                    [tooltipBackground]="
+                                                        '#424242'
+                                                    "
+                                                    ngbTooltip
+                                                    position="bottom"
                                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                                     [ngClass]="{
                                                         disabled:
@@ -1181,6 +1191,10 @@
 
                             <ng-container *ngIf="!deliveryDateRange">
                                 <div
+                                    mainTooltip="Date Range"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
                                         disabled: selectedStopTimeDelivery === 8
