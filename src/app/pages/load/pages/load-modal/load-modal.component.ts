@@ -116,6 +116,7 @@ import {
     CommentResponse,
     FileResponse,
     CreateLoadTemplateCommand,
+    LoadPaymentPayResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -4201,11 +4202,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
-            pays: this.additionalPayments().value,
+            pays: this.mapPayments(),
             tonuRate,
             revisedRate,
             invoicedDate: this.initialinvoicedDate ?? invoicedDate,
         };
+    }
+
+    private mapPayments(): LoadPaymentPayResponse[] {
+        return this.additionalPayments().value.map((payments) => {
+            return {
+                ...payments,
+                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                    payments.pay
+                ),
+                payDate: MethodsCalculationsHelper.convertDateToBackend(
+                    payments.payDate
+                ),
+            };
+        });
     }
 
     private generateLoadModel(newLoad: boolean): Load {
@@ -4699,9 +4714,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.additionalPayments().push(
                 this.createAdditionPaymentBilling({
                     id: pay.id,
-                    pay: pay.pay,
+                    pay: MethodsCalculationsHelper.convertNumberInThousandSep(
+                        pay.pay
+                    ) as any,
                     payType: pay.paymentType,
-                    payDate: pay.payDate,
+                    payDate: MethodsCalculationsHelper.convertDateFromBackend(
+                        pay.payDate
+                    ),
                     paymentType: pay.paymentType.id,
                     paymentMethod: pay.paymentMethod.id,
                     name: pay.paymentType.name,
