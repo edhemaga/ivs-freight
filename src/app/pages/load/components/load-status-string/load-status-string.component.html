@@ -50,8 +50,10 @@
                     value.length === 1 && index === displayString.length - 1,
                 'details-layout': isDetailsLayout,
                 'dispatch-history-modal-layout': isDispatchHistoryModalLayout,
-                'd-repair': displayString.length > 1 && displayString[0] === 'D',
-                'l-repair': displayString.length > 1 && displayString[0] === 'L',
+                'd-repair': displayString.length > 1 && displayString[0] === 'D'&& !isDarkColor,
+                'd-repair-dark': displayString.length > 1 && displayString[0] === 'D' && isDarkColor,
+                'l-dark': displayString.length > 1 && displayString[0] === 'L' && isDarkColor,
+
             }"
         >
             {{ value }}
