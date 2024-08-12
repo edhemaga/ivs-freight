@@ -43,8 +43,8 @@ import {
   CompanyUserShortResponse,
   ConversationInfoResponse,
   ConversationResponse,
-  MessageResponse
 } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
@@ -94,7 +94,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public isEmojiSelectionActive: boolean = false;
 
   // Messages
-  public messages: MessageResponse[] = [];
+  public messages: ChatMessageResponse[] = [];
   private isMessageSendable: boolean = true;
   public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
   public currentMessage!: string;
