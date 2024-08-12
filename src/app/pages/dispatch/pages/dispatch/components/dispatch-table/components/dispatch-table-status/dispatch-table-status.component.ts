@@ -78,6 +78,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
         id: number;
         status: DispatchStatus;
         dataFront: DispatchStatus;
+        isRevert?: boolean;
     }): void {
         if (
             [
@@ -88,7 +89,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 DispatchStatusEnum[5],
                 DispatchStatusEnum[6],
                 DispatchStatusEnum[7],
-            ].includes(e.status)
+            ].includes(e.status) &&
+            !e?.isRevert
         ) {
             const mappedEvent = {
                 ...this.dispatcher,
@@ -111,7 +113,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            this.updateStatus(e.id, e.status);
+            if (e?.isRevert) {
+                this.revertUpdateStatus();
+            } else {
+                this.updateStatus(e.id, e.status);
+            }
         }
     }
 
@@ -131,7 +137,20 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 );
             });
     }
-
+    public revertUpdateStatus(): void {
+        this.dispatchService
+            .revertDispatchStatus(this.dispatcher.id)
+            .pipe(
+                takeUntil(this.destroy$),
+                switchMap(() =>
+                    this.dispatchService.updateDispatchboardRowById(
+                        this.dispatchId,
+                        this.dispatchBoardId
+                    )
+                )
+            )
+            .subscribe();
+    }
     public updateStatus(statusId: number, statusName: DispatchStatus): void {
         const previousData = this.dispatcher;
 
