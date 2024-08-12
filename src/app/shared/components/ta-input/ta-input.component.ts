@@ -845,12 +845,15 @@ export class TaInputComponent
                         this._inputConfig.priceSeparatorLimitation;
 
                     // Cut value
-                    this.getSuperControl.patchValue(
-                        this.getSuperControl.value.slice(
-                            0,
-                            this._inputConfig.priceSeparatorLimitation
-                        )
-                    );
+                    if (this.getSuperControl.value) {
+                        this.getSuperControl.patchValue(
+                            this.getSuperControl.value.slice(
+                                0,
+                                this._inputConfig.priceSeparatorLimitation
+                            )
+                        );
+                    } else {
+                    }
 
                     // Transform value again after cutting
                     this.getSuperControl.patchValue(
@@ -861,16 +864,23 @@ export class TaInputComponent
                 }
             }
 
-            this.timeoutCleaner = setTimeout(() => {
-                this.input.nativeElement.setSelectionRange(
-                    this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1
-                            ? 1
-                            : 0),
-                    this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1 ? 1 : 0)
-                );
-            }, 0);
+            if (this.getSuperControl.value) {
+                this.timeoutCleaner = setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.cursorInputPosition +
+                            (this.getSuperControl.value.indexOf('.') === -1
+                                ? 1
+                                : 0),
+                        this.cursorInputPosition +
+                            (this.getSuperControl.value.indexOf('.') === -1
+                                ? 1
+                                : 0)
+                    );
+                }, 0);
+            } else {
+                // if we have ${n}00000 and we delete N then we got undefined instead of dot
+                this.getSuperControl.patchValue(0);
+            }
         }
 
         /**
@@ -2074,7 +2084,7 @@ export class TaInputComponent
             this.span1.nativeElement.innerHTML = dateFormat[0];
         }
 
-        if(this.span2) {
+        if (this.span2) {
             if (this._inputConfig.name !== 'datepickerBankCard') {
                 this.span2.nativeElement.innerHTML = dateFormat[1];
                 this.span3.nativeElement.innerHTML = dateFormat[2];
