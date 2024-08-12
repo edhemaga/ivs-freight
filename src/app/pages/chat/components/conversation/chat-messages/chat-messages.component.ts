@@ -97,6 +97,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public messages: MessageResponse[] = [];
   private isMessageSendable: boolean = true;
   public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
+  public currentMessage!: string;
 
   // Attachment upload
   public attachmentUploadActive: boolean = false;
@@ -373,27 +374,46 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       return;
     };
 
-    if (
-      //Shortest possible URL
-      message.length < 3 ||
-      // Check if last character is whitespace
-      message[message.length - 1] === ' ' ||
-      // Check if two consecutive characters are the same
-      message[message.length - 2] === message[message.length - 1]
-    ) return;
-
-    const lastTyped: string = message
+    const wordsList: string[] = message
       .trim()
-      .split(" ")
-      .slice(-1)[0];
+      .split(" ");
 
-    if (lastTyped) {
+    if (
+      message.length < this.currentMessage?.length &&
+      message !== this.currentMessage
+    ) {
 
-      const isLink: boolean = checkForLink(lastTyped);
+      this.links = [];
+      wordsList.forEach(word => {
+        if (checkForLink(word)) this.links = [...this.links, word];
+      });
 
-      if (isLink)
-        this.links = [...this.links, lastTyped];
+    } else {
+
+      if (
+        //Shortest possible URL
+        message.length < 3 ||
+        // Check if last character is whitespace
+        message[message.length - 1] === ' ' ||
+        // Check if two consecutive characters are the same
+        message[message.length - 2] === message[message.length - 1]
+      ) return;
+
+      const lastTyped: string = wordsList.slice(-1)[0];
+
+      if (lastTyped) {
+        console.log(lastTyped)
+
+        const isLink: boolean = checkForLink(lastTyped);
+
+        if (isLink)
+          this.links = [...this.links, lastTyped];
+
+      }
+
     }
+
+    this.currentMessage = message;
     console.log(this.links);
   }
 
