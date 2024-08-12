@@ -281,8 +281,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public statusDropDownList: SelectedStatus[];
     public previousStatus: SelectedStatus;
     public savedPickupStopItems: LoadStopItemCommand[] = [];
+    public showPickupItems: boolean = false;
     public savedDeliveryStopItems: LoadStopItemCommand[] = [];
+    public showDeliveryItems: boolean = false;
     public savedExtraStopItems: LoadStopItemCommand[][] = [];
+    public showExtraStopItems: boolean[] = [];
     public isPickupStopValid: boolean = true;
     public isDeliveryStopValid: boolean = true;
     public stopItemsValid: boolean[] = [];
@@ -3510,6 +3513,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
                 this.isCreatedNewStopItemsRow.pickup = true;
+                this.showPickupItems = true;
 
                 setTimeout(() => {
                     this.isCreatedNewStopItemsRow.pickup = false;
@@ -3518,6 +3522,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.DELIVERY:
                 this.isCreatedNewStopItemsRow.delivery = true;
+                this.showDeliveryItems = true;
 
                 setTimeout(() => {
                     this.isCreatedNewStopItemsRow.delivery = false;
@@ -3526,12 +3531,31 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
                 this.isCreatedNewStopItemsRow.extraStops[extraStopId] = true;
+                this.showExtraStopItems[extraStopId] = true;
 
                 setTimeout(() => {
                     this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
                         false;
                 }, 400);
 
+                break;
+            default:
+                break;
+        }
+    }
+
+    public toggleStopItemRow(type: string, extraStopId?: number): void {
+        switch (type) {
+            case LoadModalStringEnum.PICKUP:
+                this.showPickupItems = !this.showPickupItems;
+                break;
+            case LoadModalStringEnum.DELIVERY:
+                this.showDeliveryItems = !this.showDeliveryItems;
+
+                break;
+            case LoadModalStringEnum.EXTRA_STOP:
+                this.showExtraStopItems[extraStopId] =
+                    !this.showExtraStopItems[extraStopId];
                 break;
             default:
                 break;

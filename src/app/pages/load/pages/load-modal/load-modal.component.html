@@ -574,7 +574,7 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedPickupStopItems.length"
+                                [isCardOpen]="showPickupItems"
                                 [hasCounter]="savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
@@ -583,13 +583,12 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedPickupStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="showPickupItems"
+                                [customClass]="'scrollable'"
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
-                                [customClass]="'scrollable'"
+                                (onOpenCard)="toggleStopItemRow('pickup')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
@@ -970,8 +969,8 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    !!savedExtraStopItems[indx]
-                                                        ?.length
+                                                    showExtraStopItems[indx] ??
+                                                    false
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
@@ -986,12 +985,17 @@
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
-                                                    savedExtraStopItems[indx] &&
-                                                    savedExtraStopItems[indx]
-                                                        ?.length
+                                                    showExtraStopItems[indx] ??
+                                                    false
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
+                                                        'extra-stop',
+                                                        indx
+                                                    )
+                                                "
+                                                (onOpenCard)="
+                                                    toggleStopItemRow(
                                                         'extra-stop',
                                                         indx
                                                     )
@@ -1233,7 +1237,7 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedDeliveryStopItems.length"
+                                [isCardOpen]="showDeliveryItems"
                                 [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
@@ -1242,12 +1246,11 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedDeliveryStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="showDeliveryItems"
                                 (onActionEvent)="
                                     createNewStopItemsRow('delivery')
                                 "
+                                (onOpenCard)="toggleStopItemRow('delivery')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
