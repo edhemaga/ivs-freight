@@ -13,7 +13,8 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root'
 })
-export class HubService {
+export class ChatHubService {
+
     private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;

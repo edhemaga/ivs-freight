@@ -14,7 +14,7 @@ import {
 
 // services
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
-import { HubService } from '@pages/chat/services/hub.service';
+import { ChatHubService } from '@pages/chat/services/chat-hub.service';
 
 @Component({
     selector: 'app-root',
@@ -37,11 +37,16 @@ export class AppComponent implements OnInit {
     public animationState: number = 0;
 
     constructor(
-        private router: Router,
         public titleService: Title,
+
+        // Routing
+        private router: Router,
         private activatedRoute: ActivatedRoute,
-        private hubService: HubService,
-        private _: StaticInjectorService
+
+        // Services
+        private _: StaticInjectorService,
+        private chatHubService: ChatHubService,
+
     ) { }
 
     ngOnInit(): void {
@@ -64,7 +69,7 @@ export class AppComponent implements OnInit {
                     'CarrierAssist' + ' | ' + event.title
                 );
             });
-        this.hubService.connect();
+        this.connectToChatHub();
     }
 
     public top(): void {
@@ -74,5 +79,9 @@ export class AppComponent implements OnInit {
     public handleRouteAnimationActivate(): void {
         this.animationState =
             this.activatedRoute.firstChild.snapshot.data['routeIdx'];
+    }
+
+    private connectToChatHub(): void {
+        this.chatHubService.connect();
     }
 }

@@ -38,7 +38,7 @@ import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
-import { HubService } from '@pages/chat/services/hub.service';
+import { ChatHubService } from '@pages/chat/services/chat-hub.service';
 import { UserProfileService } from '@pages/chat/services/user-profile.service';
 
 // Models
@@ -133,7 +133,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     // Services
     private chatService: UserChatService,
-    private chatHubService: HubService,
+    private chatHubService: ChatHubService,
     public userProfileService: UserProfileService
   ) { }
 
