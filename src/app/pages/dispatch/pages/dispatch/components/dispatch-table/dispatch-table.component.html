@@ -42,10 +42,15 @@
                                 'd-flex align-items-center pickup-delivery':
                                     tableHeaderItem?.secondTitle
                             }"
+                            (click)="handleHeaderClick(tableHeaderItem?.title)"
                         >
                             <div>
                                 <svg-icon
                                     class="icon"
+                                    [class.expanded]="
+                                        tableHeaderItem?.title === 'NOTE' &&
+                                        noteExpandedView
+                                    "
                                     [svgStyle]="{
                                         'width.px': '14',
                                         'height.px': '14'
@@ -55,11 +60,14 @@
 
                                 <ng-container
                                     *ngIf="
-                                        tableHeaderItem?.title !==
+                                        (tableHeaderItem?.title !==
                                             'INSPECTION' &&
-                                        tableHeaderItem?.title !==
-                                            'DISPATCHER' &&
-                                        tableHeaderItem?.title !== 'NOTE'
+                                            tableHeaderItem?.title !==
+                                                'DISPATCHER' &&
+                                            tableHeaderItem?.title !==
+                                                'NOTE') ||
+                                        (tableHeaderItem?.title === 'NOTE' &&
+                                            noteExpandedView)
                                     "
                                 >
                                     {{ tableHeaderItem?.title }}
@@ -425,7 +433,13 @@
                                 class="main_inside"
                                 [class.filled]="item.truck"
                             >
-                                <div class="padding-inside">
+                                <div
+                                    class="padding-inside"
+                                    [ngClass]="{
+                                        'd-flex justify-content-center align-items-center':
+                                        !noteExpandedView,
+                                    }"
+                                >
                                     <div
                                         class="dispatcher-table-cell-container note-container"
                                         [class.empty-box-field]="!item.note"

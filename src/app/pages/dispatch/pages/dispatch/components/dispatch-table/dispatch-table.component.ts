@@ -835,6 +835,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
+    public handleHeaderClick(title: string): void {
+        switch (title) {
+            case DispatchTableStringEnum.NOTE:
+                this.noteExpandedView = !this.noteExpandedView;
+                break;
+            default:
+                break;
+        }
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

@@ -97,32 +97,6 @@
             font-size: 11px;
             color: $bw6-2;
 
-            &.note-header {
-                cursor: pointer;
-                svg-icon {
-                    width: 14px;
-                    height: 14px;
-
-                    svg {
-                        width: 14px;
-                        height: 14px;
-
-                        path {
-                            fill: $bw6-2;
-                        }
-                    }
-                }
-                &.expanded {
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: $ta-blue-13;
-                            }
-                        }
-                    }
-                }
-            }
-
             &::selection,
             ::selection {
                 background-color: $ta-black-2;
@@ -167,6 +141,14 @@
                 svg {
                     path {
                         fill: $bw6-2;
+                    }
+                }
+
+                &.expanded {
+                    svg {
+                        path {
+                            fill: $ta-blue-18;
+                        }
                     }
                 }
             }
@@ -359,9 +341,22 @@
                     &.note-container {
                         display: block;
                         height: 100%;
+                        width: 26px;
 
                         border-radius: 3px;
-                        padding-left: 6px;
+                        padding-left: 0px;
+
+                        &.expanded {
+                            padding-left: 6px;
+                            width: auto;
+
+                            &:hover {
+                                cursor: pointer;
+                                &:hover {
+                                    background-color: $bw2;
+                                }
+                            }
+                        }
                     }
 
                     .dispatcher-table-cell-holder {

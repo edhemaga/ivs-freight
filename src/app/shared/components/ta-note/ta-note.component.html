@@ -7,7 +7,11 @@
     [autoClose]="'outside'"
     [container]="'body'"
     [placement]="'left-top'"
-    popoverClass="my-note-popover"
+    [popoverClass]="
+        _openedAll && isDispatch
+            ? 'my-note-popover dispatch-note'
+            : 'my-note-popover'
+    "
     triggers="manual"
     (click)="_openedAll ? toggleNote(_note, t2) : ''"
 >
