@@ -7,9 +7,6 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 // models
 import { EnumValue } from 'appcoretruckassist';
 
-//components
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-
 // service
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
@@ -25,13 +22,13 @@ export class DispatchTablePreTripInspectionComponent
     implements OnInit, OnDestroy
 {
     @Input() set status(value: EnumValue | null) {
-        if (value) {
-            this._status = value;
-        }
+        if (value) this._status = value;
     }
-    @Input() dispatchBoardId?: number;
 
+    @Input() dispatchBoardId?: number;
     @Input() dispatchId?: number;
+
+    @Input() isHoveringRow: boolean;
 
     private _status: EnumValue;
     private destroy$ = new Subject<void>();

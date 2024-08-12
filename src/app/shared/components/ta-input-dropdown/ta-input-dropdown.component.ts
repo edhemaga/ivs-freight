@@ -54,7 +54,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directives
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NgControl,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
     selector: 'app-ta-input-dropdown',

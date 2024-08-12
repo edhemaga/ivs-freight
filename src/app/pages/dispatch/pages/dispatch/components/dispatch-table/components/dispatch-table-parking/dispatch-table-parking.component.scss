@@ -20,9 +20,14 @@
 
     &-hover {
         cursor: pointer;
+
         &:hover {
             background-color: $bw2;
         }
+    }
+
+    &.hovering {
+        background-color: $bw2;
     }
 
     &-dropdown {

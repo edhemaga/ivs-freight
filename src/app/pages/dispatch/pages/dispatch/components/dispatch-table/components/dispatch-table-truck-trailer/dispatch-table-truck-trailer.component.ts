@@ -52,6 +52,8 @@ export class DispatchTableTruckTrailerComponent {
     @Input() isDrag: boolean;
     @Input() isActiveLoad: boolean;
 
+    @Input() isHoveringRow: boolean;
+
     @Output() addTruckTrailerEmitter = new EventEmitter<{
         type: string;
         event: TruckMinimalResponse | TrailerMinimalResponse;

@@ -1,19 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormControl,
-} from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
-// component
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-
-//config
+// config
 import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
 
-//models
+// models
 import { AddressEntity } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
@@ -24,14 +15,14 @@ import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.mo
     styleUrls: ['./dispatch-table-last-location.component.scss'],
 })
 export class DispatchTableLastLocationComponentComponent {
+    @Input() set parkingList(value: DispatchBoardParking[]) {
+        if (this.address) this.checkParkingLocation(value);
+    }
     @Input() address?: AddressEntity = null;
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
-    @Input() set parkingList(value: DispatchBoardParking[]) {
-        if (this.address) {
-            this.checkParkingLocation(value);
-        }
-    }
+    @Input() isHoveringRow: boolean;
+
     @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
     @Output() isDropdownHidden: EventEmitter<boolean> =

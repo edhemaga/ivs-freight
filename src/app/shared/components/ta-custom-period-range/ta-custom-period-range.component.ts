@@ -21,13 +21,20 @@ import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 // moment
 import moment from 'moment';
 
+// config
+import { CustomPeriodRangeConfig } from '@shared/components/ta-custom-period-range/utils/config/custom-period-range.config';
+
+// services
+import { FormService } from '@shared/services/form.service';
+
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // models
-import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
+import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-ta-custom-period-range',
@@ -35,8 +42,11 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
     styleUrls: ['./ta-custom-period-range.component.scss'],
     standalone: true,
     imports: [
+        // modules
         CommonModule,
         ReactiveFormsModule,
+
+        // components
         TaInputComponent,
         TaInputDropdownComponent,
     ],
@@ -46,7 +56,9 @@ export class TaCustomPeriodRangeComponent
 {
     @Input() subPeriodDropdownList: DropdownListItem[] = [];
     @Input() selectedSubPeriod: DropdownListItem;
+    @Input() selectedCustomPeriodRange: CustomPeriodRange;
     @Input() clearCustomPeriodRangeValue?: boolean = false;
+    @Input() isOnlyDateInputsLayout?: boolean = false;
 
     @Output() customPeriodRangeValuesEmitter =
         new EventEmitter<CustomPeriodRange>();
@@ -54,11 +66,30 @@ export class TaCustomPeriodRangeComponent
 
     private destroy$ = new Subject<void>();
 
+    public isFormDirty: boolean = true;
+
     public customPeriodRangeForm: UntypedFormGroup;
 
     public isSubPeriodDisabled: boolean = true;
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private formService: FormService
+    ) {}
+
+    get fromDateConfig(): ITaInput {
+        return CustomPeriodRangeConfig.getFromDateConfig();
+    }
+
+    get toDateConfig(): ITaInput {
+        return CustomPeriodRangeConfig.getToDateConfig();
+    }
+
+    get subPeriodConfig(): ITaInput {
+        return CustomPeriodRangeConfig.getSubPeriodConfig(
+            this.isSubPeriodDisabled
+        );
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -74,10 +105,31 @@ export class TaCustomPeriodRangeComponent
 
     private createForm(): void {
         this.customPeriodRangeForm = this.formBuilder.group({
-            fromDate: [null, Validators.required],
-            toDate: [null, Validators.required],
-            subPeriod: [null, Validators.required],
+            fromDate: [
+                this.selectedCustomPeriodRange?.fromDate ?? null,
+                Validators.required,
+            ],
+            toDate: [
+                this.selectedCustomPeriodRange?.toDate ?? null,
+                Validators.required,
+            ],
+            subPeriod: [
+                null,
+                !this.isOnlyDateInputsLayout && Validators.required,
+            ],
         });
+
+        if (this.selectedCustomPeriodRange) this.startFormChanges();
+    }
+
+    private startFormChanges() {
+        this.formService.checkFormChange(this.customPeriodRangeForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     public handleInputSelect(dropdownListItem: DropdownListItem): void {
@@ -88,7 +140,7 @@ export class TaCustomPeriodRangeComponent
         });
     }
 
-    public handleCancelOrSetClick(isCancelBtnClick: boolean = true): void {
+    public handleCancelOrSetClick(isCancelBtnClick: boolean): void {
         if (isCancelBtnClick) {
             this.customPeriodRangeValuesEmitter.emit(null);
         } else {
@@ -98,6 +150,10 @@ export class TaCustomPeriodRangeComponent
         }
 
         this.resetCustomPeriodRangeForm();
+    }
+
+    public handleContainerClick(event: Event): void {
+        event.stopPropagation();
     }
 
     private watchDateInputsValueChange(): void {

@@ -38,7 +38,5 @@ export interface MilesByUnitResponse {
     loadedMiles?: number;
     emptyMiles?: number;
     totalMiles?: number;
-    createdAt?: string;
-    updatedAt?: string;
 }
 

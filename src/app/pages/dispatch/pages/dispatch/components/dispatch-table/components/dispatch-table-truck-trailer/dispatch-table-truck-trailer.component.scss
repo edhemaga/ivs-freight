@@ -6,7 +6,8 @@
         border-radius: 2px;
         transition: background 0.2s ease-in;
 
-        &:hover {
+        &:hover,
+        &.hovering {
             background: $bw2 !important;
         }
 

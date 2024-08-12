@@ -1,4 +1,7 @@
-<div class="d-flex flex-column justify-content-center stops-main" [ngClass]="{'stops-main-grey': isSmallDesign}">
+<div
+    class="d-flex flex-column justify-content-center stops-main"
+    [ngClass]="{ 'stops-main-grey': isSmallDesign }"
+>
     <!-- Header -->
 
     <div
@@ -349,7 +352,8 @@
             <div
                 class="d-flex flex-column justify-content-center stops-main-item-dropdown"
                 [ngClass]="{
-                    expanded: i === stopItemDropdownIndex
+                    expanded: i === stopItemDropdownIndex,
+                    'assign-load-item': isSmallDesign
                 }"
             >
                 <div
@@ -381,41 +385,44 @@
                             </ng-container>
                         </div>
 
-                        <ng-container
-                            *ngFor="
-                                let stopItemsHeaderItem of stopItemsHeaderItems
-                                    | slice : 2;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div
-                                class="d-flex align-items-center box header-box"
+                        <div class="columns-scroll header-scroll">
+                            <ng-container
+                                *ngFor="
+                                    let stopItemsHeaderItem of stopItemsHeaderItems
+                                        | slice : 2;
+                                    trackBy: trackByIdentity
+                                "
                             >
-                                <svg-icon
-                                    class="icon"
-                                    [ngStyle]="{
-                                        'margin-right':
-                                            stopItemsHeaderItem.iconMargin
-                                    }"
-                                    [svgStyle]="{
-                                        'width.px': 14,
-                                        'height.px': 14
-                                    }"
-                                    [src]="stopItemsHeaderItem.icon"
-                                ></svg-icon>
-
-                                <p
-                                    class="m-0"
-                                    [ngClass]="
-                                        stopItemsHeaderItem.title?.length > 3
-                                            ? 'ta-font-bold'
-                                            : 'ta-font-medium'
-                                    "
+                                <div
+                                    class="d-flex align-items-center box header-box"
                                 >
-                                    {{ stopItemsHeaderItem.title }}
-                                </p>
-                            </div>
-                        </ng-container>
+                                    <svg-icon
+                                        class="icon"
+                                        [ngStyle]="{
+                                            'margin-right':
+                                                stopItemsHeaderItem.iconMargin
+                                        }"
+                                        [svgStyle]="{
+                                            'width.px': 14,
+                                            'height.px': 14
+                                        }"
+                                        [src]="stopItemsHeaderItem.icon"
+                                    ></svg-icon>
+
+                                    <p
+                                        class="m-0"
+                                        [ngClass]="
+                                            stopItemsHeaderItem.title?.length >
+                                            3
+                                                ? 'ta-font-bold'
+                                                : 'ta-font-medium'
+                                        "
+                                    >
+                                        {{ stopItemsHeaderItem.title }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
 
                     <ng-container
@@ -425,7 +432,14 @@
                             trackBy: trackByIdentity
                         "
                     >
-                        <div class="align-items-center stop-items-item">
+                        <div
+                            class="stop-items-item"
+                            [ngClass]="{
+                                'align-items-center':
+                                    i !== stop.items.length - 1,
+                                'align-items-start': i === stop.items.length - 1
+                            }"
+                        >
                             <div class="align-items-center first-box">
                                 <div
                                     class="d-flex align-items-center justify-content-center box header-box"
@@ -442,36 +456,46 @@
                                 </div>
                             </div>
 
-                            <ng-container
-                                *ngFor="
-                                    let property of item | keyValuePairs;
-                                    trackBy: trackByIdentity
+                            <div
+                                class="columns-scroll"
+                                [class.items-scroll]="
+                                    i === stop.items.length - 1
                                 "
                             >
                                 <ng-container
-                                    *ngIf="
-                                        property.key !== 'id' &&
-                                        property.key !== 'units' &&
-                                        property.key !== 'description'
+                                    *ngFor="
+                                        let property of item | keyValuePairs;
+                                        trackBy: trackByIdentity
                                     "
                                 >
-                                    <div class="d-flex align-items-center box">
-                                        <p class="m-0">
-                                            {{ property.value }}
+                                    <ng-container
+                                        *ngIf="
+                                            property.key !== 'id' &&
+                                            property.key !== 'units' &&
+                                            property.key !== 'description'
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center box"
+                                        >
+                                            <p class="m-0">
+                                                {{ property.value }}
 
-                                            <ng-containeṛ
-                                                *ngIf="
-                                                    property.key === 'quantity'
-                                                "
-                                                ><span
-                                                    class="text-color-muted"
-                                                    >{{ item.units }}</span
-                                                >
-                                            </ng-containeṛ>
-                                        </p>
-                                    </div>
+                                                <ng-containeṛ
+                                                    *ngIf="
+                                                        property.key ===
+                                                        'quantity'
+                                                    "
+                                                    ><span
+                                                        class="text-color-muted"
+                                                        >{{ item.units }}</span
+                                                    >
+                                                </ng-containeṛ>
+                                            </p>
+                                        </div>
+                                    </ng-container>
                                 </ng-container>
-                            </ng-container>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
