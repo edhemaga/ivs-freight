@@ -73,7 +73,7 @@
                                     : 'ORIGIN'
                                 : 'EXTRA STOP'
                         }}
-                        <span>*</span>
+                        <span *ngIf="firstOrLast && !isDelivery" class="color-red">*</span>
                     </p>
                 </div>
             </ng-container>
