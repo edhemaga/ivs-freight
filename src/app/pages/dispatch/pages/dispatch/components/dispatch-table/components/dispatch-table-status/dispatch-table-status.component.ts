@@ -37,23 +37,11 @@ import { DispatchTableStringEnum } from '../../enums/dispatch-table-string.enum'
     selector: 'app-dispatch-table-status',
     templateUrl: './dispatch-table-status.component.html',
     styleUrls: ['./dispatch-table-status.component.scss'],
-    standalone: true,
-    imports: [
-        AngularSvgIconModule,
-        CommonModule,
-        NgbModule,
-
-        //components
-        LoadStatusStringComponent,
-        TaStatusComponentComponent,
-        TaAppTooltipV2Component,
-    ],
 })
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() set time(value: string) {
-        if (value) {
+        if (value)
             this.showTime = DispatchTableHelper.calculateDateDifference(value);
-        }
     }
     @Input() status?: DispatchStatusResponse;
 
@@ -61,8 +49,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatcher?: DispatchResponse;
     @Input() dispatchBoardId?: number;
 
-    public showTime: string;
+    @Input() isHoveringRow: boolean;
+
     private destroy$ = new Subject<void>();
+
+    public showTime: string;
 
     constructor(
         public datePipe: DatePipe,

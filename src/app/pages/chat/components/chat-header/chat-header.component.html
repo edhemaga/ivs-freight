@@ -2,13 +2,21 @@
     <div
         class="header-content"
         [ngStyle]="{
-            height: !isBottomBorderDisplayed ? 'fit-content' : '26px'
+            height: isSearchActive ? 'fit-content' : '26px'
         }"
     >
         <ng-content></ng-content>
     </div>
-
-    <ng-container *ngIf="isBottomBorderDisplayed">
-        <div class="horizontal-border"></div>
+    <ng-container *ngIf="isSearchActive; else border">
+        <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
+            <app-ta-input
+                formControlName="searchTerm"
+                [inputConfig]="ChatInput.userSearchInput"
+                (clear)="toggleSearch(false)"
+            ></app-ta-input>
+        </div>
     </ng-container>
+    <ng-template #border>
+        <div class="horizontal-border"></div>
+    </ng-template>
 </div>

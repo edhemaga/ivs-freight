@@ -29,4 +29,12 @@ export class ChatSvgRoutes {
     static phoneIcon: string = 'assets/svg/chat/phone-icon.svg';
     static emailIcon: string = 'assets/svg/chat/email-icon.svg';
     static companyIcon: string = 'assets/svg/chat/company-icon.svg';
+
+    // Groups
+    static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
+    static dispatchBoardIcon: string = 'assets/svg/chat/dispatch-board-icon.svg';
+    static truckIcon: string = 'assets/svg/chat/truck-icon.svg';
+    static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
+    static repairIcon: string = 'assets/svg/chat/repair-icon.svg';
+    static generalIcon: string = 'assets/svg/chat/general-icon.svg';
 }

@@ -312,6 +312,9 @@ export class DispatchComponent
             dispatcher?.userId === this.userId
                 ? true
                 : false;
+
+        this.isBoardLocked = true;
+
         localStorage.setItem(
             DispatchTableStringEnum.DISPATCH_USER_SELECT,
             JSON.stringify(this.selectedDispatcher)

@@ -92,7 +92,7 @@ body {
 
 *:not(.scroll-input-drodpwon):not(.description-item):not(
         .table-inner-modal
-    ):not(.scrollable) {
+    ):not(.scrollable):not(.columns-scroll.items-scroll) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

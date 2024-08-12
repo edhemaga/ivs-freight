@@ -1,6 +1,10 @@
 <div
-    [ngClass]="{ 'short-load-active': load.id === activeLoadId }"
-    class="short-load dispatch-load-grid d-grid align-items-center mouse-pointer"
+    [ngClass]="{
+        'short-load-active': load.id === activeLoadId,
+        'short-load-reordering-active': isReorderingActive
+    }"
+    [ngStyle]="{ cursor: isReorderingActive ? 'grab' : 'pointer' }"
+    class="short-load dispatch-load-grid d-grid align-items-center"
     (click)="selectLoad()"
 >
     <div
@@ -40,10 +44,22 @@
         </div>
     </div>
 
-    <div>
+    <div class="short-load-number">
         <div class="text-ellipsis">
             <span class="ta-font-bold mr-1">{{ load.loadNumber }}</span>
             <!-- TODO: ADD TEMPLATE ICON -->
+
+            <ng-container *ngIf="load.type?.name === 'LTL'">
+                <svg-icon
+                    class="mr-1"
+                    [src]="svgIcons.iconLtl"
+                    [svgStyle]="{
+                        'width.px': '14',
+                        'height.px': '14'
+                    }"
+                ></svg-icon>
+            </ng-container>
+
             <span class="ta-font-medium">{{ load.referenceNumber }}</span>
         </div>
         <p class="ta-font-medium text-color-muted text-ellipsis">
@@ -57,7 +73,7 @@
         >
             2
         </div>
-        <div>
+        <div class="short-load-stop-info-text">
             <div>
                 <span class="ta-font-medium text-ellipsis">{{
                     load.pickup.location
@@ -75,7 +91,7 @@
         >
             3
         </div>
-        <div>
+        <div class="short-load-stop-info-text">
             <div>
                 <span class="ta-font-medium text-ellipsis">{{
                     load.delivery.location
@@ -87,7 +103,7 @@
         </div>
     </div>
 
-    <div class="text-right">
+    <div class="short-load-stop-info-text text-right">
         <div>
             <span class="ta-font-semi-bold">${{ load.totalRate }}</span>
         </div>

@@ -25,6 +25,9 @@ import {
   takeUntil
 } from 'rxjs';
 
+// Components
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+
 // Assets routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
@@ -35,7 +38,8 @@ import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
-import { HubService } from '@pages/chat/services/hub.service';
+import { ChatHubService } from '@pages/chat/services/chat-hub.service';
+import { UserProfileService } from '@pages/chat/services/user-profile.service';
 
 // Models
 import {
@@ -61,6 +65,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContent') messagesContent: ElementRef;
   @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
+  @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -77,7 +82,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
   public isProfileDetailsDisplayed: boolean = false;
-  public userProfile!: ConversationInfoResponse;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -96,7 +100,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   // Attachment upload
   public attachmentUploadActive: boolean = false;
-  public attachments: UploadFile[] = [];
+  public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
   public hoveredAttachment!: ChatAttachmentForThumbnail;
 
   // Input toggle
@@ -119,6 +123,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     //Renderer
     private renderer: Renderer2,
+    private el: ElementRef,
 
     //Router
     private activatedRoute: ActivatedRoute,
@@ -128,7 +133,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     // Services
     private chatService: UserChatService,
-    private chatHubService: HubService,
+    private chatHubService: ChatHubService,
+    public userProfileService: UserProfileService
   ) { }
 
   ngOnInit(): void {
@@ -142,7 +148,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   private getResolvedData(): void {
-    this.activatedRoute.data
+    this.activatedRoute
+      .data
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -201,7 +208,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   public sendMessage(): void {
     const message = this.messageForm.value?.message;
 
-    if (!message || !this.conversation?.id || !this.isMessageSendable) return;
+    if (!this.conversation?.id || !this.isMessageSendable) return;
+    if (!message && !this.attachments$?.value?.length) return;
 
     this.isMessageSendable = false;
 
@@ -209,14 +217,14 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .sendMessage(
         this.conversation.id,
         message,
-        this.attachments)
+        this.attachments$.value)
       .pipe(
         takeUntil(this.destroy$)
       )
       .subscribe(
         () => {
           this.isMessageSendable = true;
-          this.attachments = [];
+          this.attachments$.next([]);
           this.messageForm.reset();
         }
       );
@@ -240,12 +248,13 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     }
 
     if (this.conversation?.id && value) {
+
       this.chatService
         .getAllConversationFiles(this.conversation.id)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
-          this.userProfile = data;
+          this.userProfileService.setProfile(data);
         })
     }
   }
@@ -260,7 +269,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public addAttachments(files: UploadFile[]): void {
-    this.attachments = [...this.attachments, ...files];
+    this.attachments$.next([...this.attachments$.value, ...files]);
     this.attachmentUploadActive = false;
 
     this.enableChatInput();
@@ -322,7 +331,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public removeAttachment(attachment: UploadFile): void {
-    this.attachments = [...this.attachments.filter(arg => arg !== attachment)];
+    const currentAttachments = this.attachments$.value.filter(arg => arg !== attachment);
+    this.attachments$.next(currentAttachments);
   }
 
   public blurInput(): void {

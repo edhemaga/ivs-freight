@@ -21,6 +21,8 @@ import { ChatUserProfileComponent } from "@pages/chat/components/conversation/ch
 import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
 import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
 import { ChatHeaderComponent } from "@pages/chat/components/chat-header/chat-header.component";
+import { ChatListComponent } from "@pages/chat/components/chat-list/chat-list.component";
+import { ChatListItemComponent } from "@pages/chat/components/chat-list/chat-list-item/chat-list-item.component";
 import { ChatVerticalDividerComponent } from "@pages/chat/components/chat-vertical-divider/chat-vertical-divider.component";
 import { ChatProfileResourcesComponent } from "@pages/chat/components/conversation/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
 
@@ -31,15 +33,7 @@ import { TaSearchV2Component } from "@shared/components/ta-search-v2/ta-search-v
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from "@shared/components/ta-upload-files/ta-upload-files.component";
 import { TaSearchComponent } from "@shared/components/ta-search/ta-search.component";
-
-// Services
-import { HubService } from "@pages/chat/services/hub.service";
-
-// Resolvers
-import { UserResolver } from "@pages/chat/resolvers/user/user.resolver";
-import { DriverResolver } from "@pages/chat/resolvers/driver/driver.resolver";
-import { ConversationInformationResolver } from "@pages/chat/resolvers/conversation/conversation-information.resolver";
-import { ConversationResolver } from "@pages/chat/resolvers/conversation/conversation.resolver";
+import { CaProfileImageComponent } from "ca-components";
 
 // Pipes
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
@@ -68,19 +62,14 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         ChatToolbarComponent,
         ChatNoDataComponent,
         ChatHeaderComponent,
+        ChatListComponent,
+        ChatListItemComponent,
         ChatVerticalDividerComponent,
         ChatProfileResourcesComponent,
         // Directives
         DragAndDropDirective,
     ],
     providers: [
-        // Services
-        HubService,
-        // Resolvers
-        UserResolver,
-        DriverResolver,
-        ConversationInformationResolver,
-        ConversationResolver,
         // Pipes
         NameInitialsPipe,
     ],
@@ -98,6 +87,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         TaProfileImagesComponent,
         TaAppTooltipV2Component,
         TaUploadFilesComponent,
+        CaProfileImageComponent,
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,

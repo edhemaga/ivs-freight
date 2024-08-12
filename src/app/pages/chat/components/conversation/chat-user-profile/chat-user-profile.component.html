@@ -17,20 +17,23 @@
     </app-chat-header>
 
     <div class="basic-info">
-        <div class="d-flex">
-            <app-ta-profile-images
-                [indx]="data.userAdditionalInformation?.userId"
-                [showHoverAnimation]="false"
-                [withTooltip]="false"
-                [size]="'large'"
-                [type]="
-                    (data.userAdditionalInformation?.userType?.name
-                        | lowercase) || 'driver'
+        <div class="d-flex align-content-center align-items-center">
+            <app-ca-profile-image
+                [avatarImg]="data.userAdditionalInformation?.avatarFile?.url"
+                [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
+                [textShortName]="
+                    data.userAdditionalInformation?.firstName.concat(
+                        ' ',
+                        data.userAdditionalInformation?.lastName
+                    ) | nameInitials
                 "
-                [name]="data.userAdditionalInformation?.firstName"
-                [url]="data.userAdditionalInformation?.avatarFile?.url"
-            >
-            </app-ta-profile-images>
+                [size]="74"
+                [fontSize]="30"
+                [isHoverEffect]="false"
+                [isRound]="
+                    data.userAdditionalInformation?.userType?.name !== 'Driver'
+                "
+            ></app-ca-profile-image>
             <div class="text">
                 <div class="text-name ta-font-semi-bold">
                     {{ data.userAdditionalInformation?.firstName }}

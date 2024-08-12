@@ -15,7 +15,7 @@
         </ng-container>
 
         <ng-container *ngIf="driver">
-            <div class="padding-inside">
+            <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
                 <div class="info-item">
                     <div class="driver-buttons">
                         <ng-container *ngIf="driverHover.txt !== 'email'">
@@ -81,7 +81,6 @@
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <div
                                 #t1="ngbPopover"
-                                [class.statusOpened]="statusOpenedIndex > -1"
                                 [class.empty-box-field]="true"
                                 [ngbPopover]="hos"
                                 autoClose="outside"
