@@ -116,16 +116,11 @@ export class UserChatService {
             return item.realFile
         })
 
-
-        let links;
-
-        if (linksList) {
-            links = linksList.map(link => {
-                return {
-                    url: link
-                }
-            })
-        }
+        const links = linksList?.map(link => {
+            return {
+                url: link
+            }
+        })
 
         const data = { conversationId, content, attachments, links };
 
