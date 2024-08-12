@@ -157,3 +157,8 @@
         height: 29px !important;
     }
 }
+
+.load-hazardous-container {
+    max-width: 640px;
+    width: calc(100vw - 640px);
+}
