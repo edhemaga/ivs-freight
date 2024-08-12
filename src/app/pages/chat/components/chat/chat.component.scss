@@ -177,7 +177,7 @@
 
     .chat-main-content {
         display: grid;
-        grid-template-columns: 318px auto 318px;
+        grid-template-columns: min-content auto min-content;
         gap: 12px;
         margin-top: 12px;
         height: calc(100dvh - 75px);

@@ -1,11 +1,12 @@
 @import 'src/theme/variables';
 
 .user-list-container {
-    background: $white;
-    border-radius: 3px;
+    min-height: fit-content;
     max-height: calc(50% - 4px);
     height: 100%;
     overflow-y: hidden !important;
+    background: $white;
+    border-radius: 3px;
 
     .chat-header-wrapper {
         width: 100%;
@@ -47,27 +48,24 @@
         color: $white;
         border: none;
     }
-}
+    .contact-container {
+        padding: 6px 0;
+        height: 100%;
 
-.contact-container {
-    padding-bottom: 6px;
-    height: 100%;
+        .contact-wrapper {
+            height: calc(100% - 38px);
+            overflow-y: scroll !important;
+            scrollbar-width: thin !important; /* Firefox */
+            scrollbar-color: $ta-light-grey-6 transparent !important;
+            scrollbar-width: 1px !important;
 
-    .contact-wrapper {
-        height: calc(100% - 38px);
-        overflow-y: scroll !important;
-        scrollbar-width: thin !important; /* Firefox */
-        scrollbar-color: $ta-light-grey-6 transparent !important;
-        scrollbar-width: 1px !important;
-
-        .selected-contact {
-            background-color: $ta-light-grey;
-        }
-        .contact {
-            border-radius: 2px;
-            margin-top: 2px;
-            margin-left: 6px;
-            margin-right: 6px;
+            .selected-contact {
+                background-color: $ta-light-grey;
+            }
+            .contact {
+                border-radius: 2px;
+                margin: 2px 6px 6px auto;
+            }
         }
     }
 }
@@ -97,4 +95,8 @@ svg-icon {
     color: $white;
     padding: 0px 6px;
     margin: auto 5px;
+}
+
+.selected-contact {
+    background-color: $ta-light-grey;
 }

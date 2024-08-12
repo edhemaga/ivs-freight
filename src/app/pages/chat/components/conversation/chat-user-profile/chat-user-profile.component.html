@@ -30,6 +30,9 @@
                 [size]="74"
                 [fontSize]="30"
                 [isHoverEffect]="false"
+                [isRound]="
+                    data.userAdditionalInformation?.userType?.name !== 'Driver'
+                "
             ></app-ca-profile-image>
             <div class="text">
                 <div class="text-name ta-font-semi-bold">
