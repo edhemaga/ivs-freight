@@ -29,6 +29,7 @@ import {
     TruckMinimalListResponse,
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckService implements OnDestroy {
@@ -38,21 +39,26 @@ export class TruckService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        private router: Router,
+
+        // store
         private truckActiveStore: TruckActiveStore,
         private truckInactiveStore: TruckInactiveStore,
-        private truckService: TruckTService,
-        private truckActiveQuery: TruckActiveQuery,
-        private truckInactiveQuery: TruckInactiveQuery,
-        private tableService: TruckassistTableService,
-        private truckMinimalQuery: TrucksMinimalListQuery,
         private truckMinimalStore: TrucksMinimalListStore,
         private truckItem: TruckItemStore,
         private tdlStore: TrucksDetailsListStore,
+        private truckActiveQuery: TruckActiveQuery,
+        private truckInactiveQuery: TruckInactiveQuery,
+        private truckMinimalQuery: TrucksMinimalListQuery,
+
+        // services
+        private tableService: TruckassistTableService,
+        private truckService: TruckTService,
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
         private InspectionService: InspectionService,
         private formDataService: FormDataService,
-        private router: Router
+        private dispatcherService: DispatcherService
     ) {}
 
     //Get Truck Minimal List
@@ -88,39 +94,47 @@ export class TruckService implements OnDestroy {
         );
     }
 
-    public addTruck(data: TruckResponse): Observable<TruckResponse> {
+    public addTruck(
+        data: TruckResponse,
+        isDispatchCall: boolean = false
+    ): Observable<TruckResponse> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.truckService.apiTruckPost().pipe(
             tap((res) => {
-                const subTruck = this.getTruckById(res.id)
+                this.getTruckById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (truck: any) => {
-                            this.truckActiveStore.add(truck);
-                            this.truckMinimalStore.add(truck);
-                            this.tdlStore.add(truck);
-                            const truckCount = JSON.parse(
-                                localStorage.getItem('truckTableCount')
-                            );
+                            if (!isDispatchCall) {
+                                this.truckActiveStore.add(truck);
+                                this.truckMinimalStore.add(truck);
+                                this.tdlStore.add(truck);
 
-                            truckCount.active++;
+                                const truckCount = JSON.parse(
+                                    localStorage.getItem('truckTableCount')
+                                );
 
-                            localStorage.setItem(
-                                'truckTableCount',
-                                JSON.stringify({
-                                    active: truckCount.active,
-                                    inactive: truckCount.inactive,
-                                })
-                            );
+                                truckCount.active++;
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: truck,
-                                id: truck.id,
-                            });
-                            this.router.navigate(['/list/truck']);
+                                localStorage.setItem(
+                                    'truckTableCount',
+                                    JSON.stringify({
+                                        active: truckCount.active,
+                                        inactive: truckCount.inactive,
+                                    })
+                                );
 
-                            subTruck.unsubscribe();
+                                this.tableService.sendActionAnimation({
+                                    animation: 'add',
+                                    data: truck,
+                                    id: truck.id,
+                                });
+                                this.router.navigate(['/list/truck']);
+                            } else {
+                                this.dispatcherService.updateDispatcherData =
+                                    true;
+                            }
                         },
                     });
             })
