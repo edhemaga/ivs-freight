@@ -610,8 +610,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents,
-            longitude: longitude,
-            latitude: latitude,
+            longitude:
+                this.selectedPhysicalAddressTab === 1
+                    ? this.longitude
+                    : longitude,
+            latitude:
+                this.selectedPhysicalAddressTab === 1
+                    ? this.latitude
+                    : latitude,
             locationType: this.selectedPhysicalAddressTab,
         };
 
@@ -735,12 +741,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             files: documents ? documents : this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             locationType: this.selectedPhysicalAddressTab,
+            longitude:
+                this.selectedPhysicalAddressTab === 1
+                    ? this.longitude
+                    : this.shipperForm.get(ShipperModalString.LONGITUDE).value,
+            latitude:
+                this.selectedPhysicalAddressTab === 1
+                    ? this.latitude
+                    : this.shipperForm.get(ShipperModalString.LATITUDE).value,
         };
-
-        if (this.selectedPhysicalAddressTab === 2) {
-            newData.longitude = this.shipperForm.get(ShipperModalString.LONGITUDE).value;
-            newData.latitude = this.shipperForm.get(ShipperModalString.LATITUDE).value;
-        }
 
         for (let index = 0; index < shipperContacts.length; index++) {
             shipperContacts[index].departmentId =
@@ -1153,13 +1162,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private setAddressValidations(type: string, tabChanged?: boolean): void {
-        const longitudeControl = this.shipperForm.get(ShipperModalString.LONGITUDE);
-        const latitudeControl = this.shipperForm.get(ShipperModalString.LATITUDE);
-        const addressControl = this.shipperForm.get(ShipperModalString.ADDRESS_1);
-        const countryStateAddress = this.shipperForm.get(ShipperModalString.COUNTRY_ADDRESS);
+        const longitudeControl = this.shipperForm.get(
+            ShipperModalString.LONGITUDE
+        );
+        const latitudeControl = this.shipperForm.get(
+            ShipperModalString.LATITUDE
+        );
+        const addressControl = this.shipperForm.get(
+            ShipperModalString.ADDRESS_1
+        );
+        const countryStateAddress = this.shipperForm.get(
+            ShipperModalString.COUNTRY_ADDRESS
+        );
 
         if (tabChanged) this.selectedAddress = null;
-        
+
         if (type === ShipperModalString.COORDINATES) {
             longitudeControl.setValidators([
                 Validators.required,
@@ -1194,8 +1211,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private longLatChanged(): void {
-        const longitudeControl = this.shipperForm.get(ShipperModalString.LONGITUDE);
-        const latitudeControl = this.shipperForm.get(ShipperModalString.LATITUDE);
+        const longitudeControl = this.shipperForm.get(
+            ShipperModalString.LONGITUDE
+        );
+        const latitudeControl = this.shipperForm.get(
+            ShipperModalString.LATITUDE
+        );
 
         if (
             longitudeControl.valid &&

@@ -27,6 +27,7 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
@@ -35,54 +36,64 @@ export class TrailerService implements OnDestroy {
     public currentIndex: number;
     private destroy$ = new Subject<void>();
     constructor(
+        // store
         private trailerActiveStore: TrailerActiveStore,
         private trailerInactiveStore: TrailerInactiveStore,
-        private trailerService: TrailerTService,
-        private trailerActiveQuery: TrailerActiveQuery,
-        private trailerInactiveQuery: TrailerInactiveQuery,
-        private tableService: TruckassistTableService,
-        private trailerItemStore: TrailerItemStore,
-        private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
         private tadl: TrailerDetailsListStore,
+        private trailerItemStore: TrailerItemStore,
+        private trailerActiveQuery: TrailerActiveQuery,
+        private trailerInactiveQuery: TrailerInactiveQuery,
+        private trailerMinimalQuery: TrailersMinimalListQuery,
+
+        // services
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
         private InspectionService: InspectionService,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private dispatcherService: DispatcherService,
+        private trailerService: TrailerTService,
+        private tableService: TruckassistTableService
     ) {}
 
     /* Observable<CreateTrailerResponse> */
-    public addTrailer(data: any): Observable<any> {
+    public addTrailer(
+        data: any,
+        isDispatchCall: boolean = false
+    ): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.trailerService.apiTrailerPost().pipe(
             tap((res: any) => {
-                const subTrailer = this.getTrailerById(res.id)
+                this.getTrailerById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (trailer: any) => {
-                            this.trailerActiveStore.add(trailer);
-                            this.trailerMinimalStore.add(trailer);
-                            const trailerCount = JSON.parse(
-                                localStorage.getItem('trailerTableCount')
-                            );
+                            if (!isDispatchCall) {
+                                this.trailerActiveStore.add(trailer);
+                                this.trailerMinimalStore.add(trailer);
+                                const trailerCount = JSON.parse(
+                                    localStorage.getItem('trailerTableCount')
+                                );
 
-                            trailerCount.active++;
+                                trailerCount.active++;
 
-                            localStorage.setItem(
-                                'trailerTableCount',
-                                JSON.stringify({
-                                    active: trailerCount.active,
-                                    inactive: trailerCount.inactive,
-                                })
-                            );
+                                localStorage.setItem(
+                                    'trailerTableCount',
+                                    JSON.stringify({
+                                        active: trailerCount.active,
+                                        inactive: trailerCount.inactive,
+                                    })
+                                );
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: trailer,
-                                id: trailer.id,
-                            });
-
-                            subTrailer.unsubscribe();
+                                this.tableService.sendActionAnimation({
+                                    animation: 'add',
+                                    data: trailer,
+                                    id: trailer.id,
+                                });
+                            } else {
+                                this.dispatcherService.updateDispatcherData =
+                                    true;
+                            }
                         },
                     });
             })
