@@ -1182,10 +1182,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
 
                 break;
-                case LoadModalStringEnum.CONVERT_TO_LOAD:
-                    this.isConvertedToTemplate = false;
-    
-                    break;
+            case LoadModalStringEnum.CONVERT_TO_LOAD:
+                this.isConvertedToTemplate = false;
+
+                break;
             default:
                 break;
         }
@@ -3521,31 +3521,37 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public createNewStopItemsRow(type: string, extraStopId?: number): void {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
-                this.isCreatedNewStopItemsRow.pickup = true;
-                this.showPickupItems = true;
+                if (this.isPickupStopValid) {
+                    this.isCreatedNewStopItemsRow.pickup = true;
+                    this.showPickupItems = true;
 
-                setTimeout(() => {
-                    this.isCreatedNewStopItemsRow.pickup = false;
-                }, 400);
+                    setTimeout(() => {
+                        this.isCreatedNewStopItemsRow.pickup = false;
+                    }, 400);
+                }
 
                 break;
             case LoadModalStringEnum.DELIVERY:
-                this.isCreatedNewStopItemsRow.delivery = true;
-                this.showDeliveryItems = true;
+                if (this.isDeliveryStopValid) {
+                    this.isCreatedNewStopItemsRow.delivery = true;
+                    this.showDeliveryItems = true;
 
-                setTimeout(() => {
-                    this.isCreatedNewStopItemsRow.delivery = false;
-                }, 400);
-
+                    setTimeout(() => {
+                        this.isCreatedNewStopItemsRow.delivery = false;
+                    }, 400);
+                }
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                this.isCreatedNewStopItemsRow.extraStops[extraStopId] = true;
-                this.showExtraStopItems[extraStopId] = true;
-
-                setTimeout(() => {
+                if (this.stopItemsValid[extraStopId] || this.stopItemsValid[extraStopId] === undefined) {
                     this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
-                        false;
-                }, 400);
+                        true;
+                    this.showExtraStopItems[extraStopId] = true;
+
+                    setTimeout(() => {
+                        this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
+                            false;
+                    }, 400);
+                }
 
                 break;
             default:
@@ -4361,7 +4367,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                                 this.originalStatus
                                             );
                                         });
-                                    this.setModalSpinner(null, true, true, addNew);
+                                    this.setModalSpinner(
+                                        null,
+                                        true,
+                                        true,
+                                        addNew
+                                    );
                                 },
                                 error: () =>
                                     this.setModalSpinner(null, false, false),
@@ -4916,7 +4927,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             status,
             close,
         });
-        if(addNew) this.addNewLoadModal();
+        if (addNew) this.addNewLoadModal();
     }
 
     ngOnDestroy(): void {
