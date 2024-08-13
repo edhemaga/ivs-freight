@@ -411,6 +411,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private initialinvoicedDate: string;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
+    public isButtonDisabled: boolean = false;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -1154,6 +1156,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         switch (data.action) {
             case LoadModalStringEnum.SAVE:
             case LoadModalStringEnum.SAVE_AND_ADD_NEW:
+                // Disable double click
+                if (this.isButtonDisabled) {
+                    return;
+                }
+                
+                this.isButtonDisabled = true;
+
                 if (this.loadForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.loadForm);
 
@@ -4937,6 +4946,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             status,
             close,
         });
+        this.isButtonDisabled = false;
         if (addNew) this.addNewLoadModal();
     }
 
