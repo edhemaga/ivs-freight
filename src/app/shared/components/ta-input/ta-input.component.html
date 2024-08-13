@@ -135,7 +135,8 @@
                 (!_inputConfig.blackInput && selectedDropdownLabelColor) ||
                 (_inputConfig?.dropdownImageInput?.url &&
                     !_inputConfig.blackInput &&
-                    !_inputConfig.mergeDropdownBodyWithInput),
+                    !_inputConfig.mergeDropdownBodyWithInput) ||
+                (getSuperControl.value && _inputConfig.isRemovedIconMovedOnLeft),
             'trash-can-svg': _inputConfig.removeInput
         }"
         ngbTooltip
