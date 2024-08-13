@@ -1152,7 +1152,7 @@
     "
         [ngClass]="{
             'input-fixed-placehoder-input':
-                _inputConfig.fixedPlacholder && input.value && !focusInput,
+                _inputConfig.fixedPlacholder,
             focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
