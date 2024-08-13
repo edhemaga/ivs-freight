@@ -97,6 +97,10 @@
             font-size: 11px;
             color: $bw6-2;
 
+            &.c-pointer {
+                cursor: pointer;
+            }
+
             &::selection,
             ::selection {
                 background-color: $ta-black-2;
@@ -372,10 +376,33 @@
                     background: #fff;
 
                     .padding-inside {
+                        position: relative;
+
                         &.hovering {
                             .info-item {
                                 transition: background 0.2s ease-in;
                                 background: $bw2;
+                            }
+                        }
+
+                        &.hovering-note {
+                            .note-container {
+                                transition: background 0.2s ease-in;
+                                background: $bw2;
+                            }
+                        }
+
+                        &.hovering-note-content {
+                            .note-container::after {
+                                content: 'Write Something...';
+                                position: absolute;
+                                top: 11px;
+                                left: 11px;
+
+                                font-size: 11px;
+                                line-height: 12px;
+                                font-weight: 400;
+                                color: $bw5;
                             }
                         }
 
@@ -388,6 +415,12 @@
                                 }
                             }
                         }
+                    }
+                }
+
+                .note-default {
+                    .note-container {
+                        cursor: default !important;
                     }
                 }
 

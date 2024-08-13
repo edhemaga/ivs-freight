@@ -40,7 +40,9 @@
                                     !tableHeaderItem?.title &&
                                     tableHeaderItem?.icon,
                                 'd-flex align-items-center pickup-delivery':
-                                    tableHeaderItem?.secondTitle
+                                    tableHeaderItem?.secondTitle,
+                                'c-pointer':
+                                    tableHeaderItem?.title === 'NOTE'
                             }"
                             (click)="handleHeaderClick(tableHeaderItem?.title)"
                         >
@@ -437,7 +439,16 @@
                                     class="padding-inside"
                                     [ngClass]="{
                                         'd-flex justify-content-center align-items-center':
-                                        !noteExpandedView,
+                                            !noteExpandedView,
+                                        'hovering-note':
+                                            isHoveringRowIndex === rowIndex &&
+                                            noteExpandedView,
+                                        'hovering-note-content':
+                                            isHoveringRowIndex === rowIndex &&
+                                            item.truck &&
+                                            !item.note &&
+                                            noteExpandedView,
+                                        'note-default': !item.truck,
                                     }"
                                 >
                                     <div
@@ -445,20 +456,22 @@
                                         [class.empty-box-field]="!item.note"
                                         [class.expanded]="noteExpandedView"
                                     >
-                                        <app-ta-note
-                                            [note]="item.note"
-                                            [openedAll]="noteExpandedView"
-                                            [dispatchIndex]="rowIndex"
-                                            [parking]="false"
-                                            [noteWidth]="234"
-                                            [parentWidth]="'.note-field'"
-                                            [type]="'dark'"
-                                            [isDispatch]="true"
-                                            (saveNoteValue)="
-                                                saveNoteValue($event)
-                                            "
-                                        >
-                                        </app-ta-note>
+                                        <ng-container *ngIf="item.truck">
+                                            <app-ta-note
+                                                [note]="item.note"
+                                                [openedAll]="noteExpandedView"
+                                                [dispatchIndex]="rowIndex"
+                                                [parking]="false"
+                                                [noteWidth]="250"
+                                                [parentWidth]="'.note-field'"
+                                                [type]="'dark'"
+                                                [isDispatch]="true"
+                                                (saveNoteValue)="
+                                                    saveNoteValue($event)
+                                                "
+                                            >
+                                            </app-ta-note>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>

@@ -65,7 +65,10 @@
             [class.expanded]="isExpanded"
             class="k-widget k-editor custom_editor"
             [ngStyle]="{
-                width: parentWidth ? _parentWidth + 'px' : _noteWidth + 'px'
+                width:
+                    parentWidth && _openedAll
+                        ? _parentWidth + 'px'
+                        : _noteWidth + 'px'
             }"
         >
             <div
