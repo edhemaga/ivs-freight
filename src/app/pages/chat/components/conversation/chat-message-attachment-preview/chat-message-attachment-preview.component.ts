@@ -49,6 +49,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
 
   private checkAttachmentExtension(extension: string, fileName?: string): void {
     if (!extension) {
+
       if (!fileName) {
         return;
       }

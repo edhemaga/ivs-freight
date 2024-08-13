@@ -63,11 +63,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // models
-import {
-    GetTruckModalResponse,
-    VinDecodeResponse,
-    TruckAutocompleteModelResponse,
-} from 'appcoretruckassist';
+import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-truck-modal',
@@ -961,7 +957,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         };
 
         this.truckModalService
-            .addTruck(newData)
+            .addTruck(newData, this.editData?.isDispatchCall)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1272,14 +1268,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.truckModalService
                 .autocompleteByTruckModel(model)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: TruckAutocompleteModelResponse) => {
-                        console.log('autocomplete: ', res);
-                    },
-                    error: (error) => {
-                        console.log(error);
-                    },
-                });
+                .subscribe();
         }
     }
 

@@ -148,4 +148,5 @@ export interface ITaInput {
     fixedPlacholder?: string;
     statusStyle?: boolean;
     isIconHidden?: boolean;
+    isRemovedIconMovedOnLeft?: boolean;
 }

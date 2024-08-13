@@ -131,14 +131,16 @@
                 }
             }
 
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
+            div {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
 
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
 
             .icon {
@@ -679,12 +681,34 @@
                 font-size: 26px;
                 line-height: 32px;
                 color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
             }
 
             .no-data-description {
                 font-size: 11px;
                 line-height: 14px;
                 color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
             }
         }
 

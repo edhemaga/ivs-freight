@@ -508,6 +508,24 @@
                                 </button>
                             </ng-container>
 
+                            <!-- Convert back to load -->
+                            <ng-container
+                            *ngIf="
+                                loadModalTemplate &&
+                                isConvertedToTemplate &&
+                                !editData &&
+                                !cardsModal
+                            "
+                        >
+                            <button
+                                (click)="onAction('convert-to-load')"
+                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
+                                type="button"
+                            >
+                                Convert to Load
+                            </button>
+                        </ng-container>
+
                             <ng-container
                                 *ngIf="
                                     editData?.finishOrderBtn && !isFinishOrder
@@ -1081,7 +1099,7 @@
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)
             "
         >
-            <div class="modal-additional-part">
+            <div class="modal-additional-part modal-additional-part-load-modal">
                 <ng-content select="[additional]"></ng-content>
             </div>
         </ng-container>
