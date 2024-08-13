@@ -358,9 +358,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     public expandAllNotes(): void {
         if (!this.isExpanded) {
             setTimeout(() => {
-                if (this._openedAll) {
-                    this.isExpanded = true;
-                }
+                if (this._openedAll) this.isExpanded = true;
             });
         }
     }
