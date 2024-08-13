@@ -162,3 +162,7 @@
     max-width: 640px;
     width: calc(100vw - 640px);
 }
+
+.select-template {
+    grid-template-columns: 94px 26px repeat(2, 230px);
+}

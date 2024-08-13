@@ -411,7 +411,7 @@ export class LoadModalConfig {
         };
     }
 
-    static getDispatcherInputConfig(logoName: string, name: string): ITaInput {
+    static getDispatcherInputConfig(logoName: string, name: string, isTemplate: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -426,7 +426,7 @@ export class LoadModalConfig {
                 template: 'user',
             },
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-230',
+            dropdownWidthClass: isTemplate ? 'w-col-230' : 'w-col-248',
         };
     }
 

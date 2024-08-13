@@ -412,6 +412,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public isButtonDisabled: boolean = false;
+    public isEdit: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -511,7 +512,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
                 this.selectedDispatcher?.avatarFile?.url,
-            this.selectedDispatcher?.name
+            this.selectedDispatcher?.name,
+            !this.isConvertedToTemplate && !this.isEdit
         );
     }
 
@@ -579,7 +581,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
-
+        this.isEdit = isEdit;
+        
         if (!isEdit) {
             if (this.isConvertedToTemplate) {
                 return 'Create Load Template';
@@ -3136,7 +3139,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 pickuplegMiles
             );
             stops.push({
-                id: this.stops?.[0]?.id ?? null,
+                id: !this.isEdit ? null : this.stops?.[0]?.id ?? null,
                 stopType: pickupStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: pickupStopOrder,
@@ -3175,7 +3178,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: item.get(LoadModalStringEnum.ID).value ?? null,
+                    id: !this.isEdit ? null : item.get(LoadModalStringEnum.ID).value ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3216,7 +3219,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: this.stops?.[this.stops.length - 1]?.id ?? null,
+                id: !this.isEdit ? null : this.stops?.[this.stops.length - 1]?.id ?? null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: deliveryStopOrder,
