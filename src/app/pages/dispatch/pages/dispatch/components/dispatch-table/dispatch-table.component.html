@@ -106,6 +106,7 @@
                 >
                     <tr
                         class="reorder-row"
+                        [ngClass]="{ drag: !isDispatchBoardLocked }"
                         cdkDrag
                         cdkDragLockAxis="y"
                         cdkDragPreviewContainer="parent"
@@ -135,7 +136,7 @@
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
                                 [isHoveringRow]="
-                                    isHoveringRowIndex === rowIndex
+                                    !isDrag && isHoveringRowIndex === rowIndex
                                 "
                                 (addTruckTrailerEmitter)="
                                     handleAddTruckTrailerClick($event)

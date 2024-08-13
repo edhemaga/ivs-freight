@@ -6,11 +6,6 @@
         border-radius: 2px;
         transition: background 0.2s ease-in;
 
-        &:hover,
-        &.hovering {
-            background: $bw2 !important;
-        }
-
         .circle-icon {
             position: relative !important;
             bottom: 1px !important;
