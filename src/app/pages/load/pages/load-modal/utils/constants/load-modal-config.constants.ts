@@ -289,7 +289,6 @@ export class LoadModalConfig {
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            expiredDateInvalid: true
         };
     }
 
@@ -334,7 +333,6 @@ export class LoadModalConfig {
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            expiredDateInvalid: true
         };
     }
 
@@ -379,7 +377,6 @@ export class LoadModalConfig {
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            expiredDateInvalid: true
         };
     }
 
