@@ -11,6 +11,7 @@
  */
 import { FileResponse } from './fileResponse';
 import { UserAdditionalInformationResponse } from './userAdditionalInformationResponse';
+import { LinkResponse } from './linkResponse';
 
 
 export interface ConversationInfoResponse { 
@@ -19,5 +20,7 @@ export interface ConversationInfoResponse {
     filesCount?: number;
     media?: Array<FileResponse> | null;
     mediaCount?: number;
+    links?: Array<LinkResponse> | null;
+    linksCount?: number;
 }
 
