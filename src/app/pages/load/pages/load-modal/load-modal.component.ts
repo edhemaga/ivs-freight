@@ -1150,6 +1150,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        const addNew = data.action === LoadModalStringEnum.SAVE_AND_ADD_NEW;
         switch (data.action) {
             case LoadModalStringEnum.SAVE:
             case LoadModalStringEnum.SAVE_AND_ADD_NEW:
@@ -1163,20 +1164,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.editData?.type === 'edit' &&
                     this.editData?.selectedTab === TableStringEnum.TEMPLATE
                 ) {
-                    this.updateLoadTemplate();
+                    this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
-                    this.saveLoadTemplate();
+                    this.saveLoadTemplate(addNew);
                 } else {
                     this.editData?.data
-                        ? this.updateLoad()
-                        : this.createNewLoad();
+                        ? this.updateLoad(addNew)
+                        : this.createNewLoad(addNew);
                 }
-
-                if (data.action === LoadModalStringEnum.SAVE_AND_ADD_NEW)
-                    this.modalService.openModal(LoadModalComponent, {
-                        size: LoadModalStringEnum.LOAD,
-                    });
-
+  
                 break;
             case LoadModalStringEnum.CONVERT_TO_TEMPLATE:
                 this.isConvertedToTemplate = true;
@@ -3690,11 +3686,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.ngbActiveModal.close();
 
-        setTimeout(() => {
-            this.modalService.openModal(LoadModalComponent, {
-                size: LoadModalStringEnum.LOAD,
-            });
-        }, 200);
+        setTimeout(() => this.addNewLoadModal(), 200);
     }
 
     public handleOpenCloseDocumentsCard(openClose: boolean): void {
@@ -4275,7 +4267,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    public createNewLoad(): void {
+    public createNewLoad(addNew: boolean): void {
         const isTemplate =
             this.editData?.selectedTab === TableStringEnum.TEMPLATE;
 
@@ -4292,14 +4284,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     loadServiceObservable.subscribe((newLoadData) => {
                         this.loadService.addNewLoad(newLoadData, isTemplate);
-                        this.setModalSpinner(null, true, true);
+                        this.setModalSpinner(null, true, true, addNew);
                     });
                 },
                 error: () => this.setModalSpinner(null, false, false),
             });
     }
 
-    public updateLoadTemplate() {
+    public addNewLoadModal(): void {
+        this.modalService.openModal(LoadModalComponent, {
+            size: LoadModalStringEnum.LOAD,
+        });
+    }
+
+    public updateLoadTemplate(addNew: boolean) {
         const newData = {
             ...this.generateLoadModel(false),
             name: this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME).value,
@@ -4314,12 +4312,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         .subscribe((res) => {
                             this.loadService.updateLoadTemplatePartily(res);
                         });
-                    this.setModalSpinner(null, true, true);
+                    this.setModalSpinner(null, true, true, addNew);
                 },
                 error: () => this.setModalSpinner(null, false, false),
             });
     }
-    private updateLoad(): void {
+    private updateLoad(addNew: boolean): void {
         const newData = this.generateLoadModel(false);
 
         this.loadService
@@ -4359,7 +4357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                                 this.originalStatus
                                             );
                                         });
-                                    this.setModalSpinner(null, true, true);
+                                    this.setModalSpinner(null, true, true, addNew);
                                 },
                                 error: () =>
                                     this.setModalSpinner(null, false, false),
@@ -4368,7 +4366,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
-    private saveLoadTemplate(): void {
+    private saveLoadTemplate(addNew: boolean): void {
         this.loadService
             .createLoadTemplate(this.generateTemplateModel())
             .pipe(takeUntil(this.destroy$))
@@ -4381,7 +4379,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.setModalSpinner(
                                 LoadModalStringEnum.LOAD_TEMPLATE,
                                 true,
-                                true
+                                true,
+                                addNew
                             );
                         });
                 },
@@ -4905,13 +4904,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private setModalSpinner(
         action: null | LoadModalStringEnum.LOAD_TEMPLATE,
         status: boolean,
-        close: boolean
+        close: boolean,
+        addNew?: boolean
     ): void {
         this.modalService.setModalSpinner({
             action,
             status,
             close,
         });
+        if(addNew) this.addNewLoadModal();
     }
 
     ngOnDestroy(): void {
