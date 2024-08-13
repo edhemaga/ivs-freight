@@ -1370,8 +1370,9 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ {{ totalLegHours }}h
-                                    {{ totalLegMinutes }}m</span
+                                    >≈ 
+                                    <ng-container *ngIf="totalLegHours">{{ totalLegHours }}h</ng-container>
+                                    {{ totalLegMinutes || 0 }}m</span
                                 >
                             </div>
                         </div>
