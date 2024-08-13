@@ -797,7 +797,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     cdkDragStartedTrailer(event, indx) {
         this.startIndexTrailer = indx;
         this.isDrag = true;
-        this.draggingType = DispatchTableStringEnum.TRUCK;
+        /*  this.draggingType = DispatchTableStringEnum.TRUCK; */
+        this.draggingType = 'trailer';
     }
 
     cdkDragStartedDriver(event, indx) {

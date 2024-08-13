@@ -177,8 +177,9 @@
                                         >
                                             <app-ta-custom-card
                                                 [cardName]="
+                                                    group?.isCompleted ||
                                                     group?.isIdle
-                                                        ? 'Idle Time'
+                                                        ? group?.loadNumber
                                                         : 'Load ' +
                                                           group?.loadNumber
                                                 "
@@ -186,9 +187,13 @@
                                                 [subText]="group?.interval"
                                                 [bodyTemplate]="'card'"
                                                 [isExtraLargeLayout]="true"
-                                                [isCardOpen]="true"
-                                                [disabledCard]="true"
-                                                [hasArrow]="false"
+                                                [isCardOpen]="
+                                                    !group?.isCompleted
+                                                "
+                                                [disabledCard]="
+                                                    !group?.isCompleted
+                                                "
+                                                [hasArrow]="group?.isCompleted"
                                                 [animationMarginParams]="{
                                                     marginTop: '8px',
                                                     marginBottom: '8px'
