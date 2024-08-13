@@ -40,13 +40,13 @@ export class FormService implements OnDestroy {
     }
 
 
-    public rangeValidator(min: number, max: number): ValidatorFn {
+    public rangeValidator(min: number, max: number, maxDigits: number = 3): ValidatorFn {
         return (control: AbstractControl): { [key: string]: any } | null => {
             const value = control.value;
     
             if (
                 value !== null &&
-                (!this.isValidNumber(value, 3) || value < min || value > max)
+                (!this.isValidNumber(value, maxDigits) || value < min || value > max)
 
             ) {
                 return { range: true };
