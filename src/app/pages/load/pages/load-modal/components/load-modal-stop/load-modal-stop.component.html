@@ -1,4 +1,9 @@
-<div class="load-stop-container {{ state }} {{state === 'steps-invalid' ? 'invalid ': ''}}" [ngClass]="{ active: isCardOpen }">
+<div
+    class="load-stop-container {{ state }} {{
+        state === 'steps-invalid' ? 'invalid ' : ''
+    }}"
+    [ngClass]="{ active: isCardOpen }"
+>
     <div
         class="d-flex align-items-center load-stop-header-bar"
         [ngClass]="{
@@ -73,7 +78,9 @@
                                     : 'ORIGIN'
                                 : 'EXTRA STOP'
                         }}
-                        <span *ngIf="firstOrLast && !isDelivery" class="color-red">*</span>
+                        <ng-container *ngIf="firstOrLast && !isDelivery">
+                            <span class="color-red">*</span>
+                        </ng-container>
                     </p>
                 </div>
             </ng-container>
@@ -93,10 +100,10 @@
 
                 <ng-container
                     *ngIf="
-                        !shipper &&
-                        !shipperAddress &&
-                        state &&
-                        state === 'invalid' ||
+                        (!shipper &&
+                            !shipperAddress &&
+                            state &&
+                            state === 'invalid') ||
                         state === 'steps-invalid'
                     "
                 >
@@ -112,7 +119,11 @@
 
                 <!-- Data -->
 
-                <ng-container *ngIf="shipper && shipperAddress && state !== 'steps-invalid'">
+                <ng-container
+                    *ngIf="
+                        shipper && shipperAddress && state !== 'steps-invalid'
+                    "
+                >
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p>{{ shipper }}</p>
                     </div>
@@ -125,12 +136,9 @@
             <!-- Date, Time -->
 
             <div class="load-stop-inner-content second-container">
-                <!-- Required Message --> 
+                <!-- Required Message -->
                 <ng-container
-                    *ngIf="
-                        (!!shipper && !!shipperAddress) &&
-                        state === 'invalid'
-                    "
+                    *ngIf="!!shipper && !!shipperAddress && state === 'invalid'"
                 >
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p [ngStyle]="{ color: '#F44336' }">Required</p>
@@ -144,19 +152,25 @@
 
                 <!-- Data -->
 
-                <ng-container *ngIf="dateRange && timeRange && state !== 'invalid'">
+                <ng-container
+                    *ngIf="dateRange && timeRange && state !== 'invalid'"
+                >
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
                     >
-                        <p [ngClass]="{'color-blue': stopFinished}">{{ dateRange }}
+                        <p [ngClass]="{ 'color-blue': stopFinished }">
+                            {{ dateRange }}
 
                             <ng-container *ngIf="stopFinished && waitTime">
-                                <span class="color-black">• {{waitTime}}</span>
+                                <span class="color-black"
+                                    >• {{ waitTime }}</span
+                                >
                             </ng-container>
                         </p>
                     </div>
                     <div class="load-stop-content-down">
-                        <p>{{ timeRange }} 
+                        <p>
+                            {{ timeRange }}
                             <ng-container *ngIf="appointment">
                                 • <span class="color-orange">Appt.</span>
                             </ng-container>
@@ -175,7 +189,7 @@
                     <p>
                         <!-- {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }} -->
                         <span>{{ legMile | number : '1.2-2' }} mi</span>
-                        <span>{{legTime}}</span>
+                        <span>{{ legTime }}</span>
                     </p>
                 </div>
 
@@ -202,7 +216,7 @@
             [ngStyle]="{animationMarginParams, 'display': isCardOpen ? 'block' : 'none'} "
             [@collapse]="{
                 value: isCardOpen,
-                params:animationMarginParams
+                params: animationMarginParams
             }"
             class="content-holder"
         >

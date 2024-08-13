@@ -852,7 +852,6 @@ export class TaInputComponent
                                 this._inputConfig.priceSeparatorLimitation
                             )
                         );
-                    } else {
                     }
 
                     // Transform value again after cutting

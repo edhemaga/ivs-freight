@@ -1172,7 +1172,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ? this.updateLoad(addNew)
                         : this.createNewLoad(addNew);
                 }
-  
                 break;
             case LoadModalStringEnum.CONVERT_TO_TEMPLATE:
                 this.isConvertedToTemplate = true;
@@ -1204,7 +1203,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.PAYMENT_TYPE:
                 const value = this.additionalPayments().at(index);
-                if(event) {
+                if (event) {
                     value.patchValue({
                         ...value,
                         paymentMethod: event.id,
@@ -3544,7 +3543,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                if (this.stopItemsValid[extraStopId] || this.stopItemsValid[extraStopId] === undefined) {
+                if (
+                    this.stopItemsValid[extraStopId] ||
+                    this.stopItemsValid[extraStopId] === undefined
+                ) {
                     this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
                         true;
                     this.isExtraStopItemsVisible[extraStopId] = true;
@@ -3564,15 +3566,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public toggleStopItemRow(type: string, extraStopId?: number): void {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
-                this.isPickupItemsVisible = !this.isPickupItemsVisible;
+                if (this.savedPickupStopItems.length) {
+                    this.isPickupItemsVisible = !this.isPickupItemsVisible;
+                }
                 break;
             case LoadModalStringEnum.DELIVERY:
-                this.isDeliveryItemsVisible = !this.isDeliveryItemsVisible;
+                if (this.savedDeliveryStopItems.length) {
+                    this.isDeliveryItemsVisible = !this.isDeliveryItemsVisible;
+                }
 
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                this.isExtraStopItemsVisible[extraStopId] =
-                    !this.isExtraStopItemsVisible[extraStopId];
+                if (this.savedExtraStopItems[extraStopId].length) {
+                    this.isExtraStopItemsVisible[extraStopId] =
+                        !this.isExtraStopItemsVisible[extraStopId];
+                }
                 break;
             default:
                 break;

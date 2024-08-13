@@ -694,6 +694,12 @@ ngb-modal-window[aria-hidden='true'] {
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
+                    transition: background-color 0.3s, color 0.3s;
+
+                    &:hover {
+                        background-color: $ta-black;
+                        color: $white;
+                    }
 
                     &.valid {
                         cursor: pointer;

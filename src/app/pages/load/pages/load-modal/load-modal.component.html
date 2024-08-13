@@ -580,9 +580,10 @@
                                 [cardName]="'Item'"
                                 [isCardOpen]="isPickupItemsVisible"
                                 [hasCounter]="savedPickupStopItems.length"
+                                [disabledCard]="!savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="false"
+                                [hasArrow]="savedPickupStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
@@ -983,6 +984,16 @@
                                                         indx
                                                     ] ?? false
                                                 "
+                                                [disabledCard]="
+                                                    !(
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ] &&
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ]?.length
+                                                    )
+                                                "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
                                                     savedExtraStopItems[indx]
@@ -990,7 +1001,10 @@
                                                 "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
-                                                [hasArrow]="true"
+                                                [hasArrow]="
+                                                    savedExtraStopItems[indx]
+                                                        ?.length
+                                                "
                                                 [animationMarginParams]="{
                                                     marginTop: '10px',
                                                     marginBottom: '12px'
@@ -1254,10 +1268,11 @@
                             <app-ta-custom-card
                                 [cardName]="'Item'"
                                 [isCardOpen]="isDeliveryItemsVisible"
+                                [disabledCard]="!savedDeliveryStopItems.length"
                                 [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="true"
+                                [hasArrow]="savedDeliveryStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
