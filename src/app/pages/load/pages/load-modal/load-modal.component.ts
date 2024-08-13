@@ -1204,10 +1204,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.PAYMENT_TYPE:
                 const value = this.additionalPayments().at(index);
-                value.patchValue({
-                    ...value,
-                    paymentMethod: event.id,
-                });
+                if(event) {
+                    value.patchValue({
+                        ...value,
+                        paymentMethod: event.id,
+                    });
+                }
                 break;
             case LoadModalStringEnum.DISPATCHER:
                 this.selectedDispatcher = event;
