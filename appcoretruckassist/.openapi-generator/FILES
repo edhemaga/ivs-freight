@@ -578,6 +578,8 @@ model/itemFuel.ts
 model/joinConversationCommand.ts
 model/leaveConversationCommand.ts
 model/legResponse.ts
+model/link.ts
+model/linkResponse.ts
 model/liveTrackingBaseResponse.ts
 model/liveTrackingHistoryItemResponse.ts
 model/liveTrackingHistoryMotionTimeResponse.ts
