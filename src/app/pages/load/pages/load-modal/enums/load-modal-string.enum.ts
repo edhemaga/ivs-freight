@@ -72,6 +72,7 @@ export enum LoadModalStringEnum {
     SAVE = 'save',
     SAVE_AND_ADD_NEW = 'save and add new',
     CONVERT_TO_TEMPLATE = 'convert-to-template',
+    CONVERT_TO_LOAD = 'convert-to-load',
 
     TRUCK = 'Truck',
     TRAILER = 'Trailer',

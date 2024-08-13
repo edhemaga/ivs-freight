@@ -1182,6 +1182,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
 
                 break;
+                case LoadModalStringEnum.CONVERT_TO_LOAD:
+                    this.isConvertedToTemplate = false;
+    
+                    break;
             default:
                 break;
         }

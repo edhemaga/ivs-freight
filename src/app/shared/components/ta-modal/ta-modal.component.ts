@@ -419,6 +419,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
+            case 'convert-to-load': {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
             case 'stepper-next':
                 this.stepperCounter++;
 
