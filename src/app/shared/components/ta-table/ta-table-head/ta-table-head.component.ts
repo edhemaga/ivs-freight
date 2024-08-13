@@ -321,7 +321,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                     let scroll = document.getElementById(
                         TableHeadStringEnum.SCROLL
                     );
-                    scroll.scrollLeft = response;
+                    if (scroll) scroll.scrollLeft = response;
                 }
             });
     }
@@ -368,7 +368,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                     let scroll = document.getElementById(
                         TableHeadStringEnum.SCROLL
                     );
-                    scroll.scrollLeft = 0;
+                    if (scroll) scroll.scrollLeft = 0;
                 }
             });
     }

@@ -1010,7 +1010,7 @@
                             class="load-dispatches-svg"
                             [src]="option.truck?.logoName"
                             [className]="
-                                option?.truck?.logoName.replace('.svg', '')
+                                option?.truck?.logoName?.replace('.svg', '')
                             "
                         ></svg-icon>
                         <div

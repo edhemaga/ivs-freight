@@ -1,5 +1,10 @@
 @import 'src/theme/variables';
 
+.color-red {
+    color: $ta-red-11
+}
+
+
 .load-stop-container {
     max-width: 616px;
     width: 100%;
@@ -13,8 +18,7 @@
         cursor: pointer;
         transition: background 0.3s ease-in-out;
         border-radius: 3px;
-        background-color: $ta-light-grey-5;
-
+        background-color: $bw2;
         .load-stop-header-badge {
             width: 26px;
             height: 26px;
@@ -351,6 +355,10 @@
         .color-black,
         .color-orange{
             color: #fff !important;
+        }
+
+        .color-red {
+            color: $ta-red-13;
         }
 
         .load-stop-header-bar {
