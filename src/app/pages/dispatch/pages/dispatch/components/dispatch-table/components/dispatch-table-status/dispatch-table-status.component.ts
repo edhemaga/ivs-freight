@@ -28,7 +28,10 @@ import {
     DispatchResponse,
     DispatchStatus,
     DispatchStatusResponse,
+    CreateDispatchCommand,
+    UpdateDispatchCommand,
 } from 'appcoretruckassist';
+import { DispatchTableStringEnum } from '../../enums/dispatch-table-string.enum';
 
 @Component({
     selector: 'app-dispatch-table-status',
@@ -75,6 +78,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
         id: number;
         status: DispatchStatus;
         dataFront: DispatchStatus;
+        isRevert?: boolean;
     }): void {
         if (
             [
@@ -85,8 +89,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 DispatchStatusEnum[5],
                 DispatchStatusEnum[6],
                 DispatchStatusEnum[7],
-                DispatchStatusEnum[8],
-            ].includes(e.status)
+            ].includes(e.status) &&
+            !e?.isRevert
         ) {
             const mappedEvent = {
                 ...this.dispatcher,
@@ -109,7 +113,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            this.updateStatus(e.id, e.status);
+            if (e?.isRevert) {
+                this.revertUpdateStatus();
+            } else {
+                this.updateStatus(e.id, e.status);
+            }
         }
     }
 
@@ -129,13 +137,9 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 );
             });
     }
-
-    public updateStatus(statusId: number, statusName: DispatchStatus): void {
+    public revertUpdateStatus(): void {
         this.dispatchService
-            .updateDispatchStatus({
-                id: statusId,
-                status: statusName,
-            })
+            .revertDispatchStatus(this.dispatcher.id)
             .pipe(
                 takeUntil(this.destroy$),
                 switchMap(() =>
@@ -146,6 +150,81 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe();
+    }
+    public updateStatus(statusId: number, statusName: DispatchStatus): void {
+        const previousData = this.dispatcher;
+
+        const {
+            id,
+            status,
+            order,
+            truck,
+            trailer,
+            driver,
+            coDriver,
+            location,
+            note,
+            parkingSlot,
+        } = previousData;
+
+        const updatedPreviousData:
+            | CreateDispatchCommand
+            | UpdateDispatchCommand = {
+            id,
+            status: status
+                ? (statusName as DispatchStatus)
+                : DispatchTableStringEnum.OFF,
+            order,
+            truckId: truck?.id ?? null,
+            trailerId: trailer?.id ?? null,
+            driverId: driver?.id ?? null,
+            coDriverId: coDriver?.id ?? null,
+            location,
+            note,
+            loadIds: [],
+            hoursOfService: null,
+            parkingSlotId: parkingSlot?.id ?? null,
+        };
+
+        const newData: CreateDispatchCommand | UpdateDispatchCommand = {
+            ...updatedPreviousData,
+            status: statusName,
+            ...this.setCreateUpdateOptionalProperties(
+                updatedPreviousData.id,
+                'status',
+                statusName
+            ),
+        };
+
+        this.dispatchService
+            .updateDispatchBoard(newData, this.dispatcher.id)
+            .pipe(
+                takeUntil(this.destroy$),
+                switchMap(() =>
+                    this.dispatchService.updateDispatchboardRowById(
+                        this.dispatchId,
+                        this.dispatchBoardId
+                    )
+                )
+            )
+            .subscribe();
+    }
+
+    private setCreateUpdateOptionalProperties<T>(
+        id: number,
+        key: string,
+        value: T
+    ): CreateDispatchCommand | UpdateDispatchCommand {
+        return {
+            ...(id &&
+                key === DispatchTableStringEnum.TRUCK_ID &&
+                !value && { location: null }),
+            ...(!id && { dispatchBoardId: this.dispatchBoardId }),
+            ...(!id &&
+                key === DispatchTableStringEnum.LOCATION && {
+                    truckId: this.dispatcher.truck.id,
+                }),
+        };
     }
 
     ngOnDestroy(): void {

@@ -10,10 +10,6 @@
         height: 100%;
 
         .messages-header {
-            width: 100%;
-            margin-left: 6px;
-            margin-right: 6px;
-
             .name {
                 padding-left: 4px;
                 padding-right: 4px;
@@ -63,6 +59,10 @@
                 font-size: 11px;
                 color: $bw6-2;
             }
+        }
+
+        .upload-wrapper {
+            height: calc(100% - 38px);
         }
 
         .chat-footer {

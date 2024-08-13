@@ -6,17 +6,17 @@
         }"
     >
         <ng-content></ng-content>
-        <ng-container *ngIf="isSearchActive; else border">
-            <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
-                <app-ta-input
-                    formControlName="searchTerm"
-                    [inputConfig]="ChatInput.userSearchInput"
-                    (clear)="toggleSearch(false)"
-                ></app-ta-input>
-            </div>
-        </ng-container>
-        <ng-template #border>
-            <div class="horizontal-border"></div>
-        </ng-template>
     </div>
+    <ng-container *ngIf="isSearchActive; else border">
+        <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
+            <app-ta-input
+                formControlName="searchTerm"
+                [inputConfig]="ChatInput.userSearchInput"
+                (clear)="toggleSearch(false)"
+            ></app-ta-input>
+        </div>
+    </ng-container>
+    <ng-template #border>
+        <div class="horizontal-border"></div>
+    </ng-template>
 </div>
