@@ -979,8 +979,9 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                isExtraStopItemsVisible[indx] ??
-                                                    false
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
@@ -995,8 +996,9 @@
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
-                                                isExtraStopItemsVisible[indx] ??
-                                                    false
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
