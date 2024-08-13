@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Link } from './link';
 
 
-export interface ApiChatMessagePostRequest { 
-    MessageType?: number;
-    ConversationId?: number;
-    Content?: string;
-    ParentMessageId?: number;
-    Attachments?: Array<Blob>;
-    Links?: Array<Link>;
+export interface Link { 
+    messageId?: number;
+    url?: string | null;
 }
 

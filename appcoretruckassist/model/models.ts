@@ -506,6 +506,8 @@ export * from './itemFuel';
 export * from './joinConversationCommand';
 export * from './leaveConversationCommand';
 export * from './legResponse';
+export * from './link';
+export * from './linkResponse';
 export * from './liveTrackingBaseResponse';
 export * from './liveTrackingHistoryItemResponse';
 export * from './liveTrackingHistoryMotionTimeResponse';
