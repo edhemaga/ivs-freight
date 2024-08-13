@@ -14,10 +14,19 @@
             class="d-flex align-items-center justify-content-between load-financial-header"
         >
             <p
-                class="m-0 ta-font-extra-bold load-financial-title"
+                class="m-0 ta-font-extra-bold load-financial-title d-flex"
                 [ngStyle]="{ color: _isCardOpen ? '#424242' : '#6c6c6c' }"
             >
-                {{ firstHeaderTitle }}
+                {{ firstHeaderTitle }} 
+                <app-ta-counter
+                    [count]="billingCount"
+                    [countBackground]="'#6C6C6C'"
+                    [countColor]="'#ffffff'"
+                    [countHeight]="'18px'"
+                    [countWidth]="'18px'"
+                    [countBorderRadius]="'50%'"
+                    [marginLeft]="'4px'"
+                ></app-ta-counter>
             </p>
 
             <div
@@ -82,10 +91,20 @@
             class="d-flex align-items-center justify-content-between load-financial-header"
         >
             <p
-                class="m-0 ta-font-extra-bold load-financial-title"
+                class="m-0 ta-font-extra-bold load-financial-title d-flex"
                 [ngStyle]="{ color: _isCardOpen ? '#424242' : '#6c6c6c' }"
             >
                 {{ secondHeaderTitle }}
+                
+                <app-ta-counter
+                    [count]="paymentCount"
+                    [countBackground]="'#6C6C6C'"
+                    [countColor]="'#ffffff'"
+                    [countHeight]="'18px'"
+                    [countWidth]="'18px'"
+                    [countBorderRadius]="'50%'"
+                    [marginLeft]="'4px'"
+                ></app-ta-counter>
             </p>
 
             <div

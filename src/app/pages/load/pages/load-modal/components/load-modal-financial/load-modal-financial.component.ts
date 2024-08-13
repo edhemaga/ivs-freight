@@ -19,6 +19,7 @@ import { LoadModalHelper } from '../../utils/helpers/load-modal.helper';
 
 //Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,11 +41,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
         // components
         TaAppTooltipV2Component,
+        TaCounterComponent
     ],
 })
 export class LoadModalFinancialComponent implements OnChanges {
     @Input() firstHeaderTitle: string;
+    @Input() billingCount: number;
     @Input() secondHeaderTitle: string;
+    @Input() paymentCount: number;
     @Input() thirdHeaderTitle: string;
     @Input() billing: string;
     @Input() adjusted: number;

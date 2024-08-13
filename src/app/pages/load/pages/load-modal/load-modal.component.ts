@@ -446,6 +446,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public get billingCount(): number {
+        // plus 1 from base
+        let counter = this.additionalBillings().length + 1;
+
+        if(this.showDriverRate) counter ++
+        if(this.showAdjustedRate) counter ++
+        if(this.showTonuRate) counter ++
+        if(this.showRevisedRate) counter ++
+
+        return counter;
+    }
+
     public get showAdjustedRate(): boolean {
         const selectedDispatcher: DispatchLoadModalResponse =
             this.selectedDispatches;

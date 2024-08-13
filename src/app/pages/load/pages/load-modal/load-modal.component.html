@@ -1389,6 +1389,7 @@
                             | financialCalculation : 'billing'
                             | currency
                     "
+                    [billingCount]="billingCount"
                     [disableBillAction]="
                         !loadForm.get('baseRate').value ||
                         !additionalBillingTypes?.length
@@ -1397,6 +1398,7 @@
                         adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
+                    [paymentCount]="additionalPayments().length"
                     [payment]="
                         loadModalPayment
                             | financialCalculation : 'payment'
