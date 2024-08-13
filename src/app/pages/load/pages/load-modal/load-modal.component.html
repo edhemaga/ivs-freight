@@ -578,7 +578,7 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="showPickupItems"
+                                [isCardOpen]="isPickupItemsVisible"
                                 [hasCounter]="savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
@@ -587,7 +587,7 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="showPickupItems"
+                                [hasScrollBodyXAxis]="isPickupItemsVisible"
                                 [customClass]="'scrollable'"
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
@@ -979,7 +979,7 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    showExtraStopItems[indx] ??
+                                                isExtraStopItemsVisible[indx] ??
                                                     false
                                                 "
                                                 [hasCounter]="
@@ -995,7 +995,7 @@
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
-                                                    showExtraStopItems[indx] ??
+                                                isExtraStopItemsVisible[indx] ??
                                                     false
                                                 "
                                                 (onActionEvent)="
@@ -1251,7 +1251,7 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="showDeliveryItems"
+                                [isCardOpen]="isDeliveryItemsVisible"
                                 [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
@@ -1260,7 +1260,7 @@
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="showDeliveryItems"
+                                [hasScrollBodyXAxis]="isDeliveryItemsVisible"
                                 (onActionEvent)="
                                     createNewStopItemsRow('delivery')
                                 "

@@ -282,11 +282,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public statusDropDownList: SelectedStatus[];
     public previousStatus: SelectedStatus;
     public savedPickupStopItems: LoadStopItemCommand[] = [];
-    public showPickupItems: boolean = false;
+    public isPickupItemsVisible: boolean = false;
     public savedDeliveryStopItems: LoadStopItemCommand[] = [];
-    public showDeliveryItems: boolean = false;
+    public isDeliveryItemsVisible: boolean = false;
     public savedExtraStopItems: LoadStopItemCommand[][] = [];
-    public showExtraStopItems: boolean[] = [];
+    public isExtraStopItemsVisible: boolean[] = [];
     public isPickupStopValid: boolean = true;
     public isDeliveryStopValid: boolean = true;
     public stopItemsValid: boolean[] = [];
@@ -3523,7 +3523,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.PICKUP:
                 if (this.isPickupStopValid) {
                     this.isCreatedNewStopItemsRow.pickup = true;
-                    this.showPickupItems = true;
+                    this.isPickupItemsVisible = true;
 
                     setTimeout(() => {
                         this.isCreatedNewStopItemsRow.pickup = false;
@@ -3534,7 +3534,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.DELIVERY:
                 if (this.isDeliveryStopValid) {
                     this.isCreatedNewStopItemsRow.delivery = true;
-                    this.showDeliveryItems = true;
+                    this.isDeliveryItemsVisible = true;
 
                     setTimeout(() => {
                         this.isCreatedNewStopItemsRow.delivery = false;
@@ -3545,7 +3545,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 if (this.stopItemsValid[extraStopId] || this.stopItemsValid[extraStopId] === undefined) {
                     this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
                         true;
-                    this.showExtraStopItems[extraStopId] = true;
+                    this.isExtraStopItemsVisible[extraStopId] = true;
 
                     setTimeout(() => {
                         this.isCreatedNewStopItemsRow.extraStops[extraStopId] =
@@ -3562,15 +3562,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public toggleStopItemRow(type: string, extraStopId?: number): void {
         switch (type) {
             case LoadModalStringEnum.PICKUP:
-                this.showPickupItems = !this.showPickupItems;
+                this.isPickupItemsVisible = !this.isPickupItemsVisible;
                 break;
             case LoadModalStringEnum.DELIVERY:
-                this.showDeliveryItems = !this.showDeliveryItems;
+                this.isDeliveryItemsVisible = !this.isDeliveryItemsVisible;
 
                 break;
             case LoadModalStringEnum.EXTRA_STOP:
-                this.showExtraStopItems[extraStopId] =
-                    !this.showExtraStopItems[extraStopId];
+                this.isExtraStopItemsVisible[extraStopId] =
+                    !this.isExtraStopItemsVisible[extraStopId];
                 break;
             default:
                 break;
