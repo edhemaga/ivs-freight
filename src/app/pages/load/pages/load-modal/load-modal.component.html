@@ -517,6 +517,10 @@
                                         disabled: selectedStopTimePickup === 6
                                     }"
                                     (click)="pickupDateRange = true"
+                                    mainTooltip="Date Range"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                 >
                                     <svg-icon
                                         class="plus-icon"
@@ -574,22 +578,22 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedPickupStopItems.length"
+                                [isCardOpen]="isPickupItemsVisible"
                                 [hasCounter]="savedPickupStopItems.length"
+                                [disabledCard]="!savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="false"
+                                [hasArrow]="savedPickupStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedPickupStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="isPickupItemsVisible"
+                                [customClass]="'scrollable'"
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
-                                [customClass]="'scrollable'"
+                                (onOpenCard)="toggleStopItemRow('pickup')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
@@ -881,6 +885,12 @@
                                                 "
                                             >
                                                 <div
+                                                    mainTooltip="Date Range"
+                                                    [tooltipBackground]="
+                                                        '#424242'
+                                                    "
+                                                    ngbTooltip
+                                                    position="bottom"
                                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                                     [ngClass]="{
                                                         disabled:
@@ -970,8 +980,19 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    !!savedExtraStopItems[indx]
-                                                        ?.length
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
+                                                "
+                                                [disabledCard]="
+                                                    !(
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ] &&
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ]?.length
+                                                    )
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
@@ -980,18 +1001,27 @@
                                                 "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
-                                                [hasArrow]="true"
+                                                [hasArrow]="
+                                                    savedExtraStopItems[indx]
+                                                        ?.length
+                                                "
                                                 [animationMarginParams]="{
                                                     marginTop: '10px',
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
-                                                    savedExtraStopItems[indx] &&
-                                                    savedExtraStopItems[indx]
-                                                        ?.length
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
+                                                        'extra-stop',
+                                                        indx
+                                                    )
+                                                "
+                                                (onOpenCard)="
+                                                    toggleStopItemRow(
                                                         'extra-stop',
                                                         indx
                                                     )
@@ -1177,6 +1207,10 @@
 
                             <ng-container *ngIf="!deliveryDateRange">
                                 <div
+                                    mainTooltip="Date Range"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
                                         disabled: selectedStopTimeDelivery === 8
@@ -1233,21 +1267,21 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedDeliveryStopItems.length"
+                                [isCardOpen]="isDeliveryItemsVisible"
+                                [disabledCard]="!savedDeliveryStopItems.length"
                                 [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="true"
+                                [hasArrow]="savedDeliveryStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedDeliveryStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="isDeliveryItemsVisible"
                                 (onActionEvent)="
                                     createNewStopItemsRow('delivery')
                                 "
+                                (onOpenCard)="toggleStopItemRow('delivery')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"

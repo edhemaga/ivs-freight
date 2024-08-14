@@ -52,6 +52,7 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
         id: number;
         status: DispatchStatus;
         dataFront: DispatchStatus;
+        isRevert?: boolean;
     }>();
 
     public statusDetails: LoadPossibleStatusesResponse;
@@ -95,13 +96,15 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
 
     public sendStatus(
         item: LoadStatus | DispatchStatus,
-        statusName: LoadStatus | DispatchStatus
+        statusName: LoadStatus | DispatchStatus,
+        revert?: boolean
     ): void {
         if (this.isDispatch) {
             this.onRouteEventEmmitter.emit({
                 id: this.statusId,
                 status: item as DispatchStatus,
                 dataFront: statusName as DispatchStatus,
+                isRevert: revert,
             });
         } else {
             this.loadService.updateStatus({

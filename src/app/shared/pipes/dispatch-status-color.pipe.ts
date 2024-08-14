@@ -21,6 +21,7 @@ export class dispatchStatusColorPipe implements PipeTransform {
         const statusLightOrangeColorCondition = [
             'Repair',
             'DispatchedRepair',
+            'LoadedRepair',
         ].includes(adjustedStatus);
         const statusTurquoiseColorCondition = [
             'ArrivedPickup',
@@ -36,9 +37,12 @@ export class dispatchStatusColorPipe implements PipeTransform {
         const statusDarkTurquoiseColorCondition = ['Loaded'].includes(
             adjustedStatus
         );
-        const statusRedColorCondition = ['Offloading', 'Checked-In'].includes(
-            adjustedStatus
-        );
+        const statusRedColorCondition = [
+            'Offloading',
+            'ArrivedDelivery',
+            'CheckedInDelivery',
+            'Checked-In',
+        ].includes(adjustedStatus);
         const statusDarkRedColorCondition = [
             'Offloaded',
             'RepairOffloaded',
@@ -60,7 +64,7 @@ export class dispatchStatusColorPipe implements PipeTransform {
         } else if (statusDarkRedColorCondition) {
             return { color: isDarkColor ? '#ED9292' : '#DF3C3C' };
         } else if (statusDarkRed2ColorCondition) {
-            return { color: isDarkColor ? '#C20C0C' : '#F4BEBE' };
+            return { color: isDarkColor ? ' #F4BEBE' : '#C20C0C' };
         } else if (statusLightGreenColorCondition) {
             return { color: isDarkColor ? '#50AC25' : '#9ED186' };
         } else if (statusLightPurpleColorCondition) {
