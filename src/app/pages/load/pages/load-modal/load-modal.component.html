@@ -1232,7 +1232,7 @@
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
-                                [inputConfig]="loadDeliveryDateTo"
+                                [inputConfig]="loadDeliveryDateToInputConfig"
                                 (blurInput)="
                                     markInputAsTouched('deliveryDateTo')
                                 "
