@@ -66,6 +66,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     public isInputHoverRows: boolean[][][] = [];
 
+    public isHoveringGroupIndex: number = -1;
     public isHoveringGroupItemIndex: number = -1;
 
     // custom period - date range
@@ -102,6 +103,8 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         this.getConstantData();
+
+        this.getDispatchHistory();
     }
 
     get dispatchHistoryTimeConfig(): ITaInput {
@@ -270,6 +273,15 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             DispatchHistoryModalConstants.IS_INPUT_HOVER_ROW_DISPATCH;
 
         return JSON.parse(JSON.stringify(isInputHoverRow));
+    }
+
+    public handleGroupRowHover(
+        isHover: boolean,
+        groupIndex?: number,
+        itemIndex?: number
+    ): void {
+        this.isHoveringGroupIndex = isHover ? groupIndex : -1;
+        this.isHoveringGroupItemIndex = isHover ? groupIndex + itemIndex : -1;
     }
 
     public handleInputHover(
@@ -489,6 +501,27 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
+        this.selectedTime = {
+            id: 12,
+            name: 'This Year',
+        };
+        this.selectedDispatchBoard = {
+            id: 15,
+            name: 'Team Board',
+        };
+        this.selectedTruck = {
+            id: 55,
+            name: '0697',
+        };
+        this.selectedTrailer = {
+            id: 9,
+            name: 'A012096',
+        };
+        this.selectedDriver = {
+            id: 10,
+            name: 'Eric Reid',
+        };
+
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
             isDispatchBoardSelected: !!this.selectedDispatchBoard,

@@ -171,6 +171,12 @@
                                             trackBy: trackByIdentity
                                         "
                                     >
+                                        {{
+                                            'helperGroupIndex' +
+                                                ' ' +
+                                                helperGroupIndex
+                                        }}
+                                        {{ 'groupIndex' + ' ' + groupIndex }}
                                         <div
                                             class="d-flex group-container-main-card"
                                             [formGroupName]="groupIndex"
@@ -215,18 +221,23 @@
                                                         "
                                                         [ngClass]="{
                                                             hovering:
+                                                                isHoveringGroupIndex ===
+                                                                    groupIndex &&
                                                                 isHoveringGroupItemIndex ===
-                                                                itemIndex +
-                                                                    groupIndex
+                                                                    groupIndex +
+                                                                        itemIndex
                                                         }"
                                                         (mouseenter)="
-                                                            isHoveringGroupItemIndex =
-                                                                itemIndex +
-                                                                groupIndex
+                                                            handleGroupRowHover(
+                                                                true,
+                                                                groupIndex,
+                                                                itemIndex
+                                                            )
                                                         "
                                                         (mouseleave)="
-                                                            isHoveringGroupItemIndex =
-                                                                -1
+                                                            handleGroupRowHover(
+                                                                false
+                                                            )
                                                         "
                                                     >
                                                         <!-- Status -->
@@ -234,9 +245,11 @@
                                                         <div
                                                             class="d-flex item-box"
                                                             [ngClass]="
+                                                                isHoveringGroupIndex ===
+                                                                    groupIndex &&
                                                                 isHoveringGroupItemIndex ===
-                                                                itemIndex +
-                                                                    groupIndex
+                                                                    groupIndex +
+                                                                        itemIndex
                                                                     ? 'flex-column align-items-start'
                                                                     : 'flex-row align-items-center'
                                                             "
@@ -276,9 +289,11 @@
 
                                                             <ng-container
                                                                 *ngIf="
+                                                                    isHoveringGroupIndex ===
+                                                                        groupIndex &&
                                                                     isHoveringGroupItemIndex ===
-                                                                    itemIndex +
-                                                                        groupIndex
+                                                                        groupIndex +
+                                                                            itemIndex
                                                                 "
                                                             >
                                                                 <span>
