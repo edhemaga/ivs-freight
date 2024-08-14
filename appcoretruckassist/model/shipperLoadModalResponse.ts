@@ -19,6 +19,12 @@ export interface ShipperLoadModalResponse {
     address?: AddressEntity;
     longitude?: number | null;
     latitude?: number | null;
+    receivingFrom?: string | null;
+    receivingTo?: string | null;
+    shippingFrom?: string | null;
+    shippingTo?: string | null;
+    receivingOpenTwentyFourHours?: boolean | null;
+    shippingOpenTwentyFourHours?: boolean | null;
     pickupCount?: number;
     deliveryCount?: number;
 }

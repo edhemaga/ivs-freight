@@ -26,7 +26,7 @@ import {
     ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
-    UpdateDispatchStatusCommand,
+    /*  UpdateDispatchStatusCommand, */
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
@@ -138,9 +138,9 @@ export class DispatcherService {
     }
 
     public updateDispatchStatus(
-        data: UpdateDispatchStatusCommand
+        data /* : UpdateDispatchStatusCommand */
     ): Observable<number> {
-        return this.dispatchService.apiDispatchStatusPut(data);
+        return of(null); /* this.dispatchService.apiDispatchStatusPut(data); */
     }
 
     public reorderDispatchboard(
