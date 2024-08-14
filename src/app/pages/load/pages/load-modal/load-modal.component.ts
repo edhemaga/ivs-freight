@@ -448,14 +448,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get billingCount(): number {
         // plus 1 from base
-        let counter = this.additionalBillings().length + 1;
-
-        if(this.showDriverRate) counter ++
-        if(this.showAdjustedRate) counter ++
-        if(this.showTonuRate) counter ++
-        if(this.showRevisedRate) counter ++
-
-        return counter;
+        return this.additionalBillings().length + 1 + +!!this.showDriverRate + +!!this.showAdjustedRate + +!!this.showTonuRate + +!!this.showRevisedRate;
     }
 
     public get showAdjustedRate(): boolean {
@@ -668,7 +661,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (!show) {
             this.loadForm.get(LoadModalStringEnum.REVISED).patchValue(null);
         }
-        this.showRevisedRate = show;
+        this.showRevisedRate = !!show;
     }
 
     private createForm(): void {
