@@ -59,6 +59,7 @@ export class LoadStopItemsConfig {
             label: 'Tarp',
             placeholderInsteadOfLabel: true,
             dropdownWidthClass: 'w-col-130',
+            isRemovedIconMovedOnLeft: true,
             isDisabled,
         };
     }
@@ -72,6 +73,7 @@ export class LoadStopItemsConfig {
             placeholderInsteadOfLabel: true,
             dropdownWidthClass: 'w-col-100',
             isDisabled,
+            isRemovedIconMovedOnLeft: true,
         };
     }
 
@@ -115,6 +117,7 @@ export class LoadStopItemsConfig {
         label: 'Stack',
         placeholderInsteadOfLabel: true,
         dropdownWidthClass: 'w-col-80',
+        isRemovedIconMovedOnLeft: true,
     };
     static TEMPERATURE_INPUT_CONFIG: ITaInput = {
         name: 'TMP',
