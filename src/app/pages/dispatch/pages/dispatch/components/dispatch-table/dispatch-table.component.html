@@ -40,12 +40,18 @@
                                     !tableHeaderItem?.title &&
                                     tableHeaderItem?.icon,
                                 'd-flex align-items-center pickup-delivery':
-                                    tableHeaderItem?.secondTitle
+                                    tableHeaderItem?.secondTitle,
+                                'c-pointer': tableHeaderItem?.title === 'NOTE'
                             }"
+                            (click)="handleHeaderClick(tableHeaderItem?.title)"
                         >
                             <div>
                                 <svg-icon
                                     class="icon"
+                                    [class.expanded]="
+                                        tableHeaderItem?.title === 'NOTE' &&
+                                        isNoteExpanded
+                                    "
                                     [svgStyle]="{
                                         'width.px': '14',
                                         'height.px': '14'
@@ -55,11 +61,14 @@
 
                                 <ng-container
                                     *ngIf="
-                                        tableHeaderItem?.title !==
+                                        (tableHeaderItem?.title !==
                                             'INSPECTION' &&
-                                        tableHeaderItem?.title !==
-                                            'DISPATCHER' &&
-                                        tableHeaderItem?.title !== 'NOTE'
+                                            tableHeaderItem?.title !==
+                                                'DISPATCHER' &&
+                                            tableHeaderItem?.title !==
+                                                'NOTE') ||
+                                        (tableHeaderItem?.title === 'NOTE' &&
+                                            isNoteExpanded)
                                     "
                                 >
                                     {{ tableHeaderItem?.title }}
@@ -417,29 +426,19 @@
                             </div>
                         </td>
 
-                        <td class="note-field">
-                            <div
-                                class="main_inside"
-                                [class.filled]="item.truck"
+                        <td
+                            class="note-field"
+                            [class.expanded]="isNoteExpanded"
+                        >
+                            <app-dispatch-table-note
+                                [truck]="item.truck"
+                                [note]="item.note"
+                                [isNoteExpanded]="isNoteExpanded"
+                                [isHoveringRowIndex]="isHoveringRowIndex"
+                                [rowIndex]="rowIndex"
+                                (saveNoteValue)="saveNoteValue($event)"
                             >
-                                <div
-                                    class="dispatcher-table-cell-container note-container"
-                                    [class.empty-box-field]="!item.note"
-                                >
-                                    <app-ta-note
-                                        [note]="item.note"
-                                        [openedAll]="true"
-                                        [dispatchIndex]="rowIndex"
-                                        [parking]="false"
-                                        [noteWidth]="213"
-                                        [parentWidth]="'.note-field'"
-                                        [type]="'dark'"
-                                        [isDispatch]="true"
-                                        (saveNoteValue)="saveNoteValue($event)"
-                                    >
-                                    </app-ta-note>
-                                </div>
-                            </div>
+                            </app-dispatch-table-note>
                         </td>
 
                         <td class="box-item">
@@ -537,6 +536,7 @@
                             (driverVacationEmitter)="
                                 changeDriverVacation($event)
                             "
+                            (setDriverDropdownIndexEmitter)="changeDriverDropdownIndex($event)"
                         >
                         </app-dispatch-table-driver>
                     </td>

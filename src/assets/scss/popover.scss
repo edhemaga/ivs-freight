@@ -2564,6 +2564,14 @@ ngb-popover-window {
     }
 }
 
+.dispatch-note {
+    .popover-body {
+        position: relative;
+        top: -4px;
+        left: -4px;
+    }
+}
+
 .parking-popover {
     margin-top: -10px !important;
     left: 0 !important;
