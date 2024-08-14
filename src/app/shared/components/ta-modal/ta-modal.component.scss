@@ -150,7 +150,10 @@
         width: 640px;
 
         .divider {
-            width: 615px;
+            height: 1px;
+            background-color: $bw-9;
+            width: 616px;
+            margin-left: 0;
         }
     }
 
