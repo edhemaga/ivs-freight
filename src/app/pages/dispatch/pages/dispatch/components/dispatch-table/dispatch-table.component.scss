@@ -3,25 +3,111 @@
 .dispatch-table {
     position: relative;
 
+    /* Unlocked Table */
+
     &.unlocked {
         table {
             tr {
                 td {
                     .main_inside {
-                        .cdk-drag {
-                            cursor: grab;
-                            &:active {
-                                cursor: grabbing;
+                        /* Drag & Drop Single*/
+
+                        &.dragging:not(:active) {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+                                    transition: 10s linear;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows_grey.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
                             }
                         }
 
-                        &.default {
-                            pointer-events: none;
+                        &.dragging:active {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                background: $ta-black-2;
+
+                                .padding-inside {
+                                    .info-item,
+                                    .selected-container {
+                                        background: transparent !important;
+
+                                        p {
+                                            color: $white !important;
+                                        }
+
+                                        span {
+                                            color: $bw5 !important;
+                                        }
+
+                                        .driver-items-hold {
+                                            span {
+                                                color: $white !important;
+                                            }
+
+                                            .hos-column {
+                                                .hos-number {
+                                                    color: $white !important;
+                                                }
+                                            }
+                                        }
+
+                                        .remove-icon-container,
+                                        .driver-vacation {
+                                            display: none !important;
+                                        }
+                                    }
+                                }
+
+                                .padding-inside:has(.selected-container) {
+                                    background: $ta-black-2 !important;
+                                }
+
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+                            }
                         }
 
-                        &.dragging {
-                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-                            background: red !important;
+                        .drag-hold-between {
+                            height: 100%;
+                        }
+
+                        .custom-dispatch-placeholder {
+                            position: relative;
+                            height: 32px;
+                            width: 100%;
+                            border-radius: 3px;
+                            opacity: 1 !important;
+                            cursor: grabbing !important;
+
+                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+
+                            z-index: 10;
                         }
                     }
 
@@ -79,15 +165,7 @@
         }
     }
 
-    .change-in-progress-background-cover {
-        position: absolute;
-        top: 35px;
-        height: calc(100% - 35px);
-        width: 100%;
-        z-index: 105;
-        background: $white-7;
-        border-radius: 3px;
-    }
+    /* Locked Table */
 
     table {
         width: 100%;
@@ -151,14 +229,41 @@
                 background-color: #f7f7f7;
                 border-radius: 3px;
 
+                &.filled {
+                    background: #fff;
+
+                    .padding-inside {
+                        &.hovering {
+                            .info-item,
+                            .selected-container {
+                                transition: background 0.2s ease-in;
+                                background: $bw2;
+                            }
+                        }
+
+                        &:hover {
+                            .info-item {
+                                background: $bw2;
+
+                                .driver-buttons {
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 &.cdk-drop-list {
                     overflow: hidden;
                 }
 
                 .padding-inside {
                     position: relative;
-
                     height: 100%;
+
+                    &:not(.status-inside) {
+                        padding: 4px;
+                    }
 
                     .hos-column {
                         position: relative;
@@ -223,10 +328,6 @@
                         }
                     }
 
-                    &:not(.status-inside) {
-                        padding: 4px;
-                    }
-
                     .info-item {
                         position: relative;
                         display: flex;
@@ -262,9 +363,14 @@
                                 font-weight: 400;
                             }
 
-                            &::selection {
-                                background-color: $ta-black-2;
+                            &::-moz-selection {
                                 color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
                             }
 
                             &.dr-span {
@@ -343,45 +449,6 @@
                         padding-left: 6px;
                     }
                 }
-
-                &.filled {
-                    background: #fff;
-
-                    .padding-inside {
-                        &.hovering {
-                            .info-item,
-                            .selected-container {
-                                transition: background 0.2s ease-in;
-                                background: $bw2;
-                            }
-                        }
-
-                        &:hover {
-                            .info-item {
-                                background: $bw2;
-
-                                .driver-buttons {
-                                    display: flex;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .drag-hold-between {
-                    height: 100%;
-                }
-
-                .custom-dispatch-placeholder {
-                    position: relative;
-                    height: 32px;
-                    width: 100%;
-                    border-radius: 3px;
-                    opacity: 1 !important;
-                    cursor: grabbing !important;
-
-                    z-index: 10;
-                }
             }
         }
 
@@ -457,7 +524,19 @@
         }
     }
 
-    /* Drag */
+    /* Change In Progress */
+
+    .change-in-progress-background-cover {
+        position: absolute;
+        top: 35px;
+        height: calc(100% - 35px);
+        width: 100%;
+        z-index: 105;
+        background: $white-7;
+        border-radius: 3px;
+    }
+
+    /* Drag & Drop Row */
 
     .cdk-drag {
         position: relative;
@@ -484,16 +563,16 @@
         &.cdk-drag-preview {
             position: relative;
             border-radius: 3px;
-            background-color: $ta-black-2 !important;
+            background: $ta-black-2 !important;
             z-index: 9999999 !important;
+            cursor: grabbing !important;
 
             .cdk-drag-handle {
                 pointer-events: all !important;
-                cursor: grabbing !important;
             }
 
             .main_inside {
-                background-color: transparent !important;
+                background: transparent !important;
 
                 .padding-inside {
                     &.hovering {
@@ -512,6 +591,12 @@
                             .driver-items-hold {
                                 span {
                                     color: $white !important;
+                                }
+
+                                .hos-column {
+                                    .hos-number {
+                                        color: $white !important;
+                                    }
                                 }
                             }
 
@@ -539,6 +624,18 @@
 
                     &:after,
                     .dispatch-table-driver {
+                        display: none !important;
+                    }
+                }
+
+                .add-new-container {
+                    background: transparent !important;
+
+                    p {
+                        color: $white !important;
+                    }
+
+                    .icon {
                         display: none !important;
                     }
                 }

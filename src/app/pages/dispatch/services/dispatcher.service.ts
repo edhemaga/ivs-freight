@@ -143,7 +143,9 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchStatusPut(data);
     }
 
-    reorderDispatchboard(reorder: ReorderDispatchesCommand) {
+    public reorderDispatchboard(
+        reorder: ReorderDispatchesCommand
+    ): Observable<any> {
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }
 

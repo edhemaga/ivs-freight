@@ -112,6 +112,8 @@
                         cdkDragPreviewContainer="parent"
                         cdkDragBoundary=".dispatch-table"
                         [cdkDragDisabled]="isDispatchBoardLocked || !item.truck"
+                        (cdkDragStarted)="cdkDragStartedRow($event, rowIndex)"
+                        (cdkDragEnded)="dragEnd()"
                         (mouseenter)="isHoveringRowIndex = rowIndex"
                         (mouseleave)="isHoveringRowIndex = -1"
                     >
@@ -157,16 +159,11 @@
                             }"
                         >
                             <div
+                                class="main_inside"
                                 [class.dragging]="
-                                    isDrag && draggingType == 'trailer'
+                                    isDrag && draggingType === 'trailer'
                                 "
                                 cdkDropList
-                                [cdkDropListSortPredicate]="
-                                    trailerPositionPrediction
-                                "
-                                (cdkDropListDropped)="
-                                    dropTrailer($event, rowIndex)
-                                "
                                 id="{{
                                     rowIndex | cdkid : gridIndex : 'trailer'
                                 }}"
@@ -178,20 +175,26 @@
                                             : gridIndex
                                             : 'trailer'
                                 "
+                                [cdkDropListSortPredicate]="
+                                    trailerPositionPrediction
+                                "
+                                (cdkDropListDropped)="
+                                    dropTrailer($event, rowIndex)
+                                "
                             >
                                 <div
                                     class="drag-hold-between"
                                     cdkDrag
+                                    cdkDragLockAxis="y"
+                                    cdkDragPreviewContainer="parent"
+                                    cdkDragBoundary=".dispatch-table table tbody"
+                                    [cdkDragDisabled]="
+                                        isDispatchBoardLocked || !item.trailer
+                                    "
                                     (cdkDragStarted)="
                                         cdkDragStartedTrailer($event, rowIndex)
                                     "
                                     (cdkDragEnded)="dragEnd()"
-                                    [cdkDragDisabled]="
-                                        isDispatchBoardLocked || !item.trailer
-                                    "
-                                    cdkDragLockAxis="y"
-                                    cdkDragPreviewContainer="parent"
-                                    cdkDragBoundary=".dispatch-table table tbody"
                                 >
                                     <div
                                         *cdkDragPlaceholder
@@ -210,6 +213,7 @@
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
                                         [isHoveringRow]="
+                                            !isDrag &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addTruckTrailerEmitter)="
@@ -229,19 +233,10 @@
                         <td class="driver-field">
                             <div
                                 class="main_inside"
-                                [class.filled]="item?.driver"
-                                [class.default]="
-                                    !item.driver &&
-                                    !driverList.length &&
-                                    !isDispatchBoardLocked
-                                "
                                 [class.dragging]="
-                                    isDrag && draggingType == 'driver'
+                                    isDrag && draggingType === 'driver'
                                 "
                                 cdkDropList
-                                (cdkDropListDropped)="
-                                    dropDriver($event, rowIndex)
-                                "
                                 id="{{
                                     rowIndex | cdkid : gridIndex : 'driver'
                                 }}"
@@ -253,21 +248,23 @@
                                             : gridIndex
                                             : 'driver'
                                 "
+                                (cdkDropListDropped)="
+                                    dropDriver($event, rowIndex)
+                                "
                             >
                                 <div
                                     class="drag-hold-between"
                                     cdkDrag
+                                    cdkDragLockAxis="y"
+                                    cdkDragPreviewContainer="parent"
+                                    cdkDragBoundary=".dispatch-table table tbody"
+                                    [cdkDragDisabled]="
+                                        isDispatchBoardLocked || !item.driver
+                                    "
                                     (cdkDragStarted)="
                                         cdkDragStartedDriver($event, rowIndex)
                                     "
                                     (cdkDragEnded)="dragEnd()"
-                                    [cdkDragDisabled]="
-                                        isDispatchBoardLocked || !item.driver
-                                    "
-                                    cdkDragLockAxis="y"
-                                    [cdkDragPreviewClass]="'trailer_3074D3'"
-                                    cdkDragPreviewContainer="parent"
-                                    cdkDragBoundary=".dispatch-table table tbody"
                                 >
                                     <div
                                         *cdkDragPlaceholder
@@ -282,7 +279,6 @@
                                         [isDrag]="isDrag"
                                         [phone]="item?.phone"
                                         [email]="item?.email"
-                                        [draggingType]="draggingType"
                                         [openedDriverDropdown]="
                                             openedDriverDropdown
                                         "
@@ -290,6 +286,7 @@
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
+                                            !isDrag &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addDriverEmitter)="

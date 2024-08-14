@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'cdkconnect',
-    standalone: true
+    standalone: true,
 })
 export class CdkConnectPipe implements PipeTransform {
     constructor() {}
@@ -20,12 +20,15 @@ export class CdkConnectPipe implements PipeTransform {
         }
 
         const data = [`${type}-1`];
+
         for (let i = 0; i < gridLength; i++) {
             const ni = parseInt(i + '' + gridIndex);
+
             if (i !== rowIndex) {
                 data.push(type + ni);
             }
         }
+
         return data;
     }
 }
