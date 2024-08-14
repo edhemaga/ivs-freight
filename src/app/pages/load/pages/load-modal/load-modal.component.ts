@@ -4464,6 +4464,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private populateLoadModalData(loadModalData: LoadResponse): void {
+        if(!loadModalData) return;
+        
         const {
             loadNumber,
             type,
