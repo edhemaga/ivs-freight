@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 //Models
-import { CompanyUserShortResponse, MessageResponse } from 'appcoretruckassist';
+import { CompanyUserShortResponse } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
 @Component({
   selector: 'app-chat-message',
@@ -12,7 +13,7 @@ export class ChatMessageComponent implements OnInit {
 
   @Input() currentUserId!: string;
   @Input() chatParticipants: CompanyUserShortResponse[];
-  @Input() message!: MessageResponse;
+  @Input() message!: ChatMessageResponse;
   @Input() isDateDisplayed: boolean = true;
 
   constructor() { }

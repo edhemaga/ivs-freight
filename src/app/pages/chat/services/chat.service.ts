@@ -9,9 +9,9 @@ import {
     ConversationResponse,
     CreateConversationCommand,
     CreateResponse,
-    MessageResponse,
     UserType,
 } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -75,13 +75,13 @@ export class UserChatService {
         );
     }
 
-    public getMessages(id: number): Observable<MessageResponse[]> {
+    public getMessages(id: number): Observable<ChatMessageResponse[]> {
         const params: HttpParams = new HttpParams({
             fromObject: {
                 'MessageSpecParams.ConversationId': id,
             },
         });
-        return this.http.get<MessageResponse[]>
+        return this.http.get<ChatMessageResponse[]>
             (`${environment.API_ENDPOINT}/api/chat/message/list`,
                 {
                     params,
@@ -107,7 +107,8 @@ export class UserChatService {
     public sendMessage(
         conversationId: number,
         content: string,
-        attachmentsList?: UploadFile[]
+        attachmentsList?: UploadFile[],
+        linksList?: string[]
     ): Observable<any> {
         if (!conversationId) return;
 
@@ -115,7 +116,13 @@ export class UserChatService {
             return item.realFile
         })
 
-        const data = { conversationId, content, attachments };
+        const links = linksList?.map(link => {
+            return {
+                url: link
+            }
+        })
+
+        const data = { conversationId, content, attachments, links };
 
         this.formDataService.extractFormDataFromFunction(data);
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 
 // Models
-import { MessageResponse } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
 // Env
 import { environment } from 'src/environments/environment';
@@ -58,25 +58,12 @@ export class ChatHubService {
             .then();
     }
 
-    public receiveMessage(): Observable<MessageResponse> {
-        return new Observable<MessageResponse>((observer) => {
+    public receiveMessage(): Observable<ChatMessageResponse> {
+        return new Observable<ChatMessageResponse>((observer) => {
             this.hubConnection.on('ReceiveMessage',
                 (
-                    messageId: number,
-                    senderId: number,
-                    senderName: string,
-                    conversationId: number,
-                    content: string,
+                    newMessage: ChatMessageResponse
                 ) => {
-                    const newMessage: MessageResponse = {
-                        id: messageId,
-                        sender: {
-                            id: senderId,
-                            fullName: senderName
-                        },
-                        conversationId: conversationId,
-                        content: content,
-                    }
                     return observer.next(newMessage);
                 }
             );

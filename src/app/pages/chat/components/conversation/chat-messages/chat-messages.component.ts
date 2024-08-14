@@ -25,9 +25,6 @@ import {
   takeUntil
 } from 'rxjs';
 
-// Components
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-
 // Assets routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
@@ -46,14 +43,17 @@ import {
   CompanyUserShortResponse,
   ConversationInfoResponse,
   ConversationResponse,
-  MessageResponse
 } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import { AttachmentHoveredClassStringEnum } from '@pages/chat/enums/conversation/attachment-hovered-class-string.enum';
 import { AttachmentCustomClassEnum } from '@pages/chat/enums/conversation/attachment-custom-classes.enum';
+
+// Helpers
+import { checkForLink } from '@pages/chat/utils/helpers/link-recognition.helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -90,18 +90,22 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Config
   public ChatDropzone = ChatDropzone;
 
-  // Messages
-  public messages: MessageResponse[] = [];
-  private isMessageSendable: boolean = true;
-  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
-
   // Emoji
   public isEmojiSelectionActive: boolean = false;
+
+  // Messages
+  public messages: ChatMessageResponse[] = [];
+  private isMessageSendable: boolean = true;
+  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
+  public currentMessage!: string;
 
   // Attachment upload
   public attachmentUploadActive: boolean = false;
   public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
   public hoveredAttachment!: ChatAttachmentForThumbnail;
+
+  // Links
+  public links: string[] = [];
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
@@ -141,6 +145,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
+    this.notifyTyping();
   }
 
   ngAfterContentChecked(): void {
@@ -217,7 +222,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       .sendMessage(
         this.conversation.id,
         message,
-        this.attachments$.value)
+        this.attachments$.value,
+        this.links)
       .pipe(
         takeUntil(this.destroy$)
       )
@@ -345,6 +351,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingBlurred = true;
   }
 
+
+
   public notifyTyping(): void {
 
     this.messageForm.valueChanges
@@ -352,8 +360,52 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         debounceTime(350),
         takeUntil(this.destroy$))
       .subscribe(arg => {
-        if (arg.message) this.chatHubService.notifyTyping(this.conversation.id);
+        const message: string = arg?.message;
+
+        if (message) this.chatHubService.notifyTyping(this.conversation.id);
+
+        this.checkIfContainsLink(message);
       })
+  }
+
+  private checkIfContainsLink(message: string): void {
+
+    if (!message) {
+      this.links = [];
+      return;
+    };
+
+    const wordsList: string[] = message.trim().split(" ");
+
+    if (
+      message.length < this.currentMessage?.length &&
+      message !== this.currentMessage
+    ) {
+      this.links = [];
+
+      wordsList.forEach(word => {
+        if (checkForLink(word)) this.links = [...this.links, word];
+      });
+    } else {
+      if (
+        //Shortest possible URL
+        message.length < 3 ||
+        // Check if last character is whitespace
+        message[message.length - 1] === ' ' ||
+        // Check if two consecutive characters are the same
+        message[message.length - 2] === message[message.length - 1]
+      ) return;
+
+      const lastTyped: string = wordsList.slice(-1)[0];
+
+      if (lastTyped) {
+        const isLink: boolean = checkForLink(lastTyped);
+        if (isLink)
+          this.links = [...this.links, lastTyped];
+      }
+    }
+
+    this.currentMessage = message;
   }
 
   ngOnDestroy(): void {
