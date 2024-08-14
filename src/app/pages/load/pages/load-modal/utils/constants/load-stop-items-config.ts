@@ -23,9 +23,9 @@ export class LoadStopItemsConfig {
     };
 
     static BOL_INPUT_CONFIG: ITaInput = {
-        name: 'BOL NO',
+        name: 'BOL NO.',
         type: 'text',
-        label: 'BOL NO',
+        label: 'BOL No.',
         placeholderInsteadOfLabel: true,
     };
     static WEIGHT_INPUT_CONFIG: ITaInput = {
