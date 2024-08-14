@@ -127,12 +127,6 @@
                             }
                         }
                     }
-
-                    .padding-inside {
-                        .driver-buttons {
-                            display: none !important;
-                        }
-                    }
                 }
             }
         }
@@ -176,6 +170,16 @@
             font-size: 11px;
             color: $bw6-2;
 
+            &.c-pointer {
+                cursor: pointer;
+            }
+
+            &::selection,
+            ::selection {
+                background-color: $ta-black-2;
+                color: $ta-black-2;
+            }
+
             &.pickup-delivery {
                 div {
                     flex: 1;
@@ -216,6 +220,14 @@
                 svg {
                     path {
                         fill: $bw6-2;
+                    }
+                }
+
+                &.expanded {
+                    svg {
+                        path {
+                            fill: $ta-blue-18;
+                        }
                     }
                 }
             }
@@ -263,69 +275,6 @@
 
                     &:not(.status-inside) {
                         padding: 4px;
-                    }
-
-                    .hos-column {
-                        position: relative;
-                        height: 26px;
-                        width: 26px;
-                        margin-right: 4px;
-
-                        .hos-number {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 8px;
-                            font-weight: 700;
-                            color: #919191;
-                            padding-right: 1px;
-                            user-select: none;
-                            pointer-events: none;
-                        }
-
-                        .hos-img {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            cursor: pointer;
-
-                            svg-icon {
-                                display: flex;
-                                margin-left: 1px;
-                                svg {
-                                    width: 22px;
-                                    height: 22px;
-
-                                    path {
-                                        fill: #919191;
-                                        &:first-child {
-                                            fill: transparent !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.active_hos {
-                            .hos-img {
-                                border-radius: 100%;
-                                background-color: #26a69033;
-
-                                svg-icon {
-                                    svg {
-                                        path:not(path:first-child) {
-                                            fill: #26a690;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .hos-number {
-                                color: #26a690;
-                            }
-                        }
                     }
 
                     .info-item {
@@ -433,14 +382,6 @@
                     align-items: center;
                     line-height: 1;
 
-                    &.note-container {
-                        display: block;
-                        height: 100%;
-
-                        border-radius: 3px;
-                        padding-left: 6px;
-                    }
-
                     .dispatcher-table-cell-holder {
                         display: flex;
                         height: 28px;
@@ -519,7 +460,15 @@
             }
 
             &.note-field {
-                min-width: 194px;
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
+
+                &.expanded {
+                    width: 236px !important;
+                    max-width: 236px !important;
+                    min-width: 236px !important;
+                }
             }
         }
     }
