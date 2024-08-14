@@ -9,7 +9,9 @@ import {
   HostListener,
   Renderer2,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -71,6 +73,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Escape') this.attachmentUploadActive = false;
   }
+
+  @Output() userTyping: EventEmitter<number> = new EventEmitter();
 
   private destroy$ = new Subject<void>();
 
@@ -145,7 +149,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
-    this.notifyTyping();
+    this.listenForTyping();
   }
 
   ngAfterContentChecked(): void {
@@ -189,7 +193,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
           this.chatHubService
             .receiveTypingNotification()
             .pipe(
-              debounceTime(250),
+              debounceTime(500),
               takeUntil(this.destroy$),
             )
             .subscribe((companyUserId: number) => {
@@ -200,9 +204,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                     user.id === companyUserId
                   );
               this.currentUserTypingName.next(filteredUser?.fullName);
+              this.userTyping.emit(companyUserId);
 
               setTimeout(() => {
                 this.currentUserTypingName.next(null);
+                this.userTyping.emit(0);
               }, 1000);
 
             })
@@ -217,7 +223,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     if (!message && !this.attachments$?.value?.length) return;
 
     this.isMessageSendable = false;
-
+    console.log(this.links);
     this.chatService
       .sendMessage(
         this.conversation.id,
@@ -353,11 +359,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
 
 
-  public notifyTyping(): void {
+  public listenForTyping(): void {
 
     this.messageForm.valueChanges
       .pipe(
-        debounceTime(350),
+        debounceTime(500),
         takeUntil(this.destroy$))
       .subscribe(arg => {
         const message: string = arg?.message;
@@ -412,7 +418,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       }
 
     }
-
     this.currentMessage = message;
   }
 
