@@ -400,8 +400,10 @@
                             ></svg-icon>
                         </p>
                         <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
-                        <p class="m-0 ta-font-bold">DATE & TIME</p>
-                        <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        <ng-container *ngIf="selectedPickupShipper">
+                            <p class="m-0 ta-font-bold">DATE & TIME</p>
+                            <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        </ng-container>
                     </div>
 
                     <!-- Pickup Stop  -->
