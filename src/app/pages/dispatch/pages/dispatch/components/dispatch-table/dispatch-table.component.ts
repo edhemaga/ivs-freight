@@ -125,7 +125,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public draggingType: string;
 
-    testTimeout: any;
     startIndexTrailer: number;
     startIndexDriver: number;
 
@@ -632,16 +631,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             },
         ];
 
+        const data = {
+            dispatchBoardId,
+            dispatches,
+        };
+
         this.isDispatchBoardChangeInProgress = true;
 
         console.log('dispatchBoardId', dispatchBoardId);
         console.log('dispatches', dispatches);
 
         this.dispatcherService
-            .reorderDispatchboard({
-                dispatchBoardId,
-                dispatches,
-            })
+            .reorderDispatchboard(data)
             .pipe(
                 takeUntil(this.destroy$),
                 catchError(() => {

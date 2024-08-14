@@ -375,7 +375,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 this.selectedTrailer &&
                 !this.selectedDriver
             ) {
-                this.getDispatchHistoryDriver();
+                this.getDispatchHistoryDriverAutoComplete();
             } else {
                 this.getDispatchHistory();
             }
@@ -555,7 +555,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getDispatchHistoryDriver(): void {
+    private getDispatchHistoryDriverAutoComplete(): void {
         const data = {
             truckId: this.selectedTruck?.id,
             trailerId: this.selectedTrailer?.id,

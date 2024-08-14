@@ -314,21 +314,6 @@ export class DispatchHistoryModalHelper {
                 noGroupClass = 'layout-4';
 
                 break;
-            case 'layout-21':
-                const headerLayout21 = [
-                    dispatchHistoryHeaderItems[2],
-                    ...dispatchHistoryHeaderItems.slice(4),
-                ];
-
-                headerItems = this.addExtraItemsInDispatchHistoryHeader(
-                    headerLayout21,
-                    2,
-                    4
-                );
-
-                noGroupClass = 'layout-4';
-
-                break;
             case 'layout-22':
                 const headerLayout22 = [
                     dispatchHistoryHeaderItems[1],
@@ -918,12 +903,6 @@ export class DispatchHistoryModalHelper {
             !isTruckSelected &&
             isTrailerSelected &&
             isDriverSelected;
-        const layout23 =
-            !isTimeSelected &&
-            isDispatchBoardSelected &&
-            isTruckSelected &&
-            isTrailerSelected &&
-            isDriverSelected;
         const layout24 =
             !isTimeSelected &&
             !isDispatchBoardSelected &&
@@ -1012,8 +991,6 @@ export class DispatchHistoryModalHelper {
                 return 'layout-21';
             case layout22:
                 return 'layout-22';
-            case layout23:
-                return 'layout-23';
             case layout24:
                 return 'layout-24';
             case layout25:
@@ -1075,8 +1052,10 @@ export class DispatchHistoryModalHelper {
 
             const minutes = to.diff(from, 'minutes');
 
+            const seconds = to.diff(from, 'seconds');
+
             if (!years && !days && !hours && !minutes) {
-                return null;
+                return seconds ? seconds + 's' : null;
             } else {
                 const totalResult = `${years ? years + 'y' : ''} ${
                     days ? days + 'd' : ''
@@ -1154,7 +1133,7 @@ export class DispatchHistoryModalHelper {
             isTrailerSelected &&
             isDriverSelected;
 
-        const selectedTimeId = isGroupWithoutTime ? 100 : null;
+        const selectedTimeId = isGroupWithoutTime ? 14 : null;
 
         return {
             selectedTimeId,
