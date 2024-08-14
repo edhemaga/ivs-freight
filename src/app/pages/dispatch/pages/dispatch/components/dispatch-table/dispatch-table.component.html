@@ -41,8 +41,7 @@
                                     tableHeaderItem?.icon,
                                 'd-flex align-items-center pickup-delivery':
                                     tableHeaderItem?.secondTitle,
-                                'c-pointer':
-                                    tableHeaderItem?.title === 'NOTE'
+                                'c-pointer': tableHeaderItem?.title === 'NOTE'
                             }"
                             (click)="handleHeaderClick(tableHeaderItem?.title)"
                         >
@@ -51,7 +50,7 @@
                                     class="icon"
                                     [class.expanded]="
                                         tableHeaderItem?.title === 'NOTE' &&
-                                        noteExpandedView
+                                        isNoteExpanded
                                     "
                                     [svgStyle]="{
                                         'width.px': '14',
@@ -69,7 +68,7 @@
                                             tableHeaderItem?.title !==
                                                 'NOTE') ||
                                         (tableHeaderItem?.title === 'NOTE' &&
-                                            noteExpandedView)
+                                            isNoteExpanded)
                                     "
                                 >
                                     {{ tableHeaderItem?.title }}
@@ -429,52 +428,17 @@
 
                         <td
                             class="note-field"
-                            [class.expanded]="noteExpandedView"
+                            [class.expanded]="isNoteExpanded"
                         >
-                            <div
-                                class="main_inside"
-                                [class.filled]="item.truck"
+                            <app-dispatch-table-note
+                                [truck]="item.truck"
+                                [note]="item.note"
+                                [isNoteExpanded]="isNoteExpanded"
+                                [isHoveringRowIndex]="isHoveringRowIndex"
+                                [rowIndex]="rowIndex"
+                                (saveNoteValue)="saveNoteValue($event)"
                             >
-                                <div
-                                    class="padding-inside"
-                                    [ngClass]="{
-                                        'd-flex justify-content-center align-items-center':
-                                            !noteExpandedView,
-                                        'hovering-note':
-                                            isHoveringRowIndex === rowIndex &&
-                                            noteExpandedView,
-                                        'hovering-note-content':
-                                            isHoveringRowIndex === rowIndex &&
-                                            item.truck &&
-                                            !item.note &&
-                                            noteExpandedView,
-                                        'note-default': !item.truck,
-                                    }"
-                                >
-                                    <div
-                                        class="dispatcher-table-cell-container note-container"
-                                        [class.empty-box-field]="!item.note"
-                                        [class.expanded]="noteExpandedView"
-                                    >
-                                        <ng-container *ngIf="item.truck">
-                                            <app-ta-note
-                                                [note]="item.note"
-                                                [openedAll]="noteExpandedView"
-                                                [dispatchIndex]="rowIndex"
-                                                [parking]="false"
-                                                [noteWidth]="250"
-                                                [parentWidth]="'.note-field'"
-                                                [type]="'dark'"
-                                                [isDispatch]="true"
-                                                (saveNoteValue)="
-                                                    saveNoteValue($event)
-                                                "
-                                            >
-                                            </app-ta-note>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </div>
+                            </app-dispatch-table-note>
                         </td>
 
                         <td class="box-item">
@@ -563,7 +527,7 @@
                             [isBoardLocked]="isDispatchBoardLocked"
                             [isDrag]="isDrag"
                             [draggingType]="draggingType"
-                            [openedDriverDropdown]="openedDriverDropdown"
+                            [openedDriverDropdown]="-1"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
                             (addDriverEmitter)="handleAddDriverClick($event)"
                             (removeDriverEmitter)="
@@ -572,6 +536,7 @@
                             (driverVacationEmitter)="
                                 changeDriverVacation($event)
                             "
+                            (setDriverDropdownIndexEmitter)="changeDriverDropdownIndex($event)"
                         >
                         </app-dispatch-table-driver>
                     </td>
