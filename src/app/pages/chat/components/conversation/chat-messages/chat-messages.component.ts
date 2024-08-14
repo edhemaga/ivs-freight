@@ -375,22 +375,18 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       return;
     };
 
-    const wordsList: string[] = message
-      .trim()
-      .split(" ");
+    const wordsList: string[] = message.trim().split(" ");
 
     if (
       message.length < this.currentMessage?.length &&
       message !== this.currentMessage
     ) {
-
       this.links = [];
+
       wordsList.forEach(word => {
         if (checkForLink(word)) this.links = [...this.links, word];
       });
-
     } else {
-
       if (
         //Shortest possible URL
         message.length < 3 ||
@@ -403,14 +399,10 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
       const lastTyped: string = wordsList.slice(-1)[0];
 
       if (lastTyped) {
-
         const isLink: boolean = checkForLink(lastTyped);
-
         if (isLink)
           this.links = [...this.links, lastTyped];
-
       }
-
     }
 
     this.currentMessage = message;
