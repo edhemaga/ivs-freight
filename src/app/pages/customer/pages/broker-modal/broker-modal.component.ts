@@ -449,7 +449,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public addBrokerContacts(event: { check: boolean; action: string }) {
         const form = this.createBrokerContacts();
-
+        if(!this.brokerContacts.valid) return;
+        
         if (event.check) {
             this.brokerContacts.push(form);
         }
