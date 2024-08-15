@@ -86,5 +86,19 @@
 
 .links {
     height: fit-content;
-    padding: 0 6px 6px 6px;
+    padding: 0 6px 6p3x 6px;
+
+    .link {
+        &-thumbnail {
+            margin: 4px;
+
+            &-content {
+                margin: 4px 2px;
+            }
+        }
+        &-information {
+            line-height: 14px;
+            font-size: 11px;
+        }
+    }
 }

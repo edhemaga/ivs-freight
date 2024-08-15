@@ -57,7 +57,41 @@
                 </div>
             </ng-container>
             <ng-container *ngSwitchCase="'links'">
-                Displaying Links content.
+                <div class="links d-flex align-items-center">
+                    <div class="link-thumbnail">
+                        <div class="link-thumbnail-content">
+                            <ng-container
+                                *ngIf="item.metadata?.imageUrl; else linkIcon"
+                            >
+                                <img
+                                    [src]="item.metadata?.image"
+                                    [alt]="item.metadata.title"
+                                    width="36"
+                                    height="32"
+                                />
+                            </ng-container>
+                            <ng-template #linkIcon>
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 29,
+                                        'height.px': 29
+                                    }"
+                                    [src]="ChatSvgRoutes.linkIcon"
+                                >
+                                </svg-icon>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="link-information">
+                        <div class="ta-font-medium">
+                            {{ item.metadata?.title || item.url }}
+                        </div>
+                        <div class="ta-font-regular">
+                            {{ item.time | formatDateP : 'date-time' }}
+                        </div>
+                    </div>
+                </div>
             </ng-container>
             <ng-container *ngSwitchDefault>
                 Please select a resource type.
