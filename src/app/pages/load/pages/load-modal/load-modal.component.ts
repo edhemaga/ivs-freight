@@ -4794,7 +4794,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
 
         // selected
-        this.selectedCompany = company;
+        this.selectedCompany = {
+            ...company,
+            name: company.companyName
+        };
         this.selectedDispatcher = editedDispatcher;
         this.selectedGeneralCommodity = generalCommodity;
         this.selectedTruckReq = loadRequirements?.truckType;
