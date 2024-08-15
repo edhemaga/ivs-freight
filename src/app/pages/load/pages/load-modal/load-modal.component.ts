@@ -2707,7 +2707,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public createNewExtraStop(): void {
-        if (!this.selectedPickupShipper) return;
+        if (!this.selectedPickupShipper || !this.loadExtraStops().valid) return; 
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
