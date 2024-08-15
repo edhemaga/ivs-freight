@@ -456,7 +456,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-pickup'
+                                            'shipper-pickup',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
@@ -796,7 +798,8 @@
                                                         onSelectDropdown(
                                                             $event,
                                                             'shipper-extra-stops',
-                                                            indx
+                                                            indx,
+                                                            true
                                                         )
                                                     "
                                                     (closeDropdown)="
@@ -1157,7 +1160,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-delivery'
+                                            'shipper-delivery',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
