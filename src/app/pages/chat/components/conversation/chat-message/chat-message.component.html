@@ -11,7 +11,12 @@
             <div
                 class="message-time d-flex justify-content-center align-items-center"
             >
-                {{ message.createdAt | formatTime }}
+                {{
+                    MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                        message.createdAt,
+                        true
+                    )
+                }}
             </div>
         </ng-container>
 

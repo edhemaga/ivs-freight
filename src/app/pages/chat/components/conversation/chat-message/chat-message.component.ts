@@ -4,6 +4,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CompanyUserShortResponse } from 'appcoretruckassist';
 import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
+// Helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
 @Component({
   selector: 'app-chat-message',
   templateUrl: './chat-message.component.html',
@@ -15,6 +18,8 @@ export class ChatMessageComponent implements OnInit {
   @Input() chatParticipants: CompanyUserShortResponse[];
   @Input() message!: ChatMessageResponse;
   @Input() isDateDisplayed: boolean = true;
+
+  public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
   constructor() { }
 

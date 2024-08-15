@@ -86,19 +86,26 @@
 
 .links {
     height: fit-content;
-    padding: 0 6px 6p3x 6px;
+    padding: 0 6px 6px 6px;
 
     .link {
         &-thumbnail {
             margin: 4px;
+            border-radius: 2px;
 
             &-content {
                 margin: 4px 2px;
+
+                img {
+                    object-fit: cover;
+                }
             }
         }
         &-information {
             line-height: 14px;
             font-size: 11px;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 }
