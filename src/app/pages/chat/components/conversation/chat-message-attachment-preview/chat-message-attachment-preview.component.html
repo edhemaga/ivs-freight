@@ -37,7 +37,7 @@
                 <div class="text info">
                     <ng-container [ngSwitch]="displayMode">
                         <ng-container *ngSwitchCase="'size'">
-                            {{ attachment.size }} kB
+                            {{ attachment.size || attachment.fileSize }} kB
                         </ng-container>
                         <ng-container *ngSwitchCase="'date'">
                             {{
