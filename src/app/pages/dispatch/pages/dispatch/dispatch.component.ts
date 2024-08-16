@@ -112,7 +112,7 @@ export class DispatchComponent
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.filterType) {
+                if (res?.filterType && res.action !== TableStringEnum.CLEAR) {
                     switch (res.filterType) {
                         case ToolbarFilterStringEnum.TRUCK_FILTER:
                             this.backFilterQuery.truckTypes = res.queryParams;
@@ -134,13 +134,26 @@ export class DispatchComponent
                             this.dispatchFilters(this.backFilterQuery);
 
                             break;
+                        case ToolbarFilterStringEnum.LOCATION_FILTER:
+                            this.backFilterQuery.longitude =
+                                res.queryParams?.longValue;
+                            this.backFilterQuery.latitude =
+                                res.queryParams?.latValue;
+                            this.backFilterQuery.distance =
+                                res.queryParams?.rangeValue;
+
+                            this.dispatchFilters(this.backFilterQuery);
+
+                            break;
                         default:
                             break;
                     }
                 }
 
-                if (res?.action === TableStringEnum.CLEAR)
+                if (res?.action === TableStringEnum.CLEAR) {
+                    this.dispatchFilters(this.backFilterQuery);
                     this.dispatchTableList = this.dispatchTableList;
+                }
             });
 
         this.getUserId();
@@ -352,6 +365,11 @@ export class DispatchComponent
         trailerTypes?: number[] | undefined;
         statuses?: number[] | undefined;
         parkings?: number[] | undefined;
+        search?: string | undefined;
+        vacation?: boolean | undefined;
+        longitude?: number | undefined;
+        latitude?: number | undefined;
+        distance?: number | undefined;
     }): void {
         this.dispatcherService
             .getDispatchBoardFilterList(
@@ -360,7 +378,12 @@ export class DispatchComponent
                 filter.truckTypes,
                 filter.trailerTypes,
                 filter.statuses,
-                filter.parkings
+                filter.parkings,
+                filter.vacation,
+                filter.search,
+                filter.longitude,
+                filter.latitude,
+                filter.distance
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((dispatchers) => {

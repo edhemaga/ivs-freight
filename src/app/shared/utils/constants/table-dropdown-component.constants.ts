@@ -45,7 +45,6 @@ export class TableDropdownComponentConstants {
         searchThree: null,
     };
 
-    
     static SHIPPER_LOADS_BACK_FILTER: FilterOptionsLoad = {
         loadType: null,
         statusType: null,
@@ -176,6 +175,11 @@ export class TableDropdownComponentConstants {
         trailerTypes: null,
         statuses: null,
         parkings: null,
+        vacation: null,
+        search: null,
+        longitude: null,
+        latitude: null,
+        distance: null,
     };
 
     static SHIPPER_BACK_FILTER: FilterOptionShipper = {

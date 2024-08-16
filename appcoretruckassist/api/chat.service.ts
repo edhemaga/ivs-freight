@@ -31,13 +31,13 @@ import { ConversationResponse } from '../model/conversationResponse';
 // @ts-ignore
 import { CreateConversationCommand } from '../model/createConversationCommand';
 // @ts-ignore
+import { CreateLinkCommand } from '../model/createLinkCommand';
+// @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
 import { JoinConversationCommand } from '../model/joinConversationCommand';
 // @ts-ignore
 import { LeaveConversationCommand } from '../model/leaveConversationCommand';
-// @ts-ignore
-import { Link } from '../model/link';
 // @ts-ignore
 import { MessageResponse } from '../model/messageResponse';
 // @ts-ignore
@@ -1124,10 +1124,10 @@ export class ChatService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<Link>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<Link>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<Link>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<Link>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 

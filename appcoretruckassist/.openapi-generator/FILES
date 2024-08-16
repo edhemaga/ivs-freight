@@ -347,6 +347,7 @@ model/createFuelItemCommand.ts
 model/createHosCommand.ts
 model/createHosRulesReviewCommand.ts
 model/createInsurancePolicyAddonCommand.ts
+model/createLinkCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
@@ -401,6 +402,7 @@ model/dispatchHistoryGroupItemResponse.ts
 model/dispatchHistoryGroupListResponse.ts
 model/dispatchHistoryGroupResponse.ts
 model/dispatchHistoryGroupResponsePagination.ts
+model/dispatchHistoryItemCommand.ts
 model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
@@ -578,7 +580,7 @@ model/itemFuel.ts
 model/joinConversationCommand.ts
 model/leaveConversationCommand.ts
 model/legResponse.ts
-model/link.ts
+model/linkMetadata.ts
 model/linkResponse.ts
 model/liveTrackingBaseResponse.ts
 model/liveTrackingHistoryItemResponse.ts
@@ -669,8 +671,11 @@ model/mobileFuelStopListResponse.ts
 model/mobileFuelStopResponse.ts
 model/mobileFuelStopResponsePagination.ts
 model/mobileFuelStopShortResponse.ts
+model/mobileFuelTrailerResponse.ts
 model/mobileFuelTransactionResponse.ts
 model/mobileFuelTransactionResponsePagination.ts
+model/mobileFuelTruckResponse.ts
+model/mobileFuelTruckTrailerResponse.ts
 model/mobileGpsDataCommand.ts
 model/mobileRepairShopDetailsResponse.ts
 model/mobileRepairShopDetailsResponsePagination.ts
@@ -1051,7 +1056,7 @@ model/updateContactPhoneCommand.ts
 model/updateDepartmentContactCommand.ts
 model/updateDisclosureReleaseCommand.ts
 model/updateDispatchCommand.ts
-model/updateDispatchStatusCommand.ts
+model/updateDispatchHistoryCommand.ts
 model/updateDivisionCompanyCommand.ts
 model/updateDriverRightsCommand.ts
 model/updateDrugAndAlcoholCommand.ts

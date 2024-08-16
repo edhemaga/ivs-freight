@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Link } from './link';
+import { CreateLinkCommand } from './createLinkCommand';
 
 
 export interface ApiChatMessagePostRequest { 
@@ -18,6 +18,6 @@ export interface ApiChatMessagePostRequest {
     Content?: string;
     ParentMessageId?: number;
     Attachments?: Array<Blob>;
-    Links?: Array<Link>;
+    Links?: Array<CreateLinkCommand>;
 }
 

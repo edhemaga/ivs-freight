@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LinkMetadata } from './linkMetadata';
 
 
 export interface LinkResponse { 
     messageId?: number;
     url?: string | null;
     time?: string;
+    metadata?: LinkMetadata;
 }
 

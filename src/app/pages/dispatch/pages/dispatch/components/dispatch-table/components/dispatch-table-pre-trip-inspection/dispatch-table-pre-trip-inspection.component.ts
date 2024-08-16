@@ -12,6 +12,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 //utils
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-dispatch-table-pre-trip-inspection',
@@ -27,9 +28,15 @@ export class DispatchTablePreTripInspectionComponent
 
     @Input() dispatchBoardId?: number;
     @Input() dispatchId?: number;
-
+    @Input() set time(value: string | null) {
+        if (value)
+            this._time = MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                value,
+                true
+            );
+    }
     @Input() isHoveringRow: boolean;
-
+    private _time: string | null;
     private _status: EnumValue;
     private destroy$ = new Subject<void>();
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
