@@ -43,4 +43,12 @@ export enum DispatchTableStringEnum {
     COPY = 'copy',
     VALUE = 'value',
     NOTE = 'NOTE',
+    TRUCK_1 = 'TRUCK',
+    TRAILER_1 = 'TRAILER',
+    DRIVER_1 = 'DRIVER',
+    LAST_LOCATION = 'LAST LOCATION',
+    PARKING_1 = 'PARKING',
+    INSPECTION = 'INSPECTION',
+    PROGRESS = 'PROGRESS',
+    DISPATCHER_1 = 'DISPATCHER',
 }

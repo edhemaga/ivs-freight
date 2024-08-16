@@ -822,6 +822,36 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             case DispatchTableStringEnum.NOTE:
                 this.isNoteExpanded = !this.isNoteExpanded;
                 break;
+            case DispatchTableStringEnum.TRUCK_1:
+                this.handleTableHeadClick(
+                    this.columns[0].sortName,
+                    this.columns[0].field
+                );
+                break;
+            case DispatchTableStringEnum.TRAILER_1:
+                this.handleTableHeadClick(
+                    this.columns[2].sortName,
+                    this.columns[2].field
+                );
+                break;
+            case DispatchTableStringEnum.DRIVER_1:
+                this.handleTableHeadClick(
+                    this.columns[4].sortName,
+                    this.columns[4].field
+                );
+                break;
+            case DispatchTableStringEnum.LAST_LOCATION:
+                this.handleTableHeadClick(
+                    this.columns[11].sortName,
+                    this.columns[11].field
+                );
+                break;
+            case DispatchTableStringEnum.PARKING_1:
+                this.handleTableHeadClick(
+                    this.columns[15].sortName,
+                    this.columns[15].field
+                );
+                break;
             default:
                 break;
         }

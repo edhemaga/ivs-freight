@@ -52,6 +52,7 @@ import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
+import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 
 @NgModule({
     declarations: [
@@ -92,7 +93,7 @@ import { TaStatusComponentComponent } from '@shared/components/ta-status-compone
         HosTimePipe,
         ColorFinderPipe,
         DispatchTableInfoTextPipe,
-
+        DispatchTableHeaderShowPipe,
         // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,

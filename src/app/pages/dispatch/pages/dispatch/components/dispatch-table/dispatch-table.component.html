@@ -26,93 +26,84 @@
                 "
             >
                 <tr>
-                    <th
-                        (click)="
-                            handleTableHeadClick(
-                                columns[0].sortName,
-                                columns[0].field
-                            )
+                    <ng-container
+                        *ngFor="
+                            let tableHeaderItem of dispatchTableHeaderItems;
+                            let headerItemIndex = index;
+                            trackBy: trackByIdentity
                         "
                     >
-                        TRUCK
-                    </th>
-                    <th
-                        (click)="
-                            handleTableHeadClick(
-                                columns[2].sortName,
-                                columns[2].field
-                            )
-                        "
-                    >
-                        TRAILER
-                    </th>
-                    <th
-                        (click)="
-                            handleTableHeadClick(
-                                columns[4].sortName,
-                                columns[4].field
-                            )
-                        "
-                    >
-                        DRIVER
-                    </th>
-                    <ng-container *ngIf="!columns[10].hidden">
-                        <th
-                            class="icon d-flex justify-content-center align-items-center"
-                        >
-                            <svg-icon
-                                [src]="dispatchTableSvgRoutes.preTripInspection"
-                            >
-                            </svg-icon>
-                        </th>
-                    </ng-container>
-                    <th
-                        (click)="
-                            handleTableHeadClick(
-                                columns[11].sortName,
-                                columns[11].field
-                            )
-                        "
-                    >
-                        LAST LOCATION
-                    </th>
-                    <th class="text-center p-0">STATUS</th>
-                    <th class="pick-delivery">
-                        <div>PICKUP</div>
-                        <div>DELIVERY</div>
-                    </th>
-                    <ng-container *ngIf="!columns[14].hidden">
-                        <th>PROGRESS</th>
-                    </ng-container>
-                    <ng-container *ngIf="!columns[15].hidden">
-                        <th
-                            (click)="
-                                handleTableHeadClick(
-                                    columns[15].sortName,
-                                    columns[15].field
-                                )
+                        <ng-container
+                            *ngIf="
+                                tableHeaderItem.title
+                                    | dispatchTableHeaderShowPipe : columns
                             "
                         >
-                            PARKING
-                        </th>
-                    </ng-container>
-                    <ng-container *ngIf="!columns[16].hidden">
-                        <th
-                            class="icon d-flex justify-content-center align-items-center"
-                        >
-                            <svg-icon
-                                [src]="
-                                    dispatchTableSvgRoutes.toolbarDispatchIcon
+                            <th
+                                class="ta-font-bold"
+                                [ngClass]="{
+                                    'd-flex justify-content-center align-items-center':
+                                        !tableHeaderItem?.title &&
+                                        tableHeaderItem?.icon,
+                                    'd-flex align-items-center pickup-delivery':
+                                        tableHeaderItem?.secondTitle,
+                                    'c-pointer':
+                                        tableHeaderItem?.title === 'NOTE'
+                                }"
+                                (click)="
+                                    handleHeaderClick(tableHeaderItem?.title)
                                 "
                             >
-                            </svg-icon>
-                        </th>
-                    </ng-container>
-                    <ng-container *ngIf="!columns[17].hidden">
-                        <th>NOTE</th>
-                    </ng-container>
+                                <div>
+                                    <svg-icon
+                                        class="icon"
+                                        [class.expanded]="
+                                            tableHeaderItem?.title === 'NOTE' &&
+                                            isNoteExpanded
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '14',
+                                            'height.px': '14'
+                                        }"
+                                        [src]="tableHeaderItem?.icon"
+                                    ></svg-icon>
 
-                    <th class="empty"></th>
+                                    <ng-container
+                                        *ngIf="
+                                            (tableHeaderItem?.title !==
+                                                'INSPECTION' &&
+                                                tableHeaderItem?.title !==
+                                                    'DISPATCHER' &&
+                                                tableHeaderItem?.title !==
+                                                    'NOTE') ||
+                                            (tableHeaderItem?.title ===
+                                                'NOTE' &&
+                                                isNoteExpanded)
+                                        "
+                                    >
+                                        {{ tableHeaderItem?.title }}
+                                    </ng-container>
+                                </div>
+
+                                <ng-container
+                                    *ngIf="tableHeaderItem?.secondIcon"
+                                >
+                                    <div>
+                                        <svg-icon
+                                            class="icon delivery"
+                                            [svgStyle]="{
+                                                'width.px': '14',
+                                                'height.px': '14'
+                                            }"
+                                            [src]="tableHeaderItem?.secondIcon"
+                                        ></svg-icon>
+
+                                        {{ tableHeaderItem?.secondTitle }}
+                                    </div>
+                                </ng-container>
+                            </th>
+                        </ng-container>
+                    </ng-container>
                 </tr>
             </ng-container>
         </thead>
