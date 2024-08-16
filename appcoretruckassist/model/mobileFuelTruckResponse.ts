@@ -9,16 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
-import { DispatchStatusResponse } from './dispatchStatusResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
-export interface DispatchHistoryGroupItemResponse { 
-    id?: number;
-    status?: DispatchStatusResponse;
-    startDate?: string;
-    endDate?: string | null;
-    totalTime?: string | null;
-    location?: AddressEntity;
+export interface MobileFuelTruckResponse { 
+    truckId?: number | null;
+    truckNumber?: string | null;
+    truckType?: TruckTypeResponse;
 }
 
