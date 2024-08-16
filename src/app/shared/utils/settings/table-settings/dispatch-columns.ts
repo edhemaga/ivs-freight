@@ -16,7 +16,7 @@ export function getDispatchColumnDefinition() {
             field: 'truckNumber',
             groupName: 'Truck ',
             name: 'Year ',
-            hidden: false,
+            hidden: true,
         },
         {
             ngTemplate: 'text',
@@ -34,7 +34,7 @@ export function getDispatchColumnDefinition() {
             field: 'year',
             groupName: 'Trailer',
             name: 'Year',
-            hidden: false,
+            hidden: true,
         },
 
         {
@@ -63,7 +63,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Driver ',
             name: 'Endorsements ',
             sortName: 'driver',
-            hidden: false,
+            hidden: true,
         },
 
         {
@@ -83,7 +83,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Co-Driver ',
             name: 'Hours of Service ',
             sortName: 'driver',
-            hidden: false,
+            hidden: true,
         },
         {
             ngTemplate: 'text',
@@ -92,7 +92,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Co-Driver ',
             name: 'Endorsements ',
             sortName: 'driver',
-            hidden: false,
+            hidden: true,
         },
 
         {

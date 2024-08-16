@@ -554,7 +554,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         };
 
         this.trailerModalService
-            .addTrailer(newData)
+            .addTrailer(newData, this.editData?.isDispatchCall)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1049,14 +1049,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.trailerModalService
                 .autocompleteByTrailerModel(model)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: TrailerAutocompleteModelResponse) => {
-                        console.log('autocomplete: ', res);
-                    },
-                    error: (error) => {
-                        console.log(error);
-                    },
-                });
+                .subscribe();
         }
     }
 

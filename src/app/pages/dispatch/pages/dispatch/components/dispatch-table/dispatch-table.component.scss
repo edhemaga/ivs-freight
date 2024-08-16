@@ -40,12 +40,6 @@
                             }
                         }
                     }
-
-                    .padding-inside {
-                        .driver-buttons {
-                            display: none !important;
-                        }
-                    }
                 }
             }
         }
@@ -97,6 +91,16 @@
             font-size: 11px;
             color: $bw6-2;
 
+            &.c-pointer {
+                cursor: pointer;
+            }
+
+            &::selection,
+            ::selection {
+                background-color: $ta-black-2;
+                color: $ta-black-2;
+            }
+
             &.pickup-delivery {
                 div {
                     flex: 1;
@@ -121,14 +125,16 @@
                 }
             }
 
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
+            div {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
 
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
 
             &.icon {
@@ -136,6 +142,14 @@
                 svg {
                     path {
                         fill: $bw6-2;
+                    }
+                }
+
+                &.expanded {
+                    svg {
+                        path {
+                            fill: $ta-blue-18;
+                        }
                     }
                 }
             }
@@ -156,70 +170,7 @@
                 .padding-inside {
                     position: relative;
 
-                    height: 100%;
-
-                    .hos-column {
-                        position: relative;
-                        height: 26px;
-                        width: 26px;
-                        margin-right: 4px;
-
-                        .hos-number {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 8px;
-                            font-weight: 700;
-                            color: #919191;
-                            padding-right: 1px;
-                            user-select: none;
-                            pointer-events: none;
-                        }
-
-                        .hos-img {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            cursor: pointer;
-
-                            svg-icon {
-                                display: flex;
-                                margin-left: 1px;
-                                svg {
-                                    width: 22px;
-                                    height: 22px;
-
-                                    path {
-                                        fill: #919191;
-                                        &:first-child {
-                                            fill: transparent !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.active_hos {
-                            .hos-img {
-                                border-radius: 100%;
-                                background-color: #26a69033;
-
-                                svg-icon {
-                                    svg {
-                                        path:not(path:first-child) {
-                                            fill: #26a690;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .hos-number {
-                                color: #26a690;
-                            }
-                        }
-                    }
+                    height: 100%;   
 
                     &:not(.status-inside) {
                         padding: 4px;
@@ -325,14 +276,6 @@
                     align-items: center;
                     line-height: 1;
 
-                    &.note-container {
-                        display: block;
-                        height: 100%;
-
-                        border-radius: 3px;
-                        padding-left: 6px;
-                    }
-
                     .dispatcher-table-cell-holder {
                         display: flex;
                         height: 28px;
@@ -346,20 +289,10 @@
                     background: #fff;
 
                     .padding-inside {
-                        &.hovering {
-                            .info-item {
-                                transition: background 0.2s ease-in;
-                                background: $bw2;
-                            }
-                        }
-
+                        position: relative;
                         &:hover {
                             .info-item {
                                 background: $bw2;
-
-                                .driver-buttons {
-                                    display: flex;
-                                }
                             }
                         }
                     }
@@ -449,7 +382,15 @@
             }
 
             &.note-field {
-                min-width: 194px;
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
+
+                &.expanded {
+                    width: 236px !important;
+                    max-width: 236px !important;
+                    min-width: 236px !important;
+                }
             }
         }
     }
@@ -612,12 +553,34 @@
                 font-size: 26px;
                 line-height: 32px;
                 color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
             }
 
             .no-data-description {
                 font-size: 11px;
                 line-height: 14px;
                 color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
             }
         }
 

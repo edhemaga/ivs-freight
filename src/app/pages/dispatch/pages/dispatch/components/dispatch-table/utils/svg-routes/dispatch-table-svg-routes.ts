@@ -19,4 +19,6 @@ export class DispatchTableSvgRoutes {
         'assets/svg/dispatchboard/dispatch_board_no_data.svg';
     static toolbarDispatchIcon: string =
         'assets/svg/common/ic_dispatch_board_dispatcher_icon.svg';
+    static toolbarNoteIcon: string =
+        'assets/svg/truckassist-table/note/Note.svg';
 }

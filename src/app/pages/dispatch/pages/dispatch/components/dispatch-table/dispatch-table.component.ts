@@ -124,7 +124,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public showAddAddressFieldIndex: number = -1;
 
+    public isNoteExpanded: boolean = false;
     public parkingCount: number = 0;
+    public openedDriverDropdown: number = -1;
 
     /////////////////////////////////////////// UPDATE
 
@@ -132,8 +134,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     startIndexTrailer: number;
     startIndexDriver: number;
     draggingType: string = '';
-
-    openedDriverDropdown: number = -1;
     openedHosData = [];
 
     constructor(
@@ -575,7 +575,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    saveHosData(hos, indx) {
+    public saveHosData(indx: number): void {
         this.openedHosData = this.openedHosData.map((item) => {
             item.flag = item.flag?.name ? item.flag.name : item.flag;
             return item;
@@ -588,41 +588,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    userChangeEnd(event, item) {
-        const index = item.indx;
-        const nextHos = index + 1;
-        if (this.openedHosData[nextHos]) {
-            clearTimeout(this.testTimeout);
-            this.testTimeout = setTimeout(() => {
-                this.changeHosDataPositions(event, index);
-            }, 0);
-        }
-    }
-
-    changeHosDataPositions(event, index) {
-        const nextHos = index + 1;
-        if (this.openedHosData[nextHos]) {
-            this.openedHosData[nextHos].start = this.openedHosData[index].end;
-        }
-    }
-
-    addHOS(hosType) {
-        this.openedHosData = [...this.openedHosData];
-        this.openedHosData.push({
-            start: this.openedHosData[this.openedHosData.length - 1].end,
-            end: new Date().getHours() * 60 + new Date().getMinutes(),
-            flag: { name: hosType },
-            indx: this.openedHosData.length,
-        });
-    }
-
-    removeHos(item) {
-        this.openedHosData = this.openedHosData.filter(
-            (it) => it.indx !== item.indx
-        );
-    }
-
-    saveNoteValue(item: any) {
+    public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
         this.updateOrAddDispatchBoardAndSend(
             'note',
             item.note,
@@ -849,6 +815,20 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             sortBy: sortBy,
             list: this.dispatchData,
         });
+    }
+
+    public handleHeaderClick(title: string): void {
+        switch (title) {
+            case DispatchTableStringEnum.NOTE:
+                this.isNoteExpanded = !this.isNoteExpanded;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public changeDriverDropdownIndex(index: number): void {
+        this.openedDriverDropdown = index;
     }
 
     ngOnDestroy(): void {

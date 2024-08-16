@@ -112,6 +112,11 @@
                     background-color: $bw-9;
                     height: 1px;
                 }
+
+                &-modal {
+                    max-width: 640px;
+                    width: calc(100vw - 640px);
+                }
             }
         }
     }
@@ -145,7 +150,10 @@
         width: 640px;
 
         .divider {
-            width: 615px;
+            height: 1px;
+            background-color: $bw-9;
+            width: 616px;
+            margin-left: 0;
         }
     }
 

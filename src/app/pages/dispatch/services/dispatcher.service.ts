@@ -29,6 +29,7 @@ import {
     UpdateDispatchStatusCommand,
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
+    RevertDispatchStatusCommand,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
@@ -100,6 +101,12 @@ export class DispatcherService {
         id: number
     ): Observable<DispatchPossibleStatusResponse> {
         return this.dispatchService.apiDispatchNextstatusesIdGet(id);
+    }
+
+    public revertDispatchStatus(
+        id: number
+    ): Observable<RevertDispatchStatusCommand> {
+        return this.dispatchService.apiDispatchStatusRevertPatch({ id });
     }
 
     getDispatchboardAllListAndUpdate() {
@@ -325,6 +332,17 @@ export class DispatcherService {
             modal: list[0],
             dispatchList: list[1],
         }));
+    }
+
+    set updateDispatcherData(isUpdate: boolean) {
+        if (isUpdate) {
+            this.getDispatcherList().subscribe((lists) => {
+                this.dispatcherStore.update((store) => ({
+                    ...store,
+                    modal: lists,
+                }));
+            });
+        }
     }
 
     async updateCountList<T>(id: number, type: string, value: T) {

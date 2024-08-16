@@ -1,7 +1,7 @@
 <div class="message-container d-flex">
     <div
         [ngClass]="
-            currentUserId === message.sender?.id
+            currentUserId === (message.senderId || message.sender?.id)
                 ? 'flex-row'
                 : 'flex-row-reverse'
         "
@@ -17,7 +17,9 @@
 
         <div
             [ngClass]="
-                currentUserId === message.sender?.id ? 'current-user' : 'other'
+                currentUserId === (message.senderId || message.sender?.id)
+                    ? 'current-user'
+                    : 'other'
             "
             class="content ta-font-regular"
         >

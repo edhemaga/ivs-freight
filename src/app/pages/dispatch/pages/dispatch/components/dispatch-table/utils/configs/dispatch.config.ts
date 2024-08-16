@@ -22,6 +22,9 @@ export class DispatchConfig {
     static getTruckTrailerInputConfig(
         config: TruckTrailerConfigParams
     ): ITaInput {
+        const { type, hasAdditionalFieldTruck, hasAdditionalFieldTrailer } =
+            config;
+
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -36,13 +39,13 @@ export class DispatchConfig {
             hideErrorMessage: true,
             mergeDropdownBodyWithInput: true,
             dropdownWidthClass:
-                config.type === 'truck'
-                    ? config.hasAdditionalFieldTruck
+                type === 'truck'
+                    ? hasAdditionalFieldTruck
                         ? 'w-col-158'
-                        : 'w-col-118'
-                    : config.hasAdditionalFieldTrailer
+                        : 'w-col-138'
+                    : hasAdditionalFieldTrailer
                     ? 'w-col-158'
-                    : 'w-col-125',
+                    : 'w-col-138',
         };
     }
 

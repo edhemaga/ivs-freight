@@ -8,7 +8,7 @@ import {
     ChangeDetectorRef,
     ViewChildren,
     QueryList,
-    AfterViewInit,
+    AfterViewChecked,
 } from '@angular/core';
 
 // modules
@@ -36,7 +36,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
         TaCustomPeriodRangeComponent,
     ],
 })
-export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
+export class TaTabSwitchComponent implements AfterViewChecked, OnChanges {
     @ViewChildren('popoverHolder')
     autoCloseComponent: QueryList<TaAutoclosePopoverComponent>;
 
@@ -67,10 +67,9 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
         this.setSwitchActive(this.tabs);
     }
 
-    ngAfterViewInit() {
-        setTimeout(() => {
-            this.setSwitchActive(this.tabs);
-        }, 550);
+    ngAfterViewChecked() {
+        this.setSwitchActive(this.tabs);
+        this.det.detectChanges();
     }
 
     public setSwitchActive(tabs): void {
@@ -86,17 +85,20 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
 
         this.det.detectChanges();
     }
+
     public switchTab(e, indx, item): void {
         e.stopPropagation();
         this.indexSwitch = indx;
+
 
         this.tabs.map((tab) => {
             if (tab.id === item.id) tab.checked = true;
             else tab.checked = false;
         });
-        this.hoverStyle = this.getElementOffset(e.target);
-        const closeComponentArray = this.autoCloseComponent.toArray().reverse();
 
+        this.hoverStyle = this.getElementOffset(e.target);
+
+        const closeComponentArray = this.autoCloseComponent.toArray().reverse();
         if (
             item.name != 'Custom' &&
             closeComponentArray[0]?.tooltip?.isOpen()
@@ -104,7 +106,6 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
             closeComponentArray[0].tooltip.close();
         }
         this.switchClicked.emit(item);
-
         this.det.detectChanges();
     }
 
