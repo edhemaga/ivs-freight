@@ -56,6 +56,8 @@ export class DispatchTableDriverComponent {
     @Input() public hoursOfService: HosResponse;
     @Input() public dispatchId: number;
     @Input() public isHoveringRow: boolean;
+    @Input() public showHos: boolean = true;
+    @Input() public showEndorsment: boolean = true;
 
     @Output() addDriverEmitter = new EventEmitter<{
         event: DriverMinimalResponse;

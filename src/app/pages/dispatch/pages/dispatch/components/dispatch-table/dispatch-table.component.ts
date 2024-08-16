@@ -23,6 +23,7 @@ import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
@@ -53,6 +54,7 @@ import {
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -81,11 +83,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     @Input() toolbarWidth: number = 0;
+    @Input() columns: DispatchColumn;
 
     @Input() isAllBoardsList: boolean;
 
-    @Output() onTableUnlockEmitter: EventEmitter<{ action: string }> =
-        new EventEmitter();
+    @Output() onTableUnlockEmitter: EventEmitter<{
+        action: string;
+        column?: string;
+        sortBy?: string;
+        list?: any;
+    }> = new EventEmitter();
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
@@ -137,7 +144,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService
+        private parkingService: ParkingService,
+        private tableService: TruckassistTableService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -832,6 +840,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.hasLargeFieldParking = res.isParkingExpanded;
                 }
             });
+    }
+
+    public handleTableHeadClick(action: string, sortBy: string): void {
+        this.onTableUnlockEmitter.emit({
+            action: 'sort',
+            column: action,
+            sortBy: sortBy,
+            list: this.dispatchData,
+        });
     }
 
     ngOnDestroy(): void {

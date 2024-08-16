@@ -51,6 +51,7 @@ export class DispatchTableTruckTrailerComponent {
     @Input() isBoardLocked: boolean;
     @Input() isDrag: boolean;
     @Input() isActiveLoad: boolean;
+    @Input() showYear: boolean = true;
 
     @Input() isHoveringRow: boolean;
 

@@ -9,7 +9,10 @@
     &.hovering {
         background: $bw2;
     }
-
+    svg {
+        width: 12px;
+        height: 16px;
+    }
     &.status-disabled {
         svg {
             path {

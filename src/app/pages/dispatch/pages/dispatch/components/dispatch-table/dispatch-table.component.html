@@ -26,62 +26,93 @@
                 "
             >
                 <tr>
-                    <ng-container
-                        *ngFor="
-                            let tableHeaderItem of dispatchTableHeaderItems;
-                            let headerItemIndex = index;
-                            trackBy: trackByIdentity
+                    <th
+                        (click)="
+                            handleTableHeadClick(
+                                columns[0].sortName,
+                                columns[0].field
+                            )
                         "
                     >
+                        TRUCK
+                    </th>
+                    <th
+                        (click)="
+                            handleTableHeadClick(
+                                columns[2].sortName,
+                                columns[2].field
+                            )
+                        "
+                    >
+                        TRAILER
+                    </th>
+                    <th
+                        (click)="
+                            handleTableHeadClick(
+                                columns[4].sortName,
+                                columns[4].field
+                            )
+                        "
+                    >
+                        DRIVER
+                    </th>
+                    <ng-container *ngIf="!columns[10].hidden">
                         <th
-                            class="ta-font-bold"
-                            [ngClass]="{
-                                'd-flex justify-content-center align-items-center':
-                                    !tableHeaderItem?.title &&
-                                    tableHeaderItem?.icon,
-                                'd-flex align-items-center pickup-delivery':
-                                    tableHeaderItem?.secondTitle
-                            }"
+                            class="icon d-flex justify-content-center align-items-center"
                         >
-                            <div>
-                                <svg-icon
-                                    class="icon"
-                                    [svgStyle]="{
-                                        'width.px': '14',
-                                        'height.px': '14'
-                                    }"
-                                    [src]="tableHeaderItem?.icon"
-                                ></svg-icon>
-
-                                <ng-container
-                                    *ngIf="
-                                        tableHeaderItem?.title !==
-                                            'INSPECTION' &&
-                                        tableHeaderItem?.title !==
-                                            'DISPATCHER' &&
-                                        tableHeaderItem?.title !== 'NOTE'
-                                    "
-                                >
-                                    {{ tableHeaderItem?.title }}
-                                </ng-container>
-                            </div>
-
-                            <ng-container *ngIf="tableHeaderItem?.secondIcon">
-                                <div>
-                                    <svg-icon
-                                        class="icon delivery"
-                                        [svgStyle]="{
-                                            'width.px': '14',
-                                            'height.px': '14'
-                                        }"
-                                        [src]="tableHeaderItem?.secondIcon"
-                                    ></svg-icon>
-
-                                    {{ tableHeaderItem?.secondTitle }}
-                                </div>
-                            </ng-container>
+                            <svg-icon
+                                [src]="dispatchTableSvgRoutes.preTripInspection"
+                            >
+                            </svg-icon>
                         </th>
                     </ng-container>
+                    <th
+                        (click)="
+                            handleTableHeadClick(
+                                columns[11].sortName,
+                                columns[11].field
+                            )
+                        "
+                    >
+                        LAST LOCATION
+                    </th>
+                    <th class="text-center p-0">STATUS</th>
+                    <th class="pick-delivery">
+                        <div>PICKUP</div>
+                        <div>DELIVERY</div>
+                    </th>
+                    <ng-container *ngIf="!columns[14].hidden">
+                        <th>PROGRESS</th>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[15].hidden">
+                        <th
+                            (click)="
+                                handleTableHeadClick(
+                                    columns[15].sortName,
+                                    columns[15].field
+                                )
+                            "
+                        >
+                            PARKING
+                        </th>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[16].hidden">
+                        <th
+                            class="icon d-flex justify-content-center align-items-center"
+                        >
+                            <svg-icon
+                                [src]="
+                                    dispatchTableSvgRoutes.toolbarDispatchIcon
+                                "
+                            >
+                            </svg-icon>
+                        </th>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[17].hidden">
+                        <th>NOTE</th>
+                    </ng-container>
+
+                    <th class="empty"></th>
                 </tr>
             </ng-container>
         </thead>
@@ -130,6 +161,7 @@
                                 "
                                 [truck]="item?.truck"
                                 [truckList]="truckList"
+                                [showYear]="!columns[1].hidden"
                                 [rowIndex]="rowIndex"
                                 [isBoardLocked]="isDispatchBoardLocked"
                                 [isDrag]="isDrag"
@@ -204,6 +236,7 @@
                                         "
                                         [trailer]="item?.trailer"
                                         [trailerList]="trailerList"
+                                        [showYear]="!columns[3].hidden"
                                         [rowIndex]="rowIndex"
                                         [isBoardLocked]="isDispatchBoardLocked"
                                         [isDrag]="isDrag"
@@ -287,6 +320,8 @@
                                         "
                                         [isActiveLoad]="!!item?.activeLoad"
                                         [hoursOfService]="item?.hoursOfService"
+                                        [showHos]="!columns[5].hidden"
+                                        [showEndorsment]="!columns[6].hidden"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
                                             isHoveringRowIndex === rowIndex
@@ -305,18 +340,19 @@
                                 </div>
                             </div>
                         </td>
-
-                        <td class="pre-trip">
-                            <app-dispatch-table-pre-trip-inspection
-                                [dispatchId]="item?.id"
-                                [dispatchBoardId]="item?.dispatchBoardId"
-                                [status]="item?.preTripInspection"
-                                [isHoveringRow]="
-                                    isDispatchBoardLocked &&
-                                    isHoveringRowIndex === rowIndex
-                                "
-                            ></app-dispatch-table-pre-trip-inspection>
-                        </td>
+                        <ng-container *ngIf="!columns[10].hidden">
+                            <td class="pre-trip">
+                                <app-dispatch-table-pre-trip-inspection
+                                    [dispatchId]="item?.id"
+                                    [dispatchBoardId]="item?.dispatchBoardId"
+                                    [status]="item?.preTripInspection"
+                                    [isHoveringRow]="
+                                        isDispatchBoardLocked &&
+                                        isHoveringRowIndex === rowIndex
+                                    "
+                                ></app-dispatch-table-pre-trip-inspection>
+                            </td>
+                        </ng-container>
 
                         <td class="location-field">
                             <app-dispatch-table-last-location
@@ -352,95 +388,109 @@
                         </td>
 
                         <td class="pickup-delivery-field"></td>
-
-                        <td class="progress-field">
-                            <div class="main_inside filled">
-                                <div class="padding-inside">
-                                    <div class="info-item p-0 w-100">
-                                        <app-ta-gps-progressbar></app-ta-gps-progressbar>
+                        <ng-container *ngIf="!columns[14].hidden">
+                            <td class="progress-field">
+                                <div class="main_inside filled">
+                                    <div class="padding-inside">
+                                        <div class="info-item p-0 w-100">
+                                            <app-ta-gps-progressbar></app-ta-gps-progressbar>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                        </ng-container>
 
-                        <td
-                            class="parking-field"
-                            [ngClass]="{
-                                'parking-field-large': parkingList?.length > 1
-                            }"
-                        >
-                            <app-dispatch-table-parking
-                                [parkingList]="parkingList"
-                                [parkingSlot]="item.parkingSlot"
-                                [isWideTable]="parkingList?.length > 1"
-                                [truckId]="item.truck?.id"
-                                [trailerId]="item.trailer?.id"
-                                [isHoveringRow]="
-                                    isDispatchBoardLocked &&
-                                    isHoveringRowIndex === rowIndex
-                                "
-                                (updateParking)="updateParking($event, item.id)"
-                            ></app-dispatch-table-parking>
-                        </td>
-
-                        <td class="box-item">
-                            <div class="main_inside filled">
-                                <div
-                                    class="padding-inside"
-                                    [ngClass]="{
-                                        hovering:
-                                            isDispatchBoardLocked &&
-                                            item.dispatcher?.fullName &&
-                                            isHoveringRowIndex === rowIndex
-                                    }"
-                                >
+                        <ng-container *ngIf="!columns[15].hidden">
+                            <td
+                                class="parking-field"
+                                [ngClass]="{
+                                    'parking-field-large':
+                                        parkingList?.length > 1
+                                }"
+                            >
+                                <app-dispatch-table-parking
+                                    [parkingList]="parkingList"
+                                    [parkingSlot]="item.parkingSlot"
+                                    [isWideTable]="parkingList?.length > 1"
+                                    [truckId]="item.truck?.id"
+                                    [trailerId]="item.trailer?.id"
+                                    [isHoveringRow]="
+                                        isDispatchBoardLocked &&
+                                        isHoveringRowIndex === rowIndex
+                                    "
+                                    (updateParking)="
+                                        updateParking($event, item.id)
+                                    "
+                                ></app-dispatch-table-parking>
+                            </td>
+                        </ng-container>
+                        <ng-container *ngIf="!columns[16].hidden">
+                            <td class="box-item">
+                                <div class="main_inside filled">
                                     <div
-                                        class="info-item justify-content-center"
+                                        class="padding-inside"
+                                        [ngClass]="{
+                                            hovering:
+                                                isDispatchBoardLocked &&
+                                                item.dispatcher?.fullName &&
+                                                isHoveringRowIndex === rowIndex
+                                        }"
                                     >
-                                        <ng-container
-                                            *ngIf="item.dispatcher?.fullName"
+                                        <div
+                                            class="info-item justify-content-center"
                                         >
-                                            <app-ta-profile-images
-                                                [indx]="rowIndex"
-                                                [name]="
+                                            <ng-container
+                                                *ngIf="
                                                     item.dispatcher?.fullName
                                                 "
-                                                [size]="'small'"
-                                                [type]="'user'"
-                                                [withTooltip]="true"
-                                                [isDispatch]="true"
                                             >
-                                            </app-ta-profile-images>
-                                        </ng-container>
+                                                <app-ta-profile-images
+                                                    [indx]="rowIndex"
+                                                    [name]="
+                                                        item.dispatcher
+                                                            ?.fullName
+                                                    "
+                                                    [size]="'small'"
+                                                    [type]="'user'"
+                                                    [withTooltip]="true"
+                                                    [isDispatch]="true"
+                                                >
+                                                </app-ta-profile-images>
+                                            </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                        </ng-container>
 
-                        <td class="note-field">
-                            <div
-                                class="main_inside"
-                                [class.filled]="item.truck"
-                            >
+                        <ng-container *ngIf="!columns[17].hidden">
+                            <td class="note-field">
                                 <div
-                                    class="dispatcher-table-cell-container note-container"
-                                    [class.empty-box-field]="!item.note"
+                                    class="main_inside"
+                                    [class.filled]="item.truck"
                                 >
-                                    <app-ta-note
-                                        [note]="item.note"
-                                        [openedAll]="true"
-                                        [dispatchIndex]="rowIndex"
-                                        [parking]="false"
-                                        [noteWidth]="213"
-                                        [parentWidth]="'.note-field'"
-                                        [type]="'dark'"
-                                        [isDispatch]="true"
-                                        (saveNoteValue)="saveNoteValue($event)"
+                                    <div
+                                        class="dispatcher-table-cell-container note-container"
+                                        [class.empty-box-field]="!item.note"
                                     >
-                                    </app-ta-note>
+                                        <app-ta-note
+                                            [note]="item.note"
+                                            [openedAll]="true"
+                                            [dispatchIndex]="rowIndex"
+                                            [parking]="false"
+                                            [noteWidth]="213"
+                                            [parentWidth]="'.note-field'"
+                                            [type]="'dark'"
+                                            [isDispatch]="true"
+                                            (saveNoteValue)="
+                                                saveNoteValue($event)
+                                            "
+                                        >
+                                        </app-ta-note>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                        </ng-container>
 
                         <td class="box-item">
                             <div
@@ -481,6 +531,7 @@
                             [truck]="addNewTruckData"
                             [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
                             [truckList]="truckList"
+                            [showYear]="!columns[1].hidden"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
                             [isDrag]="isDrag"
@@ -509,6 +560,7 @@
                             [trailerList]="trailerList"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
+                            [showYear]="!columns[3].hidden"
                             [isDrag]="isDrag"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
                             (addTruckTrailerEmitter)="
@@ -529,6 +581,8 @@
                             [isDrag]="isDrag"
                             [draggingType]="draggingType"
                             [openedDriverDropdown]="openedDriverDropdown"
+                            [showHos]="!columns[5].hidden"
+                            [showEndorsment]="!columns[6].hidden"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
                             (addDriverEmitter)="handleAddDriverClick($event)"
                             (removeDriverEmitter)="
@@ -540,10 +594,11 @@
                         >
                         </app-dispatch-table-driver>
                     </td>
-
-                    <td class="pre-trip">
-                        <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
-                    </td>
+                    <ng-container *ngIf="!columns[10].hidden">
+                        <td class="pre-trip">
+                            <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
+                        </td>
+                    </ng-container>
 
                     <td class="location-field">
                         <ng-container
@@ -582,30 +637,34 @@
                             <div class="padding-inside"></div>
                         </div>
                     </td>
-
-                    <td class="progress-field">
-                        <div class="main_inside">
-                            <div class="padding-inside"></div>
-                        </div>
-                    </td>
-
-                    <td class="parking-field">
-                        <div class="main_inside">
-                            <div class="padding-inside"></div>
-                        </div>
-                    </td>
-
-                    <td class="box-item">
-                        <div class="main_inside">
-                            <div class="padding-inside"></div>
-                        </div>
-                    </td>
-
-                    <td class="note-field">
-                        <div class="main_inside">
-                            <div class="padding-inside"></div>
-                        </div>
-                    </td>
+                    <ng-container *ngIf="!columns[14].hidden">
+                        <td class="progress-field">
+                            <div class="main_inside">
+                                <div class="padding-inside"></div>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[15].hidden">
+                        <td class="parking-field">
+                            <div class="main_inside">
+                                <div class="padding-inside"></div>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[16].hidden">
+                        <td class="box-item">
+                            <div class="main_inside">
+                                <div class="padding-inside"></div>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="!columns[17].hidden">
+                        <td class="note-field">
+                            <div class="main_inside">
+                                <div class="padding-inside"></div>
+                            </div>
+                        </td>
+                    </ng-container>
 
                     <td class="box-item">
                         <div class="main_inside">
