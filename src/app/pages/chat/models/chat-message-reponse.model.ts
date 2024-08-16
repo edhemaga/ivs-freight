@@ -18,7 +18,7 @@ export interface ChatMessageResponse {
     updatedAt: string;
     isEdited?: boolean;
     files?: Array<FileResponse>;
-    fileCount?: number;
+    filesCount?: number;
     media?: Array<FileResponse>;
     mediaCount?: number;
     links?: Array<ChatLink>;

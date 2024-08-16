@@ -1,5 +1,5 @@
 <div class="message-container">
-    <ng-container *ngIf="message.content || message.fileCount">
+    <ng-container *ngIf="message.content || message.filesCount">
         <div
             class="content-wrapper d-flex justify-content-end"
             [ngClass]="
@@ -32,7 +32,7 @@
             >
                 {{ message.content }}
 
-                <ng-container *ngIf="message.fileCount">
+                <ng-container *ngIf="message.filesCount">
                     <div
                         class="attachment-list d-flex"
                         [ngStyle]="
