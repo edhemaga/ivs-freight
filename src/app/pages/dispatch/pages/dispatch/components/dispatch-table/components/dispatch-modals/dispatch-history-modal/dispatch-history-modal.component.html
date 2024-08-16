@@ -171,12 +171,6 @@
                                             trackBy: trackByIdentity
                                         "
                                     >
-                                        {{
-                                            'helperGroupIndex' +
-                                                ' ' +
-                                                helperGroupIndex
-                                        }}
-                                        {{ 'groupIndex' + ' ' + groupIndex }}
                                         <div
                                             class="d-flex group-container-main-card"
                                             [formGroupName]="groupIndex"
@@ -346,6 +340,12 @@
                                                                         0
                                                                     )
                                                                 "
+                                                                (click)="
+                                                                    handleUpdateGroupHistoryDataIndex(
+                                                                        groupIndex,
+                                                                        itemIndex
+                                                                    )
+                                                                "
                                                             ></app-ta-input>
                                                         </div>
 
@@ -377,6 +377,12 @@
                                                                         groupIndex,
                                                                         itemIndex,
                                                                         1
+                                                                    )
+                                                                "
+                                                                (click)="
+                                                                    handleUpdateGroupHistoryDataIndex(
+                                                                        groupIndex,
+                                                                        itemIndex
                                                                     )
                                                                 "
                                                             ></app-ta-input>
@@ -417,6 +423,12 @@
                                                                             groupIndex,
                                                                             itemIndex,
                                                                             2
+                                                                        )
+                                                                    "
+                                                                    (click)="
+                                                                        handleUpdateGroupHistoryDataIndex(
+                                                                            groupIndex,
+                                                                            itemIndex
                                                                         )
                                                                     "
                                                                 ></app-ta-input>
@@ -460,6 +472,12 @@
                                                                             3
                                                                         )
                                                                     "
+                                                                    (click)="
+                                                                        handleUpdateGroupHistoryDataIndex(
+                                                                            groupIndex,
+                                                                            itemIndex
+                                                                        )
+                                                                    "
                                                                 ></app-ta-input>
                                                             </ng-container>
                                                         </div>
@@ -498,6 +516,45 @@
 
                         <ng-template #noGroup>
                             <div class="d-flex flex-column no-group-container">
+                                <div class="span-container">
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        A
+                                    </div>
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        B
+                                    </div>
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        C
+                                    </div>
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        D
+                                    </div>
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        E
+                                    </div>
+                                    <div
+                                        class="span-item"
+                                        [ngClass]="noGroupClass"
+                                    >
+                                        F
+                                    </div>
+                                </div>
+
                                 <!-- No Group Header -->
 
                                 <div
@@ -526,39 +583,96 @@
 
                                 <!-- No Group Main -->
 
-                                <div
-                                    class="d-flex flex-column no-group-container-main"
-                                >
+                                <div class="no-group-container-main">
                                     <ng-container
                                         *ngFor="
                                             let noGroupItemData of noGroupData;
+                                            let noGroupItemDataIndex = index;
                                             trackBy: trackByIdentity
                                         "
                                     >
                                         <div
-                                            class="align-items-center no-group-container-main-item"
+                                            class="no-group-container-main-item"
                                             [ngClass]="noGroupClass"
+                                            [ngStyle]="{
+                                                'grid-row':
+                                                    isNoGroupItemSpanArray[
+                                                        noGroupItemDataIndex
+                                                    ]?.isRowSpan
+                                                        ? 'span ' +
+                                                          isNoGroupItemSpanArray[
+                                                              noGroupItemDataIndex
+                                                          ]?.rowSpanIndex
+                                                        : '',
+                                            }"
                                         >
+                                            <!--   [ngStyle]="{
+                                                'grid-row':
+                                                    noGroupItemDataIndex == 0
+                                                        ? 'span ' + 3
+                                                        : ''
+                                            }" -->
                                             <ng-container
                                                 *ngFor="
                                                     let noGroupItem of noGroupItemData;
+                                                    let noGroupItemIndex = index;
                                                     let last = last;
                                                     trackBy: trackByIdentity
                                                 "
                                             >
                                                 <div
-                                                    class="d-flex align-items-center item-box"
+                                                    class="align-items-center item-box"
                                                     [ngClass]="{
                                                         'justify-content-end':
                                                             last
                                                     }"
+                                                    [ngStyle]="{
+                                                        'grid-row':
+                                                            isNoGroupItemSpanArray[
+                                                                noGroupItemDataIndex
+                                                            ]?.isRowSpan
+                                                                ? 'span ' + 2
+                                                                : ''
+                                                    }"
                                                 >
+                                                    <!--   isNoGroupItemSpanArray[
+                                                                noGroupItemDataIndex
+                                                            ]
+                                                                ?.isItemBoxSpanArray[
+                                                                noGroupItemIndex
+                                                            ]?.isItemBoxSpan
+                                                                ? 'span ' +
+                                                                  isNoGroupItemSpanArray[
+                                                                      noGroupItemDataIndex
+                                                                  ]
+                                                                      ?.isItemBoxSpanArray[
+                                                                      noGroupItemIndex
+                                                                  ]
+                                                                      ?.itemSpanIndex
+                                                                : '' -->
                                                     <p class="m-0">
                                                         {{
                                                             noGroupItem ??
                                                                 '\u00A0'
                                                         }}
                                                     </p>
+
+                                                    <!-- 
+       [ngStyle]="{
+        'grid-row':
+            (noGroupItem &&
+                !noGroupData[
+                    noGroupItemDataIndex +
+                        1
+                ][i]) ||
+            (!noGroupItem &&
+                !noGroupData[
+                    noGroupItemDataIndex +
+                        1
+                ][i])
+                ? 'span ' + 2
+                : ''
+    }" -->
                                                 </div>
                                             </ng-container>
                                         </div>

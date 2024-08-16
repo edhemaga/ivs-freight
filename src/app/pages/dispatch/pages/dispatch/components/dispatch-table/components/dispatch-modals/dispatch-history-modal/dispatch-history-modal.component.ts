@@ -5,7 +5,16 @@ import {
     UntypedFormArray,
 } from '@angular/forms';
 
-import { Subject, takeUntil } from 'rxjs';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    skip,
+    Subject,
+    takeUntil,
+} from 'rxjs';
+
+// moment
+import moment from 'moment';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
@@ -36,6 +45,7 @@ import {
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
+import { GroupItem } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/group-item.model';
 
 @Component({
     selector: 'app-dispatch-history-modal',
@@ -60,11 +70,16 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     public noGroupData: string[][] = [];
 
+    public isNoGroupItemSpanArray: any = [];
+
     // group
     public groupHeaderItems: string[] = [];
     public groupData: DispatchHistoryGroupResponse[] = [];
 
     public isInputHoverRows: boolean[][][] = [];
+
+    public groupIndex: number = -1;
+    public itemIndex: number = -1;
 
     public isHoveringGroupIndex: number = -1;
     public isHoveringGroupItemIndex: number = -1;
@@ -213,66 +228,26 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         ) as UntypedFormArray;
     }
 
-    private createDispatchHistoryGroupItemRows(
-        data: DispatchHistoryGroupResponse[]
-    ): void {
-        const itemsArray = this.dispatchHistoryForm.get(
-            DispatchHistoryModalStringEnum.DISPATCH_HISTORY_GROUP_ITEMS
-        ) as UntypedFormArray;
-
-        this.isInputHoverRows = [];
-
-        itemsArray.clear();
-
-        data.forEach((group, index) => {
-            this.isInputHoverRows = [...this.isInputHoverRows, []];
-
-            const itemsGroup = this.formBuilder.array(
-                group.items.map((item) => {
-                    const roundedTimeStart =
-                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
-                            item.startDate
-                        );
-                    const roundedTimeEnd =
-                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
-                            item.endDate
-                        );
-
-                    const newIsInputHoverRow = this.createIsHoverRow();
-
-                    this.isInputHoverRows[index] = [
-                        ...this.isInputHoverRows[index],
-                        newIsInputHoverRow,
-                    ];
-
-                    return this.formBuilder.group({
-                        dateStart: [
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                item.startDate
-                            ),
-                        ],
-                        timeStart: [roundedTimeStart],
-                        dateEnd: [
-                            item.endDate
-                                ? MethodsCalculationsHelper.convertDateFromBackend(
-                                      item.endDate
-                                  )
-                                : null,
-                        ],
-                        timeEnd: [roundedTimeEnd],
-                    });
-                })
-            );
-
-            itemsArray.push(itemsGroup);
-        });
+    private monitorUpdateGroupHistoryData(): void {
+        console.log('monitoring');
+        this.getDispatchHistoryGroupItems()
+            .valueChanges.pipe(
+                takeUntil(this.destroy$),
+                debounceTime(300),
+                distinctUntilChanged(),
+                skip(1)
+            )
+            .subscribe((value) => {
+                this.updateGroupHistory(value);
+            });
     }
 
-    private createIsHoverRow(): boolean[] {
-        const isInputHoverRow =
-            DispatchHistoryModalConstants.IS_INPUT_HOVER_ROW_DISPATCH;
-
-        return JSON.parse(JSON.stringify(isInputHoverRow));
+    public handleUpdateGroupHistoryDataIndex(
+        groupIndex: number,
+        itemIndex: number
+    ): void {
+        this.groupIndex = groupIndex;
+        this.itemIndex = itemIndex;
     }
 
     public handleGroupRowHover(
@@ -394,6 +369,70 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    private createDispatchHistoryGroupItemRows(
+        data: DispatchHistoryGroupResponse[]
+    ): void {
+        const itemsArray = this.dispatchHistoryForm.get(
+            DispatchHistoryModalStringEnum.DISPATCH_HISTORY_GROUP_ITEMS
+        ) as UntypedFormArray;
+
+        this.isInputHoverRows = [];
+
+        itemsArray.clear();
+
+        data.forEach((group, index) => {
+            this.isInputHoverRows = [...this.isInputHoverRows, []];
+
+            const itemsGroup = this.formBuilder.array(
+                group.items.map((item) => {
+                    const roundedTimeStart =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.startDate
+                        );
+                    const roundedTimeEnd =
+                        DispatchHistoryModalHelper.roundToNearestQuarterHour(
+                            item.endDate
+                        );
+
+                    const newIsInputHoverRow = this.createIsHoverRow();
+
+                    this.isInputHoverRows[index] = [
+                        ...this.isInputHoverRows[index],
+                        newIsInputHoverRow,
+                    ];
+
+                    return this.formBuilder.group({
+                        dateStart: [
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                item.startDate
+                            ),
+                        ],
+                        timeStart: [roundedTimeStart],
+                        dateEnd: [
+                            item.endDate
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
+                                      item.endDate
+                                  )
+                                : null,
+                        ],
+                        timeEnd: [roundedTimeEnd],
+                    });
+                })
+            );
+
+            itemsArray.push(itemsGroup);
+        });
+
+        this.monitorUpdateGroupHistoryData();
+    }
+
+    private createIsHoverRow(): boolean[] {
+        const isInputHoverRow =
+            DispatchHistoryModalConstants.IS_INPUT_HOVER_ROW_DISPATCH;
+
+        return JSON.parse(JSON.stringify(isInputHoverRow));
+    }
+
     private createDispatchHistoryGroupData(
         data: DispatchHistoryGroupResponse[]
     ): void {
@@ -435,6 +474,13 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 layoutParams,
                 data
             );
+
+        this.isNoGroupItemSpanArray =
+            DispatchHistoryModalHelper.createDispatchHistoryGridSpanData(
+                noGroupData
+            );
+
+        console.log('isNoGroupItemSpanArray', this.isNoGroupItemSpanArray);
 
         this.hasContent = !!data?.length;
 
@@ -501,7 +547,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        this.selectedTime = {
+        /*  this.selectedTime = {
             id: 12,
             name: 'This Year',
         };
@@ -520,7 +566,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.selectedDriver = {
             id: 10,
             name: 'Eric Reid',
-        };
+        }; */
 
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
@@ -616,6 +662,65 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     this.getDispatchHistory();
                 }
             });
+    }
+
+    private updateGroupHistory(groupItems: GroupItem[][]) {
+        console.log('groupItems', groupItems);
+
+        console.log('groupIndex', this.groupIndex);
+        console.log('itemIndex', this.itemIndex);
+
+        let selectedGroupItem = groupItems[this.groupIndex][this.itemIndex];
+        let nextGroupItem = groupItems[this.groupIndex][this.itemIndex + 1];
+        let previousGroupItem = groupItems[this.groupIndex][this.itemIndex - 1];
+
+        console.log('selectedGroupItem', selectedGroupItem);
+        console.log('nextGroupItem', nextGroupItem);
+        console.log('previousGroupItem', previousGroupItem);
+
+        const dateFrom = moment(previousGroupItem.dateStart, 'MM/DD/YY'); // Example start date
+        const dateTo = moment(selectedGroupItem.dateEnd, 'MM/DD/YY'); // Example end date
+
+        const previousDateDifferenceInDays = dateTo.diff(dateFrom, 'days');
+
+        /*    const previousDateDifferenceInDays = moment(
+            selectedGroupItem.dateEnd
+        ).diff(moment(previousGroupItem.dateStart, 'days'));
+ */
+        console.log(
+            'previousDateDifferenceInDays',
+            previousDateDifferenceInDays
+        );
+
+        if (previousDateDifferenceInDays >= 0) {
+            let newDateStart = dateFrom
+                .add(previousDateDifferenceInDays, 'days')
+                .format('MM/DD/YY');
+
+            console.log('newDateStart', newDateStart);
+
+            previousGroupItem = {
+                ...previousGroupItem,
+                dateStart: newDateStart,
+            };
+        } else {
+            let newDateStart = dateFrom
+                .subtract(previousDateDifferenceInDays * -1, 'days')
+                .format('MM/DD/YY');
+
+            console.log('newDateStart', newDateStart);
+
+            previousGroupItem = {
+                ...previousGroupItem,
+                dateStart: newDateStart,
+            };
+        }
+
+        const date1 = '08/14/24';
+
+        const date2 = '08/13/24';
+
+        const date3 = '08/15/24';
     }
 
     ngOnDestroy(): void {

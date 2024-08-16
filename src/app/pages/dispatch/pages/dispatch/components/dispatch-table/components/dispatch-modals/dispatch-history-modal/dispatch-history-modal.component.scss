@@ -137,11 +137,26 @@
 
                 /* No Group Container Main */
 
+                .span-container {
+                    display: grid;
+                    grid-gap: 2px;
+                    grid-auto-rows: 26px;
+
+                    .span-item {
+                        background: #7f7f7f;
+                        border-radius: 2px;
+                    }
+                }
+
                 &-main {
+                    display: grid;
+                    grid-auto-rows: 26px;
+                    grid-gap: 2px;
+
                     &-item {
                         display: grid;
+                        grid-auto-rows: 26px;
                         grid-gap: 2px;
-                        margin-bottom: 2px;
 
                         .item-box {
                             border-radius: 2px;
@@ -171,6 +186,26 @@
                             }
                         }
                     }
+                }
+
+                .grid-container {
+                    display: grid;
+                    grid-template-columns: repeat(
+                        3,
+                        1fr
+                    ); /* Example with 3 columns */
+                    grid-auto-rows: 100px; /* Fixed height for all rows */
+                    grid-gap: 10px;
+                }
+
+                .grid-item {
+                    background-color: #ccc;
+                    padding: 10px;
+                    border: 1px solid #000;
+                }
+
+                .grid-item.span-two {
+                    grid-row: span 2;
                 }
             }
 

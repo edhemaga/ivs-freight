@@ -5,6 +5,7 @@ import moment from 'moment';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
@@ -449,23 +450,14 @@ export class DispatchHistoryModalHelper {
         layout: string,
         data: DispatchHistoryResponse[]
     ): string[][] {
-        const dataItems = data.map((dataItem) => {
-            const { dispatcher, truck, trailer, driver, dateFrom, dateTo } =
-                dataItem;
+        const dataItems = data.map((dataItem, index) => {
+            const { dateFrom, dateTo } = dataItem;
 
-            const dataArray = [
-                dispatcher?.fullName ?? null,
-                truck?.truckNumber ?? null,
-                trailer?.trailerNumber ?? null,
-                driver?.firstName
-                    ? driver?.firstName + ' ' + driver?.lastName
-                    : null,
-                MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
-                dateTo
-                    ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
-                    : null,
-                this.createTotalColumnValue(dateFrom, dateTo),
-            ];
+            const dataArray = this.createDispatchHistoryDataArray(
+                data,
+                dataItem,
+                index
+            );
 
             switch (layout) {
                 case 'layout-1':
@@ -1008,6 +1000,85 @@ export class DispatchHistoryModalHelper {
             default:
                 return;
         }
+    }
+
+    static createDispatchHistoryDataArray(
+        data: DispatchHistoryResponse[],
+        dataItem: DispatchHistoryResponse,
+        index: number
+    ): string[] {
+        const { dispatcher, truck, trailer, driver, dateFrom, dateTo } =
+            dataItem;
+
+        const dataArray = [
+            dispatcher?.fullName &&
+            data[index - 1]?.dispatcher?.fullName !== dispatcher?.fullName
+                ? dispatcher?.fullName
+                : null,
+            truck?.truckNumber &&
+            data[index - 1]?.truck?.truckNumber !== truck?.truckNumber
+                ? truck?.truckNumber
+                : null,
+            trailer?.trailerNumber &&
+            data[index - 1]?.trailer?.trailerNumber !== trailer?.trailerNumber
+                ? trailer?.trailerNumber
+                : null,
+            driver?.firstName &&
+            data[index - 1]?.driver?.firstName +
+                ' ' +
+                data[index - 1]?.driver?.lastName !==
+                driver?.firstName + ' ' + driver?.lastName
+                ? driver?.firstName + ' ' + driver?.lastName
+                : null,
+            MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
+            dateTo
+                ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
+                : null,
+            this.createTotalColumnValue(dateFrom, dateTo),
+        ];
+
+        return dataArray;
+    }
+
+    static createDispatchHistoryGridSpanData(noGroupData: string[][]) {
+        console.log('noGroupData', noGroupData);
+        /*  public isNoGroupItemSpanArray: any = [
+            {
+                isRowSpan: true,
+                rowSpanIndex: 22,
+                isItemBoxSpanArray: [
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                    { isItemBoxSpan: true, itemSpanIndex: 22 },
+                ],
+            },
+        ]; */
+
+        const isNoGroupItemSpanArray = noGroupData.map((noGroupItem, index) => {
+            const nextNoGroupItem = noGroupData[index + 1] || [];
+            const hasNoValue =
+                MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(
+                    nextNoGroupItem
+                );
+            const itemIndex = nextNoGroupItem;
+
+            /*  const nextNoGroupItemIndex = noGroupData.forEach((item, itemIndex) => {
+                    if (itemIndex === index) return 
+
+                    if (item)
+                }) */
+
+            return {
+                isRowSpan: hasNoValue,
+                rowSpanIndex: 1,
+            };
+        });
+
+        return isNoGroupItemSpanArray;
     }
 
     static createStatusOrderValues(statusString: string): string {

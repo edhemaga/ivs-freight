@@ -26,7 +26,6 @@ import {
     ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
-    /*  UpdateDispatchStatusCommand, */
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
@@ -135,12 +134,6 @@ export class DispatcherService {
 
     public updatePreTripInspection(id: number): Observable<number> {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
-    }
-
-    public updateDispatchStatus(
-        data /* : UpdateDispatchStatusCommand */
-    ): Observable<number> {
-        return of(null); /* this.dispatchService.apiDispatchStatusPut(data); */
     }
 
     public reorderDispatchboard(
