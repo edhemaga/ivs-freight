@@ -79,7 +79,10 @@ export class DispatcherService {
         statuses?: Array<number>,
         parkings?: Array<number>,
         vacation?: boolean,
-        search?: string
+        search?: string,
+        longitude?: number | undefined,
+        latitude?: number | undefined,
+        distance?: number | undefined
     ): Observable<DispatchBoardListResponse> {
         return this.dispatchService.apiDispatchBoardListGet(
             dispatcherId,
@@ -89,7 +92,10 @@ export class DispatcherService {
             statuses,
             parkings,
             vacation,
-            search
+            search,
+            longitude,
+            latitude,
+            distance
         );
     }
 
