@@ -1,5 +1,13 @@
-import { Store } from "@ngrx/store";
+import { Store } from '@ngrx/store';
 
-export class PayrollFacadeService{
-    constructor( private store: Store ){}
+import * as PayrollActions from '../actions/payroll.actions';
+
+export class PayrollFacadeService {
+    constructor(private store: Store) {}
+
+    public getPayrollCounts(showOpen: boolean) {
+        this.store.dispatch(
+            PayrollActions.getPayrollCounts({ ShowOpen: showOpen })
+        );
+    }
 }

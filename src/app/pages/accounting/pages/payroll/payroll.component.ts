@@ -19,6 +19,7 @@ import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
+import { PayrollFacadeService } from './state/services/payroll.service';
 
 @Component({
     selector: 'app-payroll',
@@ -54,7 +55,10 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         private payrollQuery: PayrollQuery,
 
         // Pipes
-        private nameInitialsPipe: NameInitialsPipe
+        private nameInitialsPipe: NameInitialsPipe,
+
+        // Services
+        private payrollFacadeService: PayrollFacadeService
     ) {}
 
     ngAfterViewInit(): void {

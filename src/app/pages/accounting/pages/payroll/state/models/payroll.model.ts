@@ -1,6 +1,6 @@
-import { PayrollCountsResponse } from "appcoretruckassist";
+import { PayrollCountsResponse } from 'appcoretruckassist';
 
-export interface PayrollState{
-    payrollCounts: PayrollCountsResponse,
-    loading: boolean
+export interface PayrollState {
+    payrollCounts: PayrollCountsResponse;
+    loading: boolean;
 }
