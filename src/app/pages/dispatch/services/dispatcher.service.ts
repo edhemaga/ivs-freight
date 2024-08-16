@@ -142,12 +142,6 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
-    // public updateDispatchStatus(
-    //     data: UpdateDispatchStatusCommand
-    // ): Observable<number> {
-    //     return this.dispatchService.apiDispatchStatusPut(data);
-    // }
-
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }
