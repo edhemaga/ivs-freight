@@ -1,12 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+//models
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
 
 @Pipe({
     name: 'dispatchTableHeaderShowPipe',
     standalone: true,
 })
 export class DispatchTableHeaderShowPipe implements PipeTransform {
-    transform(title: string, columns?: any) {
+    transform<T>(title: string, columns?: DispatchColumn[]) {
         switch (title) {
             case DispatchTableStringEnum.NOTE:
                 return !columns[17]?.hidden;

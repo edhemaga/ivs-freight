@@ -56,8 +56,8 @@ export class DispatchTableDriverComponent {
     @Input() public hoursOfService: HosResponse;
     @Input() public dispatchId: number;
     @Input() public isHoveringRow: boolean;
-    @Input() public showHos: boolean = true;
-    @Input() public showEndorsment: boolean = true;
+    @Input() public isHosShown: boolean = true;
+    @Input() public isEndorsmentShow: boolean = true;
     @Input() public openedHosData: any; //leave this any because we are not doing this now
 
     @Output() addDriverEmitter = new EventEmitter<{

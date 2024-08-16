@@ -55,6 +55,7 @@ import {
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
 import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
+import { DispatchTableUnlock } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-unlock.model';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -83,21 +84,24 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     @Input() toolbarWidth: number = 0;
-    @Input() columns: DispatchColumn;
+    @Input() set columns(value: DispatchColumn[] | null) {
+        if (value) {
+            this.columnsToShow = value;
+            this.shownFields = value
+                .slice(10, 15)
+                .filter((item) => item.hidden === false);
+        }
+    }
 
     @Input() isAllBoardsList: boolean;
 
-    @Output() onTableUnlockEmitter: EventEmitter<{
-        action: string;
-        column?: string;
-        sortBy?: string;
-        list?: any;
-    }> = new EventEmitter();
+    @Output() onTableUnlockEmitter: EventEmitter<DispatchTableUnlock> =
+        new EventEmitter();
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     private destroy$ = new Subject<void>();
-
+    public columnsToShow: DispatchColumn[];
     public isDrag: boolean = false;
 
     public checkForEmpty: string;
@@ -128,6 +132,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public parkingCount: number = 0;
     public openedDriverDropdown: number = -1;
 
+    shownFields;
     /////////////////////////////////////////// UPDATE
 
     testTimeout: any;

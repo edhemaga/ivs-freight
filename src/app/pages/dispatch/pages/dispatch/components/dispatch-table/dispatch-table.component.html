@@ -36,7 +36,8 @@
                         <ng-container
                             *ngIf="
                                 tableHeaderItem.title
-                                    | dispatchTableHeaderShowPipe : columns
+                                    | dispatchTableHeaderShowPipe
+                                        : columnsToShow
                             "
                         >
                             <th
@@ -152,7 +153,7 @@
                                 "
                                 [truck]="item?.truck"
                                 [truckList]="truckList"
-                                [showYear]="!columns[1].hidden"
+                                [isYearShown]="!columnsToShow[1].hidden"
                                 [rowIndex]="rowIndex"
                                 [isBoardLocked]="isDispatchBoardLocked"
                                 [isDrag]="isDrag"
@@ -227,7 +228,7 @@
                                         "
                                         [trailer]="item?.trailer"
                                         [trailerList]="trailerList"
-                                        [showYear]="!columns[3].hidden"
+                                        [isYearShown]="!columnsToShow[3].hidden"
                                         [rowIndex]="rowIndex"
                                         [isBoardLocked]="isDispatchBoardLocked"
                                         [isDrag]="isDrag"
@@ -311,8 +312,10 @@
                                         "
                                         [isActiveLoad]="!!item?.activeLoad"
                                         [hoursOfService]="item?.hoursOfService"
-                                        [showHos]="!columns[5].hidden"
-                                        [showEndorsment]="!columns[6].hidden"
+                                        [isHosShown]="!columnsToShow[5].hidden"
+                                        [isEndorsmentShow]="
+                                            !columnsToShow[6].hidden
+                                        "
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
                                             isHoveringRowIndex === rowIndex
@@ -331,7 +334,7 @@
                                 </div>
                             </div>
                         </td>
-                        <ng-container *ngIf="!columns[10].hidden">
+                        <ng-container *ngIf="!columnsToShow[10].hidden">
                             <td class="pre-trip">
                                 <app-dispatch-table-pre-trip-inspection
                                     [dispatchId]="item?.id"
@@ -379,7 +382,7 @@
                         </td>
 
                         <td class="pickup-delivery-field"></td>
-                        <ng-container *ngIf="!columns[14].hidden">
+                        <ng-container *ngIf="!columnsToShow[14].hidden">
                             <td class="progress-field">
                                 <div class="main_inside filled">
                                     <div class="padding-inside">
@@ -391,7 +394,7 @@
                             </td>
                         </ng-container>
 
-                        <ng-container *ngIf="!columns[15].hidden">
+                        <ng-container *ngIf="!columnsToShow[15].hidden">
                             <td
                                 class="parking-field"
                                 [ngClass]="{
@@ -415,7 +418,7 @@
                                 ></app-dispatch-table-parking>
                             </td>
                         </ng-container>
-                        <ng-container *ngIf="!columns[16].hidden">
+                        <ng-container *ngIf="!columnsToShow[16].hidden">
                             <td class="box-item">
                                 <div class="main_inside filled">
                                     <div
@@ -453,7 +456,7 @@
                                 </div>
                             </td>
                         </ng-container>
-                        <ng-container *ngIf="!columns[17].hidden">
+                        <ng-container *ngIf="!columnsToShow[17].hidden">
                             <td
                                 class="note-field"
                                 [class.expanded]="isNoteExpanded"
@@ -509,7 +512,7 @@
                             [truck]="addNewTruckData"
                             [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
                             [truckList]="truckList"
-                            [showYear]="!columns[1].hidden"
+                            [isYearShown]="!columnsToShow[1].hidden"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
                             [isDrag]="isDrag"
@@ -538,7 +541,7 @@
                             [trailerList]="trailerList"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
-                            [showYear]="!columns[3].hidden"
+                            [isYearShown]="!columnsToShow[3].hidden"
                             [isDrag]="isDrag"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
                             (addTruckTrailerEmitter)="
@@ -559,8 +562,8 @@
                             [isDrag]="isDrag"
                             [draggingType]="draggingType"
                             [openedDriverDropdown]="openedDriverDropdown"
-                            [showHos]="!columns[5].hidden"
-                            [showEndorsment]="!columns[6].hidden"
+                            [isHosShown]="!columnsToShow[5].hidden"
+                            [isEndorsmentShow]="!columnsToShow[6].hidden"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
                             (addDriverEmitter)="handleAddDriverClick($event)"
                             (removeDriverEmitter)="
@@ -575,7 +578,7 @@
                         >
                         </app-dispatch-table-driver>
                     </td>
-                    <ng-container *ngIf="!columns[10].hidden">
+                    <ng-container *ngIf="!columnsToShow[10].hidden">
                         <td class="pre-trip">
                             <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
                         </td>
@@ -618,28 +621,28 @@
                             <div class="padding-inside"></div>
                         </div>
                     </td>
-                    <ng-container *ngIf="!columns[14].hidden">
+                    <ng-container *ngIf="!columnsToShow[14].hidden">
                         <td class="progress-field">
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
                     </ng-container>
-                    <ng-container *ngIf="!columns[15].hidden">
+                    <ng-container *ngIf="!columnsToShow[15].hidden">
                         <td class="parking-field">
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
                     </ng-container>
-                    <ng-container *ngIf="!columns[16].hidden">
+                    <ng-container *ngIf="!columnsToShow[16].hidden">
                         <td class="box-item">
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
                     </ng-container>
-                    <ng-container *ngIf="!columns[17].hidden">
+                    <ng-container *ngIf="!columnsToShow[17].hidden">
                         <td class="note-field">
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
@@ -798,21 +801,25 @@
 
                     <ng-container
                         *ngFor="
-                            let field of [].constructor(5);
+                            let field of shownFields;
                             trackBy: trackByIdentity
                         "
                     >
                         <td></td>
                     </ng-container>
 
-                    <td>
-                        <app-dispatch-table-info
-                            [type]="'parking'"
-                            [count]="parkingCount"
-                            [totalCount]="dispatchData.dispatches.length"
-                        ></app-dispatch-table-info>
-                    </td>
-
+                    <ng-container *ngIf="!columnsToShow[15].hidden; noParking">
+                        <td>
+                            <app-dispatch-table-info
+                                [type]="'parking'"
+                                [count]="parkingCount"
+                                [totalCount]="dispatchData.dispatches.length"
+                            ></app-dispatch-table-info>
+                        </td>
+                    </ng-container>
+                    <ng-template #noParking>
+                        <td></td>
+                    </ng-template>
                     <td colspan="3">
                         <ng-container *ngIf="isAllBoardsList">
                             <app-dispatch-table-info
