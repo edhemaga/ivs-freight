@@ -26,7 +26,6 @@ import {
     ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
-    UpdateDispatchStatusCommand,
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
@@ -80,7 +79,10 @@ export class DispatcherService {
         statuses?: Array<number>,
         parkings?: Array<number>,
         vacation?: boolean,
-        search?: string
+        search?: string,
+        longitude?: number | undefined,
+        latitude?: number | undefined,
+        distance?: number | undefined
     ): Observable<DispatchBoardListResponse> {
         return this.dispatchService.apiDispatchBoardListGet(
             dispatcherId,
@@ -90,7 +92,10 @@ export class DispatcherService {
             statuses,
             parkings,
             vacation,
-            search
+            search,
+            longitude,
+            latitude,
+            distance
         );
     }
 
@@ -135,12 +140,6 @@ export class DispatcherService {
 
     public updatePreTripInspection(id: number): Observable<number> {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
-    }
-
-    public updateDispatchStatus(
-        data: UpdateDispatchStatusCommand
-    ): Observable<number> {
-        return this.dispatchService.apiDispatchStatusPut(data);
     }
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand) {

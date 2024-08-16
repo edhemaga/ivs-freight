@@ -9,16 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
-import { DispatchStatusResponse } from './dispatchStatusResponse';
+import { DispatchHistoryItemCommand } from './dispatchHistoryItemCommand';
 
 
-export interface DispatchHistoryGroupItemResponse { 
-    id?: number;
-    status?: DispatchStatusResponse;
-    startDate?: string;
-    endDate?: string | null;
-    totalTime?: string | null;
-    location?: AddressEntity;
+export interface UpdateDispatchHistoryCommand { 
+    dispatchHistories?: Array<DispatchHistoryItemCommand> | null;
 }
 
