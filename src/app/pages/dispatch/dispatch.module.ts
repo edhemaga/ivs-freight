@@ -21,6 +21,7 @@ import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-perio
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
+import { DispatchTableNoteComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-note/dispatch-table-note.component';
 import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
@@ -68,6 +69,7 @@ import { TaStatusComponentComponent } from '@shared/components/ta-status-compone
         DispatchTablePreTripInspectionComponent,
         DispatchHistoryModalComponent,
         DispatchTableStatusComponent,
+        DispatchTableNoteComponent,
         LoadShortDetailsComponent,
 
         // pipes

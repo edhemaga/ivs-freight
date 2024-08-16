@@ -411,6 +411,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private initialinvoicedDate: string;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
+    public isButtonDisabled: boolean = false;
+    public isEdit: boolean;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -441,6 +444,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.cdRef.detectChanges();
         }
+    }
+
+    public get billingCount(): number {
+        // plus 1 from base
+        return this.additionalBillings().length + 1 + +!!this.showDriverRate + +!!this.showAdjustedRate + +!!this.showTonuRate + +!!this.showRevisedRate;
     }
 
     public get showAdjustedRate(): boolean {
@@ -509,7 +517,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
                 this.selectedDispatcher?.avatarFile?.url,
-            this.selectedDispatcher?.name
+            this.selectedDispatcher?.name,
+            !this.isConvertedToTemplate && !this.isEdit
         );
     }
 
@@ -577,7 +586,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get modalTitle(): string {
         const isEdit = this.editData?.type?.includes('edit');
-
+        this.isEdit = isEdit;
+        
         if (!isEdit) {
             if (this.isConvertedToTemplate) {
                 return 'Create Load Template';
@@ -651,7 +661,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (!show) {
             this.loadForm.get(LoadModalStringEnum.REVISED).patchValue(null);
         }
-        this.showRevisedRate = show;
+        this.showRevisedRate = !!show;
     }
 
     private createForm(): void {
@@ -1154,6 +1164,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         switch (data.action) {
             case LoadModalStringEnum.SAVE:
             case LoadModalStringEnum.SAVE_AND_ADD_NEW:
+                // Disable double click
+                if (this.isButtonDisabled) {
+                    return;
+                }
+                
+                this.isButtonDisabled = true;
+
                 if (this.loadForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.loadForm);
 
@@ -3127,7 +3144,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 pickuplegMiles
             );
             stops.push({
-                id: this.stops?.[0]?.id ?? null,
+                id: !this.isEdit ? null : this.stops?.[0]?.id ?? null,
                 stopType: pickupStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: pickupStopOrder,
@@ -3166,7 +3183,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: item.get(LoadModalStringEnum.ID).value ?? null,
+                    id: !this.isEdit ? null : item.get(LoadModalStringEnum.ID).value ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3207,7 +3224,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: this.stops?.[this.stops.length - 1]?.id ?? null,
+                id: !this.isEdit ? null : this.stops?.[this.stops.length - 1]?.id ?? null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: deliveryStopOrder,
@@ -4937,6 +4954,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             status,
             close,
         });
+        this.isButtonDisabled = false;
         if (addNew) this.addNewLoadModal();
     }
 

@@ -37,7 +37,8 @@
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
-                    'edit-load': editLoad
+                    'edit-load': editLoad,
+                    'select-template': !isConvertedToTemplate && !isEdit
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -64,7 +65,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !editLoad">
+                <ng-container *ngIf="!isConvertedToTemplate && !isEdit">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -399,8 +400,10 @@
                             ></svg-icon>
                         </p>
                         <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
-                        <p class="m-0 ta-font-bold">DATE & TIME</p>
-                        <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        <ng-container *ngIf="selectedPickupShipper">
+                            <p class="m-0 ta-font-bold">DATE & TIME</p>
+                            <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        </ng-container>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -1231,7 +1234,7 @@
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
-                                [inputConfig]="loadDeliveryDateTo"
+                                [inputConfig]="loadDeliveryDateToInputConfig"
                                 (blurInput)="
                                     markInputAsTouched('deliveryDateTo')
                                 "
@@ -1369,8 +1372,9 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ {{ totalLegHours }}h
-                                    {{ totalLegMinutes }}m</span
+                                    >≈ 
+                                    <ng-container *ngIf="totalLegHours">{{ totalLegHours }}h</ng-container>
+                                    {{ totalLegMinutes || 0 }}m</span
                                 >
                             </div>
                         </div>
@@ -1388,6 +1392,7 @@
                             | financialCalculation : 'billing'
                             | currency
                     "
+                    [billingCount]="billingCount"
                     [disableBillAction]="
                         !loadForm.get('baseRate').value ||
                         !additionalBillingTypes?.length
@@ -1396,6 +1401,7 @@
                         adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
+                    [paymentCount]="additionalPayments().length"
                     [payment]="
                         loadModalPayment
                             | financialCalculation : 'payment'

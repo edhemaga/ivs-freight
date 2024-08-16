@@ -183,7 +183,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedFuelCard: DriverModalFuelCardResponse[] = [];
     public fuelCardOptions: DriverModalFuelCardResponse[] = [];
 
-    // Load table 
+    // Load table
     public selectedQuantity: EnumValue[] = [];
     public selectedStack: EnumValue[] = [];
     public selectedSecure: EnumValue[] = [];
@@ -831,9 +831,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         null,
                         this.formService.rangeValidator(-20, 99),
                     ],
-                    weight: [null],
-                    length: [null],
-                    height: [null],
+                    weight: [null, this.formService.rangeValidator(0, 9999999, 7)],
+                    length: [null, this.formService.rangeValidator(0, 999)],
+                    height: [null, this.formService.rangeValidator(0, 999)],
                     tarp: [null],
                     stackable: [null],
                     secure: [null],
@@ -1042,10 +1042,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             }, 300);
     }
 
-    public unitsChanged(event: {unit: EnumValue, index: number}) :void {
+    public unitsChanged(event: { unit: EnumValue; index: number }): void {
         const formGroup = this.getFormArray().at(event.index);
         formGroup.patchValue({
-            units: event.unit.id
+            units: event.unit.id,
         });
         // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
         this.modalTableValueEmitter.emit(this.getFormArray().value);

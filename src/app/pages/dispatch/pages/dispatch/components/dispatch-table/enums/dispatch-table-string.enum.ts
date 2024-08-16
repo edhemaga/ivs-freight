@@ -42,4 +42,5 @@ export enum DispatchTableStringEnum {
     TEXTAREA = 'textarea',
     COPY = 'copy',
     VALUE = 'value',
+    NOTE = 'NOTE',
 }
