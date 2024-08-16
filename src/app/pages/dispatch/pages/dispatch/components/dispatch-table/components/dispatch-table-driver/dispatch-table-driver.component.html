@@ -17,29 +17,61 @@
         <ng-container *ngIf="driver">
             <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
                 <div class="info-item">
-                    <div class="driver-buttons">
-                        <ng-container *ngIf="driverHover.txt !== 'email'">
+                    <ng-container *ngIf="isBoardLocked">
+                        <div class="driver-buttons">
+                            <ng-container *ngIf="driverHover.txt !== 'email'">
+                                <span
+                                    (mouseover)="
+                                        setMouseOver('phone', rowIndex)
+                                    "
+                                    (mouseout)="setMouseOut()"
+                                    (click)="copy(phone, rowIndex, 'phone')"
+                                    ngbTooltip
+                                    [mainTooltip]="
+                                        copyIndex === rowIndex &&
+                                        driverCopy.txt === 'phone'
+                                            ? 'Copied'
+                                            : 'Copy'
+                                    "
+                                    [tooltipBackground]="
+                                        copyIndex === rowIndex &&
+                                        driverCopy.txt === 'phone'
+                                            ? '#3B73ED'
+                                            : '#424242'
+                                    "
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        [src]="dispatchTableSvgRoutes.phone"
+                                        [svgStyle]="{
+                                            'width.px': '18',
+                                            'height.px': '18'
+                                        }"
+                                        [fill]="'#ff0000'"
+                                    ></svg-icon>
+                                </span>
+                            </ng-container>
                             <span
-                                (mouseover)="setMouseOver('phone', rowIndex)"
+                                (mouseover)="setMouseOver('email', rowIndex)"
                                 (mouseout)="setMouseOut()"
-                                (click)="copy(phone, rowIndex, 'phone')"
+                                (click)="copy(email, rowIndex, 'email')"
                                 ngbTooltip
                                 [mainTooltip]="
                                     copyIndex === rowIndex &&
-                                    driverCopy.txt === 'phone'
+                                    driverCopy.txt === 'email'
                                         ? 'Copied'
                                         : 'Copy'
                                 "
                                 [tooltipBackground]="
                                     copyIndex === rowIndex &&
-                                    driverCopy.txt === 'phone'
+                                    driverCopy.txt === 'email'
                                         ? '#3B73ED'
                                         : '#424242'
                                 "
                                 position="bottom"
                             >
                                 <svg-icon
-                                    [src]="dispatchTableSvgRoutes.phone"
+                                    [src]="dispatchTableSvgRoutes.email"
                                     [svgStyle]="{
                                         'width.px': '18',
                                         'height.px': '18'
@@ -47,36 +79,8 @@
                                     [fill]="'#ff0000'"
                                 ></svg-icon>
                             </span>
-                        </ng-container>
-                        <span
-                            (mouseover)="setMouseOver('email', rowIndex)"
-                            (mouseout)="setMouseOut()"
-                            (click)="copy(email, rowIndex, 'email')"
-                            ngbTooltip
-                            [mainTooltip]="
-                                copyIndex === rowIndex &&
-                                driverCopy.txt === 'email'
-                                    ? 'Copied'
-                                    : 'Copy'
-                            "
-                            [tooltipBackground]="
-                                copyIndex === rowIndex &&
-                                driverCopy.txt === 'email'
-                                    ? '#3B73ED'
-                                    : '#424242'
-                            "
-                            position="bottom"
-                        >
-                            <svg-icon
-                                [src]="dispatchTableSvgRoutes.email"
-                                [svgStyle]="{
-                                    'width.px': '18',
-                                    'height.px': '18'
-                                }"
-                                [fill]="'#ff0000'"
-                            ></svg-icon>
-                        </span>
-                    </div>
+                        </div>
+                    </ng-container>
                     <div class="driver-items-hold d-flex align-items-center">
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <div

@@ -439,7 +439,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.isDispatchBoardChangeInProgress = true;
 
         this.checkForEmpty = key;
-
         if (updatedPreviousData.id) {
             this.dispatcherService
                 .updateDispatchBoard(newData, this.dispatchData.id)
@@ -581,10 +580,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
+        const { note, dispatchIndex } = item;
         this.updateOrAddDispatchBoardAndSend(
             'note',
-            item.note,
-            item.dispatchIndex
+            note,
+            dispatchIndex
         );
     }
 

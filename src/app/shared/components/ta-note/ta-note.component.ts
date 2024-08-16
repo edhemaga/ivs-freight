@@ -319,8 +319,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
-
-        if (!dontTransfer) this.transferNoteData();
+        if (!dontTransfer && !this.isDispatch) this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(

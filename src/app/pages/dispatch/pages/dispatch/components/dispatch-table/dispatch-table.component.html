@@ -129,6 +129,9 @@
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
                                     ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTruck
+                                    ? '160px'
                                     : '120px'
                             }"
                         >
@@ -160,6 +163,9 @@
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTrailer
                                     ? '160px'
                                     : '120px'
                             }"
@@ -436,6 +442,7 @@
                                 [isNoteExpanded]="isNoteExpanded"
                                 [isHoveringRowIndex]="isHoveringRowIndex"
                                 [rowIndex]="rowIndex"
+                                [dispatchId]="item.id"
                                 (saveNoteValue)="saveNoteValue($event)"
                             >
                             </app-dispatch-table-note>
@@ -472,7 +479,10 @@
                     <td
                         class="truck-field"
                         [ngStyle]="{
-                            width: hasAdditionalFieldTruck ? '160px' : '120px'
+                            width: hasAdditionalFieldTruck ? '160px' : '120px',
+                            'min-width': hasAdditionalFieldTruck
+                                ? '160px'
+                                : '120px'
                         }"
                     >
                         <app-dispatch-table-truck-trailer
@@ -497,7 +507,12 @@
                     <td
                         class="trailer-field"
                         [ngStyle]="{
-                            width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                            width: hasAdditionalFieldTrailer
+                                ? '160px'
+                                : '120px',
+                            'min-width': hasAdditionalFieldTrailer
+                                ? '160px'
+                                : '120px'
                         }"
                     >
                         <app-dispatch-table-truck-trailer
@@ -536,7 +551,9 @@
                             (driverVacationEmitter)="
                                 changeDriverVacation($event)
                             "
-                            (setDriverDropdownIndexEmitter)="changeDriverDropdownIndex($event)"
+                            (setDriverDropdownIndexEmitter)="
+                                changeDriverDropdownIndex($event)
+                            "
                         >
                         </app-dispatch-table-driver>
                     </td>
@@ -630,6 +647,9 @@
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
                                     ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTruck
+                                    ? '160px'
                                     : '120px'
                             }"
                         >
@@ -640,6 +660,9 @@
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTrailer
                                     ? '160px'
                                     : '120px'
                             }"
