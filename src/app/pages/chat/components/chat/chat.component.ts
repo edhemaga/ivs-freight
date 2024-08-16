@@ -141,7 +141,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     return totalUnreadCount;
   }
 
-  onActivate(component: ChatMessagesComponent) {
+  public onActivate(component: ChatMessagesComponent): void {
     if (component instanceof ChatMessagesComponent) {
       component.userTyping.subscribe((userId: number) => {
         if (userId) {

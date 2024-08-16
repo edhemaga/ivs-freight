@@ -193,7 +193,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
           this.chatHubService
             .receiveTypingNotification()
             .pipe(
-              debounceTime(500),
+              debounceTime(150),
               takeUntil(this.destroy$),
             )
             .subscribe((companyUserId: number) => {
@@ -223,7 +223,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     if (!message && !this.attachments$?.value?.length) return;
 
     this.isMessageSendable = false;
-    console.log(this.links);
+
     this.chatService
       .sendMessage(
         this.conversation.id,
@@ -363,7 +363,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     this.messageForm.valueChanges
       .pipe(
-        debounceTime(500),
+        debounceTime(150),
         takeUntil(this.destroy$))
       .subscribe(arg => {
         const message: string = arg?.message;
