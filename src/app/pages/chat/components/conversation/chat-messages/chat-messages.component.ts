@@ -23,6 +23,7 @@ import {
 import {
   BehaviorSubject,
   debounceTime,
+  map,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -74,7 +75,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     if (event.key === 'Escape') this.attachmentUploadActive = false;
   }
 
-  @Output() userTyping: EventEmitter<number> = new EventEmitter();
+  @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
 
   private destroy$ = new Subject<void>();
 
@@ -181,7 +182,15 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         () => {
           this.chatHubService
             .receiveMessage()
-            .pipe(takeUntil(this.destroy$))
+            .pipe(takeUntil(this.destroy$),
+              map(arg => {
+                return {
+                  ...arg,
+                  fileCount: arg.filesCount ?? arg.files?.length,
+                  mediaCount: arg.mediaCount ?? arg.media?.length,
+                  linksCount: arg.linksCount ?? arg.links?.length
+                }
+              }))
             .subscribe(
               message => {
                 if (message) {
@@ -204,11 +213,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                     user.id === companyUserId
                   );
               this.currentUserTypingName.next(filteredUser?.fullName);
-              this.userTyping.emit(companyUserId);
+              this.userTypingEmitter.emit(companyUserId);
 
               setTimeout(() => {
                 this.currentUserTypingName.next(null);
-                this.userTyping.emit(0);
+                this.userTypingEmitter.emit(0);
               }, 1000);
 
             })

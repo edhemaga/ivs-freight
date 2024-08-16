@@ -102,7 +102,10 @@
                                 [message]="message"
                                 [isDateDisplayed]="
                                     (message.createdAt | formatTime) !==
-                                    (messages[ind - 1]?.createdAt | formatTime)
+                                        (messages[ind - 1]?.createdAt
+                                            | formatTime) ||
+                                    message.sender?.id !==
+                                        message[ind - 1]?.sender?.id
                                 "
                             ></app-chat-message>
                         </ng-container>

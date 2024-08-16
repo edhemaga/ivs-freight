@@ -143,13 +143,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public onActivate(component: ChatMessagesComponent): void {
     if (component instanceof ChatMessagesComponent) {
-      component.userTyping.subscribe((userId: number) => {
-        if (userId) {
-          const driver = this.drivers.data.find(driver => {
-            driver.companyUser?.userId === userId;
-          })
-        }
-      });
+      component.userTypingEmitter
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((userId: number) => {
+          if (userId) {
+            const driver = this.drivers.data.find(driver => {
+              driver.companyUser?.userId === userId;
+            })
+          }
+        });
     }
   }
 
