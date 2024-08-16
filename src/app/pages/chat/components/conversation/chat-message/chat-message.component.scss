@@ -3,13 +3,40 @@
 .message-container {
     margin: auto 6px;
 
+    .media-preview-wrapper {
+        margin-bottom: 4px;
+        width: 100%;
+        .media-preview {
+            width: fit-content;
+
+            .media-margin {
+                margin: 0 4px;
+            }
+
+            :first-child {
+                margin: 0 4px 0 0;
+            }
+
+            :last-child {
+                margin: 0 0 0 4px;
+            }
+
+            img {
+                border-radius: 3px;
+                max-width: 300px;
+                max-height: 300px;
+                object-fit: cover;
+                margin: 0 4px;
+            }
+        }
+    }
+
     .content-wrapper {
         width: 100%;
         margin-top: 4px;
         margin-bottom: 4px;
 
         .message-time {
-            height: 100%;
             line-height: 14px;
             color: $bw5;
             font-size: 11px;
@@ -28,12 +55,11 @@
 
             .attachment-list {
                 width: 100%;
-                height: 46px;
+                height: fit-content;
                 border-radius: 2px;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
                 padding: 4px 2px 2px 4px;
-                margin-top: 8px;
 
                 &-dark {
                     background-color: $ta-black-3;
@@ -49,8 +75,7 @@
                     margin-right: 6px;
                     padding: 1px;
                     border-radius: 2px;
-                    max-width: 300px;
-                    max-height: 300px;
+                    flex: 1;
 
                     &-dark {
                         background-color: $bw2;
@@ -88,6 +113,18 @@
                     }
                 }
             }
+
+            .link-wrapper {
+                max-width: 300px;
+                padding-top: 8px;
+                margin-left: -10px;
+            }
+
+            .link-title {
+                font-size: 14px;
+                line-height: 18px;
+                padding: 8px 2px;
+            }
         }
 
         .current-user {
@@ -97,5 +134,11 @@
         .other {
             background-color: $ta-white-5;
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .attachment-list {
+        flex-direction: column !important;
     }
 }

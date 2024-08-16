@@ -1,5 +1,5 @@
 export interface ChatLink {
-    messageId: number;
+    messageId?: number;
     time: string;
     url: string;
     metadata: {

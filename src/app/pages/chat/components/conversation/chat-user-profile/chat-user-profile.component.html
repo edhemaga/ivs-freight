@@ -40,9 +40,11 @@
                     {{ data.userAdditionalInformation?.lastName }}
                 </div>
                 <div class="text-type ta-font-medium">
-                    {{ data.userAdditionalInformation?.userType?.name }}
+                    {{
+                        data.userAdditionalInformation?.userType?.name || 'User'
+                    }}
                 </div>
-                <div>status</div>
+                <div>Active</div>
             </div>
         </div>
         <div class="horizontal-border"></div>

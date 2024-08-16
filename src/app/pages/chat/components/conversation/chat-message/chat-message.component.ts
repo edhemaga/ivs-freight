@@ -21,6 +21,8 @@ export class ChatMessageComponent implements OnInit {
 
   public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
+  public singleImageAspectRation!: '3:2' | '2:3';
+
   constructor() { }
 
   ngOnInit(): void { }
