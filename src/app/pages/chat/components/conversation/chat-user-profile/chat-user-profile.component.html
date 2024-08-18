@@ -40,9 +40,11 @@
                     {{ data.userAdditionalInformation?.lastName }}
                 </div>
                 <div class="text-type ta-font-medium">
-                    {{ data.userAdditionalInformation?.userType?.name }}
+                    {{
+                        data.userAdditionalInformation?.userType?.name || 'User'
+                    }}
                 </div>
-                <div>status</div>
+                <div>Active</div>
             </div>
         </div>
         <div class="horizontal-border"></div>
@@ -103,8 +105,8 @@
     <app-chat-profile-resources
         [title]="'Links'"
         [customClass]="'links-content'"
-        [count]="links?.linksCount"
-        [resources]="links?.links"
+        [count]="data?.linksCount"
+        [resources]="data?.links"
         [type]="UserProfileResourceType.LINKS"
         [hasHorizontalBorder]="false"
     ></app-chat-profile-resources>

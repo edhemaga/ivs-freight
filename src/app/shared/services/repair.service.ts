@@ -419,7 +419,7 @@ export class RepairService {
             lat,
             distance,
             '',
-            0,
+            250,
             costFrom,
             costTo,
             visitedByMe,
