@@ -26,6 +26,9 @@ import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/componen
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
+//models
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
+
 //constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
@@ -35,6 +38,7 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 // components
 import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
+import { getDispatchColumnDefinition } from '@shared/utils/settings/table-settings/dispatch-columns';
 
 @Titles()
 @Component({
@@ -69,8 +73,10 @@ export class DispatchComponent
     dispatchTableList: Observable<number[]>;
 
     dispatcherItems: any[];
+    columns: DispatchColumn[];
 
     selectedDispatcher;
+    isAscending: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -96,6 +102,11 @@ export class DispatchComponent
         this.sendDispatchData();
 
         this.setTableFilter();
+
+        this.search();
+        this.columns = getDispatchColumnDefinition();
+
+        this.toggleColumns();
     }
 
     ngOnChanges() {}
@@ -145,6 +156,10 @@ export class DispatchComponent
                             this.dispatchFilters(this.backFilterQuery);
 
                             break;
+                        case ToolbarFilterStringEnum.VACATION_FILTER:
+                            this.backFilterQuery.vacation = res.vacation;
+                            this.dispatchFilters(this.backFilterQuery);
+                            break;
                         default:
                             break;
                     }
@@ -181,6 +196,10 @@ export class DispatchComponent
                 break;
             case DispatchTableStringEnum.OPEN_DISPATCH_LOAD_MODAL:
                 this.openAssignLoadModal();
+
+                break;
+            case TableStringEnum.SORT:
+                this.sortDetails(event);
 
                 break;
             default:
@@ -258,6 +277,59 @@ export class DispatchComponent
                   )
               )
             : this.dispatcherItems[0];
+    }
+
+    sortDetails(e: any) {
+        console.log(e);
+        this.sortByProperty(
+            e.list.dispatches,
+            e.column,
+            e.sortBy,
+            this.isAscending
+        );
+
+        this.isAscending = !this.isAscending;
+    }
+    sortByProperty(arr, property, sort, isAscending) {
+        return arr.sort((a, b) => {
+            const aValue = a[property]?.[sort];
+            const bValue = b[property]?.[sort];
+
+            if (aValue == null && bValue == null) {
+                return 0;
+            }
+            if (aValue == null) {
+                return 1;
+            }
+            if (bValue == null) {
+                return -1;
+            }
+
+            let comparison = 0;
+
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                comparison = aValue.localeCompare(bValue);
+            } else {
+                comparison = aValue - bValue;
+            }
+
+            return isAscending ? comparison : -comparison;
+        });
+    }
+
+    private toggleColumns(): void {
+        this.tableService.currentToaggleColumn
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response?.column) {
+                    this.columns = this.columns.map((col) => {
+                        if (col.field === response.column.field) {
+                            col.hidden = response.column.hidden;
+                        }
+                        return col;
+                    });
+                }
+            });
     }
 
     initTableOptions(): void {
@@ -365,8 +437,8 @@ export class DispatchComponent
         trailerTypes?: number[] | undefined;
         statuses?: number[] | undefined;
         parkings?: number[] | undefined;
-        search?: string | undefined;
         vacation?: boolean | undefined;
+        search?: string | undefined;
         longitude?: number | undefined;
         latitude?: number | undefined;
         distance?: number | undefined;
@@ -411,6 +483,17 @@ export class DispatchComponent
                         TableDropdownComponentConstants.DISPATCH_BACK_FILTER
                     )
                 );
+            });
+    }
+
+    private search(): void {
+        this.tableService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.backFilterQuery.search = res.search;
+                    this.dispatchFilters(this.backFilterQuery);
+                }
             });
     }
 }

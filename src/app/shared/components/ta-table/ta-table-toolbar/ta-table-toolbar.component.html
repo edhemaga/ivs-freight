@@ -687,7 +687,9 @@
     <div class="options-container">
         <!-- TOOLBAR OPTIONS -->
 
-        <ng-container *ngIf="activeViewMode === 'List'">
+        <ng-container
+            *ngIf="activeViewMode === 'List' || activeViewMode === 'Dispatch'"
+        >
             <ng-container *ngFor="let option of optionsPopupContent">
                 <div>
                     <!-- Option Border -->
@@ -719,7 +721,8 @@
                             *ngIf="
                                 option?.showBackToList &&
                                 option.hasOwnSubOpions &&
-                                option.active
+                                option.active &&
+                                activeViewMode !== 'Dispatch'
                             "
                         >
                             <svg-icon
@@ -735,7 +738,8 @@
                             {{
                                 option?.showBackToList &&
                                 option.hasOwnSubOpions &&
-                                option.active
+                                option.active &&
+                                activeViewMode !== 'Dispatch'
                                     ? 'Back to Menu'
                                     : option.text
                             }}
@@ -780,9 +784,17 @@
                     <div class="options-border"></div>
                 </div>
             </ng-container>
+        </ng-container>
 
-            <!-- COLUMNS LIST  -->
-            <div class="columns-options" *ngIf="optionsPopupContent[0].active">
+        <!-- COLUMNS LIST  -->
+
+        <div class="columns-options">
+            <ng-container
+                *ngIf="
+                    optionsPopupContent[0].active ||
+                    activeViewMode === 'Dispatch'
+                "
+            >
                 <div class="columns-container">
                     <ng-container
                         *ngFor="
@@ -791,7 +803,9 @@
                         "
                     >
                         <!-- For Regular Column -->
-                        <ng-container *ngIf="!column.isGroup">
+                        <ng-container
+                            *ngIf="!column.isGroup; else groupContainer"
+                        >
                             <div
                                 (click)="onToaggleColumn(column, i)"
                                 class="column"
@@ -837,7 +851,7 @@
                         </ng-container>
 
                         <!-- For Group -->
-                        <ng-container *ngIf="column.isGroup">
+                        <ng-template #groupContainer>
                             <div
                                 class="group-columns-container"
                                 [ngClass]="{
@@ -958,11 +972,12 @@
                                     </ng-container>
                                 </div>
                             </div>
-                        </ng-container>
+                        </ng-template>
                     </ng-container>
                 </div>
-            </div>
-        </ng-container>
+            </ng-container>
+        </div>
+        <!-- </ng-container> -->
 
         <ng-container *ngIf="activeViewMode === 'Card'">
             <!-- Columns -->

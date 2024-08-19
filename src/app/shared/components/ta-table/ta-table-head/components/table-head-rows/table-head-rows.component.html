@@ -212,7 +212,8 @@
                                         .gridNameTitle
                                     | tableHeadBorder : column.tableHeadTitle,
                                 'pickup-delivery':
-                                    column.tableHeadTitle === 'PICKUP DELIVERY'
+                                    column.tableHeadTitle === 'PICKUP DELIVERY',
+                                status: column.tableHeadTitle === 'STATUS'
                             }"
                             [innerHTML]="
                                 column.tableHeadTitle | tableDoubleHeadPayroll
