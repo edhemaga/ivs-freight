@@ -50,7 +50,6 @@ export class DispatchTableDriverComponent {
     @Input() public phone: string;
     @Input() public email: string;
     @Input() public isDrag: boolean;
-    @Input() public draggingType: string;
     @Input() public openedDriverDropdown: number;
     @Input() public isActiveLoad: boolean;
     @Input() public hoursOfService: HosResponse;
@@ -59,6 +58,10 @@ export class DispatchTableDriverComponent {
     @Input() public isHosShown: boolean = true;
     @Input() public isEndorsmentShow: boolean = true;
     @Input() public openedHosData: any; //leave this any because we are not doing this now
+
+    @Input() set driverDropdownWidth(value: number) {
+        this._driverDropdownWidth = value - 2;
+    }
 
     @Output() addDriverEmitter = new EventEmitter<{
         event: DriverMinimalResponse;
@@ -88,6 +91,7 @@ export class DispatchTableDriverComponent {
 
     public copyIndex: number = -1;
     public driverIndex: number = -1;
+    public _driverDropdownWidth: number;
 
     public tooltip: NgbTooltip;
 
@@ -101,7 +105,7 @@ export class DispatchTableDriverComponent {
     ) {}
 
     get driverInputConfig(): ITaInput {
-        return DispatchConfig.getDriverInputConfig();
+        return DispatchConfig.getDriverInputConfig(this._driverDropdownWidth);
     }
 
     public identity(_: number, item: EnumValue): number {

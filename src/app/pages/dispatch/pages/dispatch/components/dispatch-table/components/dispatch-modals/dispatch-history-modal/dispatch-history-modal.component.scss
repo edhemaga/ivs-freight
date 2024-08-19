@@ -138,10 +138,14 @@
                 /* No Group Container Main */
 
                 &-main {
+                    display: grid;
+                    grid-auto-rows: 26px;
+                    grid-gap: 2px;
+
                     &-item {
                         display: grid;
+                        grid-auto-rows: 26px;
                         grid-gap: 2px;
-                        margin-bottom: 2px;
 
                         .item-box {
                             border-radius: 2px;
@@ -150,8 +154,15 @@
                             cursor: pointer;
                             transition: background 0.2s ease-in-out;
 
-                            &:hover {
+                            /*  &:hover,
+                            &.hover-group.group {
                                 background: $bw2;
+                            } */
+
+                            &.hover-group {
+                                &:hover {
+                                    background: red;
+                                }
                             }
 
                             p {

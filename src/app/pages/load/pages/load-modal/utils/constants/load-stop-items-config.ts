@@ -23,9 +23,9 @@ export class LoadStopItemsConfig {
     };
 
     static BOL_INPUT_CONFIG: ITaInput = {
-        name: 'BOL NO',
+        name: 'BOL NO.',
         type: 'text',
-        label: 'BOL NO',
+        label: 'BOL No.',
         placeholderInsteadOfLabel: true,
     };
     static WEIGHT_INPUT_CONFIG: ITaInput = {
@@ -34,6 +34,8 @@ export class LoadStopItemsConfig {
         label: 'Weight',
         placeholderInsteadOfLabel: true,
         fixedPlacholder: 'lbs',
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
     };
 
     static LENGTH_INPUT_CONFIG: ITaInput = {
@@ -42,6 +44,8 @@ export class LoadStopItemsConfig {
         label: 'Length',
         placeholderInsteadOfLabel: true,
         fixedPlacholder: 'ft',
+        priceSeparator: true,
+        priceSeparatorLimitation: 3,
     };
     static HEIGHT_INPUT_CONFIG: ITaInput = {
         name: 'Height',
@@ -49,6 +53,8 @@ export class LoadStopItemsConfig {
         label: 'Height',
         placeholderInsteadOfLabel: true,
         fixedPlacholder: 'ft',
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
     };
 
     static getTarpInputConfig(isDisabled: boolean): ITaInput {
@@ -125,6 +131,8 @@ export class LoadStopItemsConfig {
         label: 'TMP',
         placeholderInsteadOfLabel: true,
         fixedPlacholder: '°F',
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
     };
 
     static IS_CREATED_NEW_STOP_ITEMS_ROW: LoadItemStop = {

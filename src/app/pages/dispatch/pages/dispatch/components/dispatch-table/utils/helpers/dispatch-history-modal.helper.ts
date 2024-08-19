@@ -5,6 +5,7 @@ import moment from 'moment';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
@@ -314,21 +315,6 @@ export class DispatchHistoryModalHelper {
                 noGroupClass = 'layout-4';
 
                 break;
-            case 'layout-21':
-                const headerLayout21 = [
-                    dispatchHistoryHeaderItems[2],
-                    ...dispatchHistoryHeaderItems.slice(4),
-                ];
-
-                headerItems = this.addExtraItemsInDispatchHistoryHeader(
-                    headerLayout21,
-                    2,
-                    4
-                );
-
-                noGroupClass = 'layout-4';
-
-                break;
             case 'layout-22':
                 const headerLayout22 = [
                     dispatchHistoryHeaderItems[1],
@@ -464,23 +450,14 @@ export class DispatchHistoryModalHelper {
         layout: string,
         data: DispatchHistoryResponse[]
     ): string[][] {
-        const dataItems = data.map((dataItem) => {
-            const { dispatcher, truck, trailer, driver, dateFrom, dateTo } =
-                dataItem;
+        const dataItems = data.map((dataItem, index) => {
+            const { dateFrom, dateTo } = dataItem;
 
-            const dataArray = [
-                dispatcher?.fullName ?? null,
-                truck?.truckNumber ?? null,
-                trailer?.trailerNumber ?? null,
-                driver?.firstName
-                    ? driver?.firstName + ' ' + driver?.lastName
-                    : null,
-                MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
-                dateTo
-                    ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
-                    : null,
-                this.createTotalColumnValue(dateFrom, dateTo),
-            ];
+            const dataArray = this.createDispatchHistoryDataArray(
+                data,
+                dataItem,
+                index
+            );
 
             switch (layout) {
                 case 'layout-1':
@@ -918,12 +895,6 @@ export class DispatchHistoryModalHelper {
             !isTruckSelected &&
             isTrailerSelected &&
             isDriverSelected;
-        const layout23 =
-            !isTimeSelected &&
-            isDispatchBoardSelected &&
-            isTruckSelected &&
-            isTrailerSelected &&
-            isDriverSelected;
         const layout24 =
             !isTimeSelected &&
             !isDispatchBoardSelected &&
@@ -1012,8 +983,6 @@ export class DispatchHistoryModalHelper {
                 return 'layout-21';
             case layout22:
                 return 'layout-22';
-            case layout23:
-                return 'layout-23';
             case layout24:
                 return 'layout-24';
             case layout25:
@@ -1031,6 +1000,111 @@ export class DispatchHistoryModalHelper {
             default:
                 return;
         }
+    }
+
+    static createDispatchHistoryDataArray(
+        data: DispatchHistoryResponse[],
+        dataItem: DispatchHistoryResponse,
+        index: number
+    ): string[] {
+        const { dispatcher, truck, trailer, driver, dateFrom, dateTo } =
+            dataItem;
+
+        const dataArray = [
+            dispatcher?.fullName &&
+            data[index - 1]?.dispatcher?.fullName !== dispatcher?.fullName
+                ? dispatcher?.fullName
+                : null,
+            truck?.truckNumber &&
+            data[index - 1]?.truck?.truckNumber !== truck?.truckNumber
+                ? truck?.truckNumber
+                : null,
+            trailer?.trailerNumber &&
+            data[index - 1]?.trailer?.trailerNumber !== trailer?.trailerNumber
+                ? trailer?.trailerNumber
+                : null,
+            driver?.firstName &&
+            data[index - 1]?.driver?.firstName +
+                ' ' +
+                data[index - 1]?.driver?.lastName !==
+                driver?.firstName + ' ' + driver?.lastName
+                ? driver?.firstName + ' ' + driver?.lastName
+                : null,
+            MethodsCalculationsHelper.convertDateFromBackend(dateFrom),
+            dateTo
+                ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
+                : null,
+            this.createTotalColumnValue(dateFrom, dateTo),
+        ];
+
+        return dataArray;
+    }
+
+    static createDispatchHistoryGridSpanData(
+        noGroupData: string[][]
+    ): number[][] {
+        const noGroupItemSpanArray = noGroupData.map((row, index) => {
+            const spanArray: number[] = [];
+
+            const nextRow = noGroupData[index + 1] || [];
+            const newRowIndex = noGroupData.indexOf(nextRow);
+            const nextRowHasItemWithNoValue =
+                MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(nextRow);
+
+            if (!nextRowHasItemWithNoValue) {
+                for (let i = 0; i < row.length; i++) {
+                    spanArray.push(1);
+                }
+            } else {
+                nextRow.forEach((rowItem, rowItemIndex) => {
+                    if (!rowItem) {
+                        let spanCounter = 1;
+
+                        for (let i = newRowIndex; i < noGroupData.length; i++) {
+                            if (noGroupData[i][rowItemIndex]) {
+                                break;
+                            } else {
+                                spanCounter++;
+                            }
+                        }
+
+                        spanArray[rowItemIndex] = spanCounter;
+                    }
+                });
+            }
+
+            return spanArray;
+        });
+
+        return noGroupItemSpanArray;
+    }
+
+    static createDispatchHistoryDataHoverArray(
+        noGroupItemSpanArray: number[][]
+    ): number[][] {
+        const noGroupItemHoverArray: number[][] = [];
+
+        let hoverIndexArray: number[] = [];
+        let spanHoverCounter = 0;
+
+        noGroupItemSpanArray.forEach((row, index) => {
+            const isNoSpanRow = row.every((rowItem) => rowItem === 1);
+
+            hoverIndexArray.push(index);
+
+            spanHoverCounter++;
+
+            if (isNoSpanRow) {
+                for (let i = 0; i < spanHoverCounter; i++) {
+                    noGroupItemHoverArray.push(hoverIndexArray);
+                }
+
+                hoverIndexArray = [];
+                spanHoverCounter = 0;
+            }
+        });
+
+        return noGroupItemHoverArray;
     }
 
     static createStatusOrderValues(statusString: string): string {
@@ -1075,8 +1149,10 @@ export class DispatchHistoryModalHelper {
 
             const minutes = to.diff(from, 'minutes');
 
+            const seconds = to.diff(from, 'seconds');
+
             if (!years && !days && !hours && !minutes) {
-                return null;
+                return seconds ? seconds + 's' : null;
             } else {
                 const totalResult = `${years ? years + 'y' : ''} ${
                     days ? days + 'd' : ''
@@ -1154,7 +1230,7 @@ export class DispatchHistoryModalHelper {
             isTrailerSelected &&
             isDriverSelected;
 
-        const selectedTimeId = isGroupWithoutTime ? 100 : null;
+        const selectedTimeId = isGroupWithoutTime ? 14 : null;
 
         return {
             selectedTimeId,

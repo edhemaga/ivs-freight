@@ -35,7 +35,10 @@
                     (type === 'trailer' && trailer)
                 "
             >
-                <div class="padding-inside">
+                <div
+                    class="padding-inside"
+                    [ngClass]="{ hovering: isHoveringRow }"
+                >
                     <div
                         class="d-flex align-items-center justify-content-between selected-container"
                         ngbTooltip
@@ -61,7 +64,6 @@
                                 ? '2px 0 1px 6px'
                                 : '0 0 0 6px'
                         }"
-                        [ngClass]="{ hovering: isHoveringRow }"
                     >
                         <div class="d-flex align-items-center">
                             <!-- Circle Icon -->

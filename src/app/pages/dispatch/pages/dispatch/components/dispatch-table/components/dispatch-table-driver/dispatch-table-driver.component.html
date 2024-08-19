@@ -1,9 +1,4 @@
-<div
-    class="main_inside driver-container"
-    [class.filled]="driver"
-    [class.default]="!driver && !driverList.length && !isBoardLocked"
-    [class.isDragging]="isDrag && draggingType === 'driver'"
->
+<div class="main_inside driver-container" [class.filled]="driver">
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
@@ -17,29 +12,61 @@
         <ng-container *ngIf="driver">
             <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
                 <div class="info-item">
-                    <div class="driver-buttons">
-                        <ng-container *ngIf="driverHover.txt !== 'email'">
+                    <ng-container *ngIf="isBoardLocked">
+                        <div class="driver-buttons">
+                            <ng-container *ngIf="driverHover.txt !== 'email'">
+                                <span
+                                    (mouseover)="
+                                        setMouseOver('phone', rowIndex)
+                                    "
+                                    (mouseout)="setMouseOut()"
+                                    (click)="copy(phone, rowIndex, 'phone')"
+                                    ngbTooltip
+                                    [mainTooltip]="
+                                        copyIndex === rowIndex &&
+                                        driverCopy.txt === 'phone'
+                                            ? 'Copied'
+                                            : 'Copy'
+                                    "
+                                    [tooltipBackground]="
+                                        copyIndex === rowIndex &&
+                                        driverCopy.txt === 'phone'
+                                            ? '#3B73ED'
+                                            : '#424242'
+                                    "
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        [src]="dispatchTableSvgRoutes.phone"
+                                        [svgStyle]="{
+                                            'width.px': '18',
+                                            'height.px': '18'
+                                        }"
+                                        [fill]="'#ff0000'"
+                                    ></svg-icon>
+                                </span>
+                            </ng-container>
                             <span
-                                (mouseover)="setMouseOver('phone', rowIndex)"
+                                (mouseover)="setMouseOver('email', rowIndex)"
                                 (mouseout)="setMouseOut()"
-                                (click)="copy(phone, rowIndex, 'phone')"
+                                (click)="copy(email, rowIndex, 'email')"
                                 ngbTooltip
                                 [mainTooltip]="
                                     copyIndex === rowIndex &&
-                                    driverCopy.txt === 'phone'
+                                    driverCopy.txt === 'email'
                                         ? 'Copied'
                                         : 'Copy'
                                 "
                                 [tooltipBackground]="
                                     copyIndex === rowIndex &&
-                                    driverCopy.txt === 'phone'
+                                    driverCopy.txt === 'email'
                                         ? '#3B73ED'
                                         : '#424242'
                                 "
                                 position="bottom"
                             >
                                 <svg-icon
-                                    [src]="dispatchTableSvgRoutes.phone"
+                                    [src]="dispatchTableSvgRoutes.email"
                                     [svgStyle]="{
                                         'width.px': '18',
                                         'height.px': '18'
@@ -47,36 +74,8 @@
                                     [fill]="'#ff0000'"
                                 ></svg-icon>
                             </span>
-                        </ng-container>
-                        <span
-                            (mouseover)="setMouseOver('email', rowIndex)"
-                            (mouseout)="setMouseOut()"
-                            (click)="copy(email, rowIndex, 'email')"
-                            ngbTooltip
-                            [mainTooltip]="
-                                copyIndex === rowIndex &&
-                                driverCopy.txt === 'email'
-                                    ? 'Copied'
-                                    : 'Copy'
-                            "
-                            [tooltipBackground]="
-                                copyIndex === rowIndex &&
-                                driverCopy.txt === 'email'
-                                    ? '#3B73ED'
-                                    : '#424242'
-                            "
-                            position="bottom"
-                        >
-                            <svg-icon
-                                [src]="dispatchTableSvgRoutes.email"
-                                [svgStyle]="{
-                                    'width.px': '18',
-                                    'height.px': '18'
-                                }"
-                                [fill]="'#ff0000'"
-                            ></svg-icon>
-                        </span>
-                    </div>
+                        </div>
+                    </ng-container>
                     <div class="driver-items-hold d-flex align-items-center">
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <ng-container *ngIf="isHosShown">
@@ -166,7 +165,7 @@
                             </span>
                         </ng-container>
                     </div>
-                    <ng-container *ngIf="!isBoardLocked">
+                    <ng-container *ngIf="!isBoardLocked && !isDrag">
                         <div
                             class="driver-vacation d-flex justify-content-center align-items-center c-pointer"
                             [class.driver-on-vacation]="driver.vacation"
@@ -192,8 +191,7 @@
                                 [src]="dispatchTableSvgRoutes.vacation"
                             ></svg-icon>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="!isBoardLocked && !isDrag">
+
                         <div
                             class="d-flex justify-content-center align-items-center remove-icon-container"
                             [ngClass]="{ disabled: isActiveLoad }"
@@ -274,14 +272,8 @@
                         trackBy: identity
                     "
                 >
-                    <div
-                        cdkDrag
-                        cdkDragLockAxis="y"
-                        cdkDragPreviewContainer="parent"
-                        class="ngx-slider-item off-items"
-                    >
+                    <div class="ngx-slider-item off-items">
                         <div
-                            cdkDragHandle
                             style="cursor: grab"
                             class="ngx-slider-info"
                             [ngStyle]="{
@@ -346,14 +338,8 @@
                         trackBy: identity
                     "
                 >
-                    <div
-                        cdkDrag
-                        cdkDragLockAxis="y"
-                        cdkDragPreviewContainer="parent"
-                        class="ngx-slider-item on-items"
-                    >
+                    <div class="ngx-slider-item on-items">
                         <div
-                            cdkDragHandle
                             style="cursor: grab"
                             class="ngx-slider-info"
                             [ngStyle]="{

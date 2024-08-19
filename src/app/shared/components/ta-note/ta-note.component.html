@@ -55,11 +55,9 @@
             ></app-ta-spinner>
         </div>
     </ng-container>
-    <div
-        *ngIf="isAllOpen"
-        [innerHTML]="_note | safeHtml"
-        class="note_inner_text"
-    ></div>
+    <ng-container *ngIf="isAllOpen">
+        <div [innerHTML]="value | safeHtml" class="note_inner_text"></div>
+    </ng-container>
 </div>
 
 <ng-template #note_popover let-data="data">

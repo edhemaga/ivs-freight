@@ -17,9 +17,14 @@
 
     &,
     &.location-f-city {
-        &::selection &::-moz-selection {
-            background-color: $ta-black-5;
+        &::-moz-selection {
             color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
         }
     }
 }

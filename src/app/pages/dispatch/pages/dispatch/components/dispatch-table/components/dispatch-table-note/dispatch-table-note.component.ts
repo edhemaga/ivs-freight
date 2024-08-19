@@ -14,13 +14,14 @@ export class DispatchTableNoteComponent {
     @Input() public isNoteExpanded: boolean;
     @Input() public isHoveringRowIndex: number;
     @Input() public rowIndex: number;
+    @Input() public dispatchId: number;
 
     @Output() saveNoteValue = new EventEmitter<{
         item: { note: string; dispatchIndex: number };
     }>();
     constructor() {}
 
-    public saveNote(item: { note: string; dispatchIndex: number }): void {
-        this.saveNoteValue.emit({ item });
+    public saveNote(item): void {
+        this.saveNoteValue.emit(item);
     }
 }

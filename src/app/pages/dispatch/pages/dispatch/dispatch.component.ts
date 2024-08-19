@@ -280,6 +280,7 @@ export class DispatchComponent
     }
 
     sortDetails(e: any) {
+        console.log(e);
         this.sortByProperty(
             e.list.dispatches,
             e.column,

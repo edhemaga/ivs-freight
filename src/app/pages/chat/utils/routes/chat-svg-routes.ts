@@ -17,6 +17,9 @@ export class ChatSvgRoutes {
     static sendMessageIcon: string = 'assets/svg/chat/send-message-icon.svg';
     static unreadMessageIcon: string = 'assets/svg/chat/unread-messages-icon.svg';
     static dropZoneIcon: string = 'assets/svg/chat/drop-zone-focus.svg';
+    static trashBinIcon: string = 'assets/svg/chat/trash-bin-icon.svg';
+    static replyIcon: string = 'assets/svg/chat/reply-icon.svg';
+    static editPenIcon: string = 'assets/svg/chat/edit-pen-icon.svg';
 
     // Cancel
     static noBorderXIcon: string = 'assets/svg/chat/x-icon/no-border-x-icon.svg';
@@ -37,4 +40,7 @@ export class ChatSvgRoutes {
     static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
     static repairIcon: string = 'assets/svg/chat/repair-icon.svg';
     static generalIcon: string = 'assets/svg/chat/general-icon.svg';
+
+    // Other
+    static linkIcon: string = 'assets/svg/chat/link-icon.svg';
 }
