@@ -154,11 +154,15 @@
                             cursor: pointer;
                             transition: background 0.2s ease-in-out;
 
-                            &:hover,
-                            &.hover-group.group {
+                            &.hovered {
                                 background: $bw2;
                             }
 
+                            /*   &:hover,
+                            &.hover-group.group {
+                                background: $bw2;
+                            }
+ */
                             /*  &.hover-group {
                                 &:hover {
                                     background: red;
