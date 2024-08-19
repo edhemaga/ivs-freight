@@ -1047,7 +1047,7 @@ export class DispatchHistoryModalHelper {
             const spanArray: number[] = [];
 
             const nextRow = noGroupData[index + 1] || [];
-            const newRowIndex = noGroupData.indexOf(nextRow);
+            const nextRowIndex = noGroupData.indexOf(nextRow);
             const nextRowHasItemWithNoValue =
                 MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(nextRow);
 
@@ -1060,7 +1060,11 @@ export class DispatchHistoryModalHelper {
                     if (!rowItem) {
                         let spanCounter = 1;
 
-                        for (let i = newRowIndex; i < noGroupData.length; i++) {
+                        for (
+                            let i = nextRowIndex;
+                            i < noGroupData.length;
+                            i++
+                        ) {
                             if (noGroupData[i][rowItemIndex]) {
                                 break;
                             } else {
@@ -1069,6 +1073,8 @@ export class DispatchHistoryModalHelper {
                         }
 
                         spanArray[rowItemIndex] = spanCounter;
+                    } else {
+                        spanArray[rowItemIndex] = 1;
                     }
                 });
             }
@@ -1082,6 +1088,24 @@ export class DispatchHistoryModalHelper {
     static createDispatchHistoryDataHoverArray(
         noGroupItemSpanArray: number[][]
     ): number[][] {
+        console.log('noGroupItemSpanArray', noGroupItemSpanArray);
+
+        const testArray = [];
+
+        noGroupItemSpanArray.forEach((row, rowIndex) => {
+            let classNameArray = [];
+
+            row.forEach((rowItem, rowItemIndex) => {
+                const className = '' + rowIndex + rowItemIndex;
+
+                classNameArray.push(className);
+            });
+
+            testArray.push(classNameArray);
+        });
+
+        console.log('testArray', testArray);
+
         const noGroupItemHoverArray: number[][] = [];
 
         let hoverIndexArray: number[] = [];
