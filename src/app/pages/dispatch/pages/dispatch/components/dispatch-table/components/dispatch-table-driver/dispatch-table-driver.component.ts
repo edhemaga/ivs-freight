@@ -50,7 +50,6 @@ export class DispatchTableDriverComponent {
     @Input() public phone: string;
     @Input() public email: string;
     @Input() public isDrag: boolean;
-    @Input() public draggingType: string;
     @Input() public openedDriverDropdown: number;
     @Input() public isActiveLoad: boolean;
     @Input() public hoursOfService: HosResponse;

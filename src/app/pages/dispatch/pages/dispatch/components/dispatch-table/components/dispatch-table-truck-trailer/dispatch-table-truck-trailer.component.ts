@@ -52,11 +52,10 @@ export class DispatchTableTruckTrailerComponent {
 
     @Input() rowIndex: number;
 
-    @Input() isBoardLocked: boolean;
     @Input() isDrag: boolean;
-    @Input() isActiveLoad: boolean;
-
     @Input() isHoveringRow: boolean;
+    @Input() isBoardLocked: boolean;
+    @Input() isActiveLoad: boolean;
 
     @Output() addTruckTrailerEmitter = new EventEmitter<{
         type: string;

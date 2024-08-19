@@ -1,9 +1,4 @@
-<div
-    class="main_inside driver-container"
-    [class.filled]="driver"
-    [class.default]="!driver && !driverList.length && !isBoardLocked"
-    [class.isDragging]="isDrag && draggingType === 'driver'"
->
+<div class="main_inside driver-container" [class.filled]="driver">
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
@@ -161,7 +156,7 @@
                             </span>
                         </ng-container>
                     </div>
-                    <ng-container *ngIf="!isBoardLocked">
+                    <ng-container *ngIf="!isBoardLocked && !isDrag">
                         <div
                             class="driver-vacation d-flex justify-content-center align-items-center c-pointer"
                             [class.driver-on-vacation]="driver.vacation"
@@ -187,8 +182,7 @@
                                 [src]="dispatchTableSvgRoutes.vacation"
                             ></svg-icon>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="!isBoardLocked && !isDrag">
+
                         <div
                             class="d-flex justify-content-center align-items-center remove-icon-container"
                             [ngClass]="{ disabled: isActiveLoad }"
@@ -269,14 +263,8 @@
                         trackBy: identity
                     "
                 >
-                    <div
-                        cdkDrag
-                        cdkDragLockAxis="y"
-                        cdkDragPreviewContainer="parent"
-                        class="ngx-slider-item off-items"
-                    >
+                    <div class="ngx-slider-item off-items">
                         <div
-                            cdkDragHandle
                             style="cursor: grab"
                             class="ngx-slider-info"
                             [ngStyle]="{
@@ -341,14 +329,8 @@
                         trackBy: identity
                     "
                 >
-                    <div
-                        cdkDrag
-                        cdkDragLockAxis="y"
-                        cdkDragPreviewContainer="parent"
-                        class="ngx-slider-item on-items"
-                    >
+                    <div class="ngx-slider-item on-items">
                         <div
-                            cdkDragHandle
                             style="cursor: grab"
                             class="ngx-slider-info"
                             [ngStyle]="{

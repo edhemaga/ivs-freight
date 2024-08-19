@@ -16,7 +16,7 @@ import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-background.animation';
 
 // modules
-import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -123,10 +123,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     /////////////////////////////////////////// UPDATE
 
-    testTimeout: any;
+    public draggingType: string;
+
     startIndexTrailer: number;
     startIndexDriver: number;
-    draggingType: string = '';
+
     openedHosData = [];
 
     constructor(
@@ -447,7 +448,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     takeUntil(this.destroy$),
                     catchError(() => {
                         this.isDispatchBoardChangeInProgress = false;
-                        this.checkEmptySet = '';
+                        this.checkEmptySet =
+                            DispatchTableStringEnum.EMPTY_STRING;
 
                         return of(null);
                     })
@@ -461,7 +463,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatcherService.updateModalList();
 
                     this.isDispatchBoardChangeInProgress = false;
-                    this.checkEmptySet = '';
+                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
                 });
         } else {
             this.dispatcherService
@@ -470,7 +472,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     takeUntil(this.destroy$),
                     catchError(() => {
                         this.isDispatchBoardChangeInProgress = false;
-                        this.checkEmptySet = '';
+                        this.checkEmptySet =
+                            DispatchTableStringEnum.EMPTY_STRING;
 
                         return of(null);
                     })
@@ -484,7 +487,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatcherService.updateModalList();
 
                     this.isDispatchBoardChangeInProgress = false;
-                    this.checkEmptySet = '';
+                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
                 });
         }
     }
@@ -496,7 +499,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
                 tap(() => {
                     this.isDispatchBoardChangeInProgress = false;
-                    this.checkEmptySet = '';
+                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
                 })
             )
             .subscribe();
@@ -524,7 +527,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     .subscribe(() => {
                         this.dispatcherService.updateModalList();
 
-                        this.checkEmptySet = '';
+                        this.checkEmptySet =
+                            DispatchTableStringEnum.EMPTY_STRING;
                         this.isDispatchBoardChangeInProgress = false;
                     });
             });
@@ -609,8 +613,66 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     // CDL DRAG AND DROP
 
-    dropList(event) {
+    dropList<T>(event: CdkDragDrop<T>): void {
+        console.log('event', event);
+        const { currentIndex, previousIndex } = event;
+
+        const dispatchBoardId = this.dispatchData.id;
+        const dispatchDataDispatches = this.dispatchData.dispatches;
+
+        const dispatches = [
+            {
+                id: dispatchDataDispatches[currentIndex].id,
+                order: dispatchDataDispatches[previousIndex].order,
+            },
+            {
+                id: dispatchDataDispatches[previousIndex].id,
+                order: dispatchDataDispatches[currentIndex].order,
+            },
+        ];
+
+        const data = {
+            dispatchBoardId,
+            dispatches,
+        };
+
         this.isDispatchBoardChangeInProgress = true;
+
+        console.log('dispatchBoardId', dispatchBoardId);
+        console.log('dispatches', dispatches);
+
+        this.dispatcherService
+            .reorderDispatchboard(data)
+            .pipe(
+                takeUntil(this.destroy$),
+                catchError(() => {
+                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
+                    this.isDispatchBoardChangeInProgress = false;
+
+                    return of([]);
+                })
+            )
+            .subscribe(() => {
+                [
+                    dispatchDataDispatches[currentIndex].order,
+                    dispatchDataDispatches[previousIndex].order,
+                ] = [
+                    dispatchDataDispatches[previousIndex].order,
+                    dispatchDataDispatches[currentIndex].order,
+                ];
+
+                moveItemInArray(
+                    dispatchDataDispatches,
+                    previousIndex,
+                    currentIndex
+                );
+
+                this.isDispatchBoardChangeInProgress = false;
+
+                this.cdRef.detectChanges();
+            });
+
+        /*  this.isDispatchBoardChangeInProgress = true;
 
         this.dispatcherService
             .reorderDispatchboard({
@@ -631,7 +693,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             })
             .pipe(
                 catchError(() => {
-                    this.checkEmptySet = '';
+                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
                     this.isDispatchBoardChangeInProgress = false;
                     return of([]);
                 })
@@ -641,7 +703,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatchData.dispatches[event.previousIndex].order;
                 this.dispatchData.dispatches[event.previousIndex].order =
                     this.dispatchData.dispatches[event.currentIndex].order;
+
                 this.isDispatchBoardChangeInProgress = false;
+
                 this.cdRef.detectChanges();
             });
 
@@ -649,10 +713,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.dispatchData.dispatches,
             event.previousIndex,
             event.currentIndex
-        );
+        ); */
     }
 
-    dropTrailer(event, finalIndx) {
+    dropTrailer(event, finalIndx): void {
         if (finalIndx === this.startIndexTrailer) return;
         if (finalIndx == -1) return; // TODO
         const finalIndexData = this.getDataForUpdate(
@@ -701,7 +765,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
-    dropDriver(event, finalIndx) {
+    dropDriver(event, finalIndx): void {
         if (finalIndx === this.startIndexDriver) return;
         if (finalIndx == -1) return; // Todo
         const finalIndexData = this.getDataForUpdate(
@@ -760,13 +824,20 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         };
     }
 
+    cdkDragStartedRow(event, indx) {
+        this.isDrag = true;
+    }
+
     cdkDragStartedTrailer(event, indx) {
+        console.log('END TRAILER');
         this.startIndexTrailer = indx;
         this.isDrag = true;
-        this.draggingType = DispatchTableStringEnum.TRUCK;
+        /*  this.draggingType = DispatchTableStringEnum.TRUCK; */
+        this.draggingType = 'trailer';
     }
 
     cdkDragStartedDriver(event, indx) {
+        console.log('END DRIVER');
         this.startIndexDriver = indx;
         this.isDrag = true;
         this.draggingType = 'driver';
@@ -774,7 +845,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     dragEnd() {
         this.isDrag = false;
-        this.draggingType = '';
+        this.draggingType = DispatchTableStringEnum.EMPTY_STRING;
     }
 
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
