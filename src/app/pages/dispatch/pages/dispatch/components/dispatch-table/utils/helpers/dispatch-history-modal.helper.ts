@@ -1040,45 +1040,71 @@ export class DispatchHistoryModalHelper {
         return dataArray;
     }
 
-    static createDispatchHistoryGridSpanData(noGroupData: string[][]) {
-        console.log('noGroupData', noGroupData);
-        /*  public isNoGroupItemSpanArray: any = [
-            {
-                isRowSpan: true,
-                rowSpanIndex: 22,
-                isItemBoxSpanArray: [
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                    { isItemBoxSpan: true, itemSpanIndex: 22 },
-                ],
-            },
-        ]; */
+    static createDispatchHistoryGridSpanData(
+        noGroupData: string[][]
+    ): number[][] {
+        const noGroupItemSpanArray = noGroupData.map((row, index) => {
+            const spanArray: number[] = [];
 
-        const isNoGroupItemSpanArray = noGroupData.map((noGroupItem, index) => {
-            const nextNoGroupItem = noGroupData[index + 1] || [];
-            const hasNoValue =
-                MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(
-                    nextNoGroupItem
-                );
-            const itemIndex = nextNoGroupItem;
+            const nextRow = noGroupData[index + 1] || [];
+            const newRowIndex = noGroupData.indexOf(nextRow);
+            const nextRowHasItemWithNoValue =
+                MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(nextRow);
 
-            /*  const nextNoGroupItemIndex = noGroupData.forEach((item, itemIndex) => {
-                    if (itemIndex === index) return 
+            if (!nextRowHasItemWithNoValue) {
+                for (let i = 0; i < row.length; i++) {
+                    spanArray.push(1);
+                }
+            } else {
+                nextRow.forEach((rowItem, rowItemIndex) => {
+                    if (!rowItem) {
+                        let spanCounter = 1;
 
-                    if (item)
-                }) */
+                        for (let i = newRowIndex; i < noGroupData.length; i++) {
+                            if (noGroupData[i][rowItemIndex]) {
+                                break;
+                            } else {
+                                spanCounter++;
+                            }
+                        }
 
-            return {
-                isRowSpan: hasNoValue,
-                rowSpanIndex: 1,
-            };
+                        spanArray[rowItemIndex] = spanCounter;
+                    }
+                });
+            }
+
+            return spanArray;
         });
 
-        return isNoGroupItemSpanArray;
+        return noGroupItemSpanArray;
+    }
+
+    static createDispatchHistoryDataHoverArray(
+        noGroupItemSpanArray: number[][]
+    ): number[][] {
+        const noGroupItemHoverArray: number[][] = [];
+
+        let hoverIndexArray: number[] = [];
+        let spanHoverCounter = 0;
+
+        noGroupItemSpanArray.forEach((row, index) => {
+            const isNoSpanRow = row.every((rowItem) => rowItem === 1);
+
+            hoverIndexArray.push(index);
+
+            spanHoverCounter++;
+
+            if (isNoSpanRow) {
+                for (let i = 0; i < spanHoverCounter; i++) {
+                    noGroupItemHoverArray.push(hoverIndexArray);
+                }
+
+                hoverIndexArray = [];
+                spanHoverCounter = 0;
+            }
+        });
+
+        return noGroupItemHoverArray;
     }
 
     static createStatusOrderValues(statusString: string): string {

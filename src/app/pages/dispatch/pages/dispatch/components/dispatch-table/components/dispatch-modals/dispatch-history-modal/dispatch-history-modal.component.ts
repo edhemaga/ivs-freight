@@ -70,7 +70,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
     public noGroupData: string[][] = [];
 
-    public isNoGroupItemSpanArray: any = [];
+    public noGroupItemSpanArray: number[][] = [];
 
     // group
     public groupHeaderItems: string[] = [];
@@ -458,6 +458,91 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.createDispatchHistoryGroupItemRows(data);
     }
 
+    hoverRowIndex;
+    hoverBoxIndex;
+    isHoveringGroup;
+
+    noGroupItemHoverArray: number[][] = [];
+
+    hoveredSpanItemGroupClass: string;
+    hoveredSpanItemClassList: string[] = [];
+
+    handleStart(event: MouseEvent, noGroupItemDataIndex, noGroupItemIndex) {
+        /*  this.isHoveringGroup = true;
+
+        this.hoverRowIndex = noGroupItemDataIndex;
+        this.hoverBoxIndex = noGroupItemIndex;
+ */
+        const firstRowSpanIndex =
+            this.noGroupItemHoverArray[noGroupItemDataIndex][0];
+        const lastRowSpanIndex =
+            this.noGroupItemHoverArray[noGroupItemDataIndex][
+                this.noGroupItemHoverArray[noGroupItemDataIndex].length - 1
+            ];
+
+        const hoveredGroupClass =
+            'group-' + firstRowSpanIndex + lastRowSpanIndex + noGroupItemIndex;
+
+        const hoveredSpanItemClassList = (event.target as HTMLElement)
+            .classList;
+
+        this.hoveredSpanItemGroupClass = hoveredGroupClass;
+        this.hoveredSpanItemClassList = Array.from(hoveredSpanItemClassList);
+
+        console.log(
+            'this.hoveredSpanItemGroupClass',
+            this.hoveredSpanItemGroupClass
+        );
+        console.log(
+            ' this.hoveredSpanItemClassList',
+            this.hoveredSpanItemClassList
+        );
+
+        /*   console.log('start');
+        console.log('isHoveringGroup', this.isHoveringGroup);
+        console.log('hoverRowIndex', this.hoverRowIndex);
+        console.log('hoverBoxIndex', this.hoverBoxIndex); */
+    }
+
+    handleEnd() {
+        this.hoveredSpanItemGroupClass = null;
+        this.hoveredSpanItemClassList = [];
+        /*       this.isHoveringGroup = false;
+
+        this.hoverRowIndex = null;
+        this.hoverBoxIndex = null; */
+        /* 
+        console.log('end');
+        console.log('isHoveringGroup', this.isHoveringGroup);
+        console.log('hoverRowIndex', this.hoverRowIndex);
+        console.log('hoverBoxIndex', this.hoverBoxIndex); */
+    }
+
+    handleDispatchHistoryGridSpanItemClassName(
+        isCreateClassName: boolean,
+        noGroupItemDataIndex: number,
+        noGroupItemIndex: number
+    ): string | boolean {
+        const groupClassNamePrefix = 'group-';
+
+        const firstRowSpanIndex =
+            this.noGroupItemHoverArray[noGroupItemDataIndex][0];
+        const lastRowSpanIndex =
+            this.noGroupItemHoverArray[noGroupItemDataIndex][
+                this.noGroupItemHoverArray[noGroupItemDataIndex].length - 1
+            ];
+
+        const groupClassName =
+            groupClassNamePrefix +
+            firstRowSpanIndex +
+            lastRowSpanIndex +
+            noGroupItemIndex;
+
+        return isCreateClassName
+            ? groupClassName
+            : groupClassName === this.hoveredSpanItemGroupClass;
+    }
+
     private createDispatchHistoryData(data: DispatchHistoryResponse[]): void {
         console.log('no group data', data);
 
@@ -475,12 +560,17 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 data
             );
 
-        this.isNoGroupItemSpanArray =
+        this.noGroupItemSpanArray =
             DispatchHistoryModalHelper.createDispatchHistoryGridSpanData(
                 noGroupData
             );
 
-        console.log('isNoGroupItemSpanArray', this.isNoGroupItemSpanArray);
+        this.noGroupItemHoverArray =
+            DispatchHistoryModalHelper.createDispatchHistoryDataHoverArray(
+                this.noGroupItemSpanArray
+            );
+
+        console.log('this.noGroupItemHoverArray', this.noGroupItemHoverArray);
 
         this.hasContent = !!data?.length;
 

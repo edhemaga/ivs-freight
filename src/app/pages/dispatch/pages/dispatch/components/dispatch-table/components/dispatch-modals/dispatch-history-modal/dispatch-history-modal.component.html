@@ -187,13 +187,9 @@
                                                 [subText]="group?.interval"
                                                 [bodyTemplate]="'card'"
                                                 [isExtraLargeLayout]="true"
-                                                [isCardOpen]="
-                                                    !group?.isCompleted
-                                                "
-                                                [disabledCard]="
-                                                    !group?.isCompleted
-                                                "
-                                                [hasArrow]="group?.isCompleted"
+                                                [isCardOpen]="groupIndex <= 1"
+                                                [disabledCard]="groupIndex <= 1"
+                                                [hasArrow]="groupIndex > 1"
                                                 [animationMarginParams]="{
                                                     marginTop: '8px',
                                                     marginBottom: '8px'
@@ -516,45 +512,6 @@
 
                         <ng-template #noGroup>
                             <div class="d-flex flex-column no-group-container">
-                                <div class="span-container">
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        B
-                                    </div>
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        C
-                                    </div>
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        D
-                                    </div>
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        E
-                                    </div>
-                                    <div
-                                        class="span-item"
-                                        [ngClass]="noGroupClass"
-                                    >
-                                        F
-                                    </div>
-                                </div>
-
                                 <!-- No Group Header -->
 
                                 <div
@@ -594,24 +551,7 @@
                                         <div
                                             class="no-group-container-main-item"
                                             [ngClass]="noGroupClass"
-                                            [ngStyle]="{
-                                                'grid-row':
-                                                    isNoGroupItemSpanArray[
-                                                        noGroupItemDataIndex
-                                                    ]?.isRowSpan
-                                                        ? 'span ' +
-                                                          isNoGroupItemSpanArray[
-                                                              noGroupItemDataIndex
-                                                          ]?.rowSpanIndex
-                                                        : '',
-                                            }"
                                         >
-                                            <!--   [ngStyle]="{
-                                                'grid-row':
-                                                    noGroupItemDataIndex == 0
-                                                        ? 'span ' + 3
-                                                        : ''
-                                            }" -->
                                             <ng-container
                                                 *ngFor="
                                                     let noGroupItem of noGroupItemData;
@@ -619,60 +559,117 @@
                                                     let last = last;
                                                     trackBy: trackByIdentity
                                                 "
-                                            >
+                                                ><!--  &&
+                                                            noGroupItemDataIndex ===
+                                                                hoverRowIndex -->
+
+                                                <!--  isHoveringGroup &&
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                hoverRowIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                hoverBoxIndex -->
                                                 <div
                                                     class="align-items-center item-box"
+                                                    [class]="
+                                                        handleDispatchHistoryGridSpanItemClassName(
+                                                            true,
+                                                            noGroupItemDataIndex,
+                                                            noGroupItemIndex
+                                                        )
+                                                    "
                                                     [ngClass]="{
                                                         'justify-content-end':
-                                                            last
+                                                            last,
+                                                        'hover-group':
+                                                            handleDispatchHistoryGridSpanItemClassName(
+                                                                false,
+                                                                noGroupItemDataIndex,
+                                                                noGroupItemIndex
+                                                            )
                                                     }"
                                                     [ngStyle]="{
                                                         'grid-row':
-                                                            isNoGroupItemSpanArray[
+                                                            'span ' +
+                                                            noGroupItemSpanArray[
                                                                 noGroupItemDataIndex
-                                                            ]?.isRowSpan
-                                                                ? 'span ' + 2
-                                                                : ''
+                                                            ][noGroupItemIndex]
                                                     }"
+                                                    (mouseenter)="
+                                                        handleStart(
+                                                            $event,
+                                                            noGroupItemDataIndex,
+                                                            noGroupItemIndex
+                                                        )
+                                                    "
+                                                    (mouseleave)="handleEnd()"
                                                 >
-                                                    <!--   isNoGroupItemSpanArray[
+                                                    <!--   'hover-group':
+                                                            isHoveringGroup &&
+                                                            noGroupItemHoverArray[
                                                                 noGroupItemDataIndex
-                                                            ]
-                                                                ?.isItemBoxSpanArray[
-                                                                noGroupItemIndex
-                                                            ]?.isItemBoxSpan
-                                                                ? 'span ' +
-                                                                  isNoGroupItemSpanArray[
-                                                                      noGroupItemDataIndex
-                                                                  ]
-                                                                      ?.isItemBoxSpanArray[
-                                                                      noGroupItemIndex
-                                                                  ]
-                                                                      ?.itemSpanIndex
-                                                                : '' -->
+                                                            ].includes(
+                                                                hoverRowIndex
+                                                            ) &&
+                                                            hoverRowIndex >=
+                                                                noGroupItemHoverArray[
+                                                                    noGroupItemDataIndex
+                                                                ][0] &&
+                                                            hoverRowIndex <=
+                                                                noGroupItemHoverArray[
+                                                                    noGroupItemDataIndex
+                                                                ][
+                                                                    noGroupItemHoverArray[
+                                                                        noGroupItemDataIndex
+                                                                    ].length - 1
+                                                                ],
+                                                        group:
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                1 -->
+                                                    <!--     (noGroupItemDataIndex >=
+                                                                0 &&
+                                                                noGroupItemDataIndex <=
+                                                                    5 &&
+                                                                noGroupItemIndex ===
+                                                                    1) ||
+                                                            (noGroupItemDataIndex >=
+                                                                6 &&
+                                                                noGroupItemDataIndex <=
+                                                                    15 &&
+                                                                noGroupItemIndex ===
+                                                                    1) ||
+                                                            (noGroupItemDataIndex >=
+                                                                16 &&
+                                                                noGroupItemDataIndex <=
+                                                                    24 &&
+                                                                noGroupItemIndex ===
+                                                                    1)
+                                                                    
+                                                                    noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                1 -->
                                                     <p class="m-0">
                                                         {{
                                                             noGroupItem ??
                                                                 '\u00A0'
                                                         }}
                                                     </p>
-
-                                                    <!-- 
-       [ngStyle]="{
-        'grid-row':
-            (noGroupItem &&
-                !noGroupData[
-                    noGroupItemDataIndex +
-                        1
-                ][i]) ||
-            (!noGroupItem &&
-                !noGroupData[
-                    noGroupItemDataIndex +
-                        1
-                ][i])
-                ? 'span ' + 2
-                : ''
-    }" -->
                                                 </div>
                                             </ng-container>
                                         </div>
