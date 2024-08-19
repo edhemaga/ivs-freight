@@ -58,13 +58,14 @@
             </div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="250"
+                [initialFirstElementHeight]="310"
                 [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
+                #resizerComponent
             >
                 <div firstElement  #firstElementRef  class="h-full">
                     <app-ta-custom-card

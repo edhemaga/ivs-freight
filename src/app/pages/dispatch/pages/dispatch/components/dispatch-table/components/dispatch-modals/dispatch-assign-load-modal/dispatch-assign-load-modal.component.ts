@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     CDK_DRAG_CONFIG,
@@ -21,7 +21,6 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
 import {
@@ -46,6 +45,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 
 // Helpers
 import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
@@ -56,6 +56,8 @@ import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/co
     ],
 })
 export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
+    @ViewChild('resizerComponent') resizerComponent: TaResizerComponent;
+
     // Svg
     public svgIcons = DispatchParkingSvgRoutes;
 
@@ -501,6 +503,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             this.isReorderingActive = true;
             this.showReorderButton = false;
             this.isUnAssignLoadCardOpen = false;
+            setTimeout(() => {
+                this.resizerComponent.setHeights(440, 35);
+            }, 10);
         }
     }
 
@@ -544,7 +549,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         // In progress, waiting for backend
-
         // switch (data?.filterType) {
         //     case LoadFilterStringEnum.USER_FILTER:
         //         break;

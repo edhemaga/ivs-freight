@@ -643,6 +643,6 @@ export class LoadService {
     }
 
     public apiLoadListAssignedIdGet(dispatchId: number) {
-        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+        return this.loadService.apiLoadListAssignedGet(dispatchId);
     }
 }
