@@ -26,7 +26,7 @@
                 'note-note-empty': !_note && !isAllOpen,
                 'note-all-expanded': noteOpened,
                 'dispatch-empty-note': dispatchNoteEmpty,
-                'dispatch-note': isDispatch,
+                'dispatch-note': isDispatch && !noteOpened,
             }"
             [tooltipBackground]="'#424242'"
             ngbTooltip
