@@ -823,11 +823,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 );
 
                 if (
-                    typeof className === 'string' && //for some reaseon this won't work as enum
+                    typeof className === 'string' &&
                     !processedClasses.has(className)
                 ) {
                     const field = this.columnFields.find(
-                        (f) => f.className === className
+                        (fieldItem) => fieldItem.className === className
                     );
                     if (field) {
                         const width = element.getBoundingClientRect().width;
