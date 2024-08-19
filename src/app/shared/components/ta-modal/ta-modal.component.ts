@@ -43,6 +43,8 @@ import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollb
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
+import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -50,6 +52,9 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 // models
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+
+// Enums
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 @Component({
     selector: 'app-ta-modal',
@@ -73,6 +78,8 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
         TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaTabSwitchComponent,
+        TaFilterComponent,
+        TaSearchComponent,
     ],
     animations: [
         trigger('widthGrow', [
@@ -140,6 +147,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
+    @Input() isAdditionalAssignLoadModalVisible = false;
+    @Input() isAssignLoadModal = false;
 
     // -----------------
 
@@ -162,6 +171,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
     // Use case when we want user to submit form and run validation and show form errors
     @Input() enableClickWhileFormInvalid: boolean = false;
 
+    // Header filters
+    @Input() hasTimeFilter: boolean = false;
+    @Input() hasDispatcherFilter: boolean = false;
+    @Input() hasTruckTypeFilter: boolean = false;
+    @Input() hasTrailerTypeFilter: boolean = false;
+    @Input() hasLocationFilter: boolean = false;
+    @Input() hasSearch: boolean = false;
+
     @Output() action: EventEmitter<{
         action: string;
         bool: boolean;
@@ -180,6 +197,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
         action: string;
         isOpen: boolean;
     }> = new EventEmitter<{ action: string; isOpen: boolean }>();
+
+    @Output() filterActions = new EventEmitter<any>();
 
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;
@@ -400,6 +419,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
+            case 'convert-to-load': {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
             case 'stepper-next':
                 this.stepperCounter++;
 
@@ -446,6 +469,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'change-status': {
                 this.confirmationAction.emit(this.confirmationData);
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW: {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD: {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES: {
+                this.action.emit({ action: action, bool: false });
                 break;
             }
             default: {
@@ -514,6 +549,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
+            case 'side-panel': {
+                this.additionalPartVisibilityEvent.emit({
+                    action: 'side-panel',
+                    isOpen: !this.isAdditionalAssignLoadModalVisible,
+                });
+                break;
+            }
+
             default: {
                 break;
             }
@@ -597,6 +640,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         ) {
             this.action.emit({ action: 'save', bool: false });
         }
+    }
+
+    public setFilterValue(data): void {
+        this.filterActions.emit(data);
     }
 
     ngOnDestroy(): void {

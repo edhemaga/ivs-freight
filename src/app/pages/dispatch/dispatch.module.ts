@@ -1,7 +1,7 @@
 // Modules
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,19 +16,32 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-status-switch.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
+import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
+import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
+import { DispatchTableNoteComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-note/dispatch-table-note.component';
 import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
 import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
+import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/components/load-short-details/load-short-details.component';
+import { LoadDetailsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-details-item-stops-main/load-details-item-stops-main.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
+import { LoadRequirementComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-requirement/load-requirement.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
+import { DispatchTablePreTripInspectionComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pre-trip-inspection/dispatch-table-pre-trip-inspection.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
+import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
+import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -37,26 +50,34 @@ import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
+import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
+import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 
 @NgModule({
     declarations: [
-        // Components
+        // components
         DispatchComponent,
         DispatchTableComponent,
+        DispatchTableDriverComponent,
         DispatchTableParkingComponent,
-
         DispatchTableTruckTrailerComponent,
         DispatchTableAddNewComponent,
         DispatchTableAssignLoadComponent,
-        AssignDispatchLoadModalComponent,
+        DispatchAssignLoadModalComponent,
+        DispatchTableInfoComponent,
+        DispatchTableLastLocationComponentComponent,
+        DispatchTablePreTripInspectionComponent,
+        DispatchHistoryModalComponent,
+        DispatchTableStatusComponent,
+        DispatchTableNoteComponent,
+        LoadShortDetailsComponent,
 
-        // Pipes
+        // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        DispatchHistoryModalComponent,
     ],
     imports: [
-        // Modules
+        // modules
         AngularSvgIconModule,
         CommonModule,
         DispatchRoutingModule,
@@ -65,24 +86,34 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
         SharedModule,
         NgbModule,
 
-        // Pipes
+        // pipes
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
         ColorFinderPipe,
+        DispatchTableInfoTextPipe,
 
-        // Components
+        // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
-        TaStatusSwitchComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
         TaInputComponent,
-        DispatchTableLastLocationComponentComponent,
         TaModalComponent,
+        TaCustomCardComponent,
+        TaResizerComponent,
+        TaProfileImagesComponent,
+        TaCustomPeriodRangeComponent,
+        TaStatusComponentComponent,
+
+        LoadDetailsItemStopsMainComponent,
+        LoadStatusStringComponent,
+        LoadRequirementComponent,
+
+        //  TaMapsComponent,
     ],
     exports: [ColorFinderPipe],
 })

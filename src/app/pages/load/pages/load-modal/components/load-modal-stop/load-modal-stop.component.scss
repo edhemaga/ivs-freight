@@ -1,9 +1,14 @@
 @import 'src/theme/variables';
 
+.color-red {
+    color: $ta-red-11
+}
+
+
 .load-stop-container {
     max-width: 616px;
     width: 100%;
-    padding: 4px 4px 0 4px;
+    padding: 0;
     border-radius: 2px;
     overflow: hidden;
 
@@ -13,8 +18,7 @@
         cursor: pointer;
         transition: background 0.3s ease-in-out;
         border-radius: 3px;
-        background-color: $ta-light-grey-5;
-
+        background-color: $bw2;
         .load-stop-header-badge {
             width: 26px;
             height: 26px;
@@ -344,13 +348,17 @@
 
     &.active {
         margin-bottom: 4px;
-
+        padding: 4px;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
 
         
         .color-black,
         .color-orange{
             color: #fff !important;
+        }
+
+        .color-red {
+            color: $ta-red-13;
         }
 
         .load-stop-header-bar {

@@ -22,6 +22,9 @@ export class DispatchConfig {
     static getTruckTrailerInputConfig(
         config: TruckTrailerConfigParams
     ): ITaInput {
+        const { type, hasAdditionalFieldTruck, hasAdditionalFieldTrailer } =
+            config;
+
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -36,13 +39,45 @@ export class DispatchConfig {
             hideErrorMessage: true,
             mergeDropdownBodyWithInput: true,
             dropdownWidthClass:
-                config.type === 'truck'
-                    ? config.hasAdditionalFieldTruck
+                type === 'truck'
+                    ? hasAdditionalFieldTruck
                         ? 'w-col-158'
-                        : 'w-col-118'
-                    : config.hasAdditionalFieldTrailer
+                        : 'w-col-138'
+                    : hasAdditionalFieldTrailer
                     ? 'w-col-158'
-                    : 'w-col-125',
+                    : 'w-col-138',
+        };
+    }
+
+    static getDriverInputConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Driver Name',
+            placeholder: 'Driver Name',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-238',
+            placeholderInsteadOfLabel: true,
+            hideDropdownArrow: true,
+            autoFocus: true,
+            blackInput: true,
+            hideRequiredCheck: true,
+            hideDangerMark: true,
+            hideErrorMessage: true,
+            mergeDropdownBodyWithInput: true,
+        };
+    }
+
+    static getDispatchParkingConfig(): ITaInput {
+        return {
+            name: 'Spot',
+            type: 'text',
+            autoFocus: true,
+            placeholder: 'Spot',
+            label: 'Spot',
+            blackInput: true,
+            placeholderInsteadOfLabel: true,
+            hideRequiredCheck: true,
         };
     }
 }

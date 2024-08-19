@@ -37,7 +37,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';

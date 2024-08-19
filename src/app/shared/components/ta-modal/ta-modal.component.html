@@ -74,6 +74,21 @@
                             {{ confirmationData.array.length }}
                         </div>
                     </ng-container>
+
+                    <ng-container *ngIf="hasSearch">
+                        <div class="d-flex align-items-center">
+                            <div class="modal-date-border"></div>
+                            <span>
+                                <app-ta-search
+                                    [searchType]="'tabel'"
+                                    [toolbarSearch]="true"
+                                    [selectedTabData]="{
+                                        gridNameTitle: modalTitle
+                                    }"
+                                ></app-ta-search>
+                            </span>
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
@@ -124,6 +139,94 @@
                         >
                             <svg-icon
                                 src="assets/svg/common/load/ic_load_map.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasTimeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'timeFilter'"
+                                [icon]="'ic_time'"
+                                [filterTitle]="'Time Filter'"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasDispatcherFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'userFilter'"
+                                [searchState]="true"
+                                [filterTitle]="'Dispatcher Filter'"
+                                [defFilterHolder]="true"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasTruckTypeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'truckFilter'"
+                                [icon]="'truck'"
+                                [filterTitle]="'Truck Type Filter'"
+                                [defFilterHolder]="true"
+                                [noLeftIcon]="true"
+                                (setFilter)="setFilterValue($event)"
+                                [isDispatchFilter]="true"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasTrailerTypeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'trailerFilter'"
+                                [icon]="'trailer'"
+                                [filterTitle]="'Trailer Type Filter'"
+                                [defFilterHolder]="true"
+                                [noLeftIcon]="true"
+                                (setFilter)="setFilterValue($event)"
+                                [isDispatchFilter]="true"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasLocationFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'locationFilter'"
+                                [icon]="'address'"
+                                [filterTitle]="'Area Filter'"
+                                [areaFilter]="areaFilter"
+                                [locationDefType]="true"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
+                    <!-- Assign load modal on dispatch board -->
+                    <ng-container *ngIf="isAssignLoadModal">
+                        <div
+                            ngbTooltip
+                            mainTooltip="Side Panel"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            class="d-flex align-items-center justify-content-center modal-header-load-map-button"
+                            [ngClass]="{
+                                active: isAdditionalAssignLoadModalVisible
+                            }"
+                            (click)="toggleAdditionalPart('side-panel')"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/load/ic_side-panel.svg"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -219,6 +322,7 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
+                            isAssignLoadModal ||
                             mapRouteModal,
                         'justify-content-end': !(
                             editData?.type?.includes('edit') ||
@@ -234,7 +338,8 @@
                             editData?.type?.includes('edit') ||
                             loadModalTemplate ||
                             mapSettingsModal ||
-                            mapRouteModal
+                            mapRouteModal ||
+                            isAssignLoadModal
                         "
                     >
                         <div
@@ -249,7 +354,8 @@
                                     !loadModalTemplate &&
                                     !mapSettingsModal &&
                                     !mapRouteModal &&
-                                    !isFinishOrder
+                                    !isFinishOrder &&
+                                    !isAssignLoadModal
                                 "
                             >
                                 <button
@@ -402,6 +508,24 @@
                                 </button>
                             </ng-container>
 
+                            <!-- Convert back to load -->
+                            <ng-container
+                            *ngIf="
+                                loadModalTemplate &&
+                                isConvertedToTemplate &&
+                                !editData &&
+                                !cardsModal
+                            "
+                        >
+                            <button
+                                (click)="onAction('convert-to-load')"
+                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
+                                type="button"
+                            >
+                                Convert to Load
+                            </button>
+                        </ng-container>
+
                             <ng-container
                                 *ngIf="
                                     editData?.finishOrderBtn && !isFinishOrder
@@ -413,6 +537,16 @@
                                     type="button"
                                 >
                                     Finish Order
+                                </button>
+                            </ng-container>
+
+                            <ng-container *ngIf="isAssignLoadModal">
+                                <button
+                                    (click)="onAction('assign-create-load')"
+                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
+                                    type="button"
+                                >
+                                    Create Load
                                 </button>
                             </ng-container>
                         </div>
@@ -560,7 +694,8 @@
                                 !mapSettingsModal &&
                                 !mapRouteModal &&
                                 !isStepper &&
-                                !isCardsModal
+                                !isCardsModal &&
+                                !isAssignLoadModal
                             "
                         >
                             <button
@@ -603,6 +738,25 @@
                                         ></app-ta-spinner>
                                     </div>
                                 </ng-container>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="isAssignLoadModal">
+                            <button
+                                (click)="onAction('assign-save-and-assign-new')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save & Assign New
+                            </button>
+                            <button
+                                (click)="onAction('assign-save-changes')"
+                                class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
+                                [ngClass]="{ valid: isModalValid }"
+                                type="button"
+                            >
+                                Save Changes
                             </button>
                         </ng-container>
                     </div>
@@ -945,8 +1099,14 @@
                 modalAdditionalPart && (mapVisibility || hazardousVisibility)
             "
         >
-            <div class="modal-additional-part">
+            <div class="modal-additional-part modal-additional-part-load-modal">
                 <ng-content select="[additional]"></ng-content>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="isAdditionalAssignLoadModalVisible">
+            <div class="modal-additional-part modal-additional-part-load">
+                <ng-content select="[assignLoadModal]"></ng-content>
             </div>
         </ng-container>
     </div>

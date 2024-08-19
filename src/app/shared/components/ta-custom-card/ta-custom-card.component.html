@@ -1,6 +1,7 @@
 <div
     class="ta-custom-card"
     [class.dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
+    [class.h-full]="isInheritingParentSize && _isCardOpen"
 >
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
@@ -11,7 +12,10 @@
     </ng-container>
 
     <div
-        [ngClass]="{ 'has-counter': hasCounter }"
+        [ngClass]="{
+            'has-counter': hasCounter,
+            'width-xxl': isExtraLargeLayout
+        }"
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
         [class.disabled]="disabledCard"
@@ -20,6 +24,7 @@
         "
         [class.dropdown-card]="isDropdownCard && !isDropdownModalCard"
         [class.dropdown-modal-card]="isDropdownModalCard"
+        [class.ta-card-spacing-x]="hasXAxisBottomPadding"
         [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
@@ -86,6 +91,7 @@
             <ng-container *ngIf="subText">
                 <div
                     class="d-flex align-items-center subtext-container"
+                    [ngStyle]="{ 'margin-left': !capsulaText ? 0 : '4px' }"
                     [ngClass]="subTextClass"
                 >
                     <p class="m-0 ta-font-medium">
@@ -176,7 +182,7 @@
                 *ngIf="
                     hasActionSvg &&
                     !disableMultipleReviews &&
-                    !showFinishReordering
+                    !isFinishReorderingButtonVisible
                 "
             >
                 <div
@@ -238,7 +244,16 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="showFinishReordering">
+            <ng-container *ngIf="isReorderingButtonVisible">
+                <button
+                    class="reodering-button reodering-button-mild ta-font-bold"
+                    (click)="onAction($event, 'start-reordering')"
+                >
+                    REORDER
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="isFinishReorderingButtonVisible">
                 <button
                     class="reodering-button ta-font-bold"
                     (click)="onAction($event, 'reordering')"
@@ -294,7 +309,14 @@
         class="ta-card-body"
         [ngClass]="{
             scroll: hasScrollBody,
-            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen
+            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
+            'h-full': isInheritingParentSize && _isCardOpen
+        }"
+        [ngStyle]="{
+            'scrollbar-width':
+                isInheritingParentSize && _isCardOpen
+                    ? 'thin !important'
+                    : 'none'
         }"
         [@.disabled]="disableAnimation"
     >

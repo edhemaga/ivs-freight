@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { AgmCoreModule } from '@agm/core';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmCoreModule } from '@agm/core';
 
 // modules
 import { AccidentRoutingModule } from '@pages/safety/accident/accident-routing.module';
@@ -14,22 +14,22 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 @NgModule({
     declarations: [AccidentTableComponent],
     imports: [
         CommonModule,
         AccidentRoutingModule,
-        AgmSnazzyInfoWindowModule,
-        AgmCoreModule,
+        // AgmSnazzyInfoWindowModule,
+        // AgmCoreModule,
         SharedModule,
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaMapListComponent,
         TaMapListCardComponent,
-        TaMapsComponent,
+        //TaMapsComponent,
     ],
 })
 export class AccidentModule {}

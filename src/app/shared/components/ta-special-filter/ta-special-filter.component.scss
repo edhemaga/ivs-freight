@@ -556,4 +556,107 @@
             }
         }
     }
+
+    &.pickup-filter, &.delivery-filter {
+        .main-icon-holder {
+            svg-icon {
+                svg {
+                    path {
+                        fill: $muted !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $bw2;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-black !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-black !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.zero-filter {
+            pointer-events: none;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $ta-light-grey-6 !important;
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.pickup-filter-active, &.delivery-filter-active {
+        background-color: $bw6-2;
+
+        .main-icon-holder {
+            .filters-selected-value-holder {
+                color: $white !important;
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $white-4 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black;
+
+            .main-icon-holder {
+                .filters-selected-value-holder {
+                    color: $white !important;
+
+                    &.clear-filter-icon {
+                        height: 14px;
+                        width: 14px;
+
+                        svg {
+                            path {
+                                height: 14px;
+                                width: 14px;
+                                fill: $white !important;
+                            }
+                        }
+
+                        &:hover {
+                            .filter-active-colors {
+                                background-color: $white !important;
+                            }
+                        }
+                    }
+                }
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $white-4 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

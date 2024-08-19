@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+// RXJS
+import { Subject, takeUntil } from 'rxjs';
 
 // Models
 import {
@@ -6,6 +9,7 @@ import {
     TruckMinimalResponse,
     TrailerMinimalResponse,
     LoadShortResponse,
+    LoadService,
 } from 'appcoretruckassist';
 
 // Enums
@@ -15,7 +19,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalService } from '@shared/services/modal.service';
 
 // Components
-import { AssignDispatchLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/assign-dispatch-load-modal/assign-dispatch-load-modal.component';
+import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
 
 // Svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -25,15 +29,22 @@ import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/component
     templateUrl: './dispatch-table-assign-load.component.html',
     styleUrls: ['./dispatch-table-assign-load.component.scss'],
 })
-export class DispatchTableAssignLoadComponent implements OnInit {
+export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     @Input() driver: DriverDispatchResponse;
     @Input() truck: TruckMinimalResponse;
     @Input() trailer: TrailerMinimalResponse;
     @Input() isActiveLoad: LoadShortResponse;
+    @Input() dispatchId: number;
+    @Input() isHoveringRow: boolean;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
-    constructor(private modalService: ModalService) {}
+    private destroy$ = new Subject<void>();
+
+    constructor(
+        private modalService: ModalService,
+        private loadService: LoadService
+    ) {}
 
     ngOnInit(): void {}
 
@@ -61,8 +72,19 @@ export class DispatchTableAssignLoadComponent implements OnInit {
     }
 
     public onLoadIconClick(): void {
-        this.modalService.openModal(AssignDispatchLoadModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        this.modalService.openModal(
+            DispatchAssignLoadModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                dispatchId: this.dispatchId,
+            }
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

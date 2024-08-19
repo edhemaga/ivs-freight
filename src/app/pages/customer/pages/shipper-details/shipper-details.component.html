@@ -23,11 +23,23 @@
                 [hasSearch]="item.hasSearch"
                 [timeFilter]="item.timeFilter"
                 [searchPlaceholder]="item.searchPlaceholder"
+                [pickupFilter]="item.pickupFilter"
+                [deliveryFilter]="item.deliveryFilter"
+                [pickupFilterData]="pickupFilterData"
+                [deliveryFilterData]="deliveryFilterData"
+                (filterActions)="setFilter($event)"
+                (specialFilterActions)="setSpecialFilter($event)"
+                [hasSort]="item.hasSort"
+                [sortDropdown]="item.sortDropdown"
+                (sortItemsAction)="onSortAction($event)"
             >
             </app-ta-details-header>
         </ng-container>
     </div>
 
-    <app-shipper-details-item [shipper]="shipperConfig">
+    <app-shipper-details-item
+        [shipper]="shipperConfig"
+        [shipperLoads]="shipperLoads"
+    >
     </app-shipper-details-item>
 </div>

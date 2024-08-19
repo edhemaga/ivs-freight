@@ -72,6 +72,7 @@ export enum LoadModalStringEnum {
     SAVE = 'save',
     SAVE_AND_ADD_NEW = 'save and add new',
     CONVERT_TO_TEMPLATE = 'convert-to-template',
+    CONVERT_TO_LOAD = 'convert-to-load',
 
     TRUCK = 'Truck',
     TRAILER = 'Trailer',
@@ -194,6 +195,7 @@ export enum LoadModalStringEnum {
     WAIT_TIME_STATUS = 'status',
     WAIT_TIME_STATUS_NUMBER = 'statusNumber',
     REORDERING = 'reordering',
+    START_REORDER = 'start-reordering',
     ASSIGNED = 'Assigned',
     UNASSIGNED = 'Unassigned',
     CLOSED = 'Closed',
@@ -212,5 +214,8 @@ export enum LoadModalStringEnum {
     PICKUP_SHAPE = 'pickupShape',
     DELIVERY_SHAPE = 'deliveryShape',
     SHAPE = 'shape',
-    ID = 'id'
+    ID = 'id',
+    DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW = 'assign-save-and-assign-new',
+    DISPATCH_LOAD_SAVE_CHANGES = 'assign-save-changes',
+    DISPATCH_LOAD_CREATE_LOAD = 'assign-create-load',
 }

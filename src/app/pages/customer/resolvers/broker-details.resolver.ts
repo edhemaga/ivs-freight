@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { BrokerResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
+export class BrokerDetailsResolver  {
     constructor(
         // Router
         private router: Router,
@@ -38,7 +38,15 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
 
         const brokerData$ = this.brokerService.getBrokerById(ids);
 
-        const brokerLoads$ = this.brokerService.getBrokerLoads(ids);
+        const brokerLoads$ = this.brokerService.getBrokerLoads(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            ids
+        );
 
         const brokerPaidInvoiceAging$ =
             this.brokerService.getBrokerInvoiceAging(ids, true);

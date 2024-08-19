@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 @Component({
     selector: 'app-ta-gps-progressbar',
@@ -20,7 +21,7 @@ import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
         AngularSvgIconModule,
         ReactiveFormsModule,
         NgbModule,
-        TaMapsComponent,
+      //  TaMapsComponent,
     ],
 })
 export class TaGpsProgressbarComponent implements OnInit {

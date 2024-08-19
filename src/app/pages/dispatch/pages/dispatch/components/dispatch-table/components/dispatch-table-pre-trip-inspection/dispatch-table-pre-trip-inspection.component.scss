@@ -1,0 +1,56 @@
+@import '../../dispatch-table.component.scss';
+
+.pre-trip-inspection-container {
+    padding-bottom: 2px;
+    border-radius: 2px;
+    transition: background 0.2s ease-in;
+
+    &:hover,
+    &.hovering {
+        background: $bw2;
+    }
+
+    &.status-disabled {
+        svg {
+            path {
+                fill: $ta-light-grey-6;
+            }
+        }
+    }
+
+    &.status-enabled {
+        svg {
+            path {
+                fill: $bw5;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
+    }
+
+    &.status-done {
+        svg {
+            path {
+                fill: $ta-blue-13;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: $ta-blue-15;
+                }
+            }
+        }
+    }
+}

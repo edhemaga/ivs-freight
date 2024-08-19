@@ -2,38 +2,36 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewEncapsulation,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
 
-import { catchError, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 
 // animations
 import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-background.animation';
 
 // modules
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { Options } from 'ng5-slider';
 
 // pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { ModalService } from '@shared/services/modal.service';
-
-// components
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+
+// svg routes
+import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 
 // models
 import {
@@ -50,8 +48,11 @@ import {
     TrailerMinimalResponse,
     TruckListResponse,
     TruckMinimalResponse,
+    DriverMinimalResponse,
+    DispatchResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
+import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -72,7 +73,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     @Input() set shortLists(lists: DispatchModalResponse) {
-        this.handleTruckTrailerDriverLists(lists);
+        this.handleTruckTrailerDriverParkingLists(lists);
     }
 
     @Input() set isBoardLocked(isLocked: boolean) {
@@ -81,19 +82,31 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() toolbarWidth: number = 0;
 
+    @Input() isAllBoardsList: boolean;
+
+    @Output() onTableUnlockEmitter: EventEmitter<{ action: string }> =
+        new EventEmitter();
+
+    public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+
     private destroy$ = new Subject<void>();
+
+    public isDrag: boolean = false;
 
     public checkForEmpty: string;
 
-    public dispatchTableHeaderItems: { title?: string; icon?: string }[] = [];
+    public dispatchTableHeaderItems: DispatchTableHeaderItems[] = [];
 
     public dispatchData: DispatchBoardResponse;
 
     public isDispatchBoardLocked: boolean = true;
     public isDispatchBoardChangeInProgress: boolean = false;
 
+    public isHoveringRowIndex: number = -1;
+
     public hasAdditionalFieldTruck: boolean = false;
     public hasAdditionalFieldTrailer: boolean = false;
+    public hasLargeFieldParking: boolean = false;
 
     public truckList: TruckListResponse[];
     public trailerList: TrailerListResponse[];
@@ -104,50 +117,17 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public showAddAddressFieldIndex: number = -1;
 
+    public isNoteExpanded: boolean = false;
+    public parkingCount: number = 0;
+    public openedDriverDropdown: number = -1;
+
     /////////////////////////////////////////// UPDATE
 
-    truckFormControll: UntypedFormControl = new UntypedFormControl();
-    truckAddress: UntypedFormControl = new UntypedFormControl(null);
-    copyIndex: number = -1;
     testTimeout: any;
     startIndexTrailer: number;
     startIndexDriver: number;
     draggingType: string = '';
-
-    public selectedColor: any = {};
-
-    openedTruckDropdown: number = -1;
-    openedTrailerDropdown: number = -1;
-
-    openedDriverDropdown: number = -1;
-    statusOpenedIndex: number = -1;
-
-    driverHover: { indx: number; txt: string } = {
-        indx: -1,
-        txt: '',
-    };
-    driverCopy: { indx: number; txt: string } = {
-        indx: -1,
-        txt: '',
-    };
-
-    hosHelper = [];
-
     openedHosData = [];
-
-    tooltip: any;
-
-    options: Options = {
-        floor: 0,
-        ceil: 1440,
-        showSelectionBar: false,
-        noSwitching: true,
-        hideLimitLabels: true,
-        animate: false,
-        maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
-    };
-
-    isDrag: boolean = false;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -157,13 +137,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Services
         private dispatcherService: DispatcherService,
-        private modalService: ModalService,
         private parkingService: ParkingService
     ) {}
-
-    ngOnInit(): void {
-        this.getConstantData();
-    }
 
     set checkEmptySet(value: string) {
         setTimeout(() => {
@@ -173,17 +148,29 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }, 300);
     }
 
+    ngOnInit(): void {
+        this.getConstantData();
+
+        this.getMainBoardColumnWidths();
+    }
+
     public trackByIdentity = (index: number): number => index;
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     private getConstantData(): void {
         this.dispatchTableHeaderItems = DispatchTableConstants.HEADER_ITEMS;
     }
 
-    private handleTruckTrailerDriverLists(lists: DispatchModalResponse): void {
+    private handleTruckTrailerDriverParkingLists(
+        lists: DispatchModalResponse
+    ): void {
         const { trucks, trailers, drivers, parkings } = lists;
 
         const trucksList = JSON.parse(JSON.stringify(trucks));
@@ -230,6 +217,20 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         });
 
         this.parkingList = JSON.parse(JSON.stringify(parkings));
+
+        this.hasLargeFieldParking = this.parkingList?.length > 1;
+
+        if (this.hasLargeFieldParking) {
+            const currentAdditionalFieldValues = {
+                ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
+            };
+
+            this.dispatcherService.updateMainBoardColumnWidths(
+                currentAdditionalFieldValues.isTruckExpanded,
+                currentAdditionalFieldValues.isTrailerExpanded,
+                true
+            );
+        }
     }
 
     private handleTruckTrailerAdditionalFields(): void {
@@ -239,6 +240,25 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
             (dispatch) => !!dispatch?.trailer?.year
         );
+
+        if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
+            const currentAdditionalFieldValues = {
+                ...this.dispatcherService.mainBoardColumnExpandedWidths.getValue(),
+            };
+
+            const hasAdditionalTruck =
+                this.hasAdditionalFieldTruck ||
+                currentAdditionalFieldValues.isTruckExpanded;
+            const hasAdditionalTrailer =
+                this.hasAdditionalFieldTrailer ||
+                currentAdditionalFieldValues.isTrailerExpanded;
+
+            this.dispatcherService.updateMainBoardColumnWidths(
+                hasAdditionalTruck,
+                hasAdditionalTrailer,
+                currentAdditionalFieldValues.isParkingExpanded
+            );
+        }
     }
 
     public handleAddTruckTrailerClick(eventParam: {
@@ -259,6 +279,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                 : dispatch
                     ),
                 };
+
+                this.parkingCount = this.dispatchData?.dispatches?.filter(
+                    (item) => item.parkingSlot
+                )?.length;
 
                 this.showAddAddressFieldIndex = index;
             } else {
@@ -307,7 +331,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private handleHoursOfService() {
         const mappedDispatches = this.dispatchData.dispatches.map(
             (dispatch) => {
-                const hoursOfService = dispatch.hoursOfService
+                dispatch.hoursOfService = dispatch.hoursOfService ?? [];
+                const hoursOfService = dispatch?.hoursOfService
                     .sort((a, b) => a.id - b.id)
                     .map((dispatch, index) => ({ ...dispatch, index }));
                 return {
@@ -321,6 +346,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ...this.dispatchData,
             dispatches: mappedDispatches,
         };
+
+        this.parkingCount = this.dispatchData?.dispatches?.filter(
+            (item) => item.parkingSlot
+        )?.length;
     }
 
     public onHideDropdown(): void {
@@ -477,144 +506,68 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         parkingSlot: DispatchBoardParkingEmiter,
         id: number
     ): void {
+        const data = {
+            id: parkingSlot.parking,
+            trailerId: parkingSlot.trailerId,
+            truckId: parkingSlot.truckId,
+            dispatchId: id,
+        };
+
         this.isDispatchBoardChangeInProgress = true;
 
         this.parkingService
-            .apiParkingParkingslotPut({
-                id: parkingSlot.parking,
-                trailerId: parkingSlot.trailerId,
-                truckId: parkingSlot.truckId,
-                dispatchId: id,
-            })
+            .apiParkingParkingslotPut(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.dispatcherService
                     .updateDispatchboardRowById(id, this.dispatchData.id)
                     .subscribe(() => {
                         this.dispatcherService.updateModalList();
+
                         this.checkEmptySet = '';
                         this.isDispatchBoardChangeInProgress = false;
                     });
             });
     }
 
-    /////////////////////////////////////////// UPDATE
+    public handleAddDriverClick(eventParam: {
+        event: DriverMinimalResponse;
+        index: number;
+    }): void {
+        const { event, index } = eventParam;
 
-    showDriverDropdown(ind: number) {
-        this.openedDriverDropdown = ind;
+        const driverOrCoDriver = !this.dispatchData.dispatches[
+            this.openedDriverDropdown
+        ]?.driver
+            ? DispatchTableStringEnum.DRIVER_ID
+            : DispatchTableStringEnum.CO_DRIVER_ID;
+
+        this.updateOrAddDispatchBoardAndSend(driverOrCoDriver, event.id, index);
     }
 
-    addDriver(e) {
-        if (e) {
-            if (e.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: 'open',
-                    payload: {
-                        key: 'truck-modal', // kljuc moze i ne mora, moze null
-                        value: null,
-                    },
-                    component: DriverModalComponent, // naziv komponente modala koji se otvara
-                    size: 'small',
-                });
-            } else {
-                const driverOrCoDriver = !this.dispatchData.dispatches[
-                    this.openedDriverDropdown
-                ]?.driver
-                    ? 'driverId'
-                    : 'coDriverId';
-                this.updateOrAddDispatchBoardAndSend(
-                    driverOrCoDriver,
-                    e.id,
-                    this.openedDriverDropdown
-                );
-            }
-        }
+    public handleRemoveDriverClick(event: { index: number }) {
+        const { index } = event;
 
-        this.openedDriverDropdown = -1;
-    }
+        if (
+            !this.dispatchData.dispatches[index].truck &&
+            !this.dispatchData.dispatches[index].trailer
+        ) {
+            const id = this.dispatchData.dispatches[index].id;
 
-    addStatus(e) {
-        if (e) {
-            if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
-                this.dispatchData.dispatches[this.statusOpenedIndex].status = e;
-                this.showAddAddressFieldIndex = this.statusOpenedIndex;
-                this.addNewTruckData =
-                    this.dispatchData.dispatches[this.statusOpenedIndex].truck;
-            } else {
-                this.updateOrAddDispatchBoardAndSend(
-                    'status',
-                    e.statusValue.name,
-                    this.statusOpenedIndex
-                );
-            }
-        }
+            this.isDispatchBoardChangeInProgress = true;
+            this.checkEmptySet = DispatchTableStringEnum.DRIVER_ID;
 
-        this.statusOpenedIndex = -1;
-    }
-
-    public copy(text: string, indx: number, type: string): void {
-        this.driverCopy = {
-            indx: indx,
-            txt: type,
-        };
-        this.copyIndex = indx;
-
-        setTimeout(() => {
-            this.driverCopy = {
-                indx: -1,
-                txt: '',
-            };
-            this.copyIndex = -1;
-            this.cdRef.detectChanges();
-        }, 2000);
-
-        const el = document.createElement('textarea');
-        el.value = text;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-    }
-
-    setMouseOver(txt: string, indx: number) {
-        this.driverHover = {
-            indx: indx,
-            txt: txt,
-        };
-    }
-
-    setMouseOut() {
-        this.driverHover = {
-            indx: -1,
-            txt: '',
-        };
-    }
-
-    toggleHos(tooltip: NgbTooltip, data: any) {
-        this.hosHelper = [];
-        if (!data || data.length === 0) {
-            data = [
-                {
-                    start: 0,
-                    end: new Date().getHours() * 60 + new Date().getMinutes(),
-                    flag: 'off',
-                    indx: 0,
-                },
-            ];
-        }
-
-        this.tooltip = tooltip;
-
-        this.openedHosData = data;
-
-        if (tooltip.isOpen()) {
-            tooltip.close();
+            this.deleteDispatchBoardById(id);
         } else {
-            tooltip.open();
+            this.updateOrAddDispatchBoardAndSend(
+                DispatchTableStringEnum.DRIVER_ID,
+                null,
+                index
+            );
         }
     }
 
-    saveHosData(hos, indx) {
+    public saveHosData(indx: number): void {
         this.openedHosData = this.openedHosData.map((item) => {
             item.flag = item.flag?.name ? item.flag.name : item.flag;
             return item;
@@ -627,41 +580,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    userChangeEnd(event, item) {
-        const index = item.indx;
-        const nextHos = index + 1;
-        if (this.openedHosData[nextHos]) {
-            clearTimeout(this.testTimeout);
-            this.testTimeout = setTimeout(() => {
-                this.changeHosDataPositions(event, index);
-            }, 0);
-        }
-    }
-
-    changeHosDataPositions(event, index) {
-        const nextHos = index + 1;
-        if (this.openedHosData[nextHos]) {
-            this.openedHosData[nextHos].start = this.openedHosData[index].end;
-        }
-    }
-
-    addHOS(hosType) {
-        this.openedHosData = [...this.openedHosData];
-        this.openedHosData.push({
-            start: this.openedHosData[this.openedHosData.length - 1].end,
-            end: new Date().getHours() * 60 + new Date().getMinutes(),
-            flag: { name: hosType },
-            indx: this.openedHosData.length,
-        });
-    }
-
-    removeHos(item) {
-        this.openedHosData = this.openedHosData.filter(
-            (it) => it.indx !== item.indx
-        );
-    }
-
-    saveNoteValue(item: any) {
+    public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
         this.updateOrAddDispatchBoardAndSend(
             'note',
             item.note,
@@ -669,26 +588,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    openIndex(indx: number) {
-        this.statusOpenedIndex = indx;
-    }
-
-    changeDriverVacation(data) {
+    public changeDriverVacation(data: DispatchResponse): void {
         this.isDispatchBoardChangeInProgress = true;
-
         this.dispatcherService
             .changeDriverVacation(data.driver.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                switchMap(() =>
-                    this.dispatcherService.updateDispatchboardRowById(
-                        data.id,
-                        this.dispatchData.id
-                    )
-                );
-                tap(() => {
-                    this.isDispatchBoardChangeInProgress = false;
-                });
+                this.dispatcherService
+                    .updateDispatchboardRowById(data.id, this.dispatchData.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.isDispatchBoardChangeInProgress = false;
+                    });
             });
     }
 
@@ -866,14 +777,42 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.draggingType = '';
     }
 
-    showPickupDelivery(popup: any) {
-        popup.open();
-    }
-
     // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
     trailerPositionPrediction = () => {
         return true;
     };
+
+    public unlockTable(): void {
+        this.onTableUnlockEmitter.emit({
+            action: DispatchTableStringEnum.TOGGLE_LOCKED,
+        });
+    }
+
+    public getMainBoardColumnWidths(): void {
+        this.dispatcherService.mainBoardColumnsExpanded$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && this.isAllBoardsList) {
+                    this.hasAdditionalFieldTruck = res.isTruckExpanded;
+                    this.hasAdditionalFieldTrailer = res.isTrailerExpanded;
+                    this.hasLargeFieldParking = res.isParkingExpanded;
+                }
+            });
+    }
+
+    public handleHeaderClick(title: string): void {
+        switch (title) {
+            case DispatchTableStringEnum.NOTE:
+                this.isNoteExpanded = !this.isNoteExpanded;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public changeDriverDropdownIndex(index: number): void {
+        this.openedDriverDropdown = index;
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

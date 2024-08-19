@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { GridsterModule } from 'angular-gridster2';
-import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
+//import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 
 // moduels
 import { ToDoRoutingModule } from '@pages/to-do/to-do-routing.module';
@@ -32,7 +32,7 @@ import { ToDoListCardComponent } from '@pages/to-do/pages/to-do-list-card/to-do-
         AngularSvgIconModule,
         GridsterModule,
         SharedModule,
-        NgxSmoothDnDModule,
+        //NgxSmoothDnDModule,
 
         //Components
         TaSearchComponent,

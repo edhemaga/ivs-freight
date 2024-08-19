@@ -48,9 +48,9 @@
 // stops
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 19px 216px 147px 170px;
+    grid-template-columns: 18px 216px 147px 170px;
     grid-gap: 13px;
-    padding: 0 18px;
+    padding: 0 14px;
     margin-bottom: 4px;
 
     p {
@@ -156,4 +156,13 @@
     .input-custom-group .input-control {
         height: 29px !important;
     }
+}
+
+.load-hazardous-container {
+    max-width: 640px;
+    width: calc(100vw - 640px);
+}
+
+.select-template {
+    grid-template-columns: 94px 26px repeat(2, 230px);
 }

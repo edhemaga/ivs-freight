@@ -1,8 +1,21 @@
 @import '/src/theme/variables.scss';
 
 .load-status {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
     &.details-layout {
         font-size: 14px;
+
+        &.load-status-badge {
+            font-size: 11px;
+        }
+    }
+
+    &.dispatch-history-modal-layout {
+        font-size: 11px;
 
         &.load-status-badge {
             font-size: 11px;
@@ -26,7 +39,10 @@
         background-color: $ta-green-4;
         color: $ta-black-2;
     }
- 
+    .l-dark {
+        background-color: $ta-green-4;
+        color: $white;
+    }
     &-f {
         background-color: $ta-purple-1;
         color: $white;
@@ -63,6 +79,20 @@
         &.delivery {
             margin-left: 4px;
             color: $white;
+        }
+        &.d-repair {
+            width: 12px;
+            height: 12px;
+            border-radius: 1px;
+            background-color: $ta-blue-19;
+            color: $white;
+        }
+        &.d-repair-dark {
+            width: 12px;
+            height: 12px;
+            border-radius: 1px;
+            background-color: $ta-blue-19;
+            color: $ta-black-2;
         }
     }
 }

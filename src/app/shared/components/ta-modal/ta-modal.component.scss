@@ -103,6 +103,21 @@
 
         .modal-additional-part {
             width: 640px;
+
+            &-load {
+                background-color: $ta-light-grey-5;
+                height: 650px;
+
+                .divider {
+                    background-color: $bw-9;
+                    height: 1px;
+                }
+
+                &-modal {
+                    max-width: 640px;
+                    width: calc(100vw - 640px);
+                }
+            }
         }
     }
 
@@ -135,7 +150,10 @@
         width: 640px;
 
         .divider {
-            width: 615px;
+            height: 1px;
+            background-color: $bw-9;
+            width: 616px;
+            margin-left: 0;
         }
     }
 
@@ -153,6 +171,16 @@
         .divider {
             width: 836px;
         }
+    }
+
+    &.modal-container-XL-2 {
+        width: 800px;
+
+        .divider {
+            width: 775px;
+        }
+
+        overflow: visible !important;
     }
 
     .divider-bottom {

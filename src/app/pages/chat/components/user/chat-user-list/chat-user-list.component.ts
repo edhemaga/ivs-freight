@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -13,19 +14,12 @@ import {
   Subject,
   takeUntil
 } from 'rxjs';
-import {
-  UntypedFormGroup,
-  UntypedFormBuilder,
-} from '@angular/forms';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/util/constants/chat-svg-routes.constants';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
-// Animations
-import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
-
-// Config
-import { ChatInput } from '@pages/chat/util/config/chat-input.config';
+// Constants
+import { NoDataConfig } from '@pages/chat/utils/config/no-data.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
@@ -38,7 +32,6 @@ import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/com
   selector: 'app-chat-user-list',
   templateUrl: './chat-user-list.component.html',
   styleUrls: ['./chat-user-list.component.scss'],
-  animations: [chatUserListSearchAnimation]
 })
 export class ChatUserListComponent implements OnInit, OnDestroy {
 
@@ -50,25 +43,16 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   @Output() selectedUser = new EventEmitter<number>();
   public selectedUserId: number = 0;
 
-  // Assets
+  // Assets and constants
   public ChatSvgRoutes = ChatSvgRoutes;
-
-  // Config
-  public ChatInput: ChatInput = ChatInput;
+  public noDataConfig = NoDataConfig;
 
   // Search
-  public searchForm!: UntypedFormGroup;
   public isSearchActive: boolean = false;
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private userChatService: UserChatService
-  ) { }
+  constructor(private userChatService: UserChatService) { }
 
-  ngOnInit(): void {
-    this.creteForm();
-    this.listenForSearchTermChange();
-  }
+  ngOnInit(): void { }
 
   public selectUser(userId: number): void {
     if (!userId) return;
@@ -86,30 +70,11 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
 
   public filterByDepartment(): void { }
 
-  private creteForm(): void {
-    this.searchForm = this.formBuilder.group({
-      searchTerm: [null]
-    });
+  public openSearch(): void {
+    this.isSearchActive = true;
   }
 
-  public toggleSearch(isActive?: boolean): void {
-    this.isSearchActive = isActive ?? !this.isSearchActive;
-  }
-
-  private listenForSearchTermChange(): void {
-    if (!this.searchForm) return;
-    this.searchForm
-      .valueChanges
-      .pipe(
-        takeUntil(this.destroy$),
-        debounceTime(350)
-      )
-      .subscribe(arg => {
-        this.search(arg.searchTerm)
-      })
-  }
-
-  private search(searchTerm: string): void {
+  public search(searchTerm: string): void {
     if (!searchTerm) {
       this.getUpdatedData()
         .pipe(takeUntil(this.destroy$))
@@ -131,7 +96,6 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
 
   private getUpdatedData(searchTerm?: string): Observable<CompanyUserChatResponsePaginationReduced> {
     const castedUserType: UserType = UserType[this.type];
-
     return this.userChatService
       .getCompanyUserList(castedUserType, searchTerm?.trim())
       .pipe(takeUntil(this.destroy$),
@@ -145,7 +109,6 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   }
 
   private cleanUp(): void {
-    this.searchForm = null;
     this.selectedUserId = 0;
     this.isSearchActive = false;
   }

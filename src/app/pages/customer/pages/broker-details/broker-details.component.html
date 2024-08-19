@@ -22,10 +22,32 @@
             (openModalAction)="onModalAction($event)"
             [businessOpen]="businessOpen"
             [showClosedBadge]="true"
+            [hasSearch]="item.hasSearch"
+            [searchPlaceholder]="item.searchPlaceholder"
+            [timeFilter]="item.timeFilter"
+            [dispatcherFilter]="item.dispatcherFilter"
+            [statusFilter]="item.statusFilter"
+            [locationFilter]="item.locationFilter"
+            [areaFilter]="item.areaFilter"
+            [moneyFilter]="item.moneyFilter"
+            (filterActions)="setFilter($event)"
+            [hasMultipleDetailsSelectDropdown]="
+                item.hasMultipleDetailsSelectDropdown
+            "
+            [multipleDetailsSelectDropdown]="item.multipleDetailsSelectDropdown"
+            (multipleDetailsSelectDropdownEmitter)="
+                onDetailsSelectClick($event)
+            "
+            [hasSort]="item.hasSort"
+            [sortDropdown]="item.sortDropdown"
+            (sortItemsAction)="onSortAction($event)"
         >
         </app-ta-details-header>
     </div>
 
-    <app-broker-details-item [brokerData]="brokerConfig">
+    <app-broker-details-item
+        [brokerData]="brokerConfig"
+        [brokerLoads]="brokerLoads"
+    >
     </app-broker-details-item>
 </div>

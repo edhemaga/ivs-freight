@@ -73,6 +73,8 @@ $bw8: #dbdbdb;
 $bw-9: #dadada;
 $bw-10: #eeeeee00;
 
+$box-shadow-30: #0000004d;
+
 //blue color
 $bc1: #6d82c7;
 // Box Shadow
@@ -153,6 +155,8 @@ $ta-blue-23: #536bc220;
 $ta-blue-24: #8785e8;
 $ta-blue-25: #e0eaf8;
 $ta-blue-26: #4dc5eb;
+$ta-blue-27: #68c3ff;
+$ta-blue-28: #415fc1;
 
 // $ta-blue-14: #0B49D1;
 $dark-blue-07: #5673aa70;
@@ -182,6 +186,7 @@ $ta-red-22: #e67374;
 $ta-review-green: #4db6a2;
 $ta-review-green-2: #26a690;
 $ta-review-green-3: #00967e;
+$ta-review-green-4: #26a69033;
 $ta-black: #424242;
 $ta-black-2: #2f2f2f;
 $ta-black-3: #1d1d1d;
@@ -230,6 +235,8 @@ $ta-green-4: #86c9c3;
 $ta-green-5: #259f9466;
 $ta-green-6: #77bf56;
 $ta-green-7: #259f9433;
+$ta-green-8: #97d568;
+$ta-green-9: #59a5a5;
 
 $ta-orange-1: #ff7043;
 $ta-orange-2: #f77d3b;
@@ -237,8 +244,10 @@ $ta-orange-3: #ffb097;
 $ta-orange-4: #ff906d;
 $ta-orange-5: #a08266;
 $ta-orange-6: #ffa72610;
+$ta-orange-7: #ffb74d;
 
 $ta-purple-1: #b370f0;
+$ta-purple-2: #ba68c8;
 
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class LoadClosedResolver implements Resolve<LoadClosedState> {
+export class LoadClosedResolver  {
     constructor(
         private loadService: LoadService,
         private loadClosedStore: LoadClosedStore
@@ -26,6 +26,10 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
             .getLoadList(
                 null,
                 3,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

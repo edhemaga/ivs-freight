@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { tap } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { CompanyDurationResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class DashboardResolver implements Resolve<CompanyDurationResponse> {
+export class DashboardResolver  {
     constructor(private dashboardService: DashboardService) {}
 
     resolve() {

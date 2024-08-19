@@ -13,12 +13,12 @@
         'ta-upload-large-threefiles':
             _files?.length && _files?.length >= 3 && size === 'large',
         'ta-upload-review-mode': isReview,
-        documents: dontUseSlider
+        documents: hasSlider
     }"
 >
     <!-- Carousel Files -->
     <app-ta-upload-files-carousel
-        *ngIf="_files?.length && !dontUseSlider"
+        *ngIf="_files?.length && !hasSlider"
         [files]="_files"
         [hasCarouselBottomTabs]="hasCarouselBottomTabs"
         [customClass]="size"
@@ -57,7 +57,7 @@
         </ng-container>
     </app-ta-upload-files-carousel>
 
-    <div class="documents_holder" *ngIf="dontUseSlider">
+    <div class="documents_holder" *ngIf="hasSlider">
         <app-ta-upload-dropzone
             *ngIf="showDropzone"
             (onFileEvent)="onUploadFiles($event)"
@@ -95,9 +95,9 @@
             </div>
         </ng-container>
     </div>
-
     <app-ta-upload-dropzone
-        *ngIf="showDropzone && !dontUseSlider"
+        [ngClass]="customClassName"
+        *ngIf="showDropzone && !hasSlider"
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"
         [showRequired]="showRequired"

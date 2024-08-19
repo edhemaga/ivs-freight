@@ -12,12 +12,10 @@ import {
 } from '@angular/core';
 import { Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
 import { Subject, takeUntil } from 'rxjs';
 
 // modules
-import { CroppieDirective, CroppieModule } from 'angular-croppie-module';
+//import { CroppieDirective, CroppieModule } from 'angular-croppie-module';
 import Croppie from 'croppie';
 
 // services
@@ -41,6 +39,7 @@ import { LogoSliderPipe } from '@shared/components/ta-logo-change/pipes/logo-sli
 // models
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ta-logo-change',
@@ -51,7 +50,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
         // Module
         CommonModule,
         FormsModule,
-        CroppieModule,
+       // CroppieModule,
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
@@ -70,7 +69,7 @@ export class TaLogoChangeComponent
 {
     private destroy$ = new Subject<void>();
 
-    @ViewChild('croppie') croppieDirective: CroppieDirective | any;
+    @ViewChild('croppie') croppieDirective: any | any; //CroppieDirective
     @Input() croppieOptions: Croppie.CroppieOptions = {
         // Rectangle Cropper Options - all the same except Viewport width - boundary width 616, enforceBoundary: false
         enableExif: true,

@@ -14,9 +14,11 @@
                                 cursor: grabbing;
                             }
                         }
+
                         &.default {
                             pointer-events: none;
                         }
+
                         &.dragging {
                             box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
                         }
@@ -36,20 +38,6 @@
                                 background: $ta-white-3;
                                 z-index: 999;
                             }
-                        }
-                    }
-
-                    .info-item {
-                        &:hover {
-                            .remove-item {
-                                display: flex;
-                            }
-                        }
-                    }
-
-                    .padding-inside {
-                        .driver-buttons {
-                            display: none !important;
                         }
                     }
                 }
@@ -97,33 +85,78 @@
     table {
         width: 100%;
 
-        th.pick-delivery {
-            display: flex;
-            div {
-                flex: 1;
-                display: flex;
-                align-items: center;
-            }
-        }
-
         th {
-            height: 31px;
+            height: 30px;
             padding-left: 10px;
-
-            color: $ta-black-2;
             font-size: 11px;
-            font-weight: 700;
-            user-select: none;
+            color: $bw6-2;
+
+            &.c-pointer {
+                cursor: pointer;
+            }
 
             &::selection,
             ::selection {
                 background-color: $ta-black-2;
                 color: $ta-black-2;
             }
+
+            &.pickup-delivery {
+                div {
+                    flex: 1;
+                }
+
+                .icon {
+                    margin-right: 2px;
+
+                    &.delivery {
+                        svg {
+                            path {
+                                fill: $ta-red-10;
+                            }
+                        }
+                    }
+
+                    svg {
+                        path {
+                            fill: $ta-green;
+                        }
+                    }
+                }
+            }
+
+            div {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            .icon {
+                svg {
+                    path {
+                        fill: $bw6-2;
+                    }
+                }
+
+                &.expanded {
+                    svg {
+                        path {
+                            fill: $ta-blue-18;
+                        }
+                    }
+                }
+            }
         }
 
         td {
             padding: 1px;
+
             .main_inside {
                 height: 34px;
                 background-color: #f7f7f7;
@@ -136,100 +169,10 @@
                 .padding-inside {
                     position: relative;
 
-                    height: 100%;
-
-                    .hos-column {
-                        position: relative;
-                        height: 26px;
-                        width: 26px;
-
-                        .hos-number {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 8px;
-                            font-weight: 700;
-                            color: #919191;
-                            padding-right: 1px;
-                            user-select: none;
-                        }
-
-                        .hos-img {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            cursor: pointer;
-
-                            svg-icon {
-                                display: flex;
-                                margin-left: 1px;
-                                svg {
-                                    width: 22px;
-                                    height: 22px;
-
-                                    path {
-                                        fill: #919191;
-                                        &:first-child {
-                                            fill: transparent !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.active_hos {
-                            .hos-img {
-                                border-radius: 100%;
-                                background-color: #26a69033;
-
-                                svg-icon {
-                                    svg {
-                                        path:not(path:first-child) {
-                                            fill: #26a690;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .hos-number {
-                                color: #26a690;
-                            }
-                        }
-                    }
+                    height: 100%;   
 
                     &:not(.status-inside) {
                         padding: 4px;
-                    }
-
-                    .add_new {
-                        height: 100%;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding-left: 6px;
-                        padding-right: 6px;
-
-                        &.parking-field {
-                            padding-left: 0px;
-                        }
-
-                        .text {
-                            color: #ffffff;
-                            font-size: 14px;
-                            user-select: none;
-                        }
-
-                        svg-icon {
-                            display: flex;
-
-                            svg {
-                                path {
-                                    fill: #3074d3;
-                                }
-                            }
-                        }
                     }
 
                     .info-item {
@@ -239,19 +182,10 @@
                         height: 100%;
                         align-items: center;
                         border-radius: 2px;
+                        transition: background 0.2s ease-in;
 
                         svg-icon {
                             display: flex;
-                        }
-
-                        &.pickup-dev-popover-hold {
-                            padding: 0 2px;
-                        }
-
-                        .truck-trailer {
-                            width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
                         }
 
                         span {
@@ -292,53 +226,6 @@
                             }
                         }
 
-                        .driver-buttons {
-                            display: none;
-                            position: absolute;
-                            right: 0;
-                            top: 0;
-                            z-index: 11;
-
-                            span {
-                                width: 26px;
-                                height: 26px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                padding-left: inherit;
-
-                                &:hover {
-                                    background-color: #3074d333;
-                                    border-radius: 2px;
-                                    cursor: pointer;
-                                    svg-icon {
-                                        path {
-                                            fill: #3074d3;
-                                        }
-                                    }
-                                }
-
-                                &.only_active_icon {
-                                    svg-icon {
-                                        svg {
-                                            path {
-                                                fill: #ffffff33;
-                                            }
-                                        }
-                                    }
-                                }
-                                &.active-icon {
-                                    svg-icon {
-                                        svg {
-                                            path {
-                                                fill: #ffffff;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
                         .copy_divs {
                             white-space: nowrap;
                             overflow: hidden;
@@ -349,81 +236,6 @@
                         .location-field {
                             display: flex;
                             width: 100%;
-                        }
-                        .no-delpickup {
-                            padding-left: 4px;
-
-                            font-size: 11px;
-                            color: #919191;
-                            font-weight: 500;
-                            text-transform: uppercase;
-                            user-select: none;
-                        }
-
-                        .load-items-hold {
-                            display: flex;
-                            width: 100%;
-
-                            .pick-load-box {
-                                flex: 1;
-                                display: flex;
-                                align-items: center;
-
-                                .pick-load-info {
-                                    margin-left: 6px;
-                                    line-height: 1;
-                                    .pick-load-info-address {
-                                        font-size: 11px;
-                                        font-weight: 700;
-                                        color: $ta-black-2;
-
-                                        &::selection {
-                                            background-color: $ta-black-2;
-                                            color: $ta-black-2;
-                                        }
-                                    }
-                                    .pick-load-info-time {
-                                        font-size: 11px;
-                                        color: #919191;
-
-                                        &::selection {
-                                            background-color: #91919133;
-                                            color: #919191;
-                                        }
-                                    }
-                                }
-
-                                svg-icon {
-                                    user-select: none;
-                                }
-
-                                &.delivery-box {
-                                    svg-icon {
-                                        svg {
-                                            rect {
-                                                fill: #ef5350;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .driver-copy {
-                            position: absolute;
-                            display: flex;
-                            align-items: center;
-                            padding-left: 6px;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background-color: $ta-blue-5;
-                            color: $ta-black;
-                            font-weight: 700;
-                            font-size: 11px;
-                            border-radius: 2px;
-                            z-index: 10;
                         }
 
                         app-ta-gps-progressbar {
@@ -439,6 +251,7 @@
                                     }
                                 }
                             }
+
                             .parking-number {
                                 font-size: 11px;
                                 color: #919191;
@@ -453,109 +266,6 @@
                         &.c-pointer {
                             cursor: pointer;
                         }
-
-                        &.driver-on-vacation {
-                            svg-icon {
-                                svg {
-                                    path {
-                                        fill: #3074d3;
-                                    }
-                                }
-                            }
-
-                            &:hover {
-                                background-color: #ef535033 !important;
-                                svg-icon {
-                                    svg {
-                                        path {
-                                            fill: #ef5350;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .remove-item {
-                            position: absolute;
-                            height: 26px;
-                            min-width: 26px;
-                            top: 50%;
-                            right: 0px;
-                            max-width: 85%;
-                            transform: translateY(-50%);
-                            display: none;
-                            justify-content: flex-end;
-                            align-items: center;
-                            transition: all 0.3s;
-                            z-index: 999;
-
-                            svg-icon {
-                                left: auto;
-                                right: 4px;
-                                svg {
-                                    width: 18px;
-                                    height: 18px;
-                                }
-                            }
-                            &:hover {
-                                cursor: pointer;
-                                width: 86px;
-                                background-color: #ef5350;
-                                border-radius: 2px;
-                                transition: all 0.3s;
-
-                                &::after {
-                                    content: 'REMOVE';
-                                    position: absolute;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    left: 6px;
-                                    color: #fff;
-                                }
-
-                                svg-icon {
-                                    svg {
-                                        path {
-                                            fill: #ffffff !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .driver-remove-item {
-                        svg-icon {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 6px;
-                            z-index: 300;
-                            display: flex;
-                        }
-                    }
-
-                    .dispatcher-table-cell-container {
-                        display: flex;
-                        height: 26px;
-                        align-items: center;
-                        line-height: 1;
-
-                        &.note-container {
-                            display: block;
-                            height: 100%;
-
-                            border-radius: 3px;
-                            padding-left: 6px;
-                        }
-
-                        .dispatcher-table-cell-holder {
-                            display: flex;
-                            height: 28px;
-                            width: 100%;
-                            align-items: center;
-                            padding-left: 6px;
-                        }
                     }
                 }
 
@@ -564,14 +274,6 @@
                     height: 26px;
                     align-items: center;
                     line-height: 1;
-
-                    &.note-container {
-                        display: block;
-                        height: 100%;
-
-                        border-radius: 3px;
-                        padding-left: 6px;
-                    }
 
                     .dispatcher-table-cell-holder {
                         display: flex;
@@ -582,44 +284,14 @@
                     }
                 }
 
-                &.addNew {
-                    background-color: #f7f7f7;
-
-                    .text {
-                        color: $ta-black-2 !important;
-                    }
-
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #3074d3;
-
-                        .text {
-                            color: #fff !important;
-                        }
-
-                        .add_new {
-                            svg-icon {
-                                svg {
-                                    path {
-                                        fill: #fff !important;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
                 &.filled {
-                    background-color: #fff;
+                    background: #fff;
 
                     .padding-inside {
+                        position: relative;
                         &:hover {
                             .info-item {
-                                background-color: #eeeeee;
-
-                                .driver-buttons {
-                                    display: flex;
-                                }
+                                background: $bw2;
                             }
                         }
                     }
@@ -644,23 +316,27 @@
 
         th,
         td {
-            &.empty,
             &.box-item {
                 min-width: 34px;
                 max-width: 34px;
                 width: 34px;
-
-                &.box-item {
-                    min-width: 36px;
-                    max-width: 36px;
-                    width: 36px;
-                }
             }
 
+            &.truck-field,
+            &.trailer-field {
+                min-width: 160px;
+                max-width: 160px;
+            }
+
+            &.pre-trip {
+                min-width: 34px;
+                max-width: 34px;
+                width: 34px;
+            }
             &.driver-field {
-                min-width: 200px;
-                max-width: 200px;
-                width: 200px;
+                min-width: 240px;
+                max-width: 240px;
+                width: 240px;
             }
 
             &.location-field {
@@ -698,39 +374,30 @@
                     width: 150px;
                 }
             }
+
+            &.truck-field,
+            &.trailer-field {
+                min-width: 140px;
+            }
+
+            &.note-field {
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
+
+                &.expanded {
+                    width: 236px !important;
+                    max-width: 236px !important;
+                    min-width: 236px !important;
+                }
+            }
         }
     }
 
-    .table-info {
-        margin-top: 2px;
+    /* Drag */
 
-        .table-inside-info {
-            padding: 0 10px;
-        }
-
-        .table-info-field {
-            span {
-                font-size: 11px;
-                line-height: 14px;
-                text-transform: uppercase;
-                color: $bw6-2;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-            }
-
-            &.dispatcher-field {
-                width: 300px;
-                text-align: right;
-            }
-        }
+    .cdk-drag {
+        position: relative;
     }
 
     .cdk-drag-animating {
@@ -742,52 +409,199 @@
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    .cdk-drag {
-        position: relative;
-    }
-
-    .reorder-row.cdk-drag-preview {
-        position: relative;
-        background-color: $ta-black-2;
-        border-radius: 3px;
-        z-index: 9999999 !important;
-        cursor: grabbing !important;
-
-        .cdk-drag-handle {
-            cursor: grabbing !important;
-        }
-
-        .main_inside {
-            background-color: transparent !important;
-
-            *:not(.switch_statuses) {
-                color: #fff !important;
-            }
-        }
-
-        .padding-inside {
-            &:after {
-                display: none !important;
-            }
-        }
-
-        &:after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-
-            transform: translateY(-50%);
-            background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
-            background-size: 20px 17px;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    }
-
     .cdk-drag-placeholder {
         opacity: 0;
+    }
+
+    .reorder-row {
+        &.cdk-drag-preview {
+            position: relative;
+            border-radius: 3px;
+
+            background-color: $ta-black-2 !important;
+            z-index: 9999999 !important;
+            cursor: grabbing !important;
+
+            .cdk-drag-handle {
+                cursor: grabbing !important;
+            }
+
+            .main_inside {
+                background-color: transparent !important;
+            }
+
+            .padding-inside {
+                &:after {
+                    display: none !important;
+                }
+            }
+
+            &:after {
+                content: '';
+                width: 18px;
+                height: 18px;
+                position: absolute;
+                right: 10px;
+                top: 50%;
+
+                transform: translateY(-50%);
+                background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
+                background-size: 20px 17px;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+    }
+
+    /* No Data */
+
+    .no-data-table-row {
+        margin-bottom: 2px;
+
+        td {
+            padding: 1px;
+
+            div {
+                height: 34px;
+                background: $ta-light-grey-5;
+                border-radius: 3px;
+            }
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                width: 160px;
+            }
+
+            &:nth-child(3) {
+                width: 240px;
+            }
+
+            &:nth-child(4),
+            &:nth-child(10),
+            &:nth-child(12) {
+                min-width: 34px;
+                width: 34px;
+            }
+
+            &:nth-child(5) {
+                width: 160px;
+            }
+
+            &:nth-child(6) {
+                width: 140px;
+            }
+
+            &:nth-child(7) {
+                width: 340px;
+            }
+
+            &:nth-child(8) {
+                width: 226px;
+            }
+
+            &:nth-child(9) {
+                width: 100px;
+            }
+
+            &:nth-child(11) {
+                width: 236px;
+            }
+        }
+
+        &.first-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    #f7f7f7 0%,
+                    rgba(247, 247, 247, 0.66) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+
+        &.second-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.66) 0%,
+                    rgba(247, 247, 247, 0.33) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+
+        &.third-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.33) 0%,
+                    rgba(247, 247, 247, 0) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .no-data-container {
+        gap: 32px;
+
+        .no-data-text-container {
+            gap: 12px;
+
+            .no-data-text {
+                font-size: 26px;
+                line-height: 32px;
+                color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+            }
+
+            .no-data-description {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+            }
+        }
+
+        .unlock-table-button {
+            width: 150px;
+            height: 32px;
+            border: none;
+            background: $ta-blue-13;
+            border-radius: 2px;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+            user-select: none;
+
+            p {
+                font-size: 14px;
+                line-height: 20px;
+                color: $white;
+            }
+
+            &:hover {
+                background: $ta-blue-15;
+            }
+        }
     }
 }

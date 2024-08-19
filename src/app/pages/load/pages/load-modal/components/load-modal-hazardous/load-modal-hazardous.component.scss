@@ -41,7 +41,6 @@ $columnGap: 2px;
     }
 
     &-title {
-        height: 34px;
         padding: 6px 12px;
         color: $container-color;
         display: grid;
@@ -287,15 +286,19 @@ $columnGap: 2px;
         -ms-user-select: none;
         user-select: none;
         svg {
-            width: 615px;
-            height: 530px;
+            max-width: 615px;
+            max-height: 530px;
+            height: fit-content;
+            width: 100%;
         }
     }
 
     .load-m-hazardous-compatibility-table {
         svg {
-            width: 615px;
-            height: 390px;
+            max-width: 615px;
+            max-height: 390px;
+            height: fit-content;
+            width: 100%;
         }
     }
 
@@ -310,7 +313,7 @@ $columnGap: 2px;
         &-desc {
             color: $ta-black-2;
             font-size: 10px;
-            width: 460px;
+            max-width: 460px;
 
             a {
                 color: $ta-blue-14;
@@ -320,5 +323,5 @@ $columnGap: 2px;
 }
 
 .color-red {
-    color: $ta-red-14 !important; 
+    color: $ta-red-14 !important;
 }

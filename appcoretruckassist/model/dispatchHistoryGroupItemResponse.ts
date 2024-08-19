@@ -14,6 +14,7 @@ import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
 export interface DispatchHistoryGroupItemResponse { 
+    id?: number;
     status?: DispatchStatusResponse;
     startDate?: string;
     endDate?: string | null;

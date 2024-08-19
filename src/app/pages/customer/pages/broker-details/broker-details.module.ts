@@ -12,7 +12,7 @@ import { SharedModule } from '@shared/shared.module';
 import { BrokerDetailsItemComponent } from '@pages/customer/pages/broker-details/components/broker-details-item/broker-details-item.component';
 import { BrokerDetailsCardComponent } from '@pages/customer/pages/broker-details/components/broker-details-card/broker-details-card.component';
 import { BrokerDetailsComponent } from '@pages/customer/pages/broker-details/broker-details.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+//import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
@@ -32,6 +32,7 @@ import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 import { ProgressBarColors } from '@shared/pipes/progress-bar-colors.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,7 @@ import { ProgressBarColors } from '@shared/pipes/progress-bar-colors.pipe';
         NgbModule,
 
         // Components
-        TaChartComponent,
+       // TaChartComponent,
         TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCopyComponent,
@@ -70,6 +71,7 @@ import { ProgressBarColors } from '@shared/pipes/progress-bar-colors.pipe';
         FormatDatePipe,
         FormatPhonePipe,
         ProgressBarColors,
+        LoadStatusColorPipe,
     ],
 })
 export class BrokerDetailsModule {}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list
 @Injectable({
     providedIn: 'root',
 })
-export class DriverDetailsResolver implements Resolve<any[]> {
+export class DriverDetailsResolver  {
     constructor(
         private driverService: DriverService,
 

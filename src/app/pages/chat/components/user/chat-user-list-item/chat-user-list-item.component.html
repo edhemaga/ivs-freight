@@ -1,26 +1,15 @@
 <div class="chat-list-item d-flex">
-    <!-- TODO refactor to separate component -->
-    <ng-container *ngIf="contact.companyUser?.avatarFile?.url; else noAvatar">
-        <div class="d-flex">
-            <img
-                class="chat-list-item-avatar align-items-center"
-                [src]="contact.companyUser.avatarFile.url"
-                [alt]="contact.companyUser?.fullName"
-            />
-        </div>
-    </ng-container>
-
-    <ng-template #noAvatar>
-        <app-ta-profile-images
-            [indx]="contact.companyUser?.id"
-            [showHoverAnimation]="false"
-            [withTooltip]="false"
-            [size]="'medium'"
-            [type]="contact.userType?.name | lowercase"
-            [name]="contact.companyUser?.fullName"
-        >
-        </app-ta-profile-images>
-    </ng-template>
+    <app-ca-profile-image
+        [avatarImg]="contact.companyUser?.avatarFile?.url"
+        [avatarColor]="{
+            background: '#DFC2F9',
+            color: '#9E47EC66'
+        }"
+        [textShortName]="contact.companyUser?.fullName | nameInitials"
+        [size]="30"
+        [fontSize]="9"
+        [isHoverEffect]="false"
+    ></app-ca-profile-image>
 
     <div class="chat-list-item-text-wrapper">
         <!-- TODO Change into lastMessage -->
@@ -59,7 +48,7 @@
                             contact.companyUser.lastMessage?.content
                         }}</ng-container
                     >
-                    <ng-container *ngSwitchDefault> </ng-container>
+                    <ng-container *ngSwitchDefault></ng-container>
                 </ng-container>
 
                 <div class="chat-list-item-text-time ta-font-regular">

@@ -29,6 +29,15 @@
         user-select: none;
         max-width: 616px;
 
+        &.width-xxl {
+            max-width: unset;
+        }
+
+        &.ta-card-spacing-x {
+            margin: 10px 0;
+            padding: 0 15px;
+        }
+
         .header-content {
             display: flex;
             align-items: center;
@@ -79,8 +88,6 @@
             }
 
             .subtext-container {
-                margin-left: 4px;
-
                 &.red {
                     p {
                         color: $ta-red-10;
@@ -535,6 +542,10 @@
     background: $bw2;
     color: $ta-blue-13;
     transition: 0.3s;
+
+    &-mild {
+        color: $bw6-2;
+    }
 
     &:hover {
         color: $white;

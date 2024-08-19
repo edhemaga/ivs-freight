@@ -7,6 +7,7 @@ export interface FilterOptionsLoad {
     dispatchId: number;
     brokerId: number;
     shipperId: number;
+    loadId?: number;
     dateFrom: string;
     dateTo: string;
     revenueFrom: number;
@@ -23,6 +24,9 @@ export interface FilterOptionsLoad {
     dueTo?: number;
     pickup?: boolean;
     delivery?: boolean;
+    longitude?: number;
+    latitude?: number;
+    distance?: number;
     sort: string;
     searchOne: string;
     searchTwo: string;

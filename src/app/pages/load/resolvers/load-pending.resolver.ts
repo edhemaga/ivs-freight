@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class LoadPendingResolver implements Resolve<LoadPandingState> {
+export class LoadPendingResolver  {
     constructor(
         private loadService: LoadService,
         private loadPendingStore: LoadPendingStore
@@ -30,6 +30,10 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
             .getLoadList(
                 null,
                 1,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

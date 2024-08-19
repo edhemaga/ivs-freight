@@ -1,56 +1,31 @@
 @import 'src/theme/variables';
 
 .user-list-container {
-    height: fit-content;
-    width: fit-content;
+    min-height: fit-content;
+    max-height: calc(50% - 4px);
+    height: 100%;
+    overflow-y: hidden !important;
     background: $white;
     border-radius: 3px;
 
     .chat-header-wrapper {
         width: 100%;
-        padding-top: 6px;
-        padding-left: 6px;
-        padding-right: 6px;
 
         .form-wrapper {
             flex: 1;
             width: 100%;
+            margin-top: 6px;
         }
 
         .chat-header {
-            width: 318px;
-            height: 26px;
-            padding: 0 6px;
-            margin-bottom: 6px;
+            margin-left: 6px;
+            margin-right: 6px;
 
-            .border-container {
-                height: 34px;
-                padding: 0 4px;
-
-                .border {
-                    width: 2px;
-                    height: 18px;
-                    border-radius: 1px;
-                    background: $ta-light-grey-4;
-                }
-            }
             .department-icon {
                 padding: 0 4px;
             }
             &-type {
                 color: $ta-black;
-            }
-
-            &-message-count {
-                font-size: 11px;
-                line-height: 18px;
-                height: 18px;
-                min-width: 18px;
-                border-radius: 50px;
-                background: $bw5;
-                color: $white;
-                padding: 0px 6px;
-                margin: auto 5px;
             }
         }
 
@@ -73,27 +48,24 @@
         color: $white;
         border: none;
     }
-}
-
-.contact-container {
-    height: calc(50lvh - 92px);
-    padding-bottom: 6px;
-
-    .contact-wrapper {
+    .contact-container {
+        padding: 6px 0;
         height: 100%;
-        overflow-y: scroll !important;
-        scrollbar-width: thin !important; /* Firefox */
-        scrollbar-color: $ta-light-grey-6 transparent !important;
-        scrollbar-width: 1px !important;
 
-        .selected-contact {
-            background-color: $ta-light-grey;
-        }
-        .contact {
-            border-radius: 2px;
-            margin-top: 2px;
-            margin-left: 6px;
-            margin-right: 6px;
+        .contact-wrapper {
+            height: calc(100% - 38px);
+            overflow-y: scroll !important;
+            scrollbar-width: thin !important; /* Firefox */
+            scrollbar-color: $ta-light-grey-6 transparent !important;
+            scrollbar-width: 1px !important;
+
+            .selected-contact {
+                background-color: $ta-light-grey;
+            }
+            .contact {
+                border-radius: 2px;
+                margin: 2px 6px 6px auto;
+            }
         }
     }
 }
@@ -112,4 +84,19 @@ svg-icon {
             }
         }
     }
+}
+.chat-header-message-count {
+    font-size: 11px;
+    line-height: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 50px;
+    background: $bw5;
+    color: $white;
+    padding: 0px 6px;
+    margin: auto 5px;
+}
+
+.selected-contact {
+    background-color: $ta-light-grey;
 }

@@ -10,7 +10,11 @@
         <!-- TABS -->
         <div class="tab-wrapper d-flex align-items-center">
             <ng-container
-                *ngFor="let tab of tabs; let ind = index; trackBy: trackById"
+                *ngFor="
+                    let tab of tabs;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
             >
                 <div
                     class="tab-container d-flex"
@@ -37,11 +41,7 @@
         </div>
 
         <ng-container *ngIf="unreadCount">
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+            <app-chat-vertical-divider></app-chat-vertical-divider>
 
             <div class="d-flex unread-messages-wrapper">
                 <div
@@ -49,7 +49,7 @@
                 >
                     <svg-icon
                         class="d-flex justify-content-center align-items-center"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                         [src]="ChatSvgRoutes.unreadMessageIcon"
                     >
                     </svg-icon>
@@ -71,24 +71,20 @@
             >
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     [src]="ChatSvgRoutes.burgerMenuIcon"
                 >
                 </svg-icon>
             </div>
 
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
+            <app-chat-vertical-divider></app-chat-vertical-divider>
 
             <div
                 class="settings-icon action-div active-options d-flex align-items-center"
             >
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     [src]="ChatSvgRoutes.settingsIcon"
                 >
                 </svg-icon>
@@ -110,13 +106,11 @@
             <!-- COMPANY USERS -->
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
-                [type]="'Company'"
+                [type]="'User'"
                 [contactsInfo]="companyUsers"
             >
             </app-chat-user-list>
-
             <div class="divider"></div>
-
             <!-- DRIVERS -->
             <app-chat-user-list
                 (selectedUser)="createUserConversation($event)"
@@ -129,15 +123,81 @@
         <!-- MESSAGES -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
-                <router-outlet></router-outlet>
+                <router-outlet (activate)="onActivate($event)"></router-outlet>
             </ng-container>
 
             <ng-template #noConversation>
-                <app-messages-not-selected></app-messages-not-selected>
+                <app-chat-messages-not-selected></app-chat-messages-not-selected>
             </ng-template>
         </div>
 
-        <!-- TODO Department -->
-        <div></div>
+        <!-- GROUPS -->
+        <div class="groups-container">
+            <div class="group-wrapper">
+                <app-chat-list [itemsCount]="companyChannels?.length">
+                    <app-chat-header
+                        (searchEvent)="searchDepartment($event)"
+                        header
+                    >
+                        <div class="chat-header d-flex align-items-center">
+                            <div class="chat-header-type ta-font-extra-bold">
+                                Department
+                            </div>
+
+                            <div
+                                class="chat-header-message-count ta-font-extra-bold"
+                            >
+                                {{ companyChannels?.length }}
+                            </div>
+
+                            <app-chat-vertical-divider></app-chat-vertical-divider>
+
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                [src]="ChatSvgRoutes.notificationIcon"
+                            >
+                            </svg-icon>
+                        </div>
+                    </app-chat-header>
+                    <ng-container
+                        *ngFor="
+                            let contact of companyChannels;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                        body
+                    >
+                        <div
+                            class="contact"
+                            [ngClass]="
+                                contact.id === this.selectedUserId &&
+                                'selected-contact'
+                            "
+                            (click)="selectUser(contact.id)"
+                        >
+                            <app-chat-list-item
+                                [item]="{
+                                    id: contact.id,
+                                    name: contact.name,
+                                    lastContent: {
+                                        content: contact?.lastMessage?.content,
+                                        createdAt:
+                                            contact?.lastMessage?.createdAt
+                                    },
+                                    notificationCount: 0,
+                                    pathToAsset: contact.assetPath,
+                                    assetExtension:
+                                        (contact.assetPath | fileExtension)
+                                }"
+                            ></app-chat-list-item>
+                        </div>
+                    </ng-container>
+                </app-chat-list>
+            </div>
+            <div class="divider"></div>
+
+            <div class="group-wrapper"></div>
+        </div>
     </div>
 </div>

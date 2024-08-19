@@ -1,0 +1,35 @@
+<div class="main_inside filled">
+    <div class="padding-inside">
+        <ng-container *ngIf="status?.name; else noDispatch">
+            <div
+                class="d-flex justify-content-center align-items-center pre-trip-inspection-container"
+                ngbTooltip
+                [mainTooltip]="
+                    status.name === 'Disabled'
+                        ? 'In Off Status'
+                        : status.name === 'NotDone'
+                        ? 'Mark as Done'
+                        : _time + '<br>Unmark'
+                "
+                tooltipBackground="#2F2F2F"
+                position="bottom"
+                [ngClass]="{
+                    'status-disabled': status.name === 'Disabled',
+                    'status-enabled': status.name === 'NotDone',
+                    'status-done': status.name === 'Done',
+                    hovering: isHoveringRow
+                }"
+                (click)="
+                    status.name !== 'Disabled' ? preTripInspectionDone() : null
+                "
+            >
+                <svg-icon [src]="dispatchTableSvgRoutes.preTripInspection">
+                </svg-icon>
+            </div>
+        </ng-container>
+
+        <ng-template #noDispatch>
+            <div class="d-flex justify-content-center align-items-center"></div>
+        </ng-template>
+    </div>
+</div>

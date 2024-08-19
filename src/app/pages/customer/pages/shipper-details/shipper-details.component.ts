@@ -20,6 +20,23 @@ import { ShipperDetailsListQuery } from '@pages/customer/state/shipper-state/shi
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums/shipper-details-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+
+// Models
+import {
+    ShipperContactResponse,
+    ShipperLoadStopsResponse,
+} from 'appcoretruckassist';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
+
+// Constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants/shipper-loads-sort-dropdown.constants';
+
+// Helpers
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-shipper-details',
@@ -38,6 +55,23 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public newShipperId: any = 0;
     public shipperConfigData: any;
     public businessOpen: boolean;
+    public backLoadFilterQuery: FilterOptionsLoad =
+        TableDropdownComponentConstants.SHIPPER_LOADS_BACK_FILTER;
+    public shipperLoads: ShipperLoadStopsResponse[] = [];
+    public shipperContacts: ShipperContactResponse[] = [];
+    public pickupFilterData: { selectedFilter: boolean; filteredArray: any[] } =
+        {
+            selectedFilter: false,
+            filteredArray: [],
+        };
+    public deliveryFilterData: {
+        selectedFilter: boolean;
+        filteredArray: any[];
+    } = {
+        selectedFilter: false,
+        filteredArray: [],
+    };
+
     constructor(
         // Ref
         private cdRef: ChangeDetectorRef,
@@ -80,6 +114,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.initTableOptions();
 
         this.getShipperConfig();
+
+        this.loadsSearchListener();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -112,8 +148,13 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hasArrow: false,
                 hasSearch: true,
                 timeFilter: true,
+                pickupFilter: true,
+                deliveryFilter: true,
                 searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
+                hasSort: true,
+                sortDropdown:
+                    ShipperLoadsSortDropdownConstants.SHIPPER_LOADS_SORT_DROPDOWN,
             },
             {
                 id: 2,
@@ -125,7 +166,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 icon: true,
                 hasArrow: false,
-                hasSearch: true,
+                hasSearch: false,
                 searchPlaceholder: ShipperDetailsStringEnum.CONTACTS,
                 data: data,
             },
@@ -138,9 +179,23 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 data: data,
                 hasArrow: false,
+                hasSearch: true,
+                searchPlaceholder: ShipperDetailsStringEnum.REVIEW,
             },
         ];
         this.shipperId = data?.id ? data.id : null;
+        this.shipperLoads = data?.loadStops;
+        this.shipperContacts = data?.shipperContacts;
+        this.backLoadFilterQuery.shipperId = this.shipperId;
+        this.pickupFilterData = {
+            selectedFilter: false,
+            filteredArray: this.shipperLoads,
+        };
+        this.deliveryFilterData = {
+            selectedFilter: false,
+            filteredArray: this.shipperLoads,
+        };
+        this.tableService.sendResetSpecialFilters(true);
     }
 
     public deleteShipperById(id: number): void {
@@ -220,7 +275,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             openedTab: event,
         };
         setTimeout(() => {
-            console.log(this.shipperObject, 'shipperobj')
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 this.shipperObject,
@@ -404,6 +458,177 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
         };
         this.shipperConf(shipperData);
+    }
+
+    public setFilter(data): void {
+        switch (data?.filterType) {
+            case LoadFilterStringEnum.TIME_FILTER:
+                if (data.queryParams?.timeSelected) {
+                    const { fromDate, toDate } =
+                        RepairTableDateFormaterHelper.getDateRange(
+                            data.queryParams?.timeSelected,
+                            data.queryParams.year ?? null
+                        );
+
+                    this.backLoadFilterQuery.dateTo = toDate;
+                    this.backLoadFilterQuery.dateFrom = fromDate;
+                } else {
+                    this.backLoadFilterQuery.dateTo = null;
+                    this.backLoadFilterQuery.dateFrom = null;
+                }
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private loadBackFilter(filter: FilterOptionsLoad): void {
+        this.shipperService
+            .getShipperLoads(
+                filter.loadType,
+                filter.statusType,
+                filter.status,
+                filter.dispatcherIds,
+                filter.dispatcherId,
+                filter.dispatchId,
+                filter.brokerId,
+                filter.shipperId,
+                filter.loadId,
+                filter.dateFrom,
+                filter.dateTo,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.truckId,
+                filter.rateFrom,
+                filter.rateTo,
+                filter.paidFrom,
+                filter.paidTo,
+                filter.dueFrom,
+                filter.dueTo,
+                filter.pickup,
+                filter.delivery,
+                filter.longitude,
+                filter.latitude,
+                filter.distance,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.shipperLoads = res.loads.data;
+                }
+            });
+    }
+
+    private loadsSearchListener(): void {
+        this.tableService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backLoadFilterQuery
+                    );
+
+                    if (searchEvent) {
+                        if (searchEvent.action === TableStringEnum.API) {
+                            this.loadBackFilter(searchEvent.query);
+                        } else if (
+                            searchEvent.action === TableStringEnum.STORE
+                        ) {
+                            this.backLoadFilterQuery.searchOne = null;
+                            this.backLoadFilterQuery.searchTwo = null;
+                            this.backLoadFilterQuery.searchThree = null;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+                        }
+                    }
+                }
+            });
+    }
+
+    public setSpecialFilter(data): void {
+        if (data) {
+            if (data.data.isReset) {
+                if (data.type === LoadFilterStringEnum.PICKUP_FILTER) {
+                    this.pickupFilterData.selectedFilter = false;
+                    this.backLoadFilterQuery.pickup = false;
+                } else {
+                    this.deliveryFilterData.selectedFilter = false;
+                    this.backLoadFilterQuery.delivery = false;
+                }
+
+                return;
+            }
+
+            if (data.type === LoadFilterStringEnum.PICKUP_FILTER) {
+                this.pickupFilterData.selectedFilter =
+                    !this.pickupFilterData.selectedFilter;
+
+                if (
+                    this.pickupFilterData.selectedFilter &&
+                    this.deliveryFilterData.selectedFilter
+                ) {
+                    this.tableService.sendResetSpecialFilters(
+                        true,
+                        LoadFilterStringEnum.DELIVERY_FILTER
+                    );
+                    this.backLoadFilterQuery.delivery = false;
+                }
+
+                this.backLoadFilterQuery.pickup =
+                    this.pickupFilterData.selectedFilter;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+            } else {
+                this.deliveryFilterData.selectedFilter =
+                    !this.deliveryFilterData.selectedFilter;
+
+                if (
+                    this.deliveryFilterData.selectedFilter &&
+                    this.pickupFilterData.selectedFilter
+                ) {
+                    this.tableService.sendResetSpecialFilters(
+                        true,
+                        LoadFilterStringEnum.PICKUP_FILTER
+                    );
+                    this.backLoadFilterQuery.pickup = false;
+                }
+
+                this.backLoadFilterQuery.delivery =
+                    this.deliveryFilterData.selectedFilter;
+
+                this.loadBackFilter(this.backLoadFilterQuery);
+            }
+        }
+    }
+
+    public onSortAction(event: {
+        column: LoadsSortDropdownModel;
+        sortDirection: string;
+    }): void {
+        const loadConfig = this.shipperConfig.find((item) => item.hasSort);
+
+        if (loadConfig) {
+            loadConfig.sortDropdown = loadConfig.sortDropdown.map((item) => {
+                item.active = item.id === event.column.id;
+
+                return item;
+            });
+        }
+
+        this.backLoadFilterQuery.sort = event.sortDirection;
+
+        this.loadBackFilter(this.backLoadFilterQuery);
     }
 
     ngOnDestroy(): void {

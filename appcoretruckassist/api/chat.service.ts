@@ -31,6 +31,8 @@ import { ConversationResponse } from '../model/conversationResponse';
 // @ts-ignore
 import { CreateConversationCommand } from '../model/createConversationCommand';
 // @ts-ignore
+import { CreateLinkCommand } from '../model/createLinkCommand';
+// @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
 import { JoinConversationCommand } from '../model/joinConversationCommand';
@@ -1118,13 +1120,14 @@ export class ChatService {
      * @param content 
      * @param parentMessageId 
      * @param attachments 
+     * @param links 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiChatMessagePost(messageType?: number, conversationId?: number, content?: string, parentMessageId?: number, attachments?: Array<Blob>, links?: Array<CreateLinkCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -1196,6 +1199,11 @@ export class ChatService {
         if (attachments) {
             attachments.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('Attachments', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (links) {
+            links.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Links', <any>element) as any || localVarFormParams;
             })
         }
 

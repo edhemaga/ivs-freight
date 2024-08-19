@@ -1,0 +1,50 @@
+<div class="main_inside filled">
+    <div class="padding-inside">
+        <div
+            class="status-container d-flex flex-column justify-content-center"
+            [ngClass]="{ hovering: isHoveringRow }"
+            ngbTooltip
+            mainContent
+            [mainTooltip]="'Change Status'"
+            position="bottom"
+            [tooltipBackground]="'#424242'"
+            tooltipColor="'#ffff'"
+            tooltipTextAlign="center"
+            (click)="getStatusDropdonw(ngbStatus)"
+        >
+            <div
+                class="status ta-font-bold"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="'bottom'"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+            >
+                <app-load-status-string
+                    [status]="{
+                        name: status.statusString,
+                        valueForRequest: status.statusValue.name
+                    }"
+                    [justifyStart]="true"
+                    [isDispatch]="true"
+                ></app-load-status-string>
+            </div>
+            <div class="status-time ta-font-bold">
+                {{ showTime }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #statusPopover>
+    <app-ta-status-component
+        [status]="status"
+        [time]="showTime"
+        [statusId]="dispatchId"
+        [isDispatch]="true"
+        (onRouteEventEmmitter)="upadateStatus($event)"
+    >
+    </app-ta-status-component>
+</ng-template>

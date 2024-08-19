@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { forkJoin, Observable, throwError, catchError, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class ApplicantResolver implements Resolve<ApplicantState> {
+export class ApplicantResolver  {
     constructor(
         private applicantActionsService: ApplicantService,
         private applicantStore: ApplicantStore,

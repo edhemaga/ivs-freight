@@ -1,4 +1,4 @@
-<div class="table-container dispatch-board-main-table">
+<div class="table-container dispatch-board-main">
     <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
@@ -14,16 +14,17 @@
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
         [ngStyle]="{ 'max-width.px': maxToolbarWidth }"
     >
-        <div
-            class="dipsatch_groups"
-            *ngFor="let item of dispatchTableList | async; let indx = index"
-        >
-            <app-dispatch-table
-                [dispatchTableData]="item"
-                [isBoardLocked]="isBoardLocked"
-                [shortLists]="dispatchBoardSmallList | async"
-                [toolbarWidth]="maxToolbarWidth"
-            ></app-dispatch-table>
-        </div>
+        <ng-container *ngFor="let item of dispatchTableList | async">
+            <div class="dispatch-groups">
+                <app-dispatch-table
+                    [dispatchTableData]="item"
+                    [isBoardLocked]="isBoardLocked"
+                    [shortLists]="dispatchBoardSmallList | async"
+                    [toolbarWidth]="maxToolbarWidth"
+                    [isAllBoardsList]="selectedDispatcher?.name === 'All Boards'"
+                    (onTableUnlockEmitter)="onToolBarAction($event)"
+                ></app-dispatch-table>
+            </div>
+        </ng-container>
     </div>
 </div>

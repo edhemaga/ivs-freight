@@ -34,6 +34,8 @@ export interface DispatchResponse {
     phone?: string | null;
     email?: string | null;
     location?: AddressEntity;
+    latitude?: number | null;
+    longitude?: number | null;
     status?: DispatchStatusResponse;
     lastStatusDateTime?: string;
     currentStopType?: EnumValue;
@@ -44,5 +46,6 @@ export interface DispatchResponse {
     parkingSlot?: ParkingSlotShortResponse;
     loadProgress?: LoadProgressResponse;
     preTripInspection?: EnumValue;
+    preTripInspectionTime?: string | null;
 }
 

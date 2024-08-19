@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 // models
 import { SignInResponse } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
-export class CompanySettingsGuard implements CanActivate {
+export class CompanySettingsGuard  {
     constructor(private router: Router) {}
 
     canActivate() {

@@ -21,6 +21,7 @@ import {
     RepairTruckFilterListResponse,
     PMTrailerListResponse,
     PMTruckListResponse,
+    DispatchService,
     /*  DispatcherFilterListResponse, */
 } from 'appcoretruckassist';
 
@@ -43,7 +44,8 @@ export class FilterStateService implements OnDestroy {
         private departmentService: DepartmentService,
         private loadService: LoadService,
         private truckService: TruckService,
-        private trailerService: TrailerService
+        private trailerService: TrailerService,
+        private dispatchService: DispatchService
     ) {}
 
     // get() {
@@ -218,6 +220,20 @@ export class FilterStateService implements OnDestroy {
                 next: (data: any) => {
                     this.tableService.sendActionAnimation({
                         animation: 'trailer-list-update',
+                        data: data,
+                        id: null,
+                    });
+                },
+            });
+    }
+    public getDispatchFilterData() {
+        this.dispatchService
+            .apiDispatchBoardFiltersGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'list-update',
                         data: data,
                         id: null,
                     });

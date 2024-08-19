@@ -9,11 +9,20 @@ export enum LoadFilterStringEnum {
     USER_FILTER = 'userFilter',
     MONEY_FILTER = 'moneyFilter',
     LOAD_TYPE_FILTER = 'loadTypeFilter',
+    PICKUP_FILTER = 'pickupFilter',
+    DELIVERY_FILTER = 'deliveryFilter',
+    LOCATION_FILTER = 'locationFilter',
+    TRUCK_FILTER = 'truckFilter',
+    TRAILER_FILTER = 'trailerFilter',
 
     // Load Tabs
     PENDING = 'pending',
+    PENDING_2 = 'Pending',
     ACTIVE = 'active',
+    ACTIVE_2 = 'Active',
     CLOSED = 'closed',
+    CLOSED_2 = 'Closed',
+    LOAD = 'Load',
 
     // Load Types
     FTL = 'ftl',
@@ -22,4 +31,5 @@ export enum LoadFilterStringEnum {
 
     // Other
     DISPATCH_DATA_UPDATE = 'dispatch-data-update',
+    UPDATE = 'update',
 }

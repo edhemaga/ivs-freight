@@ -1,0 +1,110 @@
+@import 'src/theme/variables';
+
+.short-load {
+    font-size: 11px;
+    line-height: 14px;
+    margin-bottom: 8px;
+    padding: 2px 6px 2px 2px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+
+    &-active {
+        background-color: $bw2;
+    }
+
+    &-icon {
+        display: none;
+        svg path {
+            transition: fill 0.3s;
+            fill: $muted;
+        }
+    }
+
+    &:hover {
+        background-color: $bw2;
+
+        .short-load-icon-actions {
+            display: block;
+        }
+
+        .short-load-icon-text {
+            display: none;
+        }
+    }
+
+    &-index {
+        font-size: 14px;
+        color: $muted;
+        height: 100%;
+        align-content: center;
+        user-select: none;
+
+        &_assigned {
+            color: $ta-blue-13;
+        }
+
+        &:not(.disabled) {
+            &:hover {
+                svg path {
+                    fill: $ta-blue-15;
+                }
+            }
+        }
+
+        &.disabled {
+            pointer-events: none;
+        }
+    }
+
+    &-badge {
+        border-radius: 3px;
+        background-color: $dark-2;
+        color: $bw6-2;
+        height: 18px;
+        width: 18px;
+        margin-right: 4px;
+        user-select: none;
+    }
+
+    &-number, &-stop-info-text {
+        span {
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        p {
+            &::-moz-selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
+    
+            &::selection {
+                color: $muted;
+                background: rgb(145, 145, 145, 0.2);
+            }
+        }
+    }
+
+    &-reordering-active {
+        &:hover {
+            .short-load-icon-actions {
+                display: none;
+            }
+    
+            .short-load-icon-text {
+                display: none;
+            }
+
+            .short-load-icon_drag {
+                display: block !important;
+            }
+        }
+    }
+}

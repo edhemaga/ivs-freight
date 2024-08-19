@@ -1,0 +1,52 @@
+<div
+    class="attachment-preview"
+    [ngStyle]="{ width: previewWidth }"
+    (click)="isInMessage && downloadFile()"
+>
+    <ng-container *ngIf="isMedia; else document">
+        <img
+            [src]="attachment.url"
+            [alt]="attachment.fileName"
+            class="attachment-preview-thumbnail"
+            width="40"
+            height="40"
+        />
+    </ng-container>
+    <ng-template #document>
+        <div class="attachment-preview-document d-flex">
+            <img
+                [src]="documentIllustrationPath"
+                [alt]="attachment.name"
+                class="attachment-preview-document-thumbnail"
+            />
+            <div
+                class="attachment-preview-document-info"
+                [ngStyle]="{ width: isInMessage && 'fit-content' }"
+            >
+                <div
+                    [ngClass]="
+                        isChatTypingBlurred && !isInMessage
+                            ? 'name-dark'
+                            : 'name-light'
+                    "
+                    [class.text-reduced]="isNameReduced"
+                    class="name ta-font-medium"
+                >
+                    {{ attachment.fileName }}
+                </div>
+                <div class="text info">
+                    <ng-container [ngSwitch]="displayMode">
+                        <ng-container *ngSwitchCase="'size'">
+                            {{ attachment.size || attachment.fileSize }} kB
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                            {{
+                                attachment.updatedAt | formatDateP : 'date-time'
+                            }}
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

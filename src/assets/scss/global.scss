@@ -92,7 +92,7 @@ body {
 
 *:not(.scroll-input-drodpwon):not(.description-item):not(
         .table-inner-modal
-    ):not(.scrollable) {
+    ):not(.scrollable):not(.columns-scroll.items-scroll) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -190,6 +190,16 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     }
 }
 
+.dragdrop-custom-placeholder-assign-load {
+    background-color: $ta-black !important;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    height: 32px;
+    width: 100%;
+    display: flex;
+    border-radius: 3px;
+    max-width: 616px;
+}
+
 .dragdrop-custom-placeholder {
     background: $ta-light-grey-5;
     box-shadow: 0px 0px 4px 0px #0000004d inset;
@@ -263,7 +273,6 @@ app-load-modal {
             display: none;
         }
         .valid-focus-out-filled {
-            background-color: $white !important;
             &:hover {
                 background-color: $ta-blue-17;
             }
@@ -286,4 +295,25 @@ app-load-modal {
 
 .pos-absolute {
     position: absolute;
+}
+
+.dispatch-load-grid {
+    grid-template-columns: 30px 176px 151px 151px 1fr;
+    gap: 4px;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.ta-custom-card .ta-card-body.scroll.h-full {
+    scrollbar-width: thin !important;
+    padding-bottom: 30px;
+    overflow-y: auto !important;
 }
