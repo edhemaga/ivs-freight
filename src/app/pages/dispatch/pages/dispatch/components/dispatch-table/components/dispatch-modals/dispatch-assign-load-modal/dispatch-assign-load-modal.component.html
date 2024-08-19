@@ -58,15 +58,15 @@
             </div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="220"
-                [initialSecondElementHeight]="440"
+                [initialFirstElementHeight]="250"
+                [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
             >
-                <div firstElement class="h-full">
+                <div firstElement  #firstElementRef  class="h-full">
                     <app-ta-custom-card
                         [cardName]="'Assigned'"
                         [hasCounter]="assignedLoads.length"
@@ -145,7 +145,7 @@
                     </app-ta-custom-card>
                 </div>
 
-                <div secondElement class="h-full">
+                <div secondElement #secondElementRef  class="h-full">
                     <app-ta-custom-card
                         [cardName]="'Unassigned'"
                         [hasCounter]="unassignedLoads.length"
@@ -156,6 +156,7 @@
                         [isInheritingParentSize]="true"
                         [disabledCard]="isReorderingActive"
                         [hasDivider]="false"
+                        [isGreyTextWhenDisabled]="true"
                         (onOpenCard)="isUnAssignLoadCardOpen = $event"
                     >
                         <ng-container

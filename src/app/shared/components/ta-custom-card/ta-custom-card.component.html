@@ -32,7 +32,10 @@
     >
         <!-- Left side of header -->
 
-        <div class="header-content">
+        <div
+            class="header-content"
+            [class.grey-text]="isGreyTextWhenDisabled && disabledCard"
+        >
             <!-- Checkbox -->
             <ng-container *ngIf="hasCheckbox">
                 <app-ta-checkbox [formControl]="controlName" [label]="''">

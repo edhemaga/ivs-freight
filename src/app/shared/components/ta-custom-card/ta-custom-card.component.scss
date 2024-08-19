@@ -561,3 +561,12 @@
         }
     }
 }
+
+.grey-text {
+    .header-text {
+        color: $ta-light-grey-2 !important;
+    }
+    .ta-counter {
+        background-color: $ta-light-grey-2 !important;
+    }
+} 
