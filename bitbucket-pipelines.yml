@@ -43,7 +43,7 @@ pipelines:
           artifacts:
             - node_modules/** # Save modules for next steps
       - step:
-          size: 2x
+          size: 3x
           name: Build
           script:
             - npm run build:stage
