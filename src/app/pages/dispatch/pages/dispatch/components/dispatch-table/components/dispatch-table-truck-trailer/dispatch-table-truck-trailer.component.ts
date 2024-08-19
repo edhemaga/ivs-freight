@@ -41,6 +41,12 @@ export class DispatchTableTruckTrailerComponent {
     @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
         this._hasAdditionalFieldTrailer = hasAdditionalField;
     }
+    @Input() set truckDropdownWidth(value: number) {
+        this._truckDropdownWidth = value -2;
+    }
+    @Input() set trailerDropdownWidth(value: number) {
+        this._trailerDropdownWidth = value -2;
+    }
 
     @Input() type: string;
 
@@ -52,11 +58,10 @@ export class DispatchTableTruckTrailerComponent {
 
     @Input() rowIndex: number;
 
-    @Input() isBoardLocked: boolean;
     @Input() isDrag: boolean;
-    @Input() isActiveLoad: boolean;
-
     @Input() isHoveringRow: boolean;
+    @Input() isBoardLocked: boolean;
+    @Input() isActiveLoad: boolean;
 
     @Output() addTruckTrailerEmitter = new EventEmitter<{
         type: string;
@@ -82,6 +87,9 @@ export class DispatchTableTruckTrailerComponent {
     public truckIndex: number = -1;
     public trailerIndex: number = -1;
 
+    public _truckDropdownWidth: number;
+    public _trailerDropdownWidth: number;
+
     constructor(private modalService: ModalService) {}
 
     get truckTrailerInputConfig(): ITaInput {
@@ -89,6 +97,8 @@ export class DispatchTableTruckTrailerComponent {
             type: this.type,
             hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
             hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
+            truckDropdownWidth: this._truckDropdownWidth,
+            trailerDropdownWidth: this._trailerDropdownWidth
         });
     }
 

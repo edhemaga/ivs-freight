@@ -34,26 +34,27 @@ export class CompanyRepairShopService {
         search1?: string,
         search2?: string
     ): Observable<RepairShopNewListResponse> {
-        return null;
-        // return this.companyRepairShop.apiRepairshopListGet(
-        //     active,
-        //     pinned,
-        //     companyOwned,
-        //     categoryIds,
-        //     _long,
-        //     lat,
-        //     distance,
-        //     costFrom,
-        //     costTo,
-        //     visitedByMe,
-        //     driverId,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
+        return this.companyRepairShop.apiRepairshopListGet(
+            active,
+            pinned,
+            companyOwned,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            '',
+            250,
+            costFrom,
+            costTo,
+            visitedByMe,
+            driverId,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 }

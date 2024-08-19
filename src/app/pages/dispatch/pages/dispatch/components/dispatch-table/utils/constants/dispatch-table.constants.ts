@@ -1,4 +1,5 @@
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
+import { ColumnFields } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/column-fields.model';
 
 export class DispatchTableConstants {
     static HEADER_ITEMS: DispatchTableHeaderItems[] = [
@@ -24,5 +25,11 @@ export class DispatchTableConstants {
             title: 'NOTE',
             icon: 'assets/svg/truckassist-table/note/Note-hover.svg',
         },
+    ];
+
+    static COLUMN_FIELDS: ColumnFields[] = [
+        { className: 'truck-field', key: 'truckWidth' },
+        { className: 'trailer-field', key: 'trailerWidth' },
+        { className: 'driver-field', key: 'driverWidth' },
     ];
 }
