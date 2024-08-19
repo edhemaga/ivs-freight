@@ -2281,10 +2281,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             case ToolbarFilterStringEnum.TRUCK_FILTER:
                 this.truckArray.sort((a, b) => {
-                    if (this.isAscendingSortOrder) {
-                        return a.name.localeCompare(b.name);
+                    if(this.isDispatchFilter) {
+                        if (this.isAscendingSortOrder) {
+                            return a.count - b.count;
+                        } else {
+                            return b.count - a.count;
+                        }
                     } else {
-                        return b.name.localeCompare(a.name);
+                        if (this.isAscendingSortOrder) {
+                            return a.name.localeCompare(b.name);
+                        } else {
+                            return b.name.localeCompare(a.name);
+                        }
                     }
                 });
                 this.isAscendingSortOrder = !this.isAscendingSortOrder;
@@ -2292,10 +2300,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             case ToolbarFilterStringEnum.TRAILER_FILTER:
                 this.trailerArray.sort((a, b) => {
-                    if (this.isAscendingSortOrder) {
-                        return a.name.localeCompare(b.name);
+                    if(this.isDispatchFilter) {
+                        if (this.isAscendingSortOrder) {
+                            return a.count - b.count;
+                        } else {
+                            return b.count - a.count;
+                        }
                     } else {
-                        return b.name.localeCompare(a.name);
+                        if (this.isAscendingSortOrder) {
+                            return a.name.localeCompare(b.name);
+                        } else {
+                            return b.name.localeCompare(a.name);
+                        }
                     }
                 });
 
@@ -2344,6 +2360,17 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
                 this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
+
+                case ToolbarFilterStringEnum.PARKING_FILTER:
+                    this.loadParkingOptionsArray.sort((a, b) => {
+                        if (this.isAscendingSortOrder) {
+                            return a.count - b.count;
+                        } else {
+                            return b.count - a.count;
+                        }
+                    });
+                    this.isAscendingSortOrder = !this.isAscendingSortOrder;
+                    break;
 
             default:
                 break;

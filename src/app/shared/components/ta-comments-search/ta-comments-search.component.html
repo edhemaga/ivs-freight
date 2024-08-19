@@ -17,7 +17,13 @@
                 class="d-flex align-items-center justify-content-between comments-container-header"
                 [ngClass]="{ disabled: commentsData?.length === 1 }"
             >
-                <p class="m-0 ta-font-bold">SORT BY</p>
+                <ng-container *ngIf="!lettersToHightlight; else showResultsCount">
+                    <p class="m-0 ta-font-bold">SORT BY</p>
+                </ng-container>
+
+                <ng-template #showResultsCount>
+                    <p class="m-0 ta-font-bold">{{commentsData.length}} {{commentsData.length === 1 ? 'RESULT' : 'RESULTS'}} </p>
+                </ng-template>
 
                 <div class="d-flex align-items-center">
                     <span class="ta-font-medium"> Date </span>

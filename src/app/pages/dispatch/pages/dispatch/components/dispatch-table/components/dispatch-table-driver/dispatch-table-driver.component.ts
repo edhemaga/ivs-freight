@@ -50,12 +50,16 @@ export class DispatchTableDriverComponent {
     @Input() public phone: string;
     @Input() public email: string;
     @Input() public isDrag: boolean;
-    @Input() public draggingType: string;
     @Input() public openedDriverDropdown: number;
     @Input() public isActiveLoad: boolean;
     @Input() public hoursOfService: HosResponse;
     @Input() public dispatchId: number;
     @Input() public isHoveringRow: boolean;
+    @Input() public openedHosData: any; //leave this any because we are not doing this now
+
+    @Input() set driverDropdownWidth(value: number) {
+        this._driverDropdownWidth = value - 2;
+    }
 
     @Output() addDriverEmitter = new EventEmitter<{
         event: DriverMinimalResponse;
@@ -63,6 +67,10 @@ export class DispatchTableDriverComponent {
     }>();
 
     @Output() removeDriverEmitter = new EventEmitter<{
+        index: number;
+    }>();
+
+    @Output() setDriverDropdownIndexEmitter = new EventEmitter<{
         index: number;
     }>();
 
@@ -81,6 +89,7 @@ export class DispatchTableDriverComponent {
 
     public copyIndex: number = -1;
     public driverIndex: number = -1;
+    public _driverDropdownWidth: number;
 
     public tooltip: NgbTooltip;
 
@@ -94,7 +103,7 @@ export class DispatchTableDriverComponent {
     ) {}
 
     get driverInputConfig(): ITaInput {
-        return DispatchConfig.getDriverInputConfig();
+        return DispatchConfig.getDriverInputConfig(this._driverDropdownWidth);
     }
 
     public identity(_: number, item: EnumValue): number {
@@ -165,6 +174,9 @@ export class DispatchTableDriverComponent {
         }
 
         this.openedDriverDropdown = -1;
+        this.setDriverDropdownIndexEmitter.emit({
+            index: this.openedDriverDropdown,
+        });
     }
 
     public removeDriver(index: number): void {
@@ -177,6 +189,9 @@ export class DispatchTableDriverComponent {
 
     public showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
+        this.setDriverDropdownIndexEmitter.emit({
+            index: this.openedDriverDropdown,
+        });
     }
 
     public toggleHos(tooltip: NgbTooltip, data: any): void {
@@ -196,6 +211,39 @@ export class DispatchTableDriverComponent {
 
         if (tooltip.isOpen()) tooltip.close();
         else tooltip.open();
+    }
+
+    public userChangeEnd(item: any): void {
+        //leave this any because we are not doing this now
+        const index = item.indx;
+        const nextHos = index + 1;
+        if (this.openedHosData[nextHos])
+            setTimeout(() => {
+                this.changeHosDataPositions(index);
+            });
+    }
+
+    private changeHosDataPositions(index: number): void {
+        const nextHos = index + 1;
+        if (this.openedHosData[nextHos])
+            this.openedHosData[nextHos].start = this.openedHosData[index].end;
+    }
+
+    public addHOS(hosType: string): void {
+        this.openedHosData = [...this.openedHosData];
+        this.openedHosData.push({
+            start: this.openedHosData[this.openedHosData.length - 1].end,
+            end: new Date().getHours() * 60 + new Date().getMinutes(),
+            flag: { name: hosType },
+            indx: this.openedHosData.length,
+        });
+    }
+
+    public removeHos(item: any): void {
+        //leave this any because we are not doing this now
+        this.openedHosData = this.openedHosData.filter(
+            (hos: any) => hos.indx !== item.indx //leave this any because we are not doing this now
+        );
     }
 
     public handleDriverVacation(): void {

@@ -37,7 +37,8 @@
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
-                    'edit-load': editLoad
+                    'edit-load': editLoad,
+                    'select-template': !isConvertedToTemplate && !isEdit
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -64,7 +65,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !editLoad">
+                <ng-container *ngIf="!isConvertedToTemplate && !isEdit">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -399,8 +400,12 @@
                             ></svg-icon>
                         </p>
                         <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
-                        <p class="m-0 ta-font-bold">DATE & TIME</p>
-                        <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        <ng-container *ngIf="selectedPickupShipper">
+                            <p class="m-0 ta-font-bold">DATE & TIME</p>
+                            <p class="m-0 ta-font-bold text-right">
+                                LEG, CONTACT
+                            </p>
+                        </ng-container>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -451,7 +456,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-pickup'
+                                            'shipper-pickup',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
@@ -514,10 +521,12 @@
                                 <div
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
-                                        disabled: selectedStopTimePickup === 6
+                                        disabled:
+                                            selectedStopTimePickup === 6 ||
+                                            selectedStopTimePickup === 2
                                     }"
-                                    (click)="pickupDateRange = true"
-                                    mainTooltip="Date Range"
+                                    (click)="addDateRange('pickup', true)"
+                                    [mainTooltip]="'Date Range'"
                                     [tooltipBackground]="'#424242'"
                                     ngbTooltip
                                     position="bottom"
@@ -789,7 +798,8 @@
                                                         onSelectDropdown(
                                                             $event,
                                                             'shipper-extra-stops',
-                                                            indx
+                                                            indx,
+                                                            true
                                                         )
                                                     "
                                                     (closeDropdown)="
@@ -896,6 +906,9 @@
                                                         disabled:
                                                             selectedExtraStopTime[
                                                                 indx
+                                                            ] === 2 ||
+                                                            selectedExtraStopTime[
+                                                                indx
                                                             ]
                                                                 ?.toString()
                                                                 ?.startsWith(
@@ -903,9 +916,11 @@
                                                                 )
                                                     }"
                                                     (click)="
-                                                        loadExtraStopsDateRange[
+                                                        addDateRange(
+                                                            'extra-stop',
+                                                            true,
                                                             indx
-                                                        ] = true
+                                                        )
                                                     "
                                                 >
                                                     <svg-icon
@@ -929,7 +944,7 @@
                                                 "
                                                 formControlName="dateTo"
                                                 [inputConfig]="
-                                                    loadExtraStopsToDateInputConfig
+                                                    getExtraStopsToDate(indx)
                                                 "
                                                 (blurInput)="
                                                     loadExtraStops()
@@ -1145,7 +1160,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-delivery'
+                                            'shipper-delivery',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
@@ -1213,9 +1230,11 @@
                                     position="bottom"
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
-                                        disabled: selectedStopTimeDelivery === 8
+                                        disabled:
+                                            selectedStopTimeDelivery === 2 ||
+                                            selectedStopTimeDelivery === 8
                                     }"
-                                    (click)="deliveryDateRange = true"
+                                    (click)="addDateRange('delivery', true)"
                                 >
                                     <svg-icon
                                         class="plus-icon"
@@ -1231,7 +1250,7 @@
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
-                                [inputConfig]="loadDeliveryDateTo"
+                                [inputConfig]="loadDeliveryDateToInputConfig"
                                 (blurInput)="
                                     markInputAsTouched('deliveryDateTo')
                                 "
@@ -1369,8 +1388,11 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ {{ totalLegHours }}h
-                                    {{ totalLegMinutes }}m</span
+                                    >≈
+                                    <ng-container *ngIf="totalLegHours"
+                                        >{{ totalLegHours }}h</ng-container
+                                    >
+                                    {{ totalLegMinutes || 0 }}m</span
                                 >
                             </div>
                         </div>
@@ -1388,6 +1410,7 @@
                             | financialCalculation : 'billing'
                             | currency
                     "
+                    [billingCount]="billingCount"
                     [disableBillAction]="
                         !loadForm.get('baseRate').value ||
                         !additionalBillingTypes?.length
@@ -1396,6 +1419,7 @@
                         adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
+                    [paymentCount]="additionalPayments().length"
                     [payment]="
                         loadModalPayment
                             | financialCalculation : 'payment'

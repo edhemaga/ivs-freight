@@ -420,6 +420,7 @@ export class TaInputComponent
         // Price Separator - remove dot on focus out
         if (
             this._inputConfig.priceSeparator &&
+            this.getSuperControl?.value && 
             this.getSuperControl?.value?.indexOf('.') >= 0
         ) {
             // 4.1. Check for Dot position
@@ -655,7 +656,7 @@ export class TaInputComponent
             this.numberOfConsecutivelySpaces = 0;
 
             // Reset One Space Only
-            if (!this.getSuperControl.value?.includes(' ')) {
+            if ( this.getSuperControl.value && !this.getSuperControl.value?.includes(' ')) {
                 this.oneSpaceOnlyCounter = 0;
             }
         }
@@ -1136,6 +1137,9 @@ export class TaInputComponent
                 'fuel per miles',
                 'fuel price map',
                 'amount',
+                'bol no.',
+                'seal no.',
+                'pickup no.'
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers

@@ -40,12 +40,18 @@
                                     !tableHeaderItem?.title &&
                                     tableHeaderItem?.icon,
                                 'd-flex align-items-center pickup-delivery':
-                                    tableHeaderItem?.secondTitle
+                                    tableHeaderItem?.secondTitle,
+                                'c-pointer': tableHeaderItem?.title === 'NOTE'
                             }"
+                            (click)="handleHeaderClick(tableHeaderItem?.title)"
                         >
                             <div>
                                 <svg-icon
                                     class="icon"
+                                    [class.expanded]="
+                                        tableHeaderItem?.title === 'NOTE' &&
+                                        isNoteExpanded
+                                    "
                                     [svgStyle]="{
                                         'width.px': '14',
                                         'height.px': '14'
@@ -55,11 +61,14 @@
 
                                 <ng-container
                                     *ngIf="
-                                        tableHeaderItem?.title !==
+                                        (tableHeaderItem?.title !==
                                             'INSPECTION' &&
-                                        tableHeaderItem?.title !==
-                                            'DISPATCHER' &&
-                                        tableHeaderItem?.title !== 'NOTE'
+                                            tableHeaderItem?.title !==
+                                                'DISPATCHER' &&
+                                            tableHeaderItem?.title !==
+                                                'NOTE') ||
+                                        (tableHeaderItem?.title === 'NOTE' &&
+                                            isNoteExpanded)
                                     "
                                 >
                                     {{ tableHeaderItem?.title }}
@@ -106,19 +115,26 @@
                 >
                     <tr
                         class="reorder-row"
+                        [ngClass]="{ drag: !isDispatchBoardLocked }"
                         cdkDrag
                         cdkDragLockAxis="y"
                         cdkDragPreviewContainer="parent"
                         cdkDragBoundary=".dispatch-table"
                         [cdkDragDisabled]="isDispatchBoardLocked || !item.truck"
+                        (cdkDragStarted)="cdkDragStartedRow($event, rowIndex)"
+                        (cdkDragEnded)="dragEnd()"
                         (mouseenter)="isHoveringRowIndex = rowIndex"
                         (mouseleave)="isHoveringRowIndex = -1"
                     >
                         <td
                             cdkDragHandle
+                            #columnField
                             class="truck-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTruck
                                     ? '160px'
                                     : '120px'
                             }"
@@ -128,6 +144,9 @@
                                 [hasAdditionalFieldTruck]="
                                     hasAdditionalFieldTruck
                                 "
+                                [truckDropdownWidth]="
+                                    columnSpecifications?.truckWidth
+                                "
                                 [truck]="item?.truck"
                                 [truckList]="truckList"
                                 [rowIndex]="rowIndex"
@@ -135,7 +154,7 @@
                                 [isDrag]="isDrag"
                                 [isActiveLoad]="!!item.activeLoad"
                                 [isHoveringRow]="
-                                    isHoveringRowIndex === rowIndex
+                                    !isDrag && isHoveringRowIndex === rowIndex
                                 "
                                 (addTruckTrailerEmitter)="
                                     handleAddTruckTrailerClick($event)
@@ -148,24 +167,23 @@
                         </td>
 
                         <td
+                            #columnField
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTrailer
                                     ? '160px'
                                     : '120px'
                             }"
                         >
                             <div
+                                class="main_inside"
                                 [class.dragging]="
-                                    isDrag && draggingType == 'trailer'
+                                    isDrag && draggingType === 'trailer'
                                 "
                                 cdkDropList
-                                [cdkDropListSortPredicate]="
-                                    trailerPositionPrediction
-                                "
-                                (cdkDropListDropped)="
-                                    dropTrailer($event, rowIndex)
-                                "
                                 id="{{
                                     rowIndex | cdkid : gridIndex : 'trailer'
                                 }}"
@@ -177,20 +195,26 @@
                                             : gridIndex
                                             : 'trailer'
                                 "
+                                [cdkDropListSortPredicate]="
+                                    trailerPositionPrediction
+                                "
+                                (cdkDropListDropped)="
+                                    dropTrailer($event, rowIndex)
+                                "
                             >
                                 <div
                                     class="drag-hold-between"
                                     cdkDrag
+                                    cdkDragLockAxis="y"
+                                    cdkDragPreviewContainer="parent"
+                                    cdkDragBoundary=".dispatch-table table tbody"
+                                    [cdkDragDisabled]="
+                                        isDispatchBoardLocked || !item.trailer
+                                    "
                                     (cdkDragStarted)="
                                         cdkDragStartedTrailer($event, rowIndex)
                                     "
                                     (cdkDragEnded)="dragEnd()"
-                                    [cdkDragDisabled]="
-                                        isDispatchBoardLocked || !item.trailer
-                                    "
-                                    cdkDragLockAxis="y"
-                                    cdkDragPreviewContainer="parent"
-                                    cdkDragBoundary=".dispatch-table table tbody"
                                 >
                                     <div
                                         *cdkDragPlaceholder
@@ -202,6 +226,9 @@
                                         [hasAdditionalFieldTrailer]="
                                             hasAdditionalFieldTrailer
                                         "
+                                        [trailerDropdownWidth]="
+                                            columnSpecifications?.trailerWidth
+                                        "
                                         [trailer]="item?.trailer"
                                         [trailerList]="trailerList"
                                         [rowIndex]="rowIndex"
@@ -209,6 +236,7 @@
                                         [isDrag]="isDrag"
                                         [isActiveLoad]="!!item.activeLoad"
                                         [isHoveringRow]="
+                                            !isDrag &&
                                             isHoveringRowIndex === rowIndex
                                         "
                                         (addTruckTrailerEmitter)="
@@ -225,22 +253,13 @@
                             </div>
                         </td>
 
-                        <td class="driver-field">
+                        <td #columnField class="driver-field">
                             <div
                                 class="main_inside"
-                                [class.filled]="item?.driver"
-                                [class.default]="
-                                    !item.driver &&
-                                    !driverList.length &&
-                                    !isDispatchBoardLocked
-                                "
                                 [class.dragging]="
-                                    isDrag && draggingType == 'driver'
+                                    isDrag && draggingType === 'driver'
                                 "
                                 cdkDropList
-                                (cdkDropListDropped)="
-                                    dropDriver($event, rowIndex)
-                                "
                                 id="{{
                                     rowIndex | cdkid : gridIndex : 'driver'
                                 }}"
@@ -252,21 +271,23 @@
                                             : gridIndex
                                             : 'driver'
                                 "
+                                (cdkDropListDropped)="
+                                    dropDriver($event, rowIndex)
+                                "
                             >
                                 <div
                                     class="drag-hold-between"
                                     cdkDrag
+                                    cdkDragLockAxis="y"
+                                    cdkDragPreviewContainer="parent"
+                                    cdkDragBoundary=".dispatch-table table tbody"
+                                    [cdkDragDisabled]="
+                                        isDispatchBoardLocked || !item.driver
+                                    "
                                     (cdkDragStarted)="
                                         cdkDragStartedDriver($event, rowIndex)
                                     "
                                     (cdkDragEnded)="dragEnd()"
-                                    [cdkDragDisabled]="
-                                        isDispatchBoardLocked || !item.driver
-                                    "
-                                    cdkDragLockAxis="y"
-                                    [cdkDragPreviewClass]="'trailer_3074D3'"
-                                    cdkDragPreviewContainer="parent"
-                                    cdkDragBoundary=".dispatch-table table tbody"
                                 >
                                     <div
                                         *cdkDragPlaceholder
@@ -281,7 +302,6 @@
                                         [isDrag]="isDrag"
                                         [phone]="item?.phone"
                                         [email]="item?.email"
-                                        [draggingType]="draggingType"
                                         [openedDriverDropdown]="
                                             openedDriverDropdown
                                         "
@@ -289,7 +309,11 @@
                                         [hoursOfService]="item?.hoursOfService"
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
+                                            !isDrag &&
                                             isHoveringRowIndex === rowIndex
+                                        "
+                                        [driverDropdownWidth]="
+                                            columnSpecifications?.driverWidth
                                         "
                                         (addDriverEmitter)="
                                             handleAddDriverClick($event)
@@ -311,6 +335,7 @@
                                 [dispatchId]="item?.id"
                                 [dispatchBoardId]="item?.dispatchBoardId"
                                 [status]="item?.preTripInspection"
+                                [time]="item?.preTripInspectionTime"
                                 [isHoveringRow]="
                                     isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
@@ -417,29 +442,20 @@
                             </div>
                         </td>
 
-                        <td class="note-field">
-                            <div
-                                class="main_inside"
-                                [class.filled]="item.truck"
+                        <td
+                            class="note-field"
+                            [class.expanded]="isNoteExpanded"
+                        >
+                            <app-dispatch-table-note
+                                [truck]="item.truck"
+                                [note]="item.note"
+                                [isNoteExpanded]="isNoteExpanded"
+                                [isHoveringRowIndex]="isHoveringRowIndex"
+                                [rowIndex]="rowIndex"
+                                [dispatchId]="item.id"
+                                (saveNoteValue)="saveNoteValue($event)"
                             >
-                                <div
-                                    class="dispatcher-table-cell-container note-container"
-                                    [class.empty-box-field]="!item.note"
-                                >
-                                    <app-ta-note
-                                        [note]="item.note"
-                                        [openedAll]="true"
-                                        [dispatchIndex]="rowIndex"
-                                        [parking]="false"
-                                        [noteWidth]="213"
-                                        [parentWidth]="'.note-field'"
-                                        [type]="'dark'"
-                                        [isDispatch]="true"
-                                        (saveNoteValue)="saveNoteValue($event)"
-                                    >
-                                    </app-ta-note>
-                                </div>
-                            </div>
+                            </app-dispatch-table-note>
                         </td>
 
                         <td class="box-item">
@@ -471,15 +487,22 @@
             <ng-container *ngIf="!isDispatchBoardLocked">
                 <tr>
                     <td
+                        #columnField
                         class="truck-field"
                         [ngStyle]="{
-                            width: hasAdditionalFieldTruck ? '160px' : '120px'
+                            width: hasAdditionalFieldTruck ? '160px' : '120px',
+                            'min-width': hasAdditionalFieldTruck
+                                ? '160px'
+                                : '120px'
                         }"
                     >
                         <app-dispatch-table-truck-trailer
                             [type]="'truck'"
                             [truck]="addNewTruckData"
                             [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
+                            [truckDropdownWidth]="
+                                columnSpecifications?.truckWidth
+                            "
                             [truckList]="truckList"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
@@ -496,15 +519,24 @@
                     </td>
 
                     <td
+                        #columnField
                         class="trailer-field"
                         [ngStyle]="{
-                            width: hasAdditionalFieldTrailer ? '160px' : '120px'
+                            width: hasAdditionalFieldTrailer
+                                ? '160px'
+                                : '120px',
+                            'min-width': hasAdditionalFieldTrailer
+                                ? '160px'
+                                : '120px'
                         }"
                     >
                         <app-dispatch-table-truck-trailer
                             [type]="'trailer'"
                             [hasAdditionalFieldTrailer]="
                                 hasAdditionalFieldTrailer
+                            "
+                            [trailerDropdownWidth]="
+                                columnSpecifications?.trailerWidth
                             "
                             [trailerList]="trailerList"
                             [rowIndex]="rowIndex"
@@ -521,7 +553,7 @@
                         </app-dispatch-table-truck-trailer>
                     </td>
 
-                    <td class="driver-field">
+                    <td #columnField class="driver-field">
                         <app-dispatch-table-driver
                             [driverList]="driverList"
                             [rowIndex]="rowIndex"
@@ -530,12 +562,18 @@
                             [draggingType]="draggingType"
                             [openedDriverDropdown]="openedDriverDropdown"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
+                            [driverDropdownWidth]="
+                                columnSpecifications?.driverWidth
+                            "
                             (addDriverEmitter)="handleAddDriverClick($event)"
                             (removeDriverEmitter)="
                                 handleRemoveDriverClick($event)
                             "
                             (driverVacationEmitter)="
                                 changeDriverVacation($event)
+                            "
+                            (setDriverDropdownIndexEmitter)="
+                                changeDriverDropdownIndex($event)
                             "
                         >
                         </app-dispatch-table-driver>
@@ -626,9 +664,13 @@
                 >
                     <tr class="reorder-row fake-row">
                         <td
+                            #columnField
                             class="truck-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTruck
                                     ? '160px'
                                     : '120px'
                             }"
@@ -637,9 +679,13 @@
                         </td>
 
                         <td
+                            #columnField
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
+                                    ? '160px'
+                                    : '120px',
+                                'min-width': hasAdditionalFieldTrailer
                                     ? '160px'
                                     : '120px'
                             }"

@@ -18,6 +18,8 @@ export enum DispatchTableStringEnum {
     DRIVER_ID = 'driverId',
     CO_DRIVER_ID = 'coDriverId',
 
+    EMPTY_STRING = '',
+
     CIRCLE_ROUTE = 'ic_circle.svg',
     OWNER_STATUS_ROUTE = 'ic_owner-status.svg',
 
@@ -42,4 +44,5 @@ export enum DispatchTableStringEnum {
     TEXTAREA = 'textarea',
     COPY = 'copy',
     VALUE = 'value',
+    NOTE = 'NOTE',
 }
