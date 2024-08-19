@@ -142,13 +142,9 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
-<<<<<<< HEAD
     public reorderDispatchboard(
         reorder: ReorderDispatchesCommand
     ): Observable<any> {
-=======
-    reorderDispatchboard(reorder: ReorderDispatchesCommand) {
->>>>>>> 4c8f188a8af3700fc28355cbda59d045d78ac197
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }
 
