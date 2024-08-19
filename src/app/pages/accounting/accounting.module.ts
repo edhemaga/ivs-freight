@@ -21,6 +21,11 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 // Pipes
 import { PayrollTablePipe } from '@pages/accounting/pages/payroll/components/payroll-table/pipes/payroll-table.pipe';
 import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/components/payroll-table/pipes/payroll-row-border.pipe';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { payrollReducer } from './pages/payroll/state/reducers/payroll.reducer';
+import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
+import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
 
 @NgModule({
     declarations: [
@@ -34,6 +39,7 @@ import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/compo
         // Pipes
         PayrollRowBorderTablePipe,
         PayrollTablePipe,
+        PayrollTableNamesPipe,
     ],
     imports: [
         // Modules
@@ -46,6 +52,8 @@ import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/compo
         TaInputComponent,
         TaProfileImagesComponent,
         TaCustomCardComponent,
+        EffectsModule.forFeature([PayrollEffect]),
+        StoreModule.forFeature('payroll', payrollReducer),
     ],
     exports: [PayrollTableComponent],
 })

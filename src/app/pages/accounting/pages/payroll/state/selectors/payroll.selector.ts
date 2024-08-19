@@ -7,6 +7,9 @@ export const selectPayrollState =
 export const selectPayrollCounts = createSelector(
     selectPayrollState,
     (state) => {
-        return state.payrollCounts;
+        return {
+            payrollCounts: state.payrollCounts,
+            payrolls: Object.keys(state.payrollCounts),
+        };
     }
 );

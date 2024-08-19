@@ -7,7 +7,7 @@ import * as PayrollActions from '../actions/payroll.actions';
 import { PayrollService } from '../../services/payroll.service';
 
 @Injectable()
-export class PaymentEffect {
+export class PayrollEffect {
     constructor(
         private actions$: Actions,
         private store: Store,

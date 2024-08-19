@@ -20,6 +20,8 @@ import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 import { PayrollFacadeService } from './state/services/payroll.service';
+import { PayrollCountsResponse } from 'appcoretruckassist';
+import { IPayrollCountsSelector } from './state/models/payroll.model';
 
 @Component({
     selector: 'app-payroll',
@@ -43,6 +45,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     driversActive: DriverState[] = [];
     driversInactive: DriversInactiveState[] = [];
     mapingIndex: number = 0;
+
+    payrollCountsResponse$: Observable<IPayrollCountsSelector>;
     payrollData: Observable<any>;
 
     tableExpanded: boolean = true;
@@ -61,29 +65,17 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         private payrollFacadeService: PayrollFacadeService
     ) {}
 
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
-    }
-
-    expandTable(data: any) {
-        this.reportTableData = data;
-        this.tableExpanded = !this.tableExpanded;
-    }
-
-    observTableContainer() {
-        this.resizeObserver = new ResizeObserver((entries) => {
-            entries.forEach((entry) => {
-                this.tableContainerWidth = entry.contentRect.width;
-            });
+    public subscribeToStoreData() {
+        this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
+        this.payrollCountsResponse$ = this.payrollFacadeService.selectPayrollCounts$;
+        this.payrollFacadeService.selectPayrollCounts$.subscribe((payroll) => {
+            console.log('WHAT IS A PAYROLLL', payroll);
         });
-
-        this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
     ngOnInit(): void {
         this.initTableOptions();
+        this.subscribeToStoreData();
 
         this.payrollData = this.payrollQuery.payrolldata$;
 
@@ -120,6 +112,27 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setDriverData(td);
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    expandTable(data: any) {
+        this.reportTableData = data;
+        this.tableExpanded = !this.tableExpanded;
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
     setDriverData(td: any) {

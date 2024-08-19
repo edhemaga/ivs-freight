@@ -4,3 +4,8 @@ export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
     loading: boolean;
 }
+
+export interface IPayrollCountsSelector{
+    payrollCounts: PayrollCountsResponse,
+    payrolls: string[]
+}

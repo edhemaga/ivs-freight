@@ -2,7 +2,9 @@ import { createReducer, on } from '@ngrx/store';
 import { PayrollState } from '../payroll.store';
 import * as PayrollActions from '../actions/payroll.actions';
 
-export const payrollState: PayrollState = {};
+export const payrollState: PayrollState = {
+    payrollCounts: []
+};
 
 export const payrollReducer = createReducer(
     payrollState,
