@@ -34,6 +34,7 @@ import {
 } from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
@@ -42,10 +43,15 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 
 // Helpers
 import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
-import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+
+// Const
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
@@ -96,6 +102,24 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
 
+    public backLoadFilterQuery = {
+        truckType: null,
+        trailerType: null,
+        _long: null,
+        lat: null,
+        distance: null,
+        dispatcherId: null,
+        dateFrom: null,
+        dateTo: null,
+        pageIndex: null,
+        pageSize: null,
+        companyId: null,
+        sort: null,
+        search: null,
+        search1: null,
+        search2: null,
+    };
+
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
 
@@ -131,7 +155,23 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         }
 
         this.loadService
-            .getDispatchModalData()
+            .getDispatchModalData(
+                null,
+                this.backLoadFilterQuery.truckType,
+                this.backLoadFilterQuery.trailerType,
+                this.backLoadFilterQuery._long,
+                this.backLoadFilterQuery.lat,
+                this.backLoadFilterQuery.distance,
+                this.backLoadFilterQuery.dispatcherId,
+                this.backLoadFilterQuery.dateFrom,
+                this.backLoadFilterQuery.dateTo,
+                this.backLoadFilterQuery.pageIndex,
+                this.backLoadFilterQuery.pageSize,
+                this.backLoadFilterQuery.companyId,
+                this.backLoadFilterQuery.sort,
+                this.backLoadFilterQuery.search,
+                this.backLoadFilterQuery.search1,
+                this.backLoadFilterQuery.search2)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
                 this.unassignedLoads = res.unassignedLoads;
@@ -346,6 +386,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                 break;
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD:
+                if(this.isReorderingActive) {
+                    return;
+                }
                 this.ngbActiveModal.close();
 
                 this.createNewLoad();
@@ -453,7 +496,24 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     private getLoadsForDispatchId(dispatchId: number) {
         this.loadService
-            .apiLoadListAssignedIdGet(dispatchId)
+            .getDispatchModalData(
+                dispatchId,
+                this.backLoadFilterQuery.truckType,
+                this.backLoadFilterQuery.trailerType,
+                this.backLoadFilterQuery._long,
+                this.backLoadFilterQuery.lat,
+                this.backLoadFilterQuery.distance,
+                this.backLoadFilterQuery.dispatcherId,
+                this.backLoadFilterQuery.dateFrom,
+                this.backLoadFilterQuery.dateTo,
+                this.backLoadFilterQuery.pageIndex,
+                this.backLoadFilterQuery.pageSize,
+                this.backLoadFilterQuery.companyId,
+                this.backLoadFilterQuery.sort,
+                this.backLoadFilterQuery.search,
+                this.backLoadFilterQuery.search1,
+                this.backLoadFilterQuery.search2
+            )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignedLoadListResponse) => {
                 this.assignedLoads = res.assignedLoads;
@@ -549,55 +609,64 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         // In progress, waiting for backend
-        // switch (data?.filterType) {
-        //     case LoadFilterStringEnum.USER_FILTER:
-        //         break;
-        //     case LoadFilterStringEnum.TIME_FILTER:
-        //         // if (data.queryParams?.timeSelected) {
-        //         //     const { fromDate, toDate } =
-        //         //         RepairTableDateFormaterHelper.getDateRange(
-        //         //             data.queryParams?.timeSelected,
-        //         //             data.queryParams.year ?? null
-        //         //         );
-        //         //     this.backLoadFilterQuery.dateTo = toDate;
-        //         //     this.backLoadFilterQuery.dateFrom = fromDate;
-        //         // } else {
-        //         //     this.backLoadFilterQuery.dateTo = null;
-        //         //     this.backLoadFilterQuery.dateFrom = null;
-        //         // }
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.MONEY_FILTER:
-        //         // this.backLoadFilterQuery.rateFrom =
-        //         //     data.queryParams?.firstFormFrom ?? null;
-        //         // this.backLoadFilterQuery.rateTo =
-        //         //     data.queryParams?.firstFormTo ?? null;
-        //         // this.backLoadFilterQuery.paidFrom =
-        //         //     data.queryParams?.secondFormFrom ?? null;
-        //         // this.backLoadFilterQuery.paidTo =
-        //         //     data.queryParams?.secondFormTo ?? null;
-        //         // this.backLoadFilterQuery.dueFrom =
-        //         //     data.queryParams?.thirdFormFrom ?? null;
-        //         // this.backLoadFilterQuery.dueTo =
-        //         //     data.queryParams?.thirdFormTo ?? null;
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.LOCATION_FILTER:
-        //         // this.backLoadFilterQuery.longitude =
-        //         //     data.queryParams?.longValue ?? null;
-        //         // this.backLoadFilterQuery.latitude =
-        //         //     data.queryParams?.latValue ?? null;
-        //         // this.backLoadFilterQuery.distance =
-        //         //     data.queryParams?.rangeValue ?? null;
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.TRUCK_FILTER:
-        //         break;
-        //     case LoadFilterStringEnum.TRAILER_FILTER:
-        //         break;
-        //     default:
-        //         break;
-        // } - Waiting for backend
+        switch (data?.filterType) {
+            case LoadFilterStringEnum.USER_FILTER:
+                break;
+            case LoadFilterStringEnum.TIME_FILTER:
+                if (data.queryParams?.timeSelected) {
+                    const { fromDate, toDate } =
+                        RepairTableDateFormaterHelper.getDateRange(
+                            data.queryParams?.timeSelected,
+                            data.queryParams.year ?? null
+                        );
+                    this.backLoadFilterQuery.dateTo = toDate;
+                    this.backLoadFilterQuery.dateFrom = fromDate;
+                } else {
+                    this.backLoadFilterQuery.dateTo = null;
+                    this.backLoadFilterQuery.dateFrom = null;
+                }
+                this.loadBackFilter(this.backLoadFilterQuery);
+                break;
+            case LoadFilterStringEnum.MONEY_FILTER:
+                // this.backLoadFilterQuery.rateFrom =
+                //     data.queryParams?.firstFormFrom ?? null;
+                // this.backLoadFilterQuery.rateTo =
+                //     data.queryParams?.firstFormTo ?? null;
+                // this.backLoadFilterQuery.paidFrom =
+                //     data.queryParams?.secondFormFrom ?? null;
+                // this.backLoadFilterQuery.paidTo =
+                //     data.queryParams?.secondFormTo ?? null;
+                // this.backLoadFilterQuery.dueFrom =
+                //     data.queryParams?.thirdFormFrom ?? null;
+                // this.backLoadFilterQuery.dueTo =
+                //     data.queryParams?.thirdFormTo ?? null;
+                this.loadBackFilter(this.backLoadFilterQuery);
+                break;
+            case LoadFilterStringEnum.LOCATION_FILTER:
+                this.backLoadFilterQuery._long =
+                    data.queryParams?.longValue ?? null;
+                this.backLoadFilterQuery.lat =
+                    data.queryParams?.latValue ?? null;
+                this.backLoadFilterQuery.distance =
+                    data.queryParams?.rangeValue ?? null;
+                this.loadBackFilter(this.backLoadFilterQuery);
+                break;
+            case LoadFilterStringEnum.TRUCK_FILTER:
+                this.backLoadFilterQuery.truckType =
+                    data.queryParams ?? null;
+                break;
+            case LoadFilterStringEnum.TRAILER_FILTER:
+                this.backLoadFilterQuery.truckType =
+                    data.queryParams ?? null;
+                break;
+            default:
+                break;
+        }
+
+        this.loadModalData()
+    }
+
+    private loadBackFilter(e: any) {
     }
 
     public ngOnDestroy(): void {
