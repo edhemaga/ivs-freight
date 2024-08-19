@@ -58,6 +58,10 @@ export class DispatchTableDriverComponent {
     @Input() public isHoveringRow: boolean;
     @Input() public openedHosData: any; //leave this any because we are not doing this now
 
+    @Input() set driverDropdownWidth(value: number) {
+        this._driverDropdownWidth = value - 2;
+    }
+
     @Output() addDriverEmitter = new EventEmitter<{
         event: DriverMinimalResponse;
         index: number;
@@ -86,6 +90,7 @@ export class DispatchTableDriverComponent {
 
     public copyIndex: number = -1;
     public driverIndex: number = -1;
+    public _driverDropdownWidth: number;
 
     public tooltip: NgbTooltip;
 
@@ -99,7 +104,7 @@ export class DispatchTableDriverComponent {
     ) {}
 
     get driverInputConfig(): ITaInput {
-        return DispatchConfig.getDriverInputConfig();
+        return DispatchConfig.getDriverInputConfig(this._driverDropdownWidth);
     }
 
     public identity(_: number, item: EnumValue): number {

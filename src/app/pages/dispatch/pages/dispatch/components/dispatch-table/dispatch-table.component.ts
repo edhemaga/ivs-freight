@@ -2,11 +2,14 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
     OnInit,
     Output,
+    QueryList,
+    ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
 
@@ -64,6 +67,8 @@ import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/compone
     animations: [dispatchBackgroundAnimation()],
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
+    @ViewChildren('columnField') columnFieldElements: QueryList<ElementRef>;
+
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
 
@@ -78,6 +83,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() set isBoardLocked(isLocked: boolean) {
         this.isDispatchBoardLocked = isLocked;
+
+        this.setColumnsWidth();
     }
 
     @Input() toolbarWidth: number = 0;
@@ -120,6 +127,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public isNoteExpanded: boolean = false;
     public parkingCount: number = 0;
     public openedDriverDropdown: number = -1;
+
+    public columnSpecifications: { [key: string]: number } = {};
+
+    public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
     /////////////////////////////////////////// UPDATE
 
@@ -798,6 +809,34 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.hasLargeFieldParking = res.isParkingExpanded;
                 }
             });
+    }
+
+    private setColumnsWidth(): void {
+        const processedClasses = new Set<string>();
+
+        setTimeout(() => {
+            this.columnFieldElements.forEach((fieldElement) => {
+                const element = fieldElement.nativeElement;
+
+                const className = Array.from(element.classList).find((classItem) =>
+                    this.columnFields.some((field) => field.className === classItem)
+                );
+
+                if (
+                    typeof className === 'string' && //for some reaseon this won't work as enum
+                    !processedClasses.has(className)
+                ) {
+                    const field = this.columnFields.find(
+                        (f) => f.className === className
+                    );
+                    if (field) {
+                        const width = element.getBoundingClientRect().width;
+                        this.columnSpecifications[field.key] = width;
+                        processedClasses.add(className);
+                    }
+                }
+            });
+        }, 1000);
     }
 
     public handleHeaderClick(title: string): void {

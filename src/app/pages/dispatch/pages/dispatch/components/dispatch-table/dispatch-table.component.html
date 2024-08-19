@@ -125,6 +125,7 @@
                     >
                         <td
                             cdkDragHandle
+                            #columnField
                             class="truck-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
@@ -139,6 +140,9 @@
                                 [type]="'truck'"
                                 [hasAdditionalFieldTruck]="
                                     hasAdditionalFieldTruck
+                                "
+                                [truckDropdownWidth]="
+                                    columnSpecifications?.truckWidth
                                 "
                                 [truck]="item?.truck"
                                 [truckList]="truckList"
@@ -160,6 +164,7 @@
                         </td>
 
                         <td
+                            #columnField
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
@@ -217,6 +222,9 @@
                                         [hasAdditionalFieldTrailer]="
                                             hasAdditionalFieldTrailer
                                         "
+                                        [trailerDropdownWidth]="
+                                            columnSpecifications?.trailerWidth
+                                        "
                                         [trailer]="item?.trailer"
                                         [trailerList]="trailerList"
                                         [rowIndex]="rowIndex"
@@ -240,7 +248,7 @@
                             </div>
                         </td>
 
-                        <td class="driver-field">
+                        <td #columnField class="driver-field">
                             <div
                                 class="main_inside"
                                 [class.filled]="item?.driver"
@@ -305,6 +313,9 @@
                                         [dispatchId]="item.id"
                                         [isHoveringRow]="
                                             isHoveringRowIndex === rowIndex
+                                        "
+                                        [driverDropdownWidth]="
+                                            columnSpecifications?.driverWidth
                                         "
                                         (addDriverEmitter)="
                                             handleAddDriverClick($event)
@@ -477,6 +488,7 @@
             <ng-container *ngIf="!isDispatchBoardLocked">
                 <tr>
                     <td
+                        #columnField
                         class="truck-field"
                         [ngStyle]="{
                             width: hasAdditionalFieldTruck ? '160px' : '120px',
@@ -489,6 +501,9 @@
                             [type]="'truck'"
                             [truck]="addNewTruckData"
                             [hasAdditionalFieldTruck]="hasAdditionalFieldTruck"
+                            [truckDropdownWidth]="
+                                columnSpecifications?.truckWidth
+                            "
                             [truckList]="truckList"
                             [rowIndex]="rowIndex"
                             [isBoardLocked]="isDispatchBoardLocked"
@@ -505,6 +520,7 @@
                     </td>
 
                     <td
+                        #columnField
                         class="trailer-field"
                         [ngStyle]="{
                             width: hasAdditionalFieldTrailer
@@ -519,6 +535,9 @@
                             [type]="'trailer'"
                             [hasAdditionalFieldTrailer]="
                                 hasAdditionalFieldTrailer
+                            "
+                            [trailerDropdownWidth]="
+                                columnSpecifications?.trailerWidth
                             "
                             [trailerList]="trailerList"
                             [rowIndex]="rowIndex"
@@ -535,7 +554,7 @@
                         </app-dispatch-table-truck-trailer>
                     </td>
 
-                    <td class="driver-field">
+                    <td #columnField class="driver-field">
                         <app-dispatch-table-driver
                             [driverList]="driverList"
                             [rowIndex]="rowIndex"
@@ -544,6 +563,9 @@
                             [draggingType]="draggingType"
                             [openedDriverDropdown]="openedDriverDropdown"
                             [isHoveringRow]="isHoveringRowIndex === rowIndex"
+                            [driverDropdownWidth]="
+                                columnSpecifications?.driverWidth
+                            "
                             (addDriverEmitter)="handleAddDriverClick($event)"
                             (removeDriverEmitter)="
                                 handleRemoveDriverClick($event)
@@ -643,6 +665,7 @@
                 >
                     <tr class="reorder-row fake-row">
                         <td
+                            #columnField
                             class="truck-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTruck
@@ -657,6 +680,7 @@
                         </td>
 
                         <td
+                            #columnField
                             class="trailer-field"
                             [ngStyle]="{
                                 width: hasAdditionalFieldTrailer
