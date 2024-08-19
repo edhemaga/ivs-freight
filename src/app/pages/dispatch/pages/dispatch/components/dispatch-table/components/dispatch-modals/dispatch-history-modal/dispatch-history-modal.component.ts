@@ -467,6 +467,16 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     hoveredSpanItemGroupClass: string;
     hoveredSpanItemClassList: string[] = [];
 
+    hoveredGroup: string = '';
+
+    handleGroupHover(groupClass: string): void {
+        this.hoveredGroup = groupClass;
+    }
+
+    handleGroupLeave(): void {
+        this.hoveredGroup = '';
+    }
+
     handleStart(event: MouseEvent, noGroupItemDataIndex, noGroupItemIndex) {
         /*  this.isHoveringGroup = true;
 
