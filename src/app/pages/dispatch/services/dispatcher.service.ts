@@ -17,18 +17,41 @@ import {
     CreateDispatchCommand,
     DispatchBoardListResponse,
     DispatchBoardResponse,
+    DispatchHistoryGroupListResponse,
+    DispatchHistoryListResponse,
+    DispatchHistoryModalResponse,
     DispatchService,
     DriverService,
     ReorderDispatchesCommand,
     ReorderDispatchLoadsCommand,
     SwitchDispatchesCommand,
     UpdateDispatchCommand,
+    DispatchPossibleStatusResponse,
+    DriversForDispatchHistoryModalResponse,
+    RevertDispatchStatusCommand,
 } from 'appcoretruckassist';
+import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
 
 @Injectable({ providedIn: 'root' })
 export class DispatcherService {
     public parkingOpened: boolean = false;
     public newParkingSubject = new BehaviorSubject<boolean>(false);
+
+    public mainBoardColumnExpandedWidths: BehaviorSubject<{
+        isTruckExpanded: boolean;
+        isTrailerExpanded: boolean;
+        isParkingExpanded: boolean;
+    }> = new BehaviorSubject({
+        isTruckExpanded: false,
+        isTrailerExpanded: false,
+        isParkingExpanded: false,
+    });
+
+    public mainBoardColumnsExpanded$: Observable<{
+        isTruckExpanded: boolean;
+        isTrailerExpanded: boolean;
+        isParkingExpanded: boolean;
+    }> = this.mainBoardColumnExpandedWidths.asObservable();
 
     constructor(
         private dispatcherStore: DispatcherStore,
@@ -38,7 +61,6 @@ export class DispatcherService {
     getDispatcherList() {
         return this.dispatchService.apiDispatchModalGet();
     }
-
     updateModalList() {
         this.dispatchService.apiDispatchModalGet().subscribe((modal) => {
             this.modalList = modal;
@@ -55,7 +77,12 @@ export class DispatcherService {
         truckTypes?: Array<number>,
         trailerTypes?: Array<number>,
         statuses?: Array<number>,
-        parkings?: Array<number>
+        parkings?: Array<number>,
+        vacation?: boolean,
+        search?: string,
+        longitude?: number | undefined,
+        latitude?: number | undefined,
+        distance?: number | undefined
     ): Observable<DispatchBoardListResponse> {
         return this.dispatchService.apiDispatchBoardListGet(
             dispatcherId,
@@ -63,12 +90,28 @@ export class DispatcherService {
             truckTypes,
             trailerTypes,
             statuses,
-            parkings
+            parkings,
+            vacation,
+            search,
+            longitude,
+            latitude,
+            distance
         );
     }
 
     getDispatchBoardByDispatcherList(id: number) {
         return this.dispatchService.apiDispatchBoardGet(id);
+    }
+    public apiDispatchNextstatusesIdGet(
+        id: number
+    ): Observable<DispatchPossibleStatusResponse> {
+        return this.dispatchService.apiDispatchNextstatusesIdGet(id);
+    }
+
+    public revertDispatchStatus(
+        id: number
+    ): Observable<RevertDispatchStatusCommand> {
+        return this.dispatchService.apiDispatchStatusRevertPatch({ id });
     }
 
     getDispatchboardAllListAndUpdate() {
@@ -99,7 +142,9 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
-    reorderDispatchboard(reorder: ReorderDispatchesCommand) {
+    public reorderDispatchboard(
+        reorder: ReorderDispatchesCommand
+    ): Observable<any> {
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }
 
@@ -290,6 +335,17 @@ export class DispatcherService {
         }));
     }
 
+    set updateDispatcherData(isUpdate: boolean) {
+        if (isUpdate) {
+            this.getDispatcherList().subscribe((lists) => {
+                this.dispatcherStore.update((store) => ({
+                    ...store,
+                    modal: lists,
+                }));
+            });
+        }
+    }
+
     async updateCountList<T>(id: number, type: string, value: T) {
         const dss = await this.dispatcherStore.getValue();
         const dispatchData = JSON.parse(
@@ -323,7 +379,87 @@ export class DispatcherService {
         }));
     }
 
-    public saveDispatchLoads(loads: ReorderDispatchLoadsCommand) {
+    public getDispatchHistoryModalDropdownLists(): Observable<DispatchHistoryModalResponse> {
+        return this.dispatchService.apiDispatchBoardHistoryModalGet();
+    }
+
+    public getDispatchHistory(
+        data: GetDispatchHistoryData
+    ): Observable<DispatchHistoryListResponse> {
+        const {
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+            customDateFrom,
+            customDateTo,
+        } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryGet(
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+            null,
+            customDateFrom,
+            customDateTo
+        );
+    }
+
+    public getDispatchHistoryGroups(
+        data: GetDispatchHistoryData
+    ): Observable<DispatchHistoryGroupListResponse> {
+        const {
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+            customDateFrom,
+            customDateTo,
+        } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryGroupsGet(
+            dispatchBoardId,
+            dispatchHistoryTime,
+            truckId,
+            trailerId,
+            driverId,
+            null,
+            customDateFrom,
+            customDateTo
+        );
+    }
+
+    public getDispatchHistoryDriver(
+        data: GetDispatchHistoryData
+    ): Observable<DriversForDispatchHistoryModalResponse> {
+        const { truckId, trailerId, dispatchBoardId } = data;
+
+        return this.dispatchService.apiDispatchBoardHistoryModalDriverGet(
+            truckId,
+            trailerId,
+            dispatchBoardId
+        );
+    }
+
+    public saveDispatchLoads(
+        loads: ReorderDispatchLoadsCommand
+    ): Observable<any> {
         return this.dispatchService.apiDispatchReorderLoadsPut(loads);
+    }
+
+    public updateMainBoardColumnWidths(
+        isTruckExpanded: boolean,
+        isTrailerExpanded: boolean,
+        isParkingExpanded: boolean
+    ): void {
+        this.mainBoardColumnExpandedWidths.next({
+            isTruckExpanded,
+            isTrailerExpanded,
+            isParkingExpanded,
+        });
     }
 }

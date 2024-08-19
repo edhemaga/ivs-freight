@@ -5,12 +5,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Models
 import {
     CompanyUserForChatListResponse,
+    ConversationInfoResponse,
     ConversationResponse,
     CreateConversationCommand,
     CreateResponse,
-    MessageResponse,
     UserType,
 } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -30,8 +31,7 @@ export class UserChatService {
 
     // Headers
     private headers = new HttpHeaders({
-        'skip-form': '1',
-        'Authorization': `Bearer ${this.token}`
+        'Authorization': `bearer ${this.token}`,
     });
 
     constructor(
@@ -58,6 +58,14 @@ export class UserChatService {
         );
     }
 
+    public getCompanyChannels(): Observable<ConversationResponse[]> {
+        return this.http.get<ConversationResponse[]>(`${environment.API_ENDPOINT}/api/chat/companychannels`,
+            {
+                headers: this.headers
+            }
+        );
+    }
+
     public getConversation(id: number): Observable<ConversationResponse> {
         return this.http.get<ConversationResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${id}`,
@@ -67,13 +75,13 @@ export class UserChatService {
         );
     }
 
-    public getMessages(id: number): Observable<MessageResponse[]> {
+    public getMessages(id: number): Observable<ChatMessageResponse[]> {
         const params: HttpParams = new HttpParams({
             fromObject: {
                 'MessageSpecParams.ConversationId': id,
             },
         });
-        return this.http.get<MessageResponse[]>
+        return this.http.get<ChatMessageResponse[]>
             (`${environment.API_ENDPOINT}/api/chat/message/list`,
                 {
                     params,
@@ -99,11 +107,22 @@ export class UserChatService {
     public sendMessage(
         conversationId: number,
         content: string,
-        attachments?: UploadFile[]
+        attachmentsList?: UploadFile[],
+        linksList?: string[]
     ): Observable<any> {
         if (!conversationId) return;
 
-        const data = { conversationId, content, attachments };
+        const attachments: File[] = attachmentsList.map(item => {
+            return item.realFile
+        })
+
+        const links = linksList?.map(link => {
+            return {
+                url: link
+            }
+        })
+
+        const data = { conversationId, content, attachments, links };
 
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -111,6 +130,16 @@ export class UserChatService {
             `${environment.API_ENDPOINT}/api/chat/message`,
             this.formDataService.formDataValue,
             { headers: this.headers }
+        );
+    }
+
+    public getAllConversationFiles(conversationId: number): Observable<ConversationInfoResponse> {
+
+        return this.http.get<ConversationInfoResponse>(
+            `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
+            {
+                headers: this.headers
+            }
         );
     }
 }

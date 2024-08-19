@@ -35,7 +35,10 @@
                     (type === 'trailer' && trailer)
                 "
             >
-                <div class="padding-inside">
+                <div
+                    class="padding-inside"
+                    [ngClass]="{ hovering: isHoveringRow }"
+                >
                     <div
                         class="d-flex align-items-center justify-content-between selected-container"
                         ngbTooltip
@@ -121,17 +124,18 @@
                                             : trailer.trailerNumber
                                     }}
                                 </p>
-
-                                <span>
-                                    {{
-                                        type === 'truck' && !!truck.year
-                                            ? '(' + truck.year + ')'
-                                            : type === 'trailer' &&
-                                              !!trailer.year
-                                            ? '(' + trailer.year + ')'
-                                            : ''
-                                    }}
-                                </span>
+                                <ng-container *ngIf="isYearShown">
+                                    <span>
+                                        {{
+                                            type === 'truck' && !!truck.year
+                                                ? '(' + truck.year + ')'
+                                                : type === 'trailer' &&
+                                                  !!trailer.year
+                                                ? '(' + trailer.year + ')'
+                                                : ''
+                                        }}
+                                    </span>
+                                </ng-container>
                             </ng-template>
                         </div>
 
@@ -175,6 +179,9 @@
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="truckTrailerInputConfig"
+            [canAddNew]="
+                type === 'truck' ? !truckList?.length : !trailerList?.length
+            "
             [canOpenModal]="true"
             [options]="type === 'truck' ? truckList : trailerList"
             (selectedItem)="

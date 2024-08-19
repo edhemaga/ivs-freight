@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class TelematicResolver implements Resolve<TelematicStateState> {
+export class TelematicResolver  {
     constructor(
         private telematicService: TelematicStateService,
         private telematicStore: TelematicStateStore

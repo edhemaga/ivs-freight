@@ -1,0 +1,66 @@
+@import 'src/theme/variables';
+@import '../../dispatch-table.component.scss';
+
+.main_inside {
+    .dispatcher-table-cell-container {
+        &.note-container {
+            display: block;
+            height: 100%;
+            width: 26px;
+
+            border-radius: 3px;
+            padding-left: 0px;
+
+            &.expanded {
+                padding-left: 6px;
+                width: auto;
+
+                &:hover {
+                    cursor: pointer;
+                    &:hover {
+                        background-color: $bw2;
+                    }
+                }
+            }
+        }
+    }
+
+    &.filled {
+        .padding-inside {
+            &.hovering {
+                .info-item {
+                    transition: background 0.2s ease-in;
+                    background: $bw2;
+                }
+            }
+
+            &.hovering-note {
+                .note-container {
+                    transition: background 0.2s ease-in;
+                    background: $bw2;
+                }
+            }
+
+            &.hovering-note-content {
+                .note-container::after {
+                    content: 'Write Something...';
+                    position: absolute;
+                    top: 11px;
+                    left: 11px;
+
+                    font-size: 11px;
+                    line-height: 12px;
+                    font-weight: 400;
+                    color: $bw5;
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+
+    .note-default {
+        .note-container {
+            cursor: default !important;
+        }
+    }
+}

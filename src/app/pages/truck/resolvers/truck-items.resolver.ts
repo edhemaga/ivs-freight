@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { TrucksDetailsListStore } from '@pages/truck/state/truck-details-list-st
 @Injectable({
     providedIn: 'root',
 })
-export class TruckItemsResolver implements Resolve<TruckItemState> {
+export class TruckItemsResolver  {
     constructor(
         private truckService: TruckService,
         private truckDetailsStore: TruckItemStore,

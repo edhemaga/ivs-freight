@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { TelematicRoutingModule } from '@pages/telematic/telematic-routing.module';
-import { AgmCoreModule } from '@agm/core';
+//import { TelematicRoutingModule } from '@pages/telematic/telematic-routing.module';
+// import { AgmCoreModule } from '@agm/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
@@ -25,13 +25,13 @@ import { TaMapToolbarComponent } from '@shared/components/ta-map-toolbar/ta-map-
     imports: [
         // Modules
         CommonModule,
-        TelematicRoutingModule,
-        AgmCoreModule,
+       // TelematicRoutingModule,
+       // AgmCoreModule,
         NgbPopoverModule,
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
-        AgmSnazzyInfoWindowModule,
+       // AgmSnazzyInfoWindowModule,
 
         // Components
         TaMapToolbarComponent,

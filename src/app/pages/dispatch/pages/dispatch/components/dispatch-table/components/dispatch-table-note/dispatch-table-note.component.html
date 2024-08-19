@@ -1,0 +1,41 @@
+<div class="main_inside" [class.filled]="truck">
+    <div
+        class="padding-inside"
+        [ngClass]="{
+            'd-flex justify-content-center align-items-center':
+                !isNoteExpanded,
+            'hovering-note':
+                isHoveringRowIndex === rowIndex &&
+                isNoteExpanded,
+            'hovering-note-content':
+                isHoveringRowIndex === rowIndex &&
+                truck &&
+                !note &&
+                isNoteExpanded,
+            'note-default': !truck,
+        }"
+    >
+        <div
+            class="dispatcher-table-cell-container note-container"
+            [class.empty-box-field]="!note"
+            [class.expanded]="isNoteExpanded"
+        >
+            <ng-container *ngIf="truck">
+                <app-ta-note
+                    [note]="note"
+                    [openedAll]="isNoteExpanded"
+                    [dispatchIndex]="rowIndex"
+                    [parking]="false"
+                    [noteWidth]="250"
+                    [parentWidth]="'.note-field'"
+                    [type]="'dark'"
+                    [isDispatch]="true"
+                    [entityType]="'Dispatch'"
+                    [entityId]="dispatchId"
+                    (saveNoteValue)="saveNote($event)"
+                >
+                </app-ta-note>
+            </ng-container>
+        </div>
+    </div>
+</div>

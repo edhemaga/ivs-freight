@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 @Injectable({
     providedIn: 'root',
 })
-export class RepairShopResolver implements Resolve<RepairShopState> {
+export class RepairShopResolver  {
     constructor(
         private repairService: RepairService,
         private tableService: TruckassistTableService,

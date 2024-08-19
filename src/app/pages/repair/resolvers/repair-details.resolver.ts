@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable, forkJoin, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { RepairService } from '@shared/services/repair.service';
 @Injectable({
     providedIn: 'root',
 })
-export class RepairDetailsResolver implements Resolve<RepairDetailsState> {
+export class RepairDetailsResolver  {
     constructor(
         private repairDetailsService: RepairDetailsService,
         private repairservice: RepairService

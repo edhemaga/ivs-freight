@@ -420,6 +420,7 @@ export class TaInputComponent
         // Price Separator - remove dot on focus out
         if (
             this._inputConfig.priceSeparator &&
+            this.getSuperControl?.value && 
             this.getSuperControl?.value?.indexOf('.') >= 0
         ) {
             // 4.1. Check for Dot position
@@ -655,7 +656,7 @@ export class TaInputComponent
             this.numberOfConsecutivelySpaces = 0;
 
             // Reset One Space Only
-            if (!this.getSuperControl.value?.includes(' ')) {
+            if ( this.getSuperControl.value && !this.getSuperControl.value?.includes(' ')) {
                 this.oneSpaceOnlyCounter = 0;
             }
         }
@@ -845,12 +846,14 @@ export class TaInputComponent
                         this._inputConfig.priceSeparatorLimitation;
 
                     // Cut value
-                    this.getSuperControl.patchValue(
-                        this.getSuperControl.value.slice(
-                            0,
-                            this._inputConfig.priceSeparatorLimitation
-                        )
-                    );
+                    if (this.getSuperControl.value) {
+                        this.getSuperControl.patchValue(
+                            this.getSuperControl.value.slice(
+                                0,
+                                this._inputConfig.priceSeparatorLimitation
+                            )
+                        );
+                    }
 
                     // Transform value again after cutting
                     this.getSuperControl.patchValue(
@@ -861,16 +864,23 @@ export class TaInputComponent
                 }
             }
 
-            this.timeoutCleaner = setTimeout(() => {
-                this.input.nativeElement.setSelectionRange(
-                    this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1
-                            ? 1
-                            : 0),
-                    this.cursorInputPosition +
-                        (this.getSuperControl.value.indexOf('.') === -1 ? 1 : 0)
-                );
-            }, 0);
+            if (this.getSuperControl.value) {
+                this.timeoutCleaner = setTimeout(() => {
+                    this.input.nativeElement.setSelectionRange(
+                        this.cursorInputPosition +
+                            (this.getSuperControl.value.indexOf('.') === -1
+                                ? 1
+                                : 0),
+                        this.cursorInputPosition +
+                            (this.getSuperControl.value.indexOf('.') === -1
+                                ? 1
+                                : 0)
+                    );
+                }, 0);
+            } else {
+                // if we have ${n}00000 and we delete N then we got undefined instead of dot
+                this.getSuperControl.patchValue(0);
+            }
         }
 
         /**
@@ -1127,6 +1137,9 @@ export class TaInputComponent
                 'fuel per miles',
                 'fuel price map',
                 'amount',
+                'bol no.',
+                'seal no.',
+                'pickup no.'
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
@@ -2074,7 +2087,7 @@ export class TaInputComponent
             this.span1.nativeElement.innerHTML = dateFormat[0];
         }
 
-        if(this.span2) {
+        if (this.span2) {
             if (this._inputConfig.name !== 'datepickerBankCard') {
                 this.span2.nativeElement.innerHTML = dateFormat[1];
                 this.span3.nativeElement.innerHTML = dateFormat[2];

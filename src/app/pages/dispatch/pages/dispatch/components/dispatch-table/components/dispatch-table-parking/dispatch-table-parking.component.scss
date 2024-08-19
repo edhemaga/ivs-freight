@@ -20,9 +20,14 @@
 
     &-hover {
         cursor: pointer;
+
         &:hover {
             background-color: $bw2;
         }
+    }
+
+    &.hovering {
+        background-color: $bw2;
     }
 
     &-dropdown {
@@ -152,6 +157,16 @@
 
         &_assigned {
             color: $ta-black-2;
+        }
+
+        &::-moz-selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
         }
     }
 

@@ -1,67 +1,80 @@
 <div
     class="all_note_holder"
-    [class.closed_main_holder]="!openedAll && noteOpened"
-    [class.opened_main_all_holder]="openedAll"
+    [class.closed_main_holder]="!isAllOpen && noteOpened"
+    [class.opened_main_all_holder]="isAllOpen"
     #t2="ngbPopover"
     [ngbPopover]="note_popover"
     [autoClose]="'outside'"
     [container]="'body'"
     [placement]="'left-top'"
-    popoverClass="my-note-popover"
+    [popoverClass]="
+        isAllOpen && isDispatch
+            ? 'my-note-popover dispatch-note'
+            : 'my-note-popover'
+    "
     triggers="manual"
-    (click)="openedAll ? toggleNote(_note, t2) : ''"
+    (click)="isAllOpen ? toggleNote(_note, t2) : ''"
 >
-    <div
-        class="note_button_hold"
-        *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
-        [ngClass]="{
-            'note-normal-icon': !openedAll,
-            'note-note-empty': !_note && !openedAll,
-            'note-all-expanded': noteOpened
-        }"
-        [tooltipBackground]="'#424242'"
-        ngbTooltip
-        [mainTooltip]="noteOpened ? 'Close Note' : 'Note'"
-        position="bottom"
+    <ng-container
+        *ngIf="!isAllOpen && (noteOpened || (!noteOpened && !savingNote))"
     >
-        <svg-icon
-            #t2="ngbPopover"
-            [ngbPopover]="note_popover"
-            [autoClose]="'outside'"
-            class="note-btn d-flex align-items-center justify-content-center"
-            [container]="'body'"
-            [placement]="'left-top'"
-            [animation]="false"
-            popoverClass="my-note-popover"
-            triggers="manual"
-            (click)="toggleNote(_note, t2)"
-            (hidden)="popoverClosed()"
-            src="assets/svg/truckassist-table/note/{{ noteIcon }}"
+        <div
+            class="note_button_hold"
+            [ngClass]="{
+                'note-normal-icon': !isAllOpen,
+                'note-note-empty': !_note && !isAllOpen,
+                'note-all-expanded': noteOpened
+            }"
+            [tooltipBackground]="'#424242'"
+            ngbTooltip
+            [mainTooltip]="noteOpened ? 'Close Note' : 'Note'"
+            position="bottom"
         >
-        </svg-icon>
-    </div>
-    <div class="spinner" *ngIf="!openedAll && !noteOpened && savingNote">
-        <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
-    </div>
-    <div
-        *ngIf="openedAll"
-        [innerHTML]="_note | safeHtml"
-        class="note_inner_text"
-    ></div>
+            <svg-icon
+                #t2="ngbPopover"
+                [ngbPopover]="note_popover"
+                [autoClose]="'outside'"
+                class="note-btn d-flex align-items-center justify-content-center"
+                [container]="'body'"
+                [placement]="'left-top'"
+                [animation]="false"
+                popoverClass="my-note-popover"
+                triggers="manual"
+                (click)="toggleNote(_note, t2)"
+                (hidden)="popoverClosed()"
+                src="assets/svg/truckassist-table/note/{{ noteIcon }}"
+            >
+            </svg-icon>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!isAllOpen && !noteOpened && savingNote">
+        <div class="spinner">
+            <app-ta-spinner
+                [size]="'small'"
+                [color]="'blueDark'"
+            ></app-ta-spinner>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="isAllOpen">
+        <div [innerHTML]="value | safeHtml" class="note_inner_text"></div>
+    </ng-container>
 </div>
 
 <ng-template #note_popover let-data="data">
     <div
         class="kendo-editor-note-wrapper"
-        [class.opened_all_hold]="openedAll"
-        [class.closed_note_hold]="!openedAll && noteOpened"
+        [class.opened_all_hold]="isAllOpen"
+        [class.closed_note_hold]="!isAllOpen && noteOpened"
         [class.dispatch]="isDispatch"
     >
         <div
             [class.expanded]="isExpanded"
             class="k-widget k-editor custom_editor"
             [ngStyle]="{
-                width: parentWidth ? _parentWidth + 'px' : _noteWidth + 'px'
+                width:
+                    parentWidth && isAllOpen
+                        ? _parentWidth + 'px'
+                        : _noteWidth + 'px'
             }"
         >
             <div
@@ -69,10 +82,10 @@
                 (focus)="checkFocus($event)"
                 (input)="valueChange($event.target.innerHTML)"
                 @noteLongAnimation
-                [@.disabled]="openedAll || parking || noteOpened"
+                [@.disabled]="isAllOpen || parking || noteOpened"
                 [class.not_expanded]="!isExpanded"
                 [class.parking_text_hold]="parking"
-                [class.opened_all_editor]="openedAll"
+                [class.opened_all_editor]="isAllOpen"
                 [innerHTML]="_note | safeHtml"
                 class="editor"
                 (keydown)="maxLimitForContenteditableDiv($event, 250)"

@@ -30,13 +30,21 @@
                             : 'name-light'
                     "
                     [class.text-reduced]="isNameReduced"
-                    class="name"
+                    class="name ta-font-medium"
                 >
                     {{ attachment.fileName }}
                 </div>
-                <div class="text size">
-                    {{ attachment.size }}
-                    kB
+                <div class="text info">
+                    <ng-container [ngSwitch]="displayMode">
+                        <ng-container *ngSwitchCase="'size'">
+                            {{ attachment.size || attachment.fileSize }} kB
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                            {{
+                                attachment.updatedAt | formatDateP : 'date-time'
+                            }}
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
         </div>

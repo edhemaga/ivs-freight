@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -18,7 +18,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class CompanyParkingResolver implements Resolve<ParkingState> {
+export class CompanyParkingResolver  {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

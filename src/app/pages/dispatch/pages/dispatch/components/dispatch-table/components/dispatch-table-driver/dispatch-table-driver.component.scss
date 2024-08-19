@@ -2,93 +2,159 @@
 @import '../../dispatch-table.component.scss';
 
 .driver-container {
-    .padding-inside {
-        .info-item {
-            padding-right: 0px;
+    &.main_inside {
+        &.filled {
+            .padding-inside {
+                &:hover {
+                    .driver-buttons {
+                        display: flex !important;
+                    }
+                }
+            }
+        }
 
-            .driver-items-hold {
-                flex: 1;
+        .padding-inside {
+            .hos-column {
+                position: relative;
+                height: 26px;
+                width: 26px;
+                margin-right: 4px;
 
-                .owner-circle {
+                .hos-number {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 8px;
+                    font-weight: 700;
+                    color: $bw5;
+                    padding-right: 1px;
+                    user-select: none;
+                    pointer-events: none;
+                }
+
+                .hos-img {
+                    height: 100%;
+                    cursor: pointer;
+
                     svg-icon {
+                        margin-left: 1px;
                         svg {
+                            width: 22px;
+                            height: 22px;
+
                             path {
-                                fill: $ta-blue-13;
-                            }
-                        }
-    
-                        &:hover {
-                            svg {
-                                path {
-                                    fill: $ta-blue-14;
+                                fill: $bw5;
+                                &:first-child {
+                                    fill: transparent !important;
                                 }
                             }
                         }
+                    }
+                }
+
+                &.active_hos {
+                    .hos-img {
+                        border-radius: 100%;
+                        background-color: $ta-review-green-4;
+
+                        svg-icon {
+                            svg {
+                                path:not(path:first-child) {
+                                    fill: $ta-review-green-2;
+                                }
+                            }
+                        }
+                    }
+
+                    .hos-number {
+                        color: $ta-review-green-2;
                     }
                 }
             }
 
-            .driver-vacation {
-                width: 26px;
-                height: 26px;
-                border-radius: 2px;
-                margin-right: 2px;
-                
-                &.driver-not-on-vacation {
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: $bw5;
-                            }
-                        }
-                    }
+            .driver-buttons {
+                display: none !important;
+            }
 
-                    &:hover {
-                        background-color: $bw-9 !important;
+            .info-item {
+                padding-right: 0px;
 
+                .driver-items-hold {
+                    flex: 1;
+
+                    .owner-circle {
                         svg-icon {
                             svg {
                                 path {
-                                    fill: $ta-black;
+                                    fill: $ta-blue-13;
+                                }
+                            }
+
+                            &:hover {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-14;
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                &.driver-on-vacation {
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: $ta-blue-13;
-                            }
-                        }
-                    }
+                .driver-vacation {
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 2px;
+                    margin-right: 2px;
 
-                    &:hover {
-                        background-color: $ta-blue-17 !important;
+                    &.driver-not-on-vacation {
                         svg-icon {
                             svg {
                                 path {
-                                    fill: $ta-blue-15;
+                                    fill: $bw5;
+                                }
+                            }
+                        }
+
+                        &:hover {
+                            background-color: $bw-9 !important;
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: $ta-black;
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                &.driver-active-load {
-                    background-color: transparent !important;
+                    &.driver-on-vacation {
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: $ta-blue-13;
+                                }
+                            }
+                        }
 
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: $ta-light-grey-6 !important;
+                        &:hover {
+                            background-color: $ta-blue-17 !important;
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: $ta-blue-15;
+                                    }
+                                }
                             }
                         }
                     }
 
-                    &:hover {
+                    &.driver-active-load {
+                        background-color: transparent !important;
+
                         svg-icon {
                             svg {
                                 path {
@@ -96,101 +162,111 @@
                                 }
                             }
                         }
-                    }
-                }
-            }
 
-            .remove-icon-container {
-                width: 26px;
-                height: 26px;
-                border-radius: 2px;
-                background: transparent;
-                cursor: pointer;
-                transition: background 0.2s ease-in;
-    
-                &:hover {
-                    background: $ta-red-15;
-    
-                    svg {
-                        path {
-                            fill: $ta-red-14;
+                        &:hover {
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: $ta-light-grey-6 !important;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-    
-                &.disabled {
-                    svg {
-                        path {
-                            fill: $ta-light-grey-6;
+
+                .remove-icon-container {
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 2px;
+                    background: transparent;
+                    cursor: pointer;
+                    transition: background 0.2s ease-in;
+
+                    &:hover {
+                        background: $ta-red-15;
+
+                        svg {
+                            path {
+                                fill: $ta-red-14;
+                            }
                         }
                     }
-    
-                    &:hover {
-                        background: transparent;
-    
+
+                    &.disabled {
                         svg {
                             path {
                                 fill: $ta-light-grey-6;
                             }
                         }
-                    }
-                }
-    
-                svg {
-                    path {
-                        fill: $bw5;
-                        transition: fill 0.2s ease-in;
-                    }
-                }
-            }
-        }
 
-        .driver-buttons {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 11;
+                        &:hover {
+                            background: transparent;
 
-            span {
-                width: 26px;
-                height: 26px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding-left: inherit;
-
-                svg-icon {
-                    path {
-                        fill: $ta-blue-13;
-                    }
-                }
-
-                &:hover {
-                    background-color: $ta-blue-17;
-                    border-radius: 2px;
-                    cursor: pointer;
-                    svg-icon {
-                        path {
-                            fill: $ta-blue-15;
-                        }
-                    }
-                }
-
-                &.only_active_icon {
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: #ffffff33;
+                            svg {
+                                path {
+                                    fill: $ta-light-grey-6;
+                                }
                             }
                         }
                     }
+
+                    svg {
+                        path {
+                            fill: $bw5;
+                            transition: fill 0.2s ease-in;
+                        }
+                    }
                 }
-                &.active-icon {
+            }
+
+            .driver-buttons {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 11;
+
+                span {
+                    width: 26px;
+                    height: 26px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding-left: inherit;
+
                     svg-icon {
-                        svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: $ta-blue-17;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        svg-icon {
                             path {
-                                fill: #ffffff;
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
+
+                    &.only_active_icon {
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: $ta-white-4;
+                                }
+                            }
+                        }
+                    }
+                    &.active-icon {
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: $white;
+                                }
                             }
                         }
                     }

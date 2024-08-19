@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { UserState, UserStore } from '@pages/user/state/user.store';
 @Injectable({
     providedIn: 'root',
 })
-export class UserResolver implements Resolve<UserState> {
+export class UserResolver  {
     constructor(
         private userService: UserService,
         private userStore: UserStore,

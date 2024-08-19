@@ -35,6 +35,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     @Input() trailer: TrailerMinimalResponse;
     @Input() isActiveLoad: LoadShortResponse;
     @Input() dispatchId: number;
+    @Input() isHoveringRow: boolean;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
@@ -77,9 +78,9 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
                 size: TableStringEnum.SMALL,
             },
             {
-                dispatchId: this.dispatchId
+                dispatchId: this.dispatchId,
             }
-        ); 
+        );
     }
 
     ngOnDestroy(): void {

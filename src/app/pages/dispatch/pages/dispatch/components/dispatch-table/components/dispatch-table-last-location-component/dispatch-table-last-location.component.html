@@ -2,7 +2,7 @@
     class="main_inside"
     [class.filled]="address?.address || showAddAddressField === rowIndex"
 >
-    <div class="padding-inside">
+    <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
         <ng-container
             *ngIf="address?.address || showAddAddressField === rowIndex"
         >
@@ -19,6 +19,7 @@
                     (closeDropdown)="onHideDropdown($event)"
                 ></app-ta-input-address-dropdown>
             </ng-container>
+
             <ng-template #addressInfo>
                 <ng-container *ngIf="address.address">
                     <div class="info-item">

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { Observable, of, catchError, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { TruckMinimalListResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class TruckMinimalResolver implements Resolve<TruckMinimalListResponse> {
+export class TruckMinimalResolver  {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;

@@ -101,7 +101,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() type: string;
     @Input() parentWidth: string;
 
-    @Input() openedAll: boolean;
+    @Input() set openedAll(value: boolean) {
+        this.isAllOpen = value;
+
+        if (this.isDispatch) {
+            this.closeNote(true);
+            this.setNoteParentWidth();
+        }
+    }
     @Input() entityId: number = 0;
     @Input() entityType: string;
     @Input() isDispatch: boolean = false;
@@ -112,6 +119,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public _noteWidth: number = 250;
     public _parentWidth: number = 250;
+    public isAllOpen: boolean;
 
     @Input() set noteWidth(value: number) {
         this._noteWidth = value;
@@ -172,7 +180,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     private setNoteParentWidth(): void {
-        if (this.parentWidth) {
+        if (this.parentWidth && this.isAllOpen) {
             setTimeout(() => {
                 const parentWidth = this.elRef.nativeElement
                     .closest(this.parentWidth)
@@ -209,7 +217,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }, 200);
 
         if (t2?.isOpen()) {
-            if (this.openedAll) {
+            if (this.isAllOpen) {
                 this.leaveThisOpened = true;
                 this.sharedService.emitAllNoteOpened.next(false);
             } else if (!this.isExpanded) {
@@ -230,7 +238,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }
             this.showCollorPattern = false;
         } else {
-            if (!data || data == '' || this.openedAll) {
+            if (!data || data == '' || this.isAllOpen) {
                 this.buttonsExpanded = true;
                 this.isExpanded = true;
             }
@@ -283,7 +291,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
         setTimeout(() => {
-            if (!autoSave && this.openedAll) {
+            if (!autoSave && this.isAllOpen) {
                 this.closeNote();
             }
         }, 200);
@@ -304,15 +312,14 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (deleteAll) this.closeNote();
     }
 
-    private closeNote(): void {
+    private closeNote(dontTransfer?: boolean): void {
         this.noteOpened = false;
         this.leaveThisOpened = false;
         this.showCollorPattern = false;
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
-
-        this.transferNoteData();
+        if (!dontTransfer && !this.isDispatch) this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(
@@ -350,9 +357,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     public expandAllNotes(): void {
         if (!this.isExpanded) {
             setTimeout(() => {
-                if (this.openedAll) {
-                    this.isExpanded = true;
-                }
+                if (this.isAllOpen) this.isExpanded = true;
             });
         }
     }

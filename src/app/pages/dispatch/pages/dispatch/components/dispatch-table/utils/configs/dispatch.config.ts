@@ -22,6 +22,14 @@ export class DispatchConfig {
     static getTruckTrailerInputConfig(
         config: TruckTrailerConfigParams
     ): ITaInput {
+        const {
+            type,
+            hasAdditionalFieldTruck,
+            hasAdditionalFieldTrailer,
+            truckDropdownWidth,
+            trailerDropdownWidth,
+        } = config;
+
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -36,24 +44,20 @@ export class DispatchConfig {
             hideErrorMessage: true,
             mergeDropdownBodyWithInput: true,
             dropdownWidthClass:
-                config.type === 'truck'
-                    ? config.hasAdditionalFieldTruck
-                        ? 'w-col-158'
-                        : 'w-col-118'
-                    : config.hasAdditionalFieldTrailer
-                    ? 'w-col-158'
-                    : 'w-col-125',
+                type === 'truck'
+                    ? `w-col-${truckDropdownWidth}`
+                    : `w-col-${trailerDropdownWidth}`,
         };
     }
 
-    static getDriverInputConfig(): ITaInput {
+    static getDriverInputConfig(driverDropdownWidth: number): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Driver Name',
             placeholder: 'Driver Name',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-238',
+            dropdownWidthClass: `w-col-${driverDropdownWidth}`,
             placeholderInsteadOfLabel: true,
             hideDropdownArrow: true,
             autoFocus: true,
@@ -62,6 +66,19 @@ export class DispatchConfig {
             hideDangerMark: true,
             hideErrorMessage: true,
             mergeDropdownBodyWithInput: true,
+        };
+    }
+
+    static getDispatchParkingConfig(): ITaInput {
+        return {
+            name: 'Spot',
+            type: 'text',
+            autoFocus: true,
+            placeholder: 'Spot',
+            label: 'Spot',
+            blackInput: true,
+            placeholderInsteadOfLabel: true,
+            hideRequiredCheck: true,
         };
     }
 }

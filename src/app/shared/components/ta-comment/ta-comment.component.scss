@@ -234,6 +234,20 @@
             .edit-icon-container {
                 margin-right: 4px;
             }
+
+            .delete-icon-container {
+                &:hover {
+                    background-color: $ta-red-15;
+
+                    .icon {
+                        svg {
+                            path {
+                                fill: $ta-red-14;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

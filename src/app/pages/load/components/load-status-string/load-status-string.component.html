@@ -14,16 +14,23 @@
         "
     >
         <!-- ' load-status-' + value.toLowerCase() is use for one letters, R,T,F -->
+
         <span
             [ngStyle]="
                 value.length > 1
                     ? isDropdownColor
                         ? (status.valueForRequest | dropdownLoadStatusColor)
+                        : isDispatch
+                        ? (status.valueForRequest
+                          | dispatchStatusColor : isDarkColor)
                         : (status.valueForRequest | loadStatusColor)
                     : value.length === 1 && index === displayString.length - 1
                     ? isDropdownColor
                         ? (status.valueForRequest
                           | dropdownLoadStatusColor : true)
+                        : isDispatch
+                        ? (status.valueForRequest
+                          | dispatchStatusColor : isDarkColor)
                         : (status.valueForRequest | loadStatusColor : true)
                     : {}
             "
@@ -41,10 +48,15 @@
                 'mr-1': value.length === 1 && index === 0,
                 'ml-1':
                     value.length === 1 && index === displayString.length - 1,
-                'details-layout': isDetailsLayout
+                'details-layout': isDetailsLayout,
+                'dispatch-history-modal-layout': isDispatchHistoryModalLayout,
+                'd-repair': displayString.length > 1 && displayString[0] === 'D'&& !isDarkColor,
+                'd-repair-dark': displayString.length > 1 && displayString[0] === 'D' && isDarkColor,
+                'l-dark': displayString.length > 1 && displayString[0] === 'L' && isDarkColor,
+
             }"
         >
-        {{ value }}
+            {{ value }}
         </span>
     </ng-container>
 

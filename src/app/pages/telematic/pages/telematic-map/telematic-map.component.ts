@@ -364,23 +364,23 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     getMapInstance(map) {
         this.agmMap = map;
 
-        var lineSymbol = {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillOpacity: 1,
-            scale: 3,
-        };
+        // var lineSymbol = {
+        //     path: google.maps.SymbolPath.CIRCLE,
+        //     fillOpacity: 1,
+        //     scale: 3,
+        // };
 
-        this.routeLineOptions = new google.maps.Polyline({
-            strokeColor: '#6C6C6C',
-            strokeOpacity: 0,
-            icons: [
-                {
-                    icon: lineSymbol,
-                    offset: '0',
-                    repeat: '12px',
-                },
-            ],
-        });
+        // this.routeLineOptions = new google.maps.Polyline({
+        //     strokeColor: '#6C6C6C',
+        //     strokeOpacity: 0,
+        //     icons: [
+        //         {
+        //             icon: lineSymbol,
+        //             offset: '0',
+        //             repeat: '12px',
+        //         },
+        //     ],
+        // });
 
         map.addListener('idle', () => {
             // update the coordinates here
@@ -1438,23 +1438,25 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     calculateDistanceBetweenDevices(device1, device2) {
-        const firstAddress = new google.maps.LatLng(
-            device1.latitude,
-            device1.longitude
-        );
-        const secondAddress = new google.maps.LatLng(
-            device2.latitude,
-            device2.longitude
-        );
+        // const firstAddress = new google.maps.LatLng(
+        //     device1.latitude,
+        //     device1.longitude
+        // );
+        // const secondAddress = new google.maps.LatLng(
+        //     device2.latitude,
+        //     device2.longitude
+        // );
 
-        let distance = google.maps.geometry.spherical.computeDistanceBetween(
-            firstAddress,
-            secondAddress
-        );
+        // let distance = google.maps.geometry.spherical.computeDistanceBetween(
+        //     firstAddress,
+        //     secondAddress
+        // );
 
-        // moving - distance = 5km, stopped - distance = 50m
+        // // moving - distance = 5km, stopped - distance = 50m
 
-        return distance;
+        // return distance;
+
+        return 0;
     }
 
     showHideAllDevices() {

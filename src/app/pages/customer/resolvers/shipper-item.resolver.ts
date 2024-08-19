@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // Services
@@ -15,7 +15,7 @@ import { ShipperResponse } from 'appcoretruckassist';
 @Injectable({
     providedIn: 'root',
 })
-export class ShipperItemResolver implements Resolve<any[]> {
+export class ShipperItemResolver  {
     constructor(
         private shipperService: ShipperService,
         private shipperDetailsStore: ShipperDetailsStore,

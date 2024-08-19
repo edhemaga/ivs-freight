@@ -22,5 +22,7 @@ export interface UserAdditionalInformationResponse {
     email?: string | null;
     phone?: string | null;
     companyName?: string | null;
+    departmentId?: number;
+    departmentName?: string | null;
 }
 

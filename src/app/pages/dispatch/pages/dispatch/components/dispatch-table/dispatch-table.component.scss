@@ -3,22 +3,111 @@
 .dispatch-table {
     position: relative;
 
+    /* Unlocked Table */
+
     &.unlocked {
         table {
             tr {
                 td {
                     .main_inside {
-                        .cdk-drag {
-                            cursor: grab;
-                            &:active {
-                                cursor: grabbing;
+                        /* Drag & Drop Single*/
+
+                        &.dragging:not(:active) {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+                                    transition: 10s linear;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows_grey.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
                             }
                         }
-                        &.default {
-                            pointer-events: none;
+
+                        &.dragging:active {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                background: $ta-black-2;
+
+                                .padding-inside {
+                                    .info-item,
+                                    .selected-container {
+                                        background: transparent !important;
+
+                                        p {
+                                            color: $white !important;
+                                        }
+
+                                        span {
+                                            color: $bw5 !important;
+                                        }
+
+                                        .driver-items-hold {
+                                            span {
+                                                color: $white !important;
+                                            }
+
+                                            .hos-column {
+                                                .hos-number {
+                                                    color: $white !important;
+                                                }
+                                            }
+                                        }
+
+                                        .remove-icon-container,
+                                        .driver-vacation {
+                                            display: none !important;
+                                        }
+                                    }
+                                }
+
+                                .padding-inside:has(.selected-container) {
+                                    background: $ta-black-2 !important;
+                                }
+
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+                            }
                         }
-                        &.dragging {
-                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+                        .drag-hold-between {
+                            height: 100%;
+                        }
+
+                        .custom-dispatch-placeholder {
+                            position: relative;
+                            height: 32px;
+                            width: 100%;
+                            border-radius: 3px;
+                            opacity: 1 !important;
+                            cursor: grabbing !important;
+
+                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+
+                            z-index: 10;
                         }
                     }
 
@@ -36,20 +125,6 @@
                                 background: $ta-white-3;
                                 z-index: 999;
                             }
-                        }
-                    }
-
-                    .info-item {
-                        &:hover {
-                            .remove-item {
-                                display: flex;
-                            }
-                        }
-                    }
-
-                    .padding-inside {
-                        .driver-buttons {
-                            display: none !important;
                         }
                     }
                 }
@@ -84,52 +159,112 @@
         }
     }
 
-    .change-in-progress-background-cover {
-        position: absolute;
-        top: 35px;
-        height: calc(100% - 35px);
-        width: 100%;
-        z-index: 105;
-        background: $white-7;
-        border-radius: 3px;
-    }
+    /* Locked Table */
 
     table {
         width: 100%;
-        th.icon {
-            padding-left: 0;
-        }
-        th.pick-delivery {
-            display: flex;
-            div {
-                flex: 1;
-                display: flex;
-                align-items: center;
-            }
-        }
 
         th {
-            height: 31px;
+            height: 30px;
             padding-left: 10px;
-
-            color: $ta-black-2;
             font-size: 11px;
-            font-weight: 700;
-            user-select: none;
+            color: $bw6-2;
+
+            &.c-pointer {
+                cursor: pointer;
+            }
 
             &::selection,
             ::selection {
                 background-color: $ta-black-2;
                 color: $ta-black-2;
             }
+
+            &.pickup-delivery {
+                div {
+                    flex: 1;
+                }
+
+                .icon {
+                    margin-right: 2px;
+
+                    &.delivery {
+                        svg {
+                            path {
+                                fill: $ta-red-10;
+                            }
+                        }
+                    }
+
+                    svg {
+                        path {
+                            fill: $ta-green;
+                        }
+                    }
+                }
+            }
+
+            div {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            &.icon {
+                padding-left: 0 !important;
+                svg {
+                    path {
+                        fill: $bw6-2;
+                    }
+                }
+
+                &.expanded {
+                    svg {
+                        path {
+                            fill: $ta-blue-18;
+                        }
+                    }
+                }
+            }
         }
 
         td {
             padding: 1px;
+
             .main_inside {
                 height: 34px;
                 background-color: #f7f7f7;
                 border-radius: 3px;
+
+                &.filled {
+                    background: #fff;
+
+                    .padding-inside {
+                        &.hovering {
+                            .info-item,
+                            .selected-container {
+                                transition: background 0.2s ease-in;
+                                background: $bw2;
+                            }
+                        }
+
+                        &:hover {
+                            .info-item {
+                                background: $bw2;
+
+                                .driver-buttons {
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 &.cdk-drop-list {
                     overflow: hidden;
@@ -137,103 +272,10 @@
 
                 .padding-inside {
                     position: relative;
-
                     height: 100%;
-
-                    .hos-column {
-                        position: relative;
-                        height: 26px;
-                        width: 26px;
-                        margin-right: 4px;
-
-                        .hos-number {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 8px;
-                            font-weight: 700;
-                            color: #919191;
-                            padding-right: 1px;
-                            user-select: none;
-                            pointer-events: none;
-                        }
-
-                        .hos-img {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100%;
-                            cursor: pointer;
-
-                            svg-icon {
-                                display: flex;
-                                margin-left: 1px;
-                                svg {
-                                    width: 22px;
-                                    height: 22px;
-
-                                    path {
-                                        fill: #919191;
-                                        &:first-child {
-                                            fill: transparent !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.active_hos {
-                            .hos-img {
-                                border-radius: 100%;
-                                background-color: #26a69033;
-
-                                svg-icon {
-                                    svg {
-                                        path:not(path:first-child) {
-                                            fill: #26a690;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .hos-number {
-                                color: #26a690;
-                            }
-                        }
-                    }
 
                     &:not(.status-inside) {
                         padding: 4px;
-                    }
-
-                    .add_new {
-                        height: 100%;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding-left: 6px;
-                        padding-right: 6px;
-
-                        &.parking-field {
-                            padding-left: 0px;
-                        }
-
-                        .text {
-                            color: #ffffff;
-                            font-size: 14px;
-                            user-select: none;
-                        }
-
-                        svg-icon {
-                            display: flex;
-
-                            svg {
-                                path {
-                                    fill: #3074d3;
-                                }
-                            }
-                        }
                     }
 
                     .info-item {
@@ -243,19 +285,10 @@
                         height: 100%;
                         align-items: center;
                         border-radius: 2px;
+                        transition: background 0.2s ease-in;
 
                         svg-icon {
                             display: flex;
-                        }
-
-                        &.pickup-dev-popover-hold {
-                            padding: 0 2px;
-                        }
-
-                        .truck-trailer {
-                            width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
                         }
 
                         span {
@@ -280,9 +313,14 @@
                                 font-weight: 400;
                             }
 
-                            &::selection {
-                                background-color: $ta-black-2;
+                            &::-moz-selection {
                                 color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
                             }
 
                             &.dr-span {
@@ -307,81 +345,6 @@
                             display: flex;
                             width: 100%;
                         }
-                        .no-delpickup {
-                            padding-left: 4px;
-
-                            font-size: 11px;
-                            color: #919191;
-                            font-weight: 500;
-                            text-transform: uppercase;
-                            user-select: none;
-                        }
-
-                        .load-items-hold {
-                            display: flex;
-                            width: 100%;
-
-                            .pick-load-box {
-                                flex: 1;
-                                display: flex;
-                                align-items: center;
-
-                                .pick-load-info {
-                                    margin-left: 6px;
-                                    line-height: 1;
-                                    .pick-load-info-address {
-                                        font-size: 11px;
-                                        font-weight: 700;
-                                        color: $ta-black-2;
-
-                                        &::selection {
-                                            background-color: $ta-black-2;
-                                            color: $ta-black-2;
-                                        }
-                                    }
-                                    .pick-load-info-time {
-                                        font-size: 11px;
-                                        color: #919191;
-
-                                        &::selection {
-                                            background-color: #91919133;
-                                            color: #919191;
-                                        }
-                                    }
-                                }
-
-                                svg-icon {
-                                    user-select: none;
-                                }
-
-                                &.delivery-box {
-                                    svg-icon {
-                                        svg {
-                                            rect {
-                                                fill: #ef5350;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .driver-copy {
-                            position: absolute;
-                            display: flex;
-                            align-items: center;
-                            padding-left: 6px;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background-color: $ta-blue-5;
-                            color: $ta-black;
-                            font-weight: 700;
-                            font-size: 11px;
-                            border-radius: 2px;
-                            z-index: 10;
-                        }
 
                         app-ta-gps-progressbar {
                             width: 100%;
@@ -396,6 +359,7 @@
                                     }
                                 }
                             }
+
                             .parking-number {
                                 font-size: 11px;
                                 color: #919191;
@@ -410,88 +374,6 @@
                         &.c-pointer {
                             cursor: pointer;
                         }
-
-                        .remove-item {
-                            position: absolute;
-                            height: 26px;
-                            min-width: 26px;
-                            top: 50%;
-                            right: 0px;
-                            max-width: 85%;
-                            transform: translateY(-50%);
-                            display: none;
-                            justify-content: flex-end;
-                            align-items: center;
-                            transition: all 0.3s;
-                            z-index: 999;
-
-                            svg-icon {
-                                left: auto;
-                                right: 4px;
-                                svg {
-                                    width: 18px;
-                                    height: 18px;
-                                }
-                            }
-                            &:hover {
-                                cursor: pointer;
-                                width: 86px;
-                                background-color: #ef5350;
-                                border-radius: 2px;
-                                transition: all 0.3s;
-
-                                &::after {
-                                    content: 'REMOVE';
-                                    position: absolute;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    left: 6px;
-                                    color: #fff;
-                                }
-
-                                svg-icon {
-                                    svg {
-                                        path {
-                                            fill: #ffffff !important;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .driver-remove-item {
-                        svg-icon {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 6px;
-                            z-index: 300;
-                            display: flex;
-                        }
-                    }
-
-                    .dispatcher-table-cell-container {
-                        display: flex;
-                        height: 26px;
-                        align-items: center;
-                        line-height: 1;
-
-                        &.note-container {
-                            display: block;
-                            height: 100%;
-
-                            border-radius: 3px;
-                            padding-left: 6px;
-                        }
-
-                        .dispatcher-table-cell-holder {
-                            display: flex;
-                            height: 28px;
-                            width: 100%;
-                            align-items: center;
-                            padding-left: 6px;
-                        }
                     }
                 }
 
@@ -501,14 +383,6 @@
                     align-items: center;
                     line-height: 1;
 
-                    &.note-container {
-                        display: block;
-                        height: 100%;
-
-                        border-radius: 3px;
-                        padding-left: 6px;
-                    }
-
                     .dispatcher-table-cell-holder {
                         display: flex;
                         height: 28px;
@@ -517,80 +391,21 @@
                         padding-left: 6px;
                     }
                 }
-
-                &.addNew {
-                    background-color: #f7f7f7;
-
-                    .text {
-                        color: $ta-black-2 !important;
-                    }
-
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #3074d3;
-
-                        .text {
-                            color: #fff !important;
-                        }
-
-                        .add_new {
-                            svg-icon {
-                                svg {
-                                    path {
-                                        fill: #fff !important;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                &.filled {
-                    background-color: #fff;
-
-                    .padding-inside {
-                        &:hover {
-                            .info-item {
-                                background-color: #eeeeee;
-
-                                .driver-buttons {
-                                    display: flex;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .drag-hold-between {
-                    height: 100%;
-                }
-
-                .custom-dispatch-placeholder {
-                    position: relative;
-                    height: 32px;
-                    width: 100%;
-                    border-radius: 3px;
-                    opacity: 1 !important;
-                    cursor: grabbing !important;
-
-                    z-index: 10;
-                }
             }
         }
 
         th,
         td {
-            &.empty,
             &.box-item {
                 min-width: 34px;
                 max-width: 34px;
                 width: 34px;
+            }
 
-                &.box-item {
-                    min-width: 36px;
-                    max-width: 36px;
-                    width: 36px;
-                }
+            &.truck-field,
+            &.trailer-field {
+                min-width: 160px;
+                max-width: 160px;
             }
 
             &.pre-trip {
@@ -639,39 +454,42 @@
                     width: 150px;
                 }
             }
+
+            &.truck-field,
+            &.trailer-field {
+                min-width: 140px;
+            }
+
+            &.note-field {
+                width: 34px;
+                max-width: 34px;
+                min-width: 34px;
+
+                &.expanded {
+                    width: 236px !important;
+                    max-width: 236px !important;
+                    min-width: 236px !important;
+                }
+            }
         }
     }
 
-    .table-info {
-        margin-top: 2px;
+    /* Change In Progress */
 
-        .table-inside-info {
-            padding: 0 10px;
-        }
+    .change-in-progress-background-cover {
+        position: absolute;
+        top: 35px;
+        height: calc(100% - 35px);
+        width: 100%;
+        z-index: 105;
+        background: $white-7;
+        border-radius: 3px;
+    }
 
-        .table-info-field {
-            span {
-                font-size: 11px;
-                line-height: 14px;
-                text-transform: uppercase;
-                color: $bw6-2;
+    /* Drag & Drop Row */
 
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(47, 47, 47, 0.2);
-                }
-            }
-
-            &.dispatcher-field {
-                width: 300px;
-                text-align: right;
-            }
-        }
+    .cdk-drag {
+        position: relative;
     }
 
     .cdk-drag-animating {
@@ -683,52 +501,262 @@
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    .cdk-drag {
-        position: relative;
-    }
-
-    .reorder-row.cdk-drag-preview {
-        position: relative;
-        background-color: $ta-black-2;
-        border-radius: 3px;
-        z-index: 9999999 !important;
-        cursor: grabbing !important;
-
-        .cdk-drag-handle {
-            cursor: grabbing !important;
-        }
-
-        .main_inside {
-            background-color: transparent !important;
-
-            *:not(.switch_statuses) {
-                color: #fff !important;
-            }
-        }
-
-        .padding-inside {
-            &:after {
-                display: none !important;
-            }
-        }
-
-        &:after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-
-            transform: translateY(-50%);
-            background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
-            background-size: 20px 17px;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    }
-
     .cdk-drag-placeholder {
         opacity: 0;
+    }
+
+    .reorder-row {
+        &.drag {
+            cursor: grab;
+        }
+
+        &.cdk-drag-preview {
+            position: relative;
+            border-radius: 3px;
+            background: $ta-black-2 !important;
+            z-index: 9999999 !important;
+            cursor: grabbing !important;
+
+            .cdk-drag-handle {
+                pointer-events: all !important;
+            }
+
+            .main_inside {
+                background: transparent !important;
+
+                .padding-inside {
+                    &.hovering {
+                        .info-item,
+                        .selected-container {
+                            background: transparent !important;
+
+                            p {
+                                color: $white !important;
+                            }
+
+                            span {
+                                color: $bw5 !important;
+                            }
+
+                            .driver-items-hold {
+                                span {
+                                    color: $white !important;
+                                }
+
+                                .hos-column {
+                                    .hos-number {
+                                        color: $white !important;
+                                    }
+                                }
+                            }
+
+                            .remove-icon-container,
+                            .driver-vacation {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .location-field {
+                        .location-city {
+                            .location-f-city,
+                            .location-f-st {
+                                color: $white !important;
+                            }
+                        }
+                    }
+
+                    .dispatch-parking {
+                        .dispatch-parking-text {
+                            color: $white !important;
+                        }
+                    }
+
+                    &:after,
+                    .dispatch-table-driver {
+                        display: none !important;
+                    }
+                }
+
+                .add-new-container {
+                    background: transparent !important;
+
+                    p {
+                        color: $white !important;
+                    }
+
+                    .icon {
+                        display: none !important;
+                    }
+                }
+            }
+
+            &:after {
+                content: '';
+                width: 18px;
+                height: 18px;
+                position: absolute;
+                right: 8px;
+                top: 50%;
+
+                transform: translateY(-50%);
+                background-image: url('/assets/svg/common/ic_sort_arrows.svg');
+                background-size: 18px 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+    }
+
+    /* No Data */
+
+    .no-data-table-row {
+        margin-bottom: 2px;
+
+        td {
+            padding: 1px;
+
+            div {
+                height: 34px;
+                background: $ta-light-grey-5;
+                border-radius: 3px;
+            }
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                width: 160px;
+            }
+
+            &:nth-child(3) {
+                width: 240px;
+            }
+
+            &:nth-child(4),
+            &:nth-child(10),
+            &:nth-child(12) {
+                min-width: 34px;
+                width: 34px;
+            }
+
+            &:nth-child(5) {
+                width: 160px;
+            }
+
+            &:nth-child(6) {
+                width: 140px;
+            }
+
+            &:nth-child(7) {
+                width: 340px;
+            }
+
+            &:nth-child(8) {
+                width: 226px;
+            }
+
+            &:nth-child(9) {
+                width: 100px;
+            }
+
+            &:nth-child(11) {
+                width: 236px;
+            }
+        }
+
+        &.first-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    #f7f7f7 0%,
+                    rgba(247, 247, 247, 0.66) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+
+        &.second-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.66) 0%,
+                    rgba(247, 247, 247, 0.33) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+
+        &.third-row {
+            div {
+                background: linear-gradient(
+                    180deg,
+                    rgba(247, 247, 247, 0.33) 0%,
+                    rgba(247, 247, 247, 0) 100%
+                );
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .no-data-container {
+        gap: 32px;
+
+        .no-data-text-container {
+            gap: 12px;
+
+            .no-data-text {
+                font-size: 26px;
+                line-height: 32px;
+                color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+            }
+
+            .no-data-description {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgba(145, 145, 145, 0.2);
+                }
+            }
+        }
+
+        .unlock-table-button {
+            width: 150px;
+            height: 32px;
+            border: none;
+            background: $ta-blue-13;
+            border-radius: 2px;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+            user-select: none;
+
+            p {
+                font-size: 14px;
+                line-height: 20px;
+                color: $white;
+            }
+
+            &:hover {
+                background: $ta-blue-15;
+            }
+        }
     }
 }

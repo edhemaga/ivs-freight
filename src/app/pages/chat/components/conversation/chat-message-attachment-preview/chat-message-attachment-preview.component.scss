@@ -2,7 +2,6 @@
 
 .attachment-preview {
     &-document {
-        height: 36px;
         width: fit-content;
         padding-left: 6px;
 
@@ -30,7 +29,7 @@
                 color: $white;
             }
 
-            .size {
+            .info {
                 color: $bw5;
                 padding: 0 4px;
             }

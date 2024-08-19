@@ -75,6 +75,8 @@ import {
 export class NavigationProfileUpdateModalComponent
     implements OnInit, OnDestroy
 {
+    private destroy$ = new Subject<void>();
+
     private user: SignInResponse;
 
     public selectedTab: number = 1;
@@ -120,8 +122,6 @@ export class NavigationProfileUpdateModalComponent
     public loadingOldPassword: boolean = false;
 
     public isFormDirty: boolean = false;
-
-    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

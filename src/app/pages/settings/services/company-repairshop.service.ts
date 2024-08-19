@@ -42,6 +42,8 @@ export class CompanyRepairShopService {
             _long,
             lat,
             distance,
+            '',
+            250,
             costFrom,
             costTo,
             visitedByMe,

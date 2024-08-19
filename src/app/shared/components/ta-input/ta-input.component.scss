@@ -74,8 +74,6 @@
             }
 
             &.valid-focus-out-filled {
-                background-color: red;
-
                 &:hover {
                     background-color: $valid-input-hover;
                 }
@@ -153,10 +151,6 @@
             .input-control {
                 background: transparent !important;
             }
-        }
-
-        &.input-blue-text {
-            color: red;
         }
 
         .input-control {
@@ -379,22 +373,20 @@
     @import './scss/ta-input.placeholdericon-rightside.scss';
 }
 
-
-
-.input-fixed-placehoder { 
+.input-fixed-placehoder {
     &-label {
         color: $default-placeholderIcon;
         position: absolute;
-        right: 40px;
+        right: 25px;
         font-size: 14px;
         top: 3px;
     }
 
     &-input {
-        padding-right: 25px !important;
+        padding-right: 45px !important;
     }
 }
 
-.invalid-filled-focus-out .input-fixed-placehoder-label{
+.invalid-filled-focus-out .input-fixed-placehoder-label {
     right: 24px;
 }

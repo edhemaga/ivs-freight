@@ -126,4 +126,20 @@ export class MethodsGlobalHelper {
 
         return Object.values(uniqueObj);
     }
+
+    static checkIfEveryPropertyInObjectHasValue<T>(obj: { [key: string]: T }) {
+        return Object.values(obj).every(
+            (value) => value !== undefined && value !== null
+        );
+    }
+
+    static checkIfEveryPropertyInObjectHasNoValue<T>(obj: {
+        [key: string]: T;
+    }) {
+        return Object.values(obj).every((value) => !value);
+    }
+
+    static checkIfAnyItemInArrayHasNoValue<T>(array: T[]) {
+        return array.some((element) => element === null);
+    }
 }

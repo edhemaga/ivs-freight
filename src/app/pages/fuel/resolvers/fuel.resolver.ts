@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { FuelState } from '@pages/fuel/state/fuel-state/fuel-state.store';
 @Injectable({
     providedIn: 'root',
 })
-export class FuelResolver implements Resolve<FuelState> {
+export class FuelResolver  {
     constructor(
         private fuelService: FuelService,
         private tableService: TruckassistTableService

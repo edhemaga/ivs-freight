@@ -18,5 +18,7 @@ export interface DispatchHistoryGroupResponse {
     interval?: string | null;
     isIdle?: boolean;
     loadNumber?: string | null;
+    isCompleted?: boolean;
+    loadId?: number | null;
 }
 

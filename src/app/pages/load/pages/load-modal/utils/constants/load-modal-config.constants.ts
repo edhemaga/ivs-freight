@@ -329,7 +329,7 @@ export class LoadModalConfig {
             name: 'datepicker',
             type: 'text',
             isDropdown: true,
-            label: deliveryDateRange ? 'Date From' : 'Date',
+            label: deliveryDateRange ? 'End Date' : 'Date',
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
@@ -408,7 +408,7 @@ export class LoadModalConfig {
         };
     }
 
-    static getDispatcherInputConfig(logoName: string, name: string): ITaInput {
+    static getDispatcherInputConfig(logoName: string, name: string, isTemplate: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -423,7 +423,7 @@ export class LoadModalConfig {
                 template: 'user',
             },
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-230',
+            dropdownWidthClass: isTemplate ? 'w-col-230' : 'w-col-248',
         };
     }
 

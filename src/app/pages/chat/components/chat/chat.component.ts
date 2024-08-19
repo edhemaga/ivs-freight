@@ -1,6 +1,5 @@
 import {
   Component,
-  inject,
   OnDestroy,
   OnInit
 } from '@angular/core';
@@ -11,7 +10,11 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+// Components
+import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
+
 // Models
+import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
 
 // Enums
@@ -26,12 +29,8 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 // Service
 import { UserChatService } from "@pages/chat/services/chat.service";
 import { ChatTab } from '@pages/chat/models/chat-tab.model';
+import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
 
-type ChatResolvedData = {
-  title: string;
-  drivers: CompanyUserChatResponsePaginationReduced;
-  users: CompanyUserChatResponsePaginationReduced
-}
 
 @Component({
   selector: 'app-chat',
@@ -47,6 +46,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public drivers!: CompanyUserChatResponsePaginationReduced;
   public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
   public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
+  public companyChannels!: ChatCompanyChannelExtended[];
 
   public unreadCount!: number;
   public selectedConversation: number;
@@ -56,11 +56,12 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public ChatSvgRoutes = ChatSvgRoutes;
 
-  private userChatService = inject(UserChatService);
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
+
+    // Services
+    private chatService: UserChatService
   ) { }
 
   ngOnInit(): void {
@@ -74,10 +75,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.title = res.title;
         this.drivers = res.drivers;
         this.companyUsers = res.users;
+        this.companyChannels = res.companyChannels;
         this.tabs[0].count = this.drivers.count + this.companyUsers.count;
         this.unreadCount = this.getUnreadCount(this.companyUsers, this.drivers);
-      }
-      );
+      });
   }
 
   public trackById(index: number, tab: ChatTab): number {
@@ -93,9 +94,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public createUserConversation(selectedUser: number): void {
 
-    if (selectedUser === 0) return;
+    if (!selectedUser) return;
 
-    this.userChatService
+    this.chatService
       .createConversation([selectedUser])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -107,6 +108,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  public searchDepartment(searchTerm: string): void { }
 
   private getUnreadCount(
     users: CompanyUserChatResponsePaginationReduced,
@@ -136,6 +139,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, 0);
 
     return totalUnreadCount;
+  }
+
+  public onActivate(component: ChatMessagesComponent): void {
+    if (component instanceof ChatMessagesComponent) {
+      component.userTypingEmitter
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((userId: number) => {
+          if (userId) {
+            const driver = this.drivers.data.find(driver => {
+              driver.companyUser?.userId === userId;
+            })
+          }
+        });
+    }
   }
 
   ngOnDestroy(): void {

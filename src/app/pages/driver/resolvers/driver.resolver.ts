@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 
 import { forkJoin, Observable, tap } from 'rxjs';
 
@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class DriverResolver implements Resolve<DriverState> {
+export class DriverResolver  {
     private activeId: number = 1;
     private pageIndex: number = 1;
     private pageSize: number = 25;

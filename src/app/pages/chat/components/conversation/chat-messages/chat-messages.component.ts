@@ -9,7 +9,9 @@ import {
   HostListener,
   Renderer2,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -21,6 +23,7 @@ import {
 import {
   BehaviorSubject,
   debounceTime,
+  map,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -35,20 +38,25 @@ import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
 
 // Services
 import { UserChatService } from '@pages/chat/services/chat.service';
-import { HubService } from '@pages/chat/services/hub.service';
+import { ChatHubService } from '@pages/chat/services/chat-hub.service';
+import { UserProfileService } from '@pages/chat/services/user-profile.service';
 
 // Models
 import {
   CompanyUserShortResponse,
+  ConversationInfoResponse,
   ConversationResponse,
-  MessageResponse
 } from 'appcoretruckassist';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import { AttachmentHoveredClassStringEnum } from '@pages/chat/enums/conversation/attachment-hovered-class-string.enum';
 import { AttachmentCustomClassEnum } from '@pages/chat/enums/conversation/attachment-custom-classes.enum';
+
+// Helpers
+import { checkForLink } from '@pages/chat/utils/helpers/link-recognition.helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,11 +68,14 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   @ViewChild('messagesContent') messagesContent: ElementRef;
   @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
+  @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Escape') this.attachmentUploadActive = false;
   }
+
+  @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
 
   private destroy$ = new Subject<void>();
 
@@ -75,6 +86,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
+  public isProfileDetailsDisplayed: boolean = false;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -83,19 +95,22 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   // Config
   public ChatDropzone = ChatDropzone;
 
-  // Messages
-  public messageToSend: string = "";
-  public messages: MessageResponse[] = [];
-  private isMessageSendable: boolean = true;
-  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
-
   // Emoji
   public isEmojiSelectionActive: boolean = false;
 
+  // Messages
+  public messages: ChatMessageResponse[] = [];
+  private isMessageSendable: boolean = true;
+  public currentUserTypingName: BehaviorSubject<string | null> = new BehaviorSubject(null);
+  public currentMessage!: string;
+
   // Attachment upload
   public attachmentUploadActive: boolean = false;
-  public attachments: UploadFile[] = [];
+  public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
   public hoveredAttachment!: ChatAttachmentForThumbnail;
+
+  // Links
+  public links: string[] = [];
 
   // Input toggle
   public isChatTypingActivated: boolean = false;
@@ -117,6 +132,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     //Renderer
     private renderer: Renderer2,
+    private el: ElementRef,
 
     //Router
     private activatedRoute: ActivatedRoute,
@@ -126,13 +142,15 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
     // Services
     private chatService: UserChatService,
-    private chatHubService: HubService,
+    private chatHubService: ChatHubService,
+    public userProfileService: UserProfileService
   ) { }
 
   ngOnInit(): void {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
+    this.listenForTyping();
   }
 
   ngAfterContentChecked(): void {
@@ -140,7 +158,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   private getResolvedData(): void {
-    this.activatedRoute.data
+    this.activatedRoute
+      .data
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -163,7 +182,15 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         () => {
           this.chatHubService
             .receiveMessage()
-            .pipe(takeUntil(this.destroy$))
+            .pipe(takeUntil(this.destroy$),
+              map(arg => {
+                return {
+                  ...arg,
+                  fileCount: arg.filesCount ?? arg.files?.length,
+                  mediaCount: arg.mediaCount ?? arg.media?.length,
+                  linksCount: arg.linksCount ?? arg.links?.length
+                }
+              }))
             .subscribe(
               message => {
                 if (message) {
@@ -175,7 +202,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
           this.chatHubService
             .receiveTypingNotification()
             .pipe(
-              debounceTime(250),
+              debounceTime(150),
               takeUntil(this.destroy$),
             )
             .subscribe((companyUserId: number) => {
@@ -186,9 +213,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                     user.id === companyUserId
                   );
               this.currentUserTypingName.next(filteredUser?.fullName);
+              this.userTypingEmitter.emit(companyUserId);
 
               setTimeout(() => {
                 this.currentUserTypingName.next(null);
+                this.userTypingEmitter.emit(0);
               }, 1000);
 
             })
@@ -197,23 +226,29 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public sendMessage(): void {
+    const message = this.messageForm.value?.message;
 
-    if (!this.messageToSend || !this.conversation?.id || !this.isMessageSendable) return;
+    if (!this.conversation?.id || !this.isMessageSendable) return;
+    if (!message && !this.attachments$?.value?.length) return;
 
     this.isMessageSendable = false;
 
     this.chatService
       .sendMessage(
         this.conversation.id,
-        this.messageToSend,
-        this.attachments)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.messageToSend = "";
-        this.isMessageSendable = true;
-        this.attachments = [];
-      });
-
+        message,
+        this.attachments$.value,
+        this.links)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        () => {
+          this.isMessageSendable = true;
+          this.attachments$.next([]);
+          this.messageForm.reset();
+        }
+      );
   }
 
   private creteForm(): void {
@@ -226,6 +261,25 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingActivated = true;
   }
 
+  public displayProfileDetails(value: boolean): void {
+
+    if (this.isProfileDetailsDisplayed && !value) {
+      this.isProfileDetailsDisplayed = value;
+      return;
+    }
+
+    if (this.conversation?.id && value) {
+
+      this.chatService
+        .getAllConversationFiles(this.conversation.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data: ConversationInfoResponse) => {
+          this.isProfileDetailsDisplayed = value;
+          this.userProfileService.setProfile(data);
+        })
+    }
+  }
+
   // TODO implement emoji selection
   public openEmojiSelection(): void {
     this.isEmojiSelectionActive = true;
@@ -236,7 +290,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public addAttachments(files: UploadFile[]): void {
-    this.attachments = [...this.attachments, ...files];
+    this.attachments$.next([...this.attachments$.value, ...files]);
     this.attachmentUploadActive = false;
 
     this.enableChatInput();
@@ -298,7 +352,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   public removeAttachment(attachment: UploadFile): void {
-    this.attachments = [...this.attachments.filter(arg => arg !== attachment)];
+    const currentAttachments = this.attachments$.value.filter(arg => arg !== attachment);
+    this.attachments$.next(currentAttachments);
   }
 
   public blurInput(): void {
@@ -311,13 +366,63 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.isChatTypingBlurred = true;
   }
 
-  public notifyTyping(): void {
-    if (!this.messageToSend) return;
-    this.chatHubService.notifyTyping(this.conversation.id);
+
+
+  public listenForTyping(): void {
+
+    this.messageForm.valueChanges
+      .pipe(
+        debounceTime(150),
+        takeUntil(this.destroy$))
+      .subscribe(arg => {
+        const message: string = arg?.message;
+
+        if (message) this.chatHubService.notifyTyping(this.conversation.id);
+
+        this.checkIfContainsLink(message);
+      })
+  }
+
+  private checkIfContainsLink(message: string): void {
+
+    if (!message) {
+      this.links = [];
+      return;
+    };
+
+    const wordsList: string[] = message.trim().split(" ");
+
+    if (
+      message.length < this.currentMessage?.length &&
+      message !== this.currentMessage
+    ) {
+      this.links = [];
+
+      wordsList.forEach(word => {
+        if (checkForLink(word)) this.links = [...this.links, word];
+      });
+    } else {
+      if (
+        //Shortest possible URL
+        message.length < 3 ||
+        // Check if last character is whitespace
+        message[message.length - 1] === ' ' ||
+        // Check if two consecutive characters are the same
+        message[message.length - 2] === message[message.length - 1]
+      ) return;
+
+      const lastTyped: string = wordsList.slice(-1)[0];
+
+      if (lastTyped) {
+        const isLink: boolean = checkForLink(lastTyped);
+        if (isLink)
+          this.links = [...this.links, lastTyped];
+      }
+    }
+    this.currentMessage = message;
   }
 
   ngOnDestroy(): void {
-    this.remainingParticipants = [];
     this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();

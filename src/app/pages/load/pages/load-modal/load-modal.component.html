@@ -37,7 +37,8 @@
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
-                    'edit-load': editLoad
+                    'edit-load': editLoad,
+                    'select-template': !isConvertedToTemplate && !isEdit
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -64,7 +65,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !editLoad">
+                <ng-container *ngIf="!isConvertedToTemplate && !isEdit">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -399,8 +400,12 @@
                             ></svg-icon>
                         </p>
                         <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
-                        <p class="m-0 ta-font-bold">DATE & TIME</p>
-                        <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
+                        <ng-container *ngIf="selectedPickupShipper">
+                            <p class="m-0 ta-font-bold">DATE & TIME</p>
+                            <p class="m-0 ta-font-bold text-right">
+                                LEG, CONTACT
+                            </p>
+                        </ng-container>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -451,7 +456,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-pickup'
+                                            'shipper-pickup',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
@@ -514,9 +521,15 @@
                                 <div
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
-                                        disabled: selectedStopTimePickup === 6
+                                        disabled:
+                                            selectedStopTimePickup === 6 ||
+                                            selectedStopTimePickup === 2
                                     }"
-                                    (click)="pickupDateRange = true"
+                                    (click)="addDateRange('pickup', true)"
+                                    [mainTooltip]="'Date Range'"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                 >
                                     <svg-icon
                                         class="plus-icon"
@@ -574,22 +587,22 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedPickupStopItems.length"
+                                [isCardOpen]="isPickupItemsVisible"
                                 [hasCounter]="savedPickupStopItems.length"
+                                [disabledCard]="!savedPickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="false"
+                                [hasArrow]="savedPickupStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedPickupStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="isPickupItemsVisible"
+                                [customClass]="'scrollable'"
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
-                                [customClass]="'scrollable'"
+                                (onOpenCard)="toggleStopItemRow('pickup')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
@@ -785,7 +798,8 @@
                                                         onSelectDropdown(
                                                             $event,
                                                             'shipper-extra-stops',
-                                                            indx
+                                                            indx,
+                                                            true
                                                         )
                                                     "
                                                     (closeDropdown)="
@@ -881,9 +895,18 @@
                                                 "
                                             >
                                                 <div
+                                                    mainTooltip="Date Range"
+                                                    [tooltipBackground]="
+                                                        '#424242'
+                                                    "
+                                                    ngbTooltip
+                                                    position="bottom"
                                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                                     [ngClass]="{
                                                         disabled:
+                                                            selectedExtraStopTime[
+                                                                indx
+                                                            ] === 2 ||
                                                             selectedExtraStopTime[
                                                                 indx
                                                             ]
@@ -893,9 +916,11 @@
                                                                 )
                                                     }"
                                                     (click)="
-                                                        loadExtraStopsDateRange[
+                                                        addDateRange(
+                                                            'extra-stop',
+                                                            true,
                                                             indx
-                                                        ] = true
+                                                        )
                                                     "
                                                 >
                                                     <svg-icon
@@ -919,7 +944,7 @@
                                                 "
                                                 formControlName="dateTo"
                                                 [inputConfig]="
-                                                    loadExtraStopsToDateInputConfig
+                                                    getExtraStopsToDate(indx)
                                                 "
                                                 (blurInput)="
                                                     loadExtraStops()
@@ -970,8 +995,19 @@
                                             <app-ta-custom-card
                                                 [cardName]="'Item'"
                                                 [isCardOpen]="
-                                                    !!savedExtraStopItems[indx]
-                                                        ?.length
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
+                                                "
+                                                [disabledCard]="
+                                                    !(
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ] &&
+                                                        savedExtraStopItems[
+                                                            indx
+                                                        ]?.length
+                                                    )
                                                 "
                                                 [hasCounter]="
                                                     savedExtraStopItems[indx] &&
@@ -980,18 +1016,27 @@
                                                 "
                                                 [hasActionSvg]="true"
                                                 [hasBodyData]="true"
-                                                [hasArrow]="true"
+                                                [hasArrow]="
+                                                    savedExtraStopItems[indx]
+                                                        ?.length
+                                                "
                                                 [animationMarginParams]="{
                                                     marginTop: '10px',
                                                     marginBottom: '12px'
                                                 }"
                                                 [hasScrollBodyXAxis]="
-                                                    savedExtraStopItems[indx] &&
-                                                    savedExtraStopItems[indx]
-                                                        ?.length
+                                                    isExtraStopItemsVisible[
+                                                        indx
+                                                    ] ?? false
                                                 "
                                                 (onActionEvent)="
                                                     createNewStopItemsRow(
+                                                        'extra-stop',
+                                                        indx
+                                                    )
+                                                "
+                                                (onOpenCard)="
+                                                    toggleStopItemRow(
                                                         'extra-stop',
                                                         indx
                                                     )
@@ -1115,7 +1160,9 @@
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
-                                            'shipper-delivery'
+                                            'shipper-delivery',
+                                            -1,
+                                            true
                                         )
                                     "
                                     (closeDropdown)="
@@ -1177,11 +1224,17 @@
 
                             <ng-container *ngIf="!deliveryDateRange">
                                 <div
+                                    mainTooltip="Date Range"
+                                    [tooltipBackground]="'#424242'"
+                                    ngbTooltip
+                                    position="bottom"
                                     class="d-flex align-items-center justify-content-center load-plus-button"
                                     [ngClass]="{
-                                        disabled: selectedStopTimeDelivery === 8
+                                        disabled:
+                                            selectedStopTimeDelivery === 2 ||
+                                            selectedStopTimeDelivery === 8
                                     }"
-                                    (click)="deliveryDateRange = true"
+                                    (click)="addDateRange('delivery', true)"
                                 >
                                     <svg-icon
                                         class="plus-icon"
@@ -1197,7 +1250,7 @@
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
-                                [inputConfig]="loadDeliveryDateTo"
+                                [inputConfig]="loadDeliveryDateToInputConfig"
                                 (blurInput)="
                                     markInputAsTouched('deliveryDateTo')
                                 "
@@ -1233,21 +1286,21 @@
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
-                                [isCardOpen]="savedDeliveryStopItems.length"
+                                [isCardOpen]="isDeliveryItemsVisible"
+                                [disabledCard]="!savedDeliveryStopItems.length"
                                 [hasCounter]="savedDeliveryStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="true"
+                                [hasArrow]="savedDeliveryStopItems.length"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
                                 }"
-                                [hasScrollBodyXAxis]="
-                                    savedDeliveryStopItems.length
-                                "
+                                [hasScrollBodyXAxis]="isDeliveryItemsVisible"
                                 (onActionEvent)="
                                     createNewStopItemsRow('delivery')
                                 "
+                                (onOpenCard)="toggleStopItemRow('delivery')"
                             >
                                 <app-ta-modal-table
                                     [tableType]="modalTableTypeEnum.LOAD_ITEMS"
@@ -1335,8 +1388,11 @@
                                     class="load-modal-icon"
                                 ></svg-icon>
                                 <span class="m-0 ta-font-bold total-miles-value"
-                                    >≈ {{ totalLegHours }}h
-                                    {{ totalLegMinutes }}m</span
+                                    >≈
+                                    <ng-container *ngIf="totalLegHours"
+                                        >{{ totalLegHours }}h</ng-container
+                                    >
+                                    {{ totalLegMinutes || 0 }}m</span
                                 >
                             </div>
                         </div>
@@ -1354,6 +1410,7 @@
                             | financialCalculation : 'billing'
                             | currency
                     "
+                    [billingCount]="billingCount"
                     [disableBillAction]="
                         !loadForm.get('baseRate').value ||
                         !additionalBillingTypes?.length
@@ -1362,6 +1419,7 @@
                         adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
+                    [paymentCount]="additionalPayments().length"
                     [payment]="
                         loadModalPayment
                             | financialCalculation : 'payment'
@@ -1668,11 +1726,11 @@
 
         <!-- Map -->
 
-        <app-ta-maps
+        <!-- <app-ta-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"
             [routes]="loadStopRoutes"
             [ngStyle]="{ width: '100%', height: '100%' }"
-        ></app-ta-maps>
+        ></app-ta-maps> -->
     </div>
 </app-ta-modal>
