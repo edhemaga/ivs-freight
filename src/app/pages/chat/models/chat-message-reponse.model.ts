@@ -3,6 +3,7 @@ import {
     EnumValue,
     FileResponse
 } from "appcoretruckassist/model/models";
+import { ChatLink } from "@pages/chat/models/chat-link.model";
 
 export interface ChatMessageResponse {
     id: number;
@@ -16,5 +17,10 @@ export interface ChatMessageResponse {
     createdAt?: string;
     updatedAt: string;
     isEdited?: boolean;
-    attachments?: Array<FileResponse>;
+    files?: Array<FileResponse>;
+    filesCount?: number;
+    media?: Array<FileResponse>;
+    mediaCount?: number;
+    links?: Array<ChatLink>;
+    linksCount?: number;
 }

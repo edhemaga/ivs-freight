@@ -347,6 +347,7 @@ model/createFuelItemCommand.ts
 model/createHosCommand.ts
 model/createHosRulesReviewCommand.ts
 model/createInsurancePolicyAddonCommand.ts
+model/createLinkCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
@@ -579,7 +580,7 @@ model/itemFuel.ts
 model/joinConversationCommand.ts
 model/leaveConversationCommand.ts
 model/legResponse.ts
-model/link.ts
+model/linkMetadata.ts
 model/linkResponse.ts
 model/liveTrackingBaseResponse.ts
 model/liveTrackingHistoryItemResponse.ts

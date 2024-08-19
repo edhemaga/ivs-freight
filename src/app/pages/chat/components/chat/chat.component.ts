@@ -1,6 +1,5 @@
 import {
   Component,
-  inject,
   OnDestroy,
   OnInit
 } from '@angular/core';
@@ -11,10 +10,12 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+// Components
+import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
+
 // Models
 import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
-import { ConversationResponse } from 'appcoretruckassist';
 
 // Enums
 import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
@@ -138,6 +139,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, 0);
 
     return totalUnreadCount;
+  }
+
+  public onActivate(component: ChatMessagesComponent): void {
+    if (component instanceof ChatMessagesComponent) {
+      component.userTypingEmitter
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((userId: number) => {
+          if (userId) {
+            const driver = this.drivers.data.find(driver => {
+              driver.companyUser?.userId === userId;
+            })
+          }
+        });
+    }
   }
 
   ngOnDestroy(): void {

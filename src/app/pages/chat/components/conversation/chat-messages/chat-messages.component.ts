@@ -9,7 +9,9 @@ import {
   HostListener,
   Renderer2,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -21,6 +23,7 @@ import {
 import {
   BehaviorSubject,
   debounceTime,
+  map,
   Subject,
   takeUntil
 } from 'rxjs';
@@ -71,6 +74,8 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Escape') this.attachmentUploadActive = false;
   }
+
+  @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
 
   private destroy$ = new Subject<void>();
 
@@ -145,7 +150,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     this.creteForm();
     this.getResolvedData();
     this.connectToHub();
-    this.notifyTyping();
+    this.listenForTyping();
   }
 
   ngAfterContentChecked(): void {
@@ -177,7 +182,15 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
         () => {
           this.chatHubService
             .receiveMessage()
-            .pipe(takeUntil(this.destroy$))
+            .pipe(takeUntil(this.destroy$),
+              map(arg => {
+                return {
+                  ...arg,
+                  fileCount: arg.filesCount ?? arg.files?.length,
+                  mediaCount: arg.mediaCount ?? arg.media?.length,
+                  linksCount: arg.linksCount ?? arg.links?.length
+                }
+              }))
             .subscribe(
               message => {
                 if (message) {
@@ -189,7 +202,7 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
           this.chatHubService
             .receiveTypingNotification()
             .pipe(
-              debounceTime(250),
+              debounceTime(150),
               takeUntil(this.destroy$),
             )
             .subscribe((companyUserId: number) => {
@@ -200,9 +213,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
                     user.id === companyUserId
                   );
               this.currentUserTypingName.next(filteredUser?.fullName);
+              this.userTypingEmitter.emit(companyUserId);
 
               setTimeout(() => {
                 this.currentUserTypingName.next(null);
+                this.userTypingEmitter.emit(0);
               }, 1000);
 
             })
@@ -353,11 +368,11 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
 
 
-  public notifyTyping(): void {
+  public listenForTyping(): void {
 
     this.messageForm.valueChanges
       .pipe(
-        debounceTime(350),
+        debounceTime(150),
         takeUntil(this.destroy$))
       .subscribe(arg => {
         const message: string = arg?.message;
@@ -404,7 +419,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
           this.links = [...this.links, lastTyped];
       }
     }
-
     this.currentMessage = message;
   }
 

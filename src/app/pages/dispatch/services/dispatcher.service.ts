@@ -79,7 +79,10 @@ export class DispatcherService {
         statuses?: Array<number>,
         parkings?: Array<number>,
         vacation?: boolean,
-        search?: string
+        search?: string,
+        longitude?: number | undefined,
+        latitude?: number | undefined,
+        distance?: number | undefined
     ): Observable<DispatchBoardListResponse> {
         return this.dispatchService.apiDispatchBoardListGet(
             dispatcherId,
@@ -89,7 +92,10 @@ export class DispatcherService {
             statuses,
             parkings,
             vacation,
-            search
+            search,
+            longitude,
+            latitude,
+            distance
         );
     }
 
@@ -136,9 +142,13 @@ export class DispatcherService {
         return this.dispatchService.apiDispatchPreTripInspectionPatch({ id });
     }
 
+<<<<<<< HEAD
     public reorderDispatchboard(
         reorder: ReorderDispatchesCommand
     ): Observable<any> {
+=======
+    reorderDispatchboard(reorder: ReorderDispatchesCommand) {
+>>>>>>> 4c8f188a8af3700fc28355cbda59d045d78ac197
         return this.dispatchService.apiDispatchReorderPut(reorder);
     }
 

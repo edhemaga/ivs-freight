@@ -26,6 +26,8 @@ export interface DispatchHistoryResponse {
     trailer?: TrailerMinimalResponse;
     driver?: DriverMinimalResponse;
     location?: AddressEntity;
+    latitude?: number | null;
+    longitude?: number | null;
     status?: DispatchStatus;
     dateFrom?: string;
     dateTo?: string | null;

@@ -318,6 +318,7 @@
                                 [dispatchId]="item?.id"
                                 [dispatchBoardId]="item?.dispatchBoardId"
                                 [status]="item?.preTripInspection"
+                                [time]="item?.preTripInspectionTime"
                                 [isHoveringRow]="
                                     isDispatchBoardLocked &&
                                     isHoveringRowIndex === rowIndex
@@ -534,7 +535,9 @@
                             (driverVacationEmitter)="
                                 changeDriverVacation($event)
                             "
-                            (setDriverDropdownIndexEmitter)="changeDriverDropdownIndex($event)"
+                            (setDriverDropdownIndexEmitter)="
+                                changeDriverDropdownIndex($event)
+                            "
                         >
                         </app-dispatch-table-driver>
                     </td>

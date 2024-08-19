@@ -1137,6 +1137,9 @@ export class TaInputComponent
                 'fuel per miles',
                 'fuel price map',
                 'amount',
+                'bol no.',
+                'seal no.',
+                'pickup no.'
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers

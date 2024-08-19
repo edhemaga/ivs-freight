@@ -27,15 +27,6 @@ export class ChatUserProfileComponent implements OnInit {
 
   @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //TODO remap to response when it's expanded
-  public links: {
-    links?: Array<string> | null;
-    linksCount?: number;
-  } = {
-      links: [],
-      linksCount: 0
-    }
-
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
 
