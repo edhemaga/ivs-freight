@@ -177,8 +177,9 @@
                                         >
                                             <app-ta-custom-card
                                                 [cardName]="
+                                                    group?.isCompleted ||
                                                     group?.isIdle
-                                                        ? 'Idle Time'
+                                                        ? group?.loadNumber
                                                         : 'Load ' +
                                                           group?.loadNumber
                                                 "
@@ -186,9 +187,9 @@
                                                 [subText]="group?.interval"
                                                 [bodyTemplate]="'card'"
                                                 [isExtraLargeLayout]="true"
-                                                [isCardOpen]="true"
-                                                [disabledCard]="true"
-                                                [hasArrow]="false"
+                                                [isCardOpen]="groupIndex <= 1"
+                                                [disabledCard]="groupIndex <= 1"
+                                                [hasArrow]="groupIndex > 1"
                                                 [animationMarginParams]="{
                                                     marginTop: '8px',
                                                     marginBottom: '8px'
@@ -210,18 +211,23 @@
                                                         "
                                                         [ngClass]="{
                                                             hovering:
+                                                                isHoveringGroupIndex ===
+                                                                    groupIndex &&
                                                                 isHoveringGroupItemIndex ===
-                                                                itemIndex +
-                                                                    groupIndex
+                                                                    groupIndex +
+                                                                        itemIndex
                                                         }"
                                                         (mouseenter)="
-                                                            isHoveringGroupItemIndex =
-                                                                itemIndex +
-                                                                groupIndex
+                                                            handleGroupRowHover(
+                                                                true,
+                                                                groupIndex,
+                                                                itemIndex
+                                                            )
                                                         "
                                                         (mouseleave)="
-                                                            isHoveringGroupItemIndex =
-                                                                -1
+                                                            handleGroupRowHover(
+                                                                false
+                                                            )
                                                         "
                                                     >
                                                         <!-- Status -->
@@ -229,9 +235,11 @@
                                                         <div
                                                             class="d-flex item-box"
                                                             [ngClass]="
+                                                                isHoveringGroupIndex ===
+                                                                    groupIndex &&
                                                                 isHoveringGroupItemIndex ===
-                                                                itemIndex +
-                                                                    groupIndex
+                                                                    groupIndex +
+                                                                        itemIndex
                                                                     ? 'flex-column align-items-start'
                                                                     : 'flex-row align-items-center'
                                                             "
@@ -271,9 +279,11 @@
 
                                                             <ng-container
                                                                 *ngIf="
+                                                                    isHoveringGroupIndex ===
+                                                                        groupIndex &&
                                                                     isHoveringGroupItemIndex ===
-                                                                    itemIndex +
-                                                                        groupIndex
+                                                                        groupIndex +
+                                                                            itemIndex
                                                                 "
                                                             >
                                                                 <span>
@@ -326,6 +336,12 @@
                                                                         0
                                                                     )
                                                                 "
+                                                                (click)="
+                                                                    handleUpdateGroupHistoryDataIndex(
+                                                                        groupIndex,
+                                                                        itemIndex
+                                                                    )
+                                                                "
                                                             ></app-ta-input>
                                                         </div>
 
@@ -357,6 +373,12 @@
                                                                         groupIndex,
                                                                         itemIndex,
                                                                         1
+                                                                    )
+                                                                "
+                                                                (click)="
+                                                                    handleUpdateGroupHistoryDataIndex(
+                                                                        groupIndex,
+                                                                        itemIndex
                                                                     )
                                                                 "
                                                             ></app-ta-input>
@@ -399,6 +421,12 @@
                                                                             2
                                                                         )
                                                                     "
+                                                                    (click)="
+                                                                        handleUpdateGroupHistoryDataIndex(
+                                                                            groupIndex,
+                                                                            itemIndex
+                                                                        )
+                                                                    "
                                                                 ></app-ta-input>
                                                             </ng-container>
                                                         </div>
@@ -438,6 +466,12 @@
                                                                             groupIndex,
                                                                             itemIndex,
                                                                             3
+                                                                        )
+                                                                    "
+                                                                    (click)="
+                                                                        handleUpdateGroupHistoryDataIndex(
+                                                                            groupIndex,
+                                                                            itemIndex
                                                                         )
                                                                     "
                                                                 ></app-ta-input>
@@ -506,33 +540,136 @@
 
                                 <!-- No Group Main -->
 
-                                <div
-                                    class="d-flex flex-column no-group-container-main"
-                                >
+                                <div class="no-group-container-main">
                                     <ng-container
                                         *ngFor="
                                             let noGroupItemData of noGroupData;
+                                            let noGroupItemDataIndex = index;
                                             trackBy: trackByIdentity
                                         "
                                     >
                                         <div
-                                            class="align-items-center no-group-container-main-item"
+                                            class="no-group-container-main-item"
                                             [ngClass]="noGroupClass"
                                         >
                                             <ng-container
                                                 *ngFor="
                                                     let noGroupItem of noGroupItemData;
+                                                    let noGroupItemIndex = index;
                                                     let last = last;
                                                     trackBy: trackByIdentity
                                                 "
-                                            >
+                                                ><!--  &&
+                                                            noGroupItemDataIndex ===
+                                                                hoverRowIndex -->
+
+                                                <!--  isHoveringGroup &&
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                hoverRowIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                hoverBoxIndex -->
                                                 <div
-                                                    class="d-flex align-items-center item-box"
+                                                    class="align-items-center item-box"
+                                                    [class]="
+                                                        handleDispatchHistoryGridSpanItemClassName(
+                                                            true,
+                                                            noGroupItemDataIndex,
+                                                            noGroupItemIndex
+                                                        )
+                                                    "
+                                                    [class.hovered]="
+                                                        hoveredGroup ===
+                                                        handleDispatchHistoryGridSpanItemClassName(
+                                                            true,
+                                                            noGroupItemDataIndex,
+                                                            noGroupItemIndex
+                                                        )
+                                                    "
                                                     [ngClass]="{
                                                         'justify-content-end':
                                                             last
                                                     }"
+                                                    [ngStyle]="{
+                                                        'grid-row':
+                                                            'span ' +
+                                                            noGroupItemSpanArray[
+                                                                noGroupItemDataIndex
+                                                            ][noGroupItemIndex]
+                                                    }"
+                                                    (mouseenter)="
+                                                        handleGroupHover(
+                                                            handleDispatchHistoryGridSpanItemClassName(
+                                                                true,
+                                                                noGroupItemDataIndex,
+                                                                noGroupItemIndex
+                                                            )
+                                                        )
+                                                    "
+                                                    (mouseleave)="
+                                                        handleGroupLeave()
+                                                    "
                                                 >
+                                                    <!--   'hover-group':
+                                                            isHoveringGroup &&
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                hoverRowIndex
+                                                            ) &&
+                                                            hoverRowIndex >=
+                                                                noGroupItemHoverArray[
+                                                                    noGroupItemDataIndex
+                                                                ][0] &&
+                                                            hoverRowIndex <=
+                                                                noGroupItemHoverArray[
+                                                                    noGroupItemDataIndex
+                                                                ][
+                                                                    noGroupItemHoverArray[
+                                                                        noGroupItemDataIndex
+                                                                    ].length - 1
+                                                                ],
+                                                        group:
+                                                            noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                1 -->
+                                                    <!--     (noGroupItemDataIndex >=
+                                                                0 &&
+                                                                noGroupItemDataIndex <=
+                                                                    5 &&
+                                                                noGroupItemIndex ===
+                                                                    1) ||
+                                                            (noGroupItemDataIndex >=
+                                                                6 &&
+                                                                noGroupItemDataIndex <=
+                                                                    15 &&
+                                                                noGroupItemIndex ===
+                                                                    1) ||
+                                                            (noGroupItemDataIndex >=
+                                                                16 &&
+                                                                noGroupItemDataIndex <=
+                                                                    24 &&
+                                                                noGroupItemIndex ===
+                                                                    1)
+                                                                    
+                                                                    noGroupItemHoverArray[
+                                                                noGroupItemDataIndex
+                                                            ].includes(
+                                                                noGroupItemDataIndex
+                                                            ) &&
+                                                            noGroupItemIndex ===
+                                                                1 -->
                                                     <p class="m-0">
                                                         {{
                                                             noGroupItem ??

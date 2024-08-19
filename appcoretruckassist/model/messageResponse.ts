@@ -12,6 +12,7 @@
 import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { LinkResponse } from './linkResponse';
 
 
 export interface MessageResponse { 
@@ -25,6 +26,11 @@ export interface MessageResponse {
     createdAt?: string;
     updatedAt?: string;
     isEdited?: boolean;
-    attachments?: Array<FileResponse> | null;
+    files?: Array<FileResponse> | null;
+    filesCount?: number;
+    media?: Array<FileResponse> | null;
+    mediaCount?: number;
+    links?: Array<LinkResponse> | null;
+    linksCount?: number;
 }
 

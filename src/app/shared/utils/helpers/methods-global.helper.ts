@@ -138,4 +138,8 @@ export class MethodsGlobalHelper {
     }) {
         return Object.values(obj).every((value) => !value);
     }
+
+    static checkIfAnyItemInArrayHasNoValue<T>(array: T[]) {
+        return array.some((element) => element === null);
+    }
 }

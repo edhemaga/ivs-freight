@@ -50,12 +50,13 @@ export class DispatchTableDriverComponent {
     @Input() public phone: string;
     @Input() public email: string;
     @Input() public isDrag: boolean;
-    @Input() public draggingType: string;
     @Input() public openedDriverDropdown: number;
     @Input() public isActiveLoad: boolean;
     @Input() public hoursOfService: HosResponse;
     @Input() public dispatchId: number;
     @Input() public isHoveringRow: boolean;
+    @Input() public isHosShown: boolean = true;
+    @Input() public isEndorsmentShow: boolean = true;
     @Input() public openedHosData: any; //leave this any because we are not doing this now
 
     @Input() set driverDropdownWidth(value: number) {

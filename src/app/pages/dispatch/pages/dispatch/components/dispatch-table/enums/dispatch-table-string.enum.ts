@@ -18,6 +18,8 @@ export enum DispatchTableStringEnum {
     DRIVER_ID = 'driverId',
     CO_DRIVER_ID = 'coDriverId',
 
+    EMPTY_STRING = '',
+
     CIRCLE_ROUTE = 'ic_circle.svg',
     OWNER_STATUS_ROUTE = 'ic_owner-status.svg',
 
@@ -43,4 +45,12 @@ export enum DispatchTableStringEnum {
     COPY = 'copy',
     VALUE = 'value',
     NOTE = 'NOTE',
+    TRUCK_1 = 'TRUCK',
+    TRAILER_1 = 'TRAILER',
+    DRIVER_1 = 'DRIVER',
+    LAST_LOCATION = 'LAST LOCATION',
+    PARKING_1 = 'PARKING',
+    INSPECTION = 'INSPECTION',
+    PROGRESS = 'PROGRESS',
+    DISPATCHER_1 = 'DISPATCHER',
 }

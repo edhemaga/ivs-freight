@@ -6,9 +6,13 @@ import {
 
 // Models
 import { FileResponse } from 'appcoretruckassist';
+import { ChatLink } from '@pages/chat/models/chat-link.model';
 
 // Enums
 import { UserProfileResourceType } from '@pages/chat/enums/conversation/user-profile-resource-type.enum';
+
+// Assets
+import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 @Component({
   selector: 'app-chat-profile-resources',
@@ -24,7 +28,10 @@ export class ChatProfileResourcesComponent implements OnInit {
   @Input() public type: UserProfileResourceType;
 
   // Resources
-  @Input() resources: Array<FileResponse | string | null>;
+  @Input() resources: Array<FileResponse | ChatLink | null>;
+
+  // Assets 
+  public ChatSvgRoutes = ChatSvgRoutes;
 
   public isExpanded: boolean = false;
 

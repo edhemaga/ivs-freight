@@ -3,24 +3,111 @@
 .dispatch-table {
     position: relative;
 
+    /* Unlocked Table */
+
     &.unlocked {
         table {
             tr {
                 td {
                     .main_inside {
-                        .cdk-drag {
-                            cursor: grab;
-                            &:active {
-                                cursor: grabbing;
+                        /* Drag & Drop Single*/
+
+                        &.dragging:not(:active) {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+                                    transition: 10s linear;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows_grey.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
                             }
                         }
 
-                        &.default {
-                            pointer-events: none;
+                        &.dragging:active {
+                            cursor: grabbing;
+
+                            .main_inside {
+                                background: $ta-black-2;
+
+                                .padding-inside {
+                                    .info-item,
+                                    .selected-container {
+                                        background: transparent !important;
+
+                                        p {
+                                            color: $white !important;
+                                        }
+
+                                        span {
+                                            color: $bw5 !important;
+                                        }
+
+                                        .driver-items-hold {
+                                            span {
+                                                color: $white !important;
+                                            }
+
+                                            .hos-column {
+                                                .hos-number {
+                                                    color: $white !important;
+                                                }
+                                            }
+                                        }
+
+                                        .remove-icon-container,
+                                        .driver-vacation {
+                                            display: none !important;
+                                        }
+                                    }
+                                }
+
+                                .padding-inside:has(.selected-container) {
+                                    background: $ta-black-2 !important;
+                                }
+
+                                &:after {
+                                    content: '';
+                                    width: 18px;
+                                    height: 18px;
+                                    position: absolute;
+                                    right: 8px;
+                                    top: 50%;
+
+                                    transform: translateY(-50%);
+                                    background-image: url('/assets/svg/common/ic_sort_arrows.svg');
+                                    background-size: 18px 18px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+                            }
                         }
 
-                        &.dragging {
-                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+                        .drag-hold-between {
+                            height: 100%;
+                        }
+
+                        .custom-dispatch-placeholder {
+                            position: relative;
+                            height: 32px;
+                            width: 100%;
+                            border-radius: 3px;
+                            opacity: 1 !important;
+                            cursor: grabbing !important;
+
+                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+
+                            z-index: 10;
                         }
                     }
 
@@ -72,15 +159,7 @@
         }
     }
 
-    .change-in-progress-background-cover {
-        position: absolute;
-        top: 35px;
-        height: calc(100% - 35px);
-        width: 100%;
-        z-index: 105;
-        background: $white-7;
-        border-radius: 3px;
-    }
+    /* Locked Table */
 
     table {
         width: 100%;
@@ -137,7 +216,8 @@
                 }
             }
 
-            .icon {
+            &.icon {
+                padding-left: 0 !important;
                 svg {
                     path {
                         fill: $bw6-2;
@@ -162,14 +242,37 @@
                 background-color: #f7f7f7;
                 border-radius: 3px;
 
+                &.filled {
+                    background: #fff;
+
+                    .padding-inside {
+                        &.hovering {
+                            .info-item,
+                            .selected-container {
+                                transition: background 0.2s ease-in;
+                                background: $bw2;
+                            }
+                        }
+
+                        &:hover {
+                            .info-item {
+                                background: $bw2;
+
+                                .driver-buttons {
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 &.cdk-drop-list {
                     overflow: hidden;
                 }
 
                 .padding-inside {
                     position: relative;
-
-                    height: 100%;   
+                    height: 100%;
 
                     &:not(.status-inside) {
                         padding: 4px;
@@ -210,9 +313,14 @@
                                 font-weight: 400;
                             }
 
-                            &::selection {
-                                background-color: $ta-black-2;
+                            &::-moz-selection {
                                 color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
                             }
 
                             &.dr-span {
@@ -282,34 +390,6 @@
                         align-items: center;
                         padding-left: 6px;
                     }
-                }
-
-                &.filled {
-                    background: #fff;
-
-                    .padding-inside {
-                        position: relative;
-                        &:hover {
-                            .info-item {
-                                background: $bw2;
-                            }
-                        }
-                    }
-                }
-
-                .drag-hold-between {
-                    height: 100%;
-                }
-
-                .custom-dispatch-placeholder {
-                    position: relative;
-                    height: 32px;
-                    width: 100%;
-                    border-radius: 3px;
-                    opacity: 1 !important;
-                    cursor: grabbing !important;
-
-                    z-index: 10;
                 }
             }
         }
@@ -394,7 +474,19 @@
         }
     }
 
-    /* Drag */
+    /* Change In Progress */
+
+    .change-in-progress-background-cover {
+        position: absolute;
+        top: 35px;
+        height: calc(100% - 35px);
+        width: 100%;
+        z-index: 105;
+        background: $white-7;
+        border-radius: 3px;
+    }
+
+    /* Drag & Drop Row */
 
     .cdk-drag {
         position: relative;
@@ -414,25 +506,88 @@
     }
 
     .reorder-row {
+        &.drag {
+            cursor: grab;
+        }
+
         &.cdk-drag-preview {
             position: relative;
             border-radius: 3px;
-
-            background-color: $ta-black-2 !important;
+            background: $ta-black-2 !important;
             z-index: 9999999 !important;
             cursor: grabbing !important;
 
             .cdk-drag-handle {
-                cursor: grabbing !important;
+                pointer-events: all !important;
             }
 
             .main_inside {
-                background-color: transparent !important;
-            }
+                background: transparent !important;
 
-            .padding-inside {
-                &:after {
-                    display: none !important;
+                .padding-inside {
+                    &.hovering {
+                        .info-item,
+                        .selected-container {
+                            background: transparent !important;
+
+                            p {
+                                color: $white !important;
+                            }
+
+                            span {
+                                color: $bw5 !important;
+                            }
+
+                            .driver-items-hold {
+                                span {
+                                    color: $white !important;
+                                }
+
+                                .hos-column {
+                                    .hos-number {
+                                        color: $white !important;
+                                    }
+                                }
+                            }
+
+                            .remove-icon-container,
+                            .driver-vacation {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .location-field {
+                        .location-city {
+                            .location-f-city,
+                            .location-f-st {
+                                color: $white !important;
+                            }
+                        }
+                    }
+
+                    .dispatch-parking {
+                        .dispatch-parking-text {
+                            color: $white !important;
+                        }
+                    }
+
+                    &:after,
+                    .dispatch-table-driver {
+                        display: none !important;
+                    }
+                }
+
+                .add-new-container {
+                    background: transparent !important;
+
+                    p {
+                        color: $white !important;
+                    }
+
+                    .icon {
+                        display: none !important;
+                    }
                 }
             }
 
@@ -441,12 +596,12 @@
                 width: 18px;
                 height: 18px;
                 position: absolute;
-                right: 10px;
+                right: 8px;
                 top: 50%;
 
                 transform: translateY(-50%);
-                background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
-                background-size: 20px 17px;
+                background-image: url('/assets/svg/common/ic_sort_arrows.svg');
+                background-size: 18px 18px;
                 background-repeat: no-repeat;
                 background-position: center;
             }

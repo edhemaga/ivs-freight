@@ -19,6 +19,8 @@ export interface CreateDispatchCommand {
     driverId?: number | null;
     coDriverId?: number | null;
     location?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
     note?: string | null;
     loadIds?: Array<number> | null;
 }

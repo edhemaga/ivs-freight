@@ -57,8 +57,9 @@ export class FormService implements OnDestroy {
     }
     
     private isValidNumber(value: string | number, maxDigits: number): boolean {
+        value = value.toString().replace(',', '');
         const numPattern = new RegExp(`^-?\\d{1,${maxDigits}}$`);
-        return numPattern.test(value.toString());
+        return numPattern.test(value);
     }
     
     ngOnDestroy(): void {

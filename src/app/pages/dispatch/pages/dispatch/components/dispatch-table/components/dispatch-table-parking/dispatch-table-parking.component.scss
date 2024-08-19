@@ -158,6 +158,16 @@
         &_assigned {
             color: $ta-black-2;
         }
+
+        &::-moz-selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black-2;
+            background: rgb(47, 47, 47, 0.2);
+        }
     }
 
     &-icon {
