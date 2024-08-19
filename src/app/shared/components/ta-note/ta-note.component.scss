@@ -61,6 +61,12 @@
             }
         }
 
+        &.dispatch-note {
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
+
         .note-btn {
             width: 18px;
             height: 18px;
@@ -79,6 +85,14 @@
             svg {
                 path {
                     fill: #ffffffb2 !important;
+                }
+            }
+        }
+
+        &.dispatch-empty-note {
+            svg {
+                path {
+                    fill: $ta-light-grey-6 !important;
                 }
             }
         }
