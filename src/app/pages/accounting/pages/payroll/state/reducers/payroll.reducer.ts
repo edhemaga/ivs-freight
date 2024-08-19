@@ -1,13 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
-import { PayrollState } from '../payroll.store';
 import * as PayrollActions from '../actions/payroll.actions';
+import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
+import { PayrollState } from '../models/payroll.model';
 
 export const payrollState: PayrollState = {
-    payrollCounts: []
+    payrollCounts: {},
+    payrollDriverMileage: {},
+    loading: false,
 };
 
 export const payrollReducer = createReducer(
     payrollState,
+    // Payroll Get Counts Actions
     on(PayrollActions.getPayrollCounts, (state) => ({
         ...state,
         loading: true,
@@ -15,5 +19,19 @@ export const payrollReducer = createReducer(
     on(PayrollActions.getPayrollCountsSuccess, (state, results) => ({
         ...state,
         payrollCounts: results.payrollCounts,
-    }))
+        loading: false,
+    })),
+    on(PayrollSoloMileageDriver.getPayrollSoloMileageDriver, (state) => ({
+        ...state,
+        loading: true,
+    })),
+    // Payroll Get Driver Solo Mileage
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageDriverSuccess,
+        (state, data) => ({
+            ...state,
+            payrollDriverMileage: data.payroll,
+            loading: false,
+        })
+    )
 );

@@ -68,9 +68,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     public subscribeToStoreData() {
         this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
         this.payrollCountsResponse$ = this.payrollFacadeService.selectPayrollCounts$;
-        this.payrollFacadeService.selectPayrollCounts$.subscribe((payroll) => {
-            console.log('WHAT IS A PAYROLLL', payroll);
-        });
     }
 
     ngOnInit(): void {

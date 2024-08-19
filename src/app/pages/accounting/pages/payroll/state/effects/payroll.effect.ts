@@ -4,6 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, map, tap, catchError } from 'rxjs/operators';
 import * as PayrollActions from '../actions/payroll.actions';
+import * as PayrollSoloMileageDriver from '../actions/payroll_solo_mileage_driver.actions';
 import { PayrollService } from '../../services/payroll.service';
 
 @Injectable()
@@ -37,6 +38,40 @@ export class PayrollEffect {
                                     PayrollActions.getPayrollCountsError({
                                         error,
                                     })
+                                )
+                            )
+                        );
+                })
+            )
+    );
+
+    public getPayrollSoloMileage$ = createEffect(
+        (): Observable<Action> =>
+            this.actions$.pipe(
+                ofType(PayrollSoloMileageDriver.getPayrollSoloMileageDriver),
+                switchMap((action) => {
+                    return this.payrollService
+                        .getPayrollSoloMileageDriver()
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.getPayrollSoloMileageDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.getPayrollSoloMileageDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
                                 )
                             )
                         );

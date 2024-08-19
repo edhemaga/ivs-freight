@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PayrollCountsResponse } from 'appcoretruckassist';
+import {
+    PayrollCountsResponse,
+    PayrollDriverMileageListResponse,
+} from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-@Injectable({providedIn: "root"})
+@Injectable({ providedIn: 'root' })
 export class PayrollService {
     constructor(public http: HttpClient) {}
 
@@ -13,6 +16,12 @@ export class PayrollService {
     ): Observable<PayrollCountsResponse> {
         return this.http.get(
             `${environment.API_ENDPOINT}/api/payroll/counts?ShowOpen=${showOpen}`
+        );
+    }
+
+    public getPayrollSoloMileageDriver(): Observable<PayrollDriverMileageListResponse> {
+        return this.http.get(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
         );
     }
 }

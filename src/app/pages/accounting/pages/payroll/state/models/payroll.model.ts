@@ -1,7 +1,8 @@
-import { PayrollCountsResponse } from 'appcoretruckassist';
+import { PayrollCountsResponse, PayrollDriverMileageListResponse } from 'appcoretruckassist';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
+    payrollDriverMileage: PayrollDriverMileageListResponse;
     loading: boolean;
 }
 
