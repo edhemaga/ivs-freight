@@ -5026,9 +5026,13 @@
                                             [mainData]="row"
                                             [entityId]="row.id"
                                             [entityType]="
-                                                activeTableData?.gridNameTitle ===
-                                                    'Customer' &&
-                                                selectedTab === 'inactive'
+                                                activeTableData.gridNameTitle ===
+                                                    'load' &&
+                                                selectedTab === 'template'
+                                                    ? 'LoadTemplate'
+                                                    : activeTableData?.gridNameTitle ===
+                                                          'Customer' &&
+                                                      selectedTab === 'inactive'
                                                     ? 'Shipper'
                                                     : activeTableData?.gridNameTitle !==
                                                       'Repair'
