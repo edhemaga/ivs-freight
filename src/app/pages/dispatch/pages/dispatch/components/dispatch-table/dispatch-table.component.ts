@@ -608,11 +608,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
-        const { note, dispatchIndex } = item;
-        this.updateOrAddDispatchBoardAndSend('note', note, dispatchIndex);
-    }
-
     public changeDriverVacation(data: DispatchResponse): void {
         this.isDispatchBoardChangeInProgress = true;
         this.dispatcherService
