@@ -2178,7 +2178,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         } else if (this.swipeFilter) {
             this.rangeValue = this.swipeActiveRange;
         } else if (this.type === ToolbarFilterStringEnum.VACATION_FILTER) {
-            this.setFilter.emit({ vacation: false });
+            this.setFilter.emit({
+                action: 'Clear',
+                filterType: ToolbarFilterStringEnum.VACATION_FILTER,
+                vacation: false,
+            });
         }
     }
 
@@ -2193,7 +2197,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         filterTextHead?.classList.remove('activeHeader');
         filterTextHead?.classList.remove('inactiveHeader');
         if (this.type === ToolbarFilterStringEnum.VACATION_FILTER) {
-            this.setFilter.emit({ vacation: true });
+            this.setFilter.emit({
+                action: 'Set',
+                filterType: ToolbarFilterStringEnum.VACATION_FILTER,
+                vacation: true,
+            });
         }
     }
 

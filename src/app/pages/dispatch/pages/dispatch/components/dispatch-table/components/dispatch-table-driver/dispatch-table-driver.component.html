@@ -78,40 +78,45 @@
                     </ng-container>
                     <div class="driver-items-hold d-flex align-items-center">
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
-                            <div
-                                #t1="ngbPopover"
-                                [class.empty-box-field]="true"
-                                [ngbPopover]="hos"
-                                autoClose="outside"
-                                class="hos-column"
-                                [ngClass]="
-                                    hoursOfService &&
-                                    hoursOfService[hoursOfService.length - 1]
-                                        ?.flag.name === 'On'
-                                        ? 'active_hos'
-                                        : 'innactive_hos'
-                                "
-                                placement="bottom"
-                                triggers="manual"
-                                container="body"
-                                popoverClass="hos-ngb-popover"
-                            >
+                            <ng-container *ngIf="isHosShown">
                                 <div
-                                    class="hos-img d-flex justify-content-center align-items-center"
-                                    ngbTooltip
-                                    mainTooltip="HOS"
-                                    tooltipBackground="#424242"
-                                    position="bottom"
+                                    #t1="ngbPopover"
+                                    [class.empty-box-field]="true"
+                                    [ngbPopover]="hos"
+                                    autoClose="outside"
+                                    class="hos-column"
+                                    [ngClass]="
+                                        hoursOfService &&
+                                        hoursOfService[
+                                            hoursOfService.length - 1
+                                        ]?.flag.name === 'On'
+                                            ? 'active_hos'
+                                            : 'innactive_hos'
+                                    "
+                                    placement="bottom"
+                                    triggers="manual"
+                                    container="body"
+                                    popoverClass="hos-ngb-popover"
                                 >
-                                    <svg-icon
-                                        class="d-flex"
-                                        [src]="dispatchTableSvgRoutes.hosArrow"
-                                    ></svg-icon>
+                                    <div
+                                        class="hos-img"
+                                        ngbTooltip
+                                        mainTooltip="HOS"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                dispatchTableSvgRoutes.hosArrow
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                    <div class="hos-number">
+                                        {{ hoursOfService ?? [] | hosTime }}
+                                    </div>
                                 </div>
-                                <div class="hos-number">
-                                    {{ hoursOfService ?? [] | hosTime }}
-                                </div>
-                            </div>
+                            </ng-container>
+
                             <span class="dr-span-left"
                                 >{{ driver.firstName }}
                                 {{ driver.lastName }}</span
