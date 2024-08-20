@@ -1139,7 +1139,8 @@ export class TaInputComponent
                 'amount',
                 'bol no.',
                 'seal no.',
-                'pickup no.'
+                'pickup no.',
+                'code'
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers

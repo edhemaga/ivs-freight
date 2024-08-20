@@ -585,15 +585,17 @@
                                                             noGroupItemIndex
                                                         )
                                                     "
+                                                    [class.hovered]="
+                                                        hoveredGroup ===
+                                                        handleDispatchHistoryGridSpanItemClassName(
+                                                            true,
+                                                            noGroupItemDataIndex,
+                                                            noGroupItemIndex
+                                                        )
+                                                    "
                                                     [ngClass]="{
                                                         'justify-content-end':
-                                                            last,
-                                                        'hover-group':
-                                                            handleDispatchHistoryGridSpanItemClassName(
-                                                                false,
-                                                                noGroupItemDataIndex,
-                                                                noGroupItemIndex
-                                                            )
+                                                            last
                                                     }"
                                                     [ngStyle]="{
                                                         'grid-row':
@@ -603,13 +605,17 @@
                                                             ][noGroupItemIndex]
                                                     }"
                                                     (mouseenter)="
-                                                        handleStart(
-                                                            $event,
-                                                            noGroupItemDataIndex,
-                                                            noGroupItemIndex
+                                                        handleGroupHover(
+                                                            handleDispatchHistoryGridSpanItemClassName(
+                                                                true,
+                                                                noGroupItemDataIndex,
+                                                                noGroupItemIndex
+                                                            )
                                                         )
                                                     "
-                                                    (mouseleave)="handleEnd()"
+                                                    (mouseleave)="
+                                                        handleGroupLeave()
+                                                    "
                                                 >
                                                     <!--   'hover-group':
                                                             isHoveringGroup &&

@@ -13,6 +13,7 @@
             : 'my-note-popover'
     "
     triggers="manual"
+    (hidden)="closeNote()"
     (click)="isAllOpen ? toggleNote(_note, t2) : ''"
 >
     <ng-container
@@ -23,7 +24,9 @@
             [ngClass]="{
                 'note-normal-icon': !isAllOpen,
                 'note-note-empty': !_note && !isAllOpen,
-                'note-all-expanded': noteOpened
+                'note-all-expanded': noteOpened,
+                'dispatch-empty-note': dispatchNoteEmpty,
+                'dispatch-note': isDispatch && !noteOpened,
             }"
             [tooltipBackground]="'#424242'"
             ngbTooltip

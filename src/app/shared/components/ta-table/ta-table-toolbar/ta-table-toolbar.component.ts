@@ -61,7 +61,11 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
 
 // Pipes
 import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
-import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormControl,
+} from '@angular/forms';
 
 @Titles()
 @Component({
@@ -568,6 +572,15 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public onShowOptions(optionsPopup): void {
         this.optionsPopupContent[0].active = false;
         this.optionsPopupContent.map((option) => {
+            if (this.activeViewMode === 'Dispatch') {
+                if (option.text === TableStringEnum.COLUMNS) {
+                    option.active = true;
+                } else {
+                    option.hide = true;
+                }
+                this.checkAreAllSelectedInGroup();
+                return option;
+            }
             if (option.text !== TableStringEnum.COLUMNS) {
                 option.hide = false;
             }
@@ -635,7 +648,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                     })
                     .subscribe(() => {});
             }
-        } else if (action.text === TableStringEnum.COLUMNS) {
+        } else if (
+            action.text === TableStringEnum.COLUMNS &&
+            this.activeViewMode !== 'Dispatch'
+        ) {
             action.active = !action.active;
 
             this.checkAreAllSelectedInGroup();
@@ -811,12 +827,14 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             JSON.stringify(newColumns)
         );
 
-        this.tableService
-            .sendTableConfig({
-                tableType: this.tableConfigurationType,
-                config: JSON.stringify(newColumns),
-            })
-            .subscribe(() => {});
+        if (this.activeViewMode !== 'Dispatch') {
+            this.tableService
+                .sendTableConfig({
+                    tableType: this.tableConfigurationType,
+                    config: JSON.stringify(newColumns),
+                })
+                .subscribe(() => {});
+        }
 
         this.tableService.sendToaggleColumn({
             column: column,

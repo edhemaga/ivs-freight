@@ -3,6 +3,7 @@
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
+        [columns]="columns"
         [selectedTab]="'active'"
         [selectedDispatcherData]="selectedDispatcher"
         [dispathcboardTableLocked]="isBoardLocked"
@@ -21,7 +22,10 @@
                     [isBoardLocked]="isBoardLocked"
                     [shortLists]="dispatchBoardSmallList | async"
                     [toolbarWidth]="maxToolbarWidth"
-                    [isAllBoardsList]="selectedDispatcher?.name === 'All Boards'"
+                    [columns]="columns"
+                    [isAllBoardsList]="
+                        selectedDispatcher?.name === 'All Boards'
+                    "
                     (onTableUnlockEmitter)="onToolBarAction($event)"
                 ></app-dispatch-table>
             </div>

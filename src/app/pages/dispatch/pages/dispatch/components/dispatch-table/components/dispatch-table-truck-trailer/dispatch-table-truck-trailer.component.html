@@ -124,17 +124,18 @@
                                             : trailer.trailerNumber
                                     }}
                                 </p>
-
-                                <span>
-                                    {{
-                                        type === 'truck' && !!truck.year
-                                            ? '(' + truck.year + ')'
-                                            : type === 'trailer' &&
-                                              !!trailer.year
-                                            ? '(' + trailer.year + ')'
-                                            : ''
-                                    }}
-                                </span>
+                                <ng-container *ngIf="isYearShown">
+                                    <span>
+                                        {{
+                                            type === 'truck' && !!truck.year
+                                                ? '(' + truck.year + ')'
+                                                : type === 'trailer' &&
+                                                  !!trailer.year
+                                                ? '(' + trailer.year + ')'
+                                                : ''
+                                        }}
+                                    </span>
+                                </ng-container>
                             </ng-template>
                         </div>
 
