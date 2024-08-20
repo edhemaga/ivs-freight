@@ -13,17 +13,20 @@ import { SharedModule } from '@shared/shared.module';
 import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/dispatch-table.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { DispatchHistoryModalNoGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-group/dispatch-history-modal-no-group.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
+import { DispatchHistoryModalNoContentComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-content/dispatch-history-modal-no-content.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from '@shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 import { DispatchTableDriverComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-driver/dispatch-table-driver.component';
 import { DispatchTableNoteComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-note/dispatch-table-note.component';
 import { DispatchTableParkingComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-parking/dispatch-table-parking.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { DispatchTableTruckTrailerComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-truck-trailer/dispatch-table-truck-trailer.component';
 import { DispatchTableAddNewComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-add-new/dispatch-table-add-new.component';
 import { DispatchTableAssignLoadComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-assign-load/dispatch-table-assign-load.component';
@@ -51,7 +54,6 @@ import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
 import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
-import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 
 @NgModule({
@@ -69,6 +71,8 @@ import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/comp
         DispatchTableLastLocationComponentComponent,
         DispatchTablePreTripInspectionComponent,
         DispatchHistoryModalComponent,
+        DispatchHistoryModalNoContentComponent,
+        DispatchHistoryModalNoGroupComponent,
         DispatchTableStatusComponent,
         DispatchTableNoteComponent,
         LoadShortDetailsComponent,

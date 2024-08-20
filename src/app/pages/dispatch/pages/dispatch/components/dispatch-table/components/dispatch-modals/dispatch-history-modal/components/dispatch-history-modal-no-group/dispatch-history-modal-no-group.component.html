@@ -1,0 +1,85 @@
+<div class="d-flex flex-column no-group-container">
+    <!-- No Group Header -->
+
+    <div
+        class="align-items-center no-group-container-header"
+        [ngClass]="noGroupClass"
+    >
+        <ng-container
+            *ngFor="
+                let noGroupHeaderItem of noGroupHeaderItems;
+                let last = last;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex align-items-center no-group-container-header-box"
+                [ngClass]="{
+                    'justify-content-end': last
+                }"
+            >
+                <p class="m-0 ta-font-bold">
+                    {{ noGroupHeaderItem }}
+                </p>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- No Group Main -->
+
+    <div class="no-group-container-main">
+        <ng-container
+            *ngFor="
+                let noGroupItemData of noGroupData;
+                let noGroupItemDataIndex = index;
+                trackBy: trackByIdentity
+            "
+        >
+            <div class="no-group-container-main-item" [ngClass]="noGroupClass">
+                <ng-container
+                    *ngFor="
+                        let noGroupItem of noGroupItemData;
+                        let noGroupItemIndex = index;
+                        let last = last;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="align-items-center item-box"
+                        [class]="
+                            noGroupItemSpanClassNameArray[noGroupItemDataIndex][
+                                noGroupItemIndex
+                            ]
+                        "
+                        [ngClass]="{
+                            'd-flex justify-content-end': last,
+                            'hover-group':
+                                noGroupItemSpanClassNameArray[
+                                    noGroupItemDataIndex
+                                ][noGroupItemIndex] === hoveredSpanGroup
+                        }"
+                        [ngStyle]="{
+                            'grid-row':
+                                'span ' +
+                                noGroupItemSpanArray[noGroupItemDataIndex][
+                                    noGroupItemIndex
+                                ]
+                        }"
+                        (mouseenter)="
+                            handleSpanGroupHover(
+                                true,
+                                noGroupItemDataIndex,
+                                noGroupItemIndex
+                            )
+                        "
+                        (mouseleave)="handleSpanGroupHover()"
+                    >
+                        <p class="m-0">
+                            {{ noGroupItem ?? '\u00A0' }}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>

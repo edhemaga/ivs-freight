@@ -1,0 +1,54 @@
+@import 'src/theme/variables.scss';
+
+.dispatch-history-modal-main-container-no-content {
+    padding: 53px 0 22px 0;
+
+    .icon {
+        margin-bottom: 21px;
+    }
+
+    p {
+        font-size: 20px;
+        line-height: 25px;
+        margin-bottom: 6px !important;
+    }
+
+    span {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    p,
+    span {
+        color: $bw5;
+
+        &::-moz-selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+        }
+
+        &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+        }
+    }
+
+    .reset-btn {
+        width: 150px;
+        height: 32px;
+        margin: 22px 0;
+        outline: none;
+        border: none;
+        border-radius: 2px;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.5px;
+        background: $bw6;
+        color: $white;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: $ta-black;
+        }
+    }
+}

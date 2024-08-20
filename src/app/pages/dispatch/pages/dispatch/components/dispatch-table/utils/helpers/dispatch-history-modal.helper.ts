@@ -1085,50 +1085,56 @@ export class DispatchHistoryModalHelper {
         return noGroupItemSpanArray;
     }
 
-    static createDispatchHistoryDataHoverArray(
+    static createDispatchHistoryDataClassNames(
         noGroupItemSpanArray: number[][]
-    ): number[][] {
-        console.log('noGroupItemSpanArray', noGroupItemSpanArray);
+    ): string[][] {
+        const groupArray: string[][] = [];
 
-        const testArray = [];
+        let groupCounter = 1;
 
-        noGroupItemSpanArray.forEach((row, rowIndex) => {
-            let classNameArray = [];
+        function getNextGroupName(): string {
+            return `group-${groupCounter.toString().padStart(3, '0')}`;
+        }
 
-            row.forEach((rowItem, rowItemIndex) => {
-                const className = '' + rowIndex + rowItemIndex;
-
-                classNameArray.push(className);
-            });
-
-            testArray.push(classNameArray);
-        });
-
-        console.log('testArray', testArray);
-
-        const noGroupItemHoverArray: number[][] = [];
-
-        let hoverIndexArray: number[] = [];
-        let spanHoverCounter = 0;
-
-        noGroupItemSpanArray.forEach((row, index) => {
-            const isNoSpanRow = row.every((rowItem) => rowItem === 1);
-
-            hoverIndexArray.push(index);
-
-            spanHoverCounter++;
-
-            if (isNoSpanRow) {
-                for (let i = 0; i < spanHoverCounter; i++) {
-                    noGroupItemHoverArray.push(hoverIndexArray);
-                }
-
-                hoverIndexArray = [];
-                spanHoverCounter = 0;
+        for (
+            let rowIndex = 0;
+            rowIndex < noGroupItemSpanArray.length;
+            rowIndex++
+        ) {
+            // initialize groupArray[rowIndex] if it doesn't exist
+            if (!groupArray[rowIndex]) {
+                groupArray[rowIndex] = [];
             }
-        });
 
-        return noGroupItemHoverArray;
+            for (
+                let colIndex = 0;
+                colIndex < noGroupItemSpanArray[rowIndex].length;
+                colIndex++
+            ) {
+                if (!groupArray[rowIndex][colIndex]) {
+                    const groupName = getNextGroupName();
+                    groupCounter++;
+
+                    // assign the group name to the current cell
+                    groupArray[rowIndex][colIndex] = groupName;
+
+                    // propagate the group name downward if the value spans multiple rows
+                    let span = noGroupItemSpanArray[rowIndex][colIndex];
+                    for (
+                        let i = 1;
+                        i < span && rowIndex + i < noGroupItemSpanArray.length;
+                        i++
+                    ) {
+                        if (!groupArray[rowIndex + i])
+                            groupArray[rowIndex + i] = [];
+
+                        groupArray[rowIndex + i][colIndex] = groupName;
+                    }
+                }
+            }
+        }
+
+        return groupArray;
     }
 
     static createStatusOrderValues(statusString: string): string {
