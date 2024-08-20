@@ -46,8 +46,7 @@ pipelines:
           size: 2x
           name: Build
           script:
-            - export NODE_OPTIONS=--max-old-space-size=3072
-            - export NODE_OPTIONS=--max_old_space_size=3072
+            - export NODE_OPTIONS=--max-old-space-size=6144
             - npm run build:stage
           artifacts:
             - dist/** # Save build for next steps
