@@ -1592,7 +1592,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             this.setButtonAvailable = false;
 
-            if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
+            if (this.type === ToolbarFilterStringEnum.TIME_FILTER || this.type === ToolbarFilterStringEnum.TIME_FILTER_FUTURE) {
                 this.filterActiveTime = this.selectedTimeValue;
 
                 if (!this.selectedTimeValue) {

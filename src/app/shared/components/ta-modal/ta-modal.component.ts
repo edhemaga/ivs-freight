@@ -173,6 +173,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     // Header filters
     @Input() hasTimeFilter: boolean = false;
+    @Input() hasFutureTimeFilter: boolean = false;
     @Input() hasDispatcherFilter: boolean = false;
     @Input() hasTruckTypeFilter: boolean = false;
     @Input() hasTrailerTypeFilter: boolean = false;

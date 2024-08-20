@@ -601,7 +601,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     ? data.queryParams[0]
                     : null;
                 break;
-            case LoadFilterStringEnum.TIME_FILTER:
+            case LoadFilterStringEnum.TIME_FILTER_FUTURE:
                 if (data.queryParams?.timeSelected) {
                     const { fromDate, toDate } =
                         RepairTableDateFormaterHelper.getDateRange(

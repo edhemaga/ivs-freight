@@ -143,6 +143,18 @@
                         </div>
                     </ng-container>
 
+                    <ng-container *ngIf="hasFutureTimeFilter">
+                        <div class="me-1">
+                            <app-ta-filter
+                                [type]="'hasFutureTimeFilter'"
+                                [icon]="'ic_time'"
+                                [filterTitle]="'Time Filter'"
+                                (setFilter)="setFilterValue($event)"
+                            >
+                            </app-ta-filter>
+                        </div>
+                    </ng-container>
+
                     <ng-container *ngIf="hasTimeFilter">
                         <div class="me-1">
                             <app-ta-filter
