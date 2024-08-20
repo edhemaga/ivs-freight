@@ -39,6 +39,7 @@ pipelines:
           caches:
             - node
           script:
+            - export NODE_OPTIONS=--max-old-space-size=6144
             - npm install
           artifacts:
             - node_modules/** # Save modules for next steps
@@ -46,7 +47,6 @@ pipelines:
           size: 2x
           name: Build
           script:
-            - export NODE_OPTIONS=--max-old-space-size=6144
             - npm run build:stage
           artifacts:
             - dist/** # Save build for next steps
