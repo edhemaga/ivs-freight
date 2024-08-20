@@ -171,7 +171,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 this.backLoadFilterQuery.sort,
                 this.backLoadFilterQuery.search,
                 this.backLoadFilterQuery.search1,
-                this.backLoadFilterQuery.search2)
+                this.backLoadFilterQuery.search2
+            )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
                 this.unassignedLoads = res.unassignedLoads;
@@ -386,7 +387,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                 break;
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD:
-                if(this.isReorderingActive) {
+                if (this.isReorderingActive) {
                     return;
                 }
                 this.ngbActiveModal.close();
@@ -608,9 +609,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public setFilter(data): void {
-        // In progress, waiting for backend
         switch (data?.filterType) {
             case LoadFilterStringEnum.USER_FILTER:
+                this.backLoadFilterQuery.dispatcherId = data.queryParams
+                    ? data.queryParams[0]
+                    : null;
                 break;
             case LoadFilterStringEnum.TIME_FILTER:
                 if (data.queryParams?.timeSelected) {
@@ -625,22 +628,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.backLoadFilterQuery.dateTo = null;
                     this.backLoadFilterQuery.dateFrom = null;
                 }
-                this.loadBackFilter(this.backLoadFilterQuery);
-                break;
-            case LoadFilterStringEnum.MONEY_FILTER:
-                // this.backLoadFilterQuery.rateFrom =
-                //     data.queryParams?.firstFormFrom ?? null;
-                // this.backLoadFilterQuery.rateTo =
-                //     data.queryParams?.firstFormTo ?? null;
-                // this.backLoadFilterQuery.paidFrom =
-                //     data.queryParams?.secondFormFrom ?? null;
-                // this.backLoadFilterQuery.paidTo =
-                //     data.queryParams?.secondFormTo ?? null;
-                // this.backLoadFilterQuery.dueFrom =
-                //     data.queryParams?.thirdFormFrom ?? null;
-                // this.backLoadFilterQuery.dueTo =
-                //     data.queryParams?.thirdFormTo ?? null;
-                this.loadBackFilter(this.backLoadFilterQuery);
                 break;
             case LoadFilterStringEnum.LOCATION_FILTER:
                 this.backLoadFilterQuery._long =
@@ -649,24 +636,22 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     data.queryParams?.latValue ?? null;
                 this.backLoadFilterQuery.distance =
                     data.queryParams?.rangeValue ?? null;
-                this.loadBackFilter(this.backLoadFilterQuery);
                 break;
             case LoadFilterStringEnum.TRUCK_FILTER:
-                this.backLoadFilterQuery.truckType =
-                    data.queryParams ?? null;
+                this.backLoadFilterQuery.truckType = data.queryParams
+                    ? data.queryParams[0]
+                    : null;
                 break;
             case LoadFilterStringEnum.TRAILER_FILTER:
-                this.backLoadFilterQuery.truckType =
-                    data.queryParams ?? null;
+                this.backLoadFilterQuery.trailerType = data.queryParams
+                    ? data.queryParams[0]
+                    : null;
                 break;
             default:
                 break;
         }
 
-        this.loadModalData()
-    }
-
-    private loadBackFilter(e: any) {
+        this.loadModalData();
     }
 
     public ngOnDestroy(): void {
