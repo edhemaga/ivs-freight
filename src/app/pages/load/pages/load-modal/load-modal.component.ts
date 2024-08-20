@@ -2145,8 +2145,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         } else {
             timeFrom?.patchValue(null);
+            timeFrom?.markAsTouched();
+
             timeTo?.patchValue(null);
-            timeTo.clearValidators();
+            if (isAppointment) {
+                timeTo?.markAsTouched();
+            }
         }
     }
 
