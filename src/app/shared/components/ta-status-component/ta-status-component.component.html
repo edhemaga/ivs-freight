@@ -55,7 +55,7 @@
                 <p class="status-previous-back ta-font-bold">Or back to</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div
-                        class="status-previous-item ta-font-bold"
+                        class="status-previous-item ta-font-bold d-flex justify-content-between align-items-center w-full"
                         (click)="
                             sendStatus(
                                 statusDetails.previousStatus.statusValue.name,
@@ -84,8 +84,8 @@
                             [isDispatch]="isDispatch"
                             [isDarkColor]="isDispatch"
                         ></app-load-status-string>
+                        <img [src]="backStatus" />
                     </div>
-                    <img [src]="backStatus" />
                 </div>
             </div>
         </ng-container>
