@@ -1,1 +1,307 @@
-<p>dispatch-history-modal-group works!</p>
+<div
+    class="d-flex flex-column group-container"
+    [formGroup]="dispatchHistoryGroupForm"
+>
+    <!-- Group Header -->
+
+    <div class="align-items-center group-container-header">
+        <ng-container
+            *ngFor="
+                let groupHeaderItem of groupHeaderItems;
+                let last = last;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex align-items-center group-container-header-box"
+                [ngClass]="{
+                    'justify-content-end': last
+                }"
+            >
+                <p class="m-0 ta-font-bold">
+                    {{ groupHeaderItem }}
+                </p>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Group Main -->
+
+    <div
+        class="d-flex flex-column group-container-main"
+        formArrayName="dispatchHistoryGroupItems"
+    >
+        <ng-container
+            *ngFor="
+                let group of _groupData;
+                let groupIndex = index;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex group-container-main-card"
+                [formGroupName]="groupIndex"
+            >
+                <app-ta-custom-card
+                    [cardName]="
+                        group?.isCompleted || group?.isIdle
+                            ? group?.loadNumber
+                            : 'Load ' + group?.loadNumber
+                    "
+                    [hasCounter]="group?.count"
+                    [subText]="group?.interval"
+                    [bodyTemplate]="'card'"
+                    [isExtraLargeLayout]="true"
+                    [isCardOpen]="groupIndex <= 1"
+                    [disabledCard]="groupIndex <= 1"
+                    [hasArrow]="groupIndex > 1"
+                    [animationMarginParams]="{
+                        marginTop: '8px',
+                        marginBottom: '8px'
+                    }"
+                >
+                    <ng-container
+                        *ngFor="
+                            let groupItem of getDispatchHistoryGroup(groupIndex)
+                                .controls;
+                            let itemIndex = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div
+                            class="align-items-center group-container-main-card-item"
+                            [formGroupName]="itemIndex"
+                            [ngClass]="{
+                                hovering:
+                                    isHoveringGroupIndex === groupIndex &&
+                                    isHoveringGroupItemIndex ===
+                                        groupIndex + itemIndex
+                            }"
+                            (mouseenter)="
+                                handleGroupRowHover(true, groupIndex, itemIndex)
+                            "
+                            (mouseleave)="handleGroupRowHover(false)"
+                        >
+                            <!-- Status -->
+
+                            <div
+                                class="d-flex item-box"
+                                [ngClass]="
+                                    isHoveringGroupIndex === groupIndex &&
+                                    isHoveringGroupItemIndex ===
+                                        groupIndex + itemIndex
+                                        ? 'flex-column align-items-start'
+                                        : 'flex-row align-items-center'
+                                "
+                            >
+                                <app-load-status-string
+                                    [isDispatchHistoryModalLayout]="true"
+                                    [status]="{
+                                        name: group?.items[itemIndex]?.status
+                                            ?.statusString,
+                                        valueForRequest:
+                                            group?.items[itemIndex]?.status
+                                                ?.statusValue?.name
+                                    }"
+                                    [statusOrder]="{
+                                        type: group?.items[itemIndex]?.type,
+                                        stopOrder:
+                                            group?.items[itemIndex]?.stopOrder
+                                    }"
+                                ></app-load-status-string>
+
+                                <ng-container
+                                    *ngIf="
+                                        isHoveringGroupIndex === groupIndex &&
+                                        isHoveringGroupItemIndex ===
+                                            groupIndex + itemIndex
+                                    "
+                                >
+                                    <span>
+                                        {{
+                                            group?.items[itemIndex]?.location
+                                                ?.city +
+                                                ', ' +
+                                                group?.items[itemIndex]
+                                                    ?.location?.stateShortName
+                                        }}
+                                    </span>
+                                </ng-container>
+                            </div>
+
+                            <!-- Date Start -->
+
+                            <div class="d-flex align-items-center item-box">
+                                <app-ta-input
+                                    formControlName="dateStart"
+                                    [inputConfig]="
+                                        dispatchHistoryDateStartConfig({  
+                                            groupIndex,
+                                            itemIndex,
+                                            groupItem
+                                        })
+                                    "
+                                    (mouseenter)="
+                                        handleInputHover(
+                                            true,
+                                            groupIndex,
+                                            itemIndex,
+                                            0
+                                        )
+                                    "
+                                    (mouseleave)="
+                                        handleInputHover(
+                                            false,
+                                            groupIndex,
+                                            itemIndex,
+                                            0
+                                        )
+                                    "
+                                    (click)="
+                                        handleUpdateGroupHistoryDataIndex(
+                                            groupIndex,
+                                            itemIndex
+                                        )
+                                    "
+                                ></app-ta-input>
+                            </div>
+
+                            <!-- Time Start -->
+
+                            <div class="d-flex align-items-center item-box">
+                                <app-ta-input
+                                    formControlName="timeStart"
+                                    [inputConfig]="
+                                        dispatchHistoryTimeStartConfig({   
+                                            groupIndex,
+                                            itemIndex,
+                                            groupItem
+                                        })
+                                    "
+                                    (mouseenter)="
+                                        handleInputHover(
+                                            true,
+                                            groupIndex,
+                                            itemIndex,
+                                            1
+                                        )
+                                    "
+                                    (mouseleave)="
+                                        handleInputHover(
+                                            false,
+                                            groupIndex,
+                                            itemIndex,
+                                            1
+                                        )
+                                    "
+                                    (click)="
+                                        handleUpdateGroupHistoryDataIndex(
+                                            groupIndex,
+                                            itemIndex
+                                        )
+                                    "
+                                ></app-ta-input>
+                            </div>
+
+                            <!-- Date End -->
+
+                            <div class="d-flex align-items-center item-box">
+                                <ng-container
+                                    *ngIf="groupItem?.get('dateEnd').value"
+                                >
+                                    <app-ta-input
+                                        formControlName="dateEnd"
+                                        [inputConfig]="
+                                            dispatchHistoryDateEndConfig({ 
+                                                groupIndex,
+                                                itemIndex,
+                                                groupItem
+                                            })
+                                        "
+                                        (mouseenter)="
+                                            handleInputHover(
+                                                true,
+                                                groupIndex,
+                                                itemIndex,
+                                                2
+                                            )
+                                        "
+                                        (mouseleave)="
+                                            handleInputHover(
+                                                false,
+                                                groupIndex,
+                                                itemIndex,
+                                                2
+                                            )
+                                        "
+                                        (click)="
+                                            handleUpdateGroupHistoryDataIndex(
+                                                groupIndex,
+                                                itemIndex
+                                            )
+                                        "
+                                    ></app-ta-input>
+                                </ng-container>
+                            </div>
+
+                            <!-- Time End -->
+
+                            <div class="d-flex align-items-center item-box">
+                                <ng-container
+                                    *ngIf="groupItem?.get('dateEnd').value"
+                                >
+                                    <app-ta-input
+                                        formControlName="timeEnd"
+                                        [inputConfig]="
+                                            dispatchHistoryTimeEndConfig({
+                                                groupIndex,
+                                                itemIndex,
+                                                groupItem
+                                            })
+                                        "
+                                        (mouseenter)="
+                                            handleInputHover(
+                                                true,
+                                                groupIndex,
+                                                itemIndex,
+                                                3
+                                            )
+                                        "
+                                        (mouseleave)="
+                                            handleInputHover(
+                                                false,
+                                                groupIndex,
+                                                itemIndex,
+                                                3
+                                            )
+                                        "
+                                        (click)="
+                                            handleUpdateGroupHistoryDataIndex(
+                                                groupIndex,
+                                                itemIndex
+                                            )
+                                        "
+                                    ></app-ta-input>
+                                </ng-container>
+                            </div>
+
+                            <!-- Total -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end item-box"
+                            >
+                                <p class="m-0 ta-font-medium">
+                                    {{
+                                        !groupItem?.get('dateEnd').value
+                                            ? 'Ongoing'
+                                            : group?.items[itemIndex]?.totalTime
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </app-ta-custom-card>
+            </div>
+        </ng-container>
+    </div>
+</div>
