@@ -55,6 +55,7 @@ import { CdkConnectPipe } from '@pages/dispatch/pipes/cdk-connect.pipe';
 import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
+import { DispatchHistoryModalGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 
 @NgModule({
     declarations: [
@@ -80,6 +81,7 @@ import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/comp
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
+        DispatchHistoryModalGroupComponent,
     ],
     imports: [
         // modules
