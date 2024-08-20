@@ -641,8 +641,8 @@ export class LoadService {
 
     public getDispatchModalData(
         dispatchId?: number,
-        truckType?: number,
-        trailerType?: number,
+        truckType?: number[],
+        trailerType?: number[],
         _long?: number,
         lat?: number,
         distance?: number,

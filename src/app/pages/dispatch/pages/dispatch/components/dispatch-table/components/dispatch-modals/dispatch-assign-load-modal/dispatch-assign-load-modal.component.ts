@@ -34,7 +34,7 @@ import {
 } from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
-import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { DispatchBoardAssignLoadFilterOptions } from '../../../models/dispatch-board-assign-load-filter-options.model.ts';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
@@ -50,8 +50,8 @@ import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/co
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
-// Const
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+// Consts
+import { DispatchAssignLoadModalConstants } from '../../../utils/constants/dispatch-assign-load-modal.constants';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
@@ -102,23 +102,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
 
-    public backLoadFilterQuery = {
-        truckType: null,
-        trailerType: null,
-        _long: null,
-        lat: null,
-        distance: null,
-        dispatcherId: null,
-        dateFrom: null,
-        dateTo: null,
-        pageIndex: null,
-        pageSize: null,
-        companyId: null,
-        sort: null,
-        search: null,
-        search1: null,
-        search2: null,
-    };
+    public backLoadFilterQuery: DispatchBoardAssignLoadFilterOptions =
+        DispatchAssignLoadModalConstants.BACK_FILTER;
 
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
@@ -611,6 +596,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public setFilter(data): void {
         switch (data?.filterType) {
             case LoadFilterStringEnum.USER_FILTER:
+                // TODO: Waiting backend
                 this.backLoadFilterQuery.dispatcherId = data.queryParams
                     ? data.queryParams[0]
                     : null;
@@ -639,12 +625,12 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 break;
             case LoadFilterStringEnum.TRUCK_FILTER:
                 this.backLoadFilterQuery.truckType = data.queryParams
-                    ? data.queryParams[0]
+                    ? data.queryParams
                     : null;
                 break;
             case LoadFilterStringEnum.TRAILER_FILTER:
                 this.backLoadFilterQuery.trailerType = data.queryParams
-                    ? data.queryParams[0]
+                    ? data.queryParams
                     : null;
                 break;
             default:
