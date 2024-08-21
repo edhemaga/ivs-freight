@@ -60,7 +60,7 @@
                                         class="icon"
                                         [class.expanded]="
                                             tableHeaderItem?.title === 'NOTE' &&
-                                            isNoteExpanded
+                                            _isNoteExpanded
                                         "
                                         [svgStyle]="{
                                             'width.px': '14',
@@ -79,7 +79,7 @@
                                                     'NOTE') ||
                                             (tableHeaderItem?.title ===
                                                 'NOTE' &&
-                                                isNoteExpanded)
+                                                _isNoteExpanded)
                                         "
                                     >
                                         {{ tableHeaderItem?.title }}
@@ -475,12 +475,12 @@
                         <ng-container *ngIf="!columnsToShow[17].hidden">
                             <td
                                 class="note-field"
-                                [class.expanded]="isNoteExpanded"
+                                [class.expanded]="_isNoteExpanded"
                             >
                                 <app-dispatch-table-note
                                     [truck]="item.truck"
                                     [note]="item.note"
-                                    [isNoteExpanded]="isNoteExpanded"
+                                    [isNoteExpanded]="_isNoteExpanded"
                                     [isHoveringRowIndex]="isHoveringRowIndex"
                                     [rowIndex]="rowIndex"
                                     [dispatchId]="item.id"

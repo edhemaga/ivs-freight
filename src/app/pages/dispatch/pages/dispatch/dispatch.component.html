@@ -26,7 +26,9 @@
                     [isAllBoardsList]="
                         selectedDispatcher?.name === 'All Boards'
                     "
+                    [isNoteExpanded]="isNoteExpanded"
                     (onTableUnlockEmitter)="onToolBarAction($event)"
+                    (onToggleNoteEmitter)="toggleNote($event)"
                 ></app-dispatch-table>
             </div>
         </ng-container>

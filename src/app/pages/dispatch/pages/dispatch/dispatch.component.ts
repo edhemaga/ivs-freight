@@ -78,6 +78,8 @@ export class DispatchComponent
     selectedDispatcher;
     isAscending: boolean = true;
 
+    public isNoteExpanded: boolean;
+
     constructor(
         private cdRef: ChangeDetectorRef,
 
@@ -495,5 +497,9 @@ export class DispatchComponent
                     this.dispatchFilters(this.backFilterQuery);
                 }
             });
+    }
+
+    public toggleNote(value: boolean): void {
+        this.isNoteExpanded = value;
     }
 }
