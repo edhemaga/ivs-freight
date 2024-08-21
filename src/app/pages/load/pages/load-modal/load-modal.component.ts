@@ -1850,7 +1850,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 event,
                 LoadModalStringEnum.PICKUP_TIME_FROM,
                 LoadModalStringEnum.PICKUP_TIME_TO,
-                this.selectedStopTimePickup === 6 || this.selectedStopTimePickup === 2
+                this.selectedStopTimePickup === 6 ||
+                    this.selectedStopTimePickup === 2
             );
 
             // draw stop on map
@@ -1992,7 +1993,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 event,
                 LoadModalStringEnum.DELIVERY_TIME_FROM,
                 LoadModalStringEnum.DELIVERY_TIME_TO,
-                this.selectedStopTimeDelivery === 2 || this.selectedStopTimeDelivery === 8
+                this.selectedStopTimeDelivery === 2 ||
+                    this.selectedStopTimeDelivery === 8
             );
             // draw stop on map
             this.drawStopOnMap();
@@ -2123,10 +2125,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         field?: AbstractControl
     ) {
         if (!isClick) return;
-    
-        const timeFrom = field ? field.get(timeFromKey) : this.loadForm.get(timeFromKey);
-        const timeTo = field ? field.get(timeToKey) : this.loadForm.get(timeToKey);
-    
+
+        const timeFrom = field
+            ? field.get(timeFromKey)
+            : this.loadForm.get(timeFromKey);
+        const timeTo = field
+            ? field.get(timeToKey)
+            : this.loadForm.get(timeToKey);
+
         if (shipper.shippingOpenTwentyFourHours) {
             timeFrom?.patchValue('00:00');
             if (!isAppointment) {
@@ -2136,6 +2142,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             timeFrom?.patchValue(shipper.receivingFrom);
             if (!isAppointment) {
                 timeTo?.patchValue(shipper.receivingTo);
+            }
+        } else {
+            timeFrom?.patchValue(null);
+            timeFrom?.markAsTouched();
+
+            timeTo?.patchValue(null);
+            if (isAppointment) {
+                timeTo?.markAsTouched();
             }
         }
     }
@@ -2163,14 +2177,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const isAppointment =
                 this.selectedExtraStopTime[index] === 2 ||
                 this.selectedExtraStopTime[index]?.toString()?.startsWith('9');
-                this.updateShipperWorkingTime(
-                    isClick,
-                    event,
-                    LoadModalStringEnum.TIME_FROM,
-                    LoadModalStringEnum.TIME_TO,
-                    isAppointment,
-                    this.loadExtraStops().at(index)
-                );
+            this.updateShipperWorkingTime(
+                isClick,
+                event,
+                LoadModalStringEnum.TIME_FROM,
+                LoadModalStringEnum.TIME_TO,
+                isAppointment,
+                this.loadExtraStops().at(index)
+            );
             this.drawStopOnMap();
 
             // select extra stop shipper
