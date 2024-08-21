@@ -329,7 +329,7 @@ export class LoadModalConfig {
             name: 'datepicker',
             type: 'text',
             isDropdown: true,
-            label: deliveryDateRange ? 'End Date' : 'Date',
+            label: deliveryDateRange ? 'Date From' : 'Date',
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',

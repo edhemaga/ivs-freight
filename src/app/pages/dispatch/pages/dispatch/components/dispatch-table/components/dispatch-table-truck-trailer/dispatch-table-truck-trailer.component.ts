@@ -42,10 +42,10 @@ export class DispatchTableTruckTrailerComponent {
         this._hasAdditionalFieldTrailer = hasAdditionalField;
     }
     @Input() set truckDropdownWidth(value: number) {
-        this._truckDropdownWidth = value - 2;
+        this._truckDropdownWidth = Math.round(value - 2);
     }
     @Input() set trailerDropdownWidth(value: number) {
-        this._trailerDropdownWidth = value - 2;
+        this._trailerDropdownWidth = Math.round(value - 2);
     }
 
     @Input() type: string;
