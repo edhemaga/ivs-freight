@@ -939,7 +939,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             case DispatchTableStringEnum.NOTE:
                 this._isNoteExpanded = !this._isNoteExpanded;
                 this.onToggleNoteEmitter.emit(this._isNoteExpanded);
-                this.cdRef.detectChanges();
                 break;
             case DispatchTableStringEnum.TRUCK_1:
                 this.handleTableHeadClick(
