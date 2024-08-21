@@ -26,6 +26,7 @@ import { StoreModule } from '@ngrx/store';
 import { payrollReducer } from './pages/payroll/state/reducers/payroll.reducer';
 import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
 import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
+import { CaComponentsLibModule } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names
         TaCustomCardComponent,
         EffectsModule.forFeature([PayrollEffect]),
         StoreModule.forFeature('payroll', payrollReducer),
+        CaComponentsLibModule
     ],
     exports: [PayrollTableComponent],
 })
