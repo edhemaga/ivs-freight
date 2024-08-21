@@ -499,7 +499,7 @@ export class DispatchComponent
             });
     }
 
-    public toggleNote(value: boolean): void {
-        this.isNoteExpanded = value;
+    public toggleNote(isNoteExpanded: boolean): void {
+        this.isNoteExpanded = isNoteExpanded;
     }
 }

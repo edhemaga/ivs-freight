@@ -678,7 +678,10 @@
                         </td>
                     </ng-container>
                     <ng-container *ngIf="!columnsToShow[17].hidden">
-                        <td class="note-field">
+                        <td
+                            class="note-field"
+                            [class.expanded]="_isNoteExpanded"
+                        >
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
@@ -770,7 +773,10 @@
                             <div class="main_inside"></div>
                         </td>
 
-                        <td class="note-field">
+                        <td
+                            class="note-field"
+                            [class.expanded]="_isNoteExpanded"
+                        >
                             <div class="main_inside"></div>
                         </td>
 
