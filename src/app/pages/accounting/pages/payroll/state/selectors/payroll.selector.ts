@@ -21,16 +21,23 @@ const payrollNamesData = {
 export const selectPayrollState =
     createFeatureSelector<PayrollState>('payroll');
 
-export const selectPayrollCounts = createSelector(
+export const selectPayrollCount = createSelector(
     selectPayrollState,
     (state) => {
+        return state.payrollCounts;
+    }
+);
+
+export const selectPayrollCounts = createSelector(
+    selectPayrollCount,
+    (payrollCounts) => {
         return {
-            payrollCounts: state.payrollCounts,
-            payrolls: Object.keys(state.payrollCounts),
-            payrollData: Object.keys(state.payrollCounts).map((payroll) =>
+            payrollCounts: payrollCounts,
+            payrolls: Object.keys(payrollCounts),
+            payrollData: Object.keys(payrollCounts).map((payroll) =>
                 getPayrollTableItem(
                     payroll,
-                    state.payrollCounts[payroll as keyof PayrollCountsResponse]
+                    payrollCounts[payroll as keyof PayrollCountsResponse]
                 )
             ),
         };
@@ -50,7 +57,6 @@ function getPayrollTableItem(
 ) {
     return {
         title: payrollNamesData[payrollTitle],
-        short_title: payrollNamesData[payrollTitle],
         //data: data[item].pagination.data,
         count: item?.count || 0,
         tableSettings: getTableDefinitions(payrollNamesData[payrollTitle]),

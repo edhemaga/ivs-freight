@@ -1,0 +1,7 @@
+<ng-template #customCell let-data>
+    <div (click)="test()" class="driver-solo-period-template">
+        <span class="driver-solo-period-text">{{ data }}</span>
+    </div>
+</ng-template>
+
+<app-ca-main-table [columns]="columns" [data$]="tableData$"></app-ca-main-table>

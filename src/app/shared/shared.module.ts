@@ -78,5 +78,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [
+    ],
 })
 export class SharedModule {}

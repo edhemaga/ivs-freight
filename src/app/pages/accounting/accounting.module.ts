@@ -27,6 +27,8 @@ import { payrollReducer } from './pages/payroll/state/reducers/payroll.reducer';
 import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
 import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
 import { CaComponentsLibModule } from 'ca-components';
+import { DriverMileageSoloTableComponent } from './pages/payroll/components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { CaMainTableComponent } from '@shared/components/ca-main-table/ca-main-table.component';
 
 @NgModule({
     declarations: [
@@ -41,6 +43,7 @@ import { CaComponentsLibModule } from 'ca-components';
         PayrollRowBorderTablePipe,
         PayrollTablePipe,
         PayrollTableNamesPipe,
+        DriverMileageSoloTableComponent,
     ],
     imports: [
         // Modules
@@ -55,7 +58,8 @@ import { CaComponentsLibModule } from 'ca-components';
         TaCustomCardComponent,
         EffectsModule.forFeature([PayrollEffect]),
         StoreModule.forFeature('payroll', payrollReducer),
-        CaComponentsLibModule
+        CaComponentsLibModule,
+        CaMainTableComponent
     ],
     exports: [PayrollTableComponent],
 })

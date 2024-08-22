@@ -56,7 +56,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         // Store
         private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
-        private payrollQuery: PayrollQuery,
+        private payrollQuery: PayrollQuery, 
 
         // Pipes
         private nameInitialsPipe: NameInitialsPipe,
@@ -67,7 +67,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     public subscribeToStoreData() {
         this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
-        this.payrollCountsResponse$ = this.payrollFacadeService.selectPayrollCounts$;
+        this.payrollCountsResponse$ =
+            this.payrollFacadeService.selectPayrollCounts$;
+            this.payrollFacadeService.selectPayrollCounts$.subscribe(res => {
+                console.log("fsdfsdfdsfsdfsd",res);
+            });
     }
 
     ngOnInit(): void {
