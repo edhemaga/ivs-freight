@@ -63,6 +63,15 @@ export class DispatchHistoryModalDateHelper {
         }
     }
 
+    static createDateAndTimeFormat(date: string, time: string): string {
+        const combinedDateTime = moment(
+            `${date} ${time}`,
+            'MM/DD/YY hh:mm A'
+        ).format('YYYY-MM-DDTHH:mm:ss.SSSSSS');
+
+        return combinedDateTime;
+    }
+
     static checkIsSelectedDateSameOrAfterPreviousDate(
         dateStart: string,
         dateEnd: string
@@ -115,12 +124,41 @@ export class DispatchHistoryModalDateHelper {
         return isTimeStartBeforeOrSameTimeEnd;
     }
 
-    static createDateAndTimeFormat(date: string, time: string): string {
-        const combinedDateTime = moment(
-            `${date} ${time}`,
-            'MM/DD/YY hh:mm A'
-        ).format('YYYY-MM-DDTHH:mm:ss.SSSSSS');
+    static checkIsSelectedDateSameOrBeforeNextDate(
+        dateEnd: string,
+        dateStart: string
+    ): boolean {
+        const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
 
-        return combinedDateTime;
+        const nextGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
+
+        const isSelectedDateSameOrAfterPreviousDate =
+            selectedGroupItemDateEnd.isSame(nextGroupItemDateStart) ||
+            selectedGroupItemDateEnd.isBefore(nextGroupItemDateStart);
+
+        return isSelectedDateSameOrAfterPreviousDate;
+    }
+
+    static checkIsSelectedDateAfterOrSameAsSelectedGroupItemDateStart(
+        dateEnd: string,
+        dateStart: string
+    ): {
+        isSelectedDateAfterSelectedGroupItemDateStart: boolean;
+        isSelectedDateSameAsSelectedGroupItemDateStart: boolean;
+    } {
+        const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
+
+        const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
+
+        const isSelectedDateAfterSelectedGroupItemDateStart =
+            selectedGroupItemDateEnd.isAfter(selectedGroupItemDateStart);
+
+        const isSelectedDateSameAsSelectedGroupItemDateStart =
+            selectedGroupItemDateEnd.isSame(selectedGroupItemDateStart);
+
+        return {
+            isSelectedDateAfterSelectedGroupItemDateStart,
+            isSelectedDateSameAsSelectedGroupItemDateStart,
+        };
     }
 }
