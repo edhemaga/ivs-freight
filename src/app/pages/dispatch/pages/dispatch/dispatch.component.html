@@ -13,7 +13,6 @@
     <div
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
-        [ngStyle]="{ 'max-width.px': maxToolbarWidth }"
     >
         <ng-container *ngFor="let item of dispatchTableList | async">
             <div class="dispatch-groups">

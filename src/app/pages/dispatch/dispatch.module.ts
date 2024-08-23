@@ -54,6 +54,9 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
 import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 
+//directives
+import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives/dispatch-resize.directive';
+
 @NgModule({
     declarations: [
         // components
@@ -109,12 +112,14 @@ import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/comp
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
         TaStatusComponentComponent,
-
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
 
         //  TaMapsComponent,
+
+        //directives
+        ResizableDirective,
     ],
     exports: [ColorFinderPipe],
 })
