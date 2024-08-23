@@ -286,13 +286,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
             if (nextGroupItem) {
                 this.handleSelectedDateBeforeOrSameDateEnd(selectedGroupItem);
             } else {
-                this.updateGroupHistoryData(
-                    true,
-                    selectedGroupItem.dateStart,
-                    selectedGroupItem.timeStart,
-                    selectedGroupItem.dateEnd,
-                    selectedGroupItem.timeEnd
-                );
+                this.updateGroupHistoryData(true);
             }
         } else {
             this.setInputValidationToInvalid(
@@ -316,6 +310,32 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
             : this.setInputValidationToInvalid(
                   DispatchHistoryModalStringEnum.DATE_END
               );
+    }
+
+    private handleSelectTimeStart(
+        selectedGroupItem: DispatchHistoryGroupItem,
+        nextGroupItem: DispatchHistoryGroupItem,
+        previousGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const { timeStart, timeEnd } = selectedGroupItem;
+
+        const isOngoing = !selectedGroupItem.dateEnd;
+
+        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+        if (isOngoing) {
+            if (isGroupItemsRowValid) this.updateGroupHistoryData(true);
+        } else {
+            const isTimeValid =
+                DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
+                    timeStart,
+                    timeEnd
+                );
+
+            if (isGroupItemsRowValid) {
+                /* TODO */
+            }
+        }
     }
 
     private handleSelectedDateBeforeOrSameDateEnd(
@@ -435,10 +455,10 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
     private updateGroupHistoryData(
         isSkipUpdateTotalColumn: boolean,
-        dateStart: string,
-        timeStart: string,
-        dateEnd: string,
-        timeEnd: string
+        dateStart?: string,
+        timeStart?: string,
+        dateEnd?: string,
+        timeEnd?: string
     ): void {
         if (!isSkipUpdateTotalColumn) {
             console.log('update total column & backend');
@@ -472,6 +492,12 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                     break;
                 case DispatchHistoryModalStringEnum.TIME_START:
+                    this.handleSelectTimeStart(
+                        selectedGroupItem,
+                        nextGroupItem,
+                        previousGroupItem
+                    );
+
                     break;
                 case DispatchHistoryModalStringEnum.DATE_END:
                     this.handleSelectDateEnd(selectedGroupItem, nextGroupItem);
