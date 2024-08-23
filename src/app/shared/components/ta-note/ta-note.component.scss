@@ -150,6 +150,19 @@
     }
 }
 
+.note-placeholder {
+    position: absolute;
+    top: 11px;
+    left: 7px;
+
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 12px;
+    
+    color: $bw6-2;
+    pointer-events: none;
+}
+
 .kendo-editor-note-wrapper {
     .save-note-check {
         height: 13px;
@@ -435,6 +448,10 @@
 
             &.parking_text_hold {
                 max-height: 124px;
+            }
+
+            &.empty-note {
+                padding-top: 9px;
             }
         }
 
