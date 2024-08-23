@@ -15,4 +15,10 @@ export enum DispatchHistoryModalStringEnum {
 
     PICKUP = 'Pickup',
     DELIVERY = 'Delivery',
+
+    TOTAL_TIME = 'totalTime',
+    DATE_START = 'dateStart',
+    TIME_START = 'timeStart',
+    DATE_END = 'dateEnd',
+    TIME_END = 'timeEnd',
 }
