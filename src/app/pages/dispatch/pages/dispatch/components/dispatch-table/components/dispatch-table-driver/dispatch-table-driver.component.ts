@@ -60,7 +60,7 @@ export class DispatchTableDriverComponent {
     @Input() public openedHosData: any; //leave this any because we are not doing this now
 
     @Input() set driverDropdownWidth(value: number) {
-        this._driverDropdownWidth = value - 2;
+        this._driverDropdownWidth = Math.round(value - 2);
     }
 
     @Output() addDriverEmitter = new EventEmitter<{

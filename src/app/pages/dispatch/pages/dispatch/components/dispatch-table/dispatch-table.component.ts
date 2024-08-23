@@ -102,8 +102,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() isAllBoardsList: boolean;
 
+    @Input() set isNoteExpanded(value: boolean) {
+        this._isNoteExpanded = value;
+    }
+
     @Output() onTableUnlockEmitter: EventEmitter<DispatchTableUnlock> =
         new EventEmitter();
+
+    @Output() onToggleNoteEmitter: EventEmitter<boolean> = new EventEmitter();
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
@@ -135,7 +141,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public showAddAddressFieldIndex: number = -1;
 
-    public isNoteExpanded: boolean = false;
+    public _isNoteExpanded: boolean = false;
     public parkingCount: number = 0;
     public openedDriverDropdown: number = -1;
 
@@ -608,11 +614,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    public saveNoteValue(item: { note: string; dispatchIndex: number }): void {
-        const { note, dispatchIndex } = item;
-        this.updateOrAddDispatchBoardAndSend('note', note, dispatchIndex);
-    }
-
     public changeDriverVacation(data: DispatchResponse): void {
         this.isDispatchBoardChangeInProgress = true;
         this.dispatcherService
@@ -933,10 +934,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public handleHeaderClick(title: string): void {
-        console.log(this.columns);
         switch (title) {
             case DispatchTableStringEnum.NOTE:
-                this.isNoteExpanded = !this.isNoteExpanded;
+                this._isNoteExpanded = !this._isNoteExpanded;
+                this.onToggleNoteEmitter.emit(this._isNoteExpanded);
                 break;
             case DispatchTableStringEnum.TRUCK_1:
                 this.handleTableHeadClick(

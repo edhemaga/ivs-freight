@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 // models
 import { TruckResponse } from 'appcoretruckassist';
@@ -10,18 +10,24 @@ import { TruckResponse } from 'appcoretruckassist';
 })
 export class DispatchTableNoteComponent {
     @Input() public truck: TruckResponse;
-    @Input() public note: string;
+    @Input() set note(value: string) {
+        this._note = value;
+    }
     @Input() public isNoteExpanded: boolean;
     @Input() public isHoveringRowIndex: number;
     @Input() public rowIndex: number;
     @Input() public dispatchId: number;
 
-    @Output() saveNoteValue = new EventEmitter<{
-        item: { note: string; dispatchIndex: number };
-    }>();
+    public noteOpened: boolean;
+    public _note: string;
+
     constructor() {}
 
-    public saveNote(item): void {
-        this.saveNoteValue.emit(item);
+    public saveNote(note: string): void {
+        this._note = note;
+    }
+
+    public toggleNote(opened: any): void {
+        this.noteOpened = opened.opened;
     }
 }

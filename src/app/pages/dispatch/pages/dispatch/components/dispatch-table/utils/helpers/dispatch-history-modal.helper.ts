@@ -1047,7 +1047,7 @@ export class DispatchHistoryModalHelper {
             const spanArray: number[] = [];
 
             const nextRow = noGroupData[index + 1] || [];
-            const newRowIndex = noGroupData.indexOf(nextRow);
+            const nextRowIndex = noGroupData.indexOf(nextRow);
             const nextRowHasItemWithNoValue =
                 MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(nextRow);
 
@@ -1060,7 +1060,11 @@ export class DispatchHistoryModalHelper {
                     if (!rowItem) {
                         let spanCounter = 1;
 
-                        for (let i = newRowIndex; i < noGroupData.length; i++) {
+                        for (
+                            let i = nextRowIndex;
+                            i < noGroupData.length;
+                            i++
+                        ) {
                             if (noGroupData[i][rowItemIndex]) {
                                 break;
                             } else {
@@ -1069,6 +1073,8 @@ export class DispatchHistoryModalHelper {
                         }
 
                         spanArray[rowItemIndex] = spanCounter;
+                    } else {
+                        spanArray[rowItemIndex] = 1;
                     }
                 });
             }
@@ -1079,32 +1085,56 @@ export class DispatchHistoryModalHelper {
         return noGroupItemSpanArray;
     }
 
-    static createDispatchHistoryDataHoverArray(
+    static createDispatchHistoryGridSpanClassNames(
         noGroupItemSpanArray: number[][]
-    ): number[][] {
-        const noGroupItemHoverArray: number[][] = [];
+    ): string[][] {
+        const groupArray: string[][] = [];
 
-        let hoverIndexArray: number[] = [];
-        let spanHoverCounter = 0;
+        let groupCounter = 1;
 
-        noGroupItemSpanArray.forEach((row, index) => {
-            const isNoSpanRow = row.every((rowItem) => rowItem === 1);
+        function getNextGroupName(): string {
+            return `group-${groupCounter.toString().padStart(3, '0')}`;
+        }
 
-            hoverIndexArray.push(index);
+        for (
+            let rowIndex = 0;
+            rowIndex < noGroupItemSpanArray.length;
+            rowIndex++
+        ) {
+            // initialize groupArray[rowIndex] if it doesn't exist
+            if (!groupArray[rowIndex]) groupArray[rowIndex] = [];
 
-            spanHoverCounter++;
+            for (
+                let colIndex = 0;
+                colIndex < noGroupItemSpanArray[rowIndex].length;
+                colIndex++
+            ) {
+                if (!groupArray[rowIndex][colIndex]) {
+                    const groupName = getNextGroupName();
 
-            if (isNoSpanRow) {
-                for (let i = 0; i < spanHoverCounter; i++) {
-                    noGroupItemHoverArray.push(hoverIndexArray);
+                    groupCounter++;
+
+                    // assign the group name to the current cell
+                    groupArray[rowIndex][colIndex] = groupName;
+
+                    // propagate the group name downward if the value spans multiple rows
+                    let span = noGroupItemSpanArray[rowIndex][colIndex];
+
+                    for (
+                        let i = 1;
+                        i < span && rowIndex + i < noGroupItemSpanArray.length;
+                        i++
+                    ) {
+                        if (!groupArray[rowIndex + i])
+                            groupArray[rowIndex + i] = [];
+
+                        groupArray[rowIndex + i][colIndex] = groupName;
+                    }
                 }
-
-                hoverIndexArray = [];
-                spanHoverCounter = 0;
             }
-        });
+        }
 
-        return noGroupItemHoverArray;
+        return groupArray;
     }
 
     static createStatusOrderValues(statusString: string): string {
@@ -1236,5 +1266,50 @@ export class DispatchHistoryModalHelper {
             selectedTimeId,
             isGroupWithoutTime,
         };
+    }
+
+    static updatDispatchHistoryGroupTotalTime(
+        days: number,
+        totalTimeString: string
+    ): string {
+        // parse the time string into hours, minutes, and seconds
+        const timeParts = totalTimeString.match(
+            /(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?/
+        );
+
+        if (!timeParts) return;
+
+        const hours = parseInt(timeParts[1] || '0', 10);
+        const minutes = parseInt(timeParts[2] || '0', 10);
+        const seconds = parseInt(timeParts[3] || '0', 10);
+
+        // start with a base moment duration of 0 days, 0 hours, 0 minutes, 0 seconds
+        const duration = moment.duration({
+            days: 0,
+            hours,
+            minutes,
+            seconds,
+        });
+
+        // add the specified number of days
+        duration.add(days, 'days');
+
+        // extract the final days, hours, minutes, and seconds from the duration
+        const finalDays = duration.days();
+        const finalHours = duration.hours();
+        const finalMinutes = duration.minutes();
+        const finalSeconds = duration.seconds();
+
+        // build the final string without leading zeros
+        const result = [
+            finalDays > 0 ? `${finalDays}d` : null,
+            finalHours > 0 ? `${finalHours}h` : null,
+            finalMinutes > 0 ? `${finalMinutes}m` : null,
+            finalSeconds > 0 ? `${finalSeconds}s` : null,
+        ]
+            .filter(Boolean)
+            .join(' ');
+
+        return result;
     }
 }

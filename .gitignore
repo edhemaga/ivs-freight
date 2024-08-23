@@ -59,3 +59,6 @@ package-lock.json
 
 #Bitbucket
 bitbucket-pipelines.yml
+
+#assets
+src/assets/ca-components

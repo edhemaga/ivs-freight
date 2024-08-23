@@ -88,6 +88,8 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
     @Output() saveNoteValue = new EventEmitter();
+    @Output() noteToggleEmitter: EventEmitter<{ opened: boolean }> =
+        new EventEmitter();
 
     public _note: string;
     @Input() set note(value: string) {
@@ -100,6 +102,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     @Input() dispatchIndex: number = -1;
     @Input() type: string;
     @Input() parentWidth: string;
+    @Input() dispatchNoteEmpty: boolean;
 
     @Input() set openedAll(value: boolean) {
         this.isAllOpen = value;
@@ -233,6 +236,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 this.buttonsExpanded = false;
                 this.leaveThisOpened = false;
                 this.noteOpened = false;
+                this.noteToggleEmitter.emit({ opened: this.noteOpened });
                 this._note = this.value;
                 t2.close();
             }
@@ -246,6 +250,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             this.sharedService.emitAllNoteOpened.next(false);
             setTimeout(() => {
                 this.noteOpened = true;
+                this.noteToggleEmitter.emit({ opened: this.noteOpened });
             }, 1);
 
             t2.open();
@@ -312,14 +317,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (deleteAll) this.closeNote();
     }
 
-    private closeNote(dontTransfer?: boolean): void {
+    public closeNote(dontTransfer?: boolean): void {
         this.noteOpened = false;
         this.leaveThisOpened = false;
         this.showCollorPattern = false;
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
-        if (!dontTransfer && !this.isDispatch) this.transferNoteData();
+        this.noteToggleEmitter.emit({ opened: this.noteOpened });
+        if (!dontTransfer) this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(
@@ -416,12 +422,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     private transferNoteData(): void {
-        if (this.dispatchIndex === -1) this.saveNoteValue.emit(this.value);
-        else
-            this.saveNoteValue.emit({
-                note: this.value,
-                dispatchIndex: this.dispatchIndex,
-            });
+        this.saveNoteValue.emit(this.value);
     }
 
     public ngOnDestroy(): void {
