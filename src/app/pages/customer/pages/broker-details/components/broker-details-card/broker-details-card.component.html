@@ -122,9 +122,9 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="invoiceChart.hoveringStatus"
+                    [class.p-0]="invoiceChart?.hoveringStatus"
                 >
-                    <div [class.d-none]="invoiceChart.hoveringStatus">
+                    <div [class.d-none]="invoiceChart?.hoveringStatus">
                         <app-ta-tab-switch
                             [type]="'type2-modal-popup'"
                             (switchClicked)="changeInvoiceTab($event)"
@@ -156,9 +156,9 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="mileageChart.hoveringStatus"
+                    [class.p-0]="mileageChart?.hoveringStatus"
                 >
-                    <ng-container *ngIf="!mileageChart.hoveringStatus">
+                    <ng-container *ngIf="!mileageChart?.hoveringStatus">
                         <div>
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -441,9 +441,9 @@
             >
                 <div
                     class="charts-template perfomance"
-                    [class.p-0]="paymentChart.hoveringStatus"
+                    [class.p-0]="paymentChart?.hoveringStatus"
                 >
-                    <ng-container *ngIf="!paymentChart.hoveringStatus">
+                    <ng-container *ngIf="!paymentChart?.hoveringStatus">
                         <div>
                             <app-ta-tab-switch
                                 [tabs]="tabsBroker"
