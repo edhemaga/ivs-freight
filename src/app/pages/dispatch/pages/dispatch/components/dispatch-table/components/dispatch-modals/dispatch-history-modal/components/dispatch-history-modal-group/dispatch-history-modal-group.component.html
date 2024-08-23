@@ -160,7 +160,8 @@
                                     (click)="
                                         handleUpdateGroupHistoryDataIndex(
                                             groupIndex,
-                                            itemIndex
+                                            itemIndex,
+                                            'dateStart'
                                         )
                                     "
                                 ></app-ta-input>
@@ -197,7 +198,8 @@
                                     (click)="
                                         handleUpdateGroupHistoryDataIndex(
                                             groupIndex,
-                                            itemIndex
+                                            itemIndex,
+                                            'timeStart'
                                         )
                                     "
                                 ></app-ta-input>
@@ -237,7 +239,8 @@
                                         (click)="
                                             handleUpdateGroupHistoryDataIndex(
                                                 groupIndex,
-                                                itemIndex
+                                                itemIndex,
+                                                'dateEnd'
                                             )
                                         "
                                     ></app-ta-input>
@@ -278,7 +281,8 @@
                                         (click)="
                                             handleUpdateGroupHistoryDataIndex(
                                                 groupIndex,
-                                                itemIndex
+                                                itemIndex,
+                                                'timeEnd'
                                             )
                                         "
                                     ></app-ta-input>
@@ -291,11 +295,7 @@
                                 class="d-flex align-items-center justify-content-end item-box"
                             >
                                 <p class="m-0 ta-font-medium">
-                                    {{
-                                        !groupItem?.get('dateEnd').value
-                                            ? 'Ongoing'
-                                            : group?.items[itemIndex]?.totalTime
-                                    }}
+                                    {{ groupItem?.get('totalTime').value }}
                                 </p>
                             </div>
                         </div>

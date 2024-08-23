@@ -3,6 +3,7 @@ import {
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
+    Validators,
 } from '@angular/forms';
 
 import {
@@ -33,7 +34,7 @@ import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/co
 import { DispatchHistoryGroupResponse } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params.model';
-import { GroupItem } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/group-item.model';
+import { DispatchHistoryGroupItem } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-history-group-item.model';
 
 @Component({
     selector: 'app-dispatch-history-modal-group',
@@ -53,13 +54,17 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
     public dispatchHistoryGroupForm: UntypedFormGroup;
 
+    // hover
     public isInputHoverRows: boolean[][][] = [];
 
     public isHoveringGroupIndex: number = -1;
     public isHoveringGroupItemIndex: number = -1;
 
+    // update
     public groupIndex: number = -1;
     public itemIndex: number = -1;
+
+    public selectedFormControlName: string;
 
     constructor(private formBuilder: UntypedFormBuilder) {}
 
@@ -152,8 +157,8 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 distinctUntilChanged(),
                 skip(1)
             )
-            .subscribe((value) => {
-                this.updateGroupHistory(value);
+            .subscribe((groupItemsData: DispatchHistoryGroupItem[][]) => {
+                this.updateGroupHistory(groupItemsData);
             });
     }
 
@@ -214,15 +219,15 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                                     : null,
                             ],
                             timeEnd: [roundedTimeEnd],
+                            totalTime: item.totalTime,
                         });
                     })
                 );
-
                 itemsArray.push(itemsGroup);
             });
 
             this.monitorUpdateGroupHistoryData();
-        }, 200);
+        }, 100);
     }
 
     public handleGroupRowHover(
@@ -245,69 +250,304 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
     public handleUpdateGroupHistoryDataIndex(
         groupIndex: number,
-        itemIndex: number
+        itemIndex: number,
+        selectedFormControlName: string
     ): void {
         this.groupIndex = groupIndex;
         this.itemIndex = itemIndex;
+
+        this.selectedFormControlName = selectedFormControlName;
     }
 
-    private updateGroupHistory(groupItems: GroupItem[][]) {
-        console.log('groupItems', groupItems);
+    isBackendUpdate: boolean = false;
 
-        console.log('groupIndex', this.groupIndex);
+    checkIsSelectedDateSameOrAfterPreviousDate(
+        dateStart: string,
+        dateEnd: string
+    ): boolean {
+        const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
+
+        const previousGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
+
+        const isSelectedDateSameOrAfterPreviousDate =
+            selectedGroupItemDateStart.isSame(previousGroupItemDateEnd) ||
+            selectedGroupItemDateStart.isAfter(previousGroupItemDateEnd);
+
+        return isSelectedDateSameOrAfterPreviousDate;
+    }
+
+    checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+        dateStart: string,
+        dateEnd: string
+    ): {
+        isSelectedDateBeforeSelectedGroupItemDateEnd: boolean;
+        isSelectedDateSameAsSelectedGroupItemDateEnd: boolean;
+    } {
+        const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
+
+        const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
+
+        const isSelectedDateBeforeSelectedGroupItemDateEnd =
+            selectedGroupItemDateStart.isBefore(selectedGroupItemDateEnd);
+
+        const isSelectedDateSameAsSelectedGroupItemDateEnd =
+            selectedGroupItemDateStart.isSame(selectedGroupItemDateEnd);
+
+        return {
+            isSelectedDateBeforeSelectedGroupItemDateEnd,
+            isSelectedDateSameAsSelectedGroupItemDateEnd,
+        };
+    }
+
+    checkIsTimeStartBeforeOrSameTimeEnd(
+        timeStart: string,
+        timeEnd: string
+    ): boolean {
+        const selectedGroupItemTimeStart = moment(
+            /* timeStart */ '06:15 AM',
+            'hh:mm A'
+        );
+        const selectedGroupItemTimeEnd = moment(
+            /* timeEnd */ '05:15 AM',
+            'hh:mm A'
+        );
+
+        const isTimeStartBeforeOrSameTimeEnd =
+            selectedGroupItemTimeStart.isBefore(selectedGroupItemTimeEnd) ||
+            selectedGroupItemTimeStart.isSame(selectedGroupItemTimeEnd);
+
+        return isTimeStartBeforeOrSameTimeEnd;
+    }
+
+    createDateAndTimeFormat(date: string, time: string): string {
+        const combinedDateTime = moment(
+            `${date} ${time}`,
+            'MM/DD/YY hh:mm A'
+        ).format('YYYY-MM-DDTHH:mm:ss.SSSSSS');
+
+        return combinedDateTime;
+    }
+
+    checkIsGroupItemsRowValid(): boolean {
+        return this.getDispatchHistoryGroup(this.groupIndex).at(this.itemIndex)
+            .valid;
+    }
+
+    setInputValidationToInvalid(formControlName: string): void {
+        this.getDispatchHistoryGroup(this.groupIndex)
+            .at(this.itemIndex)
+            .get(formControlName)
+            .setErrors({ invalid: true });
+    }
+
+    updateTotalColumnValue(
+        dateStart: string,
+        timeStart: string,
+        dateEnd: string,
+        timeEnd: string
+    ): void {
+        const formatedDateAndTimeStart = this.createDateAndTimeFormat(
+            dateStart,
+            timeStart
+        );
+        const formatedDateAndTimeEnd = this.createDateAndTimeFormat(
+            dateEnd,
+            timeEnd
+        );
+
+        const total = DispatchHistoryModalHelper.createTotalColumnValue(
+            formatedDateAndTimeStart,
+            formatedDateAndTimeEnd
+        );
+
+        this.getDispatchHistoryGroup(this.groupIndex)
+            .at(this.itemIndex)
+            .get('totalTime')
+            .patchValue(total);
+
+        this.isBackendUpdate = false;
+    }
+
+    isSelectedDateBeforeSelectedGroupItemDateEnd;
+
+    handleSelectedDateBeforeOrSameDateEnd() {}
+
+    updateGroupHistoryData(
+        dateStart: string,
+        timeStart: string,
+        dateEnd: string,
+        timeEnd: string
+    ): void {
+        this.isBackendUpdate = true;
+
+        this.updateTotalColumnValue(dateStart, timeStart, dateEnd, timeEnd);
+
+        // TODO UPDATE BACKEND
+    }
+
+    private updateGroupHistory(
+        dispatchHistoryGroupItems: DispatchHistoryGroupItem[][]
+    ): void {
+        if (this.isBackendUpdate) return;
+
+        console.log('dispatchHistoryGroupItems', dispatchHistoryGroupItems);
+
+        /* console.log('groupIndex', this.groupIndex);
         console.log('itemIndex', this.itemIndex);
+        console.log(
+            'this.selectedFormControlName',
+            this.selectedFormControlName
+        ); */
 
-        let selectedGroupItem = groupItems[this.groupIndex][this.itemIndex];
-        let nextGroupItem = groupItems[this.groupIndex][this.itemIndex + 1];
-        let previousGroupItem = groupItems[this.groupIndex][this.itemIndex - 1];
+        const selectedGroupItem =
+            dispatchHistoryGroupItems[this.groupIndex][this.itemIndex];
+        const nextGroupItem =
+            dispatchHistoryGroupItems[this.groupIndex][this.itemIndex - 1];
+        const previousGroupItem =
+            dispatchHistoryGroupItems[this.groupIndex][this.itemIndex + 1];
 
         console.log('selectedGroupItem', selectedGroupItem);
         console.log('nextGroupItem', nextGroupItem);
         console.log('previousGroupItem', previousGroupItem);
 
-        const dateFrom = moment(previousGroupItem.dateStart, 'MM/DD/YY'); // Example start date
-        const dateTo = moment(selectedGroupItem.dateEnd, 'MM/DD/YY'); // Example end date
+        if (this.selectedFormControlName === 'dateStart') {
+            /* DATE START - HAS NEXT STATUS */
+            if (nextGroupItem) {
+                /* DATE START - HAS PREVIOUS STATUS */
+                if (previousGroupItem) {
+                    const isSelectedDateSameOrAfterPreviousDate =
+                        this.checkIsSelectedDateSameOrAfterPreviousDate(
+                            selectedGroupItem.dateStart,
+                            previousGroupItem.dateEnd
+                        );
 
-        const previousDateDifferenceInDays = dateTo.diff(dateFrom, 'days');
+                    if (isSelectedDateSameOrAfterPreviousDate) {
+                        const {
+                            isSelectedDateBeforeSelectedGroupItemDateEnd,
+                            isSelectedDateSameAsSelectedGroupItemDateEnd,
+                        } =
+                            this.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                                selectedGroupItem.dateStart,
+                                selectedGroupItem.dateEnd
+                            );
 
-        /*    const previousDateDifferenceInDays = moment(
-      selectedGroupItem.dateEnd
-  ).diff(moment(previousGroupItem.dateStart, 'days'));
-*/
-        console.log(
-            'previousDateDifferenceInDays',
-            previousDateDifferenceInDays
-        );
+                        if (
+                            isSelectedDateBeforeSelectedGroupItemDateEnd ||
+                            isSelectedDateSameAsSelectedGroupItemDateEnd
+                        ) {
+                            if (isSelectedDateBeforeSelectedGroupItemDateEnd) {
+                                const isGroupItemsRowValid =
+                                    this.checkIsGroupItemsRowValid();
 
-        if (previousDateDifferenceInDays >= 0) {
-            let newDateStart = dateFrom
-                .add(previousDateDifferenceInDays, 'days')
-                .format('MM/DD/YY');
+                                if (isGroupItemsRowValid) {
+                                    this.updateGroupHistoryData(
+                                        selectedGroupItem.dateStart,
+                                        selectedGroupItem.timeStart,
+                                        selectedGroupItem.dateEnd,
+                                        selectedGroupItem.timeEnd
+                                    );
 
-            console.log('newDateStart', newDateStart);
+                                    console.log('VALID, UPDATE BACK');
+                                } else {
+                                    console.log('INVALID');
+                                }
+                            } else {
+                                const isTimeStartBeforeOrSameTimeEnd =
+                                    this.checkIsTimeStartBeforeOrSameTimeEnd(
+                                        selectedGroupItem.timeStart,
+                                        selectedGroupItem.timeEnd
+                                    );
 
-            previousGroupItem = {
-                ...previousGroupItem,
-                dateStart: newDateStart,
-            };
-        } else {
-            let newDateStart = dateFrom
-                .subtract(previousDateDifferenceInDays * -1, 'days')
-                .format('MM/DD/YY');
+                                if (isTimeStartBeforeOrSameTimeEnd) {
+                                    const isGroupItemsRowValid =
+                                        this.checkIsGroupItemsRowValid();
 
-            console.log('newDateStart', newDateStart);
+                                    if (isGroupItemsRowValid) {
+                                        console.log('VALID, UPDATE TOTAL');
+                                    } else {
+                                        console.log('INVALID');
+                                    }
+                                } else {
+                                    this.setInputValidationToInvalid(
+                                        'timeStart'
+                                    );
+                                }
+                            }
+                        } else {
+                            this.setInputValidationToInvalid('dateStart');
+                        }
+                    } else {
+                        this.setInputValidationToInvalid('dateStart');
+                    }
+                } else {
+                    /* DATE START - NO PREVIOUS STATUS */
+                    const {
+                        isSelectedDateBeforeSelectedGroupItemDateEnd,
+                        isSelectedDateSameAsSelectedGroupItemDateEnd,
+                    } =
+                        this.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                            selectedGroupItem.dateStart,
+                            selectedGroupItem.dateEnd
+                        );
 
-            previousGroupItem = {
-                ...previousGroupItem,
-                dateStart: newDateStart,
-            };
+                    if (
+                        isSelectedDateBeforeSelectedGroupItemDateEnd ||
+                        isSelectedDateSameAsSelectedGroupItemDateEnd
+                    ) {
+                        if (isSelectedDateBeforeSelectedGroupItemDateEnd) {
+                            const isGroupItemsRowValid =
+                                this.checkIsGroupItemsRowValid();
+
+                            if (isGroupItemsRowValid) {
+                                console.log('VALID, UPDATE TOTAL');
+                            } else {
+                                console.log('INVALID');
+                            }
+                        } else {
+                            const isTimeStartBeforeOrSameTimeEnd =
+                                this.checkIsTimeStartBeforeOrSameTimeEnd(
+                                    selectedGroupItem.timeStart,
+                                    selectedGroupItem.timeEnd
+                                );
+
+                            if (isTimeStartBeforeOrSameTimeEnd) {
+                                const isGroupItemsRowValid =
+                                    this.checkIsGroupItemsRowValid();
+
+                                if (isGroupItemsRowValid) {
+                                    console.log('VALID, UPDATE TOTAL');
+                                } else {
+                                    console.log('INVALID');
+                                }
+                            } else {
+                                this.setInputValidationToInvalid('timeStart');
+                            }
+                        }
+                    } else {
+                        this.setInputValidationToInvalid('dateStart');
+                    }
+                }
+            } else {
+                /* DATE START - NO NEXT STATUS - FIRST IN LIST */
+                /* DATE START - HAS PREVIOUS STATUS */
+                if (previousGroupItem) {
+                    const isSelectedDateSameOrAfterPreviousDate =
+                        this.checkIsSelectedDateSameOrAfterPreviousDate(
+                            selectedGroupItem.dateStart,
+                            previousGroupItem.dateEnd
+                        );
+
+                    if (isSelectedDateSameOrAfterPreviousDate) {
+                        console.log('VALID, UPDATE BACK');
+                    } else {
+                        this.setInputValidationToInvalid('dateStart');
+                    }
+                } else {
+                    /* DATE START - NO PREVIOUS STATUS - ONE IN LIST*/
+                    console.log('VALID, UPDATE TOTAL');
+                }
+            }
         }
-
-        const date1 = '08/14/24';
-
-        const date2 = '08/13/24';
-
-        const date3 = '08/15/24';
     }
 
     ngOnDestroy(): void {

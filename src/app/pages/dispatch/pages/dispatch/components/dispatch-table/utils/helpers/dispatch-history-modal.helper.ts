@@ -1085,7 +1085,7 @@ export class DispatchHistoryModalHelper {
         return noGroupItemSpanArray;
     }
 
-    static createDispatchHistoryDataClassNames(
+    static createDispatchHistoryGridSpanClassNames(
         noGroupItemSpanArray: number[][]
     ): string[][] {
         const groupArray: string[][] = [];
@@ -1102,9 +1102,7 @@ export class DispatchHistoryModalHelper {
             rowIndex++
         ) {
             // initialize groupArray[rowIndex] if it doesn't exist
-            if (!groupArray[rowIndex]) {
-                groupArray[rowIndex] = [];
-            }
+            if (!groupArray[rowIndex]) groupArray[rowIndex] = [];
 
             for (
                 let colIndex = 0;
@@ -1113,6 +1111,7 @@ export class DispatchHistoryModalHelper {
             ) {
                 if (!groupArray[rowIndex][colIndex]) {
                     const groupName = getNextGroupName();
+
                     groupCounter++;
 
                     // assign the group name to the current cell
@@ -1120,6 +1119,7 @@ export class DispatchHistoryModalHelper {
 
                     // propagate the group name downward if the value spans multiple rows
                     let span = noGroupItemSpanArray[rowIndex][colIndex];
+
                     for (
                         let i = 1;
                         i < span && rowIndex + i < noGroupItemSpanArray.length;
@@ -1266,5 +1266,50 @@ export class DispatchHistoryModalHelper {
             selectedTimeId,
             isGroupWithoutTime,
         };
+    }
+
+    static updatDispatchHistoryGroupTotalTime(
+        days: number,
+        totalTimeString: string
+    ): string {
+        // parse the time string into hours, minutes, and seconds
+        const timeParts = totalTimeString.match(
+            /(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?/
+        );
+
+        if (!timeParts) return;
+
+        const hours = parseInt(timeParts[1] || '0', 10);
+        const minutes = parseInt(timeParts[2] || '0', 10);
+        const seconds = parseInt(timeParts[3] || '0', 10);
+
+        // start with a base moment duration of 0 days, 0 hours, 0 minutes, 0 seconds
+        const duration = moment.duration({
+            days: 0,
+            hours,
+            minutes,
+            seconds,
+        });
+
+        // add the specified number of days
+        duration.add(days, 'days');
+
+        // extract the final days, hours, minutes, and seconds from the duration
+        const finalDays = duration.days();
+        const finalHours = duration.hours();
+        const finalMinutes = duration.minutes();
+        const finalSeconds = duration.seconds();
+
+        // build the final string without leading zeros
+        const result = [
+            finalDays > 0 ? `${finalDays}d` : null,
+            finalHours > 0 ? `${finalHours}h` : null,
+            finalMinutes > 0 ? `${finalMinutes}m` : null,
+            finalSeconds > 0 ? `${finalSeconds}s` : null,
+        ]
+            .filter(Boolean)
+            .join(' ');
+
+        return result;
     }
 }

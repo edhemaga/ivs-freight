@@ -281,7 +281,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             );
 
         this.noGroupItemSpanClassNameArray =
-            DispatchHistoryModalHelper.createDispatchHistoryDataClassNames(
+            DispatchHistoryModalHelper.createDispatchHistoryGridSpanClassNames(
                 this.noGroupItemSpanArray
             );
 
