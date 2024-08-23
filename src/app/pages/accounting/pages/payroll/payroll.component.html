@@ -13,7 +13,12 @@
                 *ngFor="let d of (payrollCountsResponse$ | async).payrollData"
             >
                 <div class="card-holder">
-                    <app-ta-custom-card
+                    <app-ca-payroll-list-summary-overview [item]="d">
+                        <app-driver-mileage-solo-table
+                            [title]="d.title"
+                        ></app-driver-mileage-solo-table>
+                    </app-ca-payroll-list-summary-overview>
+                    <!-- <app-ta-custom-card
                         [cardName]="d.title"
                         [isCardOpen]="false"
                         [hasDivider]="false"
@@ -24,8 +29,8 @@
                             marginBottom: '0px'
                         }"
                     >
-                        <app-driver-mileage-solo-table [title]="d.title"></app-driver-mileage-solo-table>
-                    </app-ta-custom-card>
+                        
+                    </app-ta-custom-card> -->
                 </div>
             </ng-container>
         </div>

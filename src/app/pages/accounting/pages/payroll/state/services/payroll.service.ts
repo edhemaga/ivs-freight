@@ -21,12 +21,14 @@ export class PayrollFacadeService {
 
     // SELECTORS
 
+
+
     // Select Payroll Counts
     public selectPayrollCounts$: Observable<IPayrollCountsSelector> =
         this.store.pipe(select(selectPayrollCounts));
 
     // Select Driver Mileage Solo
-    public selectPayrollDriverSoloMileage$: Observable<PayrollDriverMileageListResponse> =
+    public selectPayrollDriverSoloMileage$: Observable<PayrollDriverMileageListResponse[]> =
         this.store.pipe(select(selectSoloDriverMileage));
 
     public getPayrollCounts(showOpen: boolean) {

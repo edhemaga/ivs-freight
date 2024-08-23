@@ -1,41 +1,50 @@
-<table>
+<table class="ca-main-table">
     <thead>
         <tr>
             <th *ngFor="let col of columns">
-                {{ col.header }}
+                <div class="th-content-container">{{ col.header }}</div>
             </th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let row of data$ | async">
             <td *ngFor="let col of columns">
-                <ng-container [ngSwitch]="col.cellType">
-                    <!-- Default text cell -->
-                    <span *ngSwitchCase="'text'">{{ row[col.field] }}</span>
+                <div class="td-container">
+                    <div class="td-content-container">
+                        <ng-container [ngSwitch]="col.cellType">
+                            <!-- Default text cell -->
+                            <span *ngSwitchCase="'text'">{{
+                                row[col.field]
+                            }}</span>
 
-                    <!-- Template cell -->
-                    <ng-container *ngSwitchCase="'template'">
-                        <ng-container
-                            *ngTemplateOutlet="
-                                col.template;
-                                context: { $implicit: row[col.field] }
-                            "
-                        ></ng-container>
-                    </ng-container>
+                            <!-- Template cell -->
+                            <ng-container *ngSwitchCase="'template'">
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        col.template;
+                                        context: { $implicit: row[col.field] }
+                                    "
+                                ></ng-container>
+                            </ng-container>
 
-                    <!-- Custom component cell -->
-                    <ng-container *ngSwitchCase="'component'">
-                        <ng-container
-                            *ngComponentOutlet="
-                                col.component;
-                                injector: createInjector(row, col.inputs)
-                            "
-                        ></ng-container>
-                    </ng-container>
+                            <!-- Custom component cell -->
+                            <ng-container *ngSwitchCase="'component'">
+                                <ng-container
+                                    *ngComponentOutlet="
+                                        col.component;
+                                        injector: createInjector(
+                                            row,
+                                            col.inputs
+                                        )
+                                    "
+                                ></ng-container>
+                            </ng-container>
 
-                    <!-- Default fallback -->
-                    <span *ngSwitchDefault>{{ row[col.field] }}</span>
-                </ng-container>
+                            <!-- Default fallback -->
+                            <span *ngSwitchDefault>{{ row[col.field] }}</span>
+                        </ng-container>
+                    </div>
+                </div>
             </td>
         </tr>
     </tbody>

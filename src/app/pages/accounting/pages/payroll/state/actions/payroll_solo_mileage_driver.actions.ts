@@ -8,7 +8,7 @@ export const getPayrollSoloMileageDriver = createAction(
 
 export const getPayrollSoloMileageDriverSuccess = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_SUCCESS,
-    props<{ payroll: PayrollDriverMileageListResponse }>()
+    props<{ payroll: PayrollDriverMileageListResponse[] }>()
 );
 
 export const getPayrollSoloMileageDriverError = createAction(

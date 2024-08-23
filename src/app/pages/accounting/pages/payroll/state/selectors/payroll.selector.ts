@@ -9,13 +9,18 @@ import {
 } from 'appcoretruckassist';
 
 const payrollNamesData = {
-    soloMiles: 'Driver (Miles)',
-    soloFlatRate: 'Driver (Flat Rate)',
-    soloCommission: 'Driver (Commission)',
-    owner: 'Owner',
-    teamCommission: 'Team Commission',
-    teamFlatRate: 'Flat Rate',
-    teamMiles: 'Team Miles',
+    soloMiles: { text: 'Driver', type: 'Miles' },
+    soloFlatRate: { text: 'Driver', type: 'Flat Rate' },
+    soloCommission: { text: 'Driver', type: 'Commission' },
+    owner: { text: 'Owner', type: '' },
+    teamCommission: { text: 'Team Commission', type: '' },
+    teamFlatRate: { text: 'Flat Rate', type: '' },
+    teamMiles: { text: 'Team Miles', type: '' },
+};
+
+const payrollStatus = {
+    Paid: 'success',
+    Debt: 'danger',
 };
 
 export const selectPayrollState =
@@ -31,10 +36,11 @@ export const selectPayrollCount = createSelector(
 export const selectPayrollCounts = createSelector(
     selectPayrollCount,
     (payrollCounts) => {
+        const payrollCountsData = Object.keys(payrollCounts).filter(item => payrollCounts[item]);
         return {
             payrollCounts: payrollCounts,
-            payrolls: Object.keys(payrollCounts),
-            payrollData: Object.keys(payrollCounts).map((payroll) =>
+            payrolls: payrollCountsData,
+            payrollData: payrollCountsData.map((payroll) =>
                 getPayrollTableItem(
                     payroll,
                     payrollCounts[payroll as keyof PayrollCountsResponse]
@@ -56,11 +62,18 @@ function getPayrollTableItem(
     item?: PayrollCountItemResponse
 ) {
     return {
-        title: payrollNamesData[payrollTitle],
+        text: payrollNamesData[payrollTitle].text,
+        type: payrollNamesData[payrollTitle].type,
         //data: data[item].pagination.data,
-        count: item?.count || 0,
+        itemCount: item?.count || 0,
+        money: item?.value,
+        status: getStatus(item?.status.name),
         tableSettings: getTableDefinitions(payrollNamesData[payrollTitle]),
     };
+}
+
+function getStatus(item) {
+    return payrollStatus[item] || '';
 }
 
 function getTableDefinitions(title) {

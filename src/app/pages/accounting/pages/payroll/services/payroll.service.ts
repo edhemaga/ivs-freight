@@ -19,8 +19,8 @@ export class PayrollService {
         );
     }
 
-    public getPayrollSoloMileageDriver(): Observable<PayrollDriverMileageListResponse> {
-        return this.http.get(
+    public getPayrollSoloMileageDriver(): Observable<PayrollDriverMileageListResponse[]> {
+        return this.http.get<PayrollDriverMileageListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
         );
     }

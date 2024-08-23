@@ -52,6 +52,7 @@
     }
     .payroll-main{
         flex: 1;
+        max-width: 60%;
 
         &.open{
             max-width: 500px;

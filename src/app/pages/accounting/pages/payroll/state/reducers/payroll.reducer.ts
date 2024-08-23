@@ -5,7 +5,7 @@ import { PayrollState } from '../models/payroll.model';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
-    payrollDriverMileage: {},
+    payrollDriverMileage: [],
     loading: false,
 };
 

@@ -1,0 +1,29 @@
+.driver-solo-info{
+    align-items: center;
+
+    .driver-solo-info-text{
+        margin-left: 4px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+}
+
+.custom-text-date{
+    font-size: 14px;
+}
+
+.custom-status-holder{
+    align-items: center;
+    svg-icon{
+        display: flex;
+        align-items: center;
+        width: 14px;
+        height: 14px;
+    }
+    .custom-status-text{
+        font-weight: 700;
+        margin-left: 4px;
+        font-size: 14px;
+        color: #6C6C6C;
+    }
+}

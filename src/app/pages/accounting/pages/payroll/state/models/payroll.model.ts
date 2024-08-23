@@ -5,7 +5,7 @@ import {
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
-    payrollDriverMileage: PayrollDriverMileageListResponse;
+    payrollDriverMileage: PayrollDriverMileageListResponse[];
     loading: boolean;
 }
 
