@@ -120,7 +120,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     card.contactPhones[0]
-                                                        .contactPhoneType
+                                                        ?.contactPhoneType
                                                         .name === 'Work'
                                                 "
                                             >
@@ -134,7 +134,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     card.contactPhones[0]
-                                                        .contactPhoneType
+                                                        ?.contactPhoneType
                                                         .name === 'Mobile'
                                                 "
                                             >
@@ -148,7 +148,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     card.contactPhones[0]
-                                                        .contactPhoneType
+                                                        ?.contactPhoneType
                                                         .name === 'Home'
                                                 "
                                             >
@@ -159,7 +159,7 @@
                                                 ></svg-icon>
                                             </ng-container>
 
-                                            {{ card.contactPhones[0].phone }}
+                                            {{ card.contactPhones[0]?.phone ?? '/' }}
                                         </ng-container>
 
                                         <!-- If primary mail -->
@@ -173,7 +173,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     card.contactEmails[0]
-                                                        .contactEmailType
+                                                        ?.contactEmailType
                                                         .name === 'Work'
                                                 "
                                             >
@@ -187,7 +187,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     card.contactEmails[0]
-                                                        .contactEmailType
+                                                        ?.contactEmailType
                                                         .name === 'Home'
                                                 "
                                             >
@@ -198,7 +198,7 @@
                                                 ></svg-icon>
                                             </ng-container>
 
-                                            {{ card.contactEmails[0].email }}
+                                            {{ card.contactEmails[0]?.email ?? '/' }}
                                         </ng-container>
 
                                         <!-- rest of elements -->
@@ -268,7 +268,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[1]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Home'
                                                     "
                                                 >
@@ -283,7 +283,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[1]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Work'
                                                     "
                                                 >
@@ -297,7 +297,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[1]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Mobile'
                                                     "
                                                 >
@@ -339,7 +339,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[2]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Home'
                                                     "
                                                 >
@@ -354,7 +354,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[2]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Work'
                                                     "
                                                 >
@@ -368,7 +368,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactPhones[2]
-                                                            .contactPhoneType
+                                                            ?.contactPhoneType
                                                             .name === 'Mobile'
                                                     "
                                                 >
@@ -411,7 +411,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactEmails[1]
-                                                            .contactEmailType
+                                                            ?.contactEmailType
                                                             .name === 'Home'
                                                     "
                                                 >
@@ -426,7 +426,7 @@
                                                 <ng-container
                                                     *ngIf="
                                                         card.contactEmails[1]
-                                                            .contactEmailType
+                                                            ?.contactEmailType
                                                             .name === 'Work'
                                                     "
                                                 >
