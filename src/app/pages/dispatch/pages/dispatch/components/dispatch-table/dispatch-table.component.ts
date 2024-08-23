@@ -934,7 +934,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public handleHeaderClick(title: string): void {
-        console.log(this.columns);
         switch (title) {
             case DispatchTableStringEnum.NOTE:
                 this._isNoteExpanded = !this._isNoteExpanded;
