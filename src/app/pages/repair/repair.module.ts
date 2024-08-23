@@ -27,6 +27,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
+import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 // Store
 import { StoreModule } from '@ngrx/store';
@@ -60,6 +61,7 @@ import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/st
         FlipCardsPipe,
         NFormatterPipe,
         NgForLengthFilterPipe,
+        CardValuePipe,
 
         // Store
         StoreModule.forFeature('repairCardData', repairCardModalReducer),
