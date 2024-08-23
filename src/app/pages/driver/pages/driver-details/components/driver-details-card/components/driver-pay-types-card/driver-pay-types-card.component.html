@@ -75,11 +75,11 @@
 
             <ng-container
                 *ngIf="
-                    (cardData?.payType.name === 'Per Mile' &&
+                    (cardData?.payType?.name === 'Per Mile' &&
                         !cardData?.solo.perMile) ||
-                    (cardData?.payType.name === 'Commission' &&
+                    (cardData?.payType?.name === 'Commission' &&
                         cardData?.team.commission) ||
-                    (cardData?.payType.name === 'Flat Rate' &&
+                    (cardData?.payType?.name === 'Flat Rate' &&
                         cardData?.team.flatRate)
                 "
             >
