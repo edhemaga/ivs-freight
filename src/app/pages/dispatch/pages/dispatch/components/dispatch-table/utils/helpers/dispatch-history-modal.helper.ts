@@ -1,11 +1,9 @@
 import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
 
-// moment
-import moment from 'moment';
-
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { DispatchHistoryModalDateHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal-date.helper';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
@@ -16,29 +14,6 @@ import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/c
 import { DispatchHistoryResponse } from 'appcoretruckassist';
 
 export class DispatchHistoryModalHelper {
-    static roundToNearestQuarterHour(time: string): string {
-        const convertedTime = time
-            ? MethodsCalculationsHelper.convertDateFromBackendToTime(time)
-            : null;
-
-        if (convertedTime) {
-            const [hours, minutesWithPmAm] = convertedTime.split(':');
-            const [minutes, amPm] = minutesWithPmAm.split(' ');
-
-            const quarterHours = Math.round(+minutes / 15);
-
-            const roundedMinutes = quarterHours * 15;
-            const roundedHours =
-                roundedMinutes === 60 ? (+hours + 1) % 24 : hours;
-
-            return `${String(roundedHours).padStart(2, '0')}:${String(
-                roundedMinutes % 60
-            ).padStart(2, '0')} ${amPm}`;
-        }
-
-        return convertedTime;
-    }
-
     static getDispatchHistoryLayoutItems(
         layoutParams: GetDispatchHistoryLayoutParams,
         data: DispatchHistoryResponse[]
@@ -1034,7 +1009,10 @@ export class DispatchHistoryModalHelper {
             dateTo
                 ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
                 : null,
-            this.createTotalColumnValue(dateFrom, dateTo),
+            DispatchHistoryModalDateHelper.createTotalColumnValue(
+                dateFrom,
+                dateTo
+            ),
         ];
 
         return dataArray;
@@ -1161,42 +1139,6 @@ export class DispatchHistoryModalHelper {
             : DispatchHistoryModalStringEnum.EMPTY_STRING;
     }
 
-    static createTotalColumnValue(dateFrom: string, dateTo: string): string {
-        if (!dateTo) {
-            return 'Ongoing';
-        } else {
-            const from = moment(dateFrom);
-            const to = moment(dateTo);
-
-            const years = to.diff(from, 'years');
-            from.add(years, 'years');
-
-            const days = to.diff(from, 'days');
-            from.add(days, 'days');
-
-            const hours = to.diff(from, 'hours');
-            from.add(hours, 'hours');
-
-            const minutes = to.diff(from, 'minutes');
-
-            const seconds = to.diff(from, 'seconds');
-
-            if (!years && !days && !hours && !minutes) {
-                return seconds ? seconds + 's' : null;
-            } else {
-                const totalResult = `${years ? years + 'y' : ''} ${
-                    days ? days + 'd' : ''
-                } ${hours ? hours + 'h' : ''} ${
-                    minutes ? minutes + 'm' : ''
-                }`.trim();
-
-                const matches = totalResult.match(/(\d+\w)\s*/g);
-
-                return matches ? matches.slice(0, 2).join(' ') : '';
-            }
-        }
-    }
-
     static addExtraItemsInDispatchHistoryHeader(
         headerItemsArray: string[],
         startIndex: number,
@@ -1266,50 +1208,5 @@ export class DispatchHistoryModalHelper {
             selectedTimeId,
             isGroupWithoutTime,
         };
-    }
-
-    static updatDispatchHistoryGroupTotalTime(
-        days: number,
-        totalTimeString: string
-    ): string {
-        // parse the time string into hours, minutes, and seconds
-        const timeParts = totalTimeString.match(
-            /(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?/
-        );
-
-        if (!timeParts) return;
-
-        const hours = parseInt(timeParts[1] || '0', 10);
-        const minutes = parseInt(timeParts[2] || '0', 10);
-        const seconds = parseInt(timeParts[3] || '0', 10);
-
-        // start with a base moment duration of 0 days, 0 hours, 0 minutes, 0 seconds
-        const duration = moment.duration({
-            days: 0,
-            hours,
-            minutes,
-            seconds,
-        });
-
-        // add the specified number of days
-        duration.add(days, 'days');
-
-        // extract the final days, hours, minutes, and seconds from the duration
-        const finalDays = duration.days();
-        const finalHours = duration.hours();
-        const finalMinutes = duration.minutes();
-        const finalSeconds = duration.seconds();
-
-        // build the final string without leading zeros
-        const result = [
-            finalDays > 0 ? `${finalDays}d` : null,
-            finalHours > 0 ? `${finalHours}h` : null,
-            finalMinutes > 0 ? `${finalMinutes}m` : null,
-            finalSeconds > 0 ? `${finalSeconds}s` : null,
-        ]
-            .filter(Boolean)
-            .join(' ');
-
-        return result;
     }
 }
