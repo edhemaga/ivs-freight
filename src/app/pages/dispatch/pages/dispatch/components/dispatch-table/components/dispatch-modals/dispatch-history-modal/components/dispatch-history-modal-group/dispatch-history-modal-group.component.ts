@@ -313,27 +313,81 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
     }
 
     private handleSelectTimeStart(
-        selectedGroupItem: DispatchHistoryGroupItem,
-        nextGroupItem: DispatchHistoryGroupItem,
-        previousGroupItem: DispatchHistoryGroupItem
+        selectedGroupItem: DispatchHistoryGroupItem
     ): void {
-        const { timeStart, timeEnd } = selectedGroupItem;
-
         const isOngoing = !selectedGroupItem.dateEnd;
 
         const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
 
-        if (isOngoing) {
-            if (isGroupItemsRowValid) this.updateGroupHistoryData(true);
-        } else {
-            const isTimeValid =
+        if (isGroupItemsRowValid) {
+            if (isOngoing) {
+                this.updateGroupHistoryData(true);
+            } else {
+                const { dateStart, timeStart, dateEnd, timeEnd } =
+                    selectedGroupItem;
+
+                const isSameDate =
+                    DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                        dateStart,
+                        dateEnd
+                    ).isSelectedDateSameAsSelectedGroupItemDateEnd;
+
+                if (
+                    !isSameDate ||
+                    DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
+                        timeStart,
+                        timeEnd
+                    )
+                ) {
+                    this.updateGroupHistoryData(
+                        false,
+                        dateStart,
+                        timeStart,
+                        dateEnd,
+                        timeEnd
+                    );
+                } else {
+                    this.setInputValidationToInvalid(
+                        DispatchHistoryModalStringEnum.TIME_START
+                    );
+                }
+            }
+        }
+    }
+
+    private handleSelectTimeEnd(
+        selectedGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+        if (isGroupItemsRowValid) {
+            const { dateStart, timeStart, dateEnd, timeEnd } =
+                selectedGroupItem;
+
+            const isSameDate =
+                DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                    dateStart,
+                    dateEnd
+                ).isSelectedDateSameAsSelectedGroupItemDateEnd;
+
+            if (
+                !isSameDate ||
                 DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
                     timeStart,
                     timeEnd
+                )
+            ) {
+                this.updateGroupHistoryData(
+                    false,
+                    dateStart,
+                    timeStart,
+                    dateEnd,
+                    timeEnd
                 );
-
-            if (isGroupItemsRowValid) {
-                /* TODO */
+            } else {
+                this.setInputValidationToInvalid(
+                    DispatchHistoryModalStringEnum.TIME_END
+                );
             }
         }
     }
@@ -348,6 +402,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 dateStart,
                 dateEnd
             );
+
         const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
 
         if (
@@ -492,11 +547,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                     break;
                 case DispatchHistoryModalStringEnum.TIME_START:
-                    this.handleSelectTimeStart(
-                        selectedGroupItem,
-                        nextGroupItem,
-                        previousGroupItem
-                    );
+                    this.handleSelectTimeStart(selectedGroupItem);
 
                     break;
                 case DispatchHistoryModalStringEnum.DATE_END:
@@ -504,6 +555,8 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                     break;
                 case DispatchHistoryModalStringEnum.TIME_END:
+                    this.handleSelectTimeEnd(selectedGroupItem);
+
                     break;
                 default:
                     break;
