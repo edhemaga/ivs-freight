@@ -20,5 +20,7 @@ export interface PayrollCountsResponse {
     soloFlatRate?: PayrollCountItemResponse;
     teamFlatRate?: PayrollCountItemResponse;
     owner?: PayrollCountItemResponse;
+    opentPayrollCount?: number;
+    closedPayrollCount?: number;
 }
 

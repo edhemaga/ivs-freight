@@ -658,23 +658,8 @@ export class LoadService {
         search2?: string
     ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
         if (dispatchId) {
-            return this.loadService.apiLoadListAssignedGet(
+            return this.loadService.apiLoadListAssignedIdGet(
                 dispatchId,
-                truckType,
-                trailerType,
-                _long,
-                lat,
-                distance,
-                dispatcherId,
-                dateFrom,
-                dateTo,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                search,
-                search1,
-                search2
             );
         }
         return this.loadService.apiLoadModalAssignGet(
