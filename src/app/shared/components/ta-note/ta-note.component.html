@@ -89,8 +89,9 @@
                 [class.not_expanded]="!isExpanded"
                 [class.parking_text_hold]="parking"
                 [class.opened_all_editor]="isAllOpen"
+                [class.empty-note]="!value"
                 [innerHTML]="_note | safeHtml"
-                class="editor"
+                class="editor d-flex align-items-center"
                 (keydown)="maxLimitForContenteditableDiv($event, 250)"
                 contenteditable="true"
                 spellcheck="false"
@@ -98,6 +99,9 @@
                 #mainEditorDiv
                 (paste)="onPaste($event)"
             ></div>
+            <ng-container *ngIf="!value">
+                <div class="note-placeholder">Write Something...</div>
+            </ng-container>
             <div class="container_separate" *ngIf="isExpanded">
                 <div class="container_separate_inner"></div>
             </div>

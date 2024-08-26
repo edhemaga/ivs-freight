@@ -212,21 +212,7 @@
                                             cardRow.title !== 'MVR Exp.'
                                         "
                                     >
-                                        {{
-                                            !card[cardRow.key]
-                                                ? '/'
-                                                : cardRow.thirdKey
-                                                ? card[cardRow.key][
-                                                      cardRow.secondKey
-                                                  ][cardRow.thirdKey]
-                                                : cardRow.secondKey
-                                                ? card[cardRow.key][
-                                                      cardRow.secondKey
-                                                  ]
-                                                : card[cardRow.key]
-                                                ? card[cardRow.key]
-                                                : '/'
-                                        }}
+                                        {{ card | cardValue : cardRow }}
                                     </ng-container>
                                 </div>
                             </div>
