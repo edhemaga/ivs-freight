@@ -52,7 +52,12 @@
 
         <ng-container *ngIf="statusDetails.previousStatus?.statusString">
             <div class="status-previous">
-                <p class="status-previous-back ta-font-bold">Or back to</p>
+                <div class="d-flex justify-content-between align-items-center w-full">
+                    <p class="status-previous-back ta-font-bold">
+                        Or back to 
+                    </p>
+                    <img [src]="backStatus" class="status-previous-img"/>
+                </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div
                         class="status-previous-item ta-font-bold d-flex justify-content-between align-items-center w-full"
@@ -84,7 +89,6 @@
                             [isDispatch]="isDispatch"
                             [isDarkColor]="isDispatch"
                         ></app-load-status-string>
-                        <img [src]="backStatus" />
                     </div>
                 </div>
             </div>
