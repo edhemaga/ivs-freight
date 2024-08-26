@@ -316,10 +316,7 @@
             'h-full': isInheritingParentSize && _isCardOpen
         }"
         [ngStyle]="{
-            'scrollbar-width':
-                isInheritingParentSize && _isCardOpen
-                    ? 'thin !important'
-                    : 'none'
+            'scrollbar-width': isInheritingParentSize? 'thin !important': 'none'
         }"
         [@.disabled]="disableAnimation"
     >

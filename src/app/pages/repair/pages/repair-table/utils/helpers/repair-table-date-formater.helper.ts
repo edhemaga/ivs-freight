@@ -41,6 +41,14 @@ export class RepairTableDateFormaterHelper {
                     .subtract(1, RepairTableStringEnum.WEEKS)
                     .endOf(RepairTableStringEnum.WEEK);
                 break;
+            case RepairTableStringEnum.NEXT_WEEK:
+                fromDate = moment(today)
+                    .add(1, RepairTableStringEnum.WEEKS)
+                    .startOf(RepairTableStringEnum.WEEK);
+                toDate = moment(today)
+                    .add(1, RepairTableStringEnum.WEEKS)
+                    .endOf(RepairTableStringEnum.WEEK);
+                break;
             case RepairTableStringEnum.ONE_WEEK:
                 fromDate = moment(today).subtract(
                     1,
@@ -48,6 +56,13 @@ export class RepairTableDateFormaterHelper {
                 );
                 toDate = moment(today);
                 break;
+                case RepairTableStringEnum.ONE_WEEK_FUTURE:
+                    fromDate = moment(today);
+                    toDate = moment(today).add(
+                        1,
+                        RepairTableStringEnum.WEEKS
+                    );
+                    break;
             case RepairTableStringEnum.THIS_MONTH:
                 fromDate = moment(today).startOf(RepairTableStringEnum.MONTH);
                 toDate = moment(today).endOf(RepairTableStringEnum.MONTH);
@@ -60,6 +75,11 @@ export class RepairTableDateFormaterHelper {
                     .subtract(1, RepairTableStringEnum.MONTHS)
                     .endOf(RepairTableStringEnum.MONTH);
                 break;
+                case RepairTableStringEnum.ONE_MONTH_FUTURE:
+                    fromDate = moment(today);
+                    toDate = moment(today)
+                        .add(1, RepairTableStringEnum.MONTHS);
+                    break;
             case RepairTableStringEnum.ONE_MONTH:
                 fromDate = moment(today).subtract(
                     1,
@@ -67,12 +87,26 @@ export class RepairTableDateFormaterHelper {
                 );
                 toDate = moment(today);
                 break;
+            case RepairTableStringEnum.NEXT_MONTH:
+                fromDate = moment(today)
+                    .add(1, RepairTableStringEnum.MONTHS)
+                    .startOf(RepairTableStringEnum.MONTH);
+                toDate = moment(today)
+                    .add(1, RepairTableStringEnum.MONTHS)
+                    .endOf(RepairTableStringEnum.MONTH);
+                break;
             case RepairTableStringEnum.THREE_MONTHS:
                 fromDate = moment(today).subtract(
                     3,
                     RepairTableStringEnum.MONTHS
                 );
                 toDate = moment(today);
+                break;
+            case RepairTableStringEnum.THREE_MONTHS_FUTURE:
+                fromDate = moment(today);
+                toDate = moment(today)
+                    .add(3, RepairTableStringEnum.MONTHS)
+                    .endOf(RepairTableStringEnum.MONTH);
                 break;
             case RepairTableStringEnum.THIS_QUARTER:
                 fromDate = moment(today).startOf(RepairTableStringEnum.QUARTER);
@@ -86,9 +120,21 @@ export class RepairTableDateFormaterHelper {
                     .subtract(1, RepairTableStringEnum.QUARTERS)
                     .endOf(RepairTableStringEnum.QUARTER);
                 break;
+            case RepairTableStringEnum.NEXT_QUARTER:
+                fromDate = moment(today)
+                    .add(1, RepairTableStringEnum.QUARTERS)
+                    .startOf(RepairTableStringEnum.QUARTER);
+                toDate = moment(today)
+                    .add(1, RepairTableStringEnum.QUARTERS)
+                    .endOf(RepairTableStringEnum.QUARTER);
+                break;
             case RepairTableStringEnum.THIS_YEAR:
                 fromDate = moment(today).startOf(RepairTableStringEnum.YEAR);
                 toDate = moment(today).endOf(RepairTableStringEnum.YEAR);
+                break;
+            case RepairTableStringEnum.ONE_YEAR_FUTURE:
+                fromDate = moment(today);
+                toDate = moment(today).add(1, RepairTableStringEnum.YEARS);
                 break;
             case RepairTableStringEnum.ONE_YEAR:
                 fromDate = moment(today).subtract(
