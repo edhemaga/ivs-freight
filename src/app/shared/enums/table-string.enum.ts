@@ -146,6 +146,7 @@ export enum TableStringEnum {
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
+    LOAD_EXTRA_STOPS = ' EXTRA',
 
     PRINT = 'print',
     PRINT_2 = 'Print',

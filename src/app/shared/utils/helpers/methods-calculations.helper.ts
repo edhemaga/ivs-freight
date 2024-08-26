@@ -110,6 +110,11 @@ export class MethodsCalculationsHelper {
         return moment.utc(date).local().format('MM/DD/YY');
     };
 
+    //------------------------------- DATE FROM BACKEND TO FULL UTC  -------------------------------
+    static convertDateFromBackendToFullUTC = (date: string) => {
+        return moment.utc(date).local().format();
+    };
+
     //------------------------------- TIME FROM DATE FROM BACKEND -------------------------------
     static convertDateToTimeFromBackend = (
         date: string,

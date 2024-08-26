@@ -8,18 +8,20 @@
     gap: 4px;
     border-radius: 3px 0px 0px 0px;
     position: relative;
+    border-radius: 3px;
 }
 .dropdownOpen {
     top: -32px;
-    width: 140px !important;
+    width: 150px !important;
 }
 .status-dispatch {
     font-size: 11px;
     line-height: 14px;
     text-align: left;
     height: 32px;
-    padding: 0 4px 0 6px;
+    padding: 0 4px 3px 6px;
     border-radius: 2px 0px 0px 0px;
+    border-bottom: 1px solid $ta-black;
     .status-time {
         color: $white;
         overflow: hidden;
@@ -48,6 +50,10 @@
 
 .status-previous {
     border-top: 1px solid $ta-black;
+
+    &-img {
+        margin-right: 8px;
+    }
 }
 
 .status-previous-back {
