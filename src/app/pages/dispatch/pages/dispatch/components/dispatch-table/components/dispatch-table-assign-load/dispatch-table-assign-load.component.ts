@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 // RXJS
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 // Models
 import {
@@ -9,7 +9,6 @@ import {
     TruckMinimalResponse,
     TrailerMinimalResponse,
     LoadShortResponse,
-    LoadService,
 } from 'appcoretruckassist';
 
 // Enums
@@ -42,8 +41,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        private modalService: ModalService,
-        private loadService: LoadService
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {}
