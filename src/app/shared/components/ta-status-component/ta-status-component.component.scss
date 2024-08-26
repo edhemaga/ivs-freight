@@ -3,7 +3,7 @@
 .status-node {
     background-color: $ta-black-2;
     text-align: center;
-    width: 120px;
+    width: 130px;
     padding: 4px;
     gap: 4px;
     border-radius: 3px 0px 0px 0px;
@@ -69,4 +69,8 @@
         background: $ta-black;
         cursor: pointer;
     }
+}
+
+.w-full {
+    width: 100%;
 }

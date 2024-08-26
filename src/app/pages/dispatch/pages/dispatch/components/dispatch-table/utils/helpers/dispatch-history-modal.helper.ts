@@ -1,11 +1,9 @@
 import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
 
-// moment
-import moment from 'moment';
-
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { DispatchHistoryModalDateHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal-date.helper';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
@@ -16,29 +14,6 @@ import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/c
 import { DispatchHistoryResponse } from 'appcoretruckassist';
 
 export class DispatchHistoryModalHelper {
-    static roundToNearestQuarterHour(time: string): string {
-        const convertedTime = time
-            ? MethodsCalculationsHelper.convertDateFromBackendToTime(time)
-            : null;
-
-        if (convertedTime) {
-            const [hours, minutesWithPmAm] = convertedTime.split(':');
-            const [minutes, amPm] = minutesWithPmAm.split(' ');
-
-            const quarterHours = Math.round(+minutes / 15);
-
-            const roundedMinutes = quarterHours * 15;
-            const roundedHours =
-                roundedMinutes === 60 ? (+hours + 1) % 24 : hours;
-
-            return `${String(roundedHours).padStart(2, '0')}:${String(
-                roundedMinutes % 60
-            ).padStart(2, '0')} ${amPm}`;
-        }
-
-        return convertedTime;
-    }
-
     static getDispatchHistoryLayoutItems(
         layoutParams: GetDispatchHistoryLayoutParams,
         data: DispatchHistoryResponse[]
@@ -1034,7 +1009,10 @@ export class DispatchHistoryModalHelper {
             dateTo
                 ? MethodsCalculationsHelper.convertDateFromBackend(dateTo)
                 : null,
-            this.createTotalColumnValue(dateFrom, dateTo),
+            DispatchHistoryModalDateHelper.createTotalColumnValue(
+                dateFrom,
+                dateTo
+            ),
         ];
 
         return dataArray;
@@ -1047,7 +1025,7 @@ export class DispatchHistoryModalHelper {
             const spanArray: number[] = [];
 
             const nextRow = noGroupData[index + 1] || [];
-            const newRowIndex = noGroupData.indexOf(nextRow);
+            const nextRowIndex = noGroupData.indexOf(nextRow);
             const nextRowHasItemWithNoValue =
                 MethodsGlobalHelper.checkIfAnyItemInArrayHasNoValue(nextRow);
 
@@ -1060,7 +1038,11 @@ export class DispatchHistoryModalHelper {
                     if (!rowItem) {
                         let spanCounter = 1;
 
-                        for (let i = newRowIndex; i < noGroupData.length; i++) {
+                        for (
+                            let i = nextRowIndex;
+                            i < noGroupData.length;
+                            i++
+                        ) {
                             if (noGroupData[i][rowItemIndex]) {
                                 break;
                             } else {
@@ -1069,6 +1051,8 @@ export class DispatchHistoryModalHelper {
                         }
 
                         spanArray[rowItemIndex] = spanCounter;
+                    } else {
+                        spanArray[rowItemIndex] = 1;
                     }
                 });
             }
@@ -1079,32 +1063,56 @@ export class DispatchHistoryModalHelper {
         return noGroupItemSpanArray;
     }
 
-    static createDispatchHistoryDataHoverArray(
+    static createDispatchHistoryGridSpanClassNames(
         noGroupItemSpanArray: number[][]
-    ): number[][] {
-        const noGroupItemHoverArray: number[][] = [];
+    ): string[][] {
+        const groupArray: string[][] = [];
 
-        let hoverIndexArray: number[] = [];
-        let spanHoverCounter = 0;
+        let groupCounter = 1;
 
-        noGroupItemSpanArray.forEach((row, index) => {
-            const isNoSpanRow = row.every((rowItem) => rowItem === 1);
+        function getNextGroupName(): string {
+            return `group-${groupCounter.toString().padStart(3, '0')}`;
+        }
 
-            hoverIndexArray.push(index);
+        for (
+            let rowIndex = 0;
+            rowIndex < noGroupItemSpanArray.length;
+            rowIndex++
+        ) {
+            // initialize groupArray[rowIndex] if it doesn't exist
+            if (!groupArray[rowIndex]) groupArray[rowIndex] = [];
 
-            spanHoverCounter++;
+            for (
+                let colIndex = 0;
+                colIndex < noGroupItemSpanArray[rowIndex].length;
+                colIndex++
+            ) {
+                if (!groupArray[rowIndex][colIndex]) {
+                    const groupName = getNextGroupName();
 
-            if (isNoSpanRow) {
-                for (let i = 0; i < spanHoverCounter; i++) {
-                    noGroupItemHoverArray.push(hoverIndexArray);
+                    groupCounter++;
+
+                    // assign the group name to the current cell
+                    groupArray[rowIndex][colIndex] = groupName;
+
+                    // propagate the group name downward if the value spans multiple rows
+                    let span = noGroupItemSpanArray[rowIndex][colIndex];
+
+                    for (
+                        let i = 1;
+                        i < span && rowIndex + i < noGroupItemSpanArray.length;
+                        i++
+                    ) {
+                        if (!groupArray[rowIndex + i])
+                            groupArray[rowIndex + i] = [];
+
+                        groupArray[rowIndex + i][colIndex] = groupName;
+                    }
                 }
-
-                hoverIndexArray = [];
-                spanHoverCounter = 0;
             }
-        });
+        }
 
-        return noGroupItemHoverArray;
+        return groupArray;
     }
 
     static createStatusOrderValues(statusString: string): string {
@@ -1129,42 +1137,6 @@ export class DispatchHistoryModalHelper {
             : deliveryStatus.includes(statusString)
             ? DispatchHistoryModalStringEnum.DELIVERY
             : DispatchHistoryModalStringEnum.EMPTY_STRING;
-    }
-
-    static createTotalColumnValue(dateFrom: string, dateTo: string): string {
-        if (!dateTo) {
-            return 'Ongoing';
-        } else {
-            const from = moment(dateFrom);
-            const to = moment(dateTo);
-
-            const years = to.diff(from, 'years');
-            from.add(years, 'years');
-
-            const days = to.diff(from, 'days');
-            from.add(days, 'days');
-
-            const hours = to.diff(from, 'hours');
-            from.add(hours, 'hours');
-
-            const minutes = to.diff(from, 'minutes');
-
-            const seconds = to.diff(from, 'seconds');
-
-            if (!years && !days && !hours && !minutes) {
-                return seconds ? seconds + 's' : null;
-            } else {
-                const totalResult = `${years ? years + 'y' : ''} ${
-                    days ? days + 'd' : ''
-                } ${hours ? hours + 'h' : ''} ${
-                    minutes ? minutes + 'm' : ''
-                }`.trim();
-
-                const matches = totalResult.match(/(\d+\w)\s*/g);
-
-                return matches ? matches.slice(0, 2).join(' ') : '';
-            }
-        }
     }
 
     static addExtraItemsInDispatchHistoryHeader(

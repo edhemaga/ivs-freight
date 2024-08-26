@@ -5,24 +5,30 @@
             'd-flex justify-content-center align-items-center':
                 !isNoteExpanded,
             'hovering-note':
-                isHoveringRowIndex === rowIndex &&
-                isNoteExpanded,
+                isHoveringRowIndex === rowIndex,
             'hovering-note-content':
                 isHoveringRowIndex === rowIndex &&
                 truck &&
-                !note &&
+                !_note &&
                 isNoteExpanded,
             'note-default': !truck,
         }"
     >
         <div
             class="dispatcher-table-cell-container note-container"
-            [class.empty-box-field]="!note"
+            [class.empty-box-field]="!_note"
             [class.expanded]="isNoteExpanded"
         >
-            <ng-container *ngIf="truck">
+            <ng-container
+                *ngIf="
+                    (isNoteExpanded && truck) ||
+                    (!isNoteExpanded && truck && _note) ||
+                    (truck && !_note && isHoveringRowIndex === rowIndex) ||
+                    noteOpened
+                "
+            >
                 <app-ta-note
-                    [note]="note"
+                    [note]="_note"
                     [openedAll]="isNoteExpanded"
                     [dispatchIndex]="rowIndex"
                     [parking]="false"
@@ -32,7 +38,11 @@
                     [isDispatch]="true"
                     [entityType]="'Dispatch'"
                     [entityId]="dispatchId"
+                    [dispatchNoteEmpty]="
+                        truck && !_note && isHoveringRowIndex === rowIndex
+                    "
                     (saveNoteValue)="saveNote($event)"
+                    (noteToggleEmitter)="toggleNote($event)"
                 >
                 </app-ta-note>
             </ng-container>

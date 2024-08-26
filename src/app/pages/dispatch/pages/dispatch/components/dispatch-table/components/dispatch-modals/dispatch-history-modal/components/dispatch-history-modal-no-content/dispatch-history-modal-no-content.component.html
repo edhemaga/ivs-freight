@@ -1,0 +1,34 @@
+<div
+    class="d-flex justify-content-center align-items-center dispatch-history-modal-main-container-no-content"
+>
+    <div class="d-flex flex-column align-items-center">
+        <svg-icon
+            class="icon"
+            [src]="dispatchTableSvgRoutes.antQuestionSvgRoute"
+        ></svg-icon>
+
+        <p class="m-0 ta-font-bold">
+            {{ hasNoneSelected ? 'Pick something!' : 'No Results' }}
+        </p>
+
+        <span>
+            {{
+                hasNoneSelected
+                    ? 'Select one unit or driver to see history'
+                    : 'No entries match your criteria.'
+            }}
+        </span>
+
+        <ng-container *ngIf="!hasNoneSelected">
+            <span> Please revise your filters and search again. </span>
+
+            <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-bold reset-btn"
+                (click)="handleResetFiltersClick()"
+            >
+                Reset Filters
+            </button>
+        </ng-container>
+    </div>
+</div>

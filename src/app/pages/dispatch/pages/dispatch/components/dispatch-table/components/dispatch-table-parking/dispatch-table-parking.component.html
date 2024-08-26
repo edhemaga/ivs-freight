@@ -12,7 +12,7 @@
                 'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
                 'dispatch-parking_assigned': isParkingAssigned,
                 'dispatch-parking-hover': isParkingAvailable,
-                hovering: isHoveringRow
+                hovering: (!!trailerId || !!truckId) && isHoveringRow
             }"
         >
             <ng-container *ngIf="isParkingAvailable">

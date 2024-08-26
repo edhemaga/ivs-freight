@@ -61,6 +61,12 @@
             }
         }
 
+        &.dispatch-note {
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
+
         .note-btn {
             width: 18px;
             height: 18px;
@@ -79,6 +85,14 @@
             svg {
                 path {
                     fill: #ffffffb2 !important;
+                }
+            }
+        }
+
+        &.dispatch-empty-note {
+            svg {
+                path {
+                    fill: $ta-light-grey-6 !important;
                 }
             }
         }
@@ -134,6 +148,19 @@
             }
         }
     }
+}
+
+.note-placeholder {
+    position: absolute;
+    top: 11px;
+    left: 7px;
+
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 12px;
+    
+    color: $bw6-2;
+    pointer-events: none;
 }
 
 .kendo-editor-note-wrapper {
@@ -421,6 +448,10 @@
 
             &.parking_text_hold {
                 max-height: 124px;
+            }
+
+            &.empty-note {
+                padding-top: 9px;
             }
         }
 
