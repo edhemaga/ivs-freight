@@ -114,6 +114,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         return !!this.selectedDispatches && !this.isReorderingActive;
     }
 
+    public get extraStopsCount() {
+        // Remove deadhead
+        const stops = this.selectedLoad?.stops.filter(
+            (stop) => stop.id !== 0
+        );
+        return stops.length - 2 ? stops.length - 2 + ' EXTRA' : null;
+    }
+
     private initializeForm(): void {
         this.assignLoadForm = this.formBuilder.group({
             dispatchId: [null],
@@ -544,7 +552,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         // In progress, waiting for backend
-
         // switch (data?.filterType) {
         //     case LoadFilterStringEnum.USER_FILTER:
         //         break;
