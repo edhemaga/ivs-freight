@@ -399,6 +399,7 @@ export class BrokerDetailsCardComponent
         item: any, //leave this any for now because there are multiple responses
         hideAnimation?: boolean
     ): void {
+        return; //leave this commented because we don't have working charts
         config.dataLabels = [];
 
         if (item.brokerMileageRateChartResponse) {

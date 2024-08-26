@@ -26,10 +26,18 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
-                        "assets": ["src/assets"],
+                        "assets": [
+                            "src/assets",
+                                {
+                                    "glob": "**/*",
+                                    "input": "node_modules/ca-components/src/assets/ca-components/",
+                                    "output": "src/assets/ca-components/"
+                                }
+                        ],
                         "styles": [
                             "src/styles.scss",
                             "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "./node_modules/bootstrap/dist/css/bootstrap.css",
                             "./node_modules/snazzy-info-window/dist/snazzy-info-window.css",
                             "./node_modules/ngx-toastr/toastr.css",
                             "./node_modules/croppie/croppie.css",
@@ -131,7 +139,14 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "inlineStyleLanguage": "scss",
-                        "assets": ["src/assets"],
+                        "assets": [
+                            "src/assets",
+                                {
+                                    "glob": "**/*",
+                                    "input": "node_modules/ca-components/src/assets/ca-components/",
+                                    "output": "assets/ca-components/"
+                                }
+                        ],
                         "styles": [
                             "src/styles.scss",
                             "./node_modules/slick-carousel/slick/slick.scss",

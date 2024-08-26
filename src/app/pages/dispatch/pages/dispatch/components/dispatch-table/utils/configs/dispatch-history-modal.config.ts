@@ -64,6 +64,7 @@ export class DispatchHistoryModalConfig {
             isDropdown: true,
             isIconHidden: true,
             hideClear: true,
+            hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][0],
             isInputBackgroundRemoved:
                 !isInputHoverRows[groupIndex][itemIndex][0],
@@ -88,6 +89,7 @@ export class DispatchHistoryModalConfig {
             isDropdown: true,
             isIconHidden: true,
             hideClear: true,
+            hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][1],
             isInputBackgroundRemoved:
                 !isInputHoverRows[groupIndex][itemIndex][1],
@@ -112,6 +114,7 @@ export class DispatchHistoryModalConfig {
             isDropdown: true,
             isIconHidden: true,
             hideClear: true,
+            hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][2],
             isInputBackgroundRemoved:
                 !isInputHoverRows[groupIndex][itemIndex][2],
@@ -136,6 +139,7 @@ export class DispatchHistoryModalConfig {
             isDropdown: true,
             isIconHidden: true,
             hideClear: true,
+            hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][3],
             isInputBackgroundRemoved:
                 !isInputHoverRows[groupIndex][itemIndex][3],

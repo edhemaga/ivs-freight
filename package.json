@@ -13,7 +13,8 @@
     "svg:preview": "node src/app/svg-definitions/svg-converter.js",
     "lint": "npx eslint \"src/**/*.{ts,tsx,html}\" --quiet --fix",
     "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "rm -rf ./src/assets/ca-components && cp -R ./node_modules/ca-components/src/assets/ca-components ./src/assets/ca-components"
   },
   "private": true,
   "dependencies": {
@@ -59,8 +60,8 @@
     "angular2-chartjs": "^0.5.1",
     "bank-routing-number-validator": "0.0.4",
     "bootstrap": "^5.2.3",
-    "ca-components": "^0.0.6",
-    "chart.js": "^2.9.3",
+    "ca-components": "^0.0.22",
+    "chart.js": "^2.9.3", 
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-datalabels": "^1.0.0",
     "chartjs-plugin-doughnutlabel": "^2.0.3",
