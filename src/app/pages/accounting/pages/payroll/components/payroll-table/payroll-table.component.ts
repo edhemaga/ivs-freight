@@ -40,7 +40,7 @@ export class PayrollTableComponent implements OnInit {
     ngOnInit(): void {
         this.columns = [
             { header: 'Name', field: 'name', sortable: true, cellType: 'text' },
-            { header: 'Payroll', field: 'profile', cellType: 'textWithImage' },
+            { header: 'Payroll', field: 'profile', cellType: 'text' },
             {
                 header: 'Custom',
                 field: 'customField',

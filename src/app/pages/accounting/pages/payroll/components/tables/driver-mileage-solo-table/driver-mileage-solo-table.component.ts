@@ -32,10 +32,13 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
     @ViewChild('customStatus', { static: false })
     public readonly customStatusTemplate!: ElementRef;
 
+    @ViewChild('customMileageHeader', { static: false })
+    public readonly customMileageHeaderTemplate!: ElementRef;
+
     constructor(
         // Services
         private payrollFacadeService: PayrollFacadeService
-    ) { }
+    ) {}
 
     ngAfterViewInit() {
         this.columns = [
@@ -55,8 +58,9 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
             {
                 header: 'Period',
                 field: 'period',
-                cellType: 'template',
-                template: this.customTextTemplate, // Pass the template reference
+                pipeType: 'date',
+                pipeString: 'shortDate',
+                cellType: 'text', // Pass the template reference
             },
             {
                 header: 'Status',
@@ -65,19 +69,25 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 template: this.customStatusTemplate, // Pass the template reference
             },
             {
-                header: 'Empty mi',
+                header: 'Empty',
                 field: 'emptyMiles',
+                headerCellType: 'template',
+                headerTemplate: this.customMileageHeaderTemplate,
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
             },
             {
-                header: 'Empty mi',
+                header: 'Empty',
                 field: 'emptyMiles',
+                headerCellType: 'template',
+                headerTemplate: this.customMileageHeaderTemplate,
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
             },
             {
-                header: 'Loaded mi',
+                header: 'Loaded',
+                headerCellType: 'template',
+                headerTemplate: this.customMileageHeaderTemplate,
                 field: 'loadedMiles',
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
@@ -85,26 +95,28 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
             {
                 header: 'Total mi',
                 field: 'totalMiles',
-                cellType: 'template',
-                template: this.customTextTemplate, // Pass the template reference
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text', // Pass the template reference
             },
             {
                 header: 'Salary',
                 field: 'salary',
-                cellType: 'template',
-                template: this.customTextTemplate, // Pass the template reference
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text', // Pass the template reference
             },
             {
                 header: 'Total',
                 field: 'total',
-                cellType: 'template',
-                template: this.customTextTemplate, // Pass the template reference
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text', // Pass the template reference
             },
         ];
     }
 
     ngOnInit(): void {
-
         this.subscribeToStoreData();
     }
 
@@ -123,5 +135,5 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
         );
     }
 
-    test() { }
+    test() {}
 }

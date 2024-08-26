@@ -5,11 +5,11 @@
     thead {
         tr {
             th {
-                height: 24px;
-
+                color: #6c6c6c;
+                text-transform: uppercase;
                 font-size: 11px;
 
-                .th-content-container{
+                .th-content-container {
                     padding: 4px;
                 }
             }
@@ -31,6 +31,10 @@
                     .td-content-container {
                         flex: 1;
                         padding: 3px 4px;
+
+                        .text{
+                            font-size: 14px;
+                        }
                     }
                 }
 
