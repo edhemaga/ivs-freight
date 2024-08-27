@@ -1,8 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, type OnDestroy } from '@angular/core';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 
 //services
@@ -11,9 +9,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 //components
-import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
-import { TaStatusComponentComponent } from '@shared/components/ta-status-component/ta-status-component.component';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 //helpers

@@ -275,11 +275,7 @@
                 <div firstElement class="h-full">
                     <app-ta-custom-card
                         [cardName]="'Stops'"
-                        [capsulaText]="
-                            selectedLoad?.stops.length - 2
-                                ? selectedLoad?.stops.length - 2 + ' EXTRA'
-                                : null
-                        "
+                        [capsulaText]="extraStopsCount"
                         [isCardOpen]="true"
                         [hasCounter]="selectedLoad?.stops.length"
                         [hasActionSvg]="false"
