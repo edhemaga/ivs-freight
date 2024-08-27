@@ -180,6 +180,10 @@ export class DispatchTableParkingComponent implements OnInit {
         this.popoverRef.open();
     }
 
+    public onPopoverShown() : void {
+        this.isInputInFocus = true;
+    }
+
     public trackByIdentity(id: number): number {
         return id;
     }

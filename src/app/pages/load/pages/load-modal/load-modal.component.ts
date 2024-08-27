@@ -2133,12 +2133,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ? field.get(timeToKey)
             : this.loadForm.get(timeToKey);
 
-        if (shipper.shippingOpenTwentyFourHours) {
+        if (shipper?.shippingOpenTwentyFourHours) {
             timeFrom?.patchValue('00:00');
             if (!isAppointment) {
                 timeTo?.patchValue('00:00');
             }
-        } else if (shipper.receivingFrom) {
+        } else if (shipper?.receivingFrom) {
             timeFrom?.patchValue(shipper.receivingFrom);
             if (!isAppointment) {
                 timeTo?.patchValue(shipper.receivingTo);
