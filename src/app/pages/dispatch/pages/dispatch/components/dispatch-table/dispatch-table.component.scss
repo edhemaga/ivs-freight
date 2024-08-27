@@ -332,6 +332,13 @@
                                     }
                                 }
                             }
+
+                            &.driver-endorsements {
+                                font-size: 11px;
+                                line-height: 14px;
+                                font-weight: 400;
+                                color: $bw5;
+                            }
                         }
 
                         .copy_divs {
