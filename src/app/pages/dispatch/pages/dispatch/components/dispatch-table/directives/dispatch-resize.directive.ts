@@ -17,11 +17,11 @@ export class ResizableDirective implements OnInit {
     @Input() title: string;
     @Input() columns: DispatchColumn[];
     @Input() resizeEnabled: boolean = true;
+    private minWidth: number;
+    private maxWidth: number;
     private startX: number;
     private startWidth: number;
 
-    private minWidth: number;
-    private maxWidth: number;
     private isResizing = false;
 
     constructor(private el: ElementRef, private renderer: Renderer2) {}
