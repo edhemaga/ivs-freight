@@ -22,6 +22,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { ToDoListCardComponent } from '@pages/to-do/pages/to-do-list-card/to-do-list-card.component';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 @NgModule({
     declarations: [ToDoListCardComponent],
@@ -42,6 +43,7 @@ import { ToDoListCardComponent } from '@pages/to-do/pages/to-do-list-card/to-do-
         TaDetailsDropdownComponent,
         TaProgressExpirationComponent,
         TaUserReviewComponent,
+        CaSearchMultipleStatesComponent,
 
         //Pipes
         FormatDatePipe,

@@ -19,6 +19,7 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
 import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -175,7 +176,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private confiramtionService: ConfirmationService,
         private repairCardsModalService: RepairCardsModalService,
         private confirmationActivationService: ConfirmationActivationService,
-
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         // Store
         private repairShopQuery: RepairShopQuery,
         private repairTruckQuery: RepairTruckQuery,
@@ -370,8 +371,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (updatedStore !== -1) {
             const store = this.viewData[updatedStore];
             store.status = store.status === 0 ? 1 : 0;
-            store.tableDropdownContent.content = this.getShopDropdownContent(data)
-           
+            store.tableDropdownContent.content =
+                this.getShopDropdownContent(data);
         }
     }
 
@@ -518,7 +519,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private search(): void {
         // Search
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

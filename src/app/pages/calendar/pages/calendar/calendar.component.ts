@@ -18,7 +18,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 // Services
 import { SharedService } from '@shared/services/shared.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 @Component({
     selector: 'app-calendar',
@@ -709,7 +709,7 @@ export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private sharedService: SharedService,
-        private tableService: TruckassistTableService
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {
         ///const name = Calendar.name;
     }
@@ -743,7 +743,7 @@ export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
             },
         ];
 
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
