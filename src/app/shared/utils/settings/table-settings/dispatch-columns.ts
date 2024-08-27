@@ -100,7 +100,7 @@ export function getDispatchColumnDefinition() {
             title: 'Pre trip',
             field: 'PreTrip',
             name: 'Pre-Trip Insp. ',
-            hidden: false,
+            hidden: true,
         },
         {
             ngTemplate: 'text',
