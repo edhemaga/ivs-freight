@@ -13,8 +13,10 @@ import { EnumValue } from './enumValue';
 
 
 export interface PayrollCountItemResponse { 
-    count?: number;
+    totalCount?: number;
+    valueCount?: number | null;
     value?: number | null;
     status?: EnumValue;
+    date?: string | null;
 }
 

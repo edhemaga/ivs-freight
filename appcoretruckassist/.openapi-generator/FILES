@@ -888,6 +888,7 @@ model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceType.ts
 model/serviceTypeResponse.ts
+model/setLockedUnlockedByCommand.ts
 model/setNewPasswordCommand.ts
 model/setPreTripInspectionCommand.ts
 model/sevenDaysHosFeedbackResponse.ts

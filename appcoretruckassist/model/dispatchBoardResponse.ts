@@ -17,11 +17,13 @@ export interface DispatchBoardResponse {
     id?: number;
     dispatcher?: CompanyUserShortResponse;
     dispatches?: Array<DispatchResponse> | null;
+    companyUserUnlocked?: CompanyUserShortResponse;
     teamBoard?: boolean;
     dispatchCount?: number;
     truckCount?: number;
     trailerCount?: number;
     driverCount?: number;
     canUnlock?: boolean;
+    isUnlocked?: boolean;
 }
 
