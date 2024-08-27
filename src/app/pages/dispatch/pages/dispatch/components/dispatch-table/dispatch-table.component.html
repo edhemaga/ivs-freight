@@ -397,7 +397,30 @@
                             </app-dispatch-table-status>
                         </td>
 
-                        <td class="pickup-delivery-field"></td>
+                        <td class="pickup-delivery-field">
+                            <div class="main_inside filled">
+                                <div class="padding-inside" 
+                                [ngClass]="{
+                                    hovering:
+                                        isDispatchBoardLocked &&
+                                        item.dispatcher?.fullName &&
+                                        isHoveringRowIndex === rowIndex
+                                }">
+                                
+                                <div class="info-item p-0 w-100">
+                                    <ng-container *ngIf="pickupDeliveryItem(item)">
+                                        <app-ca-pickup-delivery-block
+                                        [loads]="{
+                                            active: pickupDeliveryItem(item),
+                                            closed: null,
+                                            pending: null
+                                        }"
+                                    ></app-ca-pickup-delivery-block>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            </div>
+                        </td>
                         <ng-container *ngIf="!columnsToShow[14].hidden">
                             <td class="progress-field">
                                 <div class="main_inside filled">

@@ -45,6 +45,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
+import { PickupDeliveryBlockComponent } from 'ca-components';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -56,6 +57,7 @@ import { HosTimePipe } from '@pages/dispatch/pipes/hos-time.pipe';
 import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-info-text.pipe';
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 import { DispatchHistoryModalGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
+
 
 @NgModule({
     declarations: [
@@ -115,6 +117,7 @@ import { DispatchHistoryModalGroupComponent } from './pages/dispatch/components/
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
         TaStatusComponentComponent,
+        PickupDeliveryBlockComponent,
 
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,

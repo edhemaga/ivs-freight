@@ -54,6 +54,7 @@ import {
     TruckMinimalResponse,
     DriverMinimalResponse,
     DispatchResponse,
+    LoadShortResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
@@ -184,6 +185,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
+    }
+
+    public pickupDeliveryItem(item: DispatchResponse) : LoadShortResponse[] | null {
+        if(item.activeLoad) return [item.activeLoad];
+
+        return null;
     }
 
     public trackByIdentity = (index: number): number => index;
