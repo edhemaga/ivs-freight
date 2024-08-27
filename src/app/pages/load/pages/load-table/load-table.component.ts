@@ -27,6 +27,7 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Models
 import {
@@ -163,6 +164,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         //store
         private store: Store
@@ -486,7 +488,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

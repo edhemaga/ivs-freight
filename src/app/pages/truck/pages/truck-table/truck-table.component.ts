@@ -17,6 +17,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -112,7 +113,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         public datePipe: DatePipe,
         private TruckCardsModalService: TruckCardsModalService,
         private truckCardModalQuery: truckCardModalQuery,
-        private confirmationActivationService: ConfirmationActivationService
+        private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     ngOnInit(): void {
@@ -445,7 +447,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

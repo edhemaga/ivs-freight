@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // components
 import { AccidentModalComponent } from '@pages/safety/accident/pages/accident-modal/accident-modal.component';
@@ -86,7 +87,8 @@ export class AccidentTableComponent
         private accidentActiveQuery: AccidentActiveQuery,
         private accidentInactiveQuery: AccidentInactiveQuery,
         private accidentNonReportedQuery: AccidentNonReportedQuery,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     // -------------------------------NgOnInit-------------------------------
@@ -136,7 +138,7 @@ export class AccidentTableComponent
             });
 
         // Search
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {});
 

@@ -21,6 +21,7 @@ import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { DriverState } from '@pages/driver/state/driver-state/driver.store';
@@ -149,6 +150,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private driverCardsModalService: DriverCardsModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         // store
         private driversActiveQuery: DriverQuery,
@@ -343,7 +345,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -1516,7 +1518,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.driverBackFilterQuery.active =
                     this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                 this.driverBackFilterQuery.pageIndex++;
-
                 this.driverBackFilter(this.driverBackFilterQuery, true);
             }
         } else if (event.type === TableStringEnum.EDIT) {
@@ -1683,8 +1684,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private multipleDeleteDrivers(driverIds: number[]): void {
-        console.log('driverIds', driverIds);
-
         this.driverService
             .deleteDriverList(driverIds)
             .pipe(takeUntil(this.destroy$))
