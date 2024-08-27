@@ -34,10 +34,9 @@
         min-height: 60px;
         overflow-y: scroll;
         background-color: $ta-black-2;
-        width: 96px;
+        width: 110px;
         border-radius: 3px;
-        position: relative;
-        left: -3px;
+        position: relative; 
         top: -2px;
 
         &-list {
@@ -50,7 +49,7 @@
         }
 
         &_large {
-            width: 150px;
+            width: 160px;
         }
 
         &-badge {
