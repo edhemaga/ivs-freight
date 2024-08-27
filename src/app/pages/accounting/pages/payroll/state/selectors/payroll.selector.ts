@@ -40,10 +40,10 @@ export const selectPayrollCounts = createSelector(
         return {
             payrollCounts: payrollCounts,
             payrolls: payrollCountsData,
-            payrollData: payrollCountsData.map((payroll) =>
+            payrollData: payrollCountsData.filter(item => !['opentPayrollCount', 'closedPayrollCount'].includes(item)).map((payroll) =>
                 getPayrollTableItem(
                     payroll,
-                    payrollCounts[payroll as keyof PayrollCountsResponse]
+                    payrollCounts[payroll as keyof PayrollCountsResponse] as PayrollCountItemResponse
                 )
             ),
         };
@@ -65,8 +65,9 @@ function getPayrollTableItem(
         text: payrollNamesData[payrollTitle].text,
         type: payrollNamesData[payrollTitle].type,
         //data: data[item].pagination.data,
-        itemCount: item?.count || 0,
+        itemCount: item?.valueCount || 0,
         money: item?.value,
+        date: item.date,
         status: getStatus(item?.status.name),
         tableSettings: getTableDefinitions(payrollNamesData[payrollTitle]),
     };
