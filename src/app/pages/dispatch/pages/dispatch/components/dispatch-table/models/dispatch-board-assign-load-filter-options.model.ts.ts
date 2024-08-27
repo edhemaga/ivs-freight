@@ -1,11 +1,12 @@
 export interface DispatchBoardAssignLoadFilterOptions {
+    dispatchFutureTime: number;
     dispatchId?: number;
     truckType?: number[];
     trailerType?: number[];
     _long?: number;
     lat?: number;
     distance?: number;
-    dispatcherId?: number;
+    dispatchersId?: number[];
     dateFrom?: string;
     dateTo?: string;
     pageIndex?: number;

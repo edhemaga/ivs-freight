@@ -640,13 +640,14 @@ export class LoadService {
     }
 
     public getDispatchModalData(
+        isDispatchId: boolean,
         dispatchId?: number,
         truckType?: number[],
         trailerType?: number[],
         _long?: number,
         lat?: number,
         distance?: number,
-        dispatcherId?: number,
+        dispatchersId?: number[],
         dateFrom?: string,
         dateTo?: string,
         pageIndex?: number,
@@ -657,7 +658,7 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
-        if (dispatchId) {
+        if (isDispatchId) {
             return this.loadService.apiLoadListAssignedIdGet(
                 dispatchId,
             );
@@ -669,7 +670,7 @@ export class LoadService {
             _long,
             lat,
             distance,
-            dispatcherId,
+            dispatchersId,
             dateFrom,
             dateTo,
             pageIndex,

@@ -2,12 +2,13 @@ import { DispatchBoardAssignLoadFilterOptions } from '../../models/dispatch-boar
 
 export class DispatchAssignLoadModalConstants {
     static BACK_FILTER: DispatchBoardAssignLoadFilterOptions = {
+        dispatchFutureTime: null,
         truckType: null,
         trailerType: null,
         _long: null,
         lat: null,
         distance: null,
-        dispatcherId: null,
+        dispatchersId: [],
         dateFrom: null,
         dateTo: null,
         pageIndex: null,

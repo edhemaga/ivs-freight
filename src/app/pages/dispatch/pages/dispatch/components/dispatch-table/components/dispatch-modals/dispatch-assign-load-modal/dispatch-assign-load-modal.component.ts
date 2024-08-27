@@ -28,6 +28,7 @@ import {
     AssignedLoadResponse,
     AssignLoadModalResponse,
     DispatchLoadModalResponse,
+    EnumValue,
     LoadResponse,
     LoadStopResponse,
     ReorderDispatchLoadsCommand,
@@ -107,6 +108,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
+    dispatchFutureTimes: EnumValue[];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -149,13 +151,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
         this.loadService
             .getDispatchModalData(
-                null,
+                false,
+                this.backLoadFilterQuery.dispatchFutureTime,
                 this.backLoadFilterQuery.truckType,
                 this.backLoadFilterQuery.trailerType,
                 this.backLoadFilterQuery._long,
                 this.backLoadFilterQuery.lat,
                 this.backLoadFilterQuery.distance,
-                this.backLoadFilterQuery.dispatcherId,
+                this.backLoadFilterQuery.dispatchersId,
                 this.backLoadFilterQuery.dateFrom,
                 this.backLoadFilterQuery.dateTo,
                 this.backLoadFilterQuery.pageIndex,
@@ -170,6 +173,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             .subscribe((res: AssignLoadModalResponse) => {
                 this.unassignedLoads = res.unassignedLoads;
                 this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+                this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
                 if (this.editData?.dispatchId) {
@@ -491,13 +495,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     private getLoadsForDispatchId(dispatchId: number) {
         this.loadService
             .getDispatchModalData(
+                true,
                 dispatchId,
                 this.backLoadFilterQuery.truckType,
                 this.backLoadFilterQuery.trailerType,
                 this.backLoadFilterQuery._long,
                 this.backLoadFilterQuery.lat,
                 this.backLoadFilterQuery.distance,
-                this.backLoadFilterQuery.dispatcherId,
+                this.backLoadFilterQuery.dispatchersId,
                 this.backLoadFilterQuery.dateFrom,
                 this.backLoadFilterQuery.dateTo,
                 this.backLoadFilterQuery.pageIndex,
@@ -604,13 +609,13 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public setFilter(data): void {
         switch (data?.filterType) {
             case LoadFilterStringEnum.USER_FILTER:
-                // TODO: Waiting backend
-                this.backLoadFilterQuery.dispatcherId = data.queryParams
-                    ? data.queryParams[0]
+                this.backLoadFilterQuery.dispatchersId = data.queryParams
+                    ? data.queryParams
                     : null;
                 break;
             case LoadFilterStringEnum.TIME_FILTER_FUTURE:
-                if (data.queryParams?.timeSelected) {
+                const selectedTime = this.dispatchFutureTimes.find(futureTimes => futureTimes.name.toLowerCase() === data.queryParams?.timeSelected.toLowerCase())?.id;
+                if (selectedTime === 15) {
                     const { fromDate, toDate } =
                         RepairTableDateFormaterHelper.getDateRange(
                             data.queryParams?.timeSelected,
@@ -618,10 +623,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                         );
                     this.backLoadFilterQuery.dateTo = toDate;
                     this.backLoadFilterQuery.dateFrom = fromDate;
-                } else {
+                } else { 
                     this.backLoadFilterQuery.dateTo = null;
                     this.backLoadFilterQuery.dateFrom = null;
                 }
+                this.backLoadFilterQuery.dispatchFutureTime = selectedTime;
                 break;
             case LoadFilterStringEnum.LOCATION_FILTER:
                 this.backLoadFilterQuery._long =

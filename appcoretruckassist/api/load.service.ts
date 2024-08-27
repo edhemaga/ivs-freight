@@ -1271,7 +1271,7 @@ export class LoadService {
      * @param _long 
      * @param lat 
      * @param distance 
-     * @param dispatcherId 
+     * @param dispatcherIds 
      * @param customDateFrom 
      * @param customDateTo 
      * @param pageIndex 
@@ -1284,10 +1284,10 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchFutureTime !== undefined && dispatchFutureTime !== null) {
@@ -1318,9 +1318,11 @@ export class LoadService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>distance, 'Distance');
         }
-        if (dispatcherId !== undefined && dispatcherId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>dispatcherId, 'DispatcherId');
+        if (dispatcherIds) {
+            dispatcherIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'DispatcherIds');
+            })
         }
         if (customDateFrom !== undefined && customDateFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
