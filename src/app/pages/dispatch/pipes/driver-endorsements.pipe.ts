@@ -12,9 +12,8 @@ export class DriverEndorsementsPipe implements PipeTransform {
 
         const filteredData = data?.filter((item) => item);
 
-        if (filteredData?.length) {
+        if (filteredData?.length)
             endorsementsText = '(' + data.join('&middot;') + ')';
-        }
 
         return endorsementsText;
     }
