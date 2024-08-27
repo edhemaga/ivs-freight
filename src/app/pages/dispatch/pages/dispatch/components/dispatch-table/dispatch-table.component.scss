@@ -332,6 +332,13 @@
                                     }
                                 }
                             }
+
+                            &.driver-endorsements {
+                                font-size: 11px;
+                                line-height: 14px;
+                                font-weight: 400;
+                                color: $bw5;
+                            }
                         }
 
                         .copy_divs {
@@ -415,8 +422,8 @@
             }
             &.driver-field {
                 min-width: 240px;
-                max-width: 240px;
-                width: 240px;
+                max-width: 400px;
+                width: 300px;
             }
 
             &.location-field {
