@@ -815,6 +815,7 @@ export * from './selectCompanyCommand';
 export * from './selectCompanyResponse';
 export * from './serviceType';
 export * from './serviceTypeResponse';
+export * from './setLockedUnlockedByCommand';
 export * from './setNewPasswordCommand';
 export * from './setPreTripInspectionCommand';
 export * from './sevenDaysHosFeedbackResponse';

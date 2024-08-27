@@ -1,12 +1,14 @@
+import { MethodsCalculationsHelper } from "@shared/utils/helpers/methods-calculations.helper";
+
 export class DispatchTableHelper {
     static calculateDateDifference(inputTimeStr: string): string {
-        const inputTime = new Date(inputTimeStr);
+        const inputTime = new Date(MethodsCalculationsHelper.convertDateFromBackendToFullUTC(inputTimeStr));
         const currentTime = new Date();
 
         const timeDifference = currentTime.getTime() - inputTime.getTime();
 
         const daysPassed = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hoursPassed = Math.floor(
+        const hoursPassed = Math.floor( 
             (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
         const minutesPassed = Math.floor(
