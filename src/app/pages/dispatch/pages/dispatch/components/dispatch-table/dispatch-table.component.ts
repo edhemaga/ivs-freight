@@ -97,6 +97,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
+
+            this.isDriverEndorsementActive = !this.columnsToShow[6].hidden;
         }
     }
 
@@ -150,6 +152,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
     public shownFields;
+
+    public isDriverEndorsementActive: boolean = false;
 
     /////////////////////////////////////////// UPDATE
 

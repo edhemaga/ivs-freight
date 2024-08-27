@@ -19,6 +19,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { AccountService } from '@pages/account/services/account.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { AccountState } from '@pages/account/state/account.store';
@@ -102,6 +103,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private clipboard: Clipboard,
         private confiramtionService: ConfirmationService,
         private accountCardModalQuery: accountCardModalQuery,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         @Inject(DOCUMENT) private readonly documentRef: Document
     ) {}
 
@@ -167,7 +169,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private accountCurrentSearchTableData(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

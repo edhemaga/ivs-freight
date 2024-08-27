@@ -83,9 +83,9 @@
                     [autoClose]="'outside'"
                     [popoverClass]="'parking-popover'"
                     [container]="'body'"
-                    [placement]="['bottom-left']"
+                    [placement]="'bottom auto'"
                     (click)="onInputClick()"
-                    (shown)="isInputInFocus = true"
+                    (shown)="onPopoverShown()"
                     (hidden)="isInputInFocus = false"
                 >
                     <ng-template #parkingDropDownPopover>
@@ -105,7 +105,8 @@
                                 ></app-ta-input>
                             </form>
 
-                            <ng-container
+                            <div class="dispatch-parking-dropdown-list scrollable-element">
+                                <ng-container
                                 *ngFor="
                                     let parking of filteredParkingList;
                                     let index = index;
@@ -211,6 +212,7 @@
                                     </ng-container>
                                 </div>
                             </ng-container>
+                            </div>
 
                             <ng-container
                                 *ngIf="

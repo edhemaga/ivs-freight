@@ -12,6 +12,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
+import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 // components
 import { TrailerTableComponent } from '@pages/trailer/pages/trailer-table/trailer-table.component';
@@ -55,6 +56,7 @@ import { trailerCardModalReducer } from '@pages/trailer/pages/trailer-card-modal
         FormatDatePipe,
         FlipCardsPipe,
         NgForLengthFilterPipe,
+        CardValuePipe,
 
         StoreModule.forFeature('trailerCardData', trailerCardModalReducer),
     ],

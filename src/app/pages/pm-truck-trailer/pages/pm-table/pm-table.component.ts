@@ -35,6 +35,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal/service/pm-cards-modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -111,7 +112,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private pmService: PmService,
         private pmCardsModalService: PMCardsModalService,
-
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         // Store
         private pmTruckQuery: PmTruckQuery,
         private pmTrailerQuery: PmTrailerQuery,
@@ -904,7 +905,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private pmCurrentSearchTableData(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

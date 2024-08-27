@@ -20,8 +20,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 // Enum
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum'; 
 
 // Models
 import {
@@ -112,6 +111,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public get isModalValid(): boolean {
         return !!this.selectedDispatches && !this.isReorderingActive;
+    }
+
+    public get extraStopsCount(): string {
+        // Remove deadhead
+        const stops = this.selectedLoad?.stops.filter(
+            (stop) => stop.id !== 0
+        );
+        return stops.length - 2 ? stops.length - 2 +  TableStringEnum.LOAD_EXTRA_STOPS : null;
     }
 
     private initializeForm(): void {
@@ -544,7 +551,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         // In progress, waiting for backend
-
         // switch (data?.filterType) {
         //     case LoadFilterStringEnum.USER_FILTER:
         //         break;

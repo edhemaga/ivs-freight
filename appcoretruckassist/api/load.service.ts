@@ -1265,19 +1265,98 @@ export class LoadService {
     }
 
     /**
-     * @param request 
+     * @param dispatchFutureTime 
+     * @param truckType 
+     * @param trailerType 
+     * @param _long 
+     * @param lat 
+     * @param distance 
+     * @param dispatcherId 
+     * @param customDateFrom 
+     * @param customDateTo 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadModalAssignGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
-    public apiLoadModalAssignGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (request !== undefined && request !== null) {
+        if (dispatchFutureTime !== undefined && dispatchFutureTime !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>request, 'request');
+            <any>dispatchFutureTime, 'DispatchFutureTime');
+        }
+        if (truckType) {
+            truckType.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TruckType');
+            })
+        }
+        if (trailerType) {
+            trailerType.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TrailerType');
+            })
+        }
+        if (_long !== undefined && _long !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>distance, 'Distance');
+        }
+        if (dispatcherId !== undefined && dispatcherId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dispatcherId, 'DispatcherId');
+        }
+        if (customDateFrom !== undefined && customDateFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateFrom, 'CustomDateFrom');
+        }
+        if (customDateTo !== undefined && customDateTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateTo, 'CustomDateTo');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;

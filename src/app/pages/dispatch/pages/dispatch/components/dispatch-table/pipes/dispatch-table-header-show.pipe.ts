@@ -37,9 +37,7 @@ export class DispatchTableHeaderShowPipe implements PipeTransform {
                 title === DispatchTableStringEnum.PARKING_1
             ) {
                 return true;
-            } else {
-                false;
-            }
+            } else false;
         }
     }
 }

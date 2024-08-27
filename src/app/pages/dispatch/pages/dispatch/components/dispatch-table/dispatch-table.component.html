@@ -66,7 +66,7 @@
                                     }"
                                 >
                                     <div
-                                        class="resize"
+                                        class="resize d-flex justify-content-between align-items-center"
                                         appResizable
                                         [title]="tableHeaderItem.title"
                                         [columns]="columnsToShow"
@@ -83,7 +83,7 @@
                                                 )
                                             "
                                             [ngClass]="{
-                                                'close-icon-show':
+                                                'close-icon-show d-flex justify-content-between align-items-center':
                                                     !isDispatchBoardLocked &&
                                                         tableHeaderItem.title
                                                     | dispatchTableHeaderShowPipe
@@ -361,7 +361,21 @@
                                 </div>
                             </td>
 
-                            <td #columnField class="driver-field">
+                            <td
+                                #columnField
+                                class="driver-field"
+                                [ngStyle]="{
+                                    width: isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px',
+                                    'min-width': isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px',
+                                    'max-width': isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px'
+                                }"
+                            >
                                 <div
                                     class="main_inside"
                                     [class.dragging]="
@@ -705,7 +719,21 @@
                             </app-dispatch-table-truck-trailer>
                         </td>
 
-                        <td #columnField class="driver-field">
+                        <td
+                            #columnField
+                            class="driver-field"
+                            [ngStyle]="{
+                                width: isDriverEndorsementActive
+                                    ? '300px'
+                                    : '240px',
+                                'min-width': isDriverEndorsementActive
+                                    ? '300px'
+                                    : '240px',
+                                'max-width': isDriverEndorsementActive
+                                    ? '300px'
+                                    : '240px'
+                            }"
+                        >
                             <app-dispatch-table-driver
                                 [driverList]="driverList"
                                 [rowIndex]="rowIndex"

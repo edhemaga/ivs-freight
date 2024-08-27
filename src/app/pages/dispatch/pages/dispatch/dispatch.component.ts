@@ -14,6 +14,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -89,7 +90,8 @@ export class DispatchComponent
         // services
         public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     ngOnInit(): void {
@@ -496,7 +498,7 @@ export class DispatchComponent
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

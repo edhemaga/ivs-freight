@@ -17,32 +17,62 @@ export class ResizableDirective implements OnInit {
     @Input() title: string;
     @Input() columns: DispatchColumn[];
     @Input() resizeEnabled: boolean = true;
-    private minWidth!: number;
-    private maxWidth!: number;
+    private startX: number;
+    private startWidth: number;
 
-    private startX!: number;
-    private startWidth!: number;
+    private minWidth: number;
+    private maxWidth: number;
+    private isResizing = false;
 
     constructor(private el: ElementRef, private renderer: Renderer2) {}
+
     ngOnInit(): void {
-        if (this.resizeEnabled)
+        if (this.resizeEnabled) {
             this.renderer.setStyle(
                 this.el.nativeElement,
                 'cursor',
                 'col-resize'
             );
+        }
 
         this.checkWidth();
     }
+
     @HostListener('mousedown', ['$event'])
     onMouseDown(event: MouseEvent): void {
         if (!this.resizeEnabled) return;
         event.preventDefault();
+
+        this.isResizing = true;
         this.startX = event.clientX;
         this.startWidth = this.el.nativeElement.offsetWidth;
 
-        document.addEventListener('mousemove', this.onMouseMove);
-        document.addEventListener('mouseup', this.onMouseUp);
+        // Listen for mousemove and mouseup events on the document
+        this.renderer.listen(
+            'document',
+            'mousemove',
+            this.onMouseMove.bind(this)
+        );
+        this.renderer.listen('document', 'mouseup', this.onMouseUp.bind(this));
+    }
+
+    private onMouseMove(event: MouseEvent): void {
+        if (!this.isResizing || !this.resizeEnabled) return;
+
+        const newWidth = this.startWidth + (event.clientX - this.startX);
+
+        // Apply width constraints
+        if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
+            this.renderer.setStyle(
+                this.el.nativeElement,
+                'width',
+                `${newWidth}px`
+            );
+        }
+    }
+
+    private onMouseUp(): void {
+        this.isResizing = false;
     }
 
     private checkWidth(): void {
@@ -95,26 +125,4 @@ export class ResizableDirective implements OnInit {
                 break;
         }
     }
-
-    private onMouseMove = (event: MouseEvent): void => {
-        console.log(event);
-
-        if (!this.resizeEnabled) return;
-
-        const newWidth = this.startWidth + (event.clientX - this.startX);
-
-        // Apply width constraints
-        if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
-            this.renderer.setStyle(
-                this.el.nativeElement,
-                'width',
-                `${newWidth}px`
-            );
-        }
-    };
-
-    private onMouseUp = (): void => {
-        document.removeEventListener('mousemove', this.onMouseMove);
-        document.removeEventListener('mouseup', this.onMouseUp);
-    };
 }

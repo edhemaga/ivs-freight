@@ -9,6 +9,7 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
@@ -39,7 +40,10 @@ import { StatusComponentSvgRoutes } from '@shared/components/ta-status-component
         // modules
         NgbModule,
         CommonModule,
-        LoadStatusStringComponent,
+        AngularSvgIconModule,
+
+        // Components
+        LoadStatusStringComponent
     ],
 })
 export class TaStatusComponentComponent implements OnInit, OnDestroy {

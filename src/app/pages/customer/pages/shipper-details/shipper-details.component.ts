@@ -10,6 +10,7 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Store
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
@@ -88,6 +89,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private DetailsDataService: DetailsDataService,
         private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         // Store
         private shipperMinimalStore: ShipperMinimalListStore,
@@ -530,7 +532,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadsSearchListener(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

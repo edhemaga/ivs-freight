@@ -26,9 +26,6 @@
                 }
                 .resize {
                     position: relative;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
                 }
                 .resize.show-after::after {
                     display: flex;
@@ -45,16 +42,14 @@
                     transform: translateY(-50%);
                     height: 14px;
                     padding-right: 5px;
-                    border-right: 1px solid #000;
-                    color: #000;
+                    border-right: 1px solid $black;
+                    color: $black;
                     font-size: 14px;
                     border-radius: 1px 0px 0px 0px;
                 }
+
                 .close-icon-show {
                     width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
                 }
                 td {
                     .main_inside {
@@ -237,9 +232,9 @@
                 top: 50%;
                 transform: translateY(-50%);
                 padding-right: 5px;
-                border-right: 1px solid #000;
+                border-right: 1px solid $black;
                 height: 14px;
-                color: #000;
+                color: $black;
                 font-size: 14px;
                 border-radius: 1px 0px 0px 0px;
             }
@@ -404,6 +399,13 @@
                                         }
                                     }
                                 }
+                            }
+
+                            &.driver-endorsements {
+                                font-size: 11px;
+                                line-height: 14px;
+                                font-weight: 400;
+                                color: $bw5;
                             }
                         }
 
