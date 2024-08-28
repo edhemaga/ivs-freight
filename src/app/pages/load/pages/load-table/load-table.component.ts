@@ -277,6 +277,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confiramtionService.confirmationData$.subscribe((res) => {
+            if(res.template === TableStringEnum.COMMENT) return;
+            
             if (res.type === TableStringEnum.DELETE) {
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
                     this.deleteLoadTemplateById(res.id);
@@ -1710,7 +1712,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteLoadById(id: number): void {
-        this.loadServices
+            this.loadServices
             .deleteLoadById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.sendLoadData());
