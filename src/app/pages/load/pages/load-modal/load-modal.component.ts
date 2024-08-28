@@ -525,8 +525,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
                 this.selectedDispatcher?.avatarFile?.url,
-            this.selectedDispatcher?.name,
-            !this.isConvertedToTemplate && !this.isEdit
+            this.selectedDispatcher?.name
         );
     }
 
