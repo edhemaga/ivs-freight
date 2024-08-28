@@ -2,7 +2,7 @@
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
-        <ng-container *ngIf="!driver && driverList.length && !isBoardLocked">
+        <ng-container *ngIf="!driver && !isBoardLocked">
             <app-dispatch-table-add-new
                 [isDrag]="isDrag"
                 (clickValueEmitter)="showDriverDropdown(rowIndex)"
@@ -226,7 +226,7 @@
             [formControl]="driverFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="driverInputConfig"
-            [options]="driverList"
+            [options]="_driverList"
             [canAddNew]="true"
             [canOpenModal]="true"
             [activeItem]="null"
