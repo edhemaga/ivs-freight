@@ -1,4 +1,5 @@
 .ca-main-table {
+    color: #424242;
     width: 100%;
     border-collapse: collapse;
     background-color: #eeeeee;
@@ -32,8 +33,13 @@
                         flex: 1;
                         padding: 3px 4px;
 
-                        .text{
+                        .text {
                             font-size: 14px;
+                            @for $i from 1 through 9 {
+                                &.b-#{$i}00 {
+                                    font-weight: #{$i}00;
+                                }
+                            }
                         }
                     }
                 }

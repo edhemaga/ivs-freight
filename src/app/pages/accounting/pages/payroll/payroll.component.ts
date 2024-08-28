@@ -47,6 +47,10 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     mapingIndex: number = 0;
 
     payrollCountsResponse$: Observable<IPayrollCountsSelector>;
+    payrollTabCountResponse$: Observable<{
+        open: number;
+        closed: number;
+    }>;
     payrollData: Observable<any>;
 
     tableExpanded: boolean = true;
@@ -56,7 +60,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         // Store
         private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
-        private payrollQuery: PayrollQuery, 
+        private payrollQuery: PayrollQuery,
 
         // Pipes
         private nameInitialsPipe: NameInitialsPipe,
@@ -69,9 +73,16 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         this.payrollFacadeService.getPayrollCounts(this.selectedTab === 'open');
         this.payrollCountsResponse$ =
             this.payrollFacadeService.selectPayrollCounts$;
-            this.payrollFacadeService.selectPayrollCounts$.subscribe(res => {
-                console.log("fsdfsdfdsfsdfsd",res);
-            });
+        this.payrollFacadeService.selectPayrollCounts$.subscribe((res) => {
+            console.log('fsdfsdfdsfsdfsd', res);
+        });
+
+        this.payrollFacadeService.selectPayrollTabCounts$.subscribe((res) => {
+            if (this.tableData.length) {
+                this.tableData[0].length = res.open;
+                this.tableData[1].length = res.closed;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -421,5 +432,9 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             background: backgroundColors[this.mapingIndex],
             color: textColors[this.mapingIndex],
         };
+    }
+
+    openPayrollReport(){
+        
     }
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
     PayrollCountsResponse,
     PayrollDriverMileageListResponse,
+    PayrollDriverMileageResponse,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -19,9 +20,19 @@ export class PayrollService {
         );
     }
 
-    public getPayrollSoloMileageDriver(): Observable<PayrollDriverMileageListResponse[]> {
+    public getPayrollSoloMileageDriver(): Observable<
+        PayrollDriverMileageListResponse[]
+    > {
         return this.http.get<PayrollDriverMileageListResponse[]>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/solo`
+        );
+    }
+
+    public getPayrollSoloMileageDriverReport(
+        reportId: string
+    ): Observable<PayrollDriverMileageResponse[]> {
+        return this.http.get<PayrollDriverMileageResponse[]>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage?Id=${reportId}`
         );
     }
 }

@@ -1,5 +1,5 @@
 <ng-template #customCell let-data>
-    <div (click)="test()" class="driver-solo-info d-flex">
+    <div class="driver-solo-info d-flex">
         <app-ca-profile-image
             [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
             [textShortName]="'FJ'"
@@ -23,9 +23,37 @@
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <svg-icon class="state" src="assets/svg/common/ic_clock.svg"></svg-icon>
-        <div class="custom-status-text">{{ data.name }}</div>
+        <svg-icon
+            class="payment_done"
+            *ngIf="data === 0"
+            src="assets/svg/common/dropdown-done-icon.svg"
+        ></svg-icon>
+        <svg-icon
+            class="caution"
+            *ngIf="data < 0"
+            src="assets/svg/common/ic_feedback_mark_incorrect.svg"
+        ></svg-icon>
+        <svg-icon
+            class="state"
+            *ngIf="data > 0"
+            src="assets/svg/common/ic_clock.svg"
+        ></svg-icon>
+        <div
+            *ngIf="data !== 0"
+            class="custom-status-text"
+            [ngClass]="{ 'past-payment': data < 0 }"
+        >
+            {{ Math.abs(data) }} DAYS
+        </div>
+        <div *ngIf="data === 0" class="custom-status-text ready-payment">
+            Ready
+        </div>
     </div>
 </ng-template>
 
-<app-ca-main-table [columns]="columns" [data$]="tableData$"></app-ca-main-table>
+<app-ca-main-table
+    [hideFieldsToHide]="expandTable"
+    (onPressEvent)="selectPayrollReport($event)"
+    [columns]="columns"
+    [data$]="tableData$"
+></app-ca-main-table>

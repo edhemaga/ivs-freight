@@ -29,6 +29,7 @@ import { NgxMaskModule } from 'ngx-mask';
 
 import { ObserversModule } from '@angular/cdk/observers';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { CaMainTableHiddenRowsPipe } from './components/ca-main-table/pipes/ca-main-table-hidden-rows/ca-main-table-hidden-rows.pipe';
 //import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
@@ -79,6 +80,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [
-    ],
+  ],
 })
 export class SharedModule {}

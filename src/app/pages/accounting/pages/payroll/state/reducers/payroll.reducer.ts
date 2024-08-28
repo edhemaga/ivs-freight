@@ -33,5 +33,35 @@ export const payrollReducer = createReducer(
             payrollDriverMileage: data.payroll,
             loading: false,
         })
+    ),
+
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver,
+        (state) => ({
+            ...state,
+            loading: true,
+        })
+    ),
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,
+        (state) => ({
+            ...state,
+            loading: false,
+        })
+    ),
+    // Payroll Get Driver Solo Mileage
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
+        (state, data) => {
+            console.log('fdsafsadfasdf', data.payroll);
+            // ({
+            //     ...state,
+            //     payrollDriverMileage: data.payroll,
+            //     loading: false,
+            // })
+            return state;
+        }
     )
 );
+
+//

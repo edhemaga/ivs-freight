@@ -33,6 +33,16 @@ export const selectPayrollCount = createSelector(
     }
 );
 
+export const seletPayrollTabsCount = createSelector(
+    selectPayrollCount,
+    (payrollCounts) => {
+        return {
+            open: payrollCounts.opentPayrollCount,
+            closed: payrollCounts.closedPayrollCount
+        }
+    }
+)
+
 export const selectPayrollCounts = createSelector(
     selectPayrollCount,
     (payrollCounts) => {

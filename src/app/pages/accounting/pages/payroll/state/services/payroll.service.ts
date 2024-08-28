@@ -5,6 +5,7 @@ import * as PayrollDriverMileageSolo from '../actions/payroll_solo_mileage_drive
 import {
     selectPayrollCounts,
     selectSoloDriverMileage,
+    seletPayrollTabsCount,
 } from '../selectors/payroll.selector';
 import { Observable } from 'rxjs';
 import {
@@ -21,15 +22,19 @@ export class PayrollFacadeService {
 
     // SELECTORS
 
-
-
     // Select Payroll Counts
     public selectPayrollCounts$: Observable<IPayrollCountsSelector> =
         this.store.pipe(select(selectPayrollCounts));
 
+    public selectPayrollTabCounts$: Observable<{
+        open: number;
+        closed: number;
+    }> = this.store.pipe(select(seletPayrollTabsCount));
+
     // Select Driver Mileage Solo
-    public selectPayrollDriverSoloMileage$: Observable<PayrollDriverMileageListResponse[]> =
-        this.store.pipe(select(selectSoloDriverMileage));
+    public selectPayrollDriverSoloMileage$: Observable<
+        PayrollDriverMileageListResponse[]
+    > = this.store.pipe(select(selectSoloDriverMileage));
 
     public getPayrollCounts(showOpen: boolean) {
         this.store.dispatch(
@@ -40,6 +45,14 @@ export class PayrollFacadeService {
     public getPayrollDriverMileageSoloList() {
         this.store.dispatch(
             PayrollDriverMileageSolo.getPayrollSoloMileageDriver()
+        );
+    }
+
+    public getPayrollDriverMileageReport(reportId: string) {
+        this.store.dispatch(
+            PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver({
+                reportId,
+            })
         );
     }
 }

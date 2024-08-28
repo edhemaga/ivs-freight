@@ -45,6 +45,44 @@ export class PayrollEffect {
             )
     );
 
+    //getPayrollSoloMileageDriverReport
+
+    public getPayrollSoloMileageReport$ = createEffect(
+        (): Observable<Action> =>
+            this.actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver
+                ),
+                switchMap((action) => {
+                    return this.payrollService
+                        .getPayrollSoloMileageDriverReport(action.reportId)
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+
     public getPayrollSoloMileage$ = createEffect(
         (): Observable<Action> =>
             this.actions$.pipe(

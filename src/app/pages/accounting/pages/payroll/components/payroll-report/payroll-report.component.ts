@@ -16,11 +16,11 @@ import {
     PayrollOwnerOpenLoads,
     PayrollOwnerOpenLoadsResizable,
 } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-owner-open-load.constants';
-import { MapConstants } from '@shared/utils/constants/map.constants';
 import {
     PayrollMilesDriverOpenLoads,
     PayrollMilesDriverOpenLoadsResizable,
 } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
+import { PayrollFacadeService } from '../../state/services/payroll.service';
 
 @Component({
     selector: 'app-payroll-report',
@@ -29,6 +29,8 @@ import {
     encapsulation: ViewEncapsulation.None,
 })
 export class PayrollReportComponent implements OnInit {
+    @Input() reportId: number;
+
     reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
@@ -36,32 +38,29 @@ export class PayrollReportComponent implements OnInit {
 
     public payAmount: UntypedFormControl = new UntypedFormControl();
 
-    mapLatitude: number = 41.860119;
-    mapLongitude: number = -87.660156;
-    mapZoom: number = 1;
-
-    agmMap: any;
-    styles = MapConstants.GOOGLE_MAP_STYLES;
-    mapRestrictions = {
-        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
-        strictBounds: true,
-    };
-
-    @Input() set reportTableData(value) {
-        if (value.id) {
-            this.getDataBasedOnTitle(value);
-        }
-    }
+    // @Input() set reportTableData(value) {
+    //     if (value.id) {
+    //         this.getDataBasedOnTitle(value);
+    //     }
+    // }
 
     constructor(
         // Services
         private payrollService: PayrollService,
 
         // Ref
-        private dch: ChangeDetectorRef
+        private dch: ChangeDetectorRef,
+        // Services
+        private payrollFacadeService: PayrollFacadeService
     ) {}
+    ngOnInit(): void {
+        this.subscribeToStoreData();
+    }
 
-    ngOnInit(): void {}
+    subscribeToStoreData() {
+        console.log('fsafasfsdafsda', this.reportId);
+        this.payrollFacadeService.getPayrollDriverMileageReport(`${this.reportId}`);
+    }
 
     getDataBasedOnTitle(data: { id: number; title: string }) {
         this.title = data.title;

@@ -1,7 +1,13 @@
 <table class="ca-main-table">
     <thead>
         <tr>
-            <th *ngFor="let col of columns">
+            <th
+                *ngFor="
+                    let col of columns
+                        | caMainTableHiddenRows : hideFieldsToHide
+                "
+                [class]="col.cellCustomClasses"
+            >
                 <ng-container [ngSwitch]="col.headerCellType">
                     <!-- Template cell -->
                     <ng-container *ngSwitchCase="'template'">
@@ -20,8 +26,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of data$ | async">
-            <td *ngFor="let col of columns">
+        <tr *ngFor="let row of data$ | async" (click)="onPressRow(row)">
+            <td
+                *ngFor="
+                    let col of columns
+                        | caMainTableHiddenRows : hideFieldsToHide
+                "
+                [class]="col.cellCustomClasses"
+            >
                 <div class="td-container">
                     <div class="td-content-container">
                         <ng-container [ngSwitch]="col.cellType">
@@ -61,7 +73,9 @@
                                         context: {
                                             $implicit: {
                                                 field: row[col.field],
-                                                pipeType: col.pipeType
+                                                pipeType: col.pipeType,
+                                                textCustomClasses:
+                                                    col.textCustomClasses
                                             }
                                         }
                                     "
@@ -75,20 +89,23 @@
         </tr>
     </tbody>
 </table>
-
 <!-- Default Text Template  -->
 <ng-template #customTextTemplate let-data>
     <ng-container [ngSwitch]="data.pipeType">
         <ng-container *ngSwitchCase="'date'">
-            <div class="text">{{ data.field | date : data.pipeString }}</div>
+            <div [ngClass]="data.textCustomClasses" class="text">
+                {{ data.field | date : data.pipeString }}
+            </div>
         </ng-container>
         <ng-container *ngSwitchCase="'currency'">
-            <div class="text">
+            <div [ngClass]="data.textCustomClasses" class="text">
                 {{ data.field | currency : data.pipeString }}
             </div>
         </ng-container>
         <ng-container *ngSwitchDefault>
-            <div class="text">{{ data.field }}</div>
+            <div [ngClass]="data.textCustomClasses" class="text">
+                {{ data.field }}
+            </div>
         </ng-container>
     </ng-container>
 </ng-template>

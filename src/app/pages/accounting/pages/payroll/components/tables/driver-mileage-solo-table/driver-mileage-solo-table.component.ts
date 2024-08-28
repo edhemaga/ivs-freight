@@ -2,8 +2,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
+    EventEmitter,
     Input,
     OnInit,
+    Output,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
@@ -20,7 +22,13 @@ import { AfterViewInit } from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
+    // Expose Javascript Math to template
+    Math = Math;
+
+    @Output() expandTableEvent: EventEmitter<any> = new EventEmitter<any>();
+
     @Input() title: string;
+    @Input() expandTable: boolean;
     columns: ColumnConfig[];
     tableData$: Observable<PayrollDriverMileageListResponse[]>;
 
@@ -54,6 +62,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 field: 'payroll',
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Period',
@@ -64,7 +73,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
             },
             {
                 header: 'Status',
-                field: 'status',
+                field: 'daysUntilPayment',
                 cellType: 'template',
                 template: this.customStatusTemplate, // Pass the template reference
             },
@@ -75,14 +84,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 headerTemplate: this.customMileageHeaderTemplate,
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
-            },
-            {
-                header: 'Empty',
-                field: 'emptyMiles',
-                headerCellType: 'template',
-                headerTemplate: this.customMileageHeaderTemplate,
-                cellType: 'template',
-                template: this.customTextTemplate, // Pass the template reference
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Loaded',
@@ -91,27 +93,35 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 field: 'loadedMiles',
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
+                hiddeOnTableReduce: true,
             },
             {
-                header: 'Total mi',
+                header: 'Total',
                 field: 'totalMiles',
-                pipeType: 'currency',
-                pipeString: 'USD',
-                cellType: 'text', // Pass the template reference
+                headerCellType: 'template',
+                headerTemplate: this.customMileageHeaderTemplate,
+                cellType: 'template',
+                template: this.customTextTemplate, // Pass the template reference
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Salary',
                 field: 'salary',
                 pipeType: 'currency',
                 pipeString: 'USD',
+                cellCustomClasses: 'text-center',
                 cellType: 'text', // Pass the template reference
+                hiddeOnTableReduce: true,
             },
             {
                 header: 'Total',
                 field: 'total',
                 pipeType: 'currency',
                 pipeString: 'USD',
-                cellType: 'text', // Pass the template reference
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
+                // Pass the template reference
             },
         ];
     }
@@ -135,5 +145,8 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
         );
     }
 
-    test() {}
+    selectPayrollReport(report: any) {
+        console.log('reportt', report);
+        this.expandTableEvent.emit(report);
+    }
 }

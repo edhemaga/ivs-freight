@@ -16,6 +16,8 @@
                     <app-ca-payroll-list-summary-overview [item]="d">
                         <app-driver-mileage-solo-table
                             [title]="d.title"
+                            (expandTableEvent)="expandTable($event)"
+                            [expandTable]="expandTable"
                         ></app-driver-mileage-solo-table>
                     </app-ca-payroll-list-summary-overview>
                     <!-- <app-ta-custom-card
@@ -37,6 +39,7 @@
     </div>
     <div class="report-hold" *ngIf="!tableExpanded">
         <app-payroll-report
+            [reportId]="reportTableData?.id"
             [reportTableData]="reportTableData"
         ></app-payroll-report>
     </div>
