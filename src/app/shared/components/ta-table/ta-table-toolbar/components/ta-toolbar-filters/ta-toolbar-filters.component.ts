@@ -13,10 +13,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
 //Components
-import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
+
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
-
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
@@ -36,12 +36,12 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
     imports: [
         CommonModule,
         FormsModule,
-        TaSearchComponent,
         TaFilterComponent,
         AngularSvgIconModule,
         FormatCurrencyPipe,
         MoneyFilterPipe,
         TaSpecialFilterComponent,
+        CaSearchMultipleStatesComponent,
     ],
 })
 export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {

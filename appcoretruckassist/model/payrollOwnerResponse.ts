@@ -24,7 +24,8 @@ export interface PayrollOwnerResponse {
     truckNumber?: string | null;
     truckType?: string | null;
     payrollNumber?: string | null;
-    period?: string;
+    periodStart?: string;
+    periodEnd?: string;
     status?: number;
     total?: number | null;
     commission?: number | null;

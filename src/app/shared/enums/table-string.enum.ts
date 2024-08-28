@@ -146,6 +146,7 @@ export enum TableStringEnum {
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
+    LOAD_EXTRA_STOPS = ' EXTRA',
 
     PRINT = 'print',
     PRINT_2 = 'Print',
@@ -525,4 +526,6 @@ export enum TableStringEnum {
 
     // States
     ASSETS_SVG_COMMON_STATES = 'assets/svg/common/states/ic_',
+
+    COLUMN_TOGGLE = 'columnToggle',
 }

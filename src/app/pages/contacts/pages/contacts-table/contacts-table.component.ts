@@ -11,6 +11,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { ContactState } from '@pages/contacts/state/contact.store';
@@ -59,7 +60,8 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
     providers: [NameInitialsPipe],
 })
 export class ContactsTableComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     private destroy$ = new Subject<void>();
 
     public tableOptions: any = {};
@@ -99,8 +101,9 @@ export class ContactsTableComponent
         private contactQuery: ContactQuery,
         private nameInitialsPipe: NameInitialsPipe,
         private contactService: ContactsService,
-        private confirmationService: ConfirmationService
-    ) { }
+        private confirmationService: ConfirmationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+    ) {}
 
     ngOnInit(): void {
         this.sendContactData();
@@ -170,7 +173,7 @@ export class ContactsTableComponent
     }
 
     private contactCurrentSearchTableData(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -510,9 +513,9 @@ export class ContactsTableComponent
             isShared: data.shared,
             lable: data?.companyContactLabel
                 ? {
-                    name: data?.companyContactLabel?.name ?? null,
-                    color: data?.companyContactLabel?.code ?? null,
-                }
+                      name: data?.companyContactLabel?.name ?? null,
+                      color: data?.companyContactLabel?.code ?? null,
+                  }
                 : null,
             added: MethodsCalculationsHelper.convertDateFromBackend(
                 data?.createdAt

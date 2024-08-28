@@ -67,6 +67,7 @@ export * from './apiInspectionPostRequest';
 export * from './apiInspectionPostRequest1';
 export * from './apiLoadPostRequest';
 export * from './apiLoadPostRequest1';
+export * from './apiLoadSaveasclosedPostRequest';
 export * from './apiMedicalPostRequest';
 export * from './apiMedicalPostRequest1';
 export * from './apiMvrPostRequest';

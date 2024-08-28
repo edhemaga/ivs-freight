@@ -18,6 +18,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { TrailerService } from '@shared/services/trailer.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { TrailerCardsModalService } from '@pages/trailer/pages/trailer-card-modal/services/trailer-cards-modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -121,7 +122,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private trailerCardsModalService: TrailerCardsModalService,
         private confirmationActivationService: ConfirmationActivationService,
-
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         //Store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
@@ -382,7 +383,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {

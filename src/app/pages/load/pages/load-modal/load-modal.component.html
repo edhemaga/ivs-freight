@@ -1,7 +1,7 @@
 <app-ta-modal
     [modalTitle]="modalTitle"
     [editData]="editData"
-    [editName]="isConvertedToTemplate ? null : loadNumber"
+    [editName]="isConvertedToTemplate || !isEdit ? null : loadNumber"
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&

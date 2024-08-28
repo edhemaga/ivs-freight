@@ -408,7 +408,7 @@ export class LoadModalConfig {
         };
     }
 
-    static getDispatcherInputConfig(logoName: string, name: string, isTemplate: boolean): ITaInput {
+    static getDispatcherInputConfig(logoName: string, name: string): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -423,7 +423,7 @@ export class LoadModalConfig {
                 template: 'user',
             },
             textTransform: 'capitalize',
-            dropdownWidthClass: isTemplate ? 'w-col-230' : 'w-col-248',
+            dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
         };
     }
 
@@ -601,7 +601,7 @@ export class LoadModalConfig {
             label: 'Start Date',
             labelInInput: true,
             isDisabled: isDisabled,
-            isIconHidden: true
+            isIconHidden: true,
         };
     }
 
@@ -615,7 +615,7 @@ export class LoadModalConfig {
             isRequired: true,
             labelInInput: true,
             isDisabled: isDisabled,
-            isIconHidden: true
+            isIconHidden: true,
         };
     }
 
@@ -627,7 +627,7 @@ export class LoadModalConfig {
             label: 'End Date',
             labelInInput: true,
             isDisabled: isDisabled,
-            isIconHidden: true
+            isIconHidden: true,
         };
     }
 
@@ -641,7 +641,7 @@ export class LoadModalConfig {
             isRequired: true,
             labelInInput: true,
             isDisabled: isDisabled,
-            isIconHidden: true
+            isIconHidden: true,
         };
     }
 }
