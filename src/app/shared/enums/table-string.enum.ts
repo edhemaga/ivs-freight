@@ -526,4 +526,6 @@ export enum TableStringEnum {
 
     // States
     ASSETS_SVG_COMMON_STATES = 'assets/svg/common/states/ic_',
+
+    COLUMN_TOGGLE = 'columnToggle',
 }

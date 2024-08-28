@@ -206,6 +206,14 @@ export class DispatchComponent
                 this.sortDetails(event);
 
                 break;
+            case TableStringEnum.COLUMN_TOGGLE:
+                this.columns = this.columns.map((column: DispatchColumn) => {
+                    if (column.field === event.column) {
+                        return { ...column, hidden: true };
+                    }
+                    return column;
+                });
+                break;
             default:
                 break;
         }
@@ -284,7 +292,6 @@ export class DispatchComponent
     }
 
     sortDetails(e: any) {
-        console.log(e);
         this.sortByProperty(
             e.list.dispatches,
             e.column,

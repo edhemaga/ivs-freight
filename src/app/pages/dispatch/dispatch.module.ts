@@ -58,6 +58,9 @@ import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/comp
 import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 
+//directives
+import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives/dispatch-resize.directive';
+
 @NgModule({
     declarations: [
         // components
@@ -118,12 +121,14 @@ import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsement
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
         TaStatusComponentComponent,
-
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
 
         //  TaMapsComponent,
+
+        //directives
+        ResizableDirective,
     ],
     exports: [ColorFinderPipe],
 })
