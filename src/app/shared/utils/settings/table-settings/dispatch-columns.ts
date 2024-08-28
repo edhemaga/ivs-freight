@@ -9,6 +9,9 @@ export function getDispatchColumnDefinition() {
             sortName: 'truck',
             hidden: false,
             isPined: true,
+            resizable: true,
+            width: 320,
+            minWidth: 140,
         },
         {
             ngTemplate: 'text',
@@ -27,6 +30,9 @@ export function getDispatchColumnDefinition() {
             sortName: 'trailer',
             hidden: false,
             isPined: true,
+
+            width: 320,
+            minWidth: 140,
         },
         {
             ngTemplate: 'text',
@@ -46,6 +52,9 @@ export function getDispatchColumnDefinition() {
             sortName: 'driver',
             hidden: false,
             isPined: true,
+
+            width: 400,
+            minWidth: 240,
         },
         {
             ngTemplate: 'text',
@@ -101,6 +110,8 @@ export function getDispatchColumnDefinition() {
             field: 'PreTrip',
             name: 'Pre-Trip Insp. ',
             hidden: false,
+            width: 34,
+            minWidth: 34,
         },
         {
             ngTemplate: 'text',
@@ -110,6 +121,9 @@ export function getDispatchColumnDefinition() {
             sortName: 'location',
             hidden: false,
             isPined: true,
+
+            width: 300,
+            minWidth: 140,
         },
         {
             ngTemplate: 'text',
@@ -118,6 +132,9 @@ export function getDispatchColumnDefinition() {
             name: 'Status ',
             hidden: false,
             isPined: true,
+
+            width: 200,
+            minWidth: 120,
         },
         {
             ngTemplate: 'text',
@@ -126,6 +143,9 @@ export function getDispatchColumnDefinition() {
             name: 'Pickup & Delivery ',
             hidden: false,
             isPined: true,
+
+            width: 420,
+            minWidth: 300,
         },
         {
             ngTemplate: 'text',
@@ -133,6 +153,9 @@ export function getDispatchColumnDefinition() {
             field: 'Progress',
             name: 'Progress ',
             hidden: false,
+
+            width: 326,
+            minWidth: 196,
         },
         {
             ngTemplate: 'text',
@@ -142,6 +165,9 @@ export function getDispatchColumnDefinition() {
             name: 'Parking ',
             sortName: 'parkingSlot',
             hidden: false,
+
+            width: 200,
+            minWidth: 90,
         },
         {
             ngTemplate: 'text',
@@ -151,6 +177,8 @@ export function getDispatchColumnDefinition() {
             name: 'Dispatcher',
 
             hidden: false,
+            width: 34,
+            minWidth: 34,
         },
         {
             ngTemplate: 'text',
@@ -159,6 +187,8 @@ export function getDispatchColumnDefinition() {
 
             name: 'Note',
             hidden: false,
+            width: 326,
+            minWidth: 194,
         },
     ];
 }

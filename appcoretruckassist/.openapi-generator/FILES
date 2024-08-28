@@ -139,6 +139,7 @@ model/apiInspectionPostRequest.ts
 model/apiInspectionPostRequest1.ts
 model/apiLoadPostRequest.ts
 model/apiLoadPostRequest1.ts
+model/apiLoadSaveasclosedPostRequest.ts
 model/apiMedicalPostRequest.ts
 model/apiMedicalPostRequest1.ts
 model/apiMvrPostRequest.ts

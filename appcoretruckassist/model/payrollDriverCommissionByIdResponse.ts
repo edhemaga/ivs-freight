@@ -24,7 +24,8 @@ export interface PayrollDriverCommissionByIdResponse {
     driverName?: string | null;
     driverAvatar?: FileResponse;
     payrollNumber?: string | null;
-    period?: string;
+    periodStart?: string;
+    periodEnd?: string;
     daysUntilPayment?: number;
     status?: EnumValue;
     total?: number | null;

@@ -97,6 +97,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
+
+            this.isDriverEndorsementActive = !this.columnsToShow[6].hidden;
         }
     }
 
@@ -150,6 +152,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
     public shownFields;
+
+    public isDriverEndorsementActive: boolean = false;
 
     /////////////////////////////////////////// UPDATE
 
@@ -925,52 +929,94 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public handleTableHeadClick(action: string, sortBy: string): void {
-        this.onTableUnlockEmitter.emit({
-            action: 'sort',
-            column: action,
-            sortBy: sortBy,
-            list: this.dispatchData,
-        });
+        if (action === 'columnToggle') {
+            this.onTableUnlockEmitter.emit({
+                action: 'columnToggle',
+                column: sortBy,
+            });
+        } else {
+            this.onTableUnlockEmitter.emit({
+                action: 'sort',
+                column: action,
+                sortBy: sortBy,
+                list: this.dispatchData,
+            });
+        }
     }
 
-    public handleHeaderClick(title: string): void {
-        switch (title) {
-            case DispatchTableStringEnum.NOTE:
-                this._isNoteExpanded = !this._isNoteExpanded;
-                this.onToggleNoteEmitter.emit(this._isNoteExpanded);
-                break;
-            case DispatchTableStringEnum.TRUCK_1:
-                this.handleTableHeadClick(
-                    this.columnsToShow[0].sortName,
-                    this.columnsToShow[0].field
-                );
-                break;
-            case DispatchTableStringEnum.TRAILER_1:
-                this.handleTableHeadClick(
-                    this.columnsToShow[2].sortName,
-                    this.columnsToShow[2].field
-                );
-                break;
-            case DispatchTableStringEnum.DRIVER_1:
-                this.handleTableHeadClick(
-                    this.columnsToShow[4].sortName,
-                    this.columnsToShow[4].field
-                );
-                break;
-            case DispatchTableStringEnum.LAST_LOCATION:
-                this.handleTableHeadClick(
-                    this.columnsToShow[11].sortName,
-                    this.columnsToShow[11].field
-                );
-                break;
-            case DispatchTableStringEnum.PARKING_1:
-                this.handleTableHeadClick(
-                    this.columnsToShow[15].sortName,
-                    this.columnsToShow[15].field
-                );
-                break;
-            default:
-                break;
+    public handleHeaderClick(title: string, isSort: boolean): void {
+        if (isSort) {
+            switch (title) {
+                case DispatchTableStringEnum.NOTE:
+                    this._isNoteExpanded = !this._isNoteExpanded;
+                    this.onToggleNoteEmitter.emit(this._isNoteExpanded);
+                    break;
+                case DispatchTableStringEnum.TRUCK_1:
+                    this.handleTableHeadClick(
+                        this.columnsToShow[0].sortName,
+                        this.columnsToShow[0].field
+                    );
+                    break;
+                case DispatchTableStringEnum.TRAILER_1:
+                    this.handleTableHeadClick(
+                        this.columnsToShow[2].sortName,
+                        this.columnsToShow[2].field
+                    );
+                    break;
+                case DispatchTableStringEnum.DRIVER_1:
+                    this.handleTableHeadClick(
+                        this.columnsToShow[4].sortName,
+                        this.columnsToShow[4].field
+                    );
+                    break;
+                case DispatchTableStringEnum.LAST_LOCATION:
+                    this.handleTableHeadClick(
+                        this.columnsToShow[11].sortName,
+                        this.columnsToShow[11].field
+                    );
+                    break;
+                case DispatchTableStringEnum.PARKING_1:
+                    this.handleTableHeadClick(
+                        this.columnsToShow[15].sortName,
+                        this.columnsToShow[15].field
+                    );
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (title) {
+                case DispatchTableStringEnum.NOTE:
+                    this.handleTableHeadClick(
+                        'columnToggle',
+                        this.columnsToShow[17].field
+                    );
+                    break;
+                case DispatchTableStringEnum.DISPATCHER_1:
+                    this.handleTableHeadClick(
+                        'columnToggle',
+                        this.columnsToShow[16].field
+                    );
+                    break;
+                case DispatchTableStringEnum.PROGRESS:
+                    this.handleTableHeadClick(
+                        'columnToggle',
+                        this.columnsToShow[14].field
+                    );
+                    break;
+                case DispatchTableStringEnum.INSPECTION:
+                    this.handleTableHeadClick(
+                        'columnToggle',
+                        this.columnsToShow[10].field
+                    );
+                    break;
+                case DispatchTableStringEnum.PARKING_1:
+                    this.handleTableHeadClick(
+                        'columnToggle',
+                        this.columnsToShow[15].field
+                    );
+                    break;
+            }
         }
     }
 

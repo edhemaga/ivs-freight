@@ -47,6 +47,16 @@
                 scrollbar-width: none !important; /* Firefox */
                 padding-right: 0px;
 
+                &.load-dispatcher-wrapper {
+                    overflow-y: scroll;
+                    max-height: 220px;
+
+                    .scrollable-element {
+                        max-height: 208px;
+                        overflow-y: scroll;
+                    }
+                }
+
                 &::-webkit-scrollbar {
                     width: 3px;
                 }
@@ -1361,10 +1371,6 @@
                         &:hover {
                             border-radius: 2px;
                             background-color: #1d1d1d;
-
-                            .dropdown-subgroup-text {
-                                color: #ffffff !important;
-                            }
                         }
 
                         .dropdown-subgroup-text {
@@ -1387,7 +1393,7 @@
 
                                 &::after {
                                     position: absolute;
-                                    right: -26px;
+                                    right: -30px;
                                     content: url('/assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
@@ -1403,14 +1409,13 @@
                             text-align: right;
 
                             &.active {
-                                font-weight: 400;
-                                color: #6f9ee0;
+                                color: $ta-blue-7 !important;
                             }
 
                             // Higlight text
                             .highlight-text-45632 {
                                 font-weight: 500;
-                                color: #6f9ee0 !important;
+                                color: $ta-blue-7 !important;
                             }
                         }
                     }

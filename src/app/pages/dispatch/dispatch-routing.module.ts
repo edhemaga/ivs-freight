@@ -7,7 +7,7 @@ const routes: Routes = [
     {
         path: '',
         component: DispatchComponent,
-        data: { test: 1 },
+        data: { test: 1, title: 'Dispatch' },
     },
 ];
 
