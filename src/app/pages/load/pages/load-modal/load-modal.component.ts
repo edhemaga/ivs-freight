@@ -525,8 +525,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
                 this.selectedDispatcher?.avatarFile?.url,
-            this.selectedDispatcher?.name,
-            !this.isConvertedToTemplate && !this.isEdit
+            this.selectedDispatcher?.name
         );
     }
 
@@ -4408,7 +4407,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ...commonData,
                 type: this.tabs.find((tab) => tab.id === this.selectedTab)
                     .name as LoadType,
-                loadNumber: this.loadNumber,
                 loadTemplateId: this.selectedTemplate
                     ? this.selectedTemplate.id
                     : null,
