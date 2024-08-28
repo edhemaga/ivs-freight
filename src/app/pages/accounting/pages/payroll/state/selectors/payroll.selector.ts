@@ -33,29 +33,47 @@ export const selectPayrollCount = createSelector(
     }
 );
 
+export const selectPayrollOpenedReport = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.payrollOpenedReport;
+    }
+);
+
 export const seletPayrollTabsCount = createSelector(
     selectPayrollCount,
     (payrollCounts) => {
         return {
             open: payrollCounts.opentPayrollCount,
-            closed: payrollCounts.closedPayrollCount
-        }
+            closed: payrollCounts.closedPayrollCount,
+        };
     }
-)
+);
 
 export const selectPayrollCounts = createSelector(
     selectPayrollCount,
     (payrollCounts) => {
-        const payrollCountsData = Object.keys(payrollCounts).filter(item => payrollCounts[item]);
+        const payrollCountsData = Object.keys(payrollCounts).filter(
+            (item) => payrollCounts[item]
+        );
         return {
             payrollCounts: payrollCounts,
             payrolls: payrollCountsData,
-            payrollData: payrollCountsData.filter(item => !['opentPayrollCount', 'closedPayrollCount'].includes(item)).map((payroll) =>
-                getPayrollTableItem(
-                    payroll,
-                    payrollCounts[payroll as keyof PayrollCountsResponse] as PayrollCountItemResponse
+            payrollData: payrollCountsData
+                .filter(
+                    (item) =>
+                        !['opentPayrollCount', 'closedPayrollCount'].includes(
+                            item
+                        )
                 )
-            ),
+                .map((payroll) =>
+                    getPayrollTableItem(
+                        payroll,
+                        payrollCounts[
+                            payroll as keyof PayrollCountsResponse
+                        ] as PayrollCountItemResponse
+                    )
+                ),
         };
     }
 );

@@ -21,6 +21,8 @@ import {
     PayrollMilesDriverOpenLoadsResizable,
 } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
 import { PayrollFacadeService } from '../../state/services/payroll.service';
+import { Observable } from 'rxjs';
+import { PayrollDriverMileageResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-payroll-report',
@@ -30,6 +32,7 @@ import { PayrollFacadeService } from '../../state/services/payroll.service';
 })
 export class PayrollReportComponent implements OnInit {
     @Input() reportId: number;
+    payrollReport$: Observable<PayrollDriverMileageResponse[]>;
 
     reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
     tableSettings: any[] = [];
@@ -58,8 +61,11 @@ export class PayrollReportComponent implements OnInit {
     }
 
     subscribeToStoreData() {
-        console.log('fsafasfsdafsda', this.reportId);
-        this.payrollFacadeService.getPayrollDriverMileageReport(`${this.reportId}`);
+        this.payrollFacadeService.getPayrollDriverMileageReport(
+            `${this.reportId}`
+        );
+        this.payrollReport$ =
+            this.payrollFacadeService.selectPayrollOpenedReport$;
     }
 
     getDataBasedOnTitle(data: { id: number; title: string }) {
