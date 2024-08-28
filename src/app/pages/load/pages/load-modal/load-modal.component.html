@@ -631,7 +631,7 @@
                             </app-ta-custom-card>
                         </div>
 
-                        <ng-container *ngIf="pickupStatusHistory.length">
+                        <ng-container *ngIf="pickupStatusHistory?.length">
                             <app-load-modal-wait-time
                                 [statusHistory]="pickupStatusHistory"
                                 (formChanged)="
@@ -1329,7 +1329,7 @@
                             </app-ta-custom-card>
                         </div>
 
-                        <ng-container *ngIf="deliveryStatusHistory.length">
+                        <ng-container *ngIf="deliveryStatusHistory?.length">
                             <app-load-modal-wait-time
                                 [statusHistory]="deliveryStatusHistory"
                                 (formChanged)="

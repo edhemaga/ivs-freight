@@ -118,6 +118,7 @@ import {
     CreateLoadTemplateCommand,
     LoadPaymentPayResponse,
     ShipperLoadModalResponse,
+    LoadShortResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -1067,7 +1068,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     return {
                         ...tab,
                         checked:
-                            tab.name.toLowerCase() === event.name.toLowerCase(),
+                            tab.name?.toLowerCase() ===
+                            event.name?.toLowerCase(),
                     };
                 });
 
@@ -1102,8 +1104,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...tab,
                             checked:
-                                tab.name.toLowerCase() ===
-                                event.name.toLowerCase(),
+                                tab.name?.toLowerCase() ===
+                                event.name?.toLowerCase(),
                         };
                     }
                 );
@@ -1298,7 +1300,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: LoadModalStringEnum.OPEN,
                         payload: {
                             key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.loadModalData(),
+                            value: this.getPreviusModalValues(),
                             id: this.selectedBroker.id,
                         },
                         type: LoadModalStringEnum.EDIT_CONTACT,
@@ -1356,7 +1358,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: LoadModalStringEnum.OPEN,
                         payload: {
                             key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.loadModalData(),
+                            value: this.getPreviusModalValues(),
                             id: this.selectedPickupShipper.id,
                         },
                         type: LoadModalStringEnum.EDIT_CONTACT,
@@ -1415,7 +1417,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: LoadModalStringEnum.OPEN,
                         payload: {
                             key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.loadModalData(),
+                            value: this.getPreviusModalValues(),
                             id: this.selectedDeliveryShipper.id,
                         },
                         type: LoadModalStringEnum.EDIT_CONTACT,
@@ -1474,7 +1476,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         action: LoadModalStringEnum.OPEN,
                         payload: {
                             key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.loadModalData(),
+                            value: this.getPreviusModalValues(),
                             id: this.selectedExtraStopShipper[index].id,
                         },
                         type: LoadModalStringEnum.EDIT_CONTACT,
@@ -1694,7 +1696,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 action: LoadModalStringEnum.OPEN,
                 payload: {
                     key: LoadModalStringEnum.LOAD_MODAL,
-                    value: this.loadModalData(),
+                    value: this.getPreviusModalValues(),
                 },
                 type: LoadModalStringEnum.NEW,
                 component: BrokerModalComponent,
@@ -1835,7 +1837,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 action: LoadModalStringEnum.OPEN,
                 payload: {
                     key: LoadModalStringEnum.LOAD_MODAL,
-                    value: this.loadModalData(),
+                    value: this.getPreviusModalValues(),
                 },
                 type: LoadModalStringEnum.NEW,
                 component: ShipperModalComponent,
@@ -1978,7 +1980,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 action: LoadModalStringEnum.OPEN,
                 payload: {
                     key: LoadModalStringEnum.LOAD_MODAL,
-                    value: this.loadModalData(),
+                    value: this.getPreviusModalValues(),
                 },
                 type: LoadModalStringEnum.NEW,
                 component: ShipperModalComponent,
@@ -2165,7 +2167,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 action: LoadModalStringEnum.OPEN,
                 payload: {
                     key: LoadModalStringEnum.LOAD_MODAL,
-                    value: this.loadModalData(),
+                    value: this.getPreviusModalValues(),
                 },
                 type: LoadModalStringEnum.NEW,
                 component: ShipperModalComponent,
@@ -3250,7 +3252,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 dateTo: this.formatStopDateTime(pickupDateTo, pickupTimeTo),
                 timeType:
                     this.stopTimeTabsPickup.find((item) => item.checked)
-                        .name === LoadModalStringEnum.APPOINTMENT
+                        ?.name === LoadModalStringEnum.APPOINTMENT
                         ? 2
                         : 1,
                 timeFrom: pickupTimeFrom,
@@ -3293,7 +3295,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     timeType:
                         this.stopTimeTabsExtraStops[index].find(
                             (item) => item.checked
-                        ).name === LoadModalStringEnum.APPOINTMENT
+                        )?.name === LoadModalStringEnum.APPOINTMENT
                             ? 2
                             : 1,
                     timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
@@ -3334,7 +3336,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 dateTo: this.formatStopDateTime(deliveryDateTo, deliveryTimeTo),
                 timeType:
                     this.stopTimeTabsDelivery.find((item) => item.checked)
-                        .name === LoadModalStringEnum.APPOINTMENT
+                        ?.name === LoadModalStringEnum.APPOINTMENT
                         ? 2
                         : 1,
                 timeFrom: deliveryTimeFrom,
@@ -3877,69 +3879,58 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.isDocumentsCardOpen = openClose;
     }
 
+    private getPreviusModalValues(): EditData | LoadShortResponse {
+        console.log(this.loadModalData());
+        console.log(this.generateLoadModel(true));
+        // return this.editData?.data ? this.editData : this.loadModalData();
+        return this.loadModalData();
+    }
+
     private loadModalData() {
         const { ...form } = this.loadForm.value;
+        const baseRate = form.baseRate;
+        const driverRate = form.driverRate;
+        const adjustedRate = form.adjustedRate;
+        const advancePay = form.advancePay;
+
         return {
             type: this.tabs.find((tab) => tab.id === this.selectedTab)
                 .name as LoadType,
             loadNumber: this.loadNumber,
             loadTemplateId: this.selectedTemplate,
-            dispatcherId: this.selectedDispatcher,
-            companyId:
+            dispatcher: this.selectedDispatcher,
+            company:
                 this.labelsCompanies.length === 1
                     ? this.labelsCompanies[0]
                     : this.selectedCompany,
-            dispatchId: this.selectedDispatches,
-            brokerId: this.selectedBroker,
+            dispatch: this.selectedDispatches,
+            broker: this.selectedBroker,
             brokerContactId: this.selectedBrokerContact,
             referenceNumber: form.referenceNumber,
             generalCommodity: this.selectedGeneralCommodity,
             weight: form.weight,
             loadRequirements: {
                 id: null,
-                truckTypeId: this.selectedTruckReq,
-                trailerTypeId: this.selectedTrailerReq,
+                truckType: this.selectedTruckReq,
+                trailerType: this.selectedTrailerReq,
                 doorType: this.selectedDoorType,
                 suspension: this.selectedSuspension,
-                trailerLengthId: this.selectedTrailerLength,
-                year: this.selectedYear,
+                trailerLength: this.selectedTrailerLength,
+                year: this.selectedYear?.name,
                 liftgate: form.liftgate,
                 driverMessage: form.driverMessage,
             },
+            pays: this.mapPayments(),
+            stops: this.premmapedStops(),
+            baseRate: this.convertNumbers(baseRate),
+            adjustedRate: this.convertNumbers(adjustedRate),
+            driverRate: this.convertNumbers(driverRate),
+            advancePay: this.convertNumbers(advancePay),
+            additionalBillingRates: this.premmapedAdditionalBillingRate(
+                LoadModalStringEnum.CREATE
+            ),
             // pickup shipper
-            pickupShipper: this.selectedPickupShipper,
-            pickupShipperContant: this.selectedPickupShipperContact,
-            pickupDateFrom: form.pickupDateFrom,
-            pickupDateTo: form.pickupDateTo,
-            pickupTimeFrom: form.pickupTimeFrom,
-            pickupTimeTo: form.pickupTimeTo,
-            pickuplegMiles: form.pickuplegMiles,
-            pickuplegHours: form.pickuplegHours,
-            pickuplegMinutes: form.pickuplegMinutes,
-            pickuplegCost: form.pickuplegCost,
-            selectedStopTimePickup: this.selectedStopTimePickup,
-            // delivery shipper
-            deliveryShipper: this.selectedDeliveryShipper,
-            deliveryShipperContact: this.selectedDeliveryShipperContact,
-            deliveryDateFrom: form.deliveryDateFrom,
-            deliveryDateTo: form.deliveryDateTo,
-            deliveryTimeFrom: form.deliveryTimeFrom,
-            deliveryTimeTo: form.deliveryTimeTo,
-            deliverylegMiles: form.deliverylegMiles,
-            deliverylegHours: form.deliverylegHours,
-            deliverylegMinutes: form.deliverylegMinutes,
-            deliverylegCost: form.deliverylegCost,
-            selectedStopTimeDelivery: this.selectedStopTimeDelivery,
-            // extra stop shipper
-            extraStopShipper: this.selectedExtraStopShipper,
-            extraStopShipperContact: this.selectedExtraStopShipperContact,
-            selectedExtraStopTime: this.selectedExtraStopTime,
-            extraStops: this.loadExtraStops().value,
             // billing
-            baseRate: form.baseRate,
-            driverRate: form.driverRate,
-            adjustedRate: form.adjustedRate,
-            advancePay: form.advancePay,
             additionalBillingTypes: this.additionalBillings().value,
 
             // note, files
@@ -4269,7 +4260,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     if (this.editData) {
                         this.populateLoadModalData(
-                            this.editData.data as LoadResponse
+                            (this.editData.data ??
+                                this.editData) as LoadResponse
                         );
                         this.isConvertedToTemplate =
                             this.editData.selectedTab ===
@@ -4347,7 +4339,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return {
             dispatcherId: this.getIdOrNull(this.selectedDispatcher),
             dispatchId: this.getIdOrNull(this.selectedDispatches),
-            brokerId: this.selectedBroker.id,
+            brokerId: this.getIdOrNull(this.selectedBroker),
             brokerContactId: this.getIdOrNull(this.selectedBrokerContact),
             referenceNumber,
             generalCommodity: this.getIdOrNull(this.selectedGeneralCommodity),
@@ -4593,6 +4585,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private formatTimeDifference(timeObject): string {
+        if (!timeObject) return '';
         const { days, hours, minutes } = timeObject;
         let formattedString = '';
 
@@ -4642,79 +4635,107 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             statusHistory,
         } = loadModalData;
 
-        // Remove deadhead
-        const stops = loadModalData.stops.filter((stop) => stop.id !== 0);
-        stops.forEach((stop, index) => {
-            if (index === 0) {
-                this.pickupStatusHistory = stop.statusHistory;
-                this.pickupStopItems = stop.items;
-                this.savedPickupStopItems = stop.items.length
-                    ? [stop.items]
-                    : [];
-            } else if (index !== stops.length - 1) {
-                this.extraStopItems[index - 1] = stop.items;
-                this.extraStopStatusHistory[index - 1] = stop.statusHistory;
-                this.savedExtraStopItems[index - 1] = stop.items.length
-                    ? [stop.items]
-                    : [];
-            } else {
-                this.deliveryStopItems = stop.items;
-                this.savedDeliveryStopItems = stop.items.length
-                    ? [stop.items]
-                    : [];
-                this.deliveryStatusHistory = stop.statusHistory;
-            }
-        });
+        console.log(loadModalData);
+
+        // Check if stops exists and is an array before using it
+        const stops =
+            loadModalData.stops?.filter((stop) => stop.id !== 0) || [];
+        if (stops.length > 0) {
+            stops.forEach((stop, index) => {
+                if (index === 0) {
+                    this.pickupStatusHistory = stop.statusHistory;
+                    this.pickupStopItems = stop.items;
+                    this.savedPickupStopItems = stop.items.length
+                        ? [stop.items]
+                        : [];
+                } else if (index !== stops.length - 1) {
+                    this.extraStopItems[index - 1] = stop.items;
+                    this.extraStopStatusHistory[index - 1] = stop.statusHistory;
+                    this.savedExtraStopItems[index - 1] = stop.items.length
+                        ? [stop.items]
+                        : [];
+                } else {
+                    this.deliveryStopItems = stop.items;
+                    this.savedDeliveryStopItems = stop.items.length
+                        ? [stop.items]
+                        : [];
+                    this.deliveryStatusHistory = stop.statusHistory;
+                }
+            });
+        }
 
         this.stops = stops;
         this.statusHistory = statusHistory;
 
-        const loadRequirements = {
-            truckType: loadModalData.loadRequirements?.truckType,
-            trailerType: loadModalData.loadRequirements?.trailerType,
-            year: loadModalData.loadRequirements?.year,
-            liftgate: loadModalData.loadRequirements?.liftgate,
-            driverMessage: loadModalData.loadRequirements?.driverMessage,
-            trailierLength: loadModalData.loadRequirements?.trailerLength,
-            doorType: loadModalData.loadRequirements?.doorType,
-            suspension: loadModalData.loadRequirements?.suspension,
-        };
+        // Check if loadRequirements exists before accessing its properties
+        const loadRequirements = loadModalData.loadRequirements
+            ? {
+                  truckType: loadModalData.loadRequirements.truckType,
+                  trailerType: loadModalData.loadRequirements.trailerType,
+                  year: loadModalData.loadRequirements.year,
+                  liftgate: loadModalData.loadRequirements.liftgate,
+                  driverMessage: loadModalData.loadRequirements.driverMessage,
+                  trailierLength: loadModalData.loadRequirements.trailerLength,
+                  doorType: loadModalData.loadRequirements.doorType,
+                  suspension: loadModalData.loadRequirements.suspension,
+              }
+            : {};
 
+        // Ensure pickupStop and deliveryStop are defined
         let pickupStop = stops[0];
         let deliveryStop = stops[stops.length - 1];
 
-        const editedBroker = {
-            ...this.labelsBroker.find((b) => b.id === broker.id),
-            name: broker.businessName,
-        };
+        // Ensure broker exists before attempting to find and spread
+        const editedBroker = broker
+            ? {
+                  ...this.labelsBroker.find((b) => b.id === broker?.id),
+                  name: broker?.businessName,
+              }
+            : {};
 
-        const editedDispatcher = {
-            ...dispatcher,
-            name: dispatcher.fullName,
-        };
+        // Ensure dispatcher exists before attempting to spread
+        const editedDispatcher = dispatcher
+            ? {
+                  ...dispatcher,
+                  name: dispatcher?.fullName,
+              }
+            : {};
 
-        const editedTruck = this.originLabelsDispatches.find(
-            (dispatches) => dispatches.id === dispatch?.id
-        );
+        const editedTruck = dispatch
+            ? this.originLabelsDispatches.find(
+                  (dispatches) => dispatches.id === dispatch?.id
+              )
+            : null;
 
-        const editedPickupShipper = {
-            ...stops[0].shipper,
-            address: `${pickupStop.shipper.address.city}, ${pickupStop.shipper.address.stateShortName} ${pickupStop.shipper.address.zipCode}`,
-            name: pickupStop.shipper.businessName,
-        };
+        // Ensure pickupStop and deliveryStop shippers exist before attempting to spread
+        const editedPickupShipper = pickupStop?.shipper
+            ? {
+                  ...pickupStop.shipper,
+                  address: `${pickupStop.shipper.address.city}, ${pickupStop.shipper.address.stateShortName} ${pickupStop.shipper.address.zipCode}`,
+                  name: pickupStop.shipper.businessName,
+              }
+            : {};
 
-        const editedDeliveryShipper = {
-            ...deliveryStop.shipper,
-            address: `${deliveryStop.shipper.address.city}, ${deliveryStop.shipper.address.stateShortName} ${deliveryStop.shipper.address.zipCode}`,
-            name: deliveryStop.shipper.businessName,
-        };
+        const editedDeliveryShipper = deliveryStop?.shipper
+            ? {
+                  ...deliveryStop.shipper,
+                  address: `${deliveryStop.shipper.address.city}, ${deliveryStop.shipper.address.stateShortName} ${deliveryStop.shipper.address.zipCode}`,
+                  name: deliveryStop.shipper.businessName,
+              }
+            : {};
 
+        // Filter out undefined stops
         const editedStops = stops.filter(
             (_, index) => index !== 0 && index !== stops.length - 1
         );
 
-        pickupStop = this.formatStopTimes(pickupStop);
-        deliveryStop = this.formatStopTimes(deliveryStop);
+        // Ensure pickupStop and deliveryStop are formatted if they exist
+        if (pickupStop) {
+            pickupStop = this.formatStopTimes(pickupStop);
+        }
+        if (deliveryStop) {
+            deliveryStop = this.formatStopTimes(deliveryStop);
+        }
 
         // form
         this.loadForm.patchValue({
@@ -4725,25 +4746,37 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverMessage: loadRequirements?.driverMessage,
             note: note,
             // pickup
-            pickupDateFrom: this.convertDate(pickupStop.dateFrom),
-            pickupDateTo: this.convertDate(pickupStop.dateTo),
-            pickupTimeFrom: pickupStop.timeFrom,
-            pickupTimeTo: pickupStop.timeTo,
-            pickuplegMiles: pickupStop.legMiles,
-            pickuplegHours: pickupStop.legHours,
-            pickuplegMinutes: pickupStop.legMinutes,
-            pickupWaitTime: this.formatTimeDifference(pickupStop.wait),
+            pickupDateFrom: pickupStop
+                ? this.convertDate(pickupStop.dateFrom)
+                : null,
+            pickupDateTo: pickupStop
+                ? this.convertDate(pickupStop.dateTo)
+                : null,
+            pickupTimeFrom: pickupStop?.timeFrom,
+            pickupTimeTo: pickupStop?.timeTo,
+            pickuplegMiles: pickupStop?.legMiles,
+            pickuplegHours: pickupStop?.legHours,
+            pickuplegMinutes: pickupStop?.legMinutes,
+            pickupWaitTime: pickupStop
+                ? this.formatTimeDifference(pickupStop.wait)
+                : null,
 
             // delivery
-            deliveryDateFrom: this.convertDate(deliveryStop.dateFrom),
-            deliveryDateTo: this.convertDate(deliveryStop.dateTo),
-            deliveryTimeFrom: deliveryStop.timeFrom,
-            deliveryTimeTo: deliveryStop.timeTo,
-            deliverylegMiles: deliveryStop.legMiles,
-            deliverylegHours: deliveryStop.legHours,
-            deliverylegMinutes: deliveryStop.legMinutes,
-            deliveryStopOrder: deliveryStop.stopLoadOrder,
-            deliverWaitTime: this.formatTimeDifference(deliveryStop.wait),
+            deliveryDateFrom: deliveryStop
+                ? this.convertDate(deliveryStop.dateFrom)
+                : null,
+            deliveryDateTo: deliveryStop
+                ? this.convertDate(deliveryStop.dateTo)
+                : null,
+            deliveryTimeFrom: deliveryStop?.timeFrom,
+            deliveryTimeTo: deliveryStop?.timeTo,
+            deliverylegMiles: deliveryStop?.legMiles,
+            deliverylegHours: deliveryStop?.legHours,
+            deliverylegMinutes: deliveryStop?.legMinutes,
+            deliveryStopOrder: deliveryStop?.stopLoadOrder,
+            deliverWaitTime: deliveryStop
+                ? this.formatTimeDifference(deliveryStop.wait)
+                : null,
 
             // billing & payment
             baseRate: baseRate,
@@ -4774,51 +4807,62 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.comments = comments;
 
         // dropdowns
-        this.onSelectDropdown(editedBroker, LoadModalStringEnum.BROKER);
-        this.onSelectDropdown(editedTruck, LoadModalStringEnum.DISPATCHES);
-        this.onSelectDropdown(
-            editedPickupShipper,
-            LoadModalStringEnum.SHIPPER_PICKUP
-        );
-        this.onSelectDropdown(
-            editedDeliveryShipper,
-            LoadModalStringEnum.SHIPPER_DELIVERY
-        );
-        this.onSelectDropdown(company, LoadModalStringEnum.COMPANY);
-        this.onSelectDropdown(
-            loadRequirements?.truckType,
-            LoadModalStringEnum.TRUCK_REQ
-        );
-        this.onSelectDropdown(
-            loadRequirements?.trailerType,
-            LoadModalStringEnum.TRAILER_REQ
-        );
-
-        this.onSelectDropdown(
-            loadRequirements.trailierLength,
-            LoadModalStringEnum.LENGTH
-        );
-        this.onSelectDropdown(
-            loadRequirements.doorType,
-            LoadModalStringEnum.DOOR_TYPE
-        );
-        this.onSelectDropdown(
-            loadRequirements.suspension,
-            LoadModalStringEnum.SUSPENSION
-        );
+        if (editedBroker)
+            this.onSelectDropdown(editedBroker, LoadModalStringEnum.BROKER);
+        if (editedTruck)
+            this.onSelectDropdown(editedTruck, LoadModalStringEnum.DISPATCHES);
+        if (editedPickupShipper)
+            this.onSelectDropdown(
+                editedPickupShipper,
+                LoadModalStringEnum.SHIPPER_PICKUP
+            );
+        if (editedDeliveryShipper)
+            this.onSelectDropdown(
+                editedDeliveryShipper,
+                LoadModalStringEnum.SHIPPER_DELIVERY
+            );
+        if (company)
+            this.onSelectDropdown(company, LoadModalStringEnum.COMPANY);
+        if (loadRequirements?.truckType)
+            this.onSelectDropdown(
+                loadRequirements?.truckType,
+                LoadModalStringEnum.TRUCK_REQ
+            );
+        if (loadRequirements?.trailerType)
+            this.onSelectDropdown(
+                loadRequirements?.trailerType,
+                LoadModalStringEnum.TRAILER_REQ
+            );
+        if (loadRequirements.trailierLength)
+            this.onSelectDropdown(
+                loadRequirements.trailierLength,
+                LoadModalStringEnum.LENGTH
+            );
+        if (loadRequirements.doorType)
+            this.onSelectDropdown(
+                loadRequirements.doorType,
+                LoadModalStringEnum.DOOR_TYPE
+            );
+        if (loadRequirements.suspension)
+            this.onSelectDropdown(
+                loadRequirements.suspension,
+                LoadModalStringEnum.SUSPENSION
+            );
 
         // extra stops
         if (editedStops.length) {
             editedStops.forEach((extraStop, index) => {
                 this.createNewExtraStop();
 
-                const editedShipper = {
-                    ...extraStop.shipper,
-                    address: `${extraStop.shipper.address.city}, ${extraStop.shipper.address.stateShortName} ${extraStop.shipper.address.zipCode}`,
-                    name: extraStop.shipper.businessName,
-                };
+                const editedShipper = extraStop.shipper
+                    ? {
+                          ...extraStop.shipper,
+                          address: `${extraStop.shipper.address.city}, ${extraStop.shipper.address.stateShortName} ${extraStop.shipper.address.zipCode}`,
+                          name: extraStop.shipper.businessName,
+                      }
+                    : {};
 
-                extraStop = this.formatStopTimes(extraStop);
+                if (extraStop) extraStop = this.formatStopTimes(extraStop);
 
                 this.loadExtraStops()
                     .at(index)
@@ -4827,31 +4871,38 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         stopType: extraStop.stopType.name,
                         stopOrder: extraStop.stopLoadOrder,
                         stopLoadOrder: extraStop.stopLoadOrder,
-                        shipperId: extraStop.shipper.id,
+                        shipperId: extraStop.shipper?.id,
                         shipperContactId: extraStop.shipperContact?.id,
-                        dateFrom: this.convertDate(extraStop.dateFrom),
-                        dateTo: this.convertDate(extraStop.dateTo),
+                        dateFrom: extraStop
+                            ? this.convertDate(extraStop.dateFrom)
+                            : null,
+                        dateTo: extraStop
+                            ? this.convertDate(extraStop.dateTo)
+                            : null,
                         timeType: extraStop.timeType.name.toUpperCase(),
-                        timeFrom: extraStop.timeFrom,
-                        timeTo: extraStop.timeTo,
-                        arrive: extraStop.arrive,
-                        depart: extraStop.depart,
-                        legMiles: extraStop.legMiles,
-                        legHours: extraStop.legHours,
-                        legMinutes: extraStop.legMinutes,
-                        items: extraStop.items,
+                        timeFrom: extraStop?.timeFrom,
+                        timeTo: extraStop?.timeTo,
+                        arrive: extraStop?.arrive,
+                        depart: extraStop?.depart,
+                        legMiles: extraStop?.legMiles,
+                        legHours: extraStop?.legHours,
+                        legMinutes: extraStop?.legMinutes,
+                        items: extraStop?.items,
                         openClose: false,
-                        statusHistory: extraStop.statusHistory,
-                        waitTime: this.formatTimeDifference(extraStop.wait),
+                        statusHistory: extraStop?.statusHistory,
+                        waitTime: extraStop
+                            ? this.formatTimeDifference(extraStop.wait)
+                            : null,
                     });
 
-                this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
+                this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
-                this.onSelectDropdown(
-                    editedShipper,
-                    LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
-                    index
-                );
+                if (editedShipper)
+                    this.onSelectDropdown(
+                        editedShipper,
+                        LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
+                        index
+                    );
 
                 this.onTabChange(
                     extraStop.stopType,
@@ -4866,29 +4917,37 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
         }
         // tabs
-        this.onTabChange(type, LoadModalStringEnum.FTL_LTL);
-        this.onTabChange(
-            pickupStop.timeType,
-            LoadModalStringEnum.STOP_TIME_PICKUP
-        );
-        this.onTabChange(
-            deliveryStop.timeType,
-            LoadModalStringEnum.STOP_TIME_DELIVERY
-        );
+        if (type) {
+            this.onTabChange(type, LoadModalStringEnum.FTL_LTL);
+        }
+        if (pickupStop)
+            this.onTabChange(
+                pickupStop.timeType,
+                LoadModalStringEnum.STOP_TIME_PICKUP
+            );
+        if (deliveryStop)
+            this.onTabChange(
+                deliveryStop.timeType,
+                LoadModalStringEnum.STOP_TIME_DELIVERY
+            );
 
         // selected
-        this.selectedCompany = {
-            ...company,
-            name: company.companyName,
-        };
+        this.selectedCompany = company
+            ? { ...company, name: company.companyName }
+            : {};
         this.selectedDispatcher = editedDispatcher;
         this.selectedGeneralCommodity = generalCommodity;
         this.selectedTruckReq = loadRequirements?.truckType;
         this.selectedTrailerReq = loadRequirements?.trailerType;
-        this.selectedYear = this.labelsYear.find(
-            (year) => year.name == `${loadRequirements?.year?.toString()}+`
-        );
-        additionalBillingRates.forEach((rate) => {
+        this.selectedYear = loadRequirements?.year
+            ? this.labelsYear.find(
+                  (year) =>
+                      year.name.toString().replace('+', '') ==
+                      `${loadRequirements?.year.toString().replace('+', '')}`
+              )
+            : null;
+
+        additionalBillingRates?.forEach((rate) => {
             if (rate.rate) {
                 this.additionalBillings().push(
                     this.createAdditionaBilling({
@@ -4902,7 +4961,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.isEachStopItemsRowValid = true;
 
-        pays.forEach((pay) => {
+        pays?.forEach((pay) => {
             this.additionalPayments().push(
                 this.createAdditionPaymentBilling({
                     id: pay.id,
@@ -4921,26 +4980,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             );
         });
 
-        this.isVisiblePayment = !!pays.length;
+        this.isVisiblePayment = !!pays?.length;
 
-        this.pickupDateRange = !!pickupStop.dateTo;
-        this.deliveryDateRange = !!deliveryStop.dateTo;
+        this.pickupDateRange = !!pickupStop?.dateTo;
+        this.deliveryDateRange = !!deliveryStop?.dateTo;
 
         this.isHazardousPicked =
             generalCommodity?.name.toLowerCase() ===
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
-        /* 
-        this.isVisiblePayment = !!advancePay;
-        this.selectedTemplate = loadTemplateId;
-            
-
-        additionalBillingTypes.map((item) => {
-            if (item.billingValue) {
-                this.addAdditionalBilling(item);
-            }
-        }); 
-        */
     }
 
     public pickupStatusHistoryChange(
@@ -5009,7 +5057,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isDeliveryStopFinished(): boolean {
         if (this.stops) {
             const deliveryStop = this.stops[this.stops.length - 1];
-            return !!(deliveryStop.arrive && deliveryStop.depart);
+            return (
+                deliveryStop && !!(deliveryStop.arrive && deliveryStop.depart)
+            );
         }
         return false;
     }
