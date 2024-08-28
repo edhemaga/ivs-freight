@@ -16,8 +16,9 @@ import { LoadType } from './loadType';
 import { CreateTagCommand } from './createTagCommand';
 
 
-export interface ApiLoadPostRequest1 { 
+export interface ApiLoadSaveasclosedPostRequest { 
     Type?: LoadType;
+    LoadNumber?: string;
     LoadTemplateId?: number;
     DispatcherId?: number;
     CompanyId?: number;

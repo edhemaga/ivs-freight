@@ -26,7 +26,8 @@ export interface PayrollOwnerClosedResponse {
     truckNumber?: string | null;
     truckType?: string | null;
     payrollNumber?: string | null;
-    period?: string;
+    periodStart?: string;
+    periodEnd?: string;
     closedDate?: string | null;
     status?: EnumValue;
     commission?: number | null;

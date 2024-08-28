@@ -4407,7 +4407,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ...commonData,
                 type: this.tabs.find((tab) => tab.id === this.selectedTab)
                     .name as LoadType,
-                loadNumber: this.loadNumber,
                 loadTemplateId: this.selectedTemplate
                     ? this.selectedTemplate.id
                     : null,
