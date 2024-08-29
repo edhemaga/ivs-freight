@@ -351,7 +351,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     public handleRemoveChartsHover(): void {
-        this.lineChart.chartHoverOut();
+        //waiting for charts this.lineChart.chartHoverOut();
     }
 
     private getConstantData(): void {
