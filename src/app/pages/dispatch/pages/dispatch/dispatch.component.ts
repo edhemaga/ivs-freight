@@ -79,7 +79,7 @@ export class DispatchComponent
     selectedDispatcher;
     isAscending: boolean = true;
 
-    public isNoteExpanded: boolean;
+    public isNoteExpanded: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,

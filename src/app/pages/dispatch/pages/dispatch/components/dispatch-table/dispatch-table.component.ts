@@ -143,7 +143,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public showAddAddressFieldIndex: number = -1;
 
-    public _isNoteExpanded: boolean = false;
+    public _isNoteExpanded: boolean = true;
     public parkingCount: number = 0;
     public openedDriverDropdown: number = -1;
 
