@@ -8,7 +8,14 @@
     cdkDropList
     (cdkDropListDropped)="dropList($event)"
 >
-    <div class="table-container-dispatch scrollable">
+    <div
+        class="table-container-dispatch scrollable"
+        [class.flex-column]="
+            !dispatchData?.dispatches?.length &&
+            !isAllBoardsList &&
+            isDispatchBoardLocked
+        "
+    >
         <ng-container *ngIf="isDispatchBoardChangeInProgress">
             <div
                 @dispatchBackgroundAnimation
