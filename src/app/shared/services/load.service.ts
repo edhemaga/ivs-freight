@@ -72,6 +72,7 @@ export class LoadService {
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
+        isRevert?: boolean
     }> = this.statusAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
@@ -109,6 +110,7 @@ export class LoadService {
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
+        isRevert: boolean
     }) {
         this.statusAction.next(data);
     }
