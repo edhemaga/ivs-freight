@@ -278,6 +278,7 @@ export class LoadModalConfig {
         label: 'Reference No.',
         isRequired: true,
         textTransform: 'uppercase',
+        maxLength: 16
     };
 
     static getPickupDateFromInputConfig(pickupDateRange: boolean): ITaInput {
