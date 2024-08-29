@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DashboardDataPlaceholderComponent implements OnInit {
     @Input() searchPlaceholder?: boolean = false;
+    @Input() fullHeight?: boolean;
 
     constructor() {}
 
