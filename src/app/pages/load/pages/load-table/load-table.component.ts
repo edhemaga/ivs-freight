@@ -269,7 +269,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateLoadStatus(
                         status.id,
                         status.dataBack,
-                        foundObject.status.statusString
+                        foundObject.status.statusString,
+                        status.isRevert
                     );
                 }
             });
@@ -277,6 +278,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confiramtionService.confirmationData$.subscribe((res) => {
+            if(res.template === TableStringEnum.COMMENT) return;
+            
             if (res.type === TableStringEnum.DELETE) {
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
                     this.deleteLoadTemplateById(res.id);
@@ -304,7 +307,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateLoadStatus(
                     confirmationResponse.id,
                     confirmationResponse.data.nameBack,
-                    foundObject.status.statusString
+                    foundObject.status.statusString,
+                    confirmationResponse.data.isRevert
                 );
             });
     }
@@ -1710,7 +1714,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteLoadById(id: number): void {
-        this.loadServices
+            this.loadServices
             .deleteLoadById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.sendLoadData());
@@ -1779,10 +1783,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private updateLoadStatus(
         id: number,
         status: LoadStatus,
-        previousStatus: LoadStatus
+        previousStatus: LoadStatus,
+        isRevert: boolean
     ): void {
         this.loadServices
-            .updateLoadStatus(id, status, false)
+            .updateLoadStatus(id, status, isRevert)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {

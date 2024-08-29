@@ -383,7 +383,11 @@
 
         /* Line Chart */
         &-line-chart-container {
-            margin-bottom: -42px;
+            // remove while we don't have charts margin-bottom: -42px;
+
+            .line-chart-container {
+                height: 200px; //this is until we have charts
+            }
 
             .line-chart-header {
                 margin-bottom: 12px;

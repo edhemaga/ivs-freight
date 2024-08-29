@@ -115,6 +115,7 @@ export class TaStatusComponentComponent implements OnInit, OnDestroy {
                 id: this.statusId,
                 dataBack: item as LoadStatus,
                 dataFront: statusName as LoadStatus,
+                isRevert: revert,
             });
         }
     }
