@@ -10,7 +10,7 @@ export class CaMainTableHiddenRowsPipe implements PipeTransform {
         columns: ColumnConfig[],
         hideHiddenFields: boolean
     ): ColumnConfig[] {
-        if (hideHiddenFields && columns.length) {
+        if (!hideHiddenFields && columns?.length) {
             return columns.filter((column) => !column.hiddeOnTableReduce);
         }
         return columns;

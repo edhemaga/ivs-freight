@@ -65,8 +65,8 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 hiddeOnTableReduce: true,
             },
             {
-                header: 'Period',
-                field: 'period',
+                header: 'Period ST',
+                field: 'periodStart',
                 pipeType: 'date',
                 pipeString: 'shortDate',
                 cellType: 'text', // Pass the template reference

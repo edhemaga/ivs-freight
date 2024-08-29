@@ -5,6 +5,7 @@ import { PayrollState } from '../models/payroll.model';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
+    payrollOpenedReport: [],
     payrollDriverMileage: [],
     loading: false,
 };
@@ -53,13 +54,10 @@ export const payrollReducer = createReducer(
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
         (state, data) => {
-            console.log('fdsafsadfasdf', data.payroll);
-            // ({
-            //     ...state,
-            //     payrollDriverMileage: data.payroll,
-            //     loading: false,
-            // })
-            return state;
+            return {
+                ...state,
+                payrollOpenedReport: data.payroll
+            };
         }
     )
 );

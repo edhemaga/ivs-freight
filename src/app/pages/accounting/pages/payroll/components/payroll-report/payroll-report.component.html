@@ -106,7 +106,13 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <div class="report-info-card" *ngIf="title == 'Owner'">
+            <app-ca-period-content
+                [isOpen]="true"
+                [type]="'MILEAGE'"
+                [componentData]="payrollReport$ | async"
+                [status]="'incomplete'"
+            ></app-ca-period-content>
+            <!-- <div class="report-info-card" *ngIf="title == 'Owner'">
                 <div class="report-card-title">
                     {{ reportMainData.owner.name }}
                 </div>
@@ -283,8 +289,6 @@
                         {{ reportMainData.deductionAmount | currency : 'USD' }}
                     </div>
                 </div>
-
-                <!-- Total -->
                 <div
                     class="payroll-report-money-item d-flex payroll-report-money-item-total"
                 >
@@ -300,7 +304,7 @@
                         <div class="report-button active">Process</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- <div class="report-card">
             <div class="report-card-title">Payment method</div>
