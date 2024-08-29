@@ -52,7 +52,7 @@ export enum DispatchTableStringEnum {
     PARKING_1 = 'PARKING',
     INSPECTION = 'INSPECTION',
     PROGRESS = 'PROGRESS',
-    STATUS = 'STATUE',
+    STATUS = 'STATUS',
     DISPATCHER_1 = 'DISPATCHER',
     PICKUP = 'PICKUP',
 }

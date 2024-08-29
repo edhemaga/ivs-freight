@@ -205,8 +205,6 @@
     /* Locked Table */
 
     table {
-        width: 100%;
-
         th {
             height: 30px;
             padding-left: 10px;
@@ -479,8 +477,8 @@
 
             &.truck-field,
             &.trailer-field {
-                min-width: 160px;
-                max-width: 160px;
+                min-width: 140px;
+                max-width: 320px;
             }
 
             &.pre-trip {
@@ -490,31 +488,31 @@
             }
             &.driver-field {
                 min-width: 240px;
-                max-width: 240px;
-                width: 240px;
+                max-width: 400px;
+                width: 300px;
             }
 
             &.location-field {
-                min-width: 160px;
-                max-width: 160px;
+                min-width: 140px;
+                max-width: 300px;
                 width: 160px;
             }
 
             &.status-field {
-                min-width: 140px;
-                max-width: 140px;
+                min-width: 120px;
+                max-width: 200px;
                 width: 140px;
             }
 
             &.pickup-delivery-field {
-                min-width: 270px;
-                max-width: 270px;
-                width: 270px;
+                min-width: 300px;
+                max-width: 420px;
+                width: 340px;
             }
 
             &.progress-field {
-                min-width: 226px;
-                max-width: 226px;
+                min-width: 196px;
+                max-width: 326px;
                 width: 226px;
             }
 
@@ -525,7 +523,7 @@
 
                 &-large {
                     min-width: 150px;
-                    max-width: 150px;
+                    max-width: 200px;
                     width: 150px;
                 }
             }
@@ -542,8 +540,8 @@
 
                 &.expanded {
                     width: 236px !important;
-                    max-width: 236px !important;
-                    min-width: 236px !important;
+                    max-width: 326px !important;
+                    min-width: 196px !important;
                 }
             }
         }
