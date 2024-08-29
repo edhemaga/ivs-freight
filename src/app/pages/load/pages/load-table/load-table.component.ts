@@ -269,7 +269,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateLoadStatus(
                         status.id,
                         status.dataBack,
-                        foundObject.status.statusString
+                        foundObject.status.statusString,
+                        status.isRevert
                     );
                 }
             });
@@ -306,7 +307,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateLoadStatus(
                     confirmationResponse.id,
                     confirmationResponse.data.nameBack,
-                    foundObject.status.statusString
+                    foundObject.status.statusString,
+                    confirmationResponse.data.isRevert
                 );
             });
     }
@@ -1781,10 +1783,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private updateLoadStatus(
         id: number,
         status: LoadStatus,
-        previousStatus: LoadStatus
+        previousStatus: LoadStatus,
+        isRevert: boolean
     ): void {
         this.loadServices
-            .updateLoadStatus(id, status, false)
+            .updateLoadStatus(id, status, isRevert)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {
