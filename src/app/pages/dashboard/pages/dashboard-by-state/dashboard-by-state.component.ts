@@ -143,7 +143,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
     public resetSelectedValues(): void {
         for (let i = 0; i < this.selectedByStateList.length; i++) {
-            this.barChart.removeMultiBarData(this.selectedByStateList[i], true);
+            this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
         }
 
         this.selectedByStateList = [];
@@ -441,9 +441,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         removeHover: boolean = false
     ): void {
         if (!removeHover) {
-            this.barChart.hoverBarChart(this.selectedByStateList[index]);
+            this.barChart?.hoverBarChart(this.selectedByStateList[index]);
         } else {
-            this.barChart.hoverBarChart(null);
+            this.barChart?.hoverBarChart(null);
         }
     }
 
@@ -1568,7 +1568,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             }
 
             if (this.barChart) {
-                this.barChart.updateMuiliBar(
+                this.barChart?.updateMuiliBar(
                     byStateList,
                     chartValues,
                     chartPercentages,
@@ -1580,7 +1580,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             const displayChartDefaultValue =
                 this.selectedByStateList.length === 0;
 
-            this.barChart.removeMultiBarData(
+            this.barChart?.removeMultiBarData(
                 byStateListItem,
                 displayChartDefaultValue
             );
