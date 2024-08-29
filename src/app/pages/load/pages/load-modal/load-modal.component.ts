@@ -3614,7 +3614,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegMinutes = res.totalMinutes;
                             this.totalLegCost = res.totalCost;
                             this.emptyMiles = res.legs[0]?.miles || 0;
-                            console.log(this.emptyMiles);
                         }
 
                         clearTimeout(this.lastCallTimeout);
@@ -3958,8 +3957,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    private getLoadDropdowns(): void {
-        if (this.editData?.data?.id) {
+    private getLoadDropdowns(): void { 
+        if (this.editData?.data?.id && this.editData?.selectedTab !== TableStringEnum.TEMPLATE) {
             this.loadService
                 .getLoadStatusDropdownOptions(this.editData?.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -3998,8 +3997,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.handleTonuRateVisiblity();
                 });
         }
+        const id = this.editData?.selectedTab !== TableStringEnum.TEMPLATE ? this.editData?.data?.id : null;
         this.loadService
-            .getLoadDropdowns(this.editData?.data?.id)
+            .getLoadDropdowns(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
