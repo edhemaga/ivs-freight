@@ -54,7 +54,7 @@ export class DispatchTableDriverComponent {
         ) {
             this._driverList.unshift({
                 id: 7656,
-                name: 'All Assigned',
+                name: DispatchTableStringEnum.ALL_ASSIGNED,
             });
         }
     }

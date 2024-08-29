@@ -42,8 +42,8 @@ export class ResizableDirective implements OnInit {
         if (this._resizeEnabled) {
             this.renderer.setStyle(
                 this.el.nativeElement,
-                'cursor',
-                'col-resize'
+                DispatchTableStringEnum.CURSOR,
+                DispatchTableStringEnum.COL_RESIZE
             );
         }
 
@@ -62,12 +62,16 @@ export class ResizableDirective implements OnInit {
         // Listen for mousemove and mouseup events on the document
 
         this.mouseMoveListener = this.renderer.listen(
-            'document',
-            'mousemove',
+            DispatchTableStringEnum.DOCUMENT,
+            DispatchTableStringEnum.MOUSE_MOVE,
             this.onMouseMove.bind(this)
         );
 
-        this.renderer.listen('document', 'mouseup', this.onMouseUp.bind(this));
+        this.renderer.listen(
+            DispatchTableStringEnum.DOCUMENT,
+            DispatchTableStringEnum.MOUSE_UP,
+            this.onMouseUp.bind(this)
+        );
     }
 
     private onMouseMove(event: MouseEvent): void {
@@ -79,7 +83,7 @@ export class ResizableDirective implements OnInit {
         if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
             this.renderer.setStyle(
                 this.el.nativeElement,
-                'width',
+                DispatchTableStringEnum.WIDTH,
                 `${newWidth}px`
             );
         }
@@ -125,7 +129,7 @@ export class ResizableDirective implements OnInit {
                 if (this.el.nativeElement.offsetWidth < driverMinWidth)
                     this.renderer.setStyle(
                         this.el.nativeElement,
-                        'width',
+                        DispatchTableStringEnum.WIDTH,
                         `${driverMinWidth}px`
                     );
 
