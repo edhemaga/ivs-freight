@@ -504,13 +504,16 @@
 
                 <div class="bar-chart-container">
                     <ng-container *ngIf="barChartConfig">
-                        <app-ta-chart
+                        <app-dashboard-data-placeholder
+                            [fullHeight]="true"
+                        ></app-dashboard-data-placeholder>
+                        <!-- <app-ta-chart
                             #barChart
                             [chartConfig]="barChartConfig"
                             [axesProperties]="barChartAxes"
                             [legendAttributes]="{}"
                         >
-                        </app-ta-chart>
+                        </app-ta-chart> -->
                     </ng-container>
                 </div>
             </div>

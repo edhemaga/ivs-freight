@@ -4,10 +4,53 @@
     position: relative;
 
     /* Unlocked Table */
+    .table-container-dispatch.table-container-dispatch {
+        width: 100% !important;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: thin !important;
+        scrollbar-color: $ta-light-grey-6 transparent !important;
+        scrollbar-width: 1px !important;
+        padding-bottom: 8px;
+    }
 
     &.unlocked {
         table {
             tr {
+                th {
+                }
+                .resize {
+                    position: relative;
+                }
+                .resize {
+                    position: relative;
+                }
+                .resize.show-after::after {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: col-resize;
+                }
+                .resize::after {
+                    display: none;
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 14px;
+                    padding-right: 5px;
+                    border-right: 1px solid $black;
+                    color: $black;
+                    font-size: 14px;
+                    border-radius: 1px 0px 0px 0px;
+                }
+
+                .close-icon-show {
+                    width: 100%;
+                }
                 td {
                     .main_inside {
                         /* Drag & Drop Single*/
@@ -169,7 +212,32 @@
             padding-left: 10px;
             font-size: 11px;
             color: $bw6-2;
+            position: relative;
 
+            .resize {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .resize.show-after::after {
+                display: flex;
+                cursor: col-resize;
+            }
+            .resize::after {
+                display: none;
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                padding-right: 5px;
+                border-right: 1px solid $black;
+                height: 14px;
+                color: $black;
+                font-size: 14px;
+                border-radius: 1px 0px 0px 0px;
+            }
             &.c-pointer {
                 cursor: pointer;
             }

@@ -8,6 +8,7 @@ pipelines:
           caches:
             - node
           script:
+            - export NODE_OPTIONS=--max-old-space-size=6144
             - npm install
           artifacts:
             - node_modules/** # Save modules for next steps

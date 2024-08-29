@@ -501,7 +501,10 @@
                     </div>
 
                     <div class="line-chart-container">
-                        <app-ta-chart
+                        <app-dashboard-data-placeholder
+                            [fullHeight]="true"
+                        ></app-dashboard-data-placeholder>
+                        <!-- <app-ta-chart
                             #lineChart
                             [chartConfig]="lineChartConfig"
                             [axesProperties]="lineChartAxes"
@@ -510,13 +513,13 @@
                             "
                             [legendAttributes]="{}"
                         >
-                        </app-ta-chart>
+                        </app-ta-chart> -->
                     </div>
                 </div>
 
                 <!-- Bar Chart -->
 
-                <div class="bar-chart-container">
+                <!-- <div class="bar-chart-container">
                     <app-ta-chart
                         #barChart
                         [chartConfig]="barChartConfig"
@@ -525,7 +528,7 @@
                         (hoverOtherChart)="handleBarChartHover($event)"
                     >
                     </app-ta-chart>
-                </div>
+                </div> -->
             </div>
         </ng-container>
     </div>
