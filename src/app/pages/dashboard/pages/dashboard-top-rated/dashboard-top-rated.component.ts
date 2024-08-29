@@ -156,7 +156,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public resetSelectedValues(): void {
         for (let i = 0; i < this.selectedTopRatedList.length; i++) {
-            this.barChart.removeMultiBarData(
+            this.barChart?.removeMultiBarData(
                 this.selectedTopRatedList[i],
                 true
             );
@@ -486,14 +486,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         removeHover: boolean = false
     ): void {
         if (!removeHover) {
-            this.doughnutChart.hoverDoughnut(
+            this.doughnutChart?.hoverDoughnut(
                 index,
                 DashboardChartStringEnum.NUMBER
             );
-            this.barChart.hoverBarChart(this.selectedTopRatedList[index]);
+            this.barChart?.hoverBarChart(this.selectedTopRatedList[index]);
         } else {
-            this.doughnutChart.hoverDoughnut(null);
-            this.barChart.hoverBarChart(null);
+            this.doughnutChart?.hoverDoughnut(null);
+            this.barChart?.hoverBarChart(null);
         }
     }
 
@@ -2069,7 +2069,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             }
 
             if (this.barChart) {
-                this.barChart.updateMuiliBar(
+                this.barChart?.updateMuiliBar(
                     topRatedList,
                     chartValues,
                     chartPercentages,
@@ -2081,7 +2081,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             const displayChartDefaultValue =
                 this.selectedTopRatedList.length === 0;
 
-            this.barChart.removeMultiBarData(
+            this.barChart?.removeMultiBarData(
                 topRatedListItem,
                 displayChartDefaultValue
             );
