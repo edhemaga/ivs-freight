@@ -292,6 +292,8 @@ export class DispatchComponent
                   )
               )
             : this.dispatcherItems[0];
+
+        this.initTableOptions();
     }
 
     sortDetails(e: any) {
@@ -354,13 +356,19 @@ export class DispatchComponent
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTruckDispatchFilter: true,
-                showTrailerDispatchFilter: true,
-                showParkingFilter: true,
+                showTruckDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showTrailerDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showParkingFilter: !!this.selectedDispatcher?.dispatchCount,
                 hideOpenModalButton: true,
-                showStatusDispatchFilter: true,
-                showLocationFilter: true,
+                showStatusDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showLocationFilter: !!this.selectedDispatcher?.dispatchCount,
+                showDispatchVacationFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
                 showDispatchAdd: true,
+                disableSearch: !this.selectedDispatcher?.dispatchCount,
                 hideListColumn: true,
                 showDispatchSettings: true,
                 showDropdown: true,
@@ -418,6 +426,8 @@ export class DispatchComponent
                 : false;
 
         this.isBoardLocked = true;
+
+        this.initTableOptions();
 
         localStorage.setItem(
             DispatchTableStringEnum.DISPATCH_USER_SELECT,
