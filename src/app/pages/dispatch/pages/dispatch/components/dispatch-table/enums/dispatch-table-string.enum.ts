@@ -56,6 +56,7 @@ export enum DispatchTableStringEnum {
     DISPATCHER_1 = 'DISPATCHER',
     PICKUP = 'PICKUP',
     ALL_ASSIGNED = 'All Assigned',
+    DISPATCH_TABLE_CONFIG = 'dispatch-table-config',
 
     // Resize
     CURSOR = 'cursor',

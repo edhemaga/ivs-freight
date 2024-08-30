@@ -526,7 +526,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    private deleteDispatchBoardById(id: number): void {
+    private deleteDispatchBoardById(
+        id: number,
+        isDriverDeleted?: boolean
+    ): void {
         this.dispatcherService
             .deleteDispatchboard(id)
             .pipe(
@@ -534,6 +537,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 tap(() => {
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
+
+                    if (isDriverDeleted) {
+                        this.dispatcherService.updateCountList(
+                            this.dispatchData.id,
+                            DispatchTableStringEnum.DRIVER_ID,
+                            null
+                        );
+                    }
+
+                    this.dispatcherService.updateModalList();
                 })
             )
             .subscribe();
@@ -595,7 +608,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.isDispatchBoardChangeInProgress = true;
             this.checkEmptySet = DispatchTableStringEnum.DRIVER_ID;
 
-            this.deleteDispatchBoardById(id);
+            this.deleteDispatchBoardById(id, true);
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.DRIVER_ID,

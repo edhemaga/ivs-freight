@@ -108,9 +108,12 @@ export class DispatchComponent
         this.setTableFilter();
 
         this.search();
-        this.columns = getDispatchColumnDefinition();
+
+        this.getDispatchColumns();
 
         this.toggleColumns();
+
+        this.resetColumnsSubscribe();
     }
 
     ngOnChanges() {}
@@ -339,6 +342,11 @@ export class DispatchComponent
                         }
                         return col;
                     });
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
                 }
             });
     }
@@ -510,5 +518,33 @@ export class DispatchComponent
 
     public toggleNote(isNoteExpanded: boolean): void {
         this.isNoteExpanded = isNoteExpanded;
+    }
+
+    // Reset Columns
+    public resetColumnsSubscribe(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.columns = getDispatchColumnDefinition();
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
+                }
+            });
+    }
+
+    public getDispatchColumns(): void {
+        this.columns = localStorage.getItem(
+            DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+        )
+            ? JSON.parse(
+                  localStorage.getItem(
+                      DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+                  )
+              )
+            : getDispatchColumnDefinition();
     }
 }
