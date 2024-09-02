@@ -66,6 +66,9 @@ export class PayrollReportComponent implements OnInit {
         );
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
+            this.payrollFacadeService.selectPayrollOpenedReport$.subscribe(payroll => {
+                console.log("PAYROLLL", payroll);
+            });
     }
 
     getDataBasedOnTitle(data: { id: number; title: string }) {

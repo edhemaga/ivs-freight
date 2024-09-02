@@ -1,44 +1,32 @@
 <div class="report-main-holder d-flex">
     <div class="middle-report-info">
         <div class="report-card">
-            <div class="report-card-title">Report</div>
-            <div class="border-item"></div>
-
-            <div class="report-count-item-load d-flex">
-                <div class="d-flex">
-                    <div class="report-count-item-load-left d-flex normal">
-                        <div class="count">{{ reportMainData.stopsCount }}</div>
-                        <div class="title">Stop</div>
-                    </div>
-                    <div class="report-count-item-load-left d-flex normal">
-                        <div class="count">{{ reportMainData.loadsCount }}</div>
-                        <div class="title">Load</div>
-                    </div>
+            <div
+                class="report-card-title d-flex align-items-center justify-content-between"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="payroll_report_title">Report</div>
+                    <div class="payroll_chip">12 STOP (4 EXTRA)</div>
+                    <div class="payroll_chip">3 LOAD</div>
+                    <div class="payroll_chip blue">+1 DAY</div>
                 </div>
-
-                <div class="report-count-item-load-right d-flex">
-                    <div class="report-tickets">
-                        Empty
-                        <span>{{
-                            reportMainData.driver?.solo?.emptyMile
-                                | currency : 'USD'
-                        }}</span>
-                    </div>
-                    <div class="report-tickets">
-                        Loaded
-                        <span>{{
-                            reportMainData.driver?.solo?.loadedMile
-                                | currency : 'USD'
-                        }}</span>
-                    </div>
-                    <!-- <div class="report-tickets">Commission <span>7%</span></div> -->
-
-                    <div class="edit">
-                        <svg-icon
-                            [src]="
-                                'assets/svg/truckassist-table/dropdown/content/edit-hover.svg'
-                            "
-                        ></svg-icon>
+                <div class="report-count-item-load d-flex">
+                    <div class="report-count-item-load-right d-flex">
+                        <div class="report-tickets">
+                            Empty
+                            <span>{{ 233 | currency : 'USD' }}</span>
+                        </div>
+                        <div class="report-tickets">
+                            Loaded
+                            <span>{{ 123 | currency : 'USD' }}</span>
+                        </div>
+                        <div class="edit">
+                            <svg-icon
+                                [src]="
+                                    'assets/svg/truckassist-table/dropdown/content/edit-hover.svg'
+                                "
+                            ></svg-icon>
+                        </div>
                     </div>
                 </div>
             </div>

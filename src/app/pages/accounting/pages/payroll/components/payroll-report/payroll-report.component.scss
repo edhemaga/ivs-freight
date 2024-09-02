@@ -6,7 +6,7 @@
     }
 
     .right-report-info {
-        width: 300px;
+        //  width: 300px;
     }
 
     .report-card {
@@ -17,13 +17,30 @@
         border-radius: 3px;
 
         .report-card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #2f2f2f;
-
-            &::selection {
-                background-color: #2f2f2f33;
+            .payroll_report_title {
+                font-size: 17px;
+                font-weight: 700;
                 color: #2f2f2f;
+
+                &::selection {
+                    background-color: #2f2f2f33;
+                    color: #2f2f2f;
+                }
+            }
+
+            .payroll_chip {
+                padding: 2px 6px;
+                margin: 0 4px;
+                background-color: #919191;
+                border-radius: 2px;
+
+                font-size: 11px;
+                font-weight: 700;
+                color: #fff;
+
+                &.blue{
+                    background-color: #6692F1;
+                }
             }
         }
 
@@ -89,10 +106,10 @@
             }
         }
 
-        .payroll-pay-button{
+        .payroll-pay-button {
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid #DADADA;
+            border-top: 1px solid #dadada;
 
             .report-buttons {
                 padding: 0;
@@ -100,7 +117,6 @@
                     height: 32px;
                 }
             }
-           
         }
 
         .border-item {
@@ -122,7 +138,7 @@
                 border-radius: 2px;
                 margin-right: 12px;
 
-                &.no-bc{
+                &.no-bc {
                     background-color: transparent;
                 }
                 svg-icon {
@@ -208,7 +224,7 @@
                 }
             }
 
-            &.status-template-past{
+            &.status-template-past {
                 background-color: #ef53501a;
 
                 svg-icon {
@@ -221,7 +237,7 @@
 
                 .payroll-report-status-text {
                     color: #ef5350;
-    
+
                     &::selection {
                         background-color: #ef535033;
                         color: #ef5350;
@@ -320,8 +336,6 @@
         .report-count-item-load {
             justify-content: space-between;
             align-items: center;
-
-            margin-top: 6px;
             .report-count-item-load-left {
                 align-items: center;
                 margin-right: 16px;
@@ -352,17 +366,17 @@
                     }
                 }
 
-                &.normal{
-                    .count{
+                &.normal {
+                    .count {
                         color: #424242;
-                        background-color: #EEEEEE;
+                        background-color: #eeeeee;
                     }
 
                     .title {
                         font-size: 16px;
                         color: #424242;
                         font-weight: 700;
-    
+
                         &::selection {
                             background-color: #42424233;
                             color: #424242;
@@ -383,9 +397,10 @@
                     margin: 0 4px;
                     border-radius: 2px;
                     user-select: none;
+                    font-weight: 700;
 
                     span {
-                        font-weight: 800;
+                        font-weight: 700;
                         margin-left: 6px;
                     }
                 }
