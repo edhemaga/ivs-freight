@@ -165,3 +165,14 @@
 .table-filter-padding {
     padding-left: 4px;
 }
+
+.disabled-icon {
+    svg-icon {
+        svg,
+        path {
+            fill: $ta-light-grey-6 !important;
+        }
+    }
+
+    cursor: disabled;
+}

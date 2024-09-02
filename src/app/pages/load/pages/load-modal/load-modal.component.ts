@@ -3443,8 +3443,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const validRoutes = routes.filter(
                 (item) =>
                     item &&
-                    item.longitude !== undefined &&
-                    item.latitude !== undefined
+                    item.longitude !== undefined && item.longitude !== null &&
+                    item.latitude !== undefined && item.latitude !== null
             );
 
             this.loadService

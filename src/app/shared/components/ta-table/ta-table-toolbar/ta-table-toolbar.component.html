@@ -524,6 +524,10 @@
 
                 <div
                     class="settings-dispatch dispach-history d-flex justify-content-center align-items-center"
+                    [ngClass]="{
+                        'disabled-icon pe-none':
+                            !selectedDispatcher?.dispatchCount
+                    }"
                     ngbTooltip
                     [mainTooltip]="'Dispatch History'"
                     tooltipBackground="#424242"

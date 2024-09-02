@@ -27,9 +27,16 @@ export class ResizableDirective implements OnInit {
 
         if (!value && this.mouseMoveListener) this.mouseMoveListener();
     }
+    @Input() set isNoteExpanded(value: boolean) {
+        this._isNoteExpanded = value;
+
+        this.checkWidth();
+    }
     @Output() onNoteResize = new EventEmitter();
+
     private _columns: DispatchColumn[] = [];
     private _resizeEnabled: boolean = true;
+    private _isNoteExpanded: boolean = true;
     private minWidth: number;
     private maxWidth: number;
     private startX: number;
@@ -112,6 +119,20 @@ export class ResizableDirective implements OnInit {
             case DispatchTableStringEnum.NOTE:
                 this.maxWidth = this._columns[17]?.width;
                 this.minWidth = this._columns[17]?.minWidth;
+
+                const noteMinWidth =
+                    !this._isNoteExpanded &&
+                    this.el.nativeElement.offsetWidth > 34
+                        ? 34
+                        : this.el.nativeElement.offsetWidth < this.minWidth
+                        ? this.minWidth
+                        : this.el.nativeElement.offsetWidth;
+
+                this.renderer.setStyle(
+                    this.el.nativeElement,
+                    DispatchTableStringEnum.WIDTH,
+                    `${noteMinWidth}px`
+                );
 
                 break;
             case DispatchTableStringEnum.DISPATCHER_1:

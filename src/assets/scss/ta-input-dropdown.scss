@@ -44,8 +44,11 @@
             &.scroll {
                 transition: all 0.3s ease-in-out;
                 overflow-y: scroll !important;
-                scrollbar-width: none !important; /* Firefox */
                 padding-right: 0px;
+
+                .plus-icon {
+                    margin-right: 1px !important;
+                }
 
                 &.load-dispatcher-wrapper {
                     overflow-y: scroll;
@@ -1458,6 +1461,27 @@
                             fill: $ta-green-4 !important;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    &.bs-popover-top {
+        .popover-body {
+            margin-top: 0px !important;
+
+            .dropdown-options-divider.dispatch_dropdown {
+                top: auto;
+                bottom: -6px;
+            }
+
+            .dropdown-options {
+                &.merge-dropdown-body-with-input {
+                    border-radius: 2px 2px 0 0 !important;
+                }
+
+                &.svgtext-dispatch-template {
+                    top: 6px !important;
                 }
             }
         }

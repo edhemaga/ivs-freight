@@ -72,12 +72,19 @@
     </ng-container>
 
     <!-- SEARCH -->
-    <app-ca-search-multiple-states
-        *ngIf="!options.toolbarActions.hideSearch"
-        [searchType]="'tabel'"
-        [selectedTabData]="activeTableData"
-        [toolbarSearch]="true"
-    ></app-ca-search-multiple-states>
+    <ng-container *ngIf="!options.toolbarActions.hideSearch">
+        <div
+            [ngClass]="{
+                'disabled-icon pe-none': options.toolbarActions.disableSearch
+            }"
+        >
+            <app-ca-search-multiple-states
+                [searchType]="'tabel'"
+                [selectedTabData]="activeTableData"
+                [toolbarSearch]="true"
+            ></app-ca-search-multiple-states>
+        </div>
+    </ng-container>
 
     <!-- SEARCH BORDER ONLY -->
     <ng-container *ngIf="!options.toolbarActions.hideSearch">
@@ -237,7 +244,7 @@
 
     <!-- VACATION FILTER -->
     <app-ta-filter
-        *ngIf="options.toolbarActions.showTruckDispatchFilter"
+        *ngIf="options.toolbarActions.showDispatchVacationFilter"
         [type]="'vacationFilter'"
         [icon]="'assets/svg/dispatchboard/vacation.svg'"
         [filterTitle]="'Vacation Filter'"
