@@ -55,6 +55,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 
 // Enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { AssignedLoadResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal',
@@ -147,8 +148,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
-    @Input() isAdditionalAssignLoadModalVisible = false;
-    @Input() isAssignLoadModal = false;
+    @Input() isAdditionalAssignLoadModalVisible = false;    
+    @Input() isAssignLoadModal: boolean = false;
 
     // -----------------
 
@@ -179,6 +180,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() hasTrailerTypeFilter: boolean = false;
     @Input() hasLocationFilter: boolean = false;
     @Input() hasSearch: boolean = false;
+    @Input() unassignedLoads: AssignedLoadResponse[];
 
     @Output() action: EventEmitter<{
         action: string;

@@ -188,8 +188,9 @@
                                 [filterTitle]="'Truck Type Filter'"
                                 [defFilterHolder]="true"
                                 [noLeftIcon]="true"
+                                [isAssignLoadModal]="isAssignLoadModal" 
                                 (setFilter)="setFilterValue($event)"
-                                [isDispatchFilter]="true"
+                                [isDispatchFilter]="!isAssignLoadModal"
                             >
                             </app-ta-filter>
                         </div>
@@ -203,8 +204,9 @@
                                 [filterTitle]="'Trailer Type Filter'"
                                 [defFilterHolder]="true"
                                 [noLeftIcon]="true"
+                                [isAssignLoadModal]="isAssignLoadModal" 
                                 (setFilter)="setFilterValue($event)"
-                                [isDispatchFilter]="true"
+                                [isDispatchFilter]="!isAssignLoadModal"
                             >
                             </app-ta-filter>
                         </div>

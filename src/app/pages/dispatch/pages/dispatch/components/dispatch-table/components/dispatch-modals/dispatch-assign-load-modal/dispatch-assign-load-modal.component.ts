@@ -20,7 +20,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 // Enum
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum'; 
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Models
 import {
@@ -41,6 +41,7 @@ import { DispatchBoardAssignLoadFilterOptions } from '../../../models/dispatch-b
 import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
@@ -109,13 +110,15 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
     dispatchFutureTimes: EnumValue[];
+    public isLoading: boolean;
 
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
         private modalService: ModalService,
         private dispatchService: DispatcherService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
@@ -129,10 +132,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public get extraStopsCount(): string {
         // Remove deadhead
-        const stops = this.selectedLoad?.stops.filter(
-            (stop) => stop.id !== 0
-        );
-        return stops.length - 2 ? stops.length - 2 +  TableStringEnum.LOAD_EXTRA_STOPS : null;
+        const stops = this.selectedLoad?.stops.filter((stop) => stop.id !== 0);
+        return stops.length - 2
+            ? stops.length - 2 + TableStringEnum.LOAD_EXTRA_STOPS
+            : null;
     }
 
     private initializeForm(): void {
@@ -189,6 +192,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.assignedLoads = [];
                     this.closeLoadDetails();
                 }
+                this.updateFilters();
             });
     }
 
@@ -440,13 +444,16 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public selectLoad(loadId: number, isAssigned: boolean) {
+        this.isLoading = true;
         if (!this.isAdditonalViewOpened) return;
 
         this.isAssignedLoad = isAssigned;
+        this.selectedLoad = null;
 
         this.fetchLoadById(loadId, (load) => {
-            this.selectedLoad = load;
+            this.selectedLoad = { ...load };
             this.getLoadStopRoutes(load.stops);
+            this.isLoading = false;
 
             // Hide right side of modal
             this.additionalPartVisibility({ action: '', isOpen: true });
@@ -490,6 +497,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             this.isAssignedLoad = !isAssignedList;
 
         this.drawAssignedLoadRoutes();
+        this.updateFilters();
+    }
+
+    private updateFilters(): void {
+        this.tableService.sendActionAnimation({
+            animation: 'load-list-update',
+            data: this.unassignedLoads
+        });
     }
 
     private getLoadsForDispatchId(dispatchId: number) {
@@ -614,7 +629,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     : null;
                 break;
             case LoadFilterStringEnum.TIME_FILTER_FUTURE:
-                const selectedTime = this.dispatchFutureTimes.find(futureTimes => futureTimes.name.toLowerCase() === data.queryParams?.timeSelected.toLowerCase())?.id;
+                const selectedTime = this.dispatchFutureTimes.find(
+                    (futureTimes) =>
+                        futureTimes.name.toLowerCase() ===
+                        data.queryParams?.timeSelected.toLowerCase()
+                )?.id;
                 if (selectedTime === 15) {
                     const { fromDate, toDate } =
                         RepairTableDateFormaterHelper.getDateRange(
@@ -623,7 +642,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                         );
                     this.backLoadFilterQuery.dateTo = toDate;
                     this.backLoadFilterQuery.dateFrom = fromDate;
-                } else { 
+                } else {
                     this.backLoadFilterQuery.dateTo = null;
                     this.backLoadFilterQuery.dateFrom = null;
                 }
