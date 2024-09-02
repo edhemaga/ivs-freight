@@ -1037,6 +1037,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = index;
     }
 
+    public onNoteResize(): void {
+        console.log('onNoteResize');
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
