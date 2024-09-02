@@ -357,6 +357,14 @@ export class DispatchComponent
                 showDispatchSettings: true,
                 showDropdown: true,
                 hideDataCount: true,
+                filtersOrder: {
+                    truck: 1,
+                    trailer: 2,
+                    parking: 3,
+                    vacation: 4,
+                    location: 5,
+                    status: 6,
+                },
                 viewModeOptions: [
                     {
                         name: DispatchTableStringEnum.BOARD,

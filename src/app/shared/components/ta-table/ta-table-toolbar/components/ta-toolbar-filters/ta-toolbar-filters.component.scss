@@ -110,6 +110,12 @@
             }
         }
     }
+
+    @for $i from 1 through 10 {
+        .order-#{$i} {
+            order: $i;
+        }
+    }
 }
 
 // BORDER

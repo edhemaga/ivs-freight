@@ -5,6 +5,8 @@ import {
     Input,
     Renderer2,
     OnInit,
+    Output,
+    EventEmitter,
 } from '@angular/core';
 import type { DispatchColumn } from '../models/dispatch-column.model';
 import { DispatchTableStringEnum } from '../enums/dispatch-table-string.enum';
@@ -25,6 +27,7 @@ export class ResizableDirective implements OnInit {
 
         if (!value && this.mouseMoveListener) this.mouseMoveListener();
     }
+    @Output() onNoteResize = new EventEmitter();
     private _columns: DispatchColumn[] = [];
     private _resizeEnabled: boolean = true;
     private minWidth: number;
@@ -35,6 +38,8 @@ export class ResizableDirective implements OnInit {
     private isResizing = false;
 
     private mouseMoveListener;
+
+    private isColumnResized: boolean = false;
 
     constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -86,11 +91,20 @@ export class ResizableDirective implements OnInit {
                 DispatchTableStringEnum.WIDTH,
                 `${newWidth}px`
             );
+
+            this.isColumnResized = true;
         }
     }
 
     private onMouseUp(): void {
         this.isResizing = false;
+
+        if (this.isColumnResized) {
+            this.isColumnResized = false;
+
+            if (this.title === DispatchTableStringEnum.NOTE)
+                this.onNoteResize.emit();
+        }
     }
 
     private checkWidth(): void {

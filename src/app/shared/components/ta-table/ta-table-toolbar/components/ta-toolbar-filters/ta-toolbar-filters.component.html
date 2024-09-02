@@ -98,6 +98,11 @@
         [selectedFilter]="
             this.activeTableData?.deactivatedUserArray?.selectedFilter
         "
+        [class]="
+            options?.toolbarActions?.filtersOrder?.archive
+                ? 'order-' + options.toolbarActions.filtersOrder.archive
+                : ''
+        "
     ></app-ta-special-filter>
 
     <!-- BORDER -->
@@ -137,6 +142,11 @@
         [areaFilter]="true"
         [locationDefType]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.location
+                ? 'order-' + options.toolbarActions.filtersOrder.location
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -149,6 +159,11 @@
         [noLeftIcon]="true"
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.fuelStop
+                ? 'order-' + options.toolbarActions.filtersOrder.fuelStop
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -161,6 +176,11 @@
         [defFilterHolder]="true"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.state
+                ? 'order-' + options.toolbarActions.filtersOrder.state
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -184,6 +204,11 @@
         [icon]="'ic_time'"
         [filterTitle]="'Time Filter'"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.time
+                ? 'order-' + options.toolbarActions.filtersOrder.time
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -202,6 +227,11 @@
         (setFilter)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.truck
+                ? 'order-' + options.toolbarActions.filtersOrder.truck
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -212,6 +242,11 @@
         [icon]="'assets/svg/dispatchboard/vacation.svg'"
         [filterTitle]="'Vacation Filter'"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.vacation
+                ? 'order-' + options.toolbarActions.filtersOrder.vacation
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -230,6 +265,11 @@
         (setFilter)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.trailer
+                ? 'order-' + options.toolbarActions.filtersOrder.trailer
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -241,6 +281,11 @@
         [filterTitle]="'Injury Filter'"
         [swipeFilter]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.injury
+                ? 'order-' + options.toolbarActions.filtersOrder.injury
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -257,6 +302,11 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.pm
+                ? 'order-' + options.toolbarActions.filtersOrder.pm
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -270,6 +320,11 @@
         [noLeftIcon]="false"
         [leftSideIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.categoryRepair
+                ? 'order-' + options.toolbarActions.filtersOrder.categoryRepair
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -282,6 +337,11 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.categoryFuel
+                ? 'order-' + options.toolbarActions.filtersOrder.categoryFuel
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -293,6 +353,11 @@
         [filterTitle]="'Dispatcher Filter'"
         [defFilterHolder]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.dispatcher
+                ? 'order-' + options.toolbarActions.filtersOrder.location
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -309,6 +374,11 @@
         [noLeftIcon]="false"
         (setFilter)="onFilter($event)"
         [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.status
+                ? 'order-' + options.toolbarActions.filtersOrder.status
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -321,6 +391,11 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.parking
+                ? 'order-' + options.toolbarActions.filtersOrder.parking
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -335,6 +410,11 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.truckType
+                ? 'order-' + options.toolbarActions.filtersOrder.truckType
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -349,6 +429,11 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [class]="
+            options?.toolbarActions?.filtersOrder?.trailerType
+                ? 'order-' + options.toolbarActions.filtersOrder.trailerType
+                : ''
+        "
     >
     </app-ta-filter>
 
@@ -366,6 +451,11 @@
         [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTruckPmFilter
+        "
+        [class]="
+            options?.toolbarActions?.filtersOrder?.money
+                ? 'order-' + options.toolbarActions.filtersOrder.money
+                : ''
         "
     >
     </app-ta-filter>

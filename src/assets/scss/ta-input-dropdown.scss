@@ -375,11 +375,9 @@
 
                 // Higlight text
                 .highlight-text-45632 {
-                    font-weight: 700;
+                    background-color: $ta-blue-20;
+                    color: $ta-blue-19;
                     transition: all 0.3s ease-in-out;
-                    &:hover {
-                        color: #ffffff !important;
-                    }
                 }
 
                 //------------------------ Trucks, Trailers, Colors Template  ------------------------
