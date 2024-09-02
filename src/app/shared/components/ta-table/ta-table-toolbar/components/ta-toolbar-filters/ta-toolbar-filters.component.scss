@@ -110,6 +110,12 @@
             }
         }
     }
+
+    @for $i from 1 through 10 {
+        .order-#{$i} {
+            order: $i;
+        }
+    }
 }
 
 // BORDER
@@ -158,4 +164,15 @@
 
 .table-filter-padding {
     padding-left: 4px;
+}
+
+.disabled-icon {
+    svg-icon {
+        svg,
+        path {
+            fill: $ta-light-grey-6 !important;
+        }
+    }
+
+    cursor: disabled;
 }

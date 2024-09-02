@@ -707,17 +707,19 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     // Reset Table
     public onResetTable(): void {
         this.tableReseting = true;
+        
+        if (this.tableConfigurationType) {
+            localStorage.removeItem(
+                `table-${this.tableConfigurationType}-Configuration`
+            );
 
-        localStorage.removeItem(
-            `table-${this.tableConfigurationType}-Configuration`
-        );
-
-        this.tableService
-            .sendTableConfig({
-                tableType: this.tableConfigurationType,
-                config: null,
-            })
-            .subscribe(() => {});
+            this.tableService
+                .sendTableConfig({
+                    tableType: this.tableConfigurationType,
+                    config: null,
+                })
+                .subscribe(() => {});
+        }
 
         this.tableService.sendResetColumns(true);
     }
