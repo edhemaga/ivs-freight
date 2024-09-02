@@ -92,7 +92,9 @@ body {
 
 *:not(.scroll-input-drodpwon):not(.description-item):not(
         .table-inner-modal
-    ):not(.scrollable):not(.columns-scroll.items-scroll) {
+    ):not(.scrollable):not(.columns-scroll.items-scroll):not(
+        .scrollable-element
+    ) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -114,6 +116,23 @@ body {
         right: -3rem;
         top: -50rem;
         background: transparent;
+    }
+}
+
+.scrollable-element {
+    margin: 2px 2px 2px 0;
+
+    &::-webkit-scrollbar {
+        width: 2px; 
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 5px; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $muted; 
+        border-radius: 5px;
     }
 }
 

@@ -27,6 +27,7 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Models
 import {
@@ -163,6 +164,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         //store
         private store: Store
@@ -267,7 +269,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateLoadStatus(
                         status.id,
                         status.dataBack,
-                        foundObject.status.statusString
+                        foundObject.status.statusString,
+                        status.isRevert
                     );
                 }
             });
@@ -275,6 +278,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confiramtionService.confirmationData$.subscribe((res) => {
+            if(res.template === TableStringEnum.COMMENT) return;
+            
             if (res.type === TableStringEnum.DELETE) {
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
                     this.deleteLoadTemplateById(res.id);
@@ -302,7 +307,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateLoadStatus(
                     confirmationResponse.id,
                     confirmationResponse.data.nameBack,
-                    foundObject.status.statusString
+                    foundObject.status.statusString,
+                    confirmationResponse.data.isRevert
                 );
             });
     }
@@ -486,7 +492,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -1708,7 +1714,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteLoadById(id: number): void {
-        this.loadServices
+            this.loadServices
             .deleteLoadById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.sendLoadData());
@@ -1777,10 +1783,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private updateLoadStatus(
         id: number,
         status: LoadStatus,
-        previousStatus: LoadStatus
+        previousStatus: LoadStatus,
+        isRevert: boolean
     ): void {
         this.loadServices
-            .updateLoadStatus(id, status, false)
+            .updateLoadStatus(id, status, isRevert)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {

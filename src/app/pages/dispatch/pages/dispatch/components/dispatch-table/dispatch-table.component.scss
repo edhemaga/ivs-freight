@@ -4,10 +4,53 @@
     position: relative;
 
     /* Unlocked Table */
+    .table-container-dispatch.table-container-dispatch {
+        width: 100% !important;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: thin !important;
+        scrollbar-color: $ta-light-grey-6 transparent !important;
+        scrollbar-width: 1px !important;
+        padding-bottom: 8px;
+    }
 
     &.unlocked {
         table {
             tr {
+                th {
+                }
+                .resize {
+                    position: relative;
+                }
+                .resize {
+                    position: relative;
+                }
+                .resize.show-after::after {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: col-resize;
+                }
+                .resize::after {
+                    display: none;
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 14px;
+                    padding-right: 5px;
+                    border-right: 1px solid $black;
+                    color: $black;
+                    font-size: 14px;
+                    border-radius: 1px 0px 0px 0px;
+                }
+
+                .close-icon-show {
+                    width: 100%;
+                }
                 td {
                     .main_inside {
                         /* Drag & Drop Single*/
@@ -162,14 +205,37 @@
     /* Locked Table */
 
     table {
-        width: 100%;
-
         th {
             height: 30px;
             padding-left: 10px;
             font-size: 11px;
             color: $bw6-2;
+            position: relative;
 
+            .resize {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .resize.show-after::after {
+                display: flex;
+                cursor: col-resize;
+            }
+            .resize::after {
+                display: none;
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                padding-right: 5px;
+                border-right: 1px solid $black;
+                height: 14px;
+                color: $black;
+                font-size: 14px;
+                border-radius: 1px 0px 0px 0px;
+            }
             &.c-pointer {
                 cursor: pointer;
             }
@@ -332,6 +398,13 @@
                                     }
                                 }
                             }
+
+                            &.driver-endorsements {
+                                font-size: 11px;
+                                line-height: 14px;
+                                font-weight: 400;
+                                color: $bw5;
+                            }
                         }
 
                         .copy_divs {
@@ -404,8 +477,8 @@
 
             &.truck-field,
             &.trailer-field {
-                min-width: 160px;
-                max-width: 160px;
+                min-width: 140px;
+                max-width: 320px;
             }
 
             &.pre-trip {
@@ -415,31 +488,31 @@
             }
             &.driver-field {
                 min-width: 240px;
-                max-width: 240px;
-                width: 240px;
+                max-width: 400px;
+                width: 300px;
             }
 
             &.location-field {
-                min-width: 160px;
-                max-width: 160px;
+                min-width: 140px;
+                max-width: 300px;
                 width: 160px;
             }
 
             &.status-field {
-                min-width: 140px;
-                max-width: 140px;
+                min-width: 120px;
+                max-width: 200px;
                 width: 140px;
             }
 
             &.pickup-delivery-field {
-                min-width: 270px;
-                max-width: 270px;
-                width: 270px;
+                min-width: 300px;
+                max-width: 420px;
+                width: 340px;
             }
 
             &.progress-field {
-                min-width: 226px;
-                max-width: 226px;
+                min-width: 196px;
+                max-width: 326px;
                 width: 226px;
             }
 
@@ -450,7 +523,7 @@
 
                 &-large {
                     min-width: 150px;
-                    max-width: 150px;
+                    max-width: 200px;
                     width: 150px;
                 }
             }
@@ -467,8 +540,8 @@
 
                 &.expanded {
                     width: 236px !important;
-                    max-width: 236px !important;
-                    min-width: 236px !important;
+                    max-width: 326px !important;
+                    min-width: 196px !important;
                 }
             }
         }

@@ -17,5 +17,7 @@ export interface UpdateLoadStatusCommand {
     id?: number;
     status?: LoadStatus;
     repairLocation?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 

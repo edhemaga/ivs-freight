@@ -14,6 +14,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -78,7 +79,7 @@ export class DispatchComponent
     selectedDispatcher;
     isAscending: boolean = true;
 
-    public isNoteExpanded: boolean;
+    public isNoteExpanded: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -89,7 +90,8 @@ export class DispatchComponent
         // services
         public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     ngOnInit(): void {
@@ -204,6 +206,14 @@ export class DispatchComponent
                 this.sortDetails(event);
 
                 break;
+            case TableStringEnum.COLUMN_TOGGLE:
+                this.columns = this.columns.map((column: DispatchColumn) => {
+                    if (column.field === event.column) {
+                        return { ...column, hidden: true };
+                    }
+                    return column;
+                });
+                break;
             default:
                 break;
         }
@@ -282,7 +292,6 @@ export class DispatchComponent
     }
 
     sortDetails(e: any) {
-        console.log(e);
         this.sortByProperty(
             e.list.dispatches,
             e.column,
@@ -489,7 +498,7 @@ export class DispatchComponent
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

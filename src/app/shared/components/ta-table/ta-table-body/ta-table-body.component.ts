@@ -38,6 +38,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FilesService } from '@shared/services/files.service';
 import { LoadService } from '@shared/services/load.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -229,7 +230,8 @@ export class TaTableBodyComponent
         private filesService: FilesService,
         private sanitizer: DomSanitizer,
         private statusService: LoadTableStatusConstants,
-        private loadService: LoadService
+        private loadService: LoadService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -307,7 +309,7 @@ export class TaTableBodyComponent
             });
 
         // Chips For Highlight Search
-        this.tableService.currentChipsForHighlightSearchToTable
+        this.caSearchMultipleStatesService.currentChipsForHighlightSearchToTable
             .pipe(takeUntil(this.destroy$))
             .subscribe((chips: string[]) => {
                 this.chipsForHighlight = chips.length ? chips : [];
@@ -1156,6 +1158,8 @@ export class TaTableBodyComponent
         this.tableService.sendCurrentSetTableWidth(null);
         this.tableService.sendIsScrollShownig(false);
         this.tableService.sendIsScrollReseting(true);
-        this.tableService.sendChipsForHighlightSearchToTable([]);
+        this.caSearchMultipleStatesService.sendChipsForHighlightSearchToTable(
+            []
+        );
     }
 }

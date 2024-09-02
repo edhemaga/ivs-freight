@@ -903,63 +903,65 @@
             <!--------------------------- Load Dispatcher Template (user avatar + user name) --------------------------->
 
             <ng-container *ngSwitchCase="'load-dispatcher'">
-                <div
-                    (click)="onActiveItem(option)"
-                    *ngFor="let option of _options; trackBy: identity"
-                    [ngClass]="{
-                        disabled: option?.disabled,
-                        'no-result':
-                            _options.length === 1 &&
-                            _options[0].name === 'No Results',
-                        active: option.id === _activeItem?.id
-                    }"
-                    class="dropdown-option load-dispatcher-template"
-                >
-                    <img
-                        *ngIf="
-                            option.logoName &&
-                            !(
-                                _options.length === 1 &&
-                                _options[0].name === 'No Results'
-                            )
-                        "
-                        [alt]="option.name"
+                <div class="scrollable-element">
+                    <div
+                        (click)="onActiveItem(option)"
+                        *ngFor="let option of _options; trackBy: identity"
                         [ngClass]="{
+                            disabled: option?.disabled,
+                            'no-result':
+                                _options.length === 1 &&
+                                _options[0].name === 'No Results',
                             active: option.id === _activeItem?.id
                         }"
-                        [src]="option.logoName"
-                        class="svg-template-logo"
-                    />
-                    <div
-                        *ngIf="
-                            !option.logoName &&
-                            !(
-                                _options.length === 1 &&
-                                _options[0].name === 'No Results'
-                            )
-                        "
-                        class="no-profile-image"
+                        class="dropdown-option load-dispatcher-template"
                     >
-                        <app-ta-profile-images
-                            [indx]="0"
-                            [name]="option.name"
-                            [size]="'small'"
-                            [type]="'user'"
+                        <img
+                            *ngIf="
+                                option.logoName &&
+                                !(
+                                    _options.length === 1 &&
+                                    _options[0].name === 'No Results'
+                                )
+                            "
+                            [alt]="option.name"
+                            [ngClass]="{
+                                active: option.id === _activeItem?.id
+                            }"
+                            [src]="option.logoName"
+                            class="svg-template-logo"
+                        />
+                        <div
+                            *ngIf="
+                                !option.logoName &&
+                                !(
+                                    _options.length === 1 &&
+                                    _options[0].name === 'No Results'
+                                )
+                            "
+                            class="no-profile-image"
                         >
-                        </app-ta-profile-images>
+                            <app-ta-profile-images
+                                [indx]="0"
+                                [name]="option.name"
+                                [size]="'small'"
+                                [type]="'user'"
+                            >
+                            </app-ta-profile-images>
+                        </div>
+                        <div
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
                     </div>
-                    <div
-                        [innerHtml]="
-                            option.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
                 </div>
             </ng-container>
 

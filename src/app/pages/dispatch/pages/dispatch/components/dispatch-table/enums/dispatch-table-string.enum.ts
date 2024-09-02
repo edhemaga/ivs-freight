@@ -52,5 +52,16 @@ export enum DispatchTableStringEnum {
     PARKING_1 = 'PARKING',
     INSPECTION = 'INSPECTION',
     PROGRESS = 'PROGRESS',
+    STATUS = 'STATUS',
     DISPATCHER_1 = 'DISPATCHER',
+    PICKUP = 'PICKUP',
+    ALL_ASSIGNED = 'All Assigned',
+
+    // Resize
+    CURSOR = 'cursor',
+    COL_RESIZE = 'col-resize',
+    DOCUMENT = 'document',
+    MOUSE_MOVE = 'mousemove',
+    MOUSE_UP = 'mouseup',
+    WIDTH = 'width',
 }

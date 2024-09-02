@@ -291,7 +291,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             this.selectedPerformanceDataCount++;
 
             // line chart
-            this.lineChart.insertNewChartData(
+            this.lineChart?.insertNewChartData(
                 DashboardChartStringEnum.ADD,
                 performanceDataItem.title,
                 performanceDataItem.selectedColor.slice(1)
@@ -308,7 +308,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             this.selectedPerformanceDataCount--;
 
             // line chart
-            this.lineChart.insertNewChartData(
+            this.lineChart?.insertNewChartData(
                 DashboardChartStringEnum.REMOVE,
                 performanceDataItem.title
             );
@@ -331,7 +331,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             selectedPerformanceDataItem.isHovered = true;
 
             if (selectedPerformanceDataItem.selectedColor) {
-                this.lineChart.changeChartFillProperty(
+                this.lineChart?.changeChartFillProperty(
                     selectedPerformanceDataItem.title,
                     selectedPerformanceDataItem.selectedColor.slice(1)
                 );
@@ -339,7 +339,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         } else {
             selectedPerformanceDataItem.isHovered = false;
 
-            this.lineChart.changeChartFillProperty(
+            this.lineChart?.changeChartFillProperty(
                 this.performanceData[index].title,
                 DashboardChartStringEnum.EMPTY_STRING
             );
@@ -347,11 +347,11 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
     }
 
     public handleBarChartHover(chartDataValue: number): void {
-        this.lineChart.showChartTooltip(chartDataValue);
+        this.lineChart?.showChartTooltip(chartDataValue);
     }
 
     public handleRemoveChartsHover(): void {
-        this.lineChart.chartHoverOut();
+        //waiting for charts this.lineChart?.chartHoverOut();
     }
 
     private getConstantData(): void {
@@ -450,7 +450,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                         const selectedPerformanceType =
                             selectedGraphMetricsData[j];
                         const performanceTypeTitleToLowerCase =
-                            selectedPerformanceType.performanceType.toLowerCase();
+                            selectedPerformanceType.performanceType?.toLowerCase();
 
                         const matchedPerformanceDataItem =
                             this.performanceData.find(

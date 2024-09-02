@@ -30,6 +30,7 @@ import { TableCardDropdownActionsService } from '@shared/components/ta-table-car
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services/customer-cards-modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -159,7 +160,7 @@ export class CustomerTableComponent
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
-
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         // Store
         private brokerQuery: BrokerQuery,
         private shipperQuery: ShipperQuery,
@@ -874,7 +875,7 @@ export class CustomerTableComponent
 
     // Search
     public search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
