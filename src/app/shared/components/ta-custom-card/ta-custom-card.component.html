@@ -313,7 +313,7 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'h-full': isInheritingParentSize && _isCardOpen
+            'h-full scroll scrollable-element': isInheritingParentSize && _isCardOpen
         }"
         [ngStyle]="{
             'scrollbar-width': isInheritingParentSize? 'thin !important': 'none'

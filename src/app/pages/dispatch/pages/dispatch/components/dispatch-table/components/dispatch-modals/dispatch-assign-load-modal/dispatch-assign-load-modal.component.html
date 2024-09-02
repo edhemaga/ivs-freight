@@ -67,7 +67,7 @@
                 [isLoadList]="true"
                 #resizerComponent
             >
-                <div firstElement  #firstElementRef  class="h-full">
+                <div firstElement  #firstElementRef  class="h-full-important">
                     <app-ta-custom-card
                         [cardName]="'Assigned'"
                         [hasCounter]="assignedLoads.length"
@@ -81,7 +81,9 @@
                             isAssignLoadCardOpen
                         "
                         [isFinishReorderingButtonVisible]="isReorderingActive"
+                        [hasXAxisBottomPadding]="true"
                         [hasScrollBody]="true"
+                        [isInheritingParentSize]="true"
                         [hasDivider]="false"
                         [isInheritingParentSize]="true"
                         (onOpenCard)="isAssignLoadCardOpen = $event"
@@ -146,7 +148,7 @@
                     </app-ta-custom-card>
                 </div>
 
-                <div secondElement #secondElementRef  class="h-full">
+                <div secondElement #secondElementRef  class="h-full-important">
                     <app-ta-custom-card
                         [cardName]="'Unassigned'"
                         [hasCounter]="unassignedLoads.length"
