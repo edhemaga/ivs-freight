@@ -7,6 +7,7 @@ import {
     CompanyUserForChatListResponse,
     ConversationInfoResponse,
     ConversationResponse,
+    ConversationType,
     CreateConversationCommand,
     CreateResponse,
     UserType,
@@ -91,10 +92,12 @@ export class UserChatService {
     }
 
     public createConversation(
-        participants: number[]
+        participants: number[],
+        chatType: ConversationType
     ): Observable<CreateResponse> {
         const conversationParticipants: CreateConversationCommand = {
             participantIds: participants,
+            conversationType: chatType
         };
 
         return this.http.post(
