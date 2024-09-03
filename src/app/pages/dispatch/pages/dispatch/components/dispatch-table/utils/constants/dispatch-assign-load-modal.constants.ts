@@ -1,4 +1,4 @@
-import { DispatchBoardAssignLoadFilterOptions } from '../../models/dispatch-board-assign-load-filter-options.model.ts';
+import { DispatchBoardAssignLoadFilterOptions } from "@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-board-assign-load-filter-options.model.ts";
 
 export class DispatchAssignLoadModalConstants {
     static BACK_FILTER: DispatchBoardAssignLoadFilterOptions = {

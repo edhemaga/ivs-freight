@@ -35,7 +35,7 @@ import {
 } from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
-import { DispatchBoardAssignLoadFilterOptions } from '../../../models/dispatch-board-assign-load-filter-options.model.ts';
+import { DispatchBoardAssignLoadFilterOptions } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-board-assign-load-filter-options.model.ts';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
@@ -53,8 +53,8 @@ import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-fi
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 // Consts
-import { DispatchAssignLoadModalConstants } from '../../../utils/constants/dispatch-assign-load-modal.constants';
-
+import { DispatchAssignLoadModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-assign-load-modal.constants';
+ 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
     templateUrl: './dispatch-assign-load-modal.component.html',
