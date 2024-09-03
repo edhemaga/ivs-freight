@@ -95,7 +95,11 @@
         popoverClass="ta-input-dropdown"
         [autoClose]="'outside'"
         [container]="'body'"
-        [placement]="['bottom-left']"
+        [placement]="
+            _template == 'svgtext-dispatch-template'
+                ? ['bottom-left', 'top-left']
+                : ['bottom-left']
+        "
         #input
         [formControl]="getSuperControl | formControl"
         [incorrectValue]="incorrectValue"

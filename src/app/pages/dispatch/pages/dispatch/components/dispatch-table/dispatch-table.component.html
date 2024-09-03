@@ -78,6 +78,8 @@
                                         [title]="tableHeaderItem.title"
                                         [columns]="columnsToShow"
                                         [resizeEnabled]="!isDispatchBoardLocked"
+                                        [isNoteExpanded]="_isNoteExpanded"
+                                        (onNoteResize)="onNoteResize($event)"
                                         [ngClass]="{
                                             'show-after': !isDispatchBoardLocked
                                         }"
