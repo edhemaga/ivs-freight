@@ -1,5 +1,5 @@
 export enum ConversationTypeEnum {
-    SingleChat = 'SingleChat',
-    Channel = 'Channel'
+    SINGLE_CHAT = 'SingleChat',
+    CHANNEL = 'Channel'
 
 }
