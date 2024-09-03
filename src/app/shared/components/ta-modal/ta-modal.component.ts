@@ -45,6 +45,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
+import { CaFilterComponent } from 'ca-components';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -81,6 +82,7 @@ import { AssignedLoadResponse } from 'appcoretruckassist';
         TaTabSwitchComponent,
         TaFilterComponent,
         TaSearchComponent,
+        CaFilterComponent,
     ],
     animations: [
         trigger('widthGrow', [

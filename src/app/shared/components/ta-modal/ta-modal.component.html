@@ -145,13 +145,14 @@
 
                     <ng-container *ngIf="hasFutureTimeFilter">
                         <div class="me-1">
-                            <app-ta-filter
-                                [type]="'hasFutureTimeFilter'"
+                            <app-ca-filter
+                            [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
+                                [timeSubType]="'future'"
                                 (setFilter)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
@@ -188,9 +189,10 @@
                                 [filterTitle]="'Truck Type Filter'"
                                 [defFilterHolder]="true"
                                 [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal" 
-                                (setFilter)="setFilterValue($event)"
+                                [isAssignLoadModal]="isAssignLoadModal"
                                 [isDispatchFilter]="!isAssignLoadModal"
+                                [isRepairFilter]="false"
+                                (setFilter)="setFilterValue($event)"
                             >
                             </app-ta-filter>
                         </div>
@@ -204,9 +206,10 @@
                                 [filterTitle]="'Trailer Type Filter'"
                                 [defFilterHolder]="true"
                                 [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal" 
-                                (setFilter)="setFilterValue($event)"
+                                [isAssignLoadModal]="isAssignLoadModal"
                                 [isDispatchFilter]="!isAssignLoadModal"
+                                [isRepairFilter]="false"
+                                (setFilter)="setFilterValue($event)"
                             >
                             </app-ta-filter>
                         </div>
@@ -559,7 +562,9 @@
                                     (click)="onAction('assign-create-load')"
                                     class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn pe-auto"
                                     type="button"
-                                    [ngClass]="{ 'modal-finish-order-btn': isModalValid }"
+                                    [ngClass]="{
+                                        'modal-finish-order-btn': isModalValid
+                                    }"
                                 >
                                     Create Load
                                 </button>

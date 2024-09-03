@@ -111,6 +111,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         DispatchAssignLoadModalHelper.getTableHeaderItems();
     dispatchFutureTimes: EnumValue[];
     public isLoading: boolean;
+    originalLoads: AssignedLoadResponse[] = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -174,6 +175,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
+                if(!this.originalLoads) {
+                    this.originalLoads = res.unassignedLoads;
+                    this.updateFilters();
+                }
+
                 this.unassignedLoads = res.unassignedLoads;
                 this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
                 this.dispatchFutureTimes = res.dispatchFutureTimes;
@@ -192,7 +198,6 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.assignedLoads = [];
                     this.closeLoadDetails();
                 }
-                this.updateFilters();
             });
     }
 
@@ -503,7 +508,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     private updateFilters(): void {
         this.tableService.sendActionAnimation({
             animation: 'load-list-update',
-            data: this.unassignedLoads
+            data: this.originalLoads
         });
     }
 
@@ -628,7 +633,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     ? data.queryParams
                     : null;
                 break;
-            case LoadFilterStringEnum.TIME_FILTER_FUTURE:
+            case LoadFilterStringEnum.TIME_FILTER:
                 const selectedTime = this.dispatchFutureTimes.find(
                     (futureTimes) =>
                         futureTimes.name.toLowerCase() ===
