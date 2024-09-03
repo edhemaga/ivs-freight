@@ -21,6 +21,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
 import {
@@ -49,7 +50,6 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
 
 // Helpers
 import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
-import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 // Consts
@@ -109,9 +109,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
-    dispatchFutureTimes: EnumValue[];
+    public dispatchFutureTimes: EnumValue[];
     public isLoading: boolean;
-    originalLoads: AssignedLoadResponse[] = null;
+    public originalLoads: AssignedLoadResponse[] = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -153,27 +153,44 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             });
         }
 
-        this.loadService
-            .getDispatchModalData(
-                false,
-                this.backLoadFilterQuery.dispatchFutureTime,
-                this.backLoadFilterQuery.truckType,
-                this.backLoadFilterQuery.trailerType,
-                this.backLoadFilterQuery._long,
-                this.backLoadFilterQuery.lat,
-                this.backLoadFilterQuery.distance,
-                this.backLoadFilterQuery.dispatchersId,
-                this.backLoadFilterQuery.dateFrom,
-                this.backLoadFilterQuery.dateTo,
-                this.backLoadFilterQuery.pageIndex,
-                this.backLoadFilterQuery.pageSize,
-                this.backLoadFilterQuery.companyId,
-                this.backLoadFilterQuery.sort,
-                this.backLoadFilterQuery.search,
-                this.backLoadFilterQuery.search1,
-                this.backLoadFilterQuery.search2
-            )
-            .pipe(takeUntil(this.destroy$))
+        const {
+            dispatchFutureTime,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        } = this.backLoadFilterQuery;
+        
+        this.loadService.getDispatchModalData(
+            false,
+            dispatchFutureTime,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        ).pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
                 if(!this.originalLoads) {
                     this.originalLoads = res.unassignedLoads;
@@ -513,27 +530,43 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private getLoadsForDispatchId(dispatchId: number) {
-        this.loadService
-            .getDispatchModalData(
-                true,
-                dispatchId,
-                this.backLoadFilterQuery.truckType,
-                this.backLoadFilterQuery.trailerType,
-                this.backLoadFilterQuery._long,
-                this.backLoadFilterQuery.lat,
-                this.backLoadFilterQuery.distance,
-                this.backLoadFilterQuery.dispatchersId,
-                this.backLoadFilterQuery.dateFrom,
-                this.backLoadFilterQuery.dateTo,
-                this.backLoadFilterQuery.pageIndex,
-                this.backLoadFilterQuery.pageSize,
-                this.backLoadFilterQuery.companyId,
-                this.backLoadFilterQuery.sort,
-                this.backLoadFilterQuery.search,
-                this.backLoadFilterQuery.search1,
-                this.backLoadFilterQuery.search2
-            )
-            .pipe(takeUntil(this.destroy$))
+        const {
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        } = this.backLoadFilterQuery;
+        
+        this.loadService.getDispatchModalData(
+            true,
+            dispatchId,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        ).pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignedLoadListResponse) => {
                 this.assignedLoads = res.assignedLoads;
 
