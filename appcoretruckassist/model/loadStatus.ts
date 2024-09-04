@@ -11,7 +11,7 @@
  */
 
 
-export type LoadStatus = 'Booked' | 'Assigned' | 'Unassigned' | 'Loaded' | 'Offloaded' | 'CheckedIn' | 'Dispatched' | 'Invoiced' | 'InvoicedFactoring' | 'InvoicedHold' | 'Delivered' | 'LoadCancelled' | 'Paid' | 'PaidFactoring' | 'RevisedPaidFactoring' | 'ShortPaid' | 'ShortPaidFactoring' | 'RevisedShortPaidFactoring' | 'Claim' | 'ClaimFactoring' | 'RevisedClaimFactoring' | 'Unpaid' | 'UnpaidFactoring' | 'RevisedUnpaidFactoring' | 'Tonu' | 'TonuInvoiced' | 'TonuInvoicedFactoring' | 'TonuPaid' | 'TonuPaidFactoring' | 'TonuClaim' | 'TonuClaimFactoring' | 'TonuShortPaid' | 'TonuShortPaidFactoring' | 'TonuUnpaid' | 'TonuUnpaidFactoring' | 'Hold' | 'HoldFactoring' | 'Revised' | 'RevisedFactoring' | 'RevisedPaid' | 'RevisedClaim' | 'RevisedShortPaid' | 'RevisedUnpaid' | 'Cancelled' | 'Split' | 'Loading' | 'Offloading' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery' | 'RepairDispatched' | 'RepairLoaded' | 'RepairOffloaded';
+export type LoadStatus = 'Booked' | 'Assigned' | 'Unassigned' | 'Loaded' | 'Offloaded' | 'CheckedIn' | 'Dispatched' | 'Invoiced' | 'InvoicedFactoring' | 'InvoicedHold' | 'Delivered' | 'LoadCancelled' | 'Paid' | 'PaidFactoring' | 'RevisedPaidFactoring' | 'ShortPaid' | 'ShortPaidFactoring' | 'RevisedShortPaidFactoring' | 'Claim' | 'ClaimFactoring' | 'RevisedClaimFactoring' | 'Unpaid' | 'UnpaidFactoring' | 'RevisedUnpaidFactoring' | 'Tonu' | 'TonuInvoiced' | 'TonuInvoicedFactoring' | 'TonuPaid' | 'TonuPaidFactoring' | 'TonuClaim' | 'TonuClaimFactoring' | 'TonuShortPaid' | 'TonuShortPaidFactoring' | 'TonuUnpaid' | 'TonuUnpaidFactoring' | 'Hold' | 'HoldFactoring' | 'Revised' | 'RevisedFactoring' | 'RevisedPaid' | 'RevisedClaim' | 'RevisedShortPaid' | 'RevisedUnpaid' | 'Cancelled' | 'Split' | 'Loading' | 'Offloading' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery' | 'RepairDispatched' | 'RepairLoaded' | 'RepairOffloaded' | 'InvoicedHoldFactoring';
 
 export const LoadStatus = {
     Booked: 'Booked' as LoadStatus,
@@ -67,6 +67,7 @@ export const LoadStatus = {
     CheckedInDelivery: 'CheckedInDelivery' as LoadStatus,
     RepairDispatched: 'RepairDispatched' as LoadStatus,
     RepairLoaded: 'RepairLoaded' as LoadStatus,
-    RepairOffloaded: 'RepairOffloaded' as LoadStatus
+    RepairOffloaded: 'RepairOffloaded' as LoadStatus,
+    InvoicedHoldFactoring: 'InvoicedHoldFactoring' as LoadStatus
 };
 
