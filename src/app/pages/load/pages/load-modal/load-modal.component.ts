@@ -2387,9 +2387,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.EXTRA_STOPS:
-                this.closeAllLoadExtraStopExceptActive(
-                    this.loadExtraStops().at(indx)
-                );
+                this.closeAllLoadExtraStopExceptActive(indx);
 
                 break;
             default:
@@ -2864,7 +2862,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public addLoadExtraStop(): void {
         this.loadExtraStops().push(this.newLoadExtraStop());
         this.closeAllLoadExtraStopExceptActive(
-            this.loadExtraStops().controls[this.loadExtraStops().length - 1]
+            this.loadExtraStops().length - 1
         );
         this.loadExtraStops()
             .controls[this.loadExtraStops().length - 1].get(
@@ -3065,16 +3063,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.drawStopOnMap();
     }
 
-    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl): void {
+    public closeAllLoadExtraStopExceptActive(idx: number): void {
         this.isActivePickupStop = false;
         this.isActiveDeliveryStop = false;
 
         if (this.loadExtraStops().length) {
-            this.loadExtraStops().controls.map((item) => {
-                if (
-                    item.get(LoadModalStringEnum.STOP_ORDER).value ===
-                    loadStop.get(LoadModalStringEnum.STOP_ORDER).value
-                ) {
+            this.loadExtraStops().controls.map((item, index) => {
+                if (index === idx) {
                     const isCardOpen = item.get(
                         LoadModalStringEnum.OPEN_CLOSE
                     ).value;
@@ -3443,8 +3438,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const validRoutes = routes.filter(
                 (item) =>
                     item &&
-                    item.longitude !== undefined && item.longitude !== null &&
-                    item.latitude !== undefined && item.latitude !== null
+                    item.longitude !== undefined &&
+                    item.longitude !== null &&
+                    item.latitude !== undefined &&
+                    item.latitude !== null
             );
 
             this.loadService
@@ -3957,8 +3954,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    private getLoadDropdowns(): void { 
-        if (this.editData?.data?.id && this.editData?.selectedTab !== TableStringEnum.TEMPLATE) {
+    private getLoadDropdowns(): void {
+        if (
+            this.editData?.data?.id &&
+            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+        ) {
             this.loadService
                 .getLoadStatusDropdownOptions(this.editData?.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -3997,7 +3997,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.handleTonuRateVisiblity();
                 });
         }
-        const id = this.editData?.selectedTab !== TableStringEnum.TEMPLATE ? this.editData?.data?.id : null;
+        const id =
+            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+                ? this.editData?.data?.id
+                : null;
         this.loadService
             .getLoadDropdowns(id)
             .pipe(takeUntil(this.destroy$))
@@ -4646,7 +4649,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
             statusHistory,
-            emptyMiles
+            emptyMiles,
         } = loadModalData;
 
         // Remove deadhead
