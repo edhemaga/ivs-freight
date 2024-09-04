@@ -4496,7 +4496,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.selectedStatus.valueForRequest as LoadStatus,
                     this.isPreviousStatus
                 )
-                .subscribe(() => this.handleLoadUpdate(newData, addNew));
+                .pipe(takeUntil(this.destroy$)).subscribe(() => this.handleLoadUpdate(newData, addNew));
         } else {
             this.handleLoadUpdate(newData, addNew);
         }
@@ -4504,8 +4504,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private handleLoadUpdate(newData: Load, addNew: boolean) {
         this.loadService
-            .getLoadById(this.editData.data.id)
-            .subscribe((response) => {
+            .getLoadById(this.editData.data.id).pipe(takeUntil(this.destroy$)).subscribe((response) => {
                 // After status change we get times for stops that need to be sent to the backend
                 // together with status history
                 newData.stops.forEach((stop) => {
