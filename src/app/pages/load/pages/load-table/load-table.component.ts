@@ -193,8 +193,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.onDropdownActions();
 
-        this.watchForLoadChanges();
-
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
@@ -212,12 +210,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
-    }
-
-    private watchForLoadChanges(): void {
-        this.loadServices.modalAction$.subscribe((action) => {
-            this.sendLoadData();
-        });
     }
 
     private upadateStatus(): void {
