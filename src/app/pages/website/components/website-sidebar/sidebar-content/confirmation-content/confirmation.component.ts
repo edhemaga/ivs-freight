@@ -64,9 +64,16 @@ export class ConfirmationComponent implements OnInit, OnDestroy {
     }
 
     private getConfirmationEmail(): void {
-        this.confirmationEmail = JSON.parse(
-            localStorage.getItem(WebsiteStringEnum.CONFIRMATION_EMAIL)
+        const confirmationMail = localStorage.getItem(
+            WebsiteStringEnum.CONFIRMATION_EMAIL
         );
+
+        this.confirmationEmail =
+            typeof confirmationMail !== 'string'
+                ? JSON.parse(
+                      localStorage.getItem(WebsiteStringEnum.CONFIRMATION_EMAIL)
+                  )
+                : confirmationMail;
     }
 
     private resendRegisterConfirmation(): void {
