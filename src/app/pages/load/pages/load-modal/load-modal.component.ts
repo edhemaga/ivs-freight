@@ -1063,6 +1063,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TIME_PICKUP:
+                if (!event) return;
                 this.selectedStopTimePickup = event.id;
 
                 this.stopTimeTabsPickup = this.stopTimeTabsPickup.map((tab) => {
@@ -1097,6 +1098,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TIME_DELIVERY:
+                if (!event) return;
                 this.selectedStopTimeDelivery = event.id;
 
                 this.stopTimeTabsDelivery = this.stopTimeTabsDelivery.map(
@@ -1134,6 +1136,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.EXTRA_STOPS_TIME:
+                if (!event) return;
                 this.selectedExtraStopTime[indx] = event?.id ? event.id : event;
 
                 this.stopTimeTabsExtraStops[indx] = this.stopTimeTabsExtraStops[
@@ -3443,8 +3446,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const validRoutes = routes.filter(
                 (item) =>
                     item &&
-                    item.longitude !== undefined && item.longitude !== null &&
-                    item.latitude !== undefined && item.latitude !== null
+                    item.longitude !== undefined &&
+                    item.longitude !== null &&
+                    item.latitude !== undefined &&
+                    item.latitude !== null
             );
 
             this.loadService
@@ -3837,7 +3842,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.comments = res.pagination.data[0].comments;
-                this.loadService.updateLoadPartily(res, this.originalStatus);
+                this.loadService.updateLoadPartily();
             });
     }
 
@@ -3957,8 +3962,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    private getLoadDropdowns(): void { 
-        if (this.editData?.data?.id && this.editData?.selectedTab !== TableStringEnum.TEMPLATE) {
+    private getLoadDropdowns(): void {
+        if (
+            this.editData?.data?.id &&
+            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+        ) {
             this.loadService
                 .getLoadStatusDropdownOptions(this.editData?.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -3997,7 +4005,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.handleTonuRateVisiblity();
                 });
         }
-        const id = this.editData?.selectedTab !== TableStringEnum.TEMPLATE ? this.editData?.data?.id : null;
+        const id =
+            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+                ? this.editData?.data?.id
+                : null;
         this.loadService
             .getLoadDropdowns(id)
             .pipe(takeUntil(this.destroy$))
@@ -4472,7 +4483,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           );
 
                     loadServiceObservable.subscribe((newLoadData) => {
-                        this.loadService.addNewLoad(newLoadData, isTemplate);
+                        this.loadService.addNewLoad();
                         this.setModalSpinner(null, true, true, addNew);
                     });
                 },
@@ -4499,7 +4510,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.loadService
                         .getLoadTemplateInsideListById(newData.id)
                         .subscribe((res) => {
-                            this.loadService.updateLoadTemplatePartily(res);
+                            this.loadService.updateLoadTemplatePartily();
                         });
                     this.setModalSpinner(null, true, true, addNew);
                 },
@@ -4541,10 +4552,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     this.loadService
                                         .getLoadInsideListById(newData.id)
                                         .subscribe((res) => {
-                                            this.loadService.updateLoadPartily(
-                                                res,
-                                                this.originalStatus
-                                            );
+                                            this.loadService.updateLoadPartily();
                                         });
                                     this.setModalSpinner(
                                         null,
@@ -4569,7 +4577,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.loadService
                         .getLoadTemplateInsideListById(data.id)
                         .subscribe((newLoad) => {
-                            this.loadService.addNewLoad(newLoad, true);
+                            this.loadService.addNewLoad();
                             this.setModalSpinner(
                                 LoadModalStringEnum.LOAD_TEMPLATE,
                                 true,
@@ -4599,6 +4607,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private formatTimeDifference(timeObject): string {
+        if (!timeObject) return '';
         const { days, hours, minutes } = timeObject;
         let formattedString = '';
 
@@ -4646,7 +4655,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
             statusHistory,
-            emptyMiles
+            emptyMiles,
         } = loadModalData;
 
         // Remove deadhead
@@ -4705,15 +4714,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
 
         const editedPickupShipper = {
-            ...stops[0].shipper,
-            address: `${pickupStop.shipper.address.city}, ${pickupStop.shipper.address.stateShortName} ${pickupStop.shipper.address.zipCode}`,
-            name: pickupStop.shipper.businessName,
+            ...stops[0]?.shipper,
+            address: `${pickupStop?.shipper?.address.city}, ${pickupStop?.shipper?.address.stateShortName} ${pickupStop?.shipper?.address.zipCode}`,
+            name: pickupStop?.shipper?.businessName,
         };
 
         const editedDeliveryShipper = {
-            ...deliveryStop.shipper,
-            address: `${deliveryStop.shipper.address.city}, ${deliveryStop.shipper.address.stateShortName} ${deliveryStop.shipper.address.zipCode}`,
-            name: deliveryStop.shipper.businessName,
+            ...deliveryStop?.shipper,
+            address: `${deliveryStop?.shipper?.address.city}, ${deliveryStop?.shipper?.address.stateShortName} ${deliveryStop?.shipper?.address.zipCode}`,
+            name: deliveryStop?.shipper?.businessName,
         };
 
         const editedStops = stops.filter(
@@ -4973,7 +4982,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private formatStopTimes(stop: LoadStopResponse): LoadStopResponse {
         //  If step is finished we need to show different times
-        if (stop.arrive && stop.depart) {
+        if (stop?.arrive && stop?.depart) {
             return {
                 ...stop,
                 dateFrom: stop.arrive,
@@ -5017,7 +5026,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isDeliveryStopFinished(): boolean {
         if (this.stops) {
             const deliveryStop = this.stops[this.stops.length - 1];
-            return !!(deliveryStop.arrive && deliveryStop.depart);
+            return (
+                deliveryStop && !!(deliveryStop.arrive && deliveryStop.depart)
+            );
         }
         return false;
     }

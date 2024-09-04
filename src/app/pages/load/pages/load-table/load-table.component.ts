@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
     filter,
+    forkJoin,
     Observable,
     Subject,
     Subscription,
@@ -160,7 +161,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confiramtionService: ConfirmationService,
         private nameInitialsPipe: NameInitialsPipe,
         private loadQuery: LoadQuery,
-        private cardsModalService: CardsModalConfigService,
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
@@ -204,6 +204,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentSelectedRowsSubscribe();
 
         this.upadateStatus();
+
+        this.onLoadChange();
     }
 
     ngAfterViewInit(): void {
@@ -278,8 +280,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confiramtionService.confirmationData$.subscribe((res) => {
-            if(res.template === TableStringEnum.COMMENT) return;
-            
+            if (res.template === TableStringEnum.COMMENT) return;
             if (res.type === TableStringEnum.DELETE) {
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
                     this.deleteLoadTemplateById(res.id);
@@ -310,25 +311,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     foundObject.status.statusString,
                     confirmationResponse.data.isRevert
                 );
-            });
-    }
-
-    private pendingTabCardsConfig(): void {
-        this.loadQuery.pending$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
             });
     }
 
@@ -443,6 +425,153 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (res.selectedFilter) this.viewData = this.loadTableData;
                 }
             });
+    }
+
+    private onLoadChange() {
+        this.loadServices.modalAction$.subscribe(() => {
+            const {
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                pageIndex,
+                pageSize,
+                companyId,
+                rateFrom,
+                rateTo,
+                paidFrom,
+                paidTo,
+                dueFrom,
+                dueTo,
+                pickup,
+                delivery,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree,
+            } = this.backLoadFilterQuery;
+            const pendingData$ = this.loadServices.getPendingData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+            const activeData$ = this.loadServices.getActiveData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+            const closedData$ = this.loadServices.getClosedData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+            // Wait for all three Observables to complete
+            forkJoin([pendingData$, activeData$, closedData$]).subscribe(
+                () => {
+                    this.loadBackFilter(this.backLoadFilterQuery);
+                    this.sendLoadData();
+                },
+                (error) => {
+                    console.error('Error loading data:', error);
+                }
+            );
+        });
     }
 
     // Resize
@@ -1492,7 +1621,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : this.selectedTab === TableStringEnum.CLOSED
                     ? 3
                     : 1;
-
             this.backLoadFilterQuery.pageIndex = 1;
 
             this.sendLoadData();
@@ -1714,7 +1842,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteLoadById(id: number): void {
-            this.loadServices
+        this.loadServices
             .deleteLoadById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.sendLoadData());
@@ -1791,7 +1919,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {
-                    this.loadServices.updateLoadPartily(res, previousStatus);
+                    this.loadServices.updateLoadPartily();
 
                     setTimeout(() => {
                         this.sendLoadData();
