@@ -280,11 +280,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public valueChange(
         event: string,
-        deleteAll?: boolean,
+        isDeleteAll?: boolean,
         notePopover?: NgbPopover
     ): void {
         this.value = event;
-        if (deleteAll && this.isAllOpen) {
+        if (isDeleteAll && this.isAllOpen) {
             if (notePopover?.isOpen()) notePopover?.close();
             this.closeNote();
         }
@@ -296,7 +296,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 if (moment().unix() - this.lastTypeTime >= 2) {
                     this.saveIntervalStarted = false;
                     clearInterval(this.saveInterval);
-                    this.saveNote(true, deleteAll);
+                    this.saveNote(true, isDeleteAll);
                 }
             }, 100);
         }
@@ -307,7 +307,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             this.noteContainer?.checkActiveItems();
     }
 
-    public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
+    public saveNote(autoSave?: boolean, isDeleteAll?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.isAllOpen) {
                 this.closeNote();
@@ -327,7 +327,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
-        if (deleteAll) this.closeNote();
+        if (isDeleteAll) this.closeNote();
     }
 
     public closeNote(dontTransfer?: boolean): void {
