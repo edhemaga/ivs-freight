@@ -4511,54 +4511,54 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     private updateLoad(addNew: boolean): void {
         const newData = this.generateLoadModel(false);
+        if (this.originalStatus !== this.selectedStatus.valueForRequest) {
+            this.loadService
+                .updateLoadStatus(
+                    this.editData.data.id,
+                    this.selectedStatus.valueForRequest as LoadStatus,
+                    this.isPreviousStatus
+                )
+                .subscribe(() => this.handleLoadUpdate(newData, addNew));
+        } else {
+            this.handleLoadUpdate(newData, addNew);
+        }
+    }
 
+    private handleLoadUpdate(newData: Load, addNew: boolean) {
         this.loadService
-            .updateLoadStatus(
-                this.editData.data.id,
-                this.selectedStatus.valueForRequest as LoadStatus,
-                this.isPreviousStatus
-            )
-            .subscribe((res) => {
-                this.loadService
-                    .getLoadById(this.editData.data.id)
-                    .subscribe((response) => {
-                        // After statuse change we get times for stops that needs to send to backend
-                        // together with status history
-                        newData.stops.forEach((stop) => {
-                            const _stop = response.stops.find(
-                                (initialStop) => initialStop.id === stop.id
-                            );
-                            if (_stop) {
-                                stop.arrive = _stop.arrive;
-                                stop.depart = _stop.depart;
-                            }
-                        });
+            .getLoadById(this.editData.data.id)
+            .subscribe((response) => {
+                // After status change we get times for stops that need to be sent to the backend
+                // together with status history
+                newData.stops.forEach((stop) => {
+                    const _stop = response.stops.find(
+                        (initialStop) => initialStop.id === stop.id
+                    );
+                    if (_stop) {
+                        stop.arrive = _stop.arrive;
+                        stop.depart = _stop.depart;
+                    }
+                });
 
-                        if (this.isLoadClosed)
-                            newData.statusHistory = response.statusHistory;
-                        this.loadService
-                            .updateLoad(newData)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: () => {
-                                    this.loadService
-                                        .getLoadInsideListById(newData.id)
-                                        .subscribe((res) => {
-                                            this.loadService.updateLoadPartily(
-                                                res,
-                                                this.originalStatus
-                                            );
-                                        });
-                                    this.setModalSpinner(
-                                        null,
-                                        true,
-                                        true,
-                                        addNew
+                if (this.isLoadClosed)
+                    newData.statusHistory = response.statusHistory;
+
+                this.loadService
+                    .updateLoad(newData)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: () => {
+                            this.loadService
+                                .getLoadInsideListById(newData.id)
+                                .subscribe((res) => {
+                                    this.loadService.updateLoadPartily(
+                                        res,
+                                        this.originalStatus
                                     );
-                                },
-                                error: () =>
-                                    this.setModalSpinner(null, false, false),
-                            });
+                                });
+                            this.setModalSpinner(null, true, true, addNew);
+                        },
+                        error: () => this.setModalSpinner(null, false, false),
                     });
             });
     }
