@@ -278,9 +278,16 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         ev.preventDefault();
     }
 
-    public valueChange(event: string, deleteAll?: boolean): void {
+    public valueChange(
+        event: string,
+        deleteAll?: boolean,
+        notePopover?: NgbPopover
+    ): void {
         this.value = event;
-        if (deleteAll) this.closeNote();
+        if (deleteAll && this.isAllOpen) {
+            if (notePopover?.isOpen()) notePopover?.close();
+            this.closeNote();
+        }
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
         if (!this.saveIntervalStarted) {
