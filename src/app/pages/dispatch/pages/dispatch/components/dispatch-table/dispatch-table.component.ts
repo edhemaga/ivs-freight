@@ -342,15 +342,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         const { type, index } = event;
 
         if (
-            !this.dispatchData.dispatches[index].truck &&
+            ((type === DispatchTableStringEnum.TRAILER_ID &&
+                !this.dispatchData.dispatches[index].truck) ||
+                (type === DispatchTableStringEnum.TRUCK_ID &&
+                    !this.dispatchData.dispatches[index].trailer)) &&
             !this.dispatchData.dispatches[index].driver
         ) {
             const id = this.dispatchData.dispatches[index].id;
 
             this.isDispatchBoardChangeInProgress = true;
-            this.checkEmptySet = DispatchTableStringEnum.TRAILER_ID;
+            this.checkEmptySet = type;
 
-            this.deleteDispatchBoardById(id);
+            this.deleteDispatchBoardById(id, type);
         } else {
             this.updateOrAddDispatchBoardAndSend(type, null, index);
         }
@@ -526,10 +529,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    private deleteDispatchBoardById(
-        id: number,
-        isDriverDeleted?: boolean
-    ): void {
+    private deleteDispatchBoardById(id: number, deleteItemType?: string): void {
         this.dispatcherService
             .deleteDispatchboard(id)
             .pipe(
@@ -538,10 +538,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
 
-                    if (isDriverDeleted) {
+                    if (deleteItemType) {
                         this.dispatcherService.updateCountList(
                             this.dispatchData.id,
-                            DispatchTableStringEnum.DRIVER_ID,
+                            deleteItemType,
                             null
                         );
                     }
@@ -608,7 +608,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.isDispatchBoardChangeInProgress = true;
             this.checkEmptySet = DispatchTableStringEnum.DRIVER_ID;
 
-            this.deleteDispatchBoardById(id, true);
+            this.deleteDispatchBoardById(id, DispatchTableStringEnum.DRIVER_ID);
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.DRIVER_ID,

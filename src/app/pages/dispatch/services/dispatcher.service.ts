@@ -363,6 +363,7 @@ export class DispatcherService {
                             case 'trailerId':
                                 item.trailerCount += value ? 1 : -1;
                                 break;
+                            case 'truckId':
                             case 'location':
                                 item.truckCount += value ? 1 : -1;
                                 break;

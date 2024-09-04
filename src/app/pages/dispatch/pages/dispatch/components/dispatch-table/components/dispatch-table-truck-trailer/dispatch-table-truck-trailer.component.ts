@@ -28,6 +28,8 @@ import {
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { OpenModal } from '@shared/models/open-modal.model';
+import { DispatchTruckListItemModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-truck-list-item.model';
+import { DispatchTrailerListItemModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-tralier-list-item.model';
 
 @Component({
     selector: 'app-dispatch-table-truck-trailer',
@@ -53,8 +55,37 @@ export class DispatchTableTruckTrailerComponent {
     @Input() truck: TruckResponse;
     @Input() trailer: TrailerResponse;
 
-    @Input() truckList: TruckDispatchModalResponse[];
-    @Input() trailerList: TrailerDispatchModalResponse[];
+    @Input() set trailerList(values: TrailerDispatchModalResponse[]) {
+        if (values) this._trailerList = [...values];
+
+        this.canAddNew = !values?.length;
+
+        if (
+            !values.length &&
+            !this._trailerList.find((item) => item.id === 7656)
+        ) {
+            this._trailerList.unshift({
+                id: 7656,
+                name: DispatchTableStringEnum.ALL_ASSIGNED,
+            });
+        }
+    }
+
+    @Input() set truckList(values: TruckDispatchModalResponse[]) {
+        if (values) this._truckList = [...values];
+
+        this.canAddNew = !values?.length;
+
+        if (
+            !values.length &&
+            !this._truckList.find((item) => item.id === 7656)
+        ) {
+            this._truckList.unshift({
+                id: 7656,
+                name: DispatchTableStringEnum.ALL_ASSIGNED,
+            });
+        }
+    }
 
     @Input() rowIndex: number;
 
@@ -90,6 +121,11 @@ export class DispatchTableTruckTrailerComponent {
 
     public _truckDropdownWidth: number;
     public _trailerDropdownWidth: number;
+
+    public _trailerList: DispatchTrailerListItemModel[] = [];
+    public _truckList: DispatchTruckListItemModel[] = [];
+
+    public canAddNew: boolean = false;
 
     constructor(private modalService: ModalService) {}
 

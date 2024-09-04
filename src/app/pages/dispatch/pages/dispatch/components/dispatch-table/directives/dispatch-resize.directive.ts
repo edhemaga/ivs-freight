@@ -26,6 +26,8 @@ export class ResizableDirective implements OnInit {
         this._resizeEnabled = value;
 
         if (!value && this.mouseMoveListener) this.mouseMoveListener();
+
+        this.checkWidth();
     }
     @Input() set isNoteExpanded(value: boolean) {
         this._isNoteExpanded = value;
@@ -120,12 +122,14 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[17]?.width;
                 this.minWidth = this._columns[17]?.minWidth;
 
+                const minNoteValue = this._resizeEnabled ? 30 : 23;
+
                 const noteMinWidth =
                     !this._isNoteExpanded &&
-                    this.el.nativeElement.offsetWidth > 34
-                        ? 34
-                        : this.el.nativeElement.offsetWidth < this.minWidth
-                        ? this.minWidth
+                    this.el.nativeElement.offsetWidth >= 23
+                        ? minNoteValue
+                        : this.el.nativeElement.offsetWidth < this.minWidth - 11
+                        ? this.minWidth - 11
                         : this.el.nativeElement.offsetWidth;
 
                 this.renderer.setStyle(
@@ -139,6 +143,16 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[16]?.width;
                 this.minWidth = this._columns[16]?.minWidth;
 
+                const dispatcherMinWidth = this._resizeEnabled
+                    ? this.minWidth - 4
+                    : this.minWidth - 11;
+
+                this.renderer.setStyle(
+                    this.el.nativeElement,
+                    DispatchTableStringEnum.WIDTH,
+                    `${dispatcherMinWidth}px`
+                );
+
                 break;
             case DispatchTableStringEnum.PROGRESS:
                 this.maxWidth = this._columns[14]?.width;
@@ -147,6 +161,17 @@ export class ResizableDirective implements OnInit {
             case DispatchTableStringEnum.INSPECTION:
                 this.maxWidth = this._columns[10]?.width;
                 this.minWidth = this._columns[10]?.minWidth;
+
+                const inspectionMinWidth = this._resizeEnabled
+                    ? this.minWidth - 4
+                    : this.minWidth - 11;
+
+                this.renderer.setStyle(
+                    this.el.nativeElement,
+                    DispatchTableStringEnum.WIDTH,
+                    `${inspectionMinWidth}px`
+                );
+
                 break;
             case DispatchTableStringEnum.PARKING_1:
                 this.maxWidth = this._columns[15]?.width;
@@ -161,11 +186,11 @@ export class ResizableDirective implements OnInit {
                     ? this._columns[4]?.minWidth
                     : this._columns[4]?.minWidth + 60;
 
-                if (this.el.nativeElement.offsetWidth < driverMinWidth)
+                if (this.el.nativeElement.offsetWidth < driverMinWidth - 11)
                     this.renderer.setStyle(
                         this.el.nativeElement,
                         DispatchTableStringEnum.WIDTH,
-                        `${driverMinWidth}px`
+                        `${driverMinWidth - 11}px`
                     );
 
                 this.maxWidth = this._columns[4]?.width;
@@ -187,6 +212,20 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[13]?.width;
                 this.minWidth = this._columns[13]?.minWidth;
                 break;
+        }
+
+        if (
+            this._resizeEnabled &&
+            (this.title === DispatchTableStringEnum.DISPATCHER_1 ||
+                this.title === DispatchTableStringEnum.INSPECTION ||
+                (this.title === DispatchTableStringEnum.NOTE &&
+                    !this._isNoteExpanded))
+        ) {
+            this.maxWidth = 30;
+            this.minWidth = 30;
+        } else {
+            this.maxWidth = this.maxWidth - 11;
+            this.minWidth = this.minWidth - 11;
         }
     }
 }
