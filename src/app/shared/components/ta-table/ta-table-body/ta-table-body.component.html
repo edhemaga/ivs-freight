@@ -125,7 +125,7 @@
                                             (change)="onSelectItem(row, i)"
                                             [checked]="row.isSelected"
                                             class="table-checkbox"
-                                            id="checkbox{{ i }}"
+                                            id="checkbox-table-{{ i }}"
                                             type="checkbox"
                                         />
                                         <label
@@ -145,7 +145,7 @@
                                             [tooltipColor]="'#ffff'"
                                             position="bottom"
                                             class="table-checkbox-label"
-                                            for="checkbox{{ i }}"
+                                            for="checkbox-table-{{ i }}"
                                         ></label>
                                     </div>
 
@@ -352,7 +352,7 @@
                                             (change)="onSelectItem(row, i)"
                                             [checked]="row.isSelected"
                                             class="table-checkbox"
-                                            id="checkbox{{ i }}"
+                                            id="checkbox-table-{{ i }}"
                                             type="checkbox"
                                         />
                                         <label
@@ -379,7 +379,7 @@
                                                 row.userType.name !== 'Owner'
                                             "
                                             class="table-checkbox-label"
-                                            for="checkbox{{ i }}"
+                                            for="checkbox-table-{{ i }}"
                                         ></label>
                                     </div>
 
