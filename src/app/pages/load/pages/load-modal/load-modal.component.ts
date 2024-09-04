@@ -2647,28 +2647,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
             });
 
-        // adjusted rate
-        this.loadForm
-            .get(LoadModalStringEnum.ADJUSTED_RATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (
-                    value &&
-                    (!this.loadForm.get(LoadModalStringEnum.BASE_RATE).value ||
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                    .value
-                            ))
-                ) {
-                    this.loadForm
-                        .get(LoadModalStringEnum.ADJUSTED_RATE)
-                        .reset();
-                }
-            });
-
         // driver rate
         this.loadForm
             .get(LoadModalStringEnum.DRIVER_RATE)
