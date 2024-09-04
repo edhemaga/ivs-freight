@@ -30,7 +30,9 @@ export interface DispatchHistoryResponse {
     longitude?: number | null;
     status?: DispatchStatus;
     dateFrom?: string;
+    dateFromTime?: string | null;
     dateTo?: string | null;
+    dateToTime?: string | null;
     totalTime?: { [key: string]: number; } | null;
 }
 
