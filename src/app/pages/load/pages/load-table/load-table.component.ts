@@ -564,7 +564,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             // Wait for all three Observables to complete
             forkJoin([pendingData$, activeData$, closedData$]).subscribe(
                 () => {
-                    this.loadBackFilter(this.backLoadFilterQuery);
                     this.sendLoadData();
                 },
                 (error) => {
@@ -1920,10 +1919,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {
                     this.loadServices.updateLoadPartily();
-
-                    setTimeout(() => {
-                        this.sendLoadData();
-                    }, 200);
                 });
             });
     }
