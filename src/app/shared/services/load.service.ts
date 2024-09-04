@@ -62,6 +62,7 @@ import {
     DeleteComment,
 } from '@shared/models/card-models/card-table-data.model';
 import { Load } from '@pages/load/models/load.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 
 @Injectable({
     providedIn: 'root',
@@ -829,5 +830,142 @@ export class LoadService {
                 this.loadClosedStore.set(loadPagination?.pagination?.data);
             })
         );
+    }
+
+    public getAllLoads(query: FilterOptionsLoad): Observable<any[]> {
+            const {
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                pageIndex,
+                pageSize,
+                companyId,
+                rateFrom,
+                rateTo,
+                pickup,
+                delivery,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree,
+            } = query;
+    
+            const pendingData$ = this.getPendingData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,  
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,  
+                null,  
+                null,  
+                null,  
+                pickup,
+                delivery,
+                null,  
+                null,  
+                null,  
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            const activeData$ = this.getActiveData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            const closedData$ = this.getClosedData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            // Return an array of the three observables
+            return forkJoin([pendingData$, activeData$, closedData$]);
     }
 }

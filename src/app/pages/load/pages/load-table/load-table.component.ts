@@ -420,149 +420,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private onLoadChange() {
-        this.loadServices.modalAction$.subscribe(() => {
-            const {
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                pageIndex,
-                pageSize,
-                companyId,
-                rateFrom,
-                rateTo,
-                paidFrom,
-                paidTo,
-                dueFrom,
-                dueTo,
-                pickup,
-                delivery,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree,
-            } = this.backLoadFilterQuery;
-            const pendingData$ = this.loadServices.getPendingData(
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                null,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                rateFrom,
-                rateTo,
-                null,
-                null,
-                null,
-                null,
-                pickup,
-                delivery,
-                null,
-                null,
-                null,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree
-            );
-            const activeData$ = this.loadServices.getActiveData(
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                null,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                rateFrom,
-                rateTo,
-                null,
-                null,
-                null,
-                null,
-                pickup,
-                delivery,
-                null,
-                null,
-                null,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree
-            );
-            const closedData$ = this.loadServices.getClosedData(
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                null,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                rateFrom,
-                rateTo,
-                null,
-                null,
-                null,
-                null,
-                pickup,
-                delivery,
-                null,
-                null,
-                null,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree
-            );
-            // Wait for all three Observables to complete
-            forkJoin([pendingData$, activeData$, closedData$]).subscribe(
-                () => {
-                    this.sendLoadData();
-                },
-                (error) => {
-                    console.error('Error loading data:', error);
-                }
-            );
-        });
+        this.loadServices.modalAction$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices
+                    .getAllLoads(this.backLoadFilterQuery)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.sendLoadData();
+                    });
+            });
     }
 
     // Resize
