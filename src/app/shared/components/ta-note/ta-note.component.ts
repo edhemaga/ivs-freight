@@ -97,6 +97,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.value = value;
         this.checkNoteImage(value);
     }
+    @Input() public set noteDimension(value: number) {
+        this._noteDimension = value;
+
+        if (this.isDispatch) this.setNoteParentWidth();
+    }
     @Input() mainData: any;
     @Input() parking: boolean = false;
     @Input() dispatchIndex: number = -1;
@@ -152,6 +157,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     private saveInterval: any;
     private saveIntervalStarted: boolean = false;
     public savedValue: string = '';
+    public _noteDimension: number;
 
     private destroy$ = new Subject<void>();
 
@@ -274,6 +280,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public valueChange(event: string, deleteAll?: boolean): void {
         this.value = event;
+        if (deleteAll) this.closeNote();
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
         if (!this.saveIntervalStarted) {
@@ -289,9 +296,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     private checkActiveItems(): void {
-        if (this.noteContainer && this.noteContainer?.checkActiveItems) {
+        if (this.noteContainer && this.noteContainer?.checkActiveItems)
             this.noteContainer?.checkActiveItems();
-        }
     }
 
     public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
