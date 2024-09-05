@@ -45,7 +45,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // models
-import { ActiveOptions } from '@shared/components/ta-note/models/active-options-models';
+import { ActiveOptions } from './models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
