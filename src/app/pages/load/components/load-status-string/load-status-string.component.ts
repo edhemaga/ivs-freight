@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 // Models
-import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
+import { SelectedStatus } from '@pages/load/pages/load-modal/models';
 import { StatusOrder } from '@pages/load/models/status-order.model';
 
 // Pipes

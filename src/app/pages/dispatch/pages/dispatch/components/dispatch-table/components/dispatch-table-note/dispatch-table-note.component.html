@@ -41,6 +41,7 @@
                     [dispatchNoteEmpty]="
                         truck && !_note && isHoveringRowIndex === rowIndex
                     "
+                    [noteDimension]="_noteWidth"
                     (saveNoteValue)="saveNote($event)"
                     (noteToggleEmitter)="toggleNote($event)"
                 >

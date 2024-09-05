@@ -16,7 +16,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {
         loadType: null,
-        statusType: 1,
+        statusType: 2,
         status: null,
         dispatcherIds: null,
         dispatcherId: null,

@@ -1,6 +1,4 @@
-import { LoadBilling } from '@pages/load/pages/load-modal/models/load-billing.model';
-import { LoadModalTab } from '@pages/load/pages/load-modal/models/load-modal-tab.model';
-import { LoadPayment } from '@pages/load/pages/load-modal/models/load-payment.model';
+import { LoadPayment, LoadModalTab, LoadBilling } from '@pages/load/pages/load-modal/models';
 
 export class LoadModalConstants {
     static LOAD_MODAL_TABS: LoadModalTab[] = [

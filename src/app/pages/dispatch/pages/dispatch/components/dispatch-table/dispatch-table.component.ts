@@ -159,6 +159,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public isDriverEndorsementActive: boolean = false;
 
+    public noteWidth: number = 205;
+
     /////////////////////////////////////////// UPDATE
 
     public draggingType: string;
@@ -1063,8 +1065,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = index;
     }
 
-    public onNoteResize(): void {
-        console.log('onNoteResize');
+    public onNoteResize(event: number): void {
+        this.noteWidth = event;
     }
 
     ngOnDestroy(): void {

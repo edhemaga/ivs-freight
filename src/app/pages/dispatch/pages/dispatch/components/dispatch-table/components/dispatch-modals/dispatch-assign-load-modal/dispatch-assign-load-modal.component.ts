@@ -15,10 +15,10 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/compone
 
 // Config
 import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-assign-load-modal.config';
-import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
+import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants'; 
 
 // Enum
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum'; 
 
