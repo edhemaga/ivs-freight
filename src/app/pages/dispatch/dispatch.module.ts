@@ -125,6 +125,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
+        PickupDeliveryBlockComponent,
 
         //  TaMapsComponent,
 

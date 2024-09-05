@@ -526,7 +526,14 @@
                                 </app-dispatch-table-status>
                             </td>
 
-                            <td class="pickup-delivery-field">
+                            <td
+                                class="pickup-delivery-field"
+                                (click)="
+                                    getLoadInformationForSignleDispatchResponse(
+                                        item
+                                    )
+                                "
+                            >
                                 <div class="main_inside filled">
                                     <div
                                         class="padding-inside"
@@ -543,12 +550,12 @@
                                             >
                                                 <app-ca-pickup-delivery-block
                                                     [loads]="{
-                                                        active: pickupDeliveryItem(
-                                                            item
-                                                        ),
-                                                        closed: null,
-                                                        pending: null
+                                                        active: currentDispatchGroupedLoadsResponse.active,
+                                                        closed: currentDispatchGroupedLoadsResponse.closed,
+                                                        pending:
+                                                            currentDispatchGroupedLoadsResponse.pending
                                                     }"
+                                                    [dispatchResponse]="item"
                                                 ></app-ca-pickup-delivery-block>
                                             </ng-container>
                                         </div>

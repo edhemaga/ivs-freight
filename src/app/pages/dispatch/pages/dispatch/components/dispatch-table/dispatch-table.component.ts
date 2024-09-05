@@ -55,6 +55,8 @@ import {
     DriverMinimalResponse,
     DispatchResponse,
     LoadShortResponse,
+    DispatchService,
+    DispatchGroupedLoadsResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
@@ -152,6 +154,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse =
+        {};
+
     public shownFields;
 
     public isDriverEndorsementActive: boolean = false;
@@ -174,7 +179,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         // Services
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private dispatchService: DispatchService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -191,10 +197,26 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getMainBoardColumnWidths();
     }
 
-    public pickupDeliveryItem(item: DispatchResponse) : LoadShortResponse[] | null {
-        if(item.activeLoad) return [item.activeLoad];
+    public pickupDeliveryItem(item: DispatchResponse): boolean {
+        if (item.activeLoad) {
+            return true;
+        }
 
-        return null;
+        return false;
+    }
+
+    public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
+        this.dispatcherService
+            .getDispatchAssignedloadsId(item.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (response) => {
+                    this.currentDispatchGroupedLoadsResponse = response;
+                    this.cdRef.detectChanges();
+                },
+            });
+
+        this.cdRef.detectChanges();
     }
 
     public trackByIdentity = (index: number): number => index;
