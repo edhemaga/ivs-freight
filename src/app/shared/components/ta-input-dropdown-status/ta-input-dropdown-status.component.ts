@@ -13,7 +13,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Models
-import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
+import { SelectedStatus } from '@pages/load/pages/load-modal/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Consts

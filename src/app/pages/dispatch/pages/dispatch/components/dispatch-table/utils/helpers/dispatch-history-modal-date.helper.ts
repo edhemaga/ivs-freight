@@ -97,16 +97,16 @@ export class DispatchHistoryModalDateHelper {
 
     static checkIsSelectedDateSameOrBeforeNextDate(
         dateEnd: string,
-        dateStart: string
+        dateStart: string,
+        isSameCheck: boolean = false
     ): boolean {
         const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
         const nextGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
 
-        const isSelectedDateSameOrAfterPreviousDate =
-            selectedGroupItemDateEnd.isSame(nextGroupItemDateStart) ||
-            selectedGroupItemDateEnd.isBefore(nextGroupItemDateStart);
-
-        return isSelectedDateSameOrAfterPreviousDate;
+        return isSameCheck
+            ? selectedGroupItemDateEnd.isSame(nextGroupItemDateStart)
+            : selectedGroupItemDateEnd.isSame(nextGroupItemDateStart) ||
+                  selectedGroupItemDateEnd.isBefore(nextGroupItemDateStart);
     }
 
     static checkIsSelectedDateAfterOrSameAsSelectedGroupItemDateStart(
@@ -142,5 +142,19 @@ export class DispatchHistoryModalDateHelper {
             selectedGroupItemTimeStart.isSame(previousGroupItemTimeEnd);
 
         return isTimeStartAfterOrSameAsTimeEnd;
+    }
+
+    static checkIsTimeEndBeforeOrSameNextTimeStart(
+        timeEnd: string,
+        nextTimeStart: string
+    ): boolean {
+        const selectedGroupItemTimeEnd = moment(timeEnd, 'hh:mm A');
+        const nextGroupItemTimeStart = moment(nextTimeStart, 'hh:mm A');
+
+        const isTimeEndBeforeOrSameAsTimeStart =
+            selectedGroupItemTimeEnd.isBefore(nextGroupItemTimeStart) ||
+            selectedGroupItemTimeEnd.isSame(nextGroupItemTimeStart);
+
+        return isTimeEndBeforeOrSameAsTimeStart;
     }
 }

@@ -8,8 +8,8 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import type { DispatchColumn } from '../models';
-import { DispatchTableStringEnum } from '../enums';
+import type { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 @Directive({
     selector: '[appResizable]',
@@ -112,7 +112,7 @@ export class ResizableDirective implements OnInit {
             this.isColumnResized = false;
 
             if (this.title === DispatchTableStringEnum.NOTE)
-                this.onNoteResize.emit();
+                this.onNoteResize.emit(this.el.nativeElement.offsetWidth);
         }
     }
 

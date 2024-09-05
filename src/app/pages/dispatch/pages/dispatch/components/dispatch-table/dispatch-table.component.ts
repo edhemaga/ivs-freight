@@ -29,10 +29,10 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
-import { DispatchTableConstants } from './utils/constants';
+import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // enums
-import { DispatchTableStringEnum } from './enums';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -60,7 +60,7 @@ import {
     DispatchColumn,
     DispatchTableHeaderItems,
     DispatchTableUnlock,
-} from './models';
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -156,6 +156,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public shownFields;
 
     public isDriverEndorsementActive: boolean = false;
+
+    public noteWidth: number = 205;
 
     /////////////////////////////////////////// UPDATE
 
@@ -1039,8 +1041,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = index;
     }
 
-    public onNoteResize(): void {
-        console.log('onNoteResize');
+    public onNoteResize(event: number): void {
+        this.noteWidth = event;
     }
 
     ngOnDestroy(): void {

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
     filter,
+    forkJoin,
     Observable,
     Subject,
     Subscription,
@@ -79,7 +80,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
@@ -160,7 +161,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confiramtionService: ConfirmationService,
         private nameInitialsPipe: NameInitialsPipe,
         private loadQuery: LoadQuery,
-        private cardsModalService: CardsModalConfigService,
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
@@ -193,8 +193,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.onDropdownActions();
 
-        this.watchForLoadChanges();
-
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
@@ -204,18 +202,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentSelectedRowsSubscribe();
 
         this.upadateStatus();
+
+        this.onLoadChange();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
-    }
-
-    private watchForLoadChanges(): void {
-        this.loadServices.modalAction$.subscribe((action) => {
-            this.sendLoadData();
-        });
     }
 
     private upadateStatus(): void {
@@ -278,8 +272,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private confirmationDataSubscribe(): void {
         this.confiramtionService.confirmationData$.subscribe((res) => {
-            if(res.template === TableStringEnum.COMMENT) return;
-            
+            if (res.template === TableStringEnum.COMMENT) return;
             if (res.type === TableStringEnum.DELETE) {
                 if (this.selectedTab === TableStringEnum.TEMPLATE) {
                     this.deleteLoadTemplateById(res.id);
@@ -310,25 +303,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     foundObject.status.statusString,
                     confirmationResponse.data.isRevert
                 );
-            });
-    }
-
-    private pendingTabCardsConfig(): void {
-        this.loadQuery.pending$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.LOAD_INVOICE;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
             });
     }
 
@@ -442,6 +416,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     if (res.selectedFilter) this.viewData = this.loadTableData;
                 }
+            });
+    }
+
+    private onLoadChange() {
+        this.loadServices.modalAction$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices
+                    .getAllLoads(this.backLoadFilterQuery)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.sendLoadData();
+                    });
             });
     }
 
@@ -1492,7 +1479,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : this.selectedTab === TableStringEnum.CLOSED
                     ? 3
                     : 1;
-
             this.backLoadFilterQuery.pageIndex = 1;
 
             this.sendLoadData();
@@ -1714,7 +1700,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private deleteLoadById(id: number): void {
-            this.loadServices
+        this.loadServices
             .deleteLoadById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.sendLoadData());
@@ -1791,11 +1777,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {
-                    this.loadServices.updateLoadPartily(res, previousStatus);
-
-                    setTimeout(() => {
-                        this.sendLoadData();
-                    }, 200);
+                    this.loadServices.updateLoadPartily();
                 });
             });
     }

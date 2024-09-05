@@ -1,4 +1,4 @@
-import { TruckTrailerConfigParams } from '../../models';
+import { TruckTrailerConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class DispatchConfig {

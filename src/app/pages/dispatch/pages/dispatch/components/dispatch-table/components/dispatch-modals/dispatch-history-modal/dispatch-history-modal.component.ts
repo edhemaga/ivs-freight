@@ -10,17 +10,17 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 
 // configs
-import { DispatchHistoryModalConfig } from '../../../utils/configs';
+import { DispatchHistoryModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // enums
-import { DispatchHistoryModalStringEnum } from '../../../enums';
+import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { DispatchHistoryModalHelper } from '../../../utils/helpers';
+import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // constants
-import { DispatchHistoryModalConstants } from '../../../utils/constants';
+import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // models
 import {
@@ -350,7 +350,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        /*  this.selectedTime = {
+        this.selectedTime = {
             id: 12,
             name: 'This Year',
         };
@@ -370,7 +370,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             id: 9,
             name: 'Milos Djordjevic',
         };
- */
+
         /*  this.selectedTime = {
             id: 12,
             name: 'This Year',

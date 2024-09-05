@@ -12,10 +12,10 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 import { ModalService } from '@shared/services/modal.service';
 
 // enums
-import { DispatchTableStringEnum } from '../../enums';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // config
-import { DispatchConfig } from '../../utils/configs';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // models
 import {
@@ -31,7 +31,7 @@ import { OpenModal } from '@shared/models/open-modal.model';
 import {
     DispatchTrailerListItemModel,
     DispatchTruckListItemModel,
-} from '../../models';
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table-truck-trailer',

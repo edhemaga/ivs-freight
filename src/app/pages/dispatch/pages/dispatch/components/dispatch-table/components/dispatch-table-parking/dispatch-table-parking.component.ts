@@ -12,10 +12,10 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchConfig } from '../../utils/configs';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // Enums
-import { DispatchTableStringEnum } from '../../enums';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // Models
 import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';

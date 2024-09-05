@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DispatchTableStringEnum } from '../enums';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 //models
-import { DispatchColumn } from '../models';
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Pipe({
     name: 'dispatchTableHeaderShowPipe',

@@ -12,11 +12,14 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 //helpers
-import { DispatchTableHelper } from '../../utils/helpers';
+import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DispatchStatusEnum, DispatchTableStringEnum } from '../../enums';
+import {
+    DispatchStatusEnum,
+    DispatchTableStringEnum,
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 //models
 import {

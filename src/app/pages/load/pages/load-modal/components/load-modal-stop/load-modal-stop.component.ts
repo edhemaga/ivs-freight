@@ -20,7 +20,7 @@ import { collapseAnimation } from '@pages/load/pages/load-modal/utils/animations
 
 // constants
 import { LoadStatusStringEnum } from '@pages/load/pages/load-modal/components/load-modal-stop/enums/load-status-string.enum';
-import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
+import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants'; 
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';

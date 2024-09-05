@@ -14,11 +14,11 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchAssignLoadModalConfig } from '../../../utils/configs';
-import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
+import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
+import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants';
 
 // Enum
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -44,7 +44,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // Helpers
-import { DispatchAssignLoadModalHelper } from '../../../utils/helpers';
+import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',

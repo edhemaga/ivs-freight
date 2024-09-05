@@ -24,7 +24,7 @@ import {
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { DispatchTableStringEnum } from '../../enums';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -35,7 +35,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // config
-import { DispatchConfig } from '../../utils/configs';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 @Component({
     selector: 'app-dispatch-table-driver',

@@ -11,16 +11,18 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Models
 import { LoadStatusHistoryResponse } from 'appcoretruckassist';
-import { LoadModalWaitTime } from '@pages/load/pages/load-modal/models/load-modal-wait-time';
+import {
+    SelectedStatus,
+    LoadModalWaitTime,
+} from '@pages/load/pages/load-modal/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 
 // Pipes
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // Enums
-import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
