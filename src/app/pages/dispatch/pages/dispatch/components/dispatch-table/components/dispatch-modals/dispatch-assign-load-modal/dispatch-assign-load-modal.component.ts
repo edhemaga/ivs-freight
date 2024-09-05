@@ -14,13 +14,13 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-assign-load-modal.config';
+import { DispatchAssignLoadModalConfig } from '../../../utils/configs';
 import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
 
 // Enum
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum'; 
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Models
 import {
@@ -44,7 +44,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // Helpers
-import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
+import { DispatchAssignLoadModalHelper } from '../../../utils/helpers';
 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
@@ -115,10 +115,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public get extraStopsCount(): string {
         // Remove deadhead
-        const stops = this.selectedLoad?.stops.filter(
-            (stop) => stop.id !== 0
-        );
-        return stops.length - 2 ? stops.length - 2 +  TableStringEnum.LOAD_EXTRA_STOPS : null;
+        const stops = this.selectedLoad?.stops.filter((stop) => stop.id !== 0);
+        return stops.length - 2
+            ? stops.length - 2 + TableStringEnum.LOAD_EXTRA_STOPS
+            : null;
     }
 
     private initializeForm(): void {

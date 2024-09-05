@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // config
-import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+import { DispatchConfig } from '../../utils/configs';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';

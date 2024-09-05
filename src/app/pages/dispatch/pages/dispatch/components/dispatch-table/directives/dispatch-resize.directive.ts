@@ -8,8 +8,8 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import type { DispatchColumn } from '../models/dispatch-column.model';
-import { DispatchTableStringEnum } from '../enums/dispatch-table-string.enum';
+import type { DispatchColumn } from '../models';
+import { DispatchTableStringEnum } from '../enums';
 
 @Directive({
     selector: '[appResizable]',
@@ -23,7 +23,7 @@ export class ResizableDirective implements OnInit {
         this.checkWidth();
     }
     @Input() set resizeEnabled(value: boolean) {
-        this._resizeEnabled = value;
+        this.isResizeEnabled = value;
 
         if (!value && this.mouseMoveListener) this.mouseMoveListener();
 
@@ -37,7 +37,7 @@ export class ResizableDirective implements OnInit {
     @Output() onNoteResize = new EventEmitter();
 
     private _columns: DispatchColumn[] = [];
-    private _resizeEnabled: boolean = true;
+    private isResizeEnabled: boolean = true;
     private _isNoteExpanded: boolean = true;
     private minWidth: number;
     private maxWidth: number;
@@ -53,7 +53,7 @@ export class ResizableDirective implements OnInit {
     constructor(private el: ElementRef, private renderer: Renderer2) {}
 
     ngOnInit(): void {
-        if (this._resizeEnabled) {
+        if (this.isResizeEnabled) {
             this.renderer.setStyle(
                 this.el.nativeElement,
                 DispatchTableStringEnum.CURSOR,
@@ -66,7 +66,7 @@ export class ResizableDirective implements OnInit {
 
     @HostListener('mousedown', ['$event'])
     onMouseDown(event: MouseEvent): void {
-        if (!this._resizeEnabled) return;
+        if (!this.isResizeEnabled) return;
         event.preventDefault();
 
         this.isResizing = true;
@@ -89,7 +89,7 @@ export class ResizableDirective implements OnInit {
     }
 
     private onMouseMove(event: MouseEvent): void {
-        if (!this.isResizing || !this._resizeEnabled) return;
+        if (!this.isResizing || !this.isResizeEnabled) return;
 
         const newWidth = this.startWidth + (event.clientX - this.startX);
 
@@ -122,7 +122,7 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[17]?.width;
                 this.minWidth = this._columns[17]?.minWidth;
 
-                const minNoteValue = this._resizeEnabled ? 30 : 23;
+                const minNoteValue = this.isResizeEnabled ? 30 : 23;
 
                 const noteMinWidth =
                     !this._isNoteExpanded &&
@@ -143,7 +143,7 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[16]?.width;
                 this.minWidth = this._columns[16]?.minWidth;
 
-                const dispatcherMinWidth = this._resizeEnabled
+                const dispatcherMinWidth = this.isResizeEnabled
                     ? this.minWidth - 4
                     : this.minWidth - 11;
 
@@ -162,7 +162,7 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = this._columns[10]?.width;
                 this.minWidth = this._columns[10]?.minWidth;
 
-                const inspectionMinWidth = this._resizeEnabled
+                const inspectionMinWidth = this.isResizeEnabled
                     ? this.minWidth - 4
                     : this.minWidth - 11;
 
@@ -215,7 +215,7 @@ export class ResizableDirective implements OnInit {
         }
 
         if (
-            this._resizeEnabled &&
+            this.isResizeEnabled &&
             (this.title === DispatchTableStringEnum.DISPATCHER_1 ||
                 this.title === DispatchTableStringEnum.INSPECTION ||
                 (this.title === DispatchTableStringEnum.NOTE &&

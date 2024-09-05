@@ -30,7 +30,7 @@ import {
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
 } from 'appcoretruckassist';
-import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-data.model';
+import { GetDispatchHistoryData } from '../pages/dispatch/components/dispatch-table/models';
 
 @Injectable({ providedIn: 'root' })
 export class DispatcherService {

@@ -10,17 +10,17 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 
 // configs
-import { DispatchHistoryModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-history-modal.config';
+import { DispatchHistoryModalConfig } from '../../../utils/configs';
 
 // enums
-import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-history-modal-string.enum';
+import { DispatchHistoryModalStringEnum } from '../../../enums';
 
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
+import { DispatchHistoryModalHelper } from '../../../utils/helpers';
 
 // constants
-import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
+import { DispatchHistoryModalConstants } from '../../../utils/constants';
 
 // models
 import {

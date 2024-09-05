@@ -29,10 +29,10 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
-import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
+import { DispatchTableConstants } from './utils/constants';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from './enums';
 
 // svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -56,9 +56,11 @@ import {
     DispatchResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
-import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
-import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
-import { DispatchTableUnlock } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-unlock.model';
+import {
+    DispatchColumn,
+    DispatchTableHeaderItems,
+    DispatchTableUnlock,
+} from './models';
 
 @Component({
     selector: 'app-dispatch-table',

@@ -179,7 +179,7 @@
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="truckTrailerInputConfig"
-            [canAddNew]="canAddNew"
+            [canAddNew]="hasAddNew"
             [canOpenModal]="true"
             [options]="type === 'truck' ? _truckList : _trailerList"
             (selectedItem)="

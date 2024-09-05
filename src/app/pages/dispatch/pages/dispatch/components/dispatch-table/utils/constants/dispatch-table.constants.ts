@@ -1,5 +1,4 @@
-import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
-import { ColumnFields } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/column-fields.model';
+import { ColumnFields, DispatchTableHeaderItems } from '../../models';
 
 export class DispatchTableConstants {
     static HEADER_ITEMS: DispatchTableHeaderItems[] = [

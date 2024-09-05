@@ -59,7 +59,7 @@ import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispat
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 
 //directives
-import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives/dispatch-resize.directive';
+import { ResizableDirective } from './pages/dispatch/components/dispatch-table/directives';
 
 @NgModule({
     declarations: [

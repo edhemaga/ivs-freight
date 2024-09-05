@@ -12,10 +12,10 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 import { ModalService } from '@shared/services/modal.service';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '../../enums';
 
 // config
-import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+import { DispatchConfig } from '../../utils/configs';
 
 // models
 import {
@@ -28,8 +28,10 @@ import {
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { OpenModal } from '@shared/models/open-modal.model';
-import { DispatchTruckListItemModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-truck-list-item.model';
-import { DispatchTrailerListItemModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-tralier-list-item.model';
+import {
+    DispatchTrailerListItemModel,
+    DispatchTruckListItemModel,
+} from '../../models';
 
 @Component({
     selector: 'app-dispatch-table-truck-trailer',
@@ -56,35 +58,11 @@ export class DispatchTableTruckTrailerComponent {
     @Input() trailer: TrailerResponse;
 
     @Input() set trailerList(values: TrailerDispatchModalResponse[]) {
-        if (values) this._trailerList = [...values];
-
-        this.canAddNew = !values?.length;
-
-        if (
-            !values.length &&
-            !this._trailerList.find((item) => item.id === 7656)
-        ) {
-            this._trailerList.unshift({
-                id: 7656,
-                name: DispatchTableStringEnum.ALL_ASSIGNED,
-            });
-        }
+        this.handleTruckTrailerList(values);
     }
 
     @Input() set truckList(values: TruckDispatchModalResponse[]) {
-        if (values) this._truckList = [...values];
-
-        this.canAddNew = !values?.length;
-
-        if (
-            !values.length &&
-            !this._truckList.find((item) => item.id === 7656)
-        ) {
-            this._truckList.unshift({
-                id: 7656,
-                name: DispatchTableStringEnum.ALL_ASSIGNED,
-            });
-        }
+        this.handleTruckTrailerList(values);
     }
 
     @Input() rowIndex: number;
@@ -125,7 +103,7 @@ export class DispatchTableTruckTrailerComponent {
     public _trailerList: DispatchTrailerListItemModel[] = [];
     public _truckList: DispatchTruckListItemModel[] = [];
 
-    public canAddNew: boolean = false;
+    public hasAddNew: boolean = false;
 
     constructor(private modalService: ModalService) {}
 
@@ -213,5 +191,32 @@ export class DispatchTableTruckTrailerComponent {
             type: DispatchTableStringEnum.TRAILER_ID,
             index,
         });
+    }
+
+    public handleTruckTrailerList(values): void {
+        if (values) {
+            this.type === DispatchTableStringEnum.TRUCK
+                ? (this._truckList = [...values])
+                : (this._trailerList = [...values]);
+        }
+
+        const findAllAssigned =
+            this.type === DispatchTableStringEnum.TRUCK
+                ? this._truckList.find((item) => item.id === 7656)
+                : this._trailerList.find((item) => item.id === 7656);
+
+        this.hasAddNew = !values?.length;
+
+        if (!values.length && !findAllAssigned) {
+            this.type === DispatchTableStringEnum.TRUCK
+                ? this._truckList.unshift({
+                      id: 7656,
+                      name: DispatchTableStringEnum.ALL_ASSIGNED,
+                  })
+                : this._trailerList.unshift({
+                      id: 7656,
+                      name: DispatchTableStringEnum.ALL_ASSIGNED,
+                  });
+        }
     }
 }
