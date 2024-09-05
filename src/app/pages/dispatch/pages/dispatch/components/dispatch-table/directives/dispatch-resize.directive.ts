@@ -110,7 +110,7 @@ export class ResizableDirective implements OnInit {
             this.isColumnResized = false;
 
             if (this.title === DispatchTableStringEnum.NOTE)
-                this.onNoteResize.emit();
+                this.onNoteResize.emit(this.el.nativeElement.offsetWidth);
         }
     }
 
