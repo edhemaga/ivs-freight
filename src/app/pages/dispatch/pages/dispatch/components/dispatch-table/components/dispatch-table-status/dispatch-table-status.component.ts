@@ -84,6 +84,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 DispatchStatusEnum[5],
                 DispatchStatusEnum[6],
                 DispatchStatusEnum[7],
+                DispatchStatusEnum[8],
             ].includes(e.status) &&
             !e?.isRevert
         ) {

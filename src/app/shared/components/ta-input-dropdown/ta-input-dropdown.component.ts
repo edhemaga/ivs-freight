@@ -368,7 +368,7 @@ export class TaInputDropdownComponent
             return;
         }
         // No Result
-        if (option.id === 7654) {
+        if (option.id === 7654 || option.id === 7656) {
             return;
         }
         // ADD NEW

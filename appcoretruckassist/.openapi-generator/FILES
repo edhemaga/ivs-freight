@@ -139,6 +139,7 @@ model/apiInspectionPostRequest.ts
 model/apiInspectionPostRequest1.ts
 model/apiLoadPostRequest.ts
 model/apiLoadPostRequest1.ts
+model/apiLoadSaveasclosedPostRequest.ts
 model/apiMedicalPostRequest.ts
 model/apiMedicalPostRequest1.ts
 model/apiMvrPostRequest.ts
@@ -298,6 +299,7 @@ model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserShortResponse.ts
+model/companyWithDotResponse.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
 model/contactEmailType.ts
@@ -578,6 +580,8 @@ model/invoiceAgeingResponse.ts
 model/invoiceAgingProgressBarResponse.ts
 model/itemFuel.ts
 model/joinConversationCommand.ts
+model/jsonNode.ts
+model/jsonNodeOptions.ts
 model/leaveConversationCommand.ts
 model/legResponse.ts
 model/linkMetadata.ts
@@ -868,6 +872,7 @@ model/revertLoadStatusCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
+model/roadsideAccidentCategory.ts
 model/roadsideByStateListResponse.ts
 model/roadsideByStateResponse.ts
 model/roadsideByStateResponsePagination.ts
@@ -879,6 +884,7 @@ model/roadsideInspectionResponse.ts
 model/roadsideInspectionResponsePagination.ts
 model/roadsideInspectionSpecialCheckCommand.ts
 model/roadsideInspectionSpecialCheckResponse.ts
+model/roadsideInspectionSummaryResponse.ts
 model/roadsideIntervalResponse.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
@@ -888,6 +894,7 @@ model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceType.ts
 model/serviceTypeResponse.ts
+model/setLockedUnlockedByCommand.ts
 model/setNewPasswordCommand.ts
 model/setPreTripInspectionCommand.ts
 model/sevenDaysHosFeedbackResponse.ts

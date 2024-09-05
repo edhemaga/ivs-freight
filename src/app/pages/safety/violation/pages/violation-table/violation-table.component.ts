@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { RoadsideInactiveState } from '@pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.store';
@@ -45,7 +46,8 @@ export class ViolationTableComponent
         private modalService: ModalService,
         private roadsideActiveQuery: RoadsideActiveQuery,
         private roadsideInactiveQuery: RoadsideInactiveQuery,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     // -------------------------------NgOnInit-------------------------------
@@ -95,7 +97,7 @@ export class ViolationTableComponent
             });
 
         // Search
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {});
 

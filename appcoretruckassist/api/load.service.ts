@@ -1265,19 +1265,100 @@ export class LoadService {
     }
 
     /**
-     * @param request 
+     * @param dispatchFutureTime 
+     * @param truckType 
+     * @param trailerType 
+     * @param _long 
+     * @param lat 
+     * @param distance 
+     * @param dispatcherIds 
+     * @param customDateFrom 
+     * @param customDateTo 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadModalAssignGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
-    public apiLoadModalAssignGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (request !== undefined && request !== null) {
+        if (dispatchFutureTime !== undefined && dispatchFutureTime !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>request, 'request');
+            <any>dispatchFutureTime, 'DispatchFutureTime');
+        }
+        if (truckType) {
+            truckType.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TruckType');
+            })
+        }
+        if (trailerType) {
+            trailerType.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TrailerType');
+            })
+        }
+        if (_long !== undefined && _long !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>distance, 'Distance');
+        }
+        if (dispatcherIds) {
+            dispatcherIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'DispatcherIds');
+            })
+        }
+        if (customDateFrom !== undefined && customDateFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateFrom, 'CustomDateFrom');
+        }
+        if (customDateTo !== undefined && customDateTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customDateTo, 'CustomDateTo');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -1418,7 +1499,6 @@ export class LoadService {
 
     /**
      * @param type 
-     * @param loadNumber 
      * @param loadTemplateId 
      * @param dispatcherId 
      * @param companyId 
@@ -1455,10 +1535,10 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -1517,9 +1597,6 @@ export class LoadService {
 
         if (type !== undefined) {
             localVarFormParams = localVarFormParams.append('Type', <any>type) as any || localVarFormParams;
-        }
-        if (loadNumber !== undefined) {
-            localVarFormParams = localVarFormParams.append('LoadNumber', <any>loadNumber) as any || localVarFormParams;
         }
         if (loadTemplateId !== undefined) {
             localVarFormParams = localVarFormParams.append('LoadTemplateId', <any>loadTemplateId) as any || localVarFormParams;
@@ -1683,6 +1760,7 @@ export class LoadService {
      * @param revisedRate 
      * @param tonuRate 
      * @param driverRate 
+     * @param emptyMiles 
      * @param totalMiles 
      * @param totalHours 
      * @param totalMinutes 
@@ -1716,10 +1794,10 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -1850,6 +1928,9 @@ export class LoadService {
         }
         if (driverRate !== undefined) {
             localVarFormParams = localVarFormParams.append('DriverRate', <any>driverRate) as any || localVarFormParams;
+        }
+        if (emptyMiles !== undefined) {
+            localVarFormParams = localVarFormParams.append('EmptyMiles', <any>emptyMiles) as any || localVarFormParams;
         }
         if (totalMiles !== undefined) {
             localVarFormParams = localVarFormParams.append('TotalMiles', <any>totalMiles) as any || localVarFormParams;

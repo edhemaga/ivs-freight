@@ -9,4 +9,6 @@ export interface DispatchColumn {
     sortName?: string;
     hidden?: boolean;
     isPined?: boolean;
+    minWidth?: number;
+    width?: number;
 }

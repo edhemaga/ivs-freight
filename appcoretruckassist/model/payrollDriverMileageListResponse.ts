@@ -19,7 +19,8 @@ export interface PayrollDriverMileageListResponse {
     driverName?: string | null;
     driverAvatarFile?: FileResponse;
     payroll?: string | null;
-    period?: string;
+    periodStart?: string;
+    periodEnd?: string;
     status?: EnumValue;
     daysUntilPayment?: number;
     emptyRate?: number | null;

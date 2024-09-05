@@ -28,6 +28,7 @@ import { OwnerService } from '@pages/owner/services/owner.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/services/owner-cards-modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Store
 import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
@@ -103,6 +104,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private ownerCardsModalService: OwnerCardsModalService,
         private ownerCardModalQuery: OwnerCardModalQuery,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -246,7 +248,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

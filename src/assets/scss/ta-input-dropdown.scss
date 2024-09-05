@@ -44,8 +44,21 @@
             &.scroll {
                 transition: all 0.3s ease-in-out;
                 overflow-y: scroll !important;
-                scrollbar-width: none !important; /* Firefox */
                 padding-right: 0px;
+
+                .plus-icon {
+                    margin-right: 1px !important;
+                }
+
+                &.load-dispatcher-wrapper {
+                    overflow-y: scroll;
+                    max-height: 220px;
+
+                    .scrollable-element {
+                        max-height: 208px;
+                        overflow-y: scroll;
+                    }
+                }
 
                 &::-webkit-scrollbar {
                     width: 3px;
@@ -267,6 +280,12 @@
                 }
 
                 &.all-assigned {
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    pointer-events: none;
+                    
                     .details-template-text,
                     .svgtext-template-text {
                         color: $bw5;
@@ -359,11 +378,9 @@
 
                 // Higlight text
                 .highlight-text-45632 {
-                    font-weight: 700;
+                    background-color: $ta-blue-20;
+                    color: $ta-blue-19;
                     transition: all 0.3s ease-in-out;
-                    &:hover {
-                        color: #ffffff !important;
-                    }
                 }
 
                 //------------------------ Trucks, Trailers, Colors Template  ------------------------
@@ -1355,10 +1372,6 @@
                         &:hover {
                             border-radius: 2px;
                             background-color: #1d1d1d;
-
-                            .dropdown-subgroup-text {
-                                color: #ffffff !important;
-                            }
                         }
 
                         .dropdown-subgroup-text {
@@ -1381,7 +1394,7 @@
 
                                 &::after {
                                     position: absolute;
-                                    right: -26px;
+                                    right: -30px;
                                     content: url('/assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
@@ -1397,14 +1410,13 @@
                             text-align: right;
 
                             &.active {
-                                font-weight: 400;
-                                color: #6f9ee0;
+                                color: $ta-blue-7 !important;
                             }
 
                             // Higlight text
                             .highlight-text-45632 {
                                 font-weight: 500;
-                                color: #6f9ee0 !important;
+                                color: $ta-blue-7 !important;
                             }
                         }
                     }
@@ -1449,6 +1461,27 @@
                             fill: $ta-green-4 !important;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    &.bs-popover-top {
+        .popover-body {
+            margin-top: 0px !important;
+
+            .dropdown-options-divider.dispatch_dropdown {
+                top: auto;
+                bottom: -6px;
+            }
+
+            .dropdown-options {
+                &.merge-dropdown-body-with-input {
+                    border-radius: 2px 2px 0 0 !important;
+                }
+
+                &.svgtext-dispatch-template {
+                    top: 6px !important;
                 }
             }
         }

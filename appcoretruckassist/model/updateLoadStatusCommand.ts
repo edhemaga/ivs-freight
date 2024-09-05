@@ -10,10 +10,14 @@
  * Do not edit the class manually.
  */
 import { LoadStatus } from './loadStatus';
+import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateLoadStatusCommand { 
     id?: number;
     status?: LoadStatus;
+    repairLocation?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 

@@ -7,6 +7,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { UserService } from '@pages/user/services/user.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -90,8 +91,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private userService: UserService,
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
-    ) { }
+        private confirmationService: ConfirmationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+    ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
     ngOnInit(): void {
@@ -275,7 +277,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private currentSearchTableData(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -609,8 +611,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => { },
-                error: () => { },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -640,7 +642,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 900);
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 
@@ -777,7 +779,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService
                 .userResetPassword(event.data.email)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => { });
+                .subscribe(() => {});
         }
         // User Resend Ivitation
         else if (event.type === TableStringEnum.RESEND_INVITATION) {
@@ -787,7 +789,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     isResendConfirmation: true,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => { });
+                .subscribe(() => {});
         }
         // User Delete
         else if (event.type === TableStringEnum.DELETE) {

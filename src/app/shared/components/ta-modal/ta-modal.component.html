@@ -79,13 +79,13 @@
                         <div class="d-flex align-items-center">
                             <div class="modal-date-border"></div>
                             <span>
-                                <app-ta-search
+                                <app-ca-search-multiple-states
                                     [searchType]="'tabel'"
                                     [toolbarSearch]="true"
                                     [selectedTabData]="{
                                         gridNameTitle: modalTitle
                                     }"
-                                ></app-ta-search>
+                                ></app-ca-search-multiple-states>
                             </span>
                         </div>
                     </ng-container>
@@ -510,21 +510,21 @@
 
                             <!-- Convert back to load -->
                             <ng-container
-                            *ngIf="
-                                loadModalTemplate &&
-                                isConvertedToTemplate &&
-                                !editData &&
-                                !cardsModal
-                            "
-                        >
-                            <button
-                                (click)="onAction('convert-to-load')"
-                                class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
-                                type="button"
+                                *ngIf="
+                                    loadModalTemplate &&
+                                    isConvertedToTemplate &&
+                                    !editData &&
+                                    !cardsModal
+                                "
                             >
-                                Convert to Load
-                            </button>
-                        </ng-container>
+                                <button
+                                    (click)="onAction('convert-to-load')"
+                                    class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn"
+                                    type="button"
+                                >
+                                    Convert to Load
+                                </button>
+                            </ng-container>
 
                             <ng-container
                                 *ngIf="

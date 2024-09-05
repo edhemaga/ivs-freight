@@ -18,7 +18,6 @@ import { CreateTagCommand } from './createTagCommand';
 
 export interface ApiLoadPostRequest1 { 
     Type?: LoadType;
-    LoadNumber?: string;
     LoadTemplateId?: number;
     DispatcherId?: number;
     CompanyId?: number;

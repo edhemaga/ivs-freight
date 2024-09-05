@@ -14,6 +14,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -78,7 +79,7 @@ export class DispatchComponent
     selectedDispatcher;
     isAscending: boolean = true;
 
-    public isNoteExpanded: boolean;
+    public isNoteExpanded: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -89,7 +90,8 @@ export class DispatchComponent
         // services
         public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     ngOnInit(): void {
@@ -106,9 +108,12 @@ export class DispatchComponent
         this.setTableFilter();
 
         this.search();
-        this.columns = getDispatchColumnDefinition();
+
+        this.getDispatchColumns();
 
         this.toggleColumns();
+
+        this.resetColumnsSubscribe();
     }
 
     ngOnChanges() {}
@@ -204,6 +209,14 @@ export class DispatchComponent
                 this.sortDetails(event);
 
                 break;
+            case TableStringEnum.COLUMN_TOGGLE:
+                this.columns = this.columns.map((column: DispatchColumn) => {
+                    if (column.field === event.column) {
+                        return { ...column, hidden: true };
+                    }
+                    return column;
+                });
+                break;
             default:
                 break;
         }
@@ -279,10 +292,11 @@ export class DispatchComponent
                   )
               )
             : this.dispatcherItems[0];
+
+        this.initTableOptions();
     }
 
     sortDetails(e: any) {
-        console.log(e);
         this.sortByProperty(
             e.list.dispatches,
             e.column,
@@ -330,6 +344,11 @@ export class DispatchComponent
                         }
                         return col;
                     });
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
                 }
             });
     }
@@ -337,17 +356,31 @@ export class DispatchComponent
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTruckDispatchFilter: true,
-                showTrailerDispatchFilter: true,
-                showParkingFilter: true,
+                showTruckDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showTrailerDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showParkingFilter: !!this.selectedDispatcher?.dispatchCount,
                 hideOpenModalButton: true,
-                showStatusDispatchFilter: true,
-                showLocationFilter: true,
+                showStatusDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showLocationFilter: !!this.selectedDispatcher?.dispatchCount,
+                showDispatchVacationFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
                 showDispatchAdd: true,
+                disableSearch: !this.selectedDispatcher?.dispatchCount,
                 hideListColumn: true,
                 showDispatchSettings: true,
                 showDropdown: true,
                 hideDataCount: true,
+                filtersOrder: {
+                    truck: 1,
+                    trailer: 2,
+                    parking: 3,
+                    vacation: 4,
+                    location: 5,
+                    status: 6,
+                },
                 viewModeOptions: [
                     {
                         name: DispatchTableStringEnum.BOARD,
@@ -401,6 +434,8 @@ export class DispatchComponent
                 : false;
 
         this.isBoardLocked = true;
+
+        this.initTableOptions();
 
         localStorage.setItem(
             DispatchTableStringEnum.DISPATCH_USER_SELECT,
@@ -489,7 +524,7 @@ export class DispatchComponent
     }
 
     private search(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
@@ -501,5 +536,33 @@ export class DispatchComponent
 
     public toggleNote(isNoteExpanded: boolean): void {
         this.isNoteExpanded = isNoteExpanded;
+    }
+
+    // Reset Columns
+    public resetColumnsSubscribe(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.columns = getDispatchColumnDefinition();
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
+                }
+            });
+    }
+
+    public getDispatchColumns(): void {
+        this.columns = localStorage.getItem(
+            DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+        )
+            ? JSON.parse(
+                  localStorage.getItem(
+                      DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+                  )
+              )
+            : getDispatchColumnDefinition();
     }
 }

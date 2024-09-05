@@ -13,6 +13,7 @@ import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/con
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // Store
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
@@ -84,6 +85,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private loadService: LoadService,
         private modalService: ModalService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         // Store
         private brokerMinimalStore: BrokerMinimalListStore,
@@ -623,7 +625,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadsSearchListener(): void {
-        this.tableService.currentSearchTableData
+        this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {

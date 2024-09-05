@@ -390,7 +390,7 @@ export class TaChartComponent implements OnInit, OnChanges {
         //     this.chartWidth = this.chartConfig['chartWidth'];
         //     this.chartHeight = this.chartConfig['chartHeight'];
         //     this.dottedBackground = this.chartConfig['dottedBackground'];
-        //     this.noChartImage = this.chartConfig['noChartImage'];
+          this.noChartImage = this.chartConfig['noChartImage'];
         //     this.removeChartMargin = this.chartConfig['removeChartMargin'];
         //     this.saveChartProperties = this.chartConfig['chartInnitProperties'];
         //     this.chartInnitProperties =
@@ -525,7 +525,7 @@ export class TaChartComponent implements OnInit, OnChanges {
             }
         });
 
-        this.noChartData = hasData ? false : true;
+        //this.noChartData = hasData ? false : true;
     }
 
     private setChartLegendData(elements: any): void {

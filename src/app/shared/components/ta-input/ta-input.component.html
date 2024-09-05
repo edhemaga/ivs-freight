@@ -136,7 +136,8 @@
                 (_inputConfig?.dropdownImageInput?.url &&
                     !_inputConfig.blackInput &&
                     !_inputConfig.mergeDropdownBodyWithInput) ||
-                (getSuperControl.value && _inputConfig.isRemovedIconMovedOnLeft),
+                (getSuperControl.value &&
+                    _inputConfig.isRemovedIconMovedOnLeft),
             'trash-can-svg': _inputConfig.removeInput
         }"
         ngbTooltip
@@ -1151,8 +1152,7 @@
     {{ _inputConfig.customClass }}
     "
         [ngClass]="{
-            'input-fixed-placehoder-input':
-                _inputConfig.fixedPlacholder,
+            'input-fixed-placehoder-input': _inputConfig.fixedPlacholder,
             focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
@@ -1287,6 +1287,7 @@
                 _inputConfig?.dropdownImageInput?.template === 'user' &&
                 (_inputConfig.selectedDropdown ||
                     (_inputConfig.placeholder && focusInput) ||
+                    focusInput ||
                     getSuperControl.value),
             'dropdown-input-image-pm':
                 _inputConfig?.dropdownImageInput?.withText &&

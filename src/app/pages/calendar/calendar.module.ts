@@ -13,6 +13,7 @@ import { CalendarMonthComponent } from '@pages/calendar/pages/calendar/component
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 @NgModule({
     declarations: [CalendarComponent, CalendarMonthComponent],
@@ -29,6 +30,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
         TaSearchComponent,
         TaCustomCardComponent,
         TaTabSwitchComponent,
+        CaSearchMultipleStatesComponent,
     ],
 })
 export class CalendarModule {}

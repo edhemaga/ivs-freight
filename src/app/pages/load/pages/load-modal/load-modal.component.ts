@@ -414,6 +414,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public isButtonDisabled: boolean = false;
     public isEdit: boolean;
+    private emptyMiles: number;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -525,8 +526,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
                 this.selectedDispatcher?.avatarFile?.url,
-            this.selectedDispatcher?.name,
-            !this.isConvertedToTemplate && !this.isEdit
+            this.selectedDispatcher?.name
         );
     }
 
@@ -763,6 +763,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // legs
             loadMiles: [0],
             totalMiles: [0],
+            emptyMiles: [0],
             totalHours: [0],
             totalMinutes: [0],
         });
@@ -3442,8 +3443,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const validRoutes = routes.filter(
                 (item) =>
                     item &&
-                    item.longitude !== undefined &&
-                    item.latitude !== undefined
+                    item.longitude !== undefined && item.longitude !== null &&
+                    item.latitude !== undefined && item.latitude !== null
             );
 
             this.loadService
@@ -3612,6 +3613,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegHours = res.totalHours;
                             this.totalLegMinutes = res.totalMinutes;
                             this.totalLegCost = res.totalCost;
+                            this.emptyMiles = res.legs[0]?.miles || 0;
                         }
 
                         clearTimeout(this.lastCallTimeout);
@@ -3951,11 +3953,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
+            emptyMiles: this.emptyMiles,
         };
     }
 
-    private getLoadDropdowns(): void {
-        if (this.editData?.data?.id) {
+    private getLoadDropdowns(): void { 
+        if (this.editData?.data?.id && this.editData?.selectedTab !== TableStringEnum.TEMPLATE) {
             this.loadService
                 .getLoadStatusDropdownOptions(this.editData?.data.id)
                 .pipe(takeUntil(this.destroy$))
@@ -3994,8 +3997,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.handleTonuRateVisiblity();
                 });
         }
+        const id = this.editData?.selectedTab !== TableStringEnum.TEMPLATE ? this.editData?.data?.id : null;
         this.loadService
-            .getLoadDropdowns(this.editData?.data?.id)
+            .getLoadDropdowns(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
@@ -4379,6 +4383,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
+            emptyMiles: this.emptyMiles,
             pays: this.mapPayments(),
             tonuRate,
             revisedRate,
@@ -4408,7 +4413,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ...commonData,
                 type: this.tabs.find((tab) => tab.id === this.selectedTab)
                     .name as LoadType,
-                loadNumber: this.loadNumber,
                 loadTemplateId: this.selectedTemplate
                     ? this.selectedTemplate.id
                     : null,
@@ -4642,6 +4646,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
             statusHistory,
+            emptyMiles
         } = loadModalData;
 
         // Remove deadhead
@@ -4757,6 +4762,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadMiles: loadedMiles,
             totalMiles: totalMiles,
             totalHours: totalTimeHours,
+            emptyMiles: emptyMiles,
             invoicedDate,
             ageUnpaid: ageUnpaid,
             daysToPay,
