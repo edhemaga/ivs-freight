@@ -149,4 +149,6 @@ export interface ITaInput {
     statusStyle?: boolean;
     isIconHidden?: boolean;
     isRemovedIconMovedOnLeft?: boolean;
+    removeLeadingZero?: boolean;
+    negativeLeadingZero?: boolean;
 }

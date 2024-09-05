@@ -18,8 +18,13 @@ export class DispatchTableNoteComponent {
     @Input() public rowIndex: number;
     @Input() public dispatchId: number;
 
+    @Input() public set noteWidth(value: number) {
+        this._noteWidth = value;
+    }
+
     public noteOpened: boolean;
     public _note: string;
+    public _noteWidth: number;
 
     constructor() {}
 

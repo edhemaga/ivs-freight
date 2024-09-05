@@ -1,4 +1,3 @@
-<!-- *ngIf="isUserPanelOpen" -->
 <div
     [ngClass]="{
         'user-panel': isNavigationHovered
@@ -78,16 +77,17 @@
                 </p>
             </div>
         </div>
+
         <div
             *ngIf="isNavigationHovered && isUserPanelOpen"
             [@showHideDetails]="
-                isNavigationHovered && isUserPanelOpen ? 'true' : 'true'
+                isNavigationHovered && isUserPanelOpen ? 'true' : 'false'
             "
             class="new-magic-line"
         ></div>
     </div>
 
-    <div class="panel-user" (click)="onUserPanelClose(!isUserPanelOpen)">
+    <div class="panel-user" (click)="onUserPanelClose()">
         <div class="user-holder">
             <img
                 class="panel-image"
