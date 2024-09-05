@@ -54,8 +54,6 @@ import {
     TruckMinimalResponse,
     DriverMinimalResponse,
     DispatchResponse,
-    LoadShortResponse,
-    DispatchService,
     DispatchGroupedLoadsResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
@@ -179,8 +177,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         // Services
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService,
-        private tableService: TruckassistTableService,
-        private dispatchService: DispatchService
+        private tableService: TruckassistTableService
     ) {}
 
     set checkEmptySet(value: string) {
