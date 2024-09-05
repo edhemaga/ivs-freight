@@ -284,7 +284,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         notePopover?: NgbPopover
     ): void {
         this.value = event;
-        if (isDeleteAll && this.isAllOpen) {
+        if (isDeleteAll) {
             if (notePopover?.isOpen()) notePopover?.close();
             this.closeNote();
         }
