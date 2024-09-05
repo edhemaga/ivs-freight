@@ -142,6 +142,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() areaFilter: boolean = false;
 
     @Output() setFilter = new EventEmitter<any>();
+    @Input() isAssignLoadModal: boolean = false;
 
     private destroy$ = new Subject<void>();
     public autoCloseComponent: QueryList<TaAutoclosePopoverComponent>;
@@ -1148,7 +1149,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             );
                         }
                     } else if(res?.animation === 'load-list-update') {
-                        this.truckArray =this.createTruckTypeGroups(res.data);
+                        if(this.isAssignLoadModal) this.truckArray =this.createTruckTypeGroups(res.data);
                     }
                 } else if (
                     this.type === ToolbarFilterStringEnum.TRAILER_FILTER
@@ -1183,7 +1184,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             );
                         }
                     } else if(res?.animation === 'load-list-update') {
-                        this.trailerArray = this.createTrailerTypeGroups(res.data);
+                        if(this.isAssignLoadModal) this.trailerArray =this.createTrailerTypeGroups(res.data);
                     }
                 }
             });
@@ -2305,6 +2306,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public getBackendData(type: any, subType?: string): void {
+        if(this.isAssignLoadModal) return;
         switch (this.type) {
             case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER: {
                 this.filterService.getTruckType();
