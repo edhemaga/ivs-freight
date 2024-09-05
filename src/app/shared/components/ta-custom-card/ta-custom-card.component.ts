@@ -21,8 +21,8 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Models
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+// Enums
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';

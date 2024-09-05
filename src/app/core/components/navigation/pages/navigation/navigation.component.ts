@@ -92,6 +92,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     routeIndexSelected: boolean;
     subrouteClicked: boolean = false;
     dropdowns: boolean = false;
+
     constructor(
         private cdRef: ChangeDetectorRef,
         private router: Router,
@@ -111,6 +112,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.navigationService.getValueWhichNavIsOpen().subscribe((value) => {
             this.footerRouteActive = value;
         });
+
         this.navigationService.navigationDropdownActivation$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {

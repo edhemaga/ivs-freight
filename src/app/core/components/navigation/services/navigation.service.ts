@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -40,13 +40,10 @@ export class NavigationService {
         this.footerNavigationHover.next(newValue);
     }
 
-    private navigationDropdownActivationSubject: BehaviorSubject<{
+    private navigationDropdownActivationSubject: Subject<{
         name: string;
         type: boolean;
-    }> = new BehaviorSubject<{ name: string; type: boolean }>({
-        name: null,
-        type: false,
-    });
+    }> = new Subject<{ name: string; type: boolean }>();
 
     get navigationDropdownActivation$() {
         return this.navigationDropdownActivationSubject.asObservable();

@@ -24,7 +24,6 @@ import { DispatchHistoryModalConfig } from '@pages/dispatch/pages/dispatch/compo
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
 
 // constants
 import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
@@ -199,20 +198,11 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                 const itemsGroup = this.formBuilder.array(
                     group.items.map((item) => {
-                        const roundedTimeStart =
-                            DispatchHistoryModalDateHelper.roundToNearestQuarterHour(
-                                item.startDate
-                            );
-                        const roundedTimeEnd =
-                            DispatchHistoryModalDateHelper.roundToNearestQuarterHour(
-                                item.endDate
-                            );
-
-                        const newIsInputHoverRow = this.createIsHoverRow();
+                        const createdIsInputHoverRow = this.createIsHoverRow();
 
                         this.isInputHoverRows[index] = [
                             ...this.isInputHoverRows[index],
-                            newIsInputHoverRow,
+                            createdIsInputHoverRow,
                         ];
 
                         return this.formBuilder.group({
@@ -221,7 +211,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                                     item.startDate
                                 ),
                             ],
-                            timeStart: [roundedTimeStart],
+                            timeStart: [item.startTime],
                             dateEnd: [
                                 item.endDate
                                     ? MethodsCalculationsHelper.convertDateFromBackend(
@@ -229,11 +219,12 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                                       )
                                     : null,
                             ],
-                            timeEnd: [roundedTimeEnd],
+                            timeEnd: [item.endTime],
                             totalTime: item.totalTime,
                         });
                     })
                 );
+
                 itemsArray.push(itemsGroup);
             });
 
@@ -284,7 +275,86 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
         if (isDateValid) {
             if (nextGroupItem) {
-                this.handleSelectedDateBeforeOrSameDateEnd(selectedGroupItem);
+                const isSelectedDateSameAsPreviousDate =
+                    DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrAfterPreviousDate(
+                        selectedGroupItem.dateStart,
+                        previousGroupItem.dateEnd,
+                        true
+                    );
+
+                if (isSelectedDateSameAsPreviousDate) {
+                    const isTimeValid =
+                        DispatchHistoryModalDateHelper.checkIsTimeStartAfterOrSamePreviousTimeEnd(
+                            selectedGroupItem.timeStart,
+                            previousGroupItem.timeEnd
+                        );
+
+                    const isGroupItemsRowValid =
+                        this.checkIsGroupItemsRowValid();
+
+                    if (isTimeValid && isGroupItemsRowValid) {
+                        const { dateStart, timeStart, dateEnd, timeEnd } =
+                            selectedGroupItem;
+
+                        this.updateGroupHistoryData(
+                            false,
+                            dateStart,
+                            timeStart,
+                            dateEnd,
+                            timeEnd
+                        );
+                    } else if (!isTimeValid) {
+                        this.setInputValidationToInvalid(
+                            DispatchHistoryModalStringEnum.TIME_START
+                        );
+                    }
+
+                    console.log('isTimeValid', isTimeValid);
+                } else {
+                    this.handleSelectedDateBeforeOrSameDateEnd(
+                        selectedGroupItem
+                    );
+                }
+
+                /* const { dateStart, timeStart, dateEnd, timeEnd } = selectedGroupItem;
+
+        const isDateValid =
+            DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                dateStart,
+                dateEnd
+            );
+
+        if (
+            isDateValid.isSelectedDateBeforeSelectedGroupItemDateEnd ||
+            isDateValid.isSelectedDateSameAsSelectedGroupItemDateEnd
+        ) {
+            const isTimeValid =
+                isDateValid.isSelectedDateBeforeSelectedGroupItemDateEnd ||
+                DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
+                    timeStart,
+                    timeEnd
+                );
+
+            const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+            if (isTimeValid && isGroupItemsRowValid) {
+                this.updateGroupHistoryData(
+                    false,
+                    dateStart,
+                    timeStart,
+                    dateEnd,
+                    timeEnd
+                );
+            } else if (!isTimeValid) {
+                this.setInputValidationToInvalid(
+                    DispatchHistoryModalStringEnum.TIME_START
+                );
+            }
+        } else {
+            this.setInputValidationToInvalid(
+                DispatchHistoryModalStringEnum.DATE_START
+            );
+        } */
             } else {
                 this.updateGroupHistoryData(true);
             }
@@ -403,8 +473,6 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 dateEnd
             );
 
-        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
-
         if (
             isDateValid.isSelectedDateBeforeSelectedGroupItemDateEnd ||
             isDateValid.isSelectedDateSameAsSelectedGroupItemDateEnd
@@ -415,6 +483,8 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                     timeStart,
                     timeEnd
                 );
+
+            const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
 
             if (isTimeValid && isGroupItemsRowValid) {
                 this.updateGroupHistoryData(

@@ -55,7 +55,7 @@ import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzo
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 
 @Component({

@@ -250,7 +250,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 items: group.items.map((item) => {
                     return {
                         ...item,
-                        stopOrder: null,
+                        stopOrder: item.status.statusCheckInNumber,
                         type: DispatchHistoryModalHelper.createStatusOrderValues(
                             item.status.statusValue.name
                         ),
@@ -350,7 +350,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        this.selectedTime = {
+        /*  this.selectedTime = {
             id: 12,
             name: 'This Year',
         };
@@ -370,7 +370,28 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             id: 9,
             name: 'Milos Djordjevic',
         };
-
+ */
+        /*  this.selectedTime = {
+            id: 12,
+            name: 'This Year',
+        };
+        this.selectedDispatchBoard = {
+            id: 15,
+            name: 'Team Board',
+        };
+        this.selectedTruck = {
+            id: 67,
+            name: '5142',
+        };
+        this.selectedTrailer = {
+            id: 107,
+            name: '12345678',
+        };
+        this.selectedDriver = {
+            id: 13,
+            name: 'Alan Parker',
+        };
+ */
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
             isDispatchBoardSelected: !!this.selectedDispatchBoard,
