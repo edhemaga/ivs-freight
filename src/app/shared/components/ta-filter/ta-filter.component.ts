@@ -912,7 +912,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         } = {};
 
         loadRequirements.forEach((requirement) => {
-            const trailerType = requirement?.loadRequirements.trailerType;
+            const trailerType = requirement?.loadRequirements?.trailerType;
             if (trailerType && trailerType.name) {
                 const trailerName = trailerType.name;
                 const id = trailerType.id;
@@ -958,7 +958,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         } = {};
 
         loadRequirements.forEach((requirement) => {
-            const truckType = requirement?.loadRequirements.truckType;
+            const truckType = requirement?.loadRequirements?.truckType;
             if (truckType && truckType.name) {
                 const truckName = truckType.name;
                 const id = truckType.id;
