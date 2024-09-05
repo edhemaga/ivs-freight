@@ -1,3 +1,5 @@
+import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-history-modal-string.enum';
+
 export class DispatchHistoryModalConstants {
     static DISPATCH_HISTORY_HEADER_ITEMS: string[] = [
         'DISPATCH BOARD',
@@ -21,5 +23,12 @@ export class DispatchHistoryModalConstants {
         false,
         false,
         false,
+    ];
+
+    static GROUP_ITEM_CONTROL_NAMES: string[] = [
+        DispatchHistoryModalStringEnum.DATE_START,
+        DispatchHistoryModalStringEnum.TIME_START,
+        DispatchHistoryModalStringEnum.DATE_END,
+        DispatchHistoryModalStringEnum.TIME_END,
     ];
 }

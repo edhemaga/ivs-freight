@@ -350,7 +350,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        /*  this.selectedTime = {
+        this.selectedTime = {
             id: 12,
             name: 'This Year',
         };
@@ -370,7 +370,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             id: 9,
             name: 'Milos Djordjevic',
         };
- */
+
         /*  this.selectedTime = {
             id: 12,
             name: 'This Year',
