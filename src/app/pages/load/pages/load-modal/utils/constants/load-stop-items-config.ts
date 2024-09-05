@@ -1,5 +1,5 @@
 // models
-import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
+import { LoadItemStop } from '@pages/load/pages/load-modal/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class LoadStopItemsConfig {

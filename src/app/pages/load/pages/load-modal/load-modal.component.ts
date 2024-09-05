@@ -76,21 +76,13 @@ import { fadeInAnimation } from '@pages/load/pages/load-modal/utils/animations/f
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // pipes
-import { FinancialCalculationPipe } from '@pages/load/pages/load-modal/pipes/financial-calculation.pipe';
-import { LoadDatetimeRangePipe } from '@pages/load/pages/load-modal/pipes/load-datetime-range.pipe';
-import { LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes/load-time-type.pipe';
+import { FinancialCalculationPipe, LoadDatetimeRangePipe, LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes';
 
 // constants
-import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
-import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
-import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
-
-// config
-import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants/load-stop-items-config';
+import { LoadModalConfig, LoadModalConstants, LoadModalDragAndDrop, LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants'; 
 
 // enums
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
-import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
+import { LoadModalStringEnum, LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -121,27 +113,30 @@ import {
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { LoadBilling } from '@pages/load/pages/load-modal/models/load-billing.model';
-import { LoadPayment } from '@pages/load/pages/load-modal/models/load-payment.model';
 import { MapRoute } from '@shared/models/map-route.model';
-import { LoadStopRoutes } from '@pages/load/pages/load-modal/models/load-stop-routes.model';
-import { LoadModalTab } from '@pages/load/pages/load-modal/models/load-modal-tab.model';
 import { Load } from '@pages/load/models/load.model';
-import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
-import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
-import { LoadAdditionalBilling } from '@pages/load/pages/load-modal/models/load-additional-billing.model';
-import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-dropdown.model';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
-import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
-import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
-import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import {
+    LoadModalTab,
+    SelectedStatus,
+    LoadYearDropdown,
+    LoadStopItemDropdownLists,
+    LoadItemStop,
+    LoadAdditionalBilling,
+    LoadBilling,
+    LoadPayment,
+    LoadModalInvoiceProgress,
+    LoadAdditionalPayment,
+    LoadModalWaitTimeFormField,
+    LoadStopRoutes,
+} from './models';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+
 
 @Component({
     selector: 'app-load-modal',
