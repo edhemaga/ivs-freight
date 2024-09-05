@@ -104,8 +104,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
 
-    public backLoadFilterQuery: DispatchBoardAssignLoadFilterOptions =
-        DispatchAssignLoadModalConstants.BACK_FILTER;
+    public backLoadFilterQuery: DispatchBoardAssignLoadFilterOptions;
 
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
@@ -140,6 +139,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private initializeForm(): void {
+        this.backLoadFilterQuery = {...DispatchAssignLoadModalConstants.BACK_FILTER};
         this.assignLoadForm = this.formBuilder.group({
             dispatchId: [null],
         });
