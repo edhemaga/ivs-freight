@@ -36,6 +36,7 @@ export class LoadStopItemsConfig {
         fixedPlacholder: 'lbs',
         priceSeparator: true,
         priceSeparatorLimitation: 6,
+        removeLeadingZero: true,
     };
 
     static LENGTH_INPUT_CONFIG: ITaInput = {
@@ -46,6 +47,7 @@ export class LoadStopItemsConfig {
         fixedPlacholder: 'ft',
         priceSeparator: true,
         priceSeparatorLimitation: 3,
+        removeLeadingZero: true,
     };
     static HEIGHT_INPUT_CONFIG: ITaInput = {
         name: 'Height',
@@ -55,6 +57,7 @@ export class LoadStopItemsConfig {
         fixedPlacholder: 'ft',
         priceSeparator: true,
         priceSeparatorLimitation: 6,
+        removeLeadingZero: true,
     };
 
     static getTarpInputConfig(isDisabled: boolean): ITaInput {
@@ -131,8 +134,9 @@ export class LoadStopItemsConfig {
         label: 'TMP',
         placeholderInsteadOfLabel: true,
         fixedPlacholder: '°F',
-        priceSeparator: true,
         priceSeparatorLimitation: 6,
+        removeLeadingZero: true,
+        negativeLeadingZero: true
     };
 
     static IS_CREATED_NEW_STOP_ITEMS_ROW: LoadItemStop = {
