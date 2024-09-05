@@ -466,8 +466,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public selectLoad(loadId: number, isAssigned: boolean) {
-        this.isLoading = true;
         if (!this.isAdditonalViewOpened) return;
+        this.isLoading = true;
 
         this.isAssignedLoad = isAssigned;
         this.selectedLoad = null;
