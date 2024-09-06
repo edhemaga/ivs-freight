@@ -57,6 +57,8 @@ export class FormService implements OnDestroy {
     }
     
     private isValidNumber(value: string | number, maxDigits: number): boolean {
+        if(!value) return false;
+        
         value = value.toString().replace(',', '');
         const numPattern = new RegExp(`^-?\\d{1,${maxDigits}}$`);
         return numPattern.test(value);
