@@ -499,6 +499,12 @@ export class TaInputComponent
     private removeLeadingZero(): void {
         if (this._inputConfig.removeLeadingZero) {
             const currentValue = this.getSuperControl.value;
+
+            if(!currentValue) {
+                this.getSuperControl.patchValue('');
+                this.getSuperControl.setErrors(null);
+                return;
+            }
     
             if (this._inputConfig.negativeLeadingZero) {
                 const isNegative = currentValue.startsWith('-');
