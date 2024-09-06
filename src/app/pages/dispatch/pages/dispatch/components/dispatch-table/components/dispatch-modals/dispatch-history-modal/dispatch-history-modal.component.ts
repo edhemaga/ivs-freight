@@ -10,17 +10,17 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
 
 // configs
-import { DispatchHistoryModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-history-modal.config';
+import { DispatchHistoryModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // enums
-import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-history-modal-string.enum';
+import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-history-modal.helper';
+import { DispatchHistoryModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // constants
-import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
+import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // models
 import {
@@ -250,7 +250,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                 items: group.items.map((item) => {
                     return {
                         ...item,
-                        stopOrder: null,
+                        stopOrder: item.status.statusCheckInNumber,
                         type: DispatchHistoryModalHelper.createStatusOrderValues(
                             item.status.statusValue.name
                         ),
@@ -371,6 +371,27 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             name: 'Milos Djordjevic',
         };
 
+        /*  this.selectedTime = {
+            id: 12,
+            name: 'This Year',
+        };
+        this.selectedDispatchBoard = {
+            id: 15,
+            name: 'Team Board',
+        };
+        this.selectedTruck = {
+            id: 67,
+            name: '5142',
+        };
+        this.selectedTrailer = {
+            id: 107,
+            name: '12345678',
+        };
+        this.selectedDriver = {
+            id: 13,
+            name: 'Alan Parker',
+        };
+ */
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
             isDispatchBoardSelected: !!this.selectedDispatchBoard,

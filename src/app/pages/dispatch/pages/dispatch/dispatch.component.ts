@@ -23,12 +23,12 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 //models
-import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 //constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -79,7 +79,7 @@ export class DispatchComponent
     selectedDispatcher;
     isAscending: boolean = true;
 
-    public isNoteExpanded: boolean;
+    public isNoteExpanded: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -108,9 +108,12 @@ export class DispatchComponent
         this.setTableFilter();
 
         this.search();
-        this.columns = getDispatchColumnDefinition();
+
+        this.getDispatchColumns();
 
         this.toggleColumns();
+
+        this.resetColumnsSubscribe();
     }
 
     ngOnChanges() {}
@@ -289,6 +292,8 @@ export class DispatchComponent
                   )
               )
             : this.dispatcherItems[0];
+
+        this.initTableOptions();
     }
 
     sortDetails(e: any) {
@@ -339,6 +344,11 @@ export class DispatchComponent
                         }
                         return col;
                     });
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
                 }
             });
     }
@@ -346,17 +356,31 @@ export class DispatchComponent
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTruckDispatchFilter: true,
-                showTrailerDispatchFilter: true,
-                showParkingFilter: true,
+                showTruckDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showTrailerDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showParkingFilter: !!this.selectedDispatcher?.dispatchCount,
                 hideOpenModalButton: true,
-                showStatusDispatchFilter: true,
-                showLocationFilter: true,
+                showStatusDispatchFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
+                showLocationFilter: !!this.selectedDispatcher?.dispatchCount,
+                showDispatchVacationFilter:
+                    !!this.selectedDispatcher?.dispatchCount,
                 showDispatchAdd: true,
+                disableSearch: !this.selectedDispatcher?.dispatchCount,
                 hideListColumn: true,
                 showDispatchSettings: true,
                 showDropdown: true,
                 hideDataCount: true,
+                filtersOrder: {
+                    truck: 1,
+                    trailer: 2,
+                    parking: 3,
+                    vacation: 4,
+                    location: 5,
+                    status: 6,
+                },
                 viewModeOptions: [
                     {
                         name: DispatchTableStringEnum.BOARD,
@@ -410,6 +434,8 @@ export class DispatchComponent
                 : false;
 
         this.isBoardLocked = true;
+
+        this.initTableOptions();
 
         localStorage.setItem(
             DispatchTableStringEnum.DISPATCH_USER_SELECT,
@@ -510,5 +536,33 @@ export class DispatchComponent
 
     public toggleNote(isNoteExpanded: boolean): void {
         this.isNoteExpanded = isNoteExpanded;
+    }
+
+    // Reset Columns
+    public resetColumnsSubscribe(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.columns = getDispatchColumnDefinition();
+
+                    localStorage.setItem(
+                        DispatchTableStringEnum.DISPATCH_TABLE_CONFIG,
+                        JSON.stringify(this.columns)
+                    );
+                }
+            });
+    }
+
+    public getDispatchColumns(): void {
+        this.columns = localStorage.getItem(
+            DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+        )
+            ? JSON.parse(
+                  localStorage.getItem(
+                      DispatchTableStringEnum.DISPATCH_TABLE_CONFIG
+                  )
+              )
+            : getDispatchColumnDefinition();
     }
 }

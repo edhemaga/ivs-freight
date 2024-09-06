@@ -24,7 +24,7 @@ import {
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -35,7 +35,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // config
-import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 @Component({
     selector: 'app-dispatch-table-driver',
@@ -45,7 +45,19 @@ import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispat
 export class DispatchTableDriverComponent {
     @Input() public driver: DriverResponse;
     @Input() public rowIndex: number;
-    @Input() public driverList: DriverListItemResponse[];
+    @Input() set driverList(values) {
+        if (values) this._driverList = [...values];
+
+        if (
+            !values.length &&
+            !this._driverList.find((item) => item.id === 7656)
+        ) {
+            this._driverList.unshift({
+                id: 7656,
+                name: DispatchTableStringEnum.ALL_ASSIGNED,
+            });
+        }
+    }
     @Input() public isBoardLocked: boolean;
     @Input() public phone: string;
     @Input() public email: string;
@@ -72,9 +84,7 @@ export class DispatchTableDriverComponent {
         index: number;
     }>();
 
-    @Output() setDriverDropdownIndexEmitter = new EventEmitter<{
-        index: number;
-    }>();
+    @Output() setDriverDropdownIndexEmitter = new EventEmitter<number>();
 
     @Output() driverVacationEmitter = new EventEmitter<{}>();
 
@@ -92,6 +102,7 @@ export class DispatchTableDriverComponent {
     public copyIndex: number = -1;
     public driverIndex: number = -1;
     public _driverDropdownWidth: number;
+    public _driverList: DriverListItemResponse[] = [];
 
     public tooltip: NgbTooltip;
 
@@ -176,9 +187,7 @@ export class DispatchTableDriverComponent {
         }
 
         this.openedDriverDropdown = -1;
-        this.setDriverDropdownIndexEmitter.emit({
-            index: this.openedDriverDropdown,
-        });
+        this.setDriverDropdownIndexEmitter.emit(this.openedDriverDropdown);
     }
 
     public removeDriver(index: number): void {
@@ -191,9 +200,7 @@ export class DispatchTableDriverComponent {
 
     public showDriverDropdown(ind: number) {
         this.openedDriverDropdown = ind;
-        this.setDriverDropdownIndexEmitter.emit({
-            index: this.openedDriverDropdown,
-        });
+        this.setDriverDropdownIndexEmitter.emit(this.openedDriverDropdown);
     }
 
     public toggleHos(tooltip: NgbTooltip, data: any): void {

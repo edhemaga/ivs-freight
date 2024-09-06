@@ -11,7 +11,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
             resizable: true,
             width: 320,
-            minWidth: 140,
+            minWidth: 160,
         },
         {
             ngTemplate: 'text',
@@ -32,7 +32,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
 
             width: 320,
-            minWidth: 140,
+            minWidth: 160,
         },
         {
             ngTemplate: 'text',
@@ -92,7 +92,7 @@ export function getDispatchColumnDefinition() {
             groupName: 'Co-Driver ',
             name: 'Hours of Service ',
             sortName: 'driver',
-            hidden: true,
+            hidden: false,
         },
         {
             ngTemplate: 'text',
@@ -109,7 +109,7 @@ export function getDispatchColumnDefinition() {
             title: 'Pre trip',
             field: 'PreTrip',
             name: 'Pre-Trip Insp. ',
-            hidden: false,
+            hidden: true,
             width: 34,
             minWidth: 34,
         },

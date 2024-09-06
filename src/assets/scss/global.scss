@@ -94,7 +94,7 @@ body {
         .table-inner-modal
     ):not(.scrollable):not(.columns-scroll.items-scroll):not(
         .scrollable-element
-    ) {
+    ):not(.dropdown-options.scroll) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

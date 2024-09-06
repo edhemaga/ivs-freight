@@ -432,6 +432,7 @@
                             optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
                         "
                         position="bottom"
+                        container="body"
                     >
                         <svg-icon
                             class="d-flex justify-content-center align-items-center"
@@ -502,6 +503,7 @@
                             optionsPopupOpen ? '#2F2F2F' : '#FFFFFF'
                         "
                         position="bottom"
+                        container="body"
                     >
                         <svg-icon
                             class="d-flex justify-content-center align-items-center"
@@ -522,6 +524,10 @@
 
                 <div
                     class="settings-dispatch dispach-history d-flex justify-content-center align-items-center"
+                    [ngClass]="{
+                        'disabled-icon pe-none':
+                            !selectedDispatcher?.dispatchCount
+                    }"
                     ngbTooltip
                     [mainTooltip]="'Dispatch History'"
                     tooltipBackground="#424242"

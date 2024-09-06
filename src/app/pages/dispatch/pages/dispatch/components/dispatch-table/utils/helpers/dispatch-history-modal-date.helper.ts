@@ -1,32 +1,6 @@
 import moment from 'moment';
 
-// helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
 export class DispatchHistoryModalDateHelper {
-    static roundToNearestQuarterHour(time: string): string {
-        const convertedTime = time
-            ? MethodsCalculationsHelper.convertDateFromBackendToTime(time)
-            : null;
-
-        if (convertedTime) {
-            const [hours, minutesWithPmAm] = convertedTime.split(':');
-            const [minutes, amPm] = minutesWithPmAm.split(' ');
-
-            const quarterHours = Math.round(+minutes / 15);
-
-            const roundedMinutes = quarterHours * 15;
-            const roundedHours =
-                roundedMinutes === 60 ? (+hours + 1) % 24 : hours;
-
-            return `${String(roundedHours).padStart(2, '0')}:${String(
-                roundedMinutes % 60
-            ).padStart(2, '0')} ${amPm}`;
-        }
-
-        return convertedTime;
-    }
-
     static createTotalColumnValue(dateFrom: string, dateTo: string): string {
         if (!dateTo) {
             return 'Ongoing';
@@ -74,17 +48,16 @@ export class DispatchHistoryModalDateHelper {
 
     static checkIsSelectedDateSameOrAfterPreviousDate(
         dateStart: string,
-        dateEnd: string
+        dateEnd: string,
+        isSameCheck: boolean = false
     ): boolean {
         const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
-
         const previousGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
 
-        const isSelectedDateSameOrAfterPreviousDate =
-            selectedGroupItemDateStart.isSame(previousGroupItemDateEnd) ||
-            selectedGroupItemDateStart.isAfter(previousGroupItemDateEnd);
-
-        return isSelectedDateSameOrAfterPreviousDate;
+        return isSameCheck
+            ? selectedGroupItemDateStart.isSame(previousGroupItemDateEnd)
+            : selectedGroupItemDateStart.isSame(previousGroupItemDateEnd) ||
+                  selectedGroupItemDateStart.isAfter(previousGroupItemDateEnd);
     }
 
     static checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
@@ -95,12 +68,10 @@ export class DispatchHistoryModalDateHelper {
         isSelectedDateSameAsSelectedGroupItemDateEnd: boolean;
     } {
         const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
-
         const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
 
         const isSelectedDateBeforeSelectedGroupItemDateEnd =
             selectedGroupItemDateStart.isBefore(selectedGroupItemDateEnd);
-
         const isSelectedDateSameAsSelectedGroupItemDateEnd =
             selectedGroupItemDateStart.isSame(selectedGroupItemDateEnd);
 
@@ -126,17 +97,16 @@ export class DispatchHistoryModalDateHelper {
 
     static checkIsSelectedDateSameOrBeforeNextDate(
         dateEnd: string,
-        dateStart: string
+        dateStart: string,
+        isSameCheck: boolean = false
     ): boolean {
         const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
-
         const nextGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
 
-        const isSelectedDateSameOrAfterPreviousDate =
-            selectedGroupItemDateEnd.isSame(nextGroupItemDateStart) ||
-            selectedGroupItemDateEnd.isBefore(nextGroupItemDateStart);
-
-        return isSelectedDateSameOrAfterPreviousDate;
+        return isSameCheck
+            ? selectedGroupItemDateEnd.isSame(nextGroupItemDateStart)
+            : selectedGroupItemDateEnd.isSame(nextGroupItemDateStart) ||
+                  selectedGroupItemDateEnd.isBefore(nextGroupItemDateStart);
     }
 
     static checkIsSelectedDateAfterOrSameAsSelectedGroupItemDateStart(
@@ -147,12 +117,10 @@ export class DispatchHistoryModalDateHelper {
         isSelectedDateSameAsSelectedGroupItemDateStart: boolean;
     } {
         const selectedGroupItemDateEnd = moment(dateEnd, 'MM/DD/YY');
-
         const selectedGroupItemDateStart = moment(dateStart, 'MM/DD/YY');
 
         const isSelectedDateAfterSelectedGroupItemDateStart =
             selectedGroupItemDateEnd.isAfter(selectedGroupItemDateStart);
-
         const isSelectedDateSameAsSelectedGroupItemDateStart =
             selectedGroupItemDateEnd.isSame(selectedGroupItemDateStart);
 
@@ -160,5 +128,33 @@ export class DispatchHistoryModalDateHelper {
             isSelectedDateAfterSelectedGroupItemDateStart,
             isSelectedDateSameAsSelectedGroupItemDateStart,
         };
+    }
+
+    static checkIsTimeStartAfterOrSamePreviousTimeEnd(
+        timeStart: string,
+        previousTimeEnd: string
+    ): boolean {
+        const selectedGroupItemTimeStart = moment(timeStart, 'hh:mm A');
+        const previousGroupItemTimeEnd = moment(previousTimeEnd, 'hh:mm A');
+
+        const isTimeStartAfterOrSameAsTimeEnd =
+            selectedGroupItemTimeStart.isAfter(previousGroupItemTimeEnd) ||
+            selectedGroupItemTimeStart.isSame(previousGroupItemTimeEnd);
+
+        return isTimeStartAfterOrSameAsTimeEnd;
+    }
+
+    static checkIsTimeEndBeforeOrSameNextTimeStart(
+        timeEnd: string,
+        nextTimeStart: string
+    ): boolean {
+        const selectedGroupItemTimeEnd = moment(timeEnd, 'hh:mm A');
+        const nextGroupItemTimeStart = moment(nextTimeStart, 'hh:mm A');
+
+        const isTimeEndBeforeOrSameAsTimeStart =
+            selectedGroupItemTimeEnd.isBefore(nextGroupItemTimeStart) ||
+            selectedGroupItemTimeEnd.isSame(nextGroupItemTimeStart);
+
+        return isTimeEndBeforeOrSameAsTimeStart;
     }
 }

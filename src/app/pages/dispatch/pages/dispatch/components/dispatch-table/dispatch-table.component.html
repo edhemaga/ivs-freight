@@ -8,7 +8,14 @@
     cdkDropList
     (cdkDropListDropped)="dropList($event)"
 >
-    <div class="table-container-dispatch scrollable">
+    <div
+        class="table-container-dispatch scrollable"
+        [class.flex-column]="
+            !dispatchData?.dispatches?.length &&
+            !isAllBoardsList &&
+            isDispatchBoardLocked
+        "
+    >
         <ng-container *ngIf="isDispatchBoardChangeInProgress">
             <div
                 @dispatchBackgroundAnimation
@@ -62,7 +69,16 @@
                                             tableHeaderItem?.title ===
                                                 'PARKING' ||
                                             tableHeaderItem?.title ===
-                                                'LAST LOCATION'
+                                                'LAST LOCATION',
+                                        'smaller-padding':
+                                            !isDispatchBoardLocked &&
+                                            (tableHeaderItem?.title ===
+                                                'INSPECTION' ||
+                                                tableHeaderItem?.title ===
+                                                    'DISPATCHER' ||
+                                                (tableHeaderItem?.title ===
+                                                    'NOTE' &&
+                                                    !_isNoteExpanded))
                                     }"
                                 >
                                     <div
@@ -71,6 +87,8 @@
                                         [title]="tableHeaderItem.title"
                                         [columns]="columnsToShow"
                                         [resizeEnabled]="!isDispatchBoardLocked"
+                                        [isNoteExpanded]="_isNoteExpanded"
+                                        (onNoteResize)="onNoteResize($event)"
                                         [ngClass]="{
                                             'show-after': !isDispatchBoardLocked
                                         }"
@@ -602,6 +620,7 @@
                                     <app-dispatch-table-note
                                         [truck]="item.truck"
                                         [note]="item.note"
+                                        [noteWidth]="noteWidth"
                                         [isNoteExpanded]="_isNoteExpanded"
                                         [isHoveringRowIndex]="
                                             isHoveringRowIndex

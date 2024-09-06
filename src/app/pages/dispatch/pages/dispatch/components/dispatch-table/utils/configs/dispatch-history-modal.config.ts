@@ -1,4 +1,4 @@
-import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-input-config-params.model';
+import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class DispatchHistoryModalConfig {

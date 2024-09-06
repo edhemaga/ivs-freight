@@ -6,4 +6,5 @@ export enum DispatchStatusEnum {
     LoadedRepair,
     Towing,
     Canceled,
+    Cancel,
 }

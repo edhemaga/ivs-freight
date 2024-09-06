@@ -45,7 +45,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // models
-import { ActiveOptions } from '@shared/components/ta-note/models/active-options-models';
+import { ActiveOptions } from '@shared/components/ta-note/models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
@@ -96,6 +96,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this._note = value;
         this.value = value;
         this.checkNoteImage(value);
+    }
+    @Input() public set noteDimension(value: number) {
+        this._noteDimension = value;
+
+        if (this.isDispatch) this.setNoteParentWidth();
     }
     @Input() mainData: any;
     @Input() parking: boolean = false;
@@ -152,6 +157,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     private saveInterval: any;
     private saveIntervalStarted: boolean = false;
     public savedValue: string = '';
+    public _noteDimension: number;
 
     private destroy$ = new Subject<void>();
 
@@ -272,8 +278,16 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         ev.preventDefault();
     }
 
-    public valueChange(event: string, deleteAll?: boolean): void {
+    public valueChange(
+        event: string,
+        isDeleteAll?: boolean,
+        notePopover?: NgbPopover
+    ): void {
         this.value = event;
+        if (isDeleteAll) {
+            if (notePopover?.isOpen()) notePopover?.close();
+            this.closeNote();
+        }
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
         if (!this.saveIntervalStarted) {
@@ -282,19 +296,18 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 if (moment().unix() - this.lastTypeTime >= 2) {
                     this.saveIntervalStarted = false;
                     clearInterval(this.saveInterval);
-                    this.saveNote(true, deleteAll);
+                    this.saveNote(true, isDeleteAll);
                 }
             }, 100);
         }
     }
 
     private checkActiveItems(): void {
-        if (this.noteContainer && this.noteContainer?.checkActiveItems) {
+        if (this.noteContainer && this.noteContainer?.checkActiveItems)
             this.noteContainer?.checkActiveItems();
-        }
     }
 
-    public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
+    public saveNote(autoSave?: boolean, isDeleteAll?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.isAllOpen) {
                 this.closeNote();
@@ -314,7 +327,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
-        if (deleteAll) this.closeNote();
+        if (isDeleteAll) this.closeNote();
     }
 
     public closeNote(dontTransfer?: boolean): void {

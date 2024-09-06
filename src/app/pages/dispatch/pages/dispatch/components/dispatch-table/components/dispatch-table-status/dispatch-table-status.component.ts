@@ -12,11 +12,14 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 //helpers
-import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-table.helper';
+import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DispatchStatusEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-status.enum';
+import {
+    DispatchStatusEnum,
+    DispatchTableStringEnum,
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 //models
 import {
@@ -26,7 +29,6 @@ import {
     CreateDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { DispatchTableStringEnum } from '../../enums/dispatch-table-string.enum';
 
 @Component({
     selector: 'app-dispatch-table-status',
@@ -84,6 +86,7 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
                 DispatchStatusEnum[5],
                 DispatchStatusEnum[6],
                 DispatchStatusEnum[7],
+                DispatchStatusEnum[8],
             ].includes(e.status) &&
             !e?.isRevert
         ) {
