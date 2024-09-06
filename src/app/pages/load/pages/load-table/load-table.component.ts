@@ -1369,6 +1369,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter: FilterOptionsLoad,
         isShowMore?: boolean
     ): void {
+        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+            this.loadTemplateBackFilter(this.backLoadFilterQuery);
+            return;
+        }
         this.loadServices
             .getLoadList(
                 filter.loadType,
@@ -1430,8 +1434,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadServices
             .getLoadTemplateList(
                 filter.loadType,
-                filter.revenueFrom,
-                filter.revenueTo,
+                filter.rateFrom,
+                filter.rateTo,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
