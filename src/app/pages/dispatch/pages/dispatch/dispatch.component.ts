@@ -23,12 +23,12 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 //models
-import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
+import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 //constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';

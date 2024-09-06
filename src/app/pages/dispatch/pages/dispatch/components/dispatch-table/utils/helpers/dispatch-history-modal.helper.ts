@@ -1,4 +1,4 @@
-import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-history-modal.constants';
+import { DispatchHistoryModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -7,10 +7,10 @@ import { DispatchHistoryModalDateHelper } from '@pages/dispatch/pages/dispatch/c
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
-import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-history-modal-string.enum';
+import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // models
-import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/get-dispatch-history-layout-params.model';
+import { GetDispatchHistoryLayoutParams } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { DispatchHistoryResponse } from 'appcoretruckassist';
 
 export class DispatchHistoryModalHelper {

@@ -12,10 +12,10 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // Enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // Models
 import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
@@ -180,7 +180,7 @@ export class DispatchTableParkingComponent implements OnInit {
         this.popoverRef.open();
     }
 
-    public onPopoverShown() : void {
+    public onPopoverShown(): void {
         this.isInputInFocus = true;
     }
 
