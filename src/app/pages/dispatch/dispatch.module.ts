@@ -45,6 +45,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
+import { CaInputComponent } from 'ca-components';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -121,6 +122,9 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         TaProfileImagesComponent,
         TaCustomPeriodRangeComponent,
         TaStatusComponentComponent,
+
+        CaInputComponent,
+
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,

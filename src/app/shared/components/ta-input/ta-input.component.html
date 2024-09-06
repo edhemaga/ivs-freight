@@ -706,7 +706,14 @@
                 _inputConfig.multipleLabel?.labels.length &&
                 !_inputConfig.multipleInputValues?.options.length &&
                 !_inputConfig.isDisabled,
-            dark: _inputConfig.customClass === 'datetimeclass dark'
+            dark: _inputConfig.customClass === 'datetimeclass dark',
+            'time-picker-opacity': _inputConfig.customClass === 'time-picker-opacity',
+            'dispatch-history-default-color': 
+                _inputConfig.customClass === 'time-picker-opacity' && 
+                _inputConfig.hideDropdownArrow && !focusInput,
+            'dispatch-history-row-hover': 
+                _inputConfig.customClass === 'time-picker-opacity' && 
+                _inputConfig.isHoverRow && _inputConfig.hideDropdownArrow && !focusInput,
         }"
     >
         <span
