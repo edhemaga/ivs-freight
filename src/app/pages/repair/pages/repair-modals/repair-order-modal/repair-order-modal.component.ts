@@ -89,7 +89,6 @@ import {
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { EditData } from '@shared/models/edit-data.model';
-import {} from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import {
     RepairSubtotal,
     Subtotal,

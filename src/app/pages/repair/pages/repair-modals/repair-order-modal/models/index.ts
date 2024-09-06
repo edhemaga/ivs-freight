@@ -1,4 +1,3 @@
-
 export * from './add-update-repair-properties.model';
 export * from './extended-repair-shop-response.model';
 export * from './extended-service-type-response.model';
