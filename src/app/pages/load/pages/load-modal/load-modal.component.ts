@@ -2505,6 +2505,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public removeAdditionalBilling(type: string, index: number): void {
         if (type === LoadModalStringEnum.ADJUSTED_2) {
+            if(!this.selectedAdditionalBillings.length) return; 
             this.selectedAdditionalBillings[0].checked = false;
 
             this.additionalBillingTypes.unshift(
