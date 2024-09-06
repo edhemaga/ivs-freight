@@ -69,7 +69,16 @@
                                             tableHeaderItem?.title ===
                                                 'PARKING' ||
                                             tableHeaderItem?.title ===
-                                                'LAST LOCATION'
+                                                'LAST LOCATION',
+                                        'smaller-padding':
+                                            !isDispatchBoardLocked &&
+                                            (tableHeaderItem?.title ===
+                                                'INSPECTION' ||
+                                                tableHeaderItem?.title ===
+                                                    'DISPATCHER' ||
+                                                (tableHeaderItem?.title ===
+                                                    'NOTE' &&
+                                                    !_isNoteExpanded))
                                     }"
                                 >
                                     <div
