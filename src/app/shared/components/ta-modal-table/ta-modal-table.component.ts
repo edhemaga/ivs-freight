@@ -89,7 +89,7 @@ import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-ta
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
-import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 
 @Component({
     selector: 'app-ta-modal-table',

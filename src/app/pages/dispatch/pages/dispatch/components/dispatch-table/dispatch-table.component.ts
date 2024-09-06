@@ -29,10 +29,10 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
-import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-table.constants';
+import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // svg routes
 import { DispatchTableSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-table-svg-routes';
@@ -56,9 +56,11 @@ import {
     DispatchResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
-import { DispatchTableHeaderItems } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-header-items.model';
-import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-column.model';
-import { DispatchTableUnlock } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-table-unlock.model';
+import {
+    DispatchColumn,
+    DispatchTableHeaderItems,
+    DispatchTableUnlock,
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -154,6 +156,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public shownFields;
 
     public isDriverEndorsementActive: boolean = false;
+
+    public noteWidth: number = 205;
 
     /////////////////////////////////////////// UPDATE
 
@@ -342,15 +346,18 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         const { type, index } = event;
 
         if (
-            !this.dispatchData.dispatches[index].truck &&
+            ((type === DispatchTableStringEnum.TRAILER_ID &&
+                !this.dispatchData.dispatches[index].truck) ||
+                (type === DispatchTableStringEnum.TRUCK_ID &&
+                    !this.dispatchData.dispatches[index].trailer)) &&
             !this.dispatchData.dispatches[index].driver
         ) {
             const id = this.dispatchData.dispatches[index].id;
 
             this.isDispatchBoardChangeInProgress = true;
-            this.checkEmptySet = DispatchTableStringEnum.TRAILER_ID;
+            this.checkEmptySet = type;
 
-            this.deleteDispatchBoardById(id);
+            this.deleteDispatchBoardById(id, type);
         } else {
             this.updateOrAddDispatchBoardAndSend(type, null, index);
         }
@@ -526,10 +533,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    private deleteDispatchBoardById(
-        id: number,
-        isDriverDeleted?: boolean
-    ): void {
+    private deleteDispatchBoardById(id: number, deleteItemType?: string): void {
         this.dispatcherService
             .deleteDispatchboard(id)
             .pipe(
@@ -538,10 +542,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.isDispatchBoardChangeInProgress = false;
                     this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
 
-                    if (isDriverDeleted) {
+                    if (deleteItemType) {
                         this.dispatcherService.updateCountList(
                             this.dispatchData.id,
-                            DispatchTableStringEnum.DRIVER_ID,
+                            deleteItemType,
                             null
                         );
                     }
@@ -608,7 +612,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.isDispatchBoardChangeInProgress = true;
             this.checkEmptySet = DispatchTableStringEnum.DRIVER_ID;
 
-            this.deleteDispatchBoardById(id, true);
+            this.deleteDispatchBoardById(id, DispatchTableStringEnum.DRIVER_ID);
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.DRIVER_ID,
@@ -1037,8 +1041,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = index;
     }
 
-    public onNoteResize(): void {
-        console.log('onNoteResize');
+    public onNoteResize(event: number): void {
+        this.noteWidth = event;
     }
 
     ngOnDestroy(): void {

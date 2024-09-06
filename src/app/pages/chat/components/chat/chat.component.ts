@@ -14,11 +14,13 @@ import { takeUntil } from 'rxjs/operators';
 import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
 
 // Models
+import { ConversationType } from 'appcoretruckassist';
 import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
 
 // Enums
 import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
+import { ConversationTypeEnum } from '@pages/chat/enums/conversation/chat-conversation-type.enum';
 
 // Constants
 import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
@@ -30,7 +32,6 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 import { UserChatService } from "@pages/chat/services/chat.service";
 import { ChatTab } from '@pages/chat/models/chat-tab.model';
 import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
-
 
 @Component({
   selector: 'app-chat',
@@ -50,6 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public unreadCount!: number;
   public selectedConversation: number;
+  public ConversationTypeEnum = ConversationTypeEnum;
 
   // Tab and header ribbon configuration
   public tabs: ChatTab[] = ChatToolbarDataConstants.tabs;
@@ -92,12 +94,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     //TODO Create store and set value there
   }
 
-  public createUserConversation(selectedUser: number): void {
+  public createUserConversation(
+    selectedUser: number,
+    chatType: ConversationType
+  ): void {
 
     if (!selectedUser) return;
 
     this.chatService
-      .createConversation([selectedUser])
+      .createConversation([selectedUser], chatType)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {

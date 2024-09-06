@@ -25,19 +25,14 @@ export interface RoadsideInspectionSummaryResponse {
     currentMeasure?: number | null;
     avgPUUF?: number | null;
     carrierMeasure?: number | null;
-    inspectionsCount?: number;
+    inspectionsCount?: number | null;
     measuresPerPeriod?: { [key: string]: JsonNode; } | null;
     totalInspectionsCount?: number;
     inspectionsWithViolationsCount?: number;
     inspectionsWithViolationsPercentage?: number | null;
     inspectionsWithoutViolationsCount?: number;
-    inspectionsWithoutViolationsPercentage?: number | null;
+    inspectionsWithoutViolationsPercentage?: number;
     driverOosRate?: number | null;
     truckOosRate?: number | null;
-    totalAccidents?: number;
-    towingPercentage?: number | null;
-    injuryPercentage?: number | null;
-    fatalityPercentage?: number | null;
-    hazMatPercentage?: number | null;
 }
 

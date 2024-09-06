@@ -95,7 +95,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
         private navigationService: NavigationService,
         private userProfileUpdateService: UserProfileUpdateService,
         private cdRef: ChangeDetectorRef
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.navigationService.getValueNavHovered().subscribe((value) => {
@@ -128,7 +128,9 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.loggedUser = {
             ...this.loggedUser,
-            avatar: this.loggedUser.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
+            avatar:
+                this.loggedUser.avatarFile?.url ??
+                'assets/svg/common/ic_profile.svg',
         };
 
         this.footerData[2] = {
@@ -151,7 +153,9 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser?.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
+                        avatar:
+                            this.loggedUser?.avatarFile?.url ??
+                            'assets/svg/common/ic_profile.svg',
                     };
 
                     this.footerData[2] = {
@@ -192,26 +196,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
             this.showMagicLine = true;
             this.settingsRouteActivated = $event.value;
             this.userActivatedSettingsRoute.emit($event);
-        }
-    }
-    public onAction(index: number, action: string) {
-        switch (action) {
-            case 'Open User Panel': {
-                if (index === 2) {
-                    this.navigationService.onDropdownActivation({
-                        name: 'User Panel',
-                        type: true,
-                    });
-                } else {
-                    this.isActiveFooterRoute(this.footerData[index]);
-                    localStorage.removeItem('subroute_active');
-                    this.onActivateFooterRoutes.emit(true);
-                }
-                break;
-            }
-            default: {
-                return;
-            }
         }
     }
 

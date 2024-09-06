@@ -65,8 +65,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         private websiteAuthService: WebsiteAuthService,
         private navigationService: NavigationService,
         private modalService: ModalService,
-        private userProfileUpdateService: UserProfileUpdateService,
-    ) { }
+        private userProfileUpdateService: UserProfileUpdateService
+    ) {}
 
     ngOnInit() {
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
@@ -83,15 +83,18 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser?.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
+                        avatar:
+                            this.loggedUser?.avatarFile?.url ??
+                            'assets/svg/common/ic_profile.svg',
                     };
                 }
             });
     }
-    public onUserPanelClose(event) {
+
+    public onUserPanelClose() {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
-            type: event,
+            type: !this.isUserPanelOpen,
         });
     }
 
@@ -134,7 +137,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    private changeMyStatus() { }
+    private changeMyStatus() {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

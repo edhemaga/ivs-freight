@@ -492,9 +492,37 @@ export class TaInputComponent
                 this.focusInput = false;
             }
         }
-
         this.blurInput.emit(true);
         this.touchedInput = true;
+    }
+
+    private removeLeadingZero(): void {
+        if (this._inputConfig.removeLeadingZero) {
+            const currentValue = this.getSuperControl.value;
+
+            if(!currentValue) {
+                this.getSuperControl.patchValue('');
+                this.getSuperControl.setErrors(null);
+                return;
+            }
+    
+            if (this._inputConfig.negativeLeadingZero) {
+                const isNegative = currentValue.startsWith('-');
+    
+                if (isNegative) {
+                     // Get the part after the negative sign
+                    const numberPart = currentValue.slice(1);
+                    // Remove leading zeros
+                    const transformedNumber = numberPart.replace(/^0+(?=\d)/, ''); 
+                    this.getSuperControl.patchValue(`-${transformedNumber}`); 
+                } else {
+                    this.getSuperControl.patchValue(currentValue.replace(/^0+(?=\d)/, ''));
+                }
+    
+            } else {
+                this.getSuperControl.patchValue(currentValue.replace(/^0+(?!$)/, ''));
+            }
+        }
     }
 
     public blurOnPassword() {
@@ -913,7 +941,7 @@ export class TaInputComponent
                     this.getSuperControl.setErrors({ min: 1 });
                 } else if (parseInt(value) > 17) {
                     this.getSuperControl.setErrors({ max: 17 });
-                }
+               }
             } else {
                 this.getSuperControl.setErrors(null);
             }
@@ -981,6 +1009,8 @@ export class TaInputComponent
                 return;
             }
         }
+
+        this.removeLeadingZero();
     }
 
     public onKeypress(event: KeyboardEvent): boolean {
@@ -1153,11 +1183,10 @@ export class TaInputComponent
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
-            if (
-                this.inputService
+            if (this.inputService
                     .getInputRegexPattern('qty')
                     .test(String.fromCharCode(event.charCode))
-            ) {
+            ) { 
                 return true;
             }
 

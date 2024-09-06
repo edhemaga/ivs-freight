@@ -17,13 +17,13 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Const
-import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants/load-stop-items-config';
+import { LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants'; 
 
 // Enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-// Models
-import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
+// Models 
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { EnumValue, TrailerTypeResponse } from 'appcoretruckassist';
 

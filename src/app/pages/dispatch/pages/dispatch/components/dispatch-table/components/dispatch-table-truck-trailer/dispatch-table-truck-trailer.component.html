@@ -179,11 +179,9 @@
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
             [inputConfig]="truckTrailerInputConfig"
-            [canAddNew]="
-                type === 'truck' ? !truckList?.length : !trailerList?.length
-            "
+            [canAddNew]="hasAddNew"
             [canOpenModal]="true"
-            [options]="type === 'truck' ? truckList : trailerList"
+            [options]="type === 'truck' ? _truckList : _trailerList"
             (selectedItem)="
                 type === 'truck' ? addTruck($event) : addTrailer($event)
             "

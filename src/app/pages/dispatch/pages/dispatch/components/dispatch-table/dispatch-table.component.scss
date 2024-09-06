@@ -298,6 +298,10 @@
                     }
                 }
             }
+
+            &.smaller-padding {
+                padding-left: 3px;
+            }
         }
 
         td {
@@ -517,7 +521,7 @@
             }
 
             &.parking-field {
-                min-width: 100px;
+                min-width: 90px;
                 max-width: 100px;
                 width: 100px;
 

@@ -1,20 +1,33 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, forkJoin, tap, BehaviorSubject } from 'rxjs';
+import {
+    Observable,
+    Subject,
+    forkJoin,
+    tap,
+    BehaviorSubject,
+    catchError,
+    of,
+} from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
 
 // enum
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 // store
 import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
 import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
-import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active.store';
-import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
+import {
+    LoadActiveState,
+    LoadActiveStore,
+} from '@pages/load/state/load-active-state/load-active.store';
+import {
+    LoadPandingState,
+    LoadPendingStore,
+} from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
 import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
@@ -49,6 +62,7 @@ import {
     DeleteComment,
 } from '@shared/models/card-models/card-table-data.model';
 import { Load } from '@pages/load/models/load.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 
 @Injectable({
     providedIn: 'root',
@@ -72,7 +86,7 @@ export class LoadService {
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-        isRevert?: boolean
+        isRevert?: boolean;
     }> = this.statusAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
@@ -110,7 +124,7 @@ export class LoadService {
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-        isRevert: boolean
+        isRevert: boolean;
     }) {
         this.statusAction.next(data);
     }
@@ -462,109 +476,22 @@ export class LoadService {
         );
     }
 
-    private getLoadStatus(statusString: string): {
-        isPending: boolean;
-        isActive: boolean;
-        isClosed: boolean;
-    } {
-        const isPending =
-            statusString === LoadModalStringEnum.ASSIGNED ||
-            statusString === LoadModalStringEnum.UNASSIGNED;
-        const isClosed = statusString === LoadModalStringEnum.CLOSED;
-        const isActive = !isPending && !isClosed;
-
-        return {
-            isPending,
-            isActive,
-            isClosed,
-        };
-    }
-    public updateLoadTemplatePartily(loadResponse: LoadListResponse): void {
-        const data = loadResponse.pagination.data[0];
-        this.loadTemplateStore.remove(({ id }) => id === data.id);
-        this.loadTemplateStore.add(data);
+    public updateLoadTemplatePartily(): void {
         this.triggerModalAction();
     }
 
-    public updateLoadPartily(
-        loadResponse: LoadListResponse,
-        previusStatus: string
-    ): void {
-        const data = loadResponse.pagination.data[0];
-        const loadId = data.id;
-        const { isActive, isPending, isClosed } = this.getLoadStatus(
-            data.status.statusString
-        );
-
-        [
-            this.loadActiveStore,
-            this.loadClosedStore,
-            this.loadPendingStore,
-        ].forEach((store) => {
-            store.remove(({ id }) => id === loadId);
-        });
-
-        const loadCount = JSON.parse(
-            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
-        );
-
-        if (isActive) {
-            this.loadActiveStore.add(data);
-            loadCount.activeCount++;
-        } else if (isClosed) {
-            this.loadClosedStore.add(data);
-            loadCount.closedCount++;
-        } else if (isPending) {
-            this.loadPendingStore.add(data);
-            loadCount.pendingCount++;
-        }
-
-        const previusLoadStore = this.getLoadStatus(previusStatus);
-        if (previusLoadStore.isActive) {
-            loadCount.activeCount--;
-        } else if (previusLoadStore.isClosed) {
-            loadCount.closedCount--;
-        } else if (previusLoadStore.isPending) {
-            loadCount.pendingCount--;
-        }
-
-        localStorage.setItem(
-            TableStringEnum.LOAD_TABLE_COUNT,
-            JSON.stringify(loadCount)
-        );
-
+    public updateLoadPartily(): void {
         this.triggerModalAction();
     }
 
-    public addNewLoad(data: LoadListResponse, isTemplate: boolean): void {
-        const loadCount = JSON.parse(
-            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
-        );
-
-        if (isTemplate) {
-            this.loadTemplateStore.add(data.pagination.data[0]);
-            loadCount.template++;
-            loadCount.templateCount++;
-        } else {
-            this.loadPendingStore.add(data.pagination.data[0]);
-            loadCount.pendingCount++;
-        }
-
-        localStorage.setItem(
-            TableStringEnum.LOAD_TABLE_COUNT,
-            JSON.stringify({
-                activeCount: loadCount.activeCount,
-                closedCount: loadCount.closedCount,
-                pendingCount: loadCount.pendingCount,
-                templateCount: loadCount.templateCount,
-            })
-        );
+    public addNewLoad(): void {
         this.triggerModalAction();
     }
 
     public triggerModalAction(): void {
         this.modalAction.next(true);
     }
+
     public getLoadStatusFilter(
         loadStatusType?: LoadStatusType
     ): Observable<DispatcherFilterResponse[]> {
@@ -646,5 +573,451 @@ export class LoadService {
 
     public apiLoadListAssignedIdGet(dispatchId: number) {
         return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+    }
+
+    public getPendingData(
+        loadType?: number,
+        statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
+        status?: Array<number>,
+        dispatcherIds?: Array<number>,
+        dispatcherId?: number,
+        dispatchId?: number,
+        brokerId?: number,
+        shipperId?: number,
+        loadId?: number,
+        dateFrom?: string,
+        dateTo?: string,
+        revenueFrom?: number,
+        revenueTo?: number,
+        truckId?: number,
+        rateFrom?: number,
+        rateTo?: number,
+        paidFrom?: number,
+        paidTo?: number,
+        dueFrom?: number,
+        dueTo?: number,
+        pickup?: boolean,
+        delivery?: boolean,
+        longitude?: number,
+        latitude?: number,
+        distance?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<LoadPandingState | boolean> {
+        return this.getLoadList(
+            loadType ?? null,
+            1,
+            status ?? null,
+            dispatcherIds ?? null,
+            dispatcherId ?? null,
+            dispatchId ?? null,
+            brokerId ?? null,
+            shipperId ?? null,
+            loadId ?? null,
+            dateFrom ?? null,
+            dateTo ?? null,
+            revenueFrom ?? null,
+            revenueTo ?? null,
+            truckId ?? null,
+            rateFrom ?? null,
+            rateTo ?? null,
+            paidFrom ?? null,
+            paidTo ?? null,
+            dueFrom ?? null,
+            dueTo ?? null,
+            pickup ?? null,
+            delivery ?? null,
+            longitude ?? null,
+            latitude ?? null,
+            distance ?? null,
+            pageIndex ?? 1,
+            pageSize ?? 25,
+            companyId ?? null,
+            sort ?? null,
+            search ?? null,
+            search1 ?? null,
+            search2 ?? null
+        ).pipe(
+            catchError(() => {
+                return of('No load pending data...');
+            }),
+            tap((loadPagination: LoadListResponse) => {
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pagination.count,
+                        activeCount: loadPagination.activeCount,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.templateCount,
+                    })
+                );
+
+                this.loadPendingStore.set(loadPagination.pagination.data);
+            })
+        );
+    }
+
+    public getActiveData(
+        loadType?: number,
+        statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
+        status?: Array<number>,
+        dispatcherIds?: Array<number>,
+        dispatcherId?: number,
+        dispatchId?: number,
+        brokerId?: number,
+        shipperId?: number,
+        loadId?: number,
+        dateFrom?: string,
+        dateTo?: string,
+        revenueFrom?: number,
+        revenueTo?: number,
+        truckId?: number,
+        rateFrom?: number,
+        rateTo?: number,
+        paidFrom?: number,
+        paidTo?: number,
+        dueFrom?: number,
+        dueTo?: number,
+        pickup?: boolean,
+        delivery?: boolean,
+        longitude?: number,
+        latitude?: number,
+        distance?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<any> {
+        return this.getLoadList(
+            loadType ?? null,
+            2,
+            status ?? null,
+            dispatcherIds ?? null,
+            dispatcherId ?? null,
+            dispatchId ?? null,
+            brokerId ?? null,
+            shipperId ?? null,
+            loadId ?? null,
+            dateFrom ?? null,
+            dateTo ?? null,
+            revenueFrom ?? null,
+            revenueTo ?? null,
+            truckId ?? null,
+            rateFrom ?? null,
+            rateTo ?? null,
+            paidFrom ?? null,
+            paidTo ?? null,
+            dueFrom ?? null,
+            dueTo ?? null,
+            pickup ?? null,
+            delivery ?? null,
+            longitude ?? null,
+            latitude ?? null,
+            distance ?? null,
+            pageIndex ?? 1,
+            pageSize ?? 25,
+            companyId ?? null,
+            sort ?? null,
+            search ?? null,
+            search1 ?? null,
+            search2 ?? null
+        ).pipe(
+            tap((loadPagination) => {
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pendingCount,
+                        activeCount: loadPagination.pagination.count,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.templateCount,
+                    })
+                );
+
+                this.loadActiveStore.set(loadPagination.pagination.data);
+            })
+        );
+    }
+
+    public getClosedData(
+        loadType?: number,
+        statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
+        status?: Array<number>,
+        dispatcherIds?: Array<number>,
+        dispatcherId?: number,
+        dispatchId?: number,
+        brokerId?: number,
+        shipperId?: number,
+        loadId?: number,
+        dateFrom?: string,
+        dateTo?: string,
+        revenueFrom?: number,
+        revenueTo?: number,
+        truckId?: number,
+        rateFrom?: number,
+        rateTo?: number,
+        paidFrom?: number,
+        paidTo?: number,
+        dueFrom?: number,
+        dueTo?: number,
+        pickup?: boolean,
+        delivery?: boolean,
+        longitude?: number,
+        latitude?: number,
+        distance?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<any> {
+        return this.getLoadList(
+            loadType ?? null,
+            3,
+            status ?? null,
+            dispatcherIds ?? null,
+            dispatcherId ?? null,
+            dispatchId ?? null,
+            brokerId ?? null,
+            shipperId ?? null,
+            loadId ?? null,
+            dateFrom ?? null,
+            dateTo ?? null,
+            revenueFrom ?? null,
+            revenueTo ?? null,
+            truckId ?? null,
+            rateFrom ?? null,
+            rateTo ?? null,
+            paidFrom ?? null,
+            paidTo ?? null,
+            dueFrom ?? null,
+            dueTo ?? null,
+            pickup ?? null,
+            delivery ?? null,
+            longitude ?? null,
+            latitude ?? null,
+            distance ?? null,
+            pageIndex ?? 1,
+            pageSize ?? 25,
+            companyId ?? null,
+            sort ?? null,
+            search ?? null,
+            search1 ?? null,
+            search2 ?? null
+        ).pipe(
+            tap((loadPagination) => {
+                if (loadPagination) {
+                    localStorage.setItem(
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.pagination.count,
+                            templateCount: loadPagination.templateCount,
+                        })
+                    );
+                }
+
+                this.loadClosedStore.set(loadPagination?.pagination?.data);
+            })
+        );
+    }
+
+    public getTemplateData(
+        loadType?: number,
+        revenueFrom?: number,
+        revenueTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string) {
+        
+        return this.getLoadTemplateList(
+            loadType,
+            revenueFrom,
+            revenueTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+            )
+            .pipe(
+                tap((loadPagination) => {
+                    localStorage.setItem(
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.pagination.count,
+                        })
+                    );
+
+                    this.loadTemplateStore.set(loadPagination.pagination.data);
+                })
+            );
+    }
+
+    public getAllLoads(query: FilterOptionsLoad): Observable<any[]> {
+            const {
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                pageIndex,
+                pageSize,
+                companyId,
+                rateFrom,
+                rateTo,
+                pickup,
+                delivery,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree,
+            } = query;
+    
+            const pendingData$ = this.getPendingData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,  
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,  
+                null,  
+                null,  
+                null,  
+                pickup,
+                delivery,
+                null,  
+                null,  
+                null,  
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            const activeData$ = this.getActiveData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            const closedData$ = this.getClosedData(
+                loadType,
+                statusType,
+                status,
+                dispatcherIds,
+                dispatcherId,
+                dispatchId,
+                brokerId,
+                shipperId,
+                null,
+                dateFrom,
+                dateTo,
+                revenueFrom,
+                revenueTo,
+                truckId,
+                rateFrom,
+                rateTo,
+                null,
+                null,
+                null,
+                null,
+                pickup,
+                delivery,
+                null,
+                null,
+                null,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree
+            );
+    
+            const templateData$ = this.getTemplateData(
+                loadType,
+                revenueFrom,
+                revenueTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree);
+
+            return forkJoin([pendingData$, activeData$, closedData$, templateData$]);
     }
 }
