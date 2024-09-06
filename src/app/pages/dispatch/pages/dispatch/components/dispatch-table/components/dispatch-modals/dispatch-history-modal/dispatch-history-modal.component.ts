@@ -359,39 +359,18 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             name: 'Team Board',
         };
         this.selectedTruck = {
-            id: 156,
-            name: '2',
+            id: 200,
+            name: '1',
         };
         this.selectedTrailer = {
-            id: 36,
-            name: 'R1422',
+            id: 127,
+            name: '11',
         };
         this.selectedDriver = {
-            id: 9,
-            name: 'Milos Djordjevic',
+            id: 245,
+            name: 'Aaa Aaa',
         };
 
-        /*  this.selectedTime = {
-            id: 12,
-            name: 'This Year',
-        };
-        this.selectedDispatchBoard = {
-            id: 15,
-            name: 'Team Board',
-        };
-        this.selectedTruck = {
-            id: 67,
-            name: '5142',
-        };
-        this.selectedTrailer = {
-            id: 107,
-            name: '12345678',
-        };
-        this.selectedDriver = {
-            id: 13,
-            name: 'Alan Parker',
-        };
- */
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
             isDispatchBoardSelected: !!this.selectedDispatchBoard,

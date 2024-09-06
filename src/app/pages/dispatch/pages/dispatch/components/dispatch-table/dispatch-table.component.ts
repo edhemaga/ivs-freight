@@ -477,6 +477,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.isDispatchBoardChangeInProgress = true;
 
         this.checkForEmpty = key;
+
         if (updatedPreviousData.id) {
             this.dispatcherService
                 .updateDispatchBoard(newData, this.dispatchData.id)
