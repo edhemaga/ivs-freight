@@ -1,4 +1,4 @@
-<table class="ca-main-table">
+<table class="ca-main-table" cdkDropListGroup>
     <thead>
         <tr>
             <th
@@ -17,6 +17,7 @@
                                 context: { $implicit: col.header }
                             "
                         ></ng-container>
+                        
                     </ng-container>
                     <div *ngSwitchDefault class="th-content-container">
                         {{ col.header }}
@@ -25,70 +26,93 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-        <tr *ngFor="let row of data$ | async" (click)="onPressRow(row)">
-            <td
-                *ngFor="
-                    let col of columns
-                        | caMainTableHiddenRows : hideFieldsToHide
-                "
-                [class]="col.cellCustomClasses"
+    <tbody
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        class="table-body-list"
+    >
+        <ng-container *ngFor="let row of data$ | async">
+            <tr
+                cdkDrag
+                cdkDragPreviewContainer="parent"
+                (click)="onPressRow(row)"
+                class="table-tr"
             >
-                <div class="td-container">
-                    <div class="td-content-container">
-                        <ng-container [ngSwitch]="col.cellType">
-                            <!-- Default text cell -->
-                            <!-- <span *ngSwitchCase="'text'">{{
-                                row[col.field]
-                            }}</span> -->
-
-                            <!-- Template cell -->
-                            <ng-container *ngSwitchCase="'template'">
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        col.template;
-                                        context: { $implicit: row[col.field] }
-                                    "
-                                ></ng-container>
-                            </ng-container>
-
-                            <!-- Custom component cell -->
-                            <ng-container *ngSwitchCase="'component'">
-                                <ng-container
-                                    *ngComponentOutlet="
-                                        col.component;
-                                        injector: createInjector(
-                                            row,
-                                            col.inputs
-                                        )
-                                    "
-                                ></ng-container>
-                            </ng-container>
-
-                            <!-- Default fallback -->
-                            <ng-container *ngSwitchDefault>
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        customTextTemplate;
-                                        context: {
-                                            $implicit: {
-                                                field: row[col.field],
-                                                pipeType: col.pipeType,
-                                                textCustomClasses:
-                                                    col.textCustomClasses
-                                            }
-                                        }
-                                    "
-                                ></ng-container>
-                            </ng-container>
-                            <!-- <span *ngSwitchDefault>{{ row[col.field] }}</span> -->
-                        </ng-container>
-                    </div>
-                </div>
-            </td>
-        </tr>
+                <ng-container *cdkDragPlaceholder>
+                    <tr class="drag-placeholder">
+                        <td colspan="12">Moving: {{ row.property1 }}</td>
+                    </tr>
+                </ng-container>
+                <td
+                    *ngFor="
+                        let col of columns
+                            | caMainTableHiddenRows : hideFieldsToHide
+                    "
+                    [class]="col.cellCustomClasses"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            rowTemplate;
+                            context: { row: row, col: col }
+                        "
+                    >
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-container>
     </tbody>
 </table>
+<ng-template #rowTemplate let-row="row" let-col="col">
+    <div class="td-container">
+        <div class="td-content-container">
+            <ng-container [ngSwitch]="col.cellType">
+                <!-- Default text cell -->
+                <!-- <span *ngSwitchCase="'text'">{{
+                    row[col.field]
+                }}</span> -->
+
+                <!-- Template cell -->
+                <ng-container *ngSwitchCase="'template'">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            col.template;
+                            context: {
+                                $implicit: row[col.field]
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+
+                <!-- Custom component cell -->
+                <ng-container *ngSwitchCase="'component'">
+                    <ng-container
+                        *ngComponentOutlet="
+                            col.component;
+                            injector: createInjector(row, col.inputs)
+                        "
+                    ></ng-container>
+                </ng-container>
+
+                <!-- Default fallback -->
+                <ng-container *ngSwitchDefault>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            customTextTemplate;
+                            context: {
+                                $implicit: {
+                                    field: row[col.field],
+                                    pipeType: col.pipeType,
+                                    textCustomClasses: col.textCustomClasses
+                                }
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
 <!-- Default Text Template  -->
 <ng-template #customTextTemplate let-data>
     <ng-container [ngSwitch]="data.pipeType">

@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    Component,
+    EnvironmentInjector,
+    Injector,
+    OnInit,
+    TemplateRef,
+    createComponent,
+} from '@angular/core';
 import { transition, trigger } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -15,11 +22,30 @@ import {
 // services
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 import { ChatHubService } from '@pages/chat/services/chat-hub.service';
+import { ReusableTemplatesComponent } from '@shared/components/reusable-templates/reusable-templates.component';
+import { TemplateManagerService } from '@shared/services/template-manager.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    providers: [
+        {
+            provide: ReusableTemplatesComponent,
+            useFactory: (environmentInjector: EnvironmentInjector) => {
+                // Create the component manually with EnvironmentInjector
+                const componentRef = createComponent(
+                    ReusableTemplatesComponent,
+                    {
+                        environmentInjector,
+                    }
+                );
+                componentRef.changeDetectorRef.detectChanges(); // Trigger change detection
+                return componentRef.instance;
+            },
+            deps: [EnvironmentInjector], // Inject EnvironmentInjector
+        },
+    ],
     animations: [
         scrollButtonAnimation('scrollButtonAnimation'),
         trigger('animRoutes', [
@@ -30,7 +56,6 @@ import { ChatHubService } from '@pages/chat/services/chat-hub.service';
 })
 export class AppComponent implements OnInit {
     public showScrollButton = false;
-
 
     public currentPage: string = 'login';
 
@@ -47,9 +72,13 @@ export class AppComponent implements OnInit {
         private _: StaticInjectorService,
         private chatHubService: ChatHubService,
 
-    ) { }
+        //components
+        private reusableTemplatesComponent: ReusableTemplatesComponent,
+        private templateManagerService: TemplateManagerService
+    ) {}
 
     ngOnInit(): void {
+        this.registerAllTemplates();
         this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
@@ -71,6 +100,20 @@ export class AppComponent implements OnInit {
             });
         this.connectToChatHub();
     }
+
+    private registerAllTemplates(): void {
+        const templatePrefix = 'template'; // Define a prefix or use a common convention
+        const properties = Object.keys(this.reusableTemplatesComponent) as (keyof ReusableTemplatesComponent)[];
+        
+        properties.forEach((property) => {
+          if (property.startsWith(templatePrefix)) {
+            const templateRef = this.reusableTemplatesComponent[property];
+            if (templateRef instanceof TemplateRef) {
+              this.templateManagerService.setTemplate(property as string, templateRef);
+            }
+          }
+        });
+      }
 
     public top(): void {
         window.scrollTo({ top: 0, behavior: 'smooth' });

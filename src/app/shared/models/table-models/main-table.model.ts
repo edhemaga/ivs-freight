@@ -16,5 +16,7 @@ export interface ColumnConfig {
     component?: any; // For custom components
     inputs?: { [key: string]: any }; // Inputs for the custom component
     outputs?: { [key: string]: (event: any) => void }; // Outputs for the custom component
-    template?: ElementRef<any>; // Optional template reference
+    template?: ElementRef<any>; 
+    templateRef?: TemplateRef<any>;
+    // Optional template reference
 }

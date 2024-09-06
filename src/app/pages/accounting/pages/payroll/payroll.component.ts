@@ -4,8 +4,14 @@ import {
     OnInit,
     ViewEncapsulation,
     AfterViewInit,
+    EnvironmentInjector,
+    ViewChild,
+    ViewContainerRef,
+    inject,
+    ComponentRef,
+    ChangeDetectorRef,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -22,6 +28,8 @@ import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.quer
 import { PayrollFacadeService } from './state/services/payroll.service';
 import { PayrollCountsResponse } from 'appcoretruckassist';
 import { IPayrollCountsSelector } from './state/models/payroll.model';
+import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
+import { PayrollListSummaryOverview } from 'ca-components/lib/models/payroll-list-summary.model';
 
 @Component({
     selector: 'app-payroll',
@@ -32,6 +40,13 @@ import { IPayrollCountsSelector } from './state/models/payroll.model';
     providers: [NameInitialsPipe],
 })
 export class PayrollComponent implements OnInit, AfterViewInit {
+    @ViewChild('container', { read: ViewContainerRef, static: false })
+    container!: ViewContainerRef;
+
+    componentRef: ComponentRef<any> | null = null;
+
+    environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
+
     tableOptions: any = {};
 
     selectedTab = 'open';
@@ -55,6 +70,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     tableExpanded: boolean = true;
     reportTableData: any = {};
+    tableExpanded$ = new BehaviorSubject<boolean>(true);
 
     constructor(
         // Store
@@ -132,9 +148,47 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         }, 10);
     }
 
+    public hideShowTables(data: {
+        payrollSummary: PayrollListSummaryOverview;
+        status: boolean;
+    }) {
+        if (data.status) {
+            this.container.clear();
+
+            const payrollType = `${data.payrollSummary.text} ${data.payrollSummary.type}`;
+            switch (payrollType) {
+                case 'Driver Miles':
+                    this.componentRef = this.container.createComponent(
+                        DriverMileageSoloTableComponent,
+                        {
+                            environmentInjector: this.environmentInjector,
+                        }
+                    );
+
+                    // Set inputs and subscribe to outputs if componentRef is created
+                    if (this.componentRef) {
+                        // Setting Inputs
+                        this.componentRef.instance.expandTable =
+                            this.tableExpanded; // Example input property
+
+                        // Bind the expandTable input using an Observable
+                        this.tableExpanded$.subscribe((value) => {
+                            this.componentRef!.instance.expandTable = value; // The input is updated automatically
+                        });
+
+                        this.componentRef.instance.expandTableEvent.subscribe(
+                            (event: any) => this.expandTable(event)
+                        );
+                    }
+                    return;
+            }
+        }
+    }
+
     expandTable(data: any) {
         this.reportTableData = data;
         this.tableExpanded = !this.tableExpanded;
+        this.tableExpanded$.next(this.tableExpanded);
     }
 
     observTableContainer() {
@@ -434,7 +488,5 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         };
     }
 
-    openPayrollReport(){
-        
-    }
+    openPayrollReport() {}
 }

@@ -36,13 +36,10 @@ export const payrollReducer = createReducer(
         })
     ),
 
-    on(
-        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver,
-        (state) => ({
-            ...state,
-            loading: true,
-        })
-    ),
+    on(PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver, (state) => ({
+        ...state,
+        loading: true,
+    })),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,
         (state) => ({
@@ -56,7 +53,8 @@ export const payrollReducer = createReducer(
         (state, data) => {
             return {
                 ...state,
-                payrollOpenedReport: data.payroll
+                payrollOpenedReport: data.payroll,
+                loading: false,
             };
         }
     )

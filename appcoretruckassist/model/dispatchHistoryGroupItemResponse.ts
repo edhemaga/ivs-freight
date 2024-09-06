@@ -17,7 +17,9 @@ export interface DispatchHistoryGroupItemResponse {
     id?: number;
     status?: DispatchStatusResponse;
     startDate?: string;
+    startTime?: string | null;
     endDate?: string | null;
+    endTime?: string | null;
     totalTime?: string | null;
     location?: AddressEntity;
 }

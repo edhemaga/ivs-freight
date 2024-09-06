@@ -22,7 +22,7 @@ import {
 } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { Observable } from 'rxjs';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist';
+import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 @Component({
     selector: 'app-payroll-report',

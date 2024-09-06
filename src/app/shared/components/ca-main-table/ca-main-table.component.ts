@@ -7,16 +7,32 @@ import {
     Input,
     OnInit,
     Output,
+    ViewChild,
 } from '@angular/core';
 import { ColumnConfig } from '@shared/models/table-models/main-table.model';
 import { Observable } from 'rxjs';
 import { CaMainTableHiddenRowsPipe } from './pipes/ca-main-table-hidden-rows/ca-main-table-hidden-rows.pipe';
+import {
+    CdkDrag,
+    CdkDragDrop,
+    CdkDragPlaceholder,
+    CdkDropList,
+    CdkDropListGroup,
+    moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-ca-main-table',
     templateUrl: './ca-main-table.component.html',
     standalone: true,
-    imports: [CommonModule, CaMainTableHiddenRowsPipe],
+    imports: [
+        CdkDropListGroup,
+        CdkDropList,
+        CdkDrag,
+        CdkDragPlaceholder,
+        CaMainTableHiddenRowsPipe,
+        CommonModule,
+    ],
     styleUrls: ['./ca-main-table.component.scss'],
 })
 export class CaMainTableComponent implements OnInit {
@@ -61,5 +77,10 @@ export class CaMainTableComponent implements OnInit {
                 componentRef.instance[outputKey].subscribe(outputs[outputKey]);
             }
         });
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+        console.log('THIS IS DROPPEEDD', event);
+        //moveItemInArray(this.data$, event.previousIndex, event.currentIndex);
     }
 }

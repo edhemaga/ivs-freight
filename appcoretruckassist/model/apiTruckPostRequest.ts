@@ -63,5 +63,6 @@ export interface ApiTruckPostRequest {
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
     FilesForDeleteIds?: Array<number>;
+    Differences?: { [key: string]: string; };
 }
 

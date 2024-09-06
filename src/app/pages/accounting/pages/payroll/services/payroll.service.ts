@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import {
     PayrollCountsResponse,
     PayrollDriverMileageListResponse,
-    PayrollDriverMileageResponse,
 } from 'appcoretruckassist';
+import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 

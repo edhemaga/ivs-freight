@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { PayrollSoloMileageDriverEnum } from '../enums/payroll_solo_mileage_driver.enums';
-import { PayrollDriverMileageListResponse, PayrollDriverMileageResponse } from 'appcoretruckassist';
+import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
+import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export const getPayrollSoloMileageDriver = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER

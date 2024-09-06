@@ -44,6 +44,7 @@ import { CaComponentsLibModule } from 'ca-components';
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
+import { ReusableTemplatesComponent } from '@shared/components/reusable-templates/reusable-templates.component';
 function playerFactory() {
     return player;
 }
@@ -80,6 +81,8 @@ function playerFactory() {
         StoreModule.forRoot([]),
         EffectsModule.forRoot([]),
 
+        //components 
+        ReusableTemplatesComponent,
         // routing
         AppRoutingModule,
         CaComponentsLibModule,

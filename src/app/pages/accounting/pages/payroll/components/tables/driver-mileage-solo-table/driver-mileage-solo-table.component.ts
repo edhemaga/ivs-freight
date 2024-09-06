@@ -6,7 +6,6 @@ import {
     Input,
     OnInit,
     Output,
-    TemplateRef,
     ViewChild,
 } from '@angular/core';
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
@@ -14,6 +13,7 @@ import { ColumnConfig } from '@shared/models/table-models/main-table.model';
 import { Observable } from 'rxjs';
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import { AfterViewInit } from '@angular/core';
+import { TemplateManagerService } from '@shared/services/template-manager.service';
 
 @Component({
     selector: 'app-driver-mileage-solo-table',
@@ -29,6 +29,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
 
     @Input() title: string;
     @Input() expandTable: boolean;
+    
     columns: ColumnConfig[];
     tableData$: Observable<PayrollDriverMileageListResponse[]>;
 
@@ -43,23 +44,27 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
     @ViewChild('customMileageHeader', { static: false })
     public readonly customMileageHeaderTemplate!: ElementRef;
 
+    public testTemplate: ElementRef;
+    public loading$: Observable<boolean>;
+
     constructor(
         // Services
-        private payrollFacadeService: PayrollFacadeService
+        private payrollFacadeService: PayrollFacadeService,
+        private templateManager: TemplateManagerService
     ) {}
 
     ngAfterViewInit() {
         this.columns = [
             {
                 header: 'Name',
-                field: 'driverName',
+                field: 'driver',
                 sortable: true,
                 cellType: 'template',
                 template: this.customCellTemplate, // Pass the template reference
             },
             {
                 header: 'Payroll',
-                field: 'payroll',
+                field: 'payrollNumber',
                 cellType: 'template',
                 template: this.customTextTemplate, // Pass the template reference
                 hiddeOnTableReduce: true,
@@ -73,7 +78,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
             },
             {
                 header: 'Status',
-                field: 'daysUntilPayment',
+                field: 'payrollDeadLine',
                 cellType: 'template',
                 template: this.customStatusTemplate, // Pass the template reference
             },
@@ -127,7 +132,12 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.registerAllTemplates();
         this.subscribeToStoreData();
+    }
+
+    public registerAllTemplates() {
+        this.testTemplate = this.templateManager.getTemplate('templateOne');
     }
 
     public handleClick() {
@@ -138,6 +148,8 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
         this.payrollFacadeService.getPayrollDriverMileageSoloList();
         this.tableData$ =
             this.payrollFacadeService.selectPayrollDriverSoloMileage$;
+
+        this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.payrollFacadeService.selectPayrollDriverSoloMileage$.subscribe(
             (res) => {
                 console.log('AAAAAAAA=----------', res);
