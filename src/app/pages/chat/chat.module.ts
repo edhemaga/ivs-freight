@@ -11,20 +11,16 @@ import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
-import { ChatUserListComponent } from "@pages/chat/components/user/chat-user-list/chat-user-list.component";
-import { ChatUserListItemComponent } from "@pages/chat/components/user/chat-user-list-item/chat-user-list-item.component";
-import { ChatMessageComponent } from "@pages/chat/components/conversation/chat-message/chat-message.component";
-import { ChatMessagesComponent } from "@pages/chat/components/conversation/chat-messages/chat-messages.component";
-import { ChatMessagesNotSelectedComponent } from "@pages/chat/components/conversation/chat-messages-not-selected/chat-messages-not-selected.component";
-import { ChatMessageAttachmentPreviewComponent } from "@pages/chat/components/conversation/chat-message-attachment-preview/chat-message-attachment-preview.component";
-import { ChatUserProfileComponent } from "@pages/chat/components/conversation/chat-user-profile/chat-user-profile.component";
-import { ChatToolbarComponent } from "@pages/chat/components/chat-toolbar/chat-toolbar.component";
-import { ChatNoDataComponent } from "@pages/chat/components/chat-no-data/chat-no-data.component";
-import { ChatHeaderComponent } from "@pages/chat/components/chat-header/chat-header.component";
-import { ChatListComponent } from "@pages/chat/components/chat-list/chat-list.component";
-import { ChatListItemComponent } from "@pages/chat/components/chat-list/chat-list-item/chat-list-item.component";
-import { ChatVerticalDividerComponent } from "@pages/chat/components/chat-vertical-divider/chat-vertical-divider.component";
-import { ChatProfileResourcesComponent } from "@pages/chat/components/conversation/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
+import { ChatUserListComponent } from "@pages/chat/components/conversation-list/chat-user-list/chat-user-list.component";
+import { ChatMessageComponent } from "@pages/chat/components/conversation-content/chat-message/chat-message.component";
+import { ChatMessagesComponent } from "@pages/chat/components/conversation-content/chat-messages/chat-messages.component";
+import { ChatMessageAttachmentPreviewComponent } from "@pages/chat/components/shared/chat-message-attachment-preview/chat-message-attachment-preview.component";
+import { ChatUserProfileComponent } from "@pages/chat/components/conversation-details/chat-user-profile/chat-user-profile.component";
+import { ChatHeaderComponent } from "@pages/chat/components/shared/chat-header/chat-header.component";
+import { ChatListComponent } from "@pages/chat/components/shared/chat-list/chat-list.component";
+import { ChatListItemComponent } from "@pages/chat/components/shared/chat-list/chat-list-item/chat-list-item.component";
+import { ChatVerticalDividerComponent } from "@pages/chat/components/shared/chat-vertical-divider/chat-vertical-divider.component";
+import { ChatProfileResourcesComponent } from "./components/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
 
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
@@ -49,23 +45,23 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
 @NgModule({
     declarations: [
         ChatComponent,
+
         // Chat list
         ChatUserListComponent,
-        ChatUserListItemComponent,
+
         // Conversations
         ChatMessagesComponent,
         ChatMessageComponent,
-        ChatMessagesNotSelectedComponent,
         ChatMessageAttachmentPreviewComponent,
         ChatUserProfileComponent,
+
         // Auxillary components
-        ChatToolbarComponent,
-        ChatNoDataComponent,
         ChatHeaderComponent,
         ChatListComponent,
         ChatListItemComponent,
         ChatVerticalDividerComponent,
         ChatProfileResourcesComponent,
+
         // Directives
         DragAndDropDirective,
     ],
@@ -80,6 +76,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         AngularSvgIconModule,
         ReactiveFormsModule,
         NgbModule,
+
         // Shared Components
         TaInputComponent,
         TaSearchComponent,
@@ -88,6 +85,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
         TaAppTooltipV2Component,
         TaUploadFilesComponent,
         CaProfileImageComponent,
+
         // Pipes
         NameInitialsPipe,
         FormatTimePipe,
