@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 // Components
-import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
+import { ChatMessagesComponent } from '@pages/chat/components/conversation-content/chat-messages/chat-messages.component';
 
 // Models
 import { ConversationType } from 'appcoretruckassist';
@@ -81,10 +81,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.tabs[0].count = this.drivers.count + this.companyUsers.count;
         this.unreadCount = this.getUnreadCount(this.companyUsers, this.drivers);
       });
-  }
-
-  public trackById(index: number, tab: ChatTab): number {
-    return tab.id;
   }
 
   public onSelectTab(item: ChatTab): void {
