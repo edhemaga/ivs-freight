@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatUserListComponent } from '@pages/chat/components/conversation-list/chat-user-list/chat-user-list.component';
+import { ChatUserListComponent } from '@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component';
 
 describe('ChatUserListComponent', () => {
   let component: ChatUserListComponent;

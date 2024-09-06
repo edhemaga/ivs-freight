@@ -7,5 +7,4 @@ export enum ChatAttachmentType {
     JPEG = 'jpeg',
     PNG = 'png',
     MP4 = 'mp4',
-    SVG = 'svg'
 }

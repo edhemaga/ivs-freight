@@ -52,8 +52,8 @@ import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.m
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
-import { ChatAttachmentHoveredClassStringEnum } from '@pages/chat/enums/conversation/chat-attachment-hovered-class-string.enum';
-import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums/conversation/chat-attachment-custom-classes.enum';
+import { ChatAttachmentHoveredClassStringEnum } from '@pages/chat/enums/shared/chat-attachment-hovered-class-string.enum';
+import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums/shared/chat-attachment-custom-classes.enum';
 
 // Helpers
 import { checkForLink } from '@pages/chat/utils/helpers/link-recognition.helper';

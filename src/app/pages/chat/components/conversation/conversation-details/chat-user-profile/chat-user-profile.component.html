@@ -91,7 +91,7 @@
         [customClass]="'media-content'"
         [count]="data.mediaCount"
         [resources]="data.media"
-        [type]="ChatUserProfileResourceType.MEDIA"
+        [type]="ChatUserProfileResourceTypeEnum.MEDIA"
     ></app-chat-profile-resources>
 
     <app-chat-profile-resources
@@ -99,7 +99,7 @@
         [customClass]="'files-content'"
         [count]="data.filesCount"
         [resources]="data.files"
-        [type]="ChatUserProfileResourceType.FILES"
+        [type]="ChatUserProfileResourceTypeEnum.FILES"
     ></app-chat-profile-resources>
 
     <app-chat-profile-resources
@@ -107,7 +107,7 @@
         [customClass]="'links-content'"
         [count]="data?.linksCount"
         [resources]="data?.links"
-        [type]="ChatUserProfileResourceType.LINKS"
+        [type]="ChatUserProfileResourceTypeEnum.LINKS"
         [hasHorizontalBorder]="false"
     ></app-chat-profile-resources>
 </div>

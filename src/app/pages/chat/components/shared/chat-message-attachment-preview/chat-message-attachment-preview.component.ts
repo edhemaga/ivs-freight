@@ -11,7 +11,7 @@ import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
 import { ChatExtendedUploadFile } from '@pages/chat/models/chat-extended-upload-file.model';
 
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums/conversation/chat-attachment-type.enum';
+import { ChatAttachmentType } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
 
 @Component({
   selector: 'app-chat-message-attachment-preview',

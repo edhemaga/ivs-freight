@@ -8,7 +8,7 @@ import {
 import { CompanyUserChatResponse } from 'appcoretruckassist';
 
 // Enums
-import { ChatConversationStatus } from '@pages/chat/enums/conversation/chat-conversation-status.enum';
+import { ChatConversationStatus } from '@pages/chat/enums/shared/chat-conversation-status.enum';
 
 @Component({
   selector: 'app-chat-user-list-item',

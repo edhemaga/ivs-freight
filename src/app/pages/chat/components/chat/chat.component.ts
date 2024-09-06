@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 // Components
-import { ChatMessagesComponent } from '@pages/chat/components/conversation-content/chat-messages/chat-messages.component';
+import { ChatMessagesComponent } from '@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component';
 
 // Models
 import { ConversationType } from 'appcoretruckassist';
@@ -20,7 +20,7 @@ import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/com
 
 // Enums
 import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
-import { ConversationTypeEnum } from '@pages/chat/enums/conversation/chat-conversation-type.enum';
+import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
 
 // Constants
 import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';

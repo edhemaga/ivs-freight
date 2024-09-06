@@ -22,16 +22,6 @@
                     [isRound]="item?.isRound"
                 ></app-ca-profile-image>
             </ng-container>
-            <ng-container
-                *ngSwitchCase="item?.assetExtension === ChatAttachmentType.SVG"
-            >
-                <svg-icon
-                    class="d-flex justify-content-center align-items-center"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="item?.pathToAsset"
-                >
-                </svg-icon>
-            </ng-container>
         </ng-container>
     </div>
 

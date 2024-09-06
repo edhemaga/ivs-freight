@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums/conversation/chat-attachment-type.enum';
+import { ChatAttachmentType } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
 
 // Models
 import { ChatListItem } from '@pages/chat/models/chat-list-item.model';

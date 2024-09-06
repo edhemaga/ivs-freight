@@ -13,7 +13,7 @@ import { ConversationInfoResponse } from 'appcoretruckassist';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 
 // Enums
-import { ChatUserProfileResourceType } from '@pages/chat/enums/conversation/chat-user-profile-resource-type.enum';
+import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums/conversation/conversation-details/chat-user-profile-resource-type.enum';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class ChatUserProfileComponent implements OnInit {
   public ChatSvgRoutes = ChatSvgRoutes;
 
   // Attachment and links status
-  public ChatUserProfileResourceType = ChatUserProfileResourceType;
+  public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
 
   constructor() { }
 

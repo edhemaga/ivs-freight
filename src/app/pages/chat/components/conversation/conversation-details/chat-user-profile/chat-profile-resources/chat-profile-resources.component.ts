@@ -9,7 +9,7 @@ import { FileResponse } from 'appcoretruckassist';
 import { ChatLink } from '@pages/chat/models/chat-link.model';
 
 // Enums
-import { ChatUserProfileResourceType } from '@pages/chat/enums/conversation/chat-user-profile-resource-type.enum';
+import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums/conversation/conversation-details/chat-user-profile-resource-type.enum';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
@@ -25,7 +25,7 @@ export class ChatProfileResourcesComponent implements OnInit {
   @Input() public hasHorizontalBorder: boolean = true;
   @Input() public customClass!: string;
   @Input() public count: number = 0;
-  @Input() public type: ChatUserProfileResourceType;
+  @Input() public type: ChatUserProfileResourceTypeEnum;
 
   // Resources
   @Input() resources: Array<FileResponse | ChatLink | null>;

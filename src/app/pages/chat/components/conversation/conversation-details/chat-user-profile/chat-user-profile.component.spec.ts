@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatUserProfileComponent } from '@pages/chat/components/conversation-details/chat-user-profile/chat-user-profile.component';
+import { ChatUserProfileComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-user-profile.component';
 
 describe('ChatUserProfileComponent', () => {
   let component: ChatUserProfileComponent;
