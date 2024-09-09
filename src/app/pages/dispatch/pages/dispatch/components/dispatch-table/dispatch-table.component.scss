@@ -509,9 +509,9 @@
             }
 
             &.pickup-delivery-field {
-                min-width: 300px;
-                max-width: 420px;
-                width: 340px;
+                min-width: 340px !important;
+                max-width: 340px !important;
+                width: 340px !important;
             }
 
             &.progress-field {
@@ -543,9 +543,9 @@
                 min-width: 34px;
 
                 &.expanded {
-                    width: 236px !important;
-                    max-width: 326px !important;
-                    min-width: 196px !important;
+                    width: 236px;
+                    max-width: 326px;
+                    min-width: 196px;
                 }
             }
         }
