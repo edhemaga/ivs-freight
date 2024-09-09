@@ -4,6 +4,7 @@ import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/util
 import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
 import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
 import {
+    MilesStopShortResponse,
     PayrollCountItemResponse,
     PayrollCountsResponse,
 } from 'appcoretruckassist';
@@ -33,17 +34,36 @@ export const selectPayrollCount = createSelector(
     }
 );
 
-export const selectPayrollLoad = createSelector(
-    selectPayrollState,
-    (state) => {
-        return state.loading;
-    }
-)
+export const selectPayrollLoad = createSelector(selectPayrollState, (state) => {
+    return state.loading;
+});
 
 export const selectPayrollOpenedReport = createSelector(
     selectPayrollState,
     (state) => {
         return state.payrollOpenedReport;
+    }
+);
+
+export const selectPayrollDriverMileageStops = createSelector(
+    selectPayrollState,
+    (state) => {
+        if( !state.payrollOpenedReport ) return [];
+        const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
+            (load, old) => {
+                return old.milesStops.concat(load);
+            },
+            [] as MilesStopShortResponse[]
+        );
+
+        const excludedLoads = state.payrollOpenedReport?.excludedLoads.reduce(
+            (load, old) => {
+                return old.milesStops.concat(load);
+            },
+            [] as MilesStopShortResponse[]
+        );
+
+        return includedLoads.concat(excludedLoads);
     }
 );
 

@@ -1,5 +1,6 @@
 import {
     PayrollCountsResponse,
+    PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
@@ -7,7 +8,7 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
     payrollDriverMileage: PayrollDriverMileageListResponse[];
-    payrollOpenedReport: PayrollDriverMileageResponse[];
+    payrollOpenedReport?: PayrollDriverMileageByIdResponse;
     loading: boolean;
 }
 

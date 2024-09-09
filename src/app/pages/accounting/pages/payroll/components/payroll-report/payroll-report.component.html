@@ -39,44 +39,13 @@
                 [tableAddClas]="'resizable-table'"
             ></app-payroll-table> -->
             <div class="small-table-holder-main">
-                <!-- <div class="small-tables" *ngIf="reportMainData.credits">
-                    <app-payroll-small-tables
-                        [title]="'Credit'"
-                        [type]="'credit'"
-                        [data]="reportMainData.credits"
-                        [reportMainData]="reportMainData"
-                    ></app-payroll-small-tables>
-                </div>
-
-                <div class="small-tables" *ngIf="reportMainData.bonuses">
-                    <app-payroll-small-tables
-                        [title]="'Bonus'"
-                        [type]="'bonus'"
-                        [data]="reportMainData.bonuses"
-                        [reportMainData]="reportMainData"
-                    ></app-payroll-small-tables>
-                </div>
-
-                <div
-                    class="small-tables"
-                    *ngIf="reportMainData.fuelTransactions"
-                >
-                    <app-payroll-small-tables
-                        [title]="'Fuel'"
-                        [type]="'fuel'"
-                        [data]="reportMainData.fuelTransactions"
-                        [reportMainData]="reportMainData"
-                    ></app-payroll-small-tables>
-                </div>
-
-                <div class="small-tables" *ngIf="reportMainData.deductions">
-                    <app-payroll-small-tables
-                        [title]="'Deduction'"
-                        [type]="'deduction'"
-                        [data]="reportMainData.deductions"
-                        [reportMainData]="reportMainData"
-                    ></app-payroll-small-tables>
-                </div> -->
+                 <!-- [hideFieldsToHide]="expandTable"
+                    (onPressEvent)="selectPayrollReport($event)" -->
+                <app-ca-main-table
+                    *ngIf="!(loading$ | async)"
+                    [columns]="columns"
+                    [data$]="payrollMileageDriverLoads$"
+                ></app-ca-main-table>
             </div>
             <div class="map-holder">
                 <!-- <agm-map
@@ -94,233 +63,23 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <app-ca-period-content
+            <!-- <app-ca-period-content
                 [isOpen]="true"
                 [type]="'MILEAGE'"
                 [componentData]="payrollReport$ | async"
-            ></app-ca-period-content>
-            <!-- <div class="report-info-card" *ngIf="title == 'Owner'">
-                <div class="report-card-title">
-                    {{ reportMainData.owner.name }}
-                </div>
-                <div class="border-item"></div>
-                <div class="payroll-item-info d-flex">
-                    <div class="payroll-item-info-img">
-                        <svg-icon
-                            [src]="
-                                'assets/svg/truckassist-table/trailer/ic_trailer-tanker-dryBulk.svg'
-                            "
-                        ></svg-icon>
-                        <div class="report-unit-title">Unit</div>
-                        <div class="report-unit">
-                            {{ reportMainData.truck.truckNumber }}
-                        </div>
-                    </div>
-                    <div class="payroll-item-info-details">
-                        <div class="payroll-item-details-numb">LA59OSK1389</div>
-                        <div class="payroll-item-details-numb-detail">
-                            <span>Period</span>
-                            {{ reportMainData.period | date : 'MM/dd/YY' }}
-                        </div>
-                    </div>
-                </div>
-                <div class="payroll-item-details-numb-detail">
-                    <span>Driver</span>
-                    Aleksandar Djordjevic
-                </div>
-            </div>
-
-            <div
-                class="report-info-card"
-                *ngIf="
-                    title == 'Driver (Commission)' || title == 'Driver (Miles)'
-                "
-            >
-                <div class="report-card-title">
-                    {{ reportMainData.driver.fullName }}
-                </div>
-                <div class="border-item"></div>
-                <div class="payroll-item-info d-flex">
-                    <div class="payroll-item-info-img no-bc">
-                        <app-ta-profile-images
-                            [indx]="0"
-                            [name]="reportMainData.driver.fullName"
-                            [size]="'large'"
-                            [withTooltip]="true"
-                        ></app-ta-profile-images>
-                    </div>
-                    <div class="payroll-item-info-details">
-                        <div class="payroll-item-details-numb">
-                            {{ reportMainData.payrollNumber }}
-                        </div>
-                        <div class="payroll-item-details-numb-detail">
-                            <span>Period</span>
-                            {{ reportMainData.period | date : 'MM/dd/YY' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="payroll-report-status"
-                [ngClass]="{
-                    'status-template-past':
-                        reportMainData.payDeadline?.period == 'Past',
-                    'status-template-ready':
-                        reportMainData.payDeadline?.period == 'Ready'
-                }"
-            >
-                <svg-icon
-                    *ngIf="reportMainData.payDeadline?.period == 'Past'"
-                    src="assets/svg/common/ic_danger.svg"
-                ></svg-icon>
-                <svg-icon
-                    *ngIf="reportMainData.payDeadline?.period == 'Ready'"
-                    src="assets/svg/applicant/confirm-circle.svg"
-                ></svg-icon>
-                <svg-icon
-                    *ngIf="reportMainData.payDeadline?.period == 'Pending'"
-                    src="assets/svg/common/ic_clock_white.svg"
-                ></svg-icon>
-
-                <div
-                    class="payroll-report-status-text"
-                    *ngIf="reportMainData.payDeadline?.period == 'Past'"
-                >
-                    {{ reportMainData.payDeadline?.numberOfDays }} DAYS OVERDUE
-                </div>
-                <div
-                    class="payroll-report-status-text"
-                    *ngIf="reportMainData.payDeadline?.period == 'Pending'"
-                >
-                    READY IN {{ reportMainData.payDeadline?.numberOfDays }} DAYS
-                </div>
-                <div
-                    class="payroll-report-status-text"
-                    *ngIf="reportMainData.payDeadline?.period == 'Ready'"
-                >
-                    READY
-                </div>
-            </div>
-
-            <div class="payroll-report-money-value">
-                <div
-                    class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.milesPay !== undefined"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/equal.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Mi Pay</div>
-                    </div>
-                    <div class="payroll-report-money-item-right">
-                        {{ reportMainData.milesPay | currency : 'USD' }}
-                    </div>
-                </div>
-                <div
-                    class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.bonusAmount !== undefined"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/addition.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Bonus</div>
-                    </div>
-                    <div class="payroll-report-money-item-right">
-                        {{ reportMainData.bonusAmount | currency : 'USD' }}
-                    </div>
-                </div>
-
-                <div
-                    class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.salaryAmount !== undefined"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/equal.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Salary</div>
-                    </div>
-                    <div class="payroll-report-money-item-right salary">
-                        {{ reportMainData.salaryAmount | currency : 'USD' }}
-                    </div>
-                </div>
-
-                <div
-                    class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.creditAmount !== undefined"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/addition.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Credit</div>
-                    </div>
-                    <div class="payroll-report-money-item-right credit">
-                        {{ reportMainData.creditAmount | currency : 'USD' }}
-                    </div>
-                </div>
-                <div
-                    class="payroll-report-money-item d-flex"
-                    *ngIf="reportMainData.deductionAmount !== undefined"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <svg-icon
-                            [src]="'assets/svg/payroll/deduction.svg'"
-                        ></svg-icon>
-                        <div class="sal-info">Deduction</div>
-                    </div>
-                    <div class="payroll-report-money-item-right deduction">
-                        {{ reportMainData.deductionAmount | currency : 'USD' }}
-                    </div>
-                </div>
-                <div
-                    class="payroll-report-money-item d-flex payroll-report-money-item-total"
-                >
-                    <div class="payroll-report-money-item-left d-flex">
-                        <div class="sal-info">Total</div>
-                    </div>
-                    <div class="payroll-report-money-item-right total">
-                        {{ reportMainData.totalAmount | currency : 'USD' }}
-                    </div>
-                </div>
-                <div class="payroll-pay-button">
-                    <div class="report-buttons">
-                        <div class="report-button active">Process</div>
-                    </div>
-                </div>
-            </div> -->
+            ></app-ca-period-content> -->
         </div>
-        <!-- <div class="report-card">
-            <div class="report-card-title">Payment method</div>
-            <div class="border-item"></div>
-            <div class="input-field-report d-flex">
-                <div class="pay-amount">Pay Amount</div>
-                <app-ta-input
-                    [inputConfig]="{
-                        id: 'amount',
-                        name: 'Price',
-                        type: 'text',
-                        priceSeparator: true,
-                        minLength: 4,
-                        maxLength: 13,
-                        hideRequiredCheck: true,
-                        hideErrorMessage: true,
-                        blackInput: true
-                    }"
-                    [formControl]="payAmount"
-                ></app-ta-input>
-                <div class="small-text">
-                    1.0$ Fee per transaction Bank Account ****8785 with
-                    CarrierAssist Pay
-                </div>
-            </div>
-            <div class="report-buttons">
-                <div class="report-button active">CarrierAssist Pay</div>
-                <div class="report-button">Mark as Paid</div>
-            </div>
-        </div> -->
     </div>
 </div>
+
+
+
+<!-- TABLE TEMPLATES -->
+<ng-template #customCountTemplate let-data let-index="index">
+    <div class="custom-text-date">{{ index }}</div>
+</ng-template>
+
+
+<ng-template #customLocationTypeLoad let-data let-index="index">
+    <div class="custom-text-date">{{ data.orderNumber }}</div>
+</ng-template>

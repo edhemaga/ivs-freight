@@ -10,11 +10,11 @@
 
         <div class="payroll-tables-holder">
             <ng-container
-                *ngFor="let d of (payrollCountsResponse$ | async).payrollData"
+                *ngFor="let payroll of (payrollCountsResponse$ | async).payrollData"
             >
                 <div class="card-holder">
                     <app-ca-payroll-list-summary-overview
-                        [item]="d"
+                        [item]="payroll"
                         (toggle)="hideShowTables($event)"
                     >
                         <ng-container #container></ng-container>

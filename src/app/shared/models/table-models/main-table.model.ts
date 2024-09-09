@@ -2,7 +2,9 @@ import { TemplateRef, ElementRef } from '@angular/core';
 
 export interface ColumnConfig {
     header: string;
-    field: string;
+    field?: string;
+    row?: boolean;
+    
     sortable?: boolean;
     reorderable?: boolean;
     hiddeOnTableReduce?: boolean,

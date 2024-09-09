@@ -30,8 +30,8 @@ export class PayrollService {
 
     public getPayrollSoloMileageDriverReport(
         reportId: string
-    ): Observable<PayrollDriverMileageResponse[]> {
-        return this.http.get<PayrollDriverMileageResponse[]>(
+    ): Observable<PayrollDriverMileageResponse> {
+        return this.http.get<PayrollDriverMileageResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage?Id=${reportId}`
         );
     }

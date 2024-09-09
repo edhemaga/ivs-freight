@@ -1,8 +1,10 @@
 import {
     ChangeDetectorRef,
     Component,
+    ElementRef,
     Input,
     OnInit,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -23,6 +25,8 @@ import {
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { Observable } from 'rxjs';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
+import { ColumnConfig } from '@shared/models/table-models/main-table.model';
+import { MilesStopShortResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-payroll-report',
@@ -31,8 +35,16 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
     encapsulation: ViewEncapsulation.None,
 })
 export class PayrollReportComponent implements OnInit {
+    columns: ColumnConfig[];
     @Input() reportId: number;
-    payrollReport$: Observable<PayrollDriverMileageResponse[]>;
+    payrollReport$: Observable<PayrollDriverMileageResponse>;
+    payrollMileageDriverLoads$: Observable<MilesStopShortResponse[]>;
+    public loading$: Observable<boolean>;
+
+    @ViewChild('customCountTemplate', { static: false })
+    public readonly customCountTemplate!: ElementRef;
+    @ViewChild('customLocationTypeLoad', { static: false })
+    public readonly customLocationTypeLoad!: ElementRef;
 
     reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
     tableSettings: any[] = [];
@@ -56,6 +68,83 @@ export class PayrollReportComponent implements OnInit {
         // Services
         private payrollFacadeService: PayrollFacadeService
     ) {}
+
+    ngAfterViewInit() {
+        this.columns = [
+            {
+                header: '#',
+                field: '',
+                sortable: true,
+                cellType: 'template',
+                template: this.customCountTemplate, // Pass the template reference
+            },
+            {
+                header: 'LOCATION, TYPE',
+                row: true,
+                cellType: 'template',
+                template: this.customLocationTypeLoad, // Pass the template reference
+            },
+            // {
+            //     header: 'Period ST',
+            //     field: 'periodStart',
+            //     pipeType: 'date',
+            //     pipeString: 'shortDate',
+            //     cellType: 'text', // Pass the template reference
+            // },
+            // {
+            //     header: 'Status',
+            //     field: 'payrollDeadLine',
+            //     cellType: 'template',
+            //     template: this.customStatusTemplate, // Pass the template reference
+            // },
+            // {
+            //     header: 'Empty',
+            //     field: 'emptyMiles',
+            //     headerCellType: 'template',
+            //     headerTemplate: this.customMileageHeaderTemplate,
+            //     cellType: 'template',
+            //     template: this.customTextTemplate, // Pass the template reference
+            //     hiddeOnTableReduce: true,
+            // },
+            // {
+            //     header: 'Loaded',
+            //     headerCellType: 'template',
+            //     headerTemplate: this.customMileageHeaderTemplate,
+            //     field: 'loadedMiles',
+            //     cellType: 'template',
+            //     template: this.customTextTemplate, // Pass the template reference
+            //     hiddeOnTableReduce: true,
+            // },
+            // {
+            //     header: 'Total',
+            //     field: 'totalMiles',
+            //     headerCellType: 'template',
+            //     headerTemplate: this.customMileageHeaderTemplate,
+            //     cellType: 'template',
+            //     template: this.customTextTemplate, // Pass the template reference
+            //     hiddeOnTableReduce: true,
+            // },
+            // {
+            //     header: 'Salary',
+            //     field: 'salary',
+            //     pipeType: 'currency',
+            //     pipeString: 'USD',
+            //     cellCustomClasses: 'text-center',
+            //     cellType: 'text', // Pass the template reference
+            //     hiddeOnTableReduce: true,
+            // },
+            // {
+            //     header: 'Total',
+            //     field: 'total',
+            //     pipeType: 'currency',
+            //     pipeString: 'USD',
+            //     cellType: 'text',
+            //     cellCustomClasses: 'text-right',
+            //     textCustomClasses: 'b-600',
+            // },
+        ];
+    }
+
     ngOnInit(): void {
         this.subscribeToStoreData();
     }
@@ -64,11 +153,17 @@ export class PayrollReportComponent implements OnInit {
         this.payrollFacadeService.getPayrollDriverMileageReport(
             `${this.reportId}`
         );
+        this.loading$ = this.payrollFacadeService.payrollLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
-            this.payrollFacadeService.selectPayrollOpenedReport$.subscribe(payroll => {
-                console.log("PAYROLLL", payroll);
-            });
+
+        this.payrollMileageDriverLoads$ =
+            this.payrollFacadeService.selectPayrollReportDriverMileageLoads$;
+        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
+            (payroll) => {
+                console.log('PAYROLLL', payroll);
+            }
+        );
     }
 
     getDataBasedOnTitle(data: { id: number; title: string }) {

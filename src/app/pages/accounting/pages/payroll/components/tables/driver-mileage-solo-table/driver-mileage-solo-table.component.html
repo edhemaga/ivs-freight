@@ -59,7 +59,10 @@
         >
             {{ Math.abs(data.numberOfDays) }} DAYS
         </div>
-        <div *ngIf="data.numberOfDays === 0" class="custom-status-text ready-payment">
+        <div
+            *ngIf="data.numberOfDays === 0"
+            class="custom-status-text ready-payment"
+        >
             Ready
         </div>
     </div>
