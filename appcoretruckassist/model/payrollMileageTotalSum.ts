@@ -11,9 +11,10 @@
  */
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string;
+export interface PayrollMileageTotalSum { 
+    totalEmptyMiles?: number | null;
+    totalLoadedMiles?: number | null;
+    totalMiles?: number | null;
+    totalSubtotal?: number | null;
 }
 

@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EntityTypeActivityLogResponse } from './entityTypeActivityLogResponse';
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string;
+export interface ActivityLogModuleFilterResponse { 
+    activityLogType?: EntityTypeActivityLogResponse;
+    count?: number;
 }
 

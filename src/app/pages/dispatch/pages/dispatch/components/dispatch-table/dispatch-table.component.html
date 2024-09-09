@@ -564,7 +564,8 @@
                                         [trailerId]="item.trailer?.id"
                                         [isHoveringRow]="
                                             isDispatchBoardLocked &&
-                                            isHoveringRowIndex === rowIndex
+                                            isHoveringRowIndex === rowIndex &&
+                                            parkingList.length
                                         "
                                         (updateParking)="
                                             updateParking($event, item.id)
