@@ -108,6 +108,9 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
 
+// Router
+import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
@@ -167,7 +170,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
         //store
-        private store: Store
+        private store: Store,
+
+        // Router
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -1602,7 +1608,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     })
                 )
                 .subscribe();
-        }
+        } else if (event.type === TableStringEnum.VIEW_DETAILS)
+            this.router.navigate([`/list/load/${event.id}/details`]);
     }
 
     private getSelectedTabTableData(): void {
