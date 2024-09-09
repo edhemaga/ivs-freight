@@ -88,7 +88,9 @@
                                         [columns]="columnsToShow"
                                         [resizeEnabled]="!isDispatchBoardLocked"
                                         [isNoteExpanded]="_isNoteExpanded"
-                                        (onNoteResize)="onNoteResize($event)"
+                                        (onResizeAction)="
+                                            onResizeAction($event)
+                                        "
                                         [ngClass]="{
                                             'show-after': !isDispatchBoardLocked
                                         }"
@@ -500,7 +502,14 @@
                                 </td>
                             </ng-container>
 
-                            <td class="location-field">
+                            <td
+                                class="location-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '160px',
+                                    'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '300px',
+                                    'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '140px',
+                                }"
+                            >
                                 <app-dispatch-table-last-location
                                     [address]="item.location"
                                     [rowIndex]="rowIndex"
@@ -520,7 +529,14 @@
                                 </app-dispatch-table-last-location>
                             </td>
 
-                            <td class="status-field">
+                            <td
+                                class="status-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '140px',
+                                    'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '200px',
+                                    'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '120px',
+                                }"
+                            >
                                 <app-dispatch-table-status
                                     [time]="item.lastStatusDateTime"
                                     [status]="item.status"
@@ -535,9 +551,23 @@
                                 </app-dispatch-table-status>
                             </td>
 
-                            <td class="pickup-delivery-field"></td>
+                            <td
+                                class="pickup-delivery-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                    'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                    'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                }"
+                            ></td>
                             <ng-container *ngIf="!columnsToShow[14].hidden">
-                                <td class="progress-field">
+                                <td
+                                    class="progress-field"
+                                    [ngStyle]="{
+                                        width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '226px',
+                                        'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '326px',
+                                        'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '196px',
+                                    }"
+                                >
                                     <div class="main_inside filled">
                                         <div class="padding-inside">
                                             <div class="info-item p-0 w-100">
@@ -554,6 +584,11 @@
                                     [ngClass]="{
                                         'parking-field-large':
                                             parkingList?.length > 1
+                                    }"
+                                    [ngStyle]="{
+                                        width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '100px',
+                                        'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '200px' : '100px',
+                                        'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '90px',
                                     }"
                                 >
                                     <app-dispatch-table-parking
@@ -616,6 +651,11 @@
                                 <td
                                     class="note-field"
                                     [class.expanded]="_isNoteExpanded"
+                                    [ngStyle]="{
+                                        width: !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '236px',
+                                        'max-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '326px',
+                                        'min-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '196px',
+                                    }"
                                 >
                                     <app-dispatch-table-note
                                         [truck]="item.truck"
@@ -789,7 +829,14 @@
                             </td>
                         </ng-container>
 
-                        <td class="location-field">
+                        <td
+                            class="location-field"
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '160px',
+                                'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '300px',
+                                'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '140px',
+                            }"
+                        >
                             <ng-container
                                 *ngIf="
                                     showAddAddressFieldIndex === -2;
@@ -817,26 +864,54 @@
                             </ng-template>
                         </td>
 
-                        <td class="status-field">
+                        <td
+                            class="status-field"
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '140px',
+                                'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '200px',
+                                'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '120px',
+                            }"
+                        >
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
 
-                        <td class="pickup-delivery-field">
+                        <td
+                            class="pickup-delivery-field"
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                            }"
+                        >
                             <div class="main_inside">
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
                         <ng-container *ngIf="!columnsToShow[14].hidden">
-                            <td class="progress-field">
+                            <td
+                                class="progress-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '226px',
+                                    'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '326px',
+                                    'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '196px',
+                                }"
+                            >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
                                 </div>
                             </td>
                         </ng-container>
                         <ng-container *ngIf="!columnsToShow[15].hidden">
-                            <td class="parking-field">
+                            <td
+                                class="parking-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '100px',
+                                    'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '200px' : '100px',
+                                    'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '90px',
+                                }"
+                            >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
                                 </div>
@@ -853,6 +928,11 @@
                             <td
                                 class="note-field"
                                 [class.expanded]="_isNoteExpanded"
+                                [ngStyle]="{
+                                    width: !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '236px',
+                                    'max-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '326px',
+                                    'min-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '196px',
+                                }"
                             >
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
@@ -908,51 +988,113 @@
                                 <div class="main_inside"></div>
                             </td>
 
-                            <td class="driver-field">
-                                <div class="main_inside"></div>
-                            </td>
-
-                            <td class="pre-trip">
-                                <div class="main_inside"></div>
-                            </td>
-
-                            <td class="location-field">
-                                <div class="main_inside"></div>
-                            </td>
-
-                            <td class="status-field">
-                                <div class="main_inside"></div>
-                            </td>
-
-                            <td class="pickup-delivery-field">
-                                <div class="main_inside"></div>
-                            </td>
-
-                            <td class="progress-field">
-                                <div class="main_inside"></div>
-                            </td>
-
                             <td
-                                class="parking-field"
-                                [ngClass]="{
-                                    'parking-field-large': hasLargeFieldParking
+                                class="driver-field"
+                                [ngStyle]="{
+                                    width: isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px',
+                                    'min-width': isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px',
+                                    'max-width': isDriverEndorsementActive
+                                        ? '300px'
+                                        : '240px'
                                 }"
                             >
                                 <div class="main_inside"></div>
                             </td>
 
-                            <td class="box-item">
+                            <ng-container *ngIf="!columnsToShow[10].hidden">
+                                <td class="pre-trip">
+                                    <div class="main_inside"></div>
+                                </td>
+                            </ng-container>
+
+                            <td
+                                class="location-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '160px',
+                                    'max-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '300px',
+                                    'min-width': resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '140px',
+                                }"
+                            >
                                 <div class="main_inside"></div>
                             </td>
 
                             <td
-                                class="note-field"
-                                [class.expanded]="_isNoteExpanded"
+                                class="status-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '140px',
+                                    'max-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '200px',
+                                    'min-width': resizedColumnsWidth['status'] ? resizedColumnsWidth['status'] + 'px' : '120px',
+                                }"
                             >
-                                <div class="main_inside">
-                                    <div class="padding-inside"></div>
-                                </div>
+                                <div class="main_inside"></div>
                             </td>
+
+                            <td
+                                class="pickup-delivery-field"
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                    'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                    'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
+                                }"
+                            >
+                                <div class="main_inside"></div>
+                            </td>
+
+                            <ng-container *ngIf="!columnsToShow[14].hidden">
+                                <td
+                                    class="progress-field"
+                                    [ngStyle]="{
+                                        width: resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '226px',
+                                        'max-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '326px',
+                                        'min-width': resizedColumnsWidth['progress'] ? resizedColumnsWidth['progress'] + 'px' : '196px',
+                                    }"
+                                >
+                                    <div class="main_inside"></div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container *ngIf="!columnsToShow[15].hidden">
+                                <td
+                                    class="parking-field"
+                                    [ngClass]="{
+                                        'parking-field-large':
+                                            hasLargeFieldParking
+                                    }"
+                                    [ngStyle]="{
+                                        width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '100px',
+                                        'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '200px' : '100px',
+                                        'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : parkingList?.length > 1 ? '150px' : '90px',
+                                    }"
+                                >
+                                    <div class="main_inside"></div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container *ngIf="!columnsToShow[16].hidden">
+                                <td class="box-item">
+                                    <div class="main_inside"></div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container *ngIf="!columnsToShow[17].hidden">
+                                <td
+                                    class="note-field"
+                                    [class.expanded]="_isNoteExpanded"
+                                    [ngStyle]="{
+                                        width: !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '236px',
+                                        'max-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '326px',
+                                        'min-width': !_isNoteExpanded ? '34px' : resizedColumnsWidth['note'] ? resizedColumnsWidth['note'] + 'px' : '196px',
+                                    }"
+                                >
+                                    <div class="main_inside">
+                                        <div class="padding-inside"></div>
+                                    </div>
+                                </td>
+                            </ng-container>
 
                             <td class="box-item">
                                 <div class="main_inside"></div>
@@ -975,7 +1117,9 @@
                                 [ngClass]="{
                                     'first-row': i === 0,
                                     'second-row': i === 1,
-                                    'third-row': i === 2
+                                    'third-row': i === 2,
+                                    'no-pretrip-column':
+                                        columnsToShow[10].hidden
                                 }"
                             >
                                 <ng-container
