@@ -160,6 +160,8 @@ export class FilterStateService implements OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data /* : DispatcherFilterListResponse */) => {
+                    console.log('getDispatchData data', data);
+
                     this.tableService.sendActionAnimation({
                         animation: 'dispatch-data-update',
                         data: data,

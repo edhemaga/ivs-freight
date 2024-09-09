@@ -47,9 +47,11 @@ export class dispatchStatusColorPipe implements PipeTransform {
             'Offloaded',
             'RepairOffloaded',
         ].includes(status);
-        const statusDarkRed2ColorCondition = ['Cancelled', 'Cancel', 'Canceled'].includes(
-            status
-        );
+        const statusDarkRed2ColorCondition = [
+            'Cancelled',
+            'Cancel',
+            'Canceled',
+        ].includes(status);
 
         if (statusDarkGreyColorCondition) {
             return { color: isDarkColor ? '#AAAAAA' : '#919191' };
