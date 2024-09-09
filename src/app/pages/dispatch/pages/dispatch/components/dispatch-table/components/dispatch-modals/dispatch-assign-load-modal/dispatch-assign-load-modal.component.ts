@@ -514,6 +514,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
 
             this.unassignedLoads.push(movedLoad);
+            this.isUnAssignLoadCardOpen = true;
         } else {
             const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
@@ -522,6 +523,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
 
             this.assignedLoads.push(movedLoad);
+            this.isAssignLoadCardOpen = true;
         }
 
         if (isIconClick || loadId === this.selectedLoad?.id)
