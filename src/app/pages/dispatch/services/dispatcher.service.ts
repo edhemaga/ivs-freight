@@ -29,6 +29,7 @@ import {
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
+    UpdateDispatchHistoryCommand,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
@@ -443,6 +444,14 @@ export class DispatcherService {
             truckId,
             trailerId,
             dispatchBoardId
+        );
+    }
+
+    public updateDispatchHistoryGroup(
+        updateDispatchHistoryCommand: UpdateDispatchHistoryCommand
+    ): Observable<any> {
+        return this.dispatchService.apiDispatchBoardHistoryPut(
+            updateDispatchHistoryCommand
         );
     }
 

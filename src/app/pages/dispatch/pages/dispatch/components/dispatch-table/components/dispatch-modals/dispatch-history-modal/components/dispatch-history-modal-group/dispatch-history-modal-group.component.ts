@@ -13,8 +13,8 @@ import {
     takeUntil,
 } from 'rxjs';
 
-// moment
-import moment from 'moment';
+// services
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // enums
 import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -67,7 +67,12 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
     public selectedFormControlName: string;
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+
+        // services
+        private dispatcherService: DispatcherService
+    ) {}
 
     get dispatchHistoryDateStartConfig() {
         return (configData: DispatchInputConfigParams): ITaInput => {
@@ -220,6 +225,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                         ];
 
                         return this.formBuilder.group({
+                            id: item.id,
                             dateStart: [
                                 MethodsCalculationsHelper.convertDateFromBackend(
                                     item.startDate
@@ -772,12 +778,63 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
         timeEnd?: string
     ): void {
         if (!isSkipUpdateTotalColumn) {
-            console.log('update total column & backend');
             this.updateTotalColumnValue(dateStart, timeStart, dateEnd, timeEnd);
-        }
 
-        // TODO UPDATE BACKEND
-        if (isSkipUpdateTotalColumn) console.log('updating backend');
+            const id = this.getDispatchHistoryGroup(this.groupIndex).at(
+                this.itemIndex
+            ).value.id;
+
+            const formatedDateAndTimeStart =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    dateStart,
+                    timeStart
+                );
+            const formatedDateAndTimeEnd =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    dateEnd,
+                    timeEnd
+                );
+
+            const data = {
+                id,
+                startDate: formatedDateAndTimeStart,
+                endDate: formatedDateAndTimeEnd,
+            };
+
+            console.log('data', data);
+
+            this.dispatcherService
+                .updateDispatchHistoryGroup(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        } else {
+            const id = this.getDispatchHistoryGroup(this.groupIndex).at(
+                this.itemIndex
+            ).value.id;
+
+            const formatedDateAndTimeStart =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    this.getDispatchHistoryGroup(this.groupIndex).at(
+                        this.itemIndex
+                    ).value.dateStart,
+                    this.getDispatchHistoryGroup(this.groupIndex).at(
+                        this.itemIndex
+                    ).value.timeStart
+                );
+
+            const data = {
+                id,
+                startDate: formatedDateAndTimeStart,
+                endDate: '',
+            };
+
+            console.log('data', data);
+
+            this.dispatcherService
+                .updateDispatchHistoryGroup(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
     }
 
     private updateGroupHistory(
