@@ -558,7 +558,40 @@
                                     'max-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
                                     'min-width': resizedColumnsWidth['pickup_delivery'] ? resizedColumnsWidth['pickup_delivery'] + 'px' : '340px',
                                 }"
-                            ></td>
+                                (click)="
+                                    getLoadInformationForSignleDispatchResponse(
+                                        item
+                                    )
+                                "
+                            >
+                                <div class="main_inside filled">
+                                    <div
+                                        class="padding-inside"
+                                        [ngClass]="{
+                                            hovering:
+                                                isDispatchBoardLocked &&
+                                                item.dispatcher?.fullName &&
+                                                isHoveringRowIndex === rowIndex
+                                        }"
+                                    >
+                                        <div class="info-item p-0 w-100">
+                                            <ng-container
+                                                *ngIf="pickupDeliveryItem(item)"
+                                            >
+                                                <app-ca-pickup-delivery-block
+                                                    [loads]="{
+                                                        active: currentDispatchGroupedLoadsResponse.active,
+                                                        closed: currentDispatchGroupedLoadsResponse.closed,
+                                                        pending:
+                                                            currentDispatchGroupedLoadsResponse.pending
+                                                    }"
+                                                    [dispatchResponse]="item"
+                                                ></app-ca-pickup-delivery-block>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                             <ng-container *ngIf="!columnsToShow[14].hidden">
                                 <td
                                     class="progress-field"

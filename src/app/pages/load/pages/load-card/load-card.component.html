@@ -48,24 +48,35 @@
                             </span>
                         </div>
 
-                        <div class="name d-flex ta-font-bold">
-                            <span class="title" (click)="goToDetailsPage(card)">
+                        <div class="name d-flex ta-font-bold" [class.name-no-hover]="selectedTab === 'template'">
+
+                            <ng-container
+                                *ngIf="
+                                    selectedTab !== 'template';
+                                    else loadTemplate
+                                "
+                            >
                                 <span
-                                    class="title-tooltip"
-                                    type="button"
-                                    ngbTooltip
-                                    mainTooltip="View Detail"
-                                    tooltipBackground="#424242"
-                                    position="bottom"
-                                    customClass="mt-1"
+                                    class="title"
+                                    (click)="goToDetailsPage(card)"
                                 >
-                                    {{
-                                        selectedTab === 'template'
-                                            ? card.name
-                                            : card.loadNumber
-                                    }}
+                                    <span
+                                        class="title-tooltip"
+                                        type="button"
+                                        ngbTooltip
+                                        mainTooltip="View Detail"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
+                                        customClass="mt-1"
+                                    >
+                                        {{ card.loadNumber }}
+                                    </span>
                                 </span>
-                            </span>
+                            </ng-container>
+                            
+                            <ng-template #loadTemplate>
+                                <span class="title"> {{ card.name }} </span>
+                            </ng-template>
                         </div>
                     </div>
 
