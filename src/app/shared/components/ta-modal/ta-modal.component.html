@@ -151,6 +151,7 @@
                                 [filterTitle]="'Time Filter'"
                                 [timeSubType]="'future'"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
                             </app-ca-filter>
                         </div>
