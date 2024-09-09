@@ -30,11 +30,16 @@ export class ResizableDirective implements OnInit {
         this.checkWidth();
     }
     @Input() set isNoteExpanded(value: boolean) {
+        const valueChanged = this._isNoteExpanded !== value;
+
         this._isNoteExpanded = value;
 
-        this.checkWidth();
+        this.checkWidth(valueChanged);
     }
-    @Output() onNoteResize = new EventEmitter();
+    @Output() onResizeAction = new EventEmitter<{
+        width: number;
+        column: DispatchColumn;
+    }>();
 
     private _columns: DispatchColumn[] = [];
     private isResizeEnabled: boolean = true;
@@ -111,32 +116,50 @@ export class ResizableDirective implements OnInit {
         if (this.isColumnResized) {
             this.isColumnResized = false;
 
-            if (this.title === DispatchTableStringEnum.NOTE)
-                this.onNoteResize.emit(this.el.nativeElement.offsetWidth);
+            const columnTitle =
+                this.title === DispatchTableStringEnum.DRIVER_1
+                    ? DispatchTableStringEnum.NAME
+                    : this.title === DispatchTableStringEnum.PICKUP
+                    ? DispatchTableStringEnum.PICKUP_DELIVERY
+                    : this.title;
+
+            const currentColumn = this._columns.find(
+                (column) =>
+                    column.title.toLowerCase() === columnTitle.toLowerCase()
+            );
+
+            if (currentColumn)
+                this.onResizeAction.emit({
+                    width: this.el.nativeElement.offsetWidth,
+                    column: currentColumn,
+                });
         }
     }
 
-    private checkWidth(): void {
+    private checkWidth(isNoteResized?: boolean): void {
         switch (this.title) {
             case DispatchTableStringEnum.NOTE:
                 this.maxWidth = this._columns[17]?.width;
                 this.minWidth = this._columns[17]?.minWidth;
 
-                const minNoteValue = this.isResizeEnabled ? 30 : 23;
+                if (isNoteResized) {
+                    const minNoteValue = this.isResizeEnabled ? 30 : 23;
 
-                const noteMinWidth =
-                    !this._isNoteExpanded &&
-                    this.el.nativeElement.offsetWidth >= 23
-                        ? minNoteValue
-                        : this.el.nativeElement.offsetWidth < this.minWidth - 11
-                        ? this.minWidth - 11
-                        : this.el.nativeElement.offsetWidth;
+                    const noteMinWidth =
+                        !this._isNoteExpanded &&
+                        this.el.nativeElement.offsetWidth >= 23
+                            ? minNoteValue
+                            : this.el.nativeElement.offsetWidth <
+                              this.minWidth - 11
+                            ? this.minWidth - 11
+                            : this.el.nativeElement.offsetWidth;
 
-                this.renderer.setStyle(
-                    this.el.nativeElement,
-                    DispatchTableStringEnum.WIDTH,
-                    `${noteMinWidth}px`
-                );
+                    this.renderer.setStyle(
+                        this.el.nativeElement,
+                        DispatchTableStringEnum.WIDTH,
+                        `${noteMinWidth}px`
+                    );
+                }
 
                 break;
             case DispatchTableStringEnum.DISPATCHER_1:
@@ -209,7 +232,7 @@ export class ResizableDirective implements OnInit {
                 this.minWidth = this._columns[11]?.minWidth;
                 break;
             case DispatchTableStringEnum.PICKUP:
-                this.maxWidth = this._columns[13]?.width;
+                this.maxWidth = this._columns[13]?.minWidth;
                 this.minWidth = this._columns[13]?.minWidth;
                 break;
         }

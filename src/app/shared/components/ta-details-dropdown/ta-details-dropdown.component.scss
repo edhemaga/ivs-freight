@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .details-dropdown-popover {
     background-color: transparent;
 }
@@ -427,7 +429,7 @@
             svg-icon {
                 svg {
                     path {
-                        fill: #e5737340 !important;
+                        fill: $ta-red-20 !important;
                     }
                 }
             }

@@ -54,7 +54,8 @@
                     'table-list-dropdown-content-muted': action.mutedStyle,
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
                     'table-list-dropdown-content-dropdown-active':
-                        action?.isInnerDropActive
+                        action?.isInnerDropActive,
+                    'table-list-dropdown-content-dropdown-disabled': action.mutedStyle 
                 }"
                 [ngStyle]="action?.tableListDropdownContentStyle"
             >

@@ -22,7 +22,6 @@ export class ApplicantRoutes {
                 import('@pages/applicant/applicant.module').then(
                     (m) => m.ApplicantModule
                 ),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 0,
@@ -34,7 +33,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.component'
                 ).then((m) => m.ApplicantOwnerInfoComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 1,
@@ -47,7 +45,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate.component'
                 ).then((m) => m.ApplicantMedicalCertificateComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 2,
@@ -60,7 +57,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.component'
                 ).then((m) => m.ApplicantMvrAuthorizationComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 3,
@@ -73,7 +69,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.component'
                 ).then((m) => m.ApplicantPspAuthorizationComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 4,
@@ -86,7 +81,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-sph/applicant-sph.component'
                 ).then((m) => m.ApplicantSphComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 5,
@@ -113,7 +107,6 @@ export class ApplicantRoutes {
                 import(
                     '@pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.component'
                 ).then((m) => m.ApplicantHosRulesComponent),
-            canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 6,
