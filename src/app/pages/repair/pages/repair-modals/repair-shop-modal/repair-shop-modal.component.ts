@@ -37,12 +37,7 @@ import {
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { FileEvent } from '@shared/models/file-event.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import { RepairShopModalAction } from './models/repair-shop-modal-actions.model';
-import { RepeairShopModalInput } from './models/repair-shop-modal-input.model';
-import { DisplayServiceTab } from './models/repair-shop-modal-service-tabs.model';
-import { RepairShopModalService } from './models/repair-shop-modal-services.model';
-import { RepairShopTabs } from './models/repair-shop-modal-tabs.model';
-import { CreateShopModel } from './models/repair-shop.model';
+import { RepeairShopModalInput, RepairShopTabs, RepairShopModalService, DisplayServiceTab, RepairShopModalAction, CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -92,14 +87,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { RepairShopModalEnum } from './enums/repair-shop-modal.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { FileActionEvent } from './enums/file-actions.enum';
-import { ActionTypesEnum } from './enums/modal-actions.enum';
-import { OpenWorkingHours } from './enums/working-hours.enum';
-import { RepairShopModalStringEnum } from './enums/repair-shop-modal-strings.enum';
+import { ActionTypesEnum, FileActionEvent, OpenWorkingHours, RepairShopModalStringEnum, RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 // Constants
 import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
@@ -108,7 +99,7 @@ import { RepairShopConstants } from './utils/constants/repair-shop-modal.constan
 import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
 
 // Types
-import { OpenedTab } from './types/open-tabs.type';
+import { OpenedTab } from "@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type";
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
@@ -464,7 +455,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private initTabs(): void {
-        if (this.editData) this.selectedTab = this.editData.openedTab;
+        if (this.editData) this.selectedTab = this.editData.openedTab ?? TableStringEnum.DETAILS;
         this.tabs = RepairShopHelper.TABS(!this.isEditMode, this.selectedTab);
     }
 

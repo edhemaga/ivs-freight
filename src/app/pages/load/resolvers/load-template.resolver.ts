@@ -1,56 +1,23 @@
 import { Injectable } from '@angular/core';
 
 
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+
+// Models
+import { LoadTemplateListResponse } from 'appcoretruckassist';
 
 // services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
-
-// store
-import {
-    LoadTemplateState,
-    LoadTemplateStore,
-} from '@pages/load/state/load-template-state/load-template.store';
-
+ 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadTemplateResolver  {
     constructor(
-        private loadService: LoadService,
-        private loadTemplateStore: LoadTemplateStore,
-        private tableService: TruckassistTableService
+        private loadService: LoadService, 
     ) {}
 
-    resolve(): Observable<any> {
-        return this.loadService
-            .getLoadTemplateList(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined
-            )
-            .pipe(
-                tap((loadPagination) => {
-                    localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.pagination.count,
-                        })
-                    );
-
-                    this.loadTemplateStore.set(loadPagination.pagination.data);
-                })
-            );
+    resolve(): Observable<LoadTemplateListResponse> {
+        return this.loadService.getTemplateData();
     }
 }
