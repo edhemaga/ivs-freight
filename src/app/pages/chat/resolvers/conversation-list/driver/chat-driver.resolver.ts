@@ -15,7 +15,7 @@ export class ChatDriverResolver {
     constructor(private userChatService: UserChatService) { }
 
     resolve(): Observable<CompanyUserChatResponsePagination> {
-        return this.userChatService.getCompanyUserList('Driver').pipe(
+        return this.userChatService.getCompanyUserList('Driver', 1, 6).pipe(
             map(res => {
                 return res.pagination
             })

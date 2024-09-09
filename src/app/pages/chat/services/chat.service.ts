@@ -45,16 +45,18 @@ export class UserChatService {
 
     public getCompanyUserList(
         userType: UserType,
-        searchParam?: string
+        pageIndex?: number,
+        pageSize?: number,
+        searchParam?: string,
     ): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
+            pageIndex,
+            pageSize,
             null,
             null,
-            null,
-            null,
-            searchParam ?? null,
+            searchParam,
             null
         );
     }
