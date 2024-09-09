@@ -54,6 +54,7 @@ import {
     TruckMinimalResponse,
     DriverMinimalResponse,
     DispatchResponse,
+    DispatchGroupedLoadsResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -153,6 +154,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse =
+        {};
+
     public shownFields;
 
     public isDriverEndorsementActive: boolean = false;
@@ -205,6 +209,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
+    }
+
+    public pickupDeliveryItem(item: DispatchResponse): boolean {
+        return !!item.activeLoad;
+    }
+
+    public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
+        this.dispatcherService
+            .getDispatchAssignedloadsId(item.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (response) => {
+                    this.currentDispatchGroupedLoadsResponse = response;
+                    this.cdRef.detectChanges();
+                },
+            });
     }
 
     public trackByIdentity = (index: number): number => index;
