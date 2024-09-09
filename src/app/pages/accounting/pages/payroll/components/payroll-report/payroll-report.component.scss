@@ -1,5 +1,5 @@
 .report-main-holder {
-    margin-top: 22px;
+    margin-top: 9px;
     .middle-report-info {
         flex: 1;
         margin: 0 12px;
@@ -10,14 +10,20 @@
     }
 
     .report-card {
-        background-color: #ffffff;
+        background-color: transparent;
         padding: 8px;
 
         margin-bottom: 6px;
         border-radius: 3px;
 
         .report-card-title {
+            display: flex;
+            background-color: #fff;
+            height: 34px;
+            padding: 4px;
+            border-radius: 3px;
             .payroll_report_title {
+                margin: 0 4px;
                 font-size: 17px;
                 font-weight: 700;
                 color: #2f2f2f;
@@ -38,8 +44,8 @@
                 font-weight: 700;
                 color: #fff;
 
-                &.blue{
-                    background-color: #6692F1;
+                &.blue {
+                    background-color: #6692f1;
                 }
             }
         }
@@ -428,7 +434,8 @@
 
         .small-table-holder-main {
             display: flex;
-            margin-top: 18px;
+            margin-top: 12px;
+            background-color: #FFF;
 
             .small-tables {
                 flex: 1;
@@ -448,4 +455,35 @@
             }
         }
     }
+}
+
+// Template CSS
+.load-description {
+    svg-icon{
+        margin-right: 4px;
+        height: 18px;
+        svg{
+            display: flex;
+            width: 18px;
+            height: 18px;
+        }
+       
+    }
+    .load-description-name {
+        .load-description-address,
+        .load-description-stop-type {
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 12px;
+            color: #424242;
+        }
+
+        .load-description-stop-type {
+            color: #919191;
+        }
+    }
+}
+
+.custom-load-index{
+    min-width: 26px;
 }

@@ -159,6 +159,10 @@ export class PayrollReportComponent implements OnInit {
 
         this.payrollMileageDriverLoads$ =
             this.payrollFacadeService.selectPayrollReportDriverMileageLoads$;
+
+            this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(aa => {
+                console.log("LOAD INFO", aa);
+            })
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
             (payroll) => {
                 console.log('PAYROLLL', payroll);

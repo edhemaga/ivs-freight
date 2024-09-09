@@ -39,7 +39,7 @@
                 [tableAddClas]="'resizable-table'"
             ></app-payroll-table> -->
             <div class="small-table-holder-main">
-                 <!-- [hideFieldsToHide]="expandTable"
+                <!-- [hideFieldsToHide]="expandTable"
                     (onPressEvent)="selectPayrollReport($event)" -->
                 <app-ca-main-table
                     *ngIf="!(loading$ | async)"
@@ -72,14 +72,22 @@
     </div>
 </div>
 
-
-
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
-    <div class="custom-text-date">{{ index }}</div>
+    <div class="custom-load-index">{{ index }}</div>
 </ng-template>
 
-
 <ng-template #customLocationTypeLoad let-data let-index="index">
-    <div class="custom-text-date">{{ data.orderNumber }}</div>
+    <div class="load-description d-flex align-items-center">
+        <svg-icon
+            src="assets/svg/svg_numbers/olddash/svg_num_box_1.svg"
+        ></svg-icon>
+        <div class="load-description-name">
+            <div class="load-description-address">{{ data.address }}</div>
+            <div class="load-description-stop-type">
+                {{ data.stopType.name }}
+            </div>
+            <!-- <div>{{ data.orderNumber }}</div> -->
+        </div>
+    </div>
 </ng-template>
