@@ -18,7 +18,7 @@ import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/
 
 //models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
-import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
 //pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';

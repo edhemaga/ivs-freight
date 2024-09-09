@@ -1,7 +1,6 @@
 
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { OpenHourDays } from '../../enums/open-hours.enum';
-import { OpenWorkingHours } from '../../enums/working-hours.enum';
+import { OpenHourDays, OpenWorkingHours } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 export type WorkingHoursType = OpenHourDays[];
 
