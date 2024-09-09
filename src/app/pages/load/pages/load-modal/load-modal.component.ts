@@ -123,6 +123,7 @@ import {
     LoadPaymentPayResponse,
     ShipperLoadModalResponse,
     LoadShortResponse,
+    LoadStatusResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -423,6 +424,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isEdit: boolean;
     private emptyMiles: number;
     private originalShippers: ShipperLoadModalResponse[];
+    private originalLoadStatus: LoadStatusResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -594,14 +596,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public isActiveLoad() {
-        return !!this.editData.id || (
-            !this.editData?.type?.includes('edit') ||
+        return (
+            !this.editData?.type?.includes('edit') || 
             (this.editData?.type?.includes('edit') && this.isTemplateLoad)
         );
     }
 
     public get modalTitle(): string {
-        const isEdit = !!this.editData.id || this.editData?.type?.includes('edit');
+        const isEdit = !!this.editData?.id || this.editData?.type?.includes('edit');
         this.isEdit = isEdit;
 
         if (!isEdit) {
@@ -1027,7 +1029,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
                     .patchValue(
-                        event.id
+                        (event.id ? event.id : event)
                             .toString()
                             .startsWith(LoadModalStringEnum.NUMBER_4)
                             ? LoadModalStringEnum.DELIVERY_2
@@ -3894,7 +3896,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.loadModalData();
     }
 
-    private loadModalData() {
+    private loadModalData(): EditData {
         const { ...form } = this.loadForm.value;
         const baseRate = form.baseRate;
         const driverRate = form.driverRate;
@@ -3902,9 +3904,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const advancePay = form.advancePay;
 
         return {
+            selectedTab: this.editData?.selectedTab,
+            type: 'edit',
             id: form.id,
-            type: this.tabs.find((tab) => tab.id === this.selectedTab)
-                .name as LoadType,
+            data: {
+                id: form.id,
+                status: this.originalLoadStatus,
+            type: this.tabs.find((tab) => tab.id === this.selectedTab),
             loadNumber: this.loadNumber,
             loadTemplateId: this.selectedTemplate,
             dispatcher: this.selectedDispatcher,
@@ -3930,14 +3936,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 driverMessage: form.driverMessage,
             },
             pays: this.mapPreviousPaymets(),
-            stops: this.premmapedStops(true),
+            stops: this.premmapedStops(true) as any,
             baseRate: this.convertNumbers(baseRate),
             adjustedRate: this.convertNumbers(adjustedRate),
             driverRate: this.convertNumbers(driverRate),
             advancePay: this.convertNumbers(advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 LoadModalStringEnum.CREATE
-            ),
+            ) as any,
             // pickup shipper
             // billing
             additionalBillingTypes: this.additionalBillings().value,
@@ -3951,6 +3957,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             emptyMiles: this.emptyMiles,
+            }  as any
         };
     }
 
@@ -3964,6 +3971,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     const status = (this.editData?.data as LoadResponse).status;
+                    this.originalLoadStatus = status;
+
                     if (status) {
                         this.selectedStatus = {
                             name: status.statusString,
@@ -4674,9 +4683,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             emptyMiles,
             id
         } = loadModalData;
-
-        console.log(loadModalData);
-
         // Check if stops exists and is an array before using it
         const stops =
             loadModalData.stops?.filter((stop) => stop.id !== 0) || [];

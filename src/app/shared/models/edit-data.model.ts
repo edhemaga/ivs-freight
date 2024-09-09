@@ -12,8 +12,8 @@ export interface EditData {
         | CompanyContactResponse
         | RepairResponse
         | DriverResponse;
-    type: string;
-    company: CompanyResponse;
+    type?: string;
+    company?: CompanyResponse;
     id: number;
     shopId?: number;
     isFinishOrder?: number;
