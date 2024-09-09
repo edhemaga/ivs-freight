@@ -208,11 +208,13 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public deleteComment(commentId: number): void {
+    public deleteComment(commentId: number, btnType?: string): void {
         this.closeDropdown.emit(true);
 
         const comment = {
-            commentContent: this.commentCardsDataDropdown.commentContent,
+            commentContent: btnType
+                ? this.commentCardsDataDropdown?.commentContent
+                : this.commentInput.nativeElement.textContent,
             entityTypeId: this.commentsCardId,
             commentId: commentId,
         };
@@ -230,13 +232,30 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.confirmationService.confirmationData$.subscribe((response) => {
-            if (response.type === CommentStringEnum.DELETE_SMALL)
-                this.commentsService
-                    .deleteCommentById(commentId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe(() => {
-                        this.loadService.removeComment(comment);
-                    });
+            if (response.type === CommentStringEnum.DELETE_SMALL) {
+                if (btnType) {
+                    const emitData: CommentData = {
+                        commentId: this.commentData.commentId,
+                        commentContent:
+                            this.commentInput.nativeElement.textContent,
+                        commentIndex: this.commentIndex,
+                        isEditCancel: this.isEditing,
+                        btnType,
+                    };
+
+                    this.btnActionEmitter.emit(emitData);
+
+                    this.isEditing = false;
+                    this.isCommenting = false;
+                } else {
+                    this.commentsService
+                        .deleteCommentById(commentId)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe(() => {
+                            this.loadService.removeComment(comment);
+                        });
+                }
+            }
         });
     }
 
@@ -346,19 +365,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
             case CommentStringEnum.CANCEL:
             case CommentStringEnum.DELETE:
-                const emitData: CommentData = {
-                    commentId: this.commentData.commentId,
-                    commentContent: this.commentInput.nativeElement.textContent,
-                    commentIndex: this.commentIndex,
-                    isEditCancel: this.isEditing,
-                    btnType,
-                };
-
-                this.btnActionEmitter.emit(emitData);
-
-                this.isEditing = false;
-                this.isCommenting = false;
-
+                this.deleteComment(this.commentData.commentId, btnType);
                 break;
             case CommentStringEnum.EDIT:
                 this.commentBeforeEdit =
