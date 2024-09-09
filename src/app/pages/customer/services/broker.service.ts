@@ -306,15 +306,17 @@ export class BrokerService implements OnDestroy {
                     localStorage.getItem('brokerShipperTableCount')
                 );
 
-                brokerShipperCount.broker--;
+                if (brokerShipperCount) {
+                    brokerShipperCount.broker--;
 
-                localStorage.setItem(
-                    'brokerShipperTableCount',
-                    JSON.stringify({
-                        broker: brokerShipperCount.broker,
-                        shipper: brokerShipperCount.shipper,
-                    })
-                );
+                    localStorage.setItem(
+                        'brokerShipperTableCount',
+                        JSON.stringify({
+                            broker: brokerShipperCount.broker,
+                            shipper: brokerShipperCount.shipper,
+                        })
+                    );
+                }
             })
         );
     }

@@ -1,11 +1,9 @@
 import { RepairShopResponse } from 'appcoretruckassist';
-import { RepairShopModalService } from '../models/repair-shop-modal-services.model';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { OpenHours } from '../models/repair-shop-open-hours.model';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { RepairShopModalEnum } from '../enums/repair-shop-modal.enum';
-import { RepairShopTabs } from '../models/repair-shop-modal-tabs.model';
-import { OpenedTab } from '../types/open-tabs.type';
+import { TableStringEnum,  } from '@shared/enums/table-string.enum';
+import { RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
+import { OpenHours, RepairShopTabs, RepairShopModalService } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
 export class RepairShopHelper {
     static TABS(isAddMode: boolean, openedTab: OpenedTab): RepairShopTabs[] {

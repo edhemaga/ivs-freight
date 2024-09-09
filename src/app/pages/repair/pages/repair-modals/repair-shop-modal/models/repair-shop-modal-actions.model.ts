@@ -1,4 +1,4 @@
-import { ActionTypesEnum } from "../enums/modal-actions.enum";
+import { ActionTypesEnum } from "@pages/repair/pages/repair-modals/repair-shop-modal/enums";
 
 export interface RepairShopModalAction {
     action:

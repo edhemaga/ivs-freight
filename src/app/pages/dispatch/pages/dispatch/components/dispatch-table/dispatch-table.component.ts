@@ -54,6 +54,7 @@ import {
     TruckMinimalResponse,
     DriverMinimalResponse,
     DispatchResponse,
+    DispatchGroupedLoadsResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -153,6 +154,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse =
+        {};
+
     public shownFields;
 
     public isDriverEndorsementActive: boolean = false;
@@ -162,6 +166,19 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     /////////////////////////////////////////// UPDATE
 
     public draggingType: string;
+
+    public resizedColumnsWidth = {
+        truckNumber: null,
+        trailerNumber: null,
+        firstName: null,
+        city: null,
+        status: null,
+        pickup_delivery: null,
+        progress: null,
+        slotNumber: null,
+        dispatcher: null,
+        note: null,
+    };
 
     startIndexTrailer: number;
     startIndexDriver: number;
@@ -192,6 +209,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
+    }
+
+    public pickupDeliveryItem(item: DispatchResponse): boolean {
+        return !!item.activeLoad;
+    }
+
+    public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
+        this.dispatcherService
+            .getDispatchAssignedloadsId(item.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (response) => {
+                    this.currentDispatchGroupedLoadsResponse = response;
+                    this.cdRef.detectChanges();
+                },
+            });
     }
 
     public trackByIdentity = (index: number): number => index;
@@ -482,6 +515,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.isDispatchBoardChangeInProgress = true;
 
         this.checkForEmpty = key;
+
         if (updatedPreviousData.id) {
             this.dispatcherService
                 .updateDispatchBoard(newData, this.dispatchData.id)
@@ -942,6 +976,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+
+            this.cdRef.detectChanges();
         }, 1000);
     }
 
@@ -1041,8 +1077,26 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.openedDriverDropdown = index;
     }
 
-    public onNoteResize(event: number): void {
-        this.noteWidth = event;
+    public onResizeAction(event: {
+        width: number;
+        column: DispatchColumn;
+    }): void {
+        const columnFieldName =
+            event.column.field === DispatchTableStringEnum.PICKUP_DELIVERY_2
+                ? DispatchTableStringEnum.PICKUP_DELIVERY_3
+                : event.column.field === DispatchTableStringEnum.PROGRESS_2
+                ? DispatchTableStringEnum.PROGRESS_3
+                : event.column.field === DispatchTableStringEnum.DISPATCHER_2
+                ? DispatchTableStringEnum.DISPATCHER
+                : event.column.field === DispatchTableStringEnum.NOTE_2
+                ? DispatchTableStringEnum.NOTE_3
+                : event.column.field;
+
+        this.resizedColumnsWidth[columnFieldName] = event.width + 11;
+
+        if (event.column.title === DispatchTableStringEnum.NOTE_2)
+            this.noteWidth = event.width;
+        else this.setColumnsWidth();
     }
 
     ngOnDestroy(): void {
