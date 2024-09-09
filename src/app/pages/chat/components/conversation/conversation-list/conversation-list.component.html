@@ -1,0 +1,279 @@
+<div class="conversation-list-container">
+    <div class="conversation-list-search" [formGroup]="searchForm">
+        <app-ta-input
+            formControlName="searchTerm"
+            [inputConfig]="ChatInput.userSearchInput"
+        ></app-ta-input>
+    </div>
+    <div class="conversation-list-wrapper">
+        <ng-container
+            *ngTemplateOutlet="
+                header;
+                context: {
+                    item: { title: 'Department', count: departments.length }
+                }
+            "
+        ></ng-container>
+
+        <div
+            *ngFor="
+                let department of departments;
+                let ind = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    listItemRegular;
+                    context: { type: 'GroupChat', item: department }
+                "
+            ></ng-container>
+        </div>
+
+        <ng-container
+            *ngTemplateOutlet="
+                userListHolder;
+                context: {
+                    data: companyUsers,
+                    header_title: 'Company User',
+                    type: 'SingleChat'
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                userListHolder;
+                context: {
+                    data: drivers,
+                    header_title: 'Driver',
+                    type: 'SingleChat'
+                }
+            "
+        ></ng-container>
+    </div>
+</div>
+
+<ng-template #header let-item="item">
+    <div class="header d-flex">
+        <div class="icon d-flex justify-content-center align-items-center">
+            <ng-container
+                *ngTemplateOutlet="
+                    icon;
+                    context: {
+                        item: {
+                            width: 18,
+                            height: 18,
+                            route: ChatSvgRoutes.headerArrowDownIcon
+                        }
+                    }
+                "
+            ></ng-container>
+        </div>
+        <div class="header-details d-flex flex-grow-1 justify-content-between">
+            <div class="title ta-font-bold">
+                {{ item.title }}
+            </div>
+            <div class="count ta-font-bold">
+                {{ item.count }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template
+    #userListHolder
+    let-data="data"
+    let-header_title="header_title"
+    let-type="type"
+>
+    <ng-container
+        *ngTemplateOutlet="
+            header;
+            context: { item: { title: header_title, count: drivers.count } }
+        "
+    ></ng-container>
+    <div
+        *ngFor="
+            let item of data.data;
+            let ind = index;
+            trackBy: '' | trackByProperty
+        "
+    >
+        <ng-container
+            *ngTemplateOutlet="
+                listItemAdvanced;
+                context: {
+                    type: type,
+                    item: {
+                        count: item.count,
+                        name: item.companyUser?.fullName,
+                        avatarFile: item.companyUser?.avatarFile,
+                        isRound: false
+                    }
+                }
+            "
+        ></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #listItemRegular let-item="item" let-type="type">
+    <div class="conversation-list-item" appHover hoverColor="#eee">
+        <div class="conversation-list-item-regular d-flex">
+            <div class="icon d-flex justify-content-center align-items-center">
+                <ng-container [ngSwitch]="type">
+                    <ng-container *ngSwitchCase="'SingleChat'">
+                        <app-ca-profile-image
+                            [avatarImg]="item.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="item.name | nameInitials"
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="item.isRound"
+                        ></app-ca-profile-image>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'GroupChat'">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 18,
+                                        height: 18,
+                                        route: ChatSvgRoutes.hashIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <ng-container
+                *ngTemplateOutlet="
+                    itemTitle;
+                    context: {
+                        item: item
+                    }
+                "
+            ></ng-container>
+        </div></div
+></ng-template>
+
+<ng-template #listItemAdvanced let-item="item" let-type="type">
+    <div class="conversation-list-item" appHover hoverColor="#eee">
+        <div class="conversation-list-item-advanced d-flex">
+            <div class="icon d-flex justify-content-center align-items-center">
+                <ng-container [ngSwitch]="type">
+                    <ng-container *ngSwitchCase="'SingleChat'">
+                        <app-ca-profile-image
+                            [avatarImg]="item.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="item.name | nameInitials"
+                            [size]="32"
+                            [fontSize]="11"
+                            [isHoverEffect]="false"
+                            [isRound]="item.isRound"
+                        ></app-ca-profile-image>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'GroupChat'">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 29,
+                                        height: 29,
+                                        route: ChatSvgRoutes.hashIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="conversation-list-item-advanced-details">
+                <div class="conversation-list-item-advanced-details-top">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            itemTitle;
+                            context: {
+                                item: item
+                            }
+                        "
+                    ></ng-container>
+                </div>
+                <div
+                    class="conversation-list-item-advanced-details-bottom d-flex"
+                >
+                    <div class="mesage">Message...</div>
+                    <div class="date">Date</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #itemTitle let-item="item">
+    <div class="item d-flex flex-grow-1 justify-content-between">
+        <div
+            class="title title-color ta-font-regular d-flex align-items-center justify-content-center"
+        >
+            <div>
+                {{ item.name }}
+            </div>
+        </div>
+        <div
+            class="ta-font-regular d-flex align-items-center justify-content-center"
+        >
+            <div>
+                <ng-container [ngSwitch]="true">
+                    <ng-container *ngSwitchCase="item.isFavorite">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 13,
+                                        height: 13,
+                                        route: ChatSvgRoutes.favoriteIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="item.unreadCount">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 6,
+                                        height: 6,
+                                        route: ChatSvgRoutes.circleIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault></ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #icon let-item="item">
+    <svg-icon
+        class="d-flex justify-content-center align-items-center"
+        [svgStyle]="{ 'width.px': item.width, 'height.px': item.height }"
+        [src]="item.route"
+    >
+    </svg-icon>
+</ng-template>

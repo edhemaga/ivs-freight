@@ -43,11 +43,13 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public title!: string;
 
+  // Data
+  public departments!: ChatCompanyChannelExtended[];
+  public companyChannels: ChatCompanyChannelExtended[];
   public companyUsers!: CompanyUserChatResponsePaginationReduced;
   public drivers!: CompanyUserChatResponsePaginationReduced;
   public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
   public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
-  public companyChannels!: ChatCompanyChannelExtended[];
 
   public unreadCount!: number;
   public selectedConversation: number;
@@ -77,7 +79,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.title = res.title;
         this.drivers = res.drivers;
         this.companyUsers = res.users;
-        this.companyChannels = res.companyChannels;
+        this.departments = res.departments;
         this.tabs[0].count = this.drivers.count + this.companyUsers.count;
         this.unreadCount = this.getUnreadCount(this.companyUsers, this.drivers);
       });
@@ -109,8 +111,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  public searchDepartment(searchTerm: string): void { }
 
   private getUnreadCount(
     users: CompanyUserChatResponsePaginationReduced,

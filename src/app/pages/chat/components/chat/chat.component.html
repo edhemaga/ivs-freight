@@ -101,7 +101,12 @@
         <!-- USER TYPES LIST -->
         <div class="chat-lists">
             <!-- COMPANY USERS -->
-            <app-chat-user-list
+            <app-conversation-list
+                [departments]="departments"
+                [companyUsers]="companyUsers"
+                [drivers]="drivers"
+            ></app-conversation-list>
+            <!-- <app-chat-user-list
                 (selectedUser)="
                     createUserConversation(
                         $event,
@@ -111,7 +116,7 @@
                 [type]="'User'"
                 [contactsInfo]="companyUsers"
             >
-            </app-chat-user-list>
+            </app-chat-user-list> -->
         </div>
 
         <!-- MESSAGES -->

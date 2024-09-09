@@ -87,7 +87,7 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   private getUpdatedData(searchTerm?: string): Observable<CompanyUserChatResponsePaginationReduced> {
     const castedUserType: UserType = UserType[this.type];
     return this.userChatService
-      .getCompanyUserList(castedUserType, searchTerm?.trim())
+      .getCompanyUserList(castedUserType, null, null, searchTerm?.trim())
       .pipe(takeUntil(this.destroy$),
         map(res => {
           const listOfUsers: CompanyUserChatResponsePaginationReduced = {
