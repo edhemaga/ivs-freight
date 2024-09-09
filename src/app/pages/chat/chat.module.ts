@@ -11,6 +11,7 @@ import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
+import { ConversationListComponent } from "@pages/chat/components/conversation/conversation-list/conversation-list.component";
 import { ChatUserListComponent } from "@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component";
 import { ChatMessageComponent } from "@pages/chat/components/conversation/conversation-content/chat-message/chat-message.component";
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component";
@@ -35,18 +36,20 @@ import { CaProfileImageComponent } from "ca-components";
 import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
 import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
 import { FormatDatePipe } from "@shared/pipes/format-date.pipe";
+import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
 import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
 import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
-import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
+import { HoverDirective } from "@pages/chat/utils/directives/hover.directive";
 
 @NgModule({
     declarations: [
         ChatComponent,
 
         // Chat list
+        ConversationListComponent,
         ChatUserListComponent,
 
         // Conversations
@@ -64,6 +67,7 @@ import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
 
         // Directives
         DragAndDropDirective,
+        HoverDirective,
     ],
     providers: [
         // Pipes

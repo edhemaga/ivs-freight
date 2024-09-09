@@ -17,9 +17,9 @@ const routes: Routes = [
         path: '',
         component: ChatComponent,
         resolve: {
+            departments: ChatCompanyChannelResolver,
             users: ChatCompanyUserResolver,
             drivers: ChatDriverResolver,
-            companyChannels: ChatCompanyChannelResolver
         },
         data: {
             title: 'Chat'
