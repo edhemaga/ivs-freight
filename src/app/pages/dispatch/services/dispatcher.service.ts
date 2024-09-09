@@ -114,8 +114,10 @@ export class DispatcherService {
     public currentDispatchGroupedLoadsResponse =
         this.dispatchGroupedLoadsResponse.asObservable();
 
-    public sendDispatchGroupedLoadsResponse(chip: any) {
-        this.dispatchGroupedLoadsResponse.next(chip);
+    public sendDispatchGroupedLoadsResponse(
+        dispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse
+    ) {
+        this.dispatchGroupedLoadsResponse.next(dispatchGroupedLoadsResponse);
     }
 
     public apiDispatchNextstatusesIdGet(

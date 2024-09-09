@@ -199,11 +199,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public pickupDeliveryItem(item: DispatchResponse): boolean {
-        if (item.activeLoad) {
-            return true;
-        }
-
-        return false;
+        return !!item.activeLoad;
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -216,8 +212,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 },
             });
-
-        this.cdRef.detectChanges();
     }
 
     public trackByIdentity = (index: number): number => index;
