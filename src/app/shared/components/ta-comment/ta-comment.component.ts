@@ -231,32 +231,34 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         );
 
-        this.confirmationService.confirmationData$.subscribe((response) => {
-            if (response.type === CommentStringEnum.DELETE_SMALL) {
-                if (btnType) {
-                    const emitData: CommentData = {
-                        commentId: this.commentData.commentId,
-                        commentContent:
-                            this.commentInput.nativeElement.textContent,
-                        commentIndex: this.commentIndex,
-                        isEditCancel: this.isEditing,
-                        btnType,
-                    };
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response.type === CommentStringEnum.DELETE_SMALL) {
+                    if (btnType) {
+                        const emitData: CommentData = {
+                            commentId: this.commentData.commentId,
+                            commentContent:
+                                this.commentInput.nativeElement.textContent,
+                            commentIndex: this.commentIndex,
+                            isEditCancel: this.isEditing,
+                            btnType,
+                        };
 
-                    this.btnActionEmitter.emit(emitData);
+                        this.btnActionEmitter.emit(emitData);
 
-                    this.isEditing = false;
-                    this.isCommenting = false;
-                } else {
-                    this.commentsService
-                        .deleteCommentById(commentId)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(() => {
-                            this.loadService.removeComment(comment);
-                        });
+                        this.isEditing = false;
+                        this.isCommenting = false;
+                    } else {
+                        this.commentsService
+                            .deleteCommentById(commentId)
+                            .pipe(takeUntil(this.destroy$))
+                            .subscribe(() => {
+                                this.loadService.removeComment(comment);
+                            });
+                    }
                 }
-            }
-        });
+            });
     }
 
     public checkIfLoggedUserCommented(user: number): void {
