@@ -1071,7 +1071,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         this.resizedColumnsWidth[columnFieldName] = event.width + 11;
 
-        if (event.column.title === DispatchTableStringEnum.NOTE)
+        if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;
         else this.setColumnsWidth();
     }
