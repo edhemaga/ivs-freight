@@ -15,35 +15,30 @@ import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
 import { EnumValue } from './enumValue';
+import { DriverShortResponse } from './driverShortResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
-import { TruckShortResponse } from './truckShortResponse';
-import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
 
 
-export interface PayrollOwnerClosedResponse { 
+export interface PayrollDriverCommissionClosedByIdResponse { 
     id?: number;
-    previousLoadId?: number | null;
-    owner?: string | null;
-    truck?: TruckShortResponse;
+    driver?: DriverShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;
     periodEnd?: string;
-    closedDate?: string | null;
+    closedDate?: string;
     status?: EnumValue;
-    commission?: number | null;
-    salary?: number | null;
     earnings?: number | null;
-    debt?: number | null;
+    commission?: number;
+    salary?: number | null;
     deductions?: Array<PayrollDeductionMinimalResponse> | null;
-    totalDeduction?: number | null;
+    totalDeduction?: number;
     credits?: Array<PayrollCreditMinimalResponse> | null;
-    totalCredits?: number | null;
+    totalCredits?: number;
+    debt?: number;
     loads?: Array<PayrollLoadMinimalResponse> | null;
-    totalFuels?: number | null;
-    fuels?: Array<PayrollFuelMinimalResponse> | null;
-    totalTransactions?: number | null;
-    transactions?: Array<PayrollPaymentsMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
     sums?: PayrollCommissionTotalSum;
+    totalPayments?: number;
+    payments?: Array<PayrollPaymentsMinimalResponse> | null;
 }
 

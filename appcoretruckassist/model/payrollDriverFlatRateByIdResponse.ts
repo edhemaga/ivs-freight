@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PayrollPaymentsMinimalResponse } from './payrollPaymentsMinimalResponse';
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
@@ -18,29 +17,33 @@ import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverShortResponse } from './driverShortResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
+import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 
 
-export interface PayrollDriverFlatRateClosedByIdResponse { 
+export interface PayrollDriverFlatRateByIdResponse { 
     id?: number;
     driver?: DriverShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;
     periodEnd?: string;
     status?: EnumValue;
+    payrollDeadLine?: PayrollDeadlineShortResponse;
     total?: number | null;
     salary?: number | null;
     rate?: string | null;
     flatPay?: number | null;
-    deductions?: Array<PayrollDeductionMinimalResponse> | null;
+    includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
+    excludedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
-    credits?: Array<PayrollCreditMinimalResponse> | null;
+    includedCredits?: Array<PayrollCreditMinimalResponse> | null;
+    excludedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
-    bonuses?: Array<PayrollBonusMinimalResponse> | null;
+    includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
+    excludedBonuses?: Array<PayrollBonusMinimalResponse> | null;
     totalBonuses?: number;
-    loads?: Array<PayrollLoadMinimalResponse> | null;
+    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
+    excludedLoads?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
     sums?: PayrollFlatRateTotalSum;
-    totalPayments?: number;
-    payments?: Array<PayrollPaymentsMinimalResponse> | null;
 }
 

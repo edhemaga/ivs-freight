@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserActivityLogResponse } from './companyUserActivityLogResponse';
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string;
+export interface CompanyUserActivityLogResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyUserActivityLogResponse> | null;
 }
 

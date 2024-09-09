@@ -9,11 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface UpdateDispatchHistoryCommand { 
+export interface CompanyUserActivityLogResponse { 
     id?: number;
-    startDate?: string;
-    endDate?: string;
+    companyUser?: CompanyUserShortResponse;
+    entityTypeActivity?: EnumValue;
+    actionLog?: EnumValue;
+    description?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

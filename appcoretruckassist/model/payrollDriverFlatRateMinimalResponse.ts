@@ -14,7 +14,7 @@ import { DriverShortResponse } from './driverShortResponse';
 import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 
 
-export interface PayrollDriverMileageListResponse { 
+export interface PayrollDriverFlatRateMinimalResponse { 
     id?: number;
     driver?: DriverShortResponse;
     payrollNumber?: string | null;
@@ -22,21 +22,14 @@ export interface PayrollDriverMileageListResponse {
     periodEnd?: string;
     status?: EnumValue;
     payrollDeadLine?: PayrollDeadlineShortResponse;
-    emptyRate?: number | null;
-    loadedRate?: number | null;
-    perStopRate?: number | null;
-    emptyMiles?: number | null;
-    loadedMiles?: number | null;
-    totalMiles?: number | null;
-    extraStops?: number | null;
-    emptyPay?: number | null;
-    loadedPay?: number | null;
-    milePay?: number | null;
-    extraStopPay?: number | null;
+    loadCount?: number | null;
+    miles?: number | null;
+    rate?: string | null;
+    flatPay?: number | null;
     bonus?: number | null;
+    salary?: number | null;
     credit?: number | null;
     deduction?: number | null;
-    salary?: number | null;
     total?: number | null;
 }
 

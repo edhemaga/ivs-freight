@@ -11,9 +11,10 @@
  */
 
 
-export interface UpdateDispatchHistoryCommand { 
+export interface EntityTypeActivityLogResponse { 
     id?: number;
-    startDate?: string;
-    endDate?: string;
+    companyId?: number | null;
+    name?: string | null;
+    logoName?: string | null;
 }
 

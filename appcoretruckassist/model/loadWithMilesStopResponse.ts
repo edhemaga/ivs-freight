@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MilesStopShortResponse } from './milesStopShortResponse';
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string;
+export interface LoadWithMilesStopResponse { 
+    loadId?: string | null;
+    isStartPoint?: boolean;
+    date?: string | null;
+    milesStops?: Array<MilesStopShortResponse> | null;
 }
 
