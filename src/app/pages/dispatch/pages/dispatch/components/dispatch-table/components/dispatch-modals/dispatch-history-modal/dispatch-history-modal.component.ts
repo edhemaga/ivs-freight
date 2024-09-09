@@ -244,18 +244,179 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
 
         this.hasContent = !!data?.length;
 
-        this.groupData = data.map((group) => {
+        const fakeItems = [
+            {
+                id: 5024,
+                status: {
+                    statusValue: {
+                        name: 'Loaded',
+                        id: 11,
+                    },
+                    statusString: 'Loaded',
+                    statusCheckInNumber: '1',
+                },
+                startDate: '2024-09-09T11:56:48.427937',
+                startTime: '12:00 PM',
+                endDate: null,
+                endTime: '',
+                totalTime: 'Ongoing',
+                location: {
+                    city: 'Orangeburg',
+                    state: 'New York',
+                    county: 'Rockland County',
+                    address: '123 NY-303, Orangeburg, NY 10962, US',
+                    street: 'NY-303',
+                    streetNumber: '123',
+                    country: 'US',
+                    zipCode: '10962',
+                    stateShortName: 'NY',
+                    addressUnit: null,
+                },
+            },
+            {
+                id: 5023,
+                status: {
+                    statusValue: {
+                        name: 'Loading',
+                        id: 14,
+                    },
+                    statusString: 'Loading',
+                    statusCheckInNumber: '1',
+                },
+                startDate: '2024-09-08T11:56:42.960701',
+                startTime: '12:00 PM',
+                endDate: '2024-09-08T11:56:48.427146',
+                endTime: '01:00 PM',
+                totalTime: '1h',
+                location: {
+                    city: 'Orangeburg',
+                    state: 'New York',
+                    county: 'Rockland County',
+                    address: '123 NY-303, Orangeburg, NY 10962, US',
+                    street: 'NY-303',
+                    streetNumber: '123',
+                    country: 'US',
+                    zipCode: '10962',
+                    stateShortName: 'NY',
+                    addressUnit: null,
+                },
+            },
+            {
+                id: 5022,
+                status: {
+                    statusValue: {
+                        name: 'CheckedInPickup',
+                        id: 19,
+                    },
+                    statusString: 'Checked-In',
+                    statusCheckInNumber: '1',
+                },
+                startDate: '2024-09-07T11:56:38.440388',
+                startTime: '12:00 PM',
+                endDate: '2024-09-07T11:56:42.959965',
+                endTime: '01:00 PM',
+                totalTime: '1h',
+                location: {
+                    city: 'Orangeburg',
+                    state: 'New York',
+                    county: 'Rockland County',
+                    address: '123 NY-303, Orangeburg, NY 10962, US',
+                    street: 'NY-303',
+                    streetNumber: '123',
+                    country: 'US',
+                    zipCode: '10962',
+                    stateShortName: 'NY',
+                    addressUnit: null,
+                },
+            },
+            {
+                id: 5021,
+                status: {
+                    statusValue: {
+                        name: 'ArrivedPickup',
+                        id: 17,
+                    },
+                    statusString: 'Arrived',
+                    statusCheckInNumber: '1',
+                },
+                startDate: '2024-09-06T11:56:32.845202',
+                startTime: '12:00 PM',
+                endDate: '2024-09-06T11:56:38.43924',
+                endTime: '01:00 PM',
+                totalTime: '1h',
+                location: {
+                    city: 'Orangeburg',
+                    state: 'New York',
+                    county: 'Rockland County',
+                    address: '123 NY-303, Orangeburg, NY 10962, US',
+                    street: 'NY-303',
+                    streetNumber: '123',
+                    country: 'US',
+                    zipCode: '10962',
+                    stateShortName: 'NY',
+                    addressUnit: null,
+                },
+            },
+            {
+                id: 5020,
+                status: {
+                    statusValue: {
+                        name: 'Dispatched',
+                        id: 3,
+                    },
+                    statusString: 'Dispatched',
+                    statusCheckInNumber: '',
+                },
+                startDate: '2024-09-05T11:55:46.742392',
+                startTime: '12:00 PM',
+                endDate: '2024-09-05T11:56:32.844415',
+                endTime: '01:00 PM',
+                totalTime: '1h',
+                location: {
+                    city: 'Fargo',
+                    state: 'North Dakota',
+                    county: 'Cass County',
+                    address: 'Fargo, ND, US',
+                    street: null,
+                    streetNumber: null,
+                    country: 'US',
+                    zipCode: null,
+                    stateShortName: 'ND',
+                    addressUnit: null,
+                },
+            },
+        ];
+
+        const fakeData = data.map((group) => {
             return {
                 ...group,
-                items: group.items.map((item) => {
-                    return {
-                        ...item,
-                        stopOrder: item.status.statusCheckInNumber,
-                        type: DispatchHistoryModalHelper.createStatusOrderValues(
-                            item.status.statusValue.name
-                        ),
-                    };
-                }),
+                items: fakeItems,
+            };
+        });
+
+        this.groupData = data.map((group, index) => {
+            return {
+                ...group,
+                items:
+                    index === 0
+                        ? fakeItems.map((item) => {
+                              return {
+                                  ...item,
+                                  stopOrder: item.status.statusCheckInNumber,
+                                  type: DispatchHistoryModalHelper.createStatusOrderValues(
+                                      item.status.statusValue.name
+                                  ),
+                              };
+                          })
+                        : group.items.map((item) => {
+                              return {
+                                  ...item,
+                                  stopOrder: item.status.statusCheckInNumber,
+                                  type: DispatchHistoryModalHelper.createStatusOrderValues(
+                                      item.status.statusValue.name
+                                  ),
+                              };
+                          }),
             };
         });
     }
