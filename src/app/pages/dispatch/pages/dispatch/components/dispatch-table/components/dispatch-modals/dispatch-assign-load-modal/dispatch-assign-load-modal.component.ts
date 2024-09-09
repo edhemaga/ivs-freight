@@ -54,7 +54,6 @@ import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/co
 
 // Consts
 import { DispatchAssignLoadModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-assign-load-modal.constants';
- 
 @Component({
     selector: 'app-dispatch-assign-load-modal',
     templateUrl: './dispatch-assign-load-modal.component.html',
@@ -139,7 +138,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private initializeForm(): void {
-        this.backLoadFilterQuery = {...DispatchAssignLoadModalConstants.BACK_FILTER};
+        this.backLoadFilterQuery = {
+            ...DispatchAssignLoadModalConstants.BACK_FILTER,
+        };
         this.assignLoadForm = this.formBuilder.group({
             dispatchId: [null],
         });
@@ -169,32 +170,40 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             sort,
             search,
             search1,
-            search2
+            search2,
         } = this.backLoadFilterQuery;
-        
-        this.loadService.getDispatchModalData(
-            false,
-            dispatchFutureTime,
-            truckType,
-            trailerType,
-            _long,
-            lat,
-            distance,
-            dispatchersId,
-            dateFrom,
-            dateTo,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        ).pipe(takeUntil(this.destroy$))
+
+        this.loadService
+            .getDispatchModalData(
+                false,
+                dispatchFutureTime,
+                truckType,
+                trailerType,
+                _long,
+                lat,
+                distance,
+                dispatchersId,
+                dateFrom,
+                dateTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                search,
+                search1,
+                search2
+            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
-                if(!this.originalLoads) {
+                if (!this.originalLoads) {
                     this.originalLoads = res.unassignedLoads;
                     this.updateFilters();
+
+                    this.tableService.sendActionAnimation({
+                        animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
+                        data: res.dispatches,
+                        id: null,
+                    });
                 }
 
                 this.unassignedLoads = res.unassignedLoads;
@@ -525,7 +534,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     private updateFilters(): void {
         this.tableService.sendActionAnimation({
             animation: 'load-list-update',
-            data: this.originalLoads
+            data: this.originalLoads,
         });
     }
 
@@ -545,28 +554,30 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             sort,
             search,
             search1,
-            search2
+            search2,
         } = this.backLoadFilterQuery;
-        
-        this.loadService.getDispatchModalData(
-            true,
-            dispatchId,
-            truckType,
-            trailerType,
-            _long,
-            lat,
-            distance,
-            dispatchersId,
-            dateFrom,
-            dateTo,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        ).pipe(takeUntil(this.destroy$))
+
+        this.loadService
+            .getDispatchModalData(
+                true,
+                dispatchId,
+                truckType,
+                trailerType,
+                _long,
+                lat,
+                distance,
+                dispatchersId,
+                dateFrom,
+                dateTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                search,
+                search1,
+                search2
+            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignedLoadListResponse) => {
                 this.assignedLoads = res.assignedLoads;
 
