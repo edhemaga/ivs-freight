@@ -2385,9 +2385,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.EXTRA_STOPS:
-                this.closeAllLoadExtraStopExceptActive(
-                    this.loadExtraStops().at(indx)
-                );
+                this.closeAllLoadExtraStopExceptActive(indx);
 
                 break;
             default:
@@ -2504,6 +2502,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public removeAdditionalBilling(type: string, index: number): void {
         if (type === LoadModalStringEnum.ADJUSTED_2) {
+            if(!this.selectedAdditionalBillings.length) return; 
             this.selectedAdditionalBillings[0].checked = false;
 
             this.additionalBillingTypes.unshift(
@@ -2644,28 +2643,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalBill,
                         baseRate: this.convertNumbers(value),
                     };
-                }
-            });
-
-        // adjusted rate
-        this.loadForm
-            .get(LoadModalStringEnum.ADJUSTED_RATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (
-                    value &&
-                    (!this.loadForm.get(LoadModalStringEnum.BASE_RATE).value ||
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                    .value
-                            ))
-                ) {
-                    this.loadForm
-                        .get(LoadModalStringEnum.ADJUSTED_RATE)
-                        .reset();
                 }
             });
 
@@ -2862,7 +2839,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public addLoadExtraStop(): void {
         this.loadExtraStops().push(this.newLoadExtraStop());
         this.closeAllLoadExtraStopExceptActive(
-            this.loadExtraStops().controls[this.loadExtraStops().length - 1]
+            this.loadExtraStops().length - 1
         );
         this.loadExtraStops()
             .controls[this.loadExtraStops().length - 1].get(
@@ -3063,16 +3040,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.drawStopOnMap();
     }
 
-    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl): void {
+    public closeAllLoadExtraStopExceptActive(idx: number): void {
         this.isActivePickupStop = false;
         this.isActiveDeliveryStop = false;
 
         if (this.loadExtraStops().length) {
-            this.loadExtraStops().controls.map((item) => {
-                if (
-                    item.get(LoadModalStringEnum.STOP_ORDER).value ===
-                    loadStop.get(LoadModalStringEnum.STOP_ORDER).value
-                ) {
+            this.loadExtraStops().controls.map((item, index) => {
+                if (index === idx) {
                     const isCardOpen = item.get(
                         LoadModalStringEnum.OPEN_CLOSE
                     ).value;
@@ -4514,51 +4488,50 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     private updateLoad(addNew: boolean): void {
         const newData = this.generateLoadModel(false);
+        if (this.originalStatus !== this.selectedStatus.valueForRequest) {
+            this.loadService
+                .updateLoadStatus(
+                    this.editData.data.id,
+                    this.selectedStatus.valueForRequest as LoadStatus,
+                    this.isPreviousStatus
+                )
+                .pipe(takeUntil(this.destroy$)).subscribe(() => this.handleLoadUpdate(newData, addNew));
+        } else {
+            this.handleLoadUpdate(newData, addNew);
+        }
+    }
 
+    private handleLoadUpdate(newData: Load, addNew: boolean) {
         this.loadService
-            .updateLoadStatus(
-                this.editData.data.id,
-                this.selectedStatus.valueForRequest as LoadStatus,
-                this.isPreviousStatus
-            )
-            .subscribe((res) => {
-                this.loadService
-                    .getLoadById(this.editData.data.id)
-                    .subscribe((response) => {
-                        // After statuse change we get times for stops that needs to send to backend
-                        // together with status history
-                        newData.stops.forEach((stop) => {
-                            const _stop = response.stops.find(
-                                (initialStop) => initialStop.id === stop.id
-                            );
-                            if (_stop) {
-                                stop.arrive = _stop.arrive;
-                                stop.depart = _stop.depart;
-                            }
-                        });
+            .getLoadById(this.editData.data.id).pipe(takeUntil(this.destroy$)).subscribe((response) => {
+                // After status change we get times for stops that need to be sent to the backend
+                // together with status history
+                newData.stops.forEach((stop) => {
+                    const _stop = response.stops.find(
+                        (initialStop) => initialStop.id === stop.id
+                    );
+                    if (_stop) {
+                        stop.arrive = _stop.arrive;
+                        stop.depart = _stop.depart;
+                    }
+                });
 
-                        if (this.isLoadClosed)
-                            newData.statusHistory = response.statusHistory;
-                        this.loadService
-                            .updateLoad(newData)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: () => {
-                                    this.loadService
-                                        .getLoadInsideListById(newData.id)
-                                        .subscribe((res) => {
-                                            this.loadService.updateLoadPartily();
-                                        });
-                                    this.setModalSpinner(
-                                        null,
-                                        true,
-                                        true,
-                                        addNew
-                                    );
-                                },
-                                error: () =>
-                                    this.setModalSpinner(null, false, false),
-                            });
+                if (this.isLoadClosed)
+                    newData.statusHistory = response.statusHistory;
+
+                this.loadService
+                    .updateLoad(newData)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: () => {
+                            this.loadService
+                                .getLoadInsideListById(newData.id)
+                                .subscribe(() => {
+                                    this.loadService.updateLoadPartily();
+                                });
+                            this.setModalSpinner(null, true, true, addNew);
+                        },
+                        error: () => this.setModalSpinner(null, false, false),
                     });
             });
     }

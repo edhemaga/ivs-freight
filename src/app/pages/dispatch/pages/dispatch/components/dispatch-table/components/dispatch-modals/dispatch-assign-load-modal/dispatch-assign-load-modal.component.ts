@@ -14,8 +14,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/svg-routes/dispatch-parking-svg-routes';
 
 // Config
-import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch-assign-load-modal.config';
-import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants'; 
+import { DispatchAssignLoadModalConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
+import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants';
 
 // Enum
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
@@ -49,8 +49,8 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 
 // Helpers
-import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-assign-load-modal.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // Consts
 import { DispatchAssignLoadModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-assign-load-modal.constants';

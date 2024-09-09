@@ -12,10 +12,10 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 import { ModalService } from '@shared/services/modal.service';
 
 // enums
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-table-string.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 // config
-import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs/dispatch.config';
+import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
 // models
 import {
@@ -28,6 +28,10 @@ import {
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { OpenModal } from '@shared/models/open-modal.model';
+import {
+    DispatchTrailerListItemModel,
+    DispatchTruckListItemModel,
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table-truck-trailer',
@@ -53,8 +57,13 @@ export class DispatchTableTruckTrailerComponent {
     @Input() truck: TruckResponse;
     @Input() trailer: TrailerResponse;
 
-    @Input() truckList: TruckDispatchModalResponse[];
-    @Input() trailerList: TrailerDispatchModalResponse[];
+    @Input() set trailerList(values: TrailerDispatchModalResponse[]) {
+        this.handleTruckTrailerList(values);
+    }
+
+    @Input() set truckList(values: TruckDispatchModalResponse[]) {
+        this.handleTruckTrailerList(values);
+    }
 
     @Input() rowIndex: number;
 
@@ -90,6 +99,11 @@ export class DispatchTableTruckTrailerComponent {
 
     public _truckDropdownWidth: number;
     public _trailerDropdownWidth: number;
+
+    public _trailerList: DispatchTrailerListItemModel[] = [];
+    public _truckList: DispatchTruckListItemModel[] = [];
+
+    public hasAddNew: boolean = false;
 
     constructor(private modalService: ModalService) {}
 
@@ -177,5 +191,32 @@ export class DispatchTableTruckTrailerComponent {
             type: DispatchTableStringEnum.TRAILER_ID,
             index,
         });
+    }
+
+    public handleTruckTrailerList(values): void {
+        if (values) {
+            this.type === DispatchTableStringEnum.TRUCK
+                ? (this._truckList = [...values])
+                : (this._trailerList = [...values]);
+        }
+
+        const findAllAssigned =
+            this.type === DispatchTableStringEnum.TRUCK
+                ? this._truckList.find((item) => item.id === 7656)
+                : this._trailerList.find((item) => item.id === 7656);
+
+        this.hasAddNew = !values?.length;
+
+        if (!values.length && !findAllAssigned) {
+            this.type === DispatchTableStringEnum.TRUCK
+                ? this._truckList.unshift({
+                      id: 7656,
+                      name: DispatchTableStringEnum.ALL_ASSIGNED,
+                  })
+                : this._trailerList.unshift({
+                      id: 7656,
+                      name: DispatchTableStringEnum.ALL_ASSIGNED,
+                  });
+        }
     }
 }
