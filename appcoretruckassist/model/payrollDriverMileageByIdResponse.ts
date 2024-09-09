@@ -10,39 +10,42 @@
  * Do not edit the class manually.
  */
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
-import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
-import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
+import { PayrollMileageTotalSum } from './payrollMileageTotalSum';
+import { DriverShortResponse } from './driverShortResponse';
+import { LoadWithMilesStopResponse } from './loadWithMilesStopResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
+import { PerMileEntity } from './perMileEntity';
 import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
-import { TruckShortResponse } from './truckShortResponse';
-import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
 
 
-export interface PayrollOwnerResponse { 
+export interface PayrollDriverMileageByIdResponse { 
     id?: number;
-    previousLoadId?: number | null;
-    owner?: string | null;
-    truck?: TruckShortResponse;
-    payrollNumber?: string | null;
+    driver?: DriverShortResponse;
     periodStart?: string;
     periodEnd?: string;
+    payrollNumber?: string | null;
     payrollDeadLine?: PayrollDeadlineShortResponse;
-    total?: number | null;
-    commission?: number | null;
+    mileagePay?: number | null;
+    totalEarnings?: number | null;
     salary?: number | null;
+    extraStopPay?: number | null;
+    extraStopCount?: number;
+    loadCount?: number;
+    perMilesEntity?: PerMileEntity;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     excludedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
     totalDeduction?: number;
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;
     excludedCredits?: Array<PayrollCreditMinimalResponse> | null;
     totalCredits?: number;
-    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
-    excludedLoads?: Array<PayrollLoadMinimalResponse> | null;
-    totalFuels?: number;
-    includedFuels?: Array<PayrollFuelMinimalResponse> | null;
-    excludedFuels?: Array<PayrollFuelMinimalResponse> | null;
+    includedBonus?: Array<PayrollBonusMinimalResponse> | null;
+    excludedBonus?: Array<PayrollBonusMinimalResponse> | null;
+    totalBonus?: number;
+    includedLoads?: Array<LoadWithMilesStopResponse> | null;
+    excludedLoads?: Array<LoadWithMilesStopResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
-    sums?: PayrollCommissionTotalSum;
+    sums?: PayrollMileageTotalSum;
 }
 

@@ -76,13 +76,25 @@ import { fadeInAnimation } from '@pages/load/pages/load-modal/utils/animations/f
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // pipes
-import { FinancialCalculationPipe, LoadDatetimeRangePipe, LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes';
+import {
+    FinancialCalculationPipe,
+    LoadDatetimeRangePipe,
+    LoadTimeTypePipe,
+} from '@pages/load/pages/load-modal/pipes';
 
 // constants
-import { LoadModalConfig, LoadModalConstants, LoadModalDragAndDrop, LoadStopItemsConfig } from '@pages/load/pages/load-modal/utils/constants'; 
+import {
+    LoadModalConfig,
+    LoadModalConstants,
+    LoadModalDragAndDrop,
+    LoadStopItemsConfig,
+} from '@pages/load/pages/load-modal/utils/constants';
 
 // enums
-import { LoadModalStringEnum, LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums';
+import {
+    LoadModalStringEnum,
+    LoadModalPaymentEnum,
+} from '@pages/load/pages/load-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -136,7 +148,6 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-
 
 @Component({
     selector: 'app-load-modal',
@@ -1294,17 +1305,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
-                    this.modalService.setProjectionModal({
-                        action: LoadModalStringEnum.OPEN,
-                        payload: {
-                            key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.loadModalData(),
+                    this.modalService.openModal(
+                        BrokerModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
                             id: this.selectedBroker.id,
-                        },
-                        type: LoadModalStringEnum.EDIT_CONTACT,
-                        component: BrokerModalComponent,
-                        size: LoadModalStringEnum.SMALL,
-                    });
+                            data: this.selectedBroker,
+                            type: TableStringEnum.EDIT,
+                            openedTab: TableStringEnum.CONTRACT,
+                        }
+                    );
                 } else {
                     if (event) {
                         this.selectedBrokerContact = {
@@ -2502,7 +2512,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public removeAdditionalBilling(type: string, index: number): void {
         if (type === LoadModalStringEnum.ADJUSTED_2) {
-            if(!this.selectedAdditionalBillings.length) return; 
+            if (!this.selectedAdditionalBillings.length) return;
             this.selectedAdditionalBillings[0].checked = false;
 
             this.additionalBillingTypes.unshift(
@@ -4495,7 +4505,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.selectedStatus.valueForRequest as LoadStatus,
                     this.isPreviousStatus
                 )
-                .pipe(takeUntil(this.destroy$)).subscribe(() => this.handleLoadUpdate(newData, addNew));
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => this.handleLoadUpdate(newData, addNew));
         } else {
             this.handleLoadUpdate(newData, addNew);
         }
@@ -4503,7 +4514,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private handleLoadUpdate(newData: Load, addNew: boolean) {
         this.loadService
-            .getLoadById(this.editData.data.id).pipe(takeUntil(this.destroy$)).subscribe((response) => {
+            .getLoadById(this.editData.data.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
                 // After status change we get times for stops that need to be sent to the backend
                 // together with status history
                 newData.stops.forEach((stop) => {
