@@ -1117,8 +1117,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
 
                         this.unselectedUser = newData;
-
-                        console.log('user filter newData', newData);
                     }
                 } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     if (res?.animation === 'truck-list-update') {
@@ -1203,8 +1201,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public checkForType(): void {
-        console.log('checkForType type', this.type);
-
         if (this.type === ToolbarFilterStringEnum.PM_FILTER) {
             this.getBackendData(this.type, this.pmSubtype);
         } else {

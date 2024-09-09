@@ -7,6 +7,7 @@ import {
     BehaviorSubject,
     tap,
     Observable,
+    takeUntil,
 } from 'rxjs';
 
 // Store
@@ -29,6 +30,7 @@ import {
     DispatchPossibleStatusResponse,
     DriversForDispatchHistoryModalResponse,
     RevertDispatchStatusCommand,
+    DispatchGroupedLoadsResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
@@ -102,6 +104,22 @@ export class DispatcherService {
     getDispatchBoardByDispatcherList(id: number) {
         return this.dispatchService.apiDispatchBoardGet(id);
     }
+
+    getDispatchAssignedloadsId(id: number) {
+        return this.dispatchService.apiDispatchAssignedloadsIdGet(id);
+    }
+
+    private dispatchGroupedLoadsResponse =
+        new BehaviorSubject<DispatchGroupedLoadsResponse>({});
+    public currentDispatchGroupedLoadsResponse =
+        this.dispatchGroupedLoadsResponse.asObservable();
+
+    public sendDispatchGroupedLoadsResponse(
+        dispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse
+    ) {
+        this.dispatchGroupedLoadsResponse.next(dispatchGroupedLoadsResponse);
+    }
+
     public apiDispatchNextstatusesIdGet(
         id: number
     ): Observable<DispatchPossibleStatusResponse> {

@@ -6,9 +6,12 @@ import { DetailsConfig } from '@shared/models/details-config.model';
 import { LoadResponse } from 'appcoretruckassist';
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 export class LoadDetailsHelper {
     static getDetailsDropdownOptions(
-        statusType: string
+        load: LoadResponse
     ): DetailsDropdownOptions {
         return {
             disabledMutedStyle: null,
@@ -28,7 +31,7 @@ export class LoadDetailsHelper {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     iconName: 'edit',
-                    subText: statusType.toUpperCase(),
+                    subText: load.statusType.name.toUpperCase(),
                 },
                 {
                     title: 'border',
@@ -57,6 +60,7 @@ export class LoadDetailsHelper {
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     iconName: 'delete',
+                    disabled: LoadDetailsHelper.enableDeleteButton(load.statusType.name),
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -151,5 +155,9 @@ export class LoadDetailsHelper {
                         : load?.statusHistory?.length,
             };
         });
+    }
+
+    static enableDeleteButton(loadTypeName: string) : boolean {
+        return !(loadTypeName.toLowerCase() ===TableStringEnum.TEMPLATE || loadTypeName.toLowerCase() === TableStringEnum.PENDING);
     }
 }
