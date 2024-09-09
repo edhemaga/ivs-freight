@@ -350,7 +350,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        this.selectedTime = {
+        /*   this.selectedTime = {
             id: 12,
             name: 'This Year',
         };
@@ -369,7 +369,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.selectedDriver = {
             id: 245,
             name: 'Aaa Aaa',
-        };
+        }; */
 
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
