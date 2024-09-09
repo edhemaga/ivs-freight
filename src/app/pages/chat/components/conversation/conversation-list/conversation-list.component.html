@@ -165,7 +165,7 @@
 
 <ng-template #listItemAdvanced let-item="item" let-type="type">
     <div class="conversation-list-item" appHover hoverColor="#eee">
-        <div class="conversation-list-item-advanced d-flex">
+        <div class="conversation-list-item-advanced d-flex flex-grow-1">
             <div class="icon d-flex justify-content-center align-items-center">
                 <ng-container [ngSwitch]="type">
                     <ng-container *ngSwitchCase="'SingleChat'">
@@ -210,10 +210,12 @@
                     ></ng-container>
                 </div>
                 <div
-                    class="conversation-list-item-advanced-details-bottom d-flex"
+                    class="conversation-list-item-advanced-details-bottom d-flex flex-grow-1 justify-content-between"
                 >
-                    <div class="mesage">Message...</div>
-                    <div class="date">Date</div>
+                    <div class="mesage">{{ item.lastMessage?.content }}</div>
+                    <div class="date">
+                        {{ item.lastMessage?.createdAt | formatTime }}
+                    </div>
                 </div>
             </div>
         </div>
