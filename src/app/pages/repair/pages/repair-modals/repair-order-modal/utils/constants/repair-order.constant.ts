@@ -1,4 +1,4 @@
-import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
+import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { Tabs } from '@shared/models/tabs.model';
 
 export class RepairOrderConstants {

@@ -362,11 +362,7 @@ export class TaInputComponent
                 this.selectionInput = -1;
             }
 
-            if (this._inputConfig.placeholderIcon) {
-                this.t2.close();
-            } else {
-                this.t2.open();
-            }
+            this.t2.toggle();
         }
 
         // Dropdown

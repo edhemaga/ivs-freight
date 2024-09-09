@@ -80,9 +80,14 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // models
 import { ReviewComment } from '@shared/models/review-comment.model';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-broker-modal',
@@ -404,12 +409,25 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 }
                 // Delete
                 if (data.action === 'delete' && this.editData) {
-                    this.deleteBrokerById(this.editData.id);
                     this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: false,
+                        action: null,
+                        status: false,
+                        close: true,
                     });
+
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.DELETE },
+                        {
+                            id: this.editData.id,
+                            data: this.editData.data,
+                            template: TableStringEnum.BROKER,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                            modalHeaderTitle:
+                                ConfirmationModalStringEnum.DELETE_BROKER,
+                        }
+                    );
                 }
             }
         }
@@ -449,8 +467,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public addBrokerContacts(event: { check: boolean; action: string }) {
         const form = this.createBrokerContacts();
-        if(!this.brokerContacts.valid) return;
-        
+        if (!this.brokerContacts.valid) return;
+
         if (event.check) {
             this.brokerContacts.push(form);
         }

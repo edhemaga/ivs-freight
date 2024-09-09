@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 import { PayrollPaymentsMinimalResponse } from './payrollPaymentsMinimalResponse';
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
@@ -17,14 +16,13 @@ import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
 import { PayrollFlatRateTotalSum } from './payrollFlatRateTotalSum';
 import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
 import { EnumValue } from './enumValue';
+import { DriverShortResponse } from './driverShortResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
 
 
 export interface PayrollDriverFlatRateClosedByIdResponse { 
     id?: number;
-    driverId?: number;
-    driverName?: string | null;
-    driverAvatar?: FileResponse;
+    driver?: DriverShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;
     periodEnd?: string;

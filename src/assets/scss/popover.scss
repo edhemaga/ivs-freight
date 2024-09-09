@@ -207,6 +207,10 @@
                         }
                     }
 
+                    .delete svg path {
+                        fill: $ta-red-20 !important;
+                    }
+
                     .hire-applicant {
                         svg {
                             path {

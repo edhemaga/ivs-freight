@@ -86,16 +86,18 @@ import {
     RepairItemResponse,
     TagResponse,
 } from 'appcoretruckassist';
-import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
-import { Subtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/subtotal.model';
 import { EditData } from '@shared/models/edit-data.model';
-import { ExtendedTruckMinimalResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-truck-minimal-response.model';
-import { ExtendedTrailerMinimalResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-trailer-minimal-response.model';
-import { ExtendedServiceTypeResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-service-type-response.model';
-import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-repair-shop-response.model';
-import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models/add-update-repair-properties.model';
+import {
+    RepairSubtotal,
+    Subtotal,
+    ExtendedTruckMinimalResponse,
+    ExtendedTrailerMinimalResponse,
+    ExtendedServiceTypeResponse,
+    ExtendedRepairShopResponse,
+    AddUpdateRepairProperties,
+} from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
 @Component({
     selector: 'app-repair-order-modal',

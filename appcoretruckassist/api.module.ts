@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AccidentService } from './api/accident.service';
 import { AccountService } from './api/account.service';
+import { ActivityLogService } from './api/activityLog.service';
 import { ApplicantService } from './api/applicant.service';
 import { BankService } from './api/bank.service';
 import { BrokerService } from './api/broker.service';

@@ -1,7 +1,6 @@
-import { EditDataKey } from "../enums/edit-data.enum";
-import { RepairShopModalEnum } from "../enums/repair-shop-modal.enum";
-import { OpenedTab } from "../types/open-tabs.type";
-import { CreateShopModel } from "./repair-shop.model";
+import { EditDataKey, RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { OpenedTab } from "@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type";
+import { CreateShopModel } from "@pages/repair/pages/repair-modals/repair-shop-modal/models";
 
 type EditDataType = EditDataKey.REPAIR_MODAL;
 

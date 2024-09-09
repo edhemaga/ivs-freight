@@ -95,6 +95,8 @@ export class DispatchComponent
     ) {}
 
     ngOnInit(): void {
+        this.getUserId();
+
         this.dispatcherQuery.modalBoardListData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((result) => {
@@ -177,8 +179,6 @@ export class DispatchComponent
                     this.dispatchTableList = this.dispatchTableList;
                 }
             });
-
-        this.getUserId();
     }
 
     private getUserId(): void {
@@ -283,15 +283,29 @@ export class DispatchComponent
             name: DispatchTableStringEnum.ALL_BOARDS,
         });
 
-        this.selectedDispatcher = localStorage.getItem(
+        const selectedDispatcherId = localStorage.getItem(
             DispatchTableStringEnum.DISPATCH_USER_SELECT
         )
             ? JSON.parse(
                   localStorage.getItem(
                       DispatchTableStringEnum.DISPATCH_USER_SELECT
                   )
-              )
-            : this.dispatcherItems[0];
+              ).id
+            : -1;
+
+        this.selectedDispatcher =
+            this.dispatcherItems.find(
+                (dispatcher) => dispatcher.id === selectedDispatcherId
+            ) ?? this.dispatcherItems[0];
+
+        if (!this.userId) this.getUserId();
+
+        this.selectedDispatcher.canUnlock =
+            this.selectedDispatcher.name ===
+                DispatchTableStringEnum.TEAM_BOARD ||
+            this.selectedDispatcher?.userId === this.userId
+                ? true
+                : false;
 
         this.initTableOptions();
     }

@@ -5,7 +5,6 @@ import {
     Subject,
     forkJoin,
     tap,
-    BehaviorSubject,
     catchError,
     of,
 } from 'rxjs';
@@ -73,15 +72,15 @@ export class LoadService {
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
-    private statusAction: BehaviorSubject<{
+    private statusAction: Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }> = new BehaviorSubject<{
+    }> = new Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }>(null);
+    }>();
     public statusAction$: Observable<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
