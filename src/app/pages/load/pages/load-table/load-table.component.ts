@@ -1622,17 +1622,39 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.type === TableStringEnum.CONVERT_TO_TEMPLATE ||
             event.type === TableStringEnum.CONVERT_TO_LOAD
         ) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.DELETE,
-                    template: TableStringEnum.LOAD,
-                    subType: this.selectedTab,
-                    loadAction: event.type,
-                }
-            );
+            this.loadServices
+                .getLoadById(
+                    event.id,
+                    this.selectedTab === TableStringEnum.TEMPLATE
+                )
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap((load) => {
+                        const editData = {
+                            data: {
+                                ...load,
+                            },
+                            type: event.type,
+                            selectedTab: this.selectedTab,
+                        };
+
+                        this.modalService.openModal(
+                            LoadModalComponent,
+                            { size: TableStringEnum.LOAD },
+                            {
+                                ...editData,
+                                disableButton: false,
+                                loadAction: event.type,
+                                selectedTab:
+                                    event.type ===
+                                    TableStringEnum.CONVERT_TO_TEMPLATE
+                                        ? TableStringEnum.TEMPLATE
+                                        : null,
+                            }
+                        );
+                    })
+                )
+                .subscribe();
         }
     }
 

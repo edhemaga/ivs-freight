@@ -1,4 +1,5 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { SelectedStatus } from '@pages/load/pages/load-modal/models';
 import {
     CompanyContactResponse,
     CompanyResponse,
@@ -13,8 +14,8 @@ export interface EditData {
         | CompanyContactResponse
         | RepairResponse
         | DriverResponse;
-    type: string;
-    company: CompanyResponse;
+    type?: string;
+    company?: CompanyResponse;
     id: number;
     shopId?: number;
     isFinishOrder?: number;
@@ -24,4 +25,6 @@ export interface EditData {
     loadAction?:
         | TableStringEnum.CONVERT_TO_TEMPLATE
         | TableStringEnum.CONVERT_TO_LOAD;
+    isEditMode?: boolean;
+    previousStatus?: SelectedStatus;
 }
