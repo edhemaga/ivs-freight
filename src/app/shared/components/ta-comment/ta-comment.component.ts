@@ -212,7 +212,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.closeDropdown.emit(true);
 
         const comment = {
-            commentContent: btnType
+            commentContent: this.commentCardsDataDropdown
                 ? this.commentCardsDataDropdown?.commentContent
                 : this.commentInput.nativeElement.textContent,
             entityTypeId: this.commentsCardId,
