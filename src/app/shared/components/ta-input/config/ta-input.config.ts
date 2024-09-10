@@ -151,4 +151,5 @@ export interface ITaInput {
     isRemovedIconMovedOnLeft?: boolean;
     removeLeadingZero?: boolean;
     negativeLeadingZero?: boolean;
+    minutesGapFive?: boolean
 }
