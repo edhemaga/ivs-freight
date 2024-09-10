@@ -1,3 +1,4 @@
+import { SelectedStatus } from '@pages/load/pages/load-modal/models';
 import {
     CompanyContactResponse,
     CompanyResponse,
@@ -21,4 +22,5 @@ export interface EditData {
     renewData?: any;
     selectedTab: string;
     isEditMode?: boolean;
+    previousStatus?: SelectedStatus;
 }

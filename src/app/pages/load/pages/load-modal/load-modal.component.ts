@@ -426,6 +426,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private originalShippers: ShipperLoadModalResponse[];
     private originalLoadStatus: LoadStatusResponse;
     private isEditingMode: boolean = false;
+    previuosStatusModel: SelectedStatus;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -3905,7 +3906,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getPreviusModalValues(): EditData | LoadShortResponse {
-        console.log(this.loadModalData());
         return this.loadModalData();
     }
 
@@ -3921,6 +3921,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             selectedTab: this.editData?.selectedTab,
             id: form.id,
             isEditMode: this.isEditingMode,
+            previousStatus: this.selectedStatus,
             data: {
                 id: form.id,
                 status: this.originalLoadStatus,
@@ -3994,11 +3995,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalLoadStatus = status;
 
                     if (status) {
-                        this.selectedStatus = {
-                            name: status.statusString,
-                            id: status.statusValue.id,
-                            valueForRequest: status.statusValue.name,
-                        };
+                        if (this.editData.previousStatus) {
+                            this.selectedStatus = this.editData.previousStatus;
+                        } else {
+                            this.selectedStatus = {
+                                name: status.statusString,
+                                id: status.statusValue.id,
+                                valueForRequest: status.statusValue.name,
+                            };
+                        }
                         this.statusDropDownList = [
                             this.selectedStatus,
                             ...res.possibleStatuses.map((status) => {
