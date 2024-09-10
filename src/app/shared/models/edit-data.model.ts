@@ -20,4 +20,5 @@ export interface EditData {
     file_id?: number;
     renewData?: any;
     selectedTab: string;
+    isEditMode?: boolean;
 }

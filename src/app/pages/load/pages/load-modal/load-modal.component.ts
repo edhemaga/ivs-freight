@@ -425,6 +425,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private emptyMiles: number;
     private originalShippers: ShipperLoadModalResponse[];
     private originalLoadStatus: LoadStatusResponse;
+    private isEditingMode: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -595,41 +596,50 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.editData?.selectedTab === TableStringEnum.TEMPLATE;
     }
 
-    public isActiveLoad() {
-        return (
-            !this.editData?.type?.includes('edit') ||
-            (this.editData?.type?.includes('edit') && this.isTemplateLoad)
-        );
+    private isLoadActive(statusType: string): boolean {
+        if (
+            statusType === TableStringEnum.PENDING_2 ||
+            statusType === TableStringEnum.ACTIVE_2 ||
+            statusType === TableStringEnum.CLOSED_2
+        ) {
+            return true;
+        }
+    }
+
+    public isActiveLoad(): boolean {
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
+
+        return this.isLoadActive(statusType);
     }
 
     public get modalTitle(): string {
-        const isEdit =
-            !!this.editData?.id || this.editData?.type?.includes('edit');
-        this.isEdit = isEdit;
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
 
-        if (!isEdit) {
-            if (this.isConvertedToTemplate) {
-                return 'Create Load Template';
-            } else if (!isEdit) {
-                return 'Create Load';
-            }
+        if (statusType === TableStringEnum.PENDING_2) {
+            return 'Edit Pending Load';
+        }
+
+        if (statusType === TableStringEnum.ACTIVE_2) {
+            return 'Edit Active Load';
+        }
+
+        if (statusType === TableStringEnum.CLOSED_2) {
+            return 'Edit Closed Load';
         }
 
         if (this.isTemplateLoad) {
             return 'Edit Load Template';
         }
 
-        if (this.editData?.selectedTab === TableStringEnum.CLOSED) {
-            return 'Edit Closed Load';
+        if (this.isConvertedToTemplate) {
+            return 'Create Load Template';
         }
 
-        if (this.editData?.selectedTab === TableStringEnum.ACTIVE) {
-            return 'Edit Active Load';
-        }
-
-        if (this.editData?.selectedTab === TableStringEnum.PENDING) {
-            return 'Edit Pending Load';
-        }
+        return 'Create Load';
     }
 
     public get getLoadStatus(): string {
@@ -779,6 +789,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             emptyMiles: [0],
             totalHours: [0],
             totalMinutes: [0],
+
+            //
+            statusType: [null],
+            loadRequirementsId: [null],
         });
     }
 
@@ -1209,19 +1223,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 if (this.loadForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.loadForm);
-
+                    this.isButtonDisabled = false;
                     return;
                 }
 
                 if (
-                    this.editData?.type === 'edit' &&
+                    this.isEditingMode &&
                     this.editData?.selectedTab === TableStringEnum.TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
                     this.saveLoadTemplate(addNew);
                 } else {
-                    this.editData?.data
+                    this.isActiveLoad()
                         ? this.updateLoad(addNew)
                         : this.createNewLoad(addNew);
                 }
@@ -3890,9 +3904,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getPreviusModalValues(): EditData | LoadShortResponse {
-        console.log(this.loadModalData());
-        console.log(this.generateLoadModel(true));
-        // return this.editData?.data ? this.editData : this.loadModalData();
         return this.loadModalData();
     }
 
@@ -3902,15 +3913,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const driverRate = form.driverRate;
         const adjustedRate = form.adjustedRate;
         const advancePay = form.advancePay;
+        const statusType = form.statusType;
 
         return {
             selectedTab: this.editData?.selectedTab,
-            type: 'edit',
             id: form.id,
+            isEditMode: this.isEditingMode,
             data: {
                 id: form.id,
                 status: this.originalLoadStatus,
                 type: this.tabs.find((tab) => tab.id === this.selectedTab),
+                name: form.templateName,
                 loadNumber: this.loadNumber,
                 loadTemplateId: this.selectedTemplate,
                 dispatcher: this.selectedDispatcher,
@@ -3925,7 +3938,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 generalCommodity: this.selectedGeneralCommodity,
                 weight: form.weight,
                 loadRequirements: {
-                    id: null,
+                    id: form.loadRequirementsId,
                     truckType: this.selectedTruckReq,
                     trailerType: this.selectedTrailerReq,
                     doorType: this.selectedDoorType,
@@ -3957,13 +3970,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 totalHours: this.totalLegHours,
                 totalMinutes: this.totalLegMinutes,
                 emptyMiles: this.emptyMiles,
+                statusType,
             } as any,
         };
     }
 
     private getLoadDropdowns(): void {
         if (
-            this.editData?.data?.id &&
+            this.isLoadActive(
+                (this.editData?.data as LoadResponse)?.statusType?.name ||
+                    ((this.editData?.data as LoadResponse)
+                        ?.statusType as string)
+            ) &&
             this.editData?.selectedTab !== TableStringEnum.TEMPLATE
         ) {
             this.loadService
@@ -4007,7 +4025,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 });
         }
         const id =
-            this.editData?.selectedTab !== TableStringEnum.TEMPLATE
+            this.editData?.selectedTab !== TableStringEnum.TEMPLATE &&
+            this.isActiveLoad()
                 ? this.editData?.data?.id
                 : null;
         this.loadService
@@ -4682,7 +4701,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             statusHistory,
             emptyMiles,
             id,
+            statusType,
         } = loadModalData;
+
+        this.isEditingMode = true;
+
         // Check if stops exists and is an array before using it
         const stops =
             loadModalData.stops?.filter((stop) => stop.id !== 0) || [];
@@ -4727,6 +4750,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                   trailierLength: loadModalData.loadRequirements.trailerLength,
                   doorType: loadModalData.loadRequirements.doorType,
                   suspension: loadModalData.loadRequirements.suspension,
+                  id: loadModalData.loadRequirements.id,
               }
             : {};
 
@@ -4795,6 +4819,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             weight: weight,
             liftgate: loadRequirements?.liftgate,
             driverMessage: loadRequirements?.driverMessage,
+            loadRequirementsId: loadRequirements.id,
             note: note,
             // pickup
             pickupDateFrom: pickupStop
@@ -4845,6 +4870,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             daysToPay,
             tonuRate,
             revisedRate,
+            statusType: statusType?.name || statusType,
         });
 
         // load number
