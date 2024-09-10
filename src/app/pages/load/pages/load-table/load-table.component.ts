@@ -25,7 +25,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
-import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
@@ -583,7 +582,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -606,7 +604,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-
     private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -1619,8 +1616,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     })
                 )
                 .subscribe();
-        } else if (event.type === TableStringEnum.VIEW_DETAILS)
+        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
             this.router.navigate([`/list/load/${event.id}/details`]);
+        } else if (
+            event.type === TableStringEnum.CONVERT_TO_TEMPLATE ||
+            event.type === TableStringEnum.CONVERT_TO_LOAD
+        ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...event,
+                    type: TableStringEnum.DELETE,
+                    template: TableStringEnum.LOAD,
+                    subType: this.selectedTab,
+                    loadAction: event.type,
+                }
+            );
+        }
     }
 
     private getSelectedTabTableData(): void {

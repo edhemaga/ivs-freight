@@ -1,3 +1,4 @@
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 import {
     CompanyContactResponse,
     CompanyResponse,
@@ -20,4 +21,7 @@ export interface EditData {
     file_id?: number;
     renewData?: any;
     selectedTab: string;
+    loadAction?:
+        | TableStringEnum.CONVERT_TO_TEMPLATE
+        | TableStringEnum.CONVERT_TO_LOAD;
 }
