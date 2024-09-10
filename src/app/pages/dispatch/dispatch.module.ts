@@ -58,6 +58,7 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
+import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
 
 //directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
@@ -79,6 +80,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchHistoryModalComponent,
         DispatchHistoryModalNoContentComponent,
         DispatchHistoryModalNoGroupComponent,
+        DispatchHistoryModalGroupComponent,
         DispatchTableStatusComponent,
         DispatchTableNoteComponent,
         LoadShortDetailsComponent,
@@ -86,7 +88,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        DispatchHistoryModalGroupComponent,
+        DispatchAllowedTruckTrailerPipe,
     ],
     imports: [
         // modules
@@ -106,6 +108,9 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchTableInfoTextPipe,
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
+
+        //directives
+        ResizableDirective,
 
         // components
         TaAppTooltipV2Component,
@@ -128,9 +133,6 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         PickupDeliveryBlockComponent,
 
         //  TaMapsComponent,
-
-        //directives
-        ResizableDirective,
     ],
     exports: [ColorFinderPipe],
 })

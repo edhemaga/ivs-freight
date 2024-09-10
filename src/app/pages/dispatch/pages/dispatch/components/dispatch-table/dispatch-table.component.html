@@ -263,7 +263,12 @@
                                         columnSpecifications?.truckWidth
                                     "
                                     [truck]="item?.truck"
-                                    [truckList]="truckList"
+                                    [truckList]="
+                                        truckList
+                                            | allowedTruckTrailerPipe
+                                                : true
+                                                : item?.trailer?.id
+                                    "
                                     [isYearShown]="!columnsToShow[1].hidden"
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
@@ -351,7 +356,12 @@
                                                 columnSpecifications?.trailerWidth
                                             "
                                             [trailer]="item?.trailer"
-                                            [trailerList]="trailerList"
+                                            [trailerList]="
+                                                trailerList
+                                                    | allowedTruckTrailerPipe
+                                                        : false
+                                                        : item?.truck?.id
+                                            "
                                             [isYearShown]="
                                                 !columnsToShow[3].hidden
                                             "
@@ -364,6 +374,9 @@
                                             [isHoveringRow]="
                                                 !isDrag &&
                                                 isHoveringRowIndex === rowIndex
+                                            "
+                                            [isTrailerAddNewHidden]="
+                                                isTrailerAddNewHidden
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
@@ -802,6 +815,7 @@
                                 [isHoveringRow]="
                                     isHoveringRowIndex === rowIndex
                                 "
+                                [isTrailerAddNewHidden]="isTrailerAddNewHidden"
                                 (addTruckTrailerEmitter)="
                                     handleAddTruckTrailerClick($event)
                                 "

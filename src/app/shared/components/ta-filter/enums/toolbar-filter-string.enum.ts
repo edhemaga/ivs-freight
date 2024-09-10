@@ -17,6 +17,7 @@ export enum ToolbarFilterStringEnum {
     STATE_FILTER = 'stateFilter',
     LABEL_FILTER = 'labelFilter',
     TIME_FILTER = 'timeFilter',
+    TIME_FILTER_FUTURE = 'hasFutureTimeFilter',
     INJURY_FILTER = 'injuryFilter',
     FATALITY_FILTER = 'fatalityFilter',
     VIOLATION_FILTER = 'violationFilter',
