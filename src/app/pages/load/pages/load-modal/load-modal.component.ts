@@ -602,13 +602,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private isLoadActive(statusType: string): boolean {
-        if (
+        return (
             statusType === TableStringEnum.PENDING_2 ||
             statusType === TableStringEnum.ACTIVE_2 ||
             statusType === TableStringEnum.CLOSED_2
-        ) {
-            return true;
-        }
+        );
     }
 
     public checkIfLoadIsActive(): boolean {
@@ -792,8 +790,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             files: [null],
             tags: [null],
 
-            id: [null],
-
             // legs
             loadMiles: [0],
             totalMiles: [0],
@@ -801,11 +797,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: [0],
             totalMinutes: [0],
 
-            //
             statusType: [null],
             loadRequirementsId: [null],
             arrive: [null],
             depart: [null],
+            id: [null],
         });
     }
 
@@ -3300,7 +3296,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: this.isActiveLoad ? item.get(LoadModalStringEnum.ID).value ?? null : null,
+                    id: this.isActiveLoad
+                        ? item.get(LoadModalStringEnum.ID).value ?? null
+                        : null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3349,7 +3347,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: this.isActiveLoad ? this.stops?.[this.stops.length - 1]?.id ?? null : null,
+                id: this.isActiveLoad
+                    ? this.stops?.[this.stops.length - 1]?.id ?? null
+                    : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 // TODO: stops.length + 1 ?? deliveryStopOrder check this
