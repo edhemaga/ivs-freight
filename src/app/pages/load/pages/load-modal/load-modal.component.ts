@@ -597,13 +597,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public isActiveLoad() {
         return (
-            !this.editData?.type?.includes('edit') || 
+            !this.editData?.type?.includes('edit') ||
             (this.editData?.type?.includes('edit') && this.isTemplateLoad)
         );
     }
 
     public get modalTitle(): string {
-        const isEdit = !!this.editData?.id || this.editData?.type?.includes('edit');
+        const isEdit =
+            !!this.editData?.id || this.editData?.type?.includes('edit');
         this.isEdit = isEdit;
 
         if (!isEdit) {
@@ -1312,17 +1313,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
-                    this.modalService.setProjectionModal({
-                        action: LoadModalStringEnum.OPEN,
-                        payload: {
-                            key: LoadModalStringEnum.LOAD_MODAL,
-                            value: this.getPreviusModalValues(),
+                    this.modalService.openModal(
+                        BrokerModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
                             id: this.selectedBroker.id,
-                        },
-                        type: LoadModalStringEnum.EDIT_CONTACT,
-                        component: BrokerModalComponent,
-                        size: LoadModalStringEnum.SMALL,
-                    });
+                            data: this.selectedBroker,
+                            type: TableStringEnum.EDIT,
+                            openedTab: TableStringEnum.CONTRACT,
+                        }
+                    );
                 } else {
                     if (event) {
                         this.selectedBrokerContact = {
@@ -3326,7 +3326,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : this.stops?.[this.stops.length - 1]?.id ?? null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                // TODO: stops.length + 1 ?? deliveryStopOrder check this 
+                // TODO: stops.length + 1 ?? deliveryStopOrder check this
                 stopLoadOrder: stops.length + 1,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
@@ -3910,54 +3910,54 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             data: {
                 id: form.id,
                 status: this.originalLoadStatus,
-            type: this.tabs.find((tab) => tab.id === this.selectedTab),
-            loadNumber: this.loadNumber,
-            loadTemplateId: this.selectedTemplate,
-            dispatcher: this.selectedDispatcher,
-            company:
-                this.labelsCompanies.length === 1
-                    ? this.labelsCompanies[0]
-                    : this.selectedCompany,
-            dispatch: this.selectedDispatches,
-            broker: this.selectedBroker,
-            brokerContactId: this.selectedBrokerContact,
-            referenceNumber: form.referenceNumber,
-            generalCommodity: this.selectedGeneralCommodity,
-            weight: form.weight,
-            loadRequirements: {
-                id: null,
-                truckType: this.selectedTruckReq,
-                trailerType: this.selectedTrailerReq,
-                doorType: this.selectedDoorType,
-                suspension: this.selectedSuspension,
-                trailerLength: this.selectedTrailerLength,
-                year: this.selectedYear?.name,
-                liftgate: form.liftgate,
-                driverMessage: form.driverMessage,
-            },
-            pays: this.mapPreviousPaymets(),
-            stops: this.premmapedStops(true) as any,
-            baseRate: this.convertNumbers(baseRate),
-            adjustedRate: this.convertNumbers(adjustedRate),
-            driverRate: this.convertNumbers(driverRate),
-            advancePay: this.convertNumbers(advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(
-                LoadModalStringEnum.CREATE
-            ) as any,
-            // pickup shipper
-            // billing
-            additionalBillingTypes: this.additionalBillings().value,
+                type: this.tabs.find((tab) => tab.id === this.selectedTab),
+                loadNumber: this.loadNumber,
+                loadTemplateId: this.selectedTemplate,
+                dispatcher: this.selectedDispatcher,
+                company:
+                    this.labelsCompanies.length === 1
+                        ? this.labelsCompanies[0]
+                        : this.selectedCompany,
+                dispatch: this.selectedDispatches,
+                broker: this.selectedBroker,
+                brokerContactId: this.selectedBrokerContact,
+                referenceNumber: form.referenceNumber,
+                generalCommodity: this.selectedGeneralCommodity,
+                weight: form.weight,
+                loadRequirements: {
+                    id: null,
+                    truckType: this.selectedTruckReq,
+                    trailerType: this.selectedTrailerReq,
+                    doorType: this.selectedDoorType,
+                    suspension: this.selectedSuspension,
+                    trailerLength: this.selectedTrailerLength,
+                    year: this.selectedYear?.name,
+                    liftgate: form.liftgate,
+                    driverMessage: form.driverMessage,
+                },
+                pays: this.mapPreviousPaymets(),
+                stops: this.premmapedStops(true) as any,
+                baseRate: this.convertNumbers(baseRate),
+                adjustedRate: this.convertNumbers(adjustedRate),
+                driverRate: this.convertNumbers(driverRate),
+                advancePay: this.convertNumbers(advancePay),
+                additionalBillingRates: this.premmapedAdditionalBillingRate(
+                    LoadModalStringEnum.CREATE
+                ) as any,
+                // pickup shipper
+                // billing
+                additionalBillingTypes: this.additionalBillings().value,
 
-            // note, files
-            note: form.note,
-            files: this.documents,
+                // note, files
+                note: form.note,
+                files: this.documents,
 
-            // legs
-            totalMiles: this.totalLegMiles,
-            totalHours: this.totalLegHours,
-            totalMinutes: this.totalLegMinutes,
-            emptyMiles: this.emptyMiles,
-            }  as any
+                // legs
+                totalMiles: this.totalLegMiles,
+                totalHours: this.totalLegHours,
+                totalMinutes: this.totalLegMinutes,
+                emptyMiles: this.emptyMiles,
+            } as any,
         };
     }
 
@@ -4681,7 +4681,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             revisedRate,
             statusHistory,
             emptyMiles,
-            id
+            id,
         } = loadModalData;
         // Check if stops exists and is an array before using it
         const stops =

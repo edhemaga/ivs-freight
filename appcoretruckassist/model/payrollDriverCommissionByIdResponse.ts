@@ -9,24 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
 import { EnumValue } from './enumValue';
+import { DriverShortResponse } from './driverShortResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
+import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 
 
 export interface PayrollDriverCommissionByIdResponse { 
     id?: number;
-    driverId?: number;
-    driverName?: string | null;
-    driverAvatar?: FileResponse;
+    driver?: DriverShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;
     periodEnd?: string;
-    daysUntilPayment?: number;
+    payrollDeadLine?: PayrollDeadlineShortResponse;
     status?: EnumValue;
     total?: number | null;
     commission?: number;

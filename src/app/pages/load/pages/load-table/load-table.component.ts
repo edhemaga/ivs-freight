@@ -29,6 +29,7 @@ import { CardsModalConfigService } from '@shared/components/ta-shared-modals/car
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { BrokerService } from '@pages/customer/services/broker.service';
 
 // Models
 import {
@@ -108,6 +109,9 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
 
+// Router
+import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-load-table',
     templateUrl: './load-table.component.html',
@@ -165,9 +169,13 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private brokerService: BrokerService,
 
         //store
-        private store: Store
+        private store: Store,
+
+        // Router
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -214,7 +222,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private upadateStatus(): void {
         this.loadServices.statusAction$
-            .pipe(filter((statusAction) => statusAction !== null))
+            .pipe(
+                takeUntil(this.destroy$),
+                filter((statusAction) => statusAction !== null)
+            )
             .subscribe((status) => {
                 const foundObject = this.viewData.find(
                     (item) => item.id === status.id
@@ -271,22 +282,28 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private confirmationDataSubscribe(): void {
-        this.confiramtionService.confirmationData$.subscribe((res) => {
-            if (res.template === TableStringEnum.COMMENT) return;
-            if (res.type === TableStringEnum.DELETE) {
-                if (this.selectedTab === TableStringEnum.TEMPLATE) {
-                    this.deleteLoadTemplateById(res.id);
-                } else {
-                    this.deleteLoadById(res.id);
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.template === TableStringEnum.COMMENT) return;
+                if (res.type === TableStringEnum.DELETE) {
+                    if (res.template === TableStringEnum.BROKER) {
+                        this.deleteBrokerById(res.id);
+                    } else {
+                        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                            this.deleteLoadTemplateById(res.id);
+                        } else {
+                            this.deleteLoadById(res.id);
+                        }
+                    }
+                } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                    if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                        this.deleteLoadTemplateList(res.array);
+                    } else {
+                        this.deleteLoadList(res.array);
+                    }
                 }
-            } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
-                if (this.selectedTab === TableStringEnum.TEMPLATE) {
-                    this.deleteLoadTemplateList(res.array);
-                } else {
-                    this.deleteLoadList(res.array);
-                }
-            }
-        });
+            });
 
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
@@ -1369,6 +1386,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter: FilterOptionsLoad,
         isShowMore?: boolean
     ): void {
+        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+            this.loadTemplateBackFilter(this.backLoadFilterQuery);
+            return;
+        }
         this.loadServices
             .getLoadList(
                 filter.loadType,
@@ -1430,8 +1451,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadServices
             .getLoadTemplateList(
                 filter.loadType,
-                filter.revenueFrom,
-                filter.revenueTo,
+                filter.rateFrom,
+                filter.rateTo,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -1598,7 +1619,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     })
                 )
                 .subscribe();
-        }
+        } else if (event.type === TableStringEnum.VIEW_DETAILS)
+            this.router.navigate([`/list/load/${event.id}/details`]);
     }
 
     private getSelectedTabTableData(): void {
@@ -1796,6 +1818,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         this.loadServices.updateNote(noteData);
+    }
+    public deleteBrokerById(id: number): void {
+        this.brokerService
+            .deleteBrokerById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices.triggerModalAction();
+            });
     }
 
     public ngOnDestroy(): void {

@@ -5,7 +5,6 @@ import {
     Subject,
     forkJoin,
     tap,
-    BehaviorSubject,
     catchError,
     of,
 } from 'rxjs';
@@ -73,15 +72,15 @@ export class LoadService {
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
-    private statusAction: BehaviorSubject<{
+    private statusAction: Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }> = new BehaviorSubject<{
+    }> = new Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }>(null);
+    }>();
     public statusAction$: Observable<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
@@ -832,6 +831,47 @@ export class LoadService {
         );
     }
 
+    public getTemplateData(
+        loadType?: number,
+        revenueFrom?: number,
+        revenueTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string) {
+        
+        return this.getLoadTemplateList(
+            loadType,
+            revenueFrom,
+            revenueTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+            )
+            .pipe(
+                tap((loadPagination) => {
+                    localStorage.setItem(
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.pagination.count,
+                        })
+                    );
+
+                    this.loadTemplateStore.set(loadPagination.pagination.data);
+                })
+            );
+    }
+
     public getAllLoads(query: FilterOptionsLoad): Observable<any[]> {
             const {
                 loadType,
@@ -965,7 +1005,18 @@ export class LoadService {
                 searchThree
             );
     
-            // Return an array of the three observables
-            return forkJoin([pendingData$, activeData$, closedData$]);
+            const templateData$ = this.getTemplateData(
+                loadType,
+                revenueFrom,
+                revenueTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                searchOne,
+                searchTwo,
+                searchThree);
+
+            return forkJoin([pendingData$, activeData$, closedData$, templateData$]);
     }
 }

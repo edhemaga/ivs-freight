@@ -5,6 +5,9 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 
+// Helpers
+import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/load-details.helper';
+
 export class DropdownContentHelper {
     static getDropdownShipperContent(data): DropdownItem[] {
         return [
@@ -326,19 +329,10 @@ export class DropdownContentHelper {
                     height: 18,
                 },
                 svgClass: 'delete',
-                mutedStyle:
-                    (tab !== TableStringEnum.TEMPLATE &&
-                        tab !== TableStringEnum.PENDING) ||
-                    ![
-                        TableStringEnum.UNASSIGNED,
-                        TableStringEnum.BOOKED,
-                    ].includes(
-                        data.status?.statusValue?.name as TableStringEnum
-                    ),
+                mutedStyle: LoadDetailsHelper.enableDeleteButton(tab),
             },
         ];
     }
-
     static getDropdownOwnerContent(): DropdownItem[] {
         return [
             {
