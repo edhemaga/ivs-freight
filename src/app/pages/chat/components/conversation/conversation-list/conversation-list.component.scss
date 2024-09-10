@@ -158,7 +158,24 @@
     color: $white;
 }
 
-.icon-regular {
-    width: 26px;
-    margin: 2px auto;
+.icon {
+    &-regular {
+        width: 26px;
+        margin: 2px auto;
+    }
+
+    &-0degr {
+        transform: rotate(0);
+        transition: transform 0.25s ease-out;
+    }
+
+    &-90degr {
+        transform: rotate(-90deg);
+        transition: transform 0.25s ease-out;
+    }
+
+    &-180degr {
+        transform: rotate(180deg);
+        transition: transform 0.25s ease-out;
+    }
 }

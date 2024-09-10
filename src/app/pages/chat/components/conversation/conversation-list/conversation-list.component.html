@@ -105,13 +105,9 @@
         >
             <ng-container
                 *ngTemplateOutlet="
-                    icon;
+                    headerArrowIcon;
                     context: {
-                        item: {
-                            width: 18,
-                            height: 18,
-                            route: ChatSvgRoutes.headerArrowDownIcon
-                        }
+                        state
                     }
                 "
             ></ng-container>
@@ -163,7 +159,9 @@
                             id: item.companyUser?.id,
                             name: item.companyUser?.fullName,
                             avatarFile: item.companyUser?.avatarFile,
-                            isRound: is_round
+                            isRound: is_round,
+                            isFavourite: item.isFavourite,
+                            unreadCount: item.unreadCount
                         }
                     }
                 "
@@ -312,7 +310,7 @@
         >
             <div>
                 <ng-container [ngSwitch]="true">
-                    <ng-container *ngSwitchCase="item?.isFavorite">
+                    <ng-container *ngSwitchCase="item?.isFavourite">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -350,13 +348,18 @@
 <ng-template #icon let-item="item">
     <svg-icon
         class="d-flex justify-content-center align-items-center"
+        [ngClass]="
+            (item.state === ChatGroupStateEnum.Expanded && 'icon-0degr') ||
+            (item.state === ChatGroupStateEnum.Collapsed && 'icon-90degr') ||
+            (item.state === ChatGroupStateEnum.AllExpanded && 'icon-180degr')
+        "
         [svgStyle]="{ 'width.px': item.width, 'height.px': item.height }"
         [src]="item.route"
     >
     </svg-icon>
 </ng-template>
 
-<ng-template #headerExpandCollapseIcon let-item="item">
+<ng-template #headerArrowIcon let-state="state">
     <ng-container
         *ngTemplateOutlet="
             icon;
@@ -364,7 +367,8 @@
                 item: {
                     width: 18,
                     height: 18,
-                    route: ChatSvgRoutes.headerArrowDownIcon
+                    route: ChatSvgRoutes.headerArrowDownIcon,
+                    state
                 }
             }
         "
