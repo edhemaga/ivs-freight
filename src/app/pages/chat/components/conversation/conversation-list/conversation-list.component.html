@@ -6,58 +6,97 @@
         ></app-ta-input>
     </div>
     <div class="conversation-list-wrapper">
+        <!-- Loop through each group in groupsState -->
         <ng-container
-            *ngTemplateOutlet="
-                header;
-                context: {
-                    item: { title: 'Department', count: departments.length }
-                }
-            "
-        ></ng-container>
-
-        <div
             *ngFor="
-                let department of departments;
+                let group of groupsState;
                 let ind = index;
                 trackBy: '' | trackByProperty
             "
         >
-            <ng-container
-                *ngTemplateOutlet="
-                    isAdvancedView ? listItemAdvanced : listItemRegular;
-                    context: { type: 'GroupChat', item: department }
-                "
-            ></ng-container>
-        </div>
+            <!-- ngSwitch based on group.id -->
+            <ng-container [ngSwitch]="group.id">
+                <!-- Case for Department -->
+                <ng-container *ngSwitchCase="ChatGroupEnum.Department">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            header;
+                            context: {
+                                item: {
+                                    title: ChatGroupEnum.Department,
+                                    count: departments.length
+                                }
+                            }
+                        "
+                    ></ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                userListHolder;
-                context: {
-                    data: companyUsers,
-                    header_title: 'Company User',
-                    type: 'SingleChat',
-                    is_round: true
-                }
-            "
-        ></ng-container>
+                    <ng-container
+                        *ngIf="group.state === ChatGroupStateEnum.Expanded"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let department of group.groupData;
+                                let ind = index;
+                                trackBy: '' | trackByProperty
+                            "
+                        >
+                            <div [@fadeInOut]>
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        isAdvancedView
+                                            ? listItemAdvanced
+                                            : listItemRegular;
+                                        context: {
+                                            type: 'GroupChat',
+                                            item: department
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                userListHolder;
-                context: {
-                    data: drivers,
-                    header_title: 'Driver',
-                    type: 'SingleChat',
-                    is_round: false
-                }
-            "
-        ></ng-container>
+                <!-- Case for Company User -->
+                <ng-container *ngSwitchCase="ChatGroupEnum.CompanyUser">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            userListHolder;
+                            context: {
+                                data: group.groupData?.data,
+                                state: group.state,
+                                header_title: ChatGroupEnum.CompanyUser,
+                                type: 'SingleChat',
+                                is_round: true
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+
+                <!-- Case for Driver -->
+                <ng-container *ngSwitchCase="ChatGroupEnum.Driver">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            userListHolder;
+                            context: {
+                                data: group.groupData?.data,
+                                state: group.state,
+                                header_title: ChatGroupEnum.Driver,
+                                type: 'SingleChat',
+                                is_round: false
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+                <ng-container *ngSwitchDefault> </ng-container>
+            </ng-container>
+        </ng-container>
     </div>
 </div>
 
 <ng-template #header let-item="item">
-    <div class="header d-flex">
+    <!-- Since title uses enum values, it is unique and therefore can be used as id -->
+    <div class="header d-flex" (click)="toggleChatGroupState(item.title)">
         <div class="icon d-flex justify-content-center align-items-center">
             <ng-container
                 *ngTemplateOutlet="
@@ -85,6 +124,8 @@
 
 <ng-template
     #userListHolder
+    let-group_id="group-id"
+    let-state="state"
     let-data="data"
     let-header_title="header_title"
     let-type="type"
@@ -96,28 +137,30 @@
             context: { item: { title: header_title, count: drivers.count } }
         "
     ></ng-container>
-    <div
-        *ngFor="
-            let item of data.data;
-            let ind = index;
-            trackBy: '' | trackByProperty
-        "
-    >
+    <ng-container *ngIf="state === ChatGroupStateEnum.Expanded">
         <ng-container
-            *ngTemplateOutlet="
-                isAdvancedView ? listItemAdvanced : listItemRegular;
-                context: {
-                    type: type,
-                    item: {
-                        id: item.companyUser?.id,
-                        name: item.companyUser?.fullName,
-                        avatarFile: item.companyUser?.avatarFile,
-                        isRound: is_round
-                    }
-                }
+            *ngFor="
+                let item of data;
+                let ind = index;
+                trackBy: '' | trackByProperty
             "
-        ></ng-container>
-    </div>
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    isAdvancedView ? listItemAdvanced : listItemRegular;
+                    context: {
+                        type: type,
+                        item: {
+                            id: item.companyUser?.id,
+                            name: item.companyUser?.fullName,
+                            avatarFile: item.companyUser?.avatarFile,
+                            isRound: is_round
+                        }
+                    }
+                "
+            ></ng-container>
+        </ng-container>
+    </ng-container>
 </ng-template>
 
 <ng-template #listItemRegular let-item="item" let-type="type">
@@ -125,6 +168,7 @@
         class="conversation-list-item"
         appHover
         hoverColor="#eee"
+        [@fadeInOut]
         (click)="selectConversation(item)"
     >
         <div class="conversation-list-item-regular d-flex">
@@ -168,11 +212,18 @@
                     }
                 "
             ></ng-container>
-        </div></div
-></ng-template>
+        </div>
+    </div>
+</ng-template>
 
 <ng-template #listItemAdvanced let-item="item" let-type="type">
-    <div class="conversation-list-item" appHover hoverColor="#eee">
+    <div
+        class="conversation-list-item"
+        appHover
+        hoverColor="#eee"
+        [@fadeInOut]
+        (click)="selectConversation(item)"
+    >
         <div class="conversation-list-item-advanced d-flex flex-grow-1">
             <div class="icon d-flex justify-content-center align-items-center">
                 <ng-container [ngSwitch]="type">
@@ -244,7 +295,7 @@
         >
             <div>
                 <ng-container [ngSwitch]="true">
-                    <ng-container *ngSwitchCase="item.isFavorite">
+                    <ng-container *ngSwitchCase="item?.isFavorite">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -258,7 +309,7 @@
                             "
                         ></ng-container>
                     </ng-container>
-                    <ng-container *ngSwitchCase="item.unreadCount">
+                    <ng-container *ngSwitchCase="item?.unreadCount">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
