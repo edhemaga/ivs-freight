@@ -77,9 +77,18 @@ export class DispatchComponent
     columns: DispatchColumn[];
 
     selectedDispatcher;
-    isAscending: boolean = true;
 
     public isNoteExpanded: boolean = true;
+
+    public sortBy: string = null;
+
+    public sortDirection: string = '';
+
+    private rotate: { [key: string]: string } = {
+        asc: '',
+        desc: 'asc',
+        '': 'desc',
+    };
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -311,19 +320,22 @@ export class DispatchComponent
     }
 
     sortDetails(e: any) {
+        this.sortDirection =
+            this.sortBy !== e.sortBy ? 'desc' : this.rotate[this.sortDirection];
+
         this.sortByProperty(
             e.list.dispatches,
             e.column,
             e.sortBy,
-            this.isAscending
+            this.sortDirection
         );
 
-        this.isAscending = !this.isAscending;
+        this.sortBy = e.sortBy;
     }
-    sortByProperty(arr, property, sort, isAscending) {
+    sortByProperty(arr, property, sort, sortDirection) {
         return arr.sort((a, b) => {
-            const aValue = a[property]?.[sort];
-            const bValue = b[property]?.[sort];
+            const aValue = !sortDirection ? a['order'] : a[property]?.[sort];
+            const bValue = !sortDirection ? b['order'] : b[property]?.[sort];
 
             if (aValue == null && bValue == null) {
                 return 0;
@@ -343,7 +355,9 @@ export class DispatchComponent
                 comparison = aValue - bValue;
             }
 
-            return isAscending ? comparison : -comparison;
+            return !sortDirection || sortDirection === 'asc'
+                ? comparison
+                : -comparison;
         });
     }
 

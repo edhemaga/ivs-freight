@@ -111,6 +111,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this._isNoteExpanded = value;
     }
 
+    @Input() sortBy: string;
+    @Input() sortDirection: string;
+
     @Output() onTableUnlockEmitter: EventEmitter<DispatchTableUnlock> =
         new EventEmitter();
 
@@ -992,7 +995,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 action: 'sort',
                 column: action,
                 sortBy: sortBy,
-                list: this.dispatchData,
+                list: this.dispatchData
             });
         }
     }
