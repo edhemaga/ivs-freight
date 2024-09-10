@@ -61,7 +61,6 @@ export class ConversationListComponent implements OnInit {
   public ChatInput = ChatInput;
   public isAdvancedView: boolean = false;
 
-
   // Create list of states for all groups available
 
   public groupsState: ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>[] = [
