@@ -977,6 +977,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+
+            this.cdRef.detectChanges();
         }, 1000);
     }
 

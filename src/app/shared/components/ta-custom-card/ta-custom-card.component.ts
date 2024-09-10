@@ -114,6 +114,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isReorderingButtonVisible: boolean = false;
     @Input() hasXAxisBottomPadding: boolean = false;
     @Input() isInheritingParentSize: boolean = false;
+    @Input() isGreyTextWhenDisabled: boolean = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);

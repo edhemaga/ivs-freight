@@ -25,6 +25,9 @@ import { TaCustomDateTimePickersDateCalendarsComponent } from '@shared/component
 // models
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// constants
+import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-datetime-pickers/constants/custom-datetime-pickers.constants'
+
 @Component({
     selector: 'app-ta-custom-datetime-pickers',
     templateUrl: './ta-custom-datetime-pickers.component.html',
@@ -46,6 +49,11 @@ export class TaCustomDatetimePickersComponent
         this._inputConfig = config;
         if (this._inputConfig.name === 'datepickerBankCard')
             this.listPreview = 'month_list';
+
+        if (this._inputConfig.minutesGapFive)
+            this.timeMinutes =
+                CustomDatetimePickersConstants.timeMinutesGapFive;
+        else this.timeMinutes = CustomDatetimePickersConstants.timeMinutes;
     }
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();
@@ -62,7 +70,7 @@ export class TaCustomDatetimePickersComponent
     currentMonth: any = new Date().getMonth();
     currentDay: any = new Date().getDate();
     listPreview: any = 'full_list';
-    timeMinutes: any = ['00', '15', '30', '45'];
+    timeMinutes: any;
     monthArray: any = new Array(12).fill(0).map((_, indx) => indx + 1);
     monthDayList: any = new Array(31).fill(0).map((_, indx) => indx + 1);
     yearsList: any = new Array(100)

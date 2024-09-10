@@ -63,6 +63,40 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
         this.secondElementHeight = this.isSecondElementOpen
             ? this.initialSecondElementHeight
             : this.minHeightSecondElement;
+
+        this.applyHeights();
+    }
+
+    private applyHeights(): void {
+        const firstElement = this.elRef.nativeElement.querySelector(
+            '[firstElement]'
+        );
+        const secondElement = this.elRef.nativeElement.querySelector(
+            '[secondElement]'
+        );
+
+        if (firstElement) {
+            this.renderer.setStyle(
+                firstElement,
+                'height',
+                `${this.firstElementHeight}px`
+            );
+        }
+        if (secondElement) {
+            this.renderer.setStyle(
+                secondElement,
+                'height',
+                `${this.secondElementHeight}px`
+            );
+        }
+
+    }
+
+    public setHeights(firstElementHeight: number, secondElementHeight: number): void {
+        this.firstElementHeight = firstElementHeight;
+        this.secondElementHeight = secondElementHeight;
+
+        this.applyHeights();
     }
 
     public onMouseDown(event: MouseEvent): void {
