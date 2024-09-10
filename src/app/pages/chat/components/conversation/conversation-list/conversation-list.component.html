@@ -24,7 +24,7 @@
         >
             <ng-container
                 *ngTemplateOutlet="
-                    listItemRegular;
+                    isAdvancedView ? listItemAdvanced : listItemRegular;
                     context: { type: 'GroupChat', item: department }
                 "
             ></ng-container>
@@ -36,7 +36,8 @@
                 context: {
                     data: companyUsers,
                     header_title: 'Company User',
-                    type: 'SingleChat'
+                    type: 'SingleChat',
+                    is_round: true
                 }
             "
         ></ng-container>
@@ -47,7 +48,8 @@
                 context: {
                     data: drivers,
                     header_title: 'Driver',
-                    type: 'SingleChat'
+                    type: 'SingleChat',
+                    is_round: false
                 }
             "
         ></ng-container>
@@ -86,6 +88,7 @@
     let-data="data"
     let-header_title="header_title"
     let-type="type"
+    let-is_round="is_round"
 >
     <ng-container
         *ngTemplateOutlet="
@@ -102,14 +105,14 @@
     >
         <ng-container
             *ngTemplateOutlet="
-                listItemAdvanced;
+                isAdvancedView ? listItemAdvanced : listItemRegular;
                 context: {
                     type: type,
                     item: {
-                        count: item.count,
+                        id: item.companyUser?.id,
                         name: item.companyUser?.fullName,
                         avatarFile: item.companyUser?.avatarFile,
-                        isRound: false
+                        isRound: is_round
                     }
                 }
             "
@@ -118,7 +121,12 @@
 </ng-template>
 
 <ng-template #listItemRegular let-item="item" let-type="type">
-    <div class="conversation-list-item" appHover hoverColor="#eee">
+    <div
+        class="conversation-list-item"
+        appHover
+        hoverColor="#eee"
+        (click)="selectConversation(item)"
+    >
         <div class="conversation-list-item-regular d-flex">
             <div class="icon d-flex justify-content-center align-items-center">
                 <ng-container [ngSwitch]="type">

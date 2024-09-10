@@ -8,7 +8,7 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
 import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
 
 // Models
-import { CompanyUserChatResponsePagination } from 'appcoretruckassist';
+import { CompanyUserChatResponse, CompanyUserChatResponsePagination } from 'appcoretruckassist';
 import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
 
 @Component({
@@ -27,6 +27,7 @@ export class ConversationListComponent implements OnInit {
 
   // Config
   public ChatInput = ChatInput;
+  public isAdvancedView: boolean = false;
 
   // Data
   @Input() public departments: ChatCompanyChannelExtended[];
@@ -45,5 +46,9 @@ export class ConversationListComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       searchTerm: [null]
     });
+  }
+
+  public selectConversation(item: ChatCompanyChannelExtended | CompanyUserChatResponse): void {
+    console.log(item);
   }
 }
