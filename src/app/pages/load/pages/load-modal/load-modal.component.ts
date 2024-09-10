@@ -793,6 +793,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             //
             statusType: [null],
             loadRequirementsId: [null],
+            arrive: [null],
+            depart: [null],
         });
     }
 
@@ -3221,7 +3223,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours,
             pickuplegMinutes,
             deliveryStop,
-            deliveryStopOrder,
             deliveryDateFrom,
             deliveryDateTo,
             deliveryTimeFrom,
@@ -3904,6 +3905,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private getPreviusModalValues(): EditData | LoadShortResponse {
+        console.log(this.loadModalData());
         return this.loadModalData();
     }
 
@@ -4019,7 +4021,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.originalStatus = (
                         this.editData?.data as LoadResponse
-                    )?.status?.statusString;
+                    )?.status.statusValue.name;
 
                     this.handleTonuRateVisiblity();
                 });
@@ -4871,6 +4873,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
             statusType: statusType?.name || statusType,
+            arrive: pickupStop?.arrive,
+            depart: pickupStop?.depart,
         });
 
         // load number
