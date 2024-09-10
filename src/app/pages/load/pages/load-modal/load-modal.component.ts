@@ -421,14 +421,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public isButtonDisabled: boolean = false;
-    public isEdit: boolean;
     private emptyMiles: number;
     private originalShippers: ShipperLoadModalResponse[];
     private originalLoadStatus: LoadStatusResponse;
     private isEditingMode: boolean = false;
     public previuosStatusModel: SelectedStatus;
     public modalTitle: string;
-    isActiveLoad: boolean;
+    public isActiveLoad: boolean;
+    public editName: string;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -617,6 +617,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         ).value;
 
         return !this.isConvertedToTemplate && this.isLoadActive(statusType);
+    }
+
+    private generateModalText(): void {
+        this.modalTitle = this.generateModalTitle();
+        this.editName = this.isConvertedToTemplate ? null : this.loadNumber;
     }
 
     public generateModalTitle(): string {
@@ -1256,9 +1261,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME)
                 );
 
+                this.generateModalText();
+
                 break;
             case LoadModalStringEnum.CONVERT_TO_LOAD:
                 this.isConvertedToTemplate = false;
+                this.generateModalText();
 
                 break;
             default:
@@ -3249,7 +3257,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 pickuplegMiles
             );
             stops.push({
-                id: !this.isEdit ? null : this.stops?.[0]?.id ?? null,
+                id: this.stops?.[0]?.id ?? null,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: pickupStopOrder,
                 stopType: pickupStop,
@@ -3292,9 +3300,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: !this.isEdit
-                        ? null
-                        : item.get(LoadModalStringEnum.ID).value ?? null,
+                    id: item.get(LoadModalStringEnum.ID).value ?? null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3343,9 +3349,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: !this.isEdit
-                    ? null
-                    : this.stops?.[this.stops.length - 1]?.id ?? null,
+                id: this.stops?.[this.stops.length - 1]?.id ?? null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 // TODO: stops.length + 1 ?? deliveryStopOrder check this
@@ -4048,7 +4052,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    this.loadNumber = res.loadNumber;
+                    // this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
                     // dispatcher
@@ -4330,7 +4334,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.watchFormChanges();
                     }
 
-                    this.modalTitle = this.generateModalTitle();
+                    this.generateModalText();
                     this.isActiveLoad = this.checkIfLoadIsActive();
 
                     // stop items
