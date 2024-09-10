@@ -37,12 +37,12 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editLoad,
-                    'select-template': !isConvertedToTemplate && !isActiveLoad()
+                    'select-template': !isConvertedToTemplate && !isActiveLoad
                 }"
             >
                 <!-- FTL-LTL Switcher -->
                 <div class="tabs-container">
-                    <ng-container *ngIf="!isActiveLoad(); else editLoad">
+                    <ng-container *ngIf="!isActiveLoad; else editLoad">
                         <app-ta-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onTabChange($event, 'ftl-ltl')"
@@ -64,7 +64,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad()">
+                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"

@@ -426,8 +426,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private originalShippers: ShipperLoadModalResponse[];
     private originalLoadStatus: LoadStatusResponse;
     private isEditingMode: boolean = false;
-    previuosStatusModel: SelectedStatus;
-
+    public previuosStatusModel: SelectedStatus;
+    public modalTitle: string;
+    isActiveLoad: boolean;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -610,7 +611,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public isActiveLoad(): boolean {
+    public checkIfLoadIsActive(): boolean {
         const statusType = this.loadForm.get(
             LoadModalStringEnum.STATUS_TYPE
         ).value;
@@ -618,7 +619,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return !this.isConvertedToTemplate && this.isLoadActive(statusType);
     }
 
-    public get modalTitle(): string {
+    public generateModalTitle(): string {
         const statusType = this.loadForm.get(
             LoadModalStringEnum.STATUS_TYPE
         ).value;
@@ -1243,7 +1244,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else if (this.isConvertedToTemplate) {
                     this.saveLoadTemplate(addNew);
                 } else {
-                    this.isActiveLoad()
+                    this.isActiveLoad
                         ? this.updateLoad(addNew)
                         : this.createNewLoad(addNew);
                 }
@@ -4039,7 +4040,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
         const id =
             this.editData?.selectedTab !== TableStringEnum.TEMPLATE &&
-            this.isActiveLoad()
+            this.isActiveLoad
                 ? this.editData?.data?.id
                 : null;
         this.loadService
@@ -4328,6 +4329,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     } else {
                         this.watchFormChanges();
                     }
+
+                    this.modalTitle = this.generateModalTitle();
+                    this.isActiveLoad = this.checkIfLoadIsActive();
 
                     // stop items
                     this.stopItemDropdownLists = {
