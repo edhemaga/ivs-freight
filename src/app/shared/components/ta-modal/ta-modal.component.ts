@@ -45,6 +45,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
+import { CaFilterComponent } from 'ca-components';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -55,6 +56,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 
 // Enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { AssignedLoadResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal',
@@ -80,6 +82,7 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
         TaTabSwitchComponent,
         TaFilterComponent,
         TaSearchComponent,
+        CaFilterComponent,
     ],
     animations: [
         trigger('widthGrow', [
@@ -147,8 +150,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
-    @Input() isAdditionalAssignLoadModalVisible = false;
-    @Input() isAssignLoadModal = false;
+    @Input() isAdditionalAssignLoadModalVisible = false;    
+    @Input() isAssignLoadModal: boolean = false;
 
     // -----------------
 
@@ -173,11 +176,13 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     // Header filters
     @Input() hasTimeFilter: boolean = false;
+    @Input() hasFutureTimeFilter: boolean = false;
     @Input() hasDispatcherFilter: boolean = false;
     @Input() hasTruckTypeFilter: boolean = false;
     @Input() hasTrailerTypeFilter: boolean = false;
     @Input() hasLocationFilter: boolean = false;
     @Input() hasSearch: boolean = false;
+    @Input() unassignedLoads: AssignedLoadResponse[];
 
     @Output() action: EventEmitter<{
         action: string;

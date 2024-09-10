@@ -139,8 +139,7 @@
                         stop?.shipper?.address?.city +
                             ', ' +
                             stop?.shipper?.address?.stateShortName +
-                            ' ' +
-                            stop?.shipper?.address?.zipCode?.split('-')[0]
+                            ' ' + ( stop?.shipper?.address?.zipCode ? stop?.shipper?.address?.zipCode?.split('-')[0] : '' )
                     }}
                 </p>
 
