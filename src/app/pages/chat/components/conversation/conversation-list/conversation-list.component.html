@@ -25,7 +25,8 @@
                                 item: {
                                     title: ChatGroupEnum.Department,
                                     count: departments.length
-                                }
+                                },
+                                state: group.state
                             }
                         "
                     ></ng-container>
@@ -47,7 +48,7 @@
                                             ? listItemAdvanced
                                             : listItemRegular;
                                         context: {
-                                            type: 'GroupChat',
+                                            type: ConversationTypeEnum.CHANNEL,
                                             item: department
                                         }
                                     "
@@ -64,9 +65,10 @@
                             userListHolder;
                             context: {
                                 data: group.groupData?.data,
+                                count: group.groupData?.count,
                                 state: group.state,
                                 header_title: ChatGroupEnum.CompanyUser,
-                                type: 'SingleChat',
+                                type: ConversationTypeEnum.SINGLE_CHAT,
                                 is_round: true
                             }
                         "
@@ -80,9 +82,10 @@
                             userListHolder;
                             context: {
                                 data: group.groupData?.data,
+                                count: group.groupData?.count,
                                 state: group.state,
                                 header_title: ChatGroupEnum.Driver,
-                                type: 'SingleChat',
+                                type: ConversationTypeEnum.SINGLE_CHAT,
                                 is_round: false
                             }
                         "
@@ -94,10 +97,12 @@
     </div>
 </div>
 
-<ng-template #header let-item="item">
+<ng-template #header let-item="item" let-unread="unread" let-state="state">
     <!-- Since title uses enum values, it is unique and therefore can be used as id -->
     <div class="header d-flex" (click)="toggleChatGroupState(item.title)">
-        <div class="icon d-flex justify-content-center align-items-center">
+        <div
+            class="icon-regular d-flex justify-content-center align-items-center"
+        >
             <ng-container
                 *ngTemplateOutlet="
                     icon;
@@ -111,7 +116,10 @@
                 "
             ></ng-container>
         </div>
-        <div class="header-details d-flex flex-grow-1 justify-content-between">
+        <div
+            class="header-details d-flex flex-grow-1 justify-content-between"
+            [ngClass]="item.count | chatHeaderClass : state : unread"
+        >
             <div class="title ta-font-bold">
                 {{ item.title }}
             </div>
@@ -127,6 +135,7 @@
     let-group_id="group-id"
     let-state="state"
     let-data="data"
+    let-count="count"
     let-header_title="header_title"
     let-type="type"
     let-is_round="is_round"
@@ -134,7 +143,7 @@
     <ng-container
         *ngTemplateOutlet="
             header;
-            context: { item: { title: header_title, count: drivers.count } }
+            context: { item: { title: header_title, count: count }, state }
         "
     ></ng-container>
     <ng-container *ngIf="state === ChatGroupStateEnum.Expanded">
@@ -169,12 +178,16 @@
         appHover
         hoverColor="#eee"
         [@fadeInOut]
-        (click)="selectConversation(item)"
+        (click)="selectConversation(item, type)"
     >
         <div class="conversation-list-item-regular d-flex">
-            <div class="icon d-flex justify-content-center align-items-center">
+            <div
+                class="icon-regular d-flex justify-content-center align-items-center"
+            >
                 <ng-container [ngSwitch]="type">
-                    <ng-container *ngSwitchCase="'SingleChat'">
+                    <ng-container
+                        *ngSwitchCase="ConversationTypeEnum.SINGLE_CHAT"
+                    >
                         <app-ca-profile-image
                             [avatarImg]="item.avatarFile?.url"
                             [avatarColor]="{
@@ -188,7 +201,7 @@
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'GroupChat'">
+                    <ng-container *ngSwitchCase="ConversationTypeEnum.CHANNEL">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -225,9 +238,13 @@
         (click)="selectConversation(item)"
     >
         <div class="conversation-list-item-advanced d-flex flex-grow-1">
-            <div class="icon d-flex justify-content-center align-items-center">
+            <div
+                class="icon-advanced d-flex justify-content-center align-items-center"
+            >
                 <ng-container [ngSwitch]="type">
-                    <ng-container *ngSwitchCase="'SingleChat'">
+                    <ng-container
+                        *ngSwitchCase="ConversationTypeEnum.SINGLE_CHAT"
+                    >
                         <app-ca-profile-image
                             [avatarImg]="item.avatarFile?.url"
                             [avatarColor]="{
@@ -241,7 +258,7 @@
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'GroupChat'">
+                    <ng-container *ngSwitchCase="ConversationTypeEnum.CHANNEL">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -337,4 +354,19 @@
         [src]="item.route"
     >
     </svg-icon>
+</ng-template>
+
+<ng-template #headerExpandCollapseIcon let-item="item">
+    <ng-container
+        *ngTemplateOutlet="
+            icon;
+            context: {
+                item: {
+                    width: 18,
+                    height: 18,
+                    route: ChatSvgRoutes.headerArrowDownIcon
+                }
+            }
+        "
+    ></ng-container>
 </ng-template>

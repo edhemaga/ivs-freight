@@ -78,6 +78,56 @@
     &-details {
         padding: 4px;
     }
+
+    .expanded {
+        .title {
+            color: $ta-black;
+        }
+
+        .count {
+            background-color: $bw6-2;
+        }
+    }
+
+    .collapsed {
+        .title {
+            color: $bw6-2;
+        }
+
+        .count {
+            background-color: $bw5;
+        }
+    }
+
+    .empty {
+        .title {
+            color: $ta-light-grey-2;
+        }
+
+        .count {
+            background-color: $ta-light-grey-6;
+        }
+    }
+
+    .unread-collapsed {
+        .title {
+            color: $bw6-2;
+        }
+
+        .count {
+            background-color: $ta-blue-13;
+        }
+    }
+
+    .unread-expanded {
+        .title {
+            color: $ta-black;
+        }
+
+        .count {
+            background-color: $ta-blue-14;
+        }
+    }
 }
 
 // Shared
@@ -94,7 +144,6 @@
 
 .item {
     height: 100%;
-
     padding: 0 4px;
 }
 
@@ -106,7 +155,10 @@
     border-radius: 60px;
     padding: 2px 5px;
     float: right;
-
-    background-color: $ta-light-grey-6;
     color: $white;
+}
+
+.icon-regular {
+    width: 26px;
+    margin: 2px auto;
 }

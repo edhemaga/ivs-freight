@@ -1,7 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
-  OnInit
+  OnInit,
+  Output
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -22,10 +24,13 @@ import {
 import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
 import { ChatGroupStateInterface } from '@pages/chat/models/conversation-list/chat-group-state.interface';
 
-// Animations
-import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
+// Enums
+import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
 import { ChatGroupEnum } from '@pages/chat/enums/conversation/conversation-list/chat-group.enum';
 import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-list/chat-group-state.enum';
+
+// Animations
+import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
 
 @Component({
@@ -35,6 +40,15 @@ import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-
   animations: [chatUserListSearchAnimation]
 })
 export class ConversationListComponent implements OnInit {
+
+  // Data
+  @Input() public departments: ChatCompanyChannelExtended[];
+  @Input() public truckChannel: ChatCompanyChannelExtended[];
+  @Input() public dispatchBoardChannel: ChatCompanyChannelExtended[];
+  @Input() public companyUsers: CompanyUserChatResponsePagination;
+  @Input() public drivers: CompanyUserChatResponsePagination;
+
+  @Output() selectedConversation = new EventEmitter<{ id: number, type: ConversationTypeEnum }>();
 
   public searchForm!: UntypedFormGroup;
 
@@ -47,13 +61,6 @@ export class ConversationListComponent implements OnInit {
   public ChatInput = ChatInput;
   public isAdvancedView: boolean = false;
 
-
-  // Data
-  @Input() public departments: ChatCompanyChannelExtended[];
-  @Input() public truckChannel: ChatCompanyChannelExtended[];
-  @Input() public dispatchBoardChannel: ChatCompanyChannelExtended[];
-  @Input() public companyUsers: CompanyUserChatResponsePagination;
-  @Input() public drivers: CompanyUserChatResponsePagination;
 
   // Create list of states for all groups available
 
@@ -79,6 +86,7 @@ export class ConversationListComponent implements OnInit {
 
   public ChatGroupStateEnum = ChatGroupStateEnum;
   public ChatGroupEnum = ChatGroupEnum;
+  public ConversationTypeEnum = ConversationTypeEnum;
 
   constructor(private formBuilder: UntypedFormBuilder) { }
 
@@ -147,7 +155,25 @@ export class ConversationListComponent implements OnInit {
 
   };
 
-  public selectConversation(item: ChatCompanyChannelExtended | CompanyUserChatResponse): void {
-    return;
+  public selectConversation(item: ChatCompanyChannelExtended | CompanyUserChatResponse, type: ConversationTypeEnum): void {
+    if ('companyUser' in item) {
+      this.selectedConversation.emit(
+        {
+          id: item.companyUser?.id,
+          type
+        }
+      );
+      return;
+    }
+
+    if ('id' in item) {
+      this.selectedConversation.emit({
+        id: item.id,
+        type
+      });
+      return;
+    }
+
   }
+
 }

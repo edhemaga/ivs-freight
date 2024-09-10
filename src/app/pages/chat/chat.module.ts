@@ -39,6 +39,7 @@ import { FormatDatePipe } from "@shared/pipes/format-date.pipe";
 import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
 import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
 import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
+import { ChatHeaderClassPipe } from "./utils/pipes/chat-header-class.pipe";
 
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
@@ -68,6 +69,9 @@ import { HoverDirective } from "@pages/chat/utils/directives/hover.directive";
         // Directives
         DragAndDropDirective,
         HoverDirective,
+
+        // Pipes
+        ChatHeaderClassPipe
     ],
     providers: [
         // Pipes

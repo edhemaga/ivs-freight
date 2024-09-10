@@ -105,6 +105,9 @@
                 [departments]="departments"
                 [companyUsers]="companyUsers"
                 [drivers]="drivers"
+                (selectedConversation)="
+                    createUserConversation($event.id, $event.type)
+                "
             ></app-conversation-list>
             <!-- <app-chat-user-list
                 (selectedUser)="
