@@ -3257,7 +3257,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 pickuplegMiles
             );
             stops.push({
-                id: this.stops?.[0]?.id ?? null,
+                id: this.isActiveLoad ? this.stops?.[0]?.id ?? null : null,
                 stopOrder: stops.length + 1,
                 stopLoadOrder: pickupStopOrder,
                 stopType: pickupStop,
@@ -3300,7 +3300,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
                 stops.push({
-                    id: item.get(LoadModalStringEnum.ID).value ?? null,
+                    id: this.isActiveLoad ? item.get(LoadModalStringEnum.ID).value ?? null : null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
@@ -3349,7 +3349,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 deliverylegMiles
             );
             stops.push({
-                id: this.stops?.[this.stops.length - 1]?.id ?? null,
+                id: this.isActiveLoad ? this.stops?.[this.stops.length - 1]?.id ?? null : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
                 // TODO: stops.length + 1 ?? deliveryStopOrder check this
