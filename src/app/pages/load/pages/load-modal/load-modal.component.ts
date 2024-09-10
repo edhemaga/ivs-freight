@@ -594,7 +594,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get isTemplateLoad(): boolean {
-        return this.editData?.selectedTab === TableStringEnum.TEMPLATE;
+        return (
+            this.editData?.selectedTab === TableStringEnum.TEMPLATE &&
+            this.editData.loadAction !== TableStringEnum.CONVERT_TO_TEMPLATE
+        );
     }
 
     private isLoadActive(statusType: string): boolean {
@@ -620,6 +623,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             LoadModalStringEnum.STATUS_TYPE
         ).value;
 
+        if (this.isTemplateLoad) {
+            return 'Edit Load Template';
+        }
+
         if (this.isConvertedToTemplate) {
             return 'Create Load Template';
         }
@@ -634,10 +641,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         if (statusType === TableStringEnum.CLOSED_2) {
             return 'Edit Closed Load';
-        }
-
-        if (this.isTemplateLoad) {
-            return 'Edit Load Template';
         }
 
         return 'Create Load';
@@ -4824,7 +4827,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // form
         this.loadForm.patchValue({
             id,
-            templateName: (loadModalData as any).name,
+            templateName:
+                (loadModalData as any).name !== undefined
+                    ? (loadModalData as any).name
+                    : null,
             name: (loadModalData as any).name,
             referenceNumber: referenceNumber,
             weight: weight,
