@@ -58,6 +58,8 @@ export class DispatchTableTruckTrailerComponent {
         this.handleTruckTrailerList(values);
     }
 
+    @Input() isTrailerAddNewHidden: boolean;
+
     @Input() truck: TruckResponse;
     @Input() trailer: TrailerResponse;
 

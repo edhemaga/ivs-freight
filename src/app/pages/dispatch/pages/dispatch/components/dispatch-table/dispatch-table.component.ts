@@ -82,7 +82,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     @Input() set shortLists(lists: DispatchModalResponse) {
-        console.log('lists', lists);
         this.handleTruckTrailerDriverParkingLists(lists);
     }
 
@@ -138,8 +137,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public hasAdditionalFieldTrailer: boolean = false;
     public hasLargeFieldParking: boolean = false;
 
-    public originalTruckList: TruckDispatchModalResponse[];
-    public originalTrailerList: TrailerDispatchModalResponse[];
+    public isTrailerAddNewHidden = false;
+
     public truckList: TruckDispatchModalResponse[];
     public trailerList: TrailerDispatchModalResponse[];
     public driverList: DriverListResponse[];
@@ -265,7 +264,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             };
         });
 
-        this.originalTrailerList = trailersList.map((trailer) => {
+        this.trailerList = trailersList.map((trailer) => {
             return {
                 ...trailer,
                 name: trailer.trailerNumber,
@@ -340,24 +339,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         event: TruckDispatchModalResponse | TrailerDispatchModalResponse;
         index: number;
     }): void {
-        console.log('eventParam', eventParam);
-
         const { type, event, index } = eventParam;
 
         if (type === DispatchTableStringEnum.TRUCK) {
-            console.log('truckList', this.truckList);
-            console.log('trailerList', this.trailerList);
+            const allowedTrailerIds = (event as TruckDispatchModalResponse)
+                .allowedTrailerIds;
 
-            const truck = event as TruckDispatchModalResponse;
-            const allowedTrailerIds = truck.allowedTrailerIds;
-
-            if (allowedTrailerIds) {
-                this.trailerList = this.originalTrailerList.filter((trailer) =>
-                    allowedTrailerIds.includes(trailer.id)
-                );
-            } else {
-                this.trailerList = [];
-            }
+            this.isTrailerAddNewHidden = !allowedTrailerIds;
 
             if (index) {
                 this.dispatchData = {
@@ -456,6 +444,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.showAddAddressFieldIndex = -1;
 
             this.addNewTruckData = null;
+
+            this.isTrailerAddNewHidden = false;
 
             this.cdRef.detectChanges();
         }, 3000);
@@ -708,7 +698,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     // CDL DRAG AND DROP
 
     dropList<T>(event: CdkDragDrop<T>): void {
-        console.log('event', event);
         const { currentIndex, previousIndex } = event;
 
         const dispatchBoardId = this.dispatchData.id;
@@ -731,9 +720,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         };
 
         this.isDispatchBoardChangeInProgress = true;
-
-        console.log('dispatchBoardId', dispatchBoardId);
-        console.log('dispatches', dispatches);
 
         this.dispatcherService
             .reorderDispatchboard(data)
@@ -923,7 +909,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     cdkDragStartedTrailer(event, indx) {
-        console.log('END TRAILER');
         this.startIndexTrailer = indx;
         this.isDrag = true;
         /*  this.draggingType = DispatchTableStringEnum.TRUCK; */
@@ -931,7 +916,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     cdkDragStartedDriver(event, indx) {
-        console.log('END DRIVER');
         this.startIndexDriver = indx;
         this.isDrag = true;
         this.draggingType = 'driver';
