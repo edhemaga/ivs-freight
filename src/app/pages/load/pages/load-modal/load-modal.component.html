@@ -37,7 +37,7 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editLoad,
-                    'select-template': !isConvertedToTemplate && !isActiveLoad
+                    'select-template': !isConvertedToTemplate && !isActiveLoad && labelsTemplate.length
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -64,7 +64,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad">
+                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad && labelsTemplate.length">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
