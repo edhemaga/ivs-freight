@@ -17,7 +17,7 @@ pipelines:
           name: Build
           script:
             - npm run build:production
-            - rm -rf ./src/assets/ca-components && cp -R ./node_modules/ca-components/src/assets/ca-components ./src/assets/ca-components
+            - npm run postinstall
           artifacts:
             - dist/** # Save build for next steps
       - step:
