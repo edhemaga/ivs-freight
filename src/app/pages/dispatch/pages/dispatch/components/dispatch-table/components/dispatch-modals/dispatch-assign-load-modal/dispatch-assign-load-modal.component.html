@@ -60,7 +60,7 @@
             </div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 310 : 400 : 30"
+                [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 415 : 400 : 30"
                 [initialSecondElementHeight]="selectedDispatches? 400 : 400"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
@@ -159,7 +159,7 @@
                     [disabledCard]="isReorderingActive"
                     [hasDivider]="false"
                     [isGreyTextWhenDisabled]="true"
-                    (onOpenCard)="isUnAssignLoadCardOpen = $event"
+                    (onOpenCard)="toggleUnAssignedList()"
                 >
                     <ng-container
                         *ngIf="

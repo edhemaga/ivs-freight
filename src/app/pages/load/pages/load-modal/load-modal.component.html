@@ -260,10 +260,10 @@
                     [hasDivider]="false"
                     [animationMarginParams]="{
                         marginTop: '10px',
-                        marginBottom: '12px'
+                        marginBottom: '0'
                     }"
                 >
-                    <div class="pt-2">
+                    <div class="pt-3">
                         <div class="load-requirements-load-first-row">
                             <app-ta-input-dropdown
                                 formControlName="truckTypeId"
@@ -1666,17 +1666,20 @@
                     [cardName]="'Document'"
                     [isCardOpen]="documents?.length"
                     (onOpenCard)="handleOpenCloseDocumentsCard($event)"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
                 >
-                    <app-ta-upload-files
-                        *ngIf="isDocumentsCardOpen"
-                        [files]="documents"
-                        [size]="'medium'"
-                        [showDropzone]="true"
-                        (onFileEvent)="onFilesEvent($event)"
-                        [customClassName]="'modals'"
-                        [hasTagsDropdown]="true"
-                        [tags]="tags"
-                    ></app-ta-upload-files>
+                <app-ta-upload-files
+                    [files]="documents"
+                    [size]="'medium'"
+                    [showDropzone]="true"
+                    (onFileEvent)="onFilesEvent($event)"
+                    [customClassName]="'modals'"
+                    [hasTagsDropdown]="true"
+                    [tags]="tags"
+                ></app-ta-upload-files>
                 </app-ta-custom-card>
             </div>
 

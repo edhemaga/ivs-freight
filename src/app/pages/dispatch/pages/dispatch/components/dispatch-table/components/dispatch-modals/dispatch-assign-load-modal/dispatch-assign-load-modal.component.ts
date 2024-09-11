@@ -736,6 +736,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         this.loadModalData();
     }
 
+    public toggleUnAssignedList(): void {
+        this.isUnAssignLoadCardOpen = !this.isUnAssignLoadCardOpen;
+    }
+
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
