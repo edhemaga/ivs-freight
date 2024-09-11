@@ -10,6 +10,7 @@ pipelines:
           script:
             - export NODE_OPTIONS=--max-old-space-size=6144
             - npm install
+            - npm run postinstall
           artifacts:
             - node_modules/** # Save modules for next steps
       - step:
@@ -17,7 +18,6 @@ pipelines:
           name: Build
           script:
             - npm run build:production
-            - npm run postinstall
           artifacts:
             - dist/** # Save build for next steps
       - step:
