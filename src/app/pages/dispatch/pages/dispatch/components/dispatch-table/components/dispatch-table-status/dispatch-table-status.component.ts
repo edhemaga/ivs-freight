@@ -12,7 +12,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 //helpers
-import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-table.helper';
+import { LoadStatusHelper } from '@shared/utils/helpers/load-status.helper';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -37,7 +37,7 @@ import { LastStatusPassed } from '@shared/models/card-models/card-table-data.mod
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() set time(timePassed: LastStatusPassed) {
         if (timePassed)
-            this.showTime = DispatchTableHelper.calculateDateDifference(timePassed);
+            this.showTime = LoadStatusHelper.calculateStatusTime(timePassed);
     }
     @Input() status?: DispatchStatusResponse;
 

@@ -1,7 +1,7 @@
 import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
 
-export class DispatchTableHelper {
-    static calculateDateDifference(lastStatusPassed: LastStatusPassed): string {
+export class LoadStatusHelper {
+    static calculateStatusTime(lastStatusPassed: LastStatusPassed): string {
         const { days, hours, minutes, seconds } = lastStatusPassed;
 
         // If the change just occurred in less than 5 minutes
