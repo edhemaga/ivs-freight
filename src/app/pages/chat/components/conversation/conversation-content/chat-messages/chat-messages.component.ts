@@ -175,54 +175,48 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   private connectToHub(): void {
-    this.chatHubService
-      .connect()
-      .pipe(takeUntil(this.destroy$))
+
+    ChatHubService
+      .receiveMessage()
+      .pipe(takeUntil(this.destroy$),
+        map(arg => {
+          return {
+            ...arg,
+            fileCount: arg.filesCount ?? arg.files?.length,
+            mediaCount: arg.mediaCount ?? arg.media?.length,
+            linksCount: arg.linksCount ?? arg.links?.length
+          }
+        }))
       .subscribe(
-        () => {
-          this.chatHubService
-            .receiveMessage()
-            .pipe(takeUntil(this.destroy$),
-              map(arg => {
-                return {
-                  ...arg,
-                  fileCount: arg.filesCount ?? arg.files?.length,
-                  mediaCount: arg.mediaCount ?? arg.media?.length,
-                  linksCount: arg.linksCount ?? arg.links?.length
-                }
-              }))
-            .subscribe(
-              message => {
-                if (message) {
-                  this.messages = [...this.messages, message];
-                }
-              }
-            );
-
-          this.chatHubService
-            .receiveTypingNotification()
-            .pipe(
-              debounceTime(150),
-              takeUntil(this.destroy$),
-            )
-            .subscribe((companyUserId: number) => {
-
-              const filteredUser: CompanyUserShortResponse =
-                this.remainingParticipants
-                  .find(user =>
-                    user.id === companyUserId
-                  );
-              this.currentUserTypingName.next(filteredUser?.fullName);
-              this.userTypingEmitter.emit(companyUserId);
-
-              setTimeout(() => {
-                this.currentUserTypingName.next(null);
-                this.userTypingEmitter.emit(0);
-              }, 1000);
-
-            })
+        message => {
+          if (message) {
+            this.messages = [...this.messages, message];
+          }
         }
       );
+
+    this.chatHubService
+      .receiveTypingNotification()
+      .pipe(
+        debounceTime(150),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((companyUserId: number) => {
+
+        const filteredUser: CompanyUserShortResponse =
+          this.remainingParticipants
+            .find(user =>
+              user.id === companyUserId
+            );
+        this.currentUserTypingName.next(filteredUser?.fullName);
+        this.userTypingEmitter.emit(companyUserId);
+
+        setTimeout(() => {
+          this.currentUserTypingName.next(null);
+          this.userTypingEmitter.emit(0);
+        }, 1000);
+
+      })
   }
 
   public sendMessage(): void {

@@ -5,5 +5,6 @@ import { ChatGroupEnum } from "@pages/chat/enums/conversation/conversation-list/
 export interface ChatGroupStateInterface<T> {
     id: ChatGroupEnum,
     state: ChatGroupStateEnum,
-    groupData?: T
+    groupData?: T,
+    hasNewMessage?: boolean
 }

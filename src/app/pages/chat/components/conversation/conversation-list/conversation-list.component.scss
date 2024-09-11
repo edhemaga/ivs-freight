@@ -79,6 +79,12 @@
         padding: 4px;
     }
 
+    &-arrow {
+        height: 26px;
+        width: 26px;
+        border-radius: 2px;
+    }
+
     .expanded {
         .title {
             color: $ta-black;

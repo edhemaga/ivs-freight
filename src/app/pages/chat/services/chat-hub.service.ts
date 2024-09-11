@@ -18,11 +18,13 @@ export class ChatHubService {
     private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;
-    private hubConnection!: signalR.HubConnection;
+    private static hubConnection: signalR.HubConnection;
 
     private establishInitialConnection(): void {
+
         if (!this.token) return;
-        this.hubConnection = new signalR.HubConnectionBuilder()
+
+        ChatHubService.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
@@ -33,34 +35,37 @@ export class ChatHubService {
             .build();
     }
 
-    public connect(): Observable<void> {
+    public connect(): void {
         if (!this.token) return;
 
         this.establishInitialConnection();
 
-        if (!this.hubConnection) return;
+        if (
+            !ChatHubService.hubConnection &&
+            ChatHubService.hubConnection?.state !== signalR.HubConnectionState.Connecting &&
+            ChatHubService.hubConnection?.state !== signalR.HubConnectionState.Connected
+        )
+            return;
 
-        return new Observable<void>((observer) => {
-            this.hubConnection
-                .start()
-                .then(() => {
-                    observer.next();
-                })
-                .catch((error) => {
-                    observer.error(error);
-                });
-        });
+        ChatHubService.hubConnection
+            .start()
+            .then();
+
+        ChatHubService.hubConnection.
+            onclose(() => {
+                ChatHubService.hubConnection.start();
+            });
     }
 
     public disconnect(): void {
-        this.hubConnection
+        ChatHubService.hubConnection
             .stop()
             .then();
     }
 
-    public receiveMessage(): Observable<ChatMessageResponse> {
+    public static receiveMessage(): Observable<ChatMessageResponse> {
         return new Observable<ChatMessageResponse>((observer) => {
-            this.hubConnection.on('ReceiveMessage',
+            ChatHubService.hubConnection.on('ReceiveMessage',
                 (
                     newMessage: ChatMessageResponse
                 ) => {
@@ -73,13 +78,13 @@ export class ChatHubService {
     public notifyTyping(conversationId: number): void {
         // If function within a hub is called 'invoke' is a must
         // invoke(name of the function, arguments)
-        // Send would not work
-        this.hubConnection.invoke(`NotifyTyping`, conversationId);
+        // Send not working
+        ChatHubService.hubConnection.invoke(`NotifyTyping`, conversationId);
     }
 
     public receiveTypingNotification(): Observable<number> {
         return new Observable<number>((observer) => {
-            this.hubConnection.on('ReceiveTypingNotification',
+            ChatHubService.hubConnection.on('ReceiveTypingNotification',
                 (companyUserId: number) => {
                     observer.next(companyUserId);
                 });
