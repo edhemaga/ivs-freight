@@ -263,7 +263,12 @@
                                         columnSpecifications?.truckWidth
                                     "
                                     [truck]="item?.truck"
-                                    [truckList]="truckList"
+                                    [truckList]="
+                                        truckList
+                                            | allowedTruckTrailerPipe
+                                                : true
+                                                : item?.trailer?.id
+                                    "
                                     [isYearShown]="!columnsToShow[1].hidden"
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
@@ -351,7 +356,12 @@
                                                 columnSpecifications?.trailerWidth
                                             "
                                             [trailer]="item?.trailer"
-                                            [trailerList]="trailerList"
+                                            [trailerList]="
+                                                trailerList
+                                                    | allowedTruckTrailerPipe
+                                                        : false
+                                                        : item?.truck?.id
+                                            "
                                             [isYearShown]="
                                                 !columnsToShow[3].hidden
                                             "
@@ -364,6 +374,11 @@
                                             [isHoveringRow]="
                                                 !isDrag &&
                                                 isHoveringRowIndex === rowIndex
+                                            "
+                                            [isTrailerAddNewHidden]="
+                                                isTrailerAddNewHidden
+                                                    | hiddenAddTrailerPipe
+                                                        : item?.truck
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
@@ -538,7 +553,7 @@
                                 }"
                             >
                                 <app-dispatch-table-status
-                                    [time]="item.lastStatusDateTime"
+                                    [time]="item.lastStatusPassed"
                                     [status]="item.status"
                                     [dispatchId]="item.id"
                                     [dispatchBoardId]="item?.dispatchBoardId"
@@ -578,7 +593,7 @@
                                             <ng-container
                                                 *ngIf="pickupDeliveryItem(item)"
                                             >
-                                                <app-ca-pickup-delivery-block
+                                                <!--     <app-ca-pickup-delivery-block
                                                     [loads]="{
                                                         active: currentDispatchGroupedLoadsResponse.active,
                                                         closed: currentDispatchGroupedLoadsResponse.closed,
@@ -586,7 +601,7 @@
                                                             currentDispatchGroupedLoadsResponse.pending
                                                     }"
                                                     [dispatchResponse]="item"
-                                                ></app-ca-pickup-delivery-block>
+                                                ></app-ca-pickup-delivery-block> -->
                                             </ng-container>
                                         </div>
                                     </div>
@@ -802,6 +817,7 @@
                                 [isHoveringRow]="
                                     isHoveringRowIndex === rowIndex
                                 "
+                                [isTrailerAddNewHidden]="isTrailerAddNewHidden"
                                 (addTruckTrailerEmitter)="
                                     handleAddTruckTrailerClick($event)
                                 "
