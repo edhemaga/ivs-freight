@@ -87,7 +87,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
-    public isAssignLoadCardOpen: boolean = true;
+    public isAssignLoadCardOpen: boolean = false;
     public isUnAssignLoadCardOpen: boolean = true;
 
     // Additional load
@@ -207,7 +207,13 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.unassignedLoads = res.unassignedLoads;
-                this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+
+                if(this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length; 
+                } else {
+                    this.isUnAssignLoadCardOpen = true;
+                }
+
                 this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
