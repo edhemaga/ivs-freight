@@ -41,6 +41,7 @@ import {
     CardDetails,
     DeleteComment,
     DropdownItem,
+    LastStatusPassed,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -78,6 +79,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { LoadStatusHelper } from '@shared/utils/helpers/load-status.helper';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -1227,24 +1229,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 tab: this.selectedTab,
-                time:
-                    (lastStatusPassed?.days
-                        ? lastStatusPassed?.days +
-                          ' ' +
-                          TableStringEnum.DAY +
-                          ' '
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
-                    (lastStatusPassed?.hours
-                        ? lastStatusPassed?.hours +
-                          ' ' +
-                          TableStringEnum.HOURS +
-                          ' '
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
-                    (lastStatusPassed?.minutes
-                        ? lastStatusPassed?.minutes +
-                          ' ' +
-                          TableStringEnum.MINUTES
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time: LoadStatusHelper.calculateStatusTime(
+                    lastStatusPassed as any
+                ), //leave this any for now
             },
             total: miles?.totalMiles,
             empty: miles?.emptyMiles,
