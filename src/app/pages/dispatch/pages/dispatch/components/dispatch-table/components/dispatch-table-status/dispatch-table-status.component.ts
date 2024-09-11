@@ -12,14 +12,12 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 //helpers
-import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
+import { DispatchTableHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers/dispatch-table.helper';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import {
-    DispatchStatusEnum,
-    DispatchTableStringEnum,
-} from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+import { DispatchStatusEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-status.enum';
+import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 //models
 import {
@@ -29,6 +27,7 @@ import {
     CreateDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
+import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-dispatch-table-status',
@@ -36,9 +35,9 @@ import {
     styleUrls: ['./dispatch-table-status.component.scss'],
 })
 export class DispatchTableStatusComponent implements OnInit, OnDestroy {
-    @Input() set time(value: string) {
-        if (value)
-            this.showTime = DispatchTableHelper.calculateDateDifference(value);
+    @Input() set time(timePassed: LastStatusPassed) {
+        if (timePassed)
+            this.showTime = DispatchTableHelper.calculateDateDifference(timePassed);
     }
     @Input() status?: DispatchStatusResponse;
 

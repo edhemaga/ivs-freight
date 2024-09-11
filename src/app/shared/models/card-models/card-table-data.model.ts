@@ -265,6 +265,8 @@ export interface LastStatusPassed {
     hours: number;
     minutes: number;
     additionalProp3: number;
+    days?: number;
+    seconds?: number;
 }
 
 export interface Dispatcher {
