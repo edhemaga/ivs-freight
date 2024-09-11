@@ -81,7 +81,6 @@ export class PayrollBonusModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
-
         this.getModalDropdowns();
     }
 
