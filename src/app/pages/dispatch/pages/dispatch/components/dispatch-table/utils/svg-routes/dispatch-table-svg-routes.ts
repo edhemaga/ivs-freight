@@ -21,4 +21,8 @@ export class DispatchTableSvgRoutes {
         'assets/svg/common/ic_dispatch_board_dispatcher_icon.svg';
     static toolbarNoteIcon: string =
         'assets/svg/truckassist-table/note/Note.svg';
+    static sortAscendingArrow: string =
+        'assets/svg/truckassist-table/ascending-sort.svg';
+    static sortDescendingArrow: string =
+        'assets/svg/truckassist-table/descending-sort.svg';
 }

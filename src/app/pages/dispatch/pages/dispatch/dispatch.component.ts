@@ -27,14 +27,16 @@ import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/componen
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
-//models
+// models
 import { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
-//constants
+// constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { DispatchSortDirectionsConstants } from './components/dispatch-table/utils/constants/dispatch-sort-directions.constants';
 
 // helpers
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DispatchSortByPropertyHelper } from './components/dispatch-table/utils/helpers/dispatch-sort-by-property.helper';
 
 // components
 import { DispatchAssignLoadModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/dispatch-assign-load-modal.component';
@@ -84,11 +86,7 @@ export class DispatchComponent
 
     public sortDirection: string = '';
 
-    private rotate: { [key: string]: string } = {
-        asc: '',
-        desc: 'asc',
-        '': 'desc',
-    };
+    private rotate = DispatchSortDirectionsConstants.sortDirectionsRotate;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -323,7 +321,7 @@ export class DispatchComponent
         this.sortDirection =
             this.sortBy !== e.sortBy ? 'desc' : this.rotate[this.sortDirection];
 
-        this.sortByProperty(
+        DispatchSortByPropertyHelper.sortByProperty(
             e.list.dispatches,
             e.column,
             e.sortBy,
@@ -331,34 +329,6 @@ export class DispatchComponent
         );
 
         this.sortBy = e.sortBy;
-    }
-    sortByProperty(arr, property, sort, sortDirection) {
-        return arr.sort((a, b) => {
-            const aValue = !sortDirection ? a['order'] : a[property]?.[sort];
-            const bValue = !sortDirection ? b['order'] : b[property]?.[sort];
-
-            if (aValue == null && bValue == null) {
-                return 0;
-            }
-            if (aValue == null) {
-                return 1;
-            }
-            if (bValue == null) {
-                return -1;
-            }
-
-            let comparison = 0;
-
-            if (typeof aValue === 'string' && typeof bValue === 'string') {
-                comparison = aValue.localeCompare(bValue);
-            } else {
-                comparison = aValue - bValue;
-            }
-
-            return !sortDirection || sortDirection === 'asc'
-                ? comparison
-                : -comparison;
-        });
     }
 
     private toggleColumns(): void {
