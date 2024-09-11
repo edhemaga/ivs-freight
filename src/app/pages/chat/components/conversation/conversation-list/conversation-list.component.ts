@@ -31,7 +31,14 @@ import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-
 
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { BehaviorSubject, take, takeUntil } from 'rxjs';
 
+// Helpers
+import { Unsubscribe } from '@pages/chat/utils/helpers/unsubscribe';
+
+// Services
+import { ChatHubService } from '@pages/chat/services/chat-hub.service';
 
 @Component({
   selector: 'app-conversation-list',
@@ -39,7 +46,7 @@ import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
   styleUrls: ['./conversation-list.component.scss'],
   animations: [chatUserListSearchAnimation]
 })
-export class ConversationListComponent implements OnInit {
+export class ConversationListComponent extends Unsubscribe implements OnInit {
 
   // Data
   @Input() public departments: ChatCompanyChannelExtended[];
@@ -47,6 +54,9 @@ export class ConversationListComponent implements OnInit {
   @Input() public dispatchBoardChannel: ChatCompanyChannelExtended[];
   @Input() public companyUsers: CompanyUserChatResponsePagination;
   @Input() public drivers: CompanyUserChatResponsePagination;
+
+  // New message emitted from hub
+  @Input() public newMessage: BehaviorSubject<ChatMessageResponse> = new BehaviorSubject(null);
 
   @Output() selectedConversation = new EventEmitter<{ id: number, type: ConversationTypeEnum }>();
 
@@ -87,11 +97,14 @@ export class ConversationListComponent implements OnInit {
   public ChatGroupEnum = ChatGroupEnum;
   public ConversationTypeEnum = ConversationTypeEnum;
 
-  constructor(private formBuilder: UntypedFormBuilder) { }
+  constructor(private formBuilder: UntypedFormBuilder) {
+    super();
+  }
 
   ngOnInit(): void {
     this.initializeChatGroupStates();
     this.creteForm();
+    this.listenForNewMessage();
     // this.listenForSearchTermChange();
   }
 
@@ -101,47 +114,103 @@ export class ConversationListComponent implements OnInit {
     });
   }
 
+  private listenForNewMessage(): void {
+    ChatHubService.receiveMessage().subscribe(arg => { console.log(arg) })
+  }
+
   private initializeChatGroupStates(): void {
+
     this.groupsState = [
       {
         ...this.findChatGroupState(ChatGroupEnum.Department),
-        groupData: this.departments
+        groupData: this.departments?.slice(0, 6)
       },
       {
         ...this.findChatGroupState(ChatGroupEnum.Truck),
-        groupData: this.truckChannel
+        groupData: this.truckChannel?.slice(0, 6)
       },
       {
         ...this.findChatGroupState(ChatGroupEnum.Dispatch),
-        groupData: this.dispatchBoardChannel
+        groupData: this.dispatchBoardChannel?.slice(0, 6)
       },
       {
         ...this.findChatGroupState(ChatGroupEnum.CompanyUser),
-        groupData: this.companyUsers
+        groupData: {
+          ...this.companyUsers,
+          data: this.companyUsers?.data?.slice(0, 6),
+          count: this.companyUsers?.data?.slice(0, 6).length
+        }
       },
       {
         ...this.findChatGroupState(ChatGroupEnum.Driver),
-        groupData: this.drivers
+        groupData: {
+          ...this.drivers,
+          data: this.drivers?.data?.slice(0, 6),
+          count: this.drivers?.data?.slice(0, 6).length
+        }
       }
     ];
+
+  }
+
+  private showAllChatGroupData(group: ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
+
+    group.state = ChatGroupStateEnum.AllExpanded;
+
+    switch (group.id) {
+      case ChatGroupEnum.Department:
+        this.departments = this.departments;
+        break;
+      case ChatGroupEnum.Truck:
+        group.groupData = this.truckChannel;
+        break;
+      case ChatGroupEnum.Dispatch:
+        group.groupData = this.dispatchBoardChannel;
+        break;
+      case ChatGroupEnum.CompanyUser:
+        group.groupData = {
+          ...group.groupData,
+          data: this.companyUsers.data,
+          count: this.companyUsers.count
+        }
+        break;
+      case ChatGroupEnum.Driver:
+        group.groupData = {
+          ...group.groupData,
+          data: this.drivers.data,
+          count: this.drivers.count
+        }
+        break;
+      default:
+        return;
+
+    }
+    return group;
   }
 
   private findChatGroupState(groupId: ChatGroupEnum): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
     return this.groupsState.find(group => group.id === groupId);
   }
 
+  private findChatGroupByParticipantId(id: number): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
+    return this.groupsState.find(group => { console.log(group) })
+  }
 
-  public toggleChatGroupState(id: ChatGroupEnum): void {
 
+  public toggleChatGroupState(id: ChatGroupEnum, expandAll?: boolean): void {
     this.groupsState = this.groupsState.map(group => {
 
       if (group.id !== id) return group;
 
-      switch (group.state) {
-        case ChatGroupStateEnum.Expanded:
+      switch (true) {
+        case expandAll && ChatGroupStateEnum.Collapsed === group.state:
+          group = this.showAllChatGroupData(group);
+          break;
+        case ChatGroupStateEnum.Expanded === group.state || ChatGroupStateEnum.AllExpanded === group.state:
           group.state = ChatGroupStateEnum.Collapsed;
           break;
-        case ChatGroupStateEnum.Collapsed:
+        case ChatGroupStateEnum.Collapsed === group.state:
+          this.initializeChatGroupStates();
           group.state = ChatGroupStateEnum.Expanded;
           break;
         default:

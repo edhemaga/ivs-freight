@@ -19,7 +19,7 @@ export class ChatHeaderClassPipe implements PipeTransform {
         if (state === ChatGroupStateEnum.Expanded && unread) {
             return 'unread-expanded';
         }
-        if (state === ChatGroupStateEnum.Expanded) {
+        if (state === ChatGroupStateEnum.Expanded || state === ChatGroupStateEnum.AllExpanded) {
             return 'expanded';
         }
         if (state === ChatGroupStateEnum.Collapsed && unread) {

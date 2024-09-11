@@ -15,7 +15,7 @@ export class ChatCompanyUserResolver {
     constructor(private userChatService: UserChatService) { }
 
     resolve(): Observable<CompanyUserChatResponsePagination> {
-        return this.userChatService.getCompanyUserList('User', 1, 6).pipe(
+        return this.userChatService.getCompanyUserList('User').pipe(
             map(res => {
                 return res.pagination
             })
