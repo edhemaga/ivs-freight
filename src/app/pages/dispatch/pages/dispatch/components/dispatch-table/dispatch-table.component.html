@@ -377,6 +377,8 @@
                                             "
                                             [isTrailerAddNewHidden]="
                                                 isTrailerAddNewHidden
+                                                    | hiddenAddTrailerPipe
+                                                        : item?.truck
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
