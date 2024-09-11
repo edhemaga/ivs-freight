@@ -4,12 +4,14 @@
     [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
     [isAssignLoadModal]="true"
     [isModalValid]="isModalValid"
-    [hasTimeFilter]="true"
+    [hasFutureTimeFilter]="true"
     [hasDispatcherFilter]="true"
     [hasTruckTypeFilter]="true"
     [hasTrailerTypeFilter]="true"
     [hasLocationFilter]="true"
     [hasSearch]="true"
+    [isAssignLoadModal]="true"
+    [unassignedLoads]="originalLoads"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
     (filterActions)="setFilter($event)"
@@ -58,159 +60,62 @@
             </div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="220"
-                [initialSecondElementHeight]="440"
+                [initialFirstElementHeight]="310"
+                [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
+                #resizerComponent
             >
-                <div firstElement class="h-full">
-                    <app-ta-custom-card
-                        [cardName]="'Assigned'"
-                        [hasCounter]="assignedLoads.length"
-                        [isCardOpen]="isAssignLoadCardOpen"
-                        [hasActionSvg]="false"
-                        [hasBodyData]="true"
-                        [hasArrow]="showReorderButton"
-                        [isReorderingButtonVisible]="
-                            !isReorderingActive &&
-                            assignedLoads.length > 1 &&
-                            isAssignLoadCardOpen
-                        "
-                        [isFinishReorderingButtonVisible]="isReorderingActive"
-                        [hasScrollBody]="true"
-                        [hasDivider]="false"
-                        [isInheritingParentSize]="true"
-                        (onOpenCard)="isAssignLoadCardOpen = $event"
-                        (onActionEvent)="onReorderAction($event)"
-                        (cdkDropListDropped)="dropAssigned($event)"
-                        cdkDropList
-                    >
-                        <ng-container
-                            *ngIf="
-                                assignedLoads.length;
-                                else showNoAssignedLoads
-                            "
-                        >
-                            <div
-                                *ngFor="
-                                    let assignedLoad of assignedLoads;
-                                    let index = index;
-                                    trackBy: trackByIdentity
-                                "
-                                [cdkDragDisabled]="!isReorderingActive"
-                                cdkDrag
-                            >
-                                <div
-                                    class="dragdrop-custom-placeholder-assign-load"
-                                    *cdkDragPlaceholder
-                                ></div>
-                                <app-load-short-details
-                                    [load]="assignedLoad"
-                                    [index]="index + 1"
-                                    [isAssigned]="true"
-                                    [activeLoadId]="selectedLoad?.id"
-                                    [isDisabled]="!selectedDispatches"
-                                    [isReorderingActive]="isReorderingActive"
-                                    (changeLoadList$)="
-                                        changeLoadList(assignedLoad.id, true)
-                                    "
-                                    (selectLoad$)="
-                                        selectLoad(assignedLoad.id, true)
-                                    "
-                                ></app-load-short-details>
-                            </div>
-                        </ng-container>
-
-                        <ng-template #showNoAssignedLoads>
-                            <div
-                                class="d-flex flex-column align-items-center justify-content-center"
-                            >
-                                <svg-icon [src]="svgIcons.noLoads"></svg-icon>
-
-                                <div
-                                    class="ta-font-bold dispatch-load-no-results-title"
-                                >
-                                    No data found
-                                </div>
-                                <p
-                                    class="ta-font-medium dispatch-load-no-results-text"
-                                >
-                                    There are currently no assigned loads
-                                </p>
-                            </div>
-                        </ng-template>
-                    </app-ta-custom-card>
-                </div>
-
-                <div secondElement class="h-full">
-                    <app-ta-custom-card
-                        [cardName]="'Unassigned'"
-                        [hasCounter]="unassignedLoads.length"
-                        [isCardOpen]="isUnAssignLoadCardOpen"
-                        [hasActionSvg]="false"
-                        [hasBodyData]="true"
-                        [hasArrow]="true"
-                        [isInheritingParentSize]="true"
-                        [disabledCard]="isReorderingActive"
-                        [hasDivider]="false"
-                        (onOpenCard)="isUnAssignLoadCardOpen = $event"
-                    >
-                        <ng-container
-                            *ngIf="
-                                unassignedLoads.length;
-                                else showNoUnassignedLoads
-                            "
-                        >
-                            <div
-                                *ngFor="
-                                    let unassignedLoad of unassignedLoads;
-                                    let index = index;
-                                    trackBy: trackByIdentity
-                                "
-                            >
-                                <app-load-short-details
-                                    [load]="unassignedLoad"
-                                    [index]="index + 1"
-                                    [isAssigned]="false"
-                                    [activeLoadId]="selectedLoad?.id"
-                                    [isDisabled]="!selectedDispatches"
-                                    (changeLoadList$)="
-                                        changeLoadList(unassignedLoad.id, false)
-                                    "
-                                    (selectLoad$)="
-                                        selectLoad(unassignedLoad.id, false)
-                                    "
-                                ></app-load-short-details>
-                            </div>
-                        </ng-container>
-
-                        <ng-template #showNoUnassignedLoads>
-                            <div
-                                class="d-flex flex-column align-items-center justify-content-center"
-                            >
-                                <svg-icon [src]="svgIcons.noLoads"></svg-icon>
-                                <div
-                                    class="ta-font-bold dispatch-load-no-results-title"
-                                >
-                                    No data found
-                                </div>
-                                <p
-                                    class="ta-font-medium dispatch-load-no-results-text"
-                                >
-                                    There are currently no unassigned loads
-                                </p>
-                            </div>
-                        </ng-template>
-                    </app-ta-custom-card>
-                </div>
+            <div firstElement #firstElementRef class="h-full-important">
+                <ng-container
+                    *ngTemplateOutlet="
+                        loadCardTemplate;
+                        context: {
+                            loads: assignedLoads,
+                            isAssigned: true,
+                            isReorderingActive: isReorderingActive,
+                            isCardOpen: isAssignLoadCardOpen,
+                            hasArrow: showReorderButton,
+                        }
+                    "
+                ></ng-container>
+            </div>
+            
+            <div secondElement #secondElementRef class="h-full-important">
+                <ng-container
+                    *ngTemplateOutlet="
+                        loadCardTemplate;
+                        context: {
+                            loads: unassignedLoads,
+                            isAssigned: false,
+                            isReorderingActive: isReorderingActive,
+                            isCardOpen: isUnAssignLoadCardOpen,
+                            hasArrow: true,
+                        }
+                    "
+                ></ng-container>
+            </div>
             </app-ta-resizer>
         </div>
     </div>
 
     <div assignLoadModal class="d-flex flex-column h-full position-relative">
+        <ng-container *ngIf="isLoading">
+            <div class="dispatch-load-map-loader position-absolute">
+                <div
+                    class="position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center flex-column gap-2"
+                >
+                    <div
+                        class="dispatch-load-map-loader-box d-flex align-items-center justify-content-center"
+                    >
+                        <div class="dispatch-load-map-loader-box-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
         <ng-container *ngIf="selectedLoad; else modalTitle">
             <div class="modal-header d-flex justify-content-between">
                 <div class="modal-header-leftside">
@@ -310,10 +215,10 @@
                         class="d-flex justify-content-center align-items-center dispatch-load-map"
                     >
                         <!-- <app-ta-maps
-                            [mapType]="'routing'"
-                            [routes]="loadStopRoutes"
-                            [ngStyle]="{ width: '100%', height: '540px' }"
-                        ></app-ta-maps> -->
+                                [mapType]="'routing'"
+                                [routes]="loadStopRoutes"
+                                [ngStyle]="{ width: '100%', height: '540px' }"
+                            ></app-ta-maps> -->
                     </div>
                 </div>
             </app-ta-resizer>
@@ -371,3 +276,42 @@
         </ng-container>
     </div>
 </app-ta-modal>
+
+<ng-template #loadCardTemplate let-loads="loads" let-isAssigned="isAssigned" let-isReorderingActive="isReorderingActive" let-isCardOpen="isCardOpen" let-hasArrow="hasArrow">
+    <app-ta-custom-card
+        [cardName]="isAssigned ? 'Assigned' : 'Unassigned'"
+        [hasCounter]="loads.length"
+        [isCardOpen]="isCardOpen"
+        [hasActionSvg]="false"
+        [hasBodyData]="true"
+        [hasArrow]="hasArrow"
+        [isInheritingParentSize]="true"
+        [disabledCard]="isReorderingActive"
+        [hasDivider]="false"
+        [isGreyTextWhenDisabled]="!isAssigned"
+    >
+        <ng-container *ngIf="loads.length; else showNoLoads">
+            <div *ngFor="let load of loads; let index = index; trackBy: trackByIdentity" [cdkDragDisabled]="!isReorderingActive" cdkDrag>
+                <div class="dragdrop-custom-placeholder-assign-load" *cdkDragPlaceholder></div>
+                <app-load-short-details
+                    [load]="load"
+                    [index]="index + 1"
+                    [isAssigned]="isAssigned"
+                    [activeLoadId]="selectedLoad?.id"
+                    [isDisabled]="!selectedDispatches"
+                    [isReorderingActive]="isReorderingActive"
+                    (changeLoadList$)="changeLoadList(load.id, isAssigned)"
+                    (selectLoad$)="selectLoad(load.id, isAssigned)"
+                ></app-load-short-details>
+            </div>
+        </ng-container>
+
+        <ng-template #showNoLoads>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <svg-icon [src]="svgIcons.noLoads"></svg-icon>
+                <div class="ta-font-bold dispatch-load-no-results-title">No data found</div>
+                <p class="ta-font-medium dispatch-load-no-results-text">There are currently no {{ isAssigned ? 'assigned' : 'unassigned' }} loads</p>
+            </div>
+        </ng-template>
+    </app-ta-custom-card>
+</ng-template>

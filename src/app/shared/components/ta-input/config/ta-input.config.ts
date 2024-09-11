@@ -152,4 +152,5 @@ export interface ITaInput {
     removeLeadingZero?: boolean;
     negativeLeadingZero?: boolean;
     isHoverRow?: boolean;
+    minutesGapFive?: boolean
 }

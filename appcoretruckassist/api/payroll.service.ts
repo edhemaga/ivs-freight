@@ -37,8 +37,6 @@ import { CreatePayrollPaymentCommand } from '../model/createPayrollPaymentComman
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
-import { FleetType } from '../model/fleetType';
-// @ts-ignore
 import { PayrollBonusDescriptionAutocompleteResponse } from '../model/payrollBonusDescriptionAutocompleteResponse';
 // @ts-ignore
 import { PayrollBonusModalResponse } from '../model/payrollBonusModalResponse';
@@ -61,13 +59,19 @@ import { PayrollDeductionResponse } from '../model/payrollDeductionResponse';
 // @ts-ignore
 import { PayrollDriverCommissionByIdResponse } from '../model/payrollDriverCommissionByIdResponse';
 // @ts-ignore
-import { PayrollDriverCommissionResponse } from '../model/payrollDriverCommissionResponse';
+import { PayrollDriverCommissionClosedByIdResponse } from '../model/payrollDriverCommissionClosedByIdResponse';
+// @ts-ignore
+import { PayrollDriverFlatRateByIdResponse } from '../model/payrollDriverFlatRateByIdResponse';
 // @ts-ignore
 import { PayrollDriverFlatRateClosedByIdResponse } from '../model/payrollDriverFlatRateClosedByIdResponse';
 // @ts-ignore
-import { PayrollDriverMileageListResponse } from '../model/payrollDriverMileageListResponse';
+import { PayrollDriverFlatRateMinimalResponse } from '../model/payrollDriverFlatRateMinimalResponse';
 // @ts-ignore
-import { PayrollDriverMileageResponse } from '../model/payrollDriverMileageResponse';
+import { PayrollDriverMileageByIdResponse } from '../model/payrollDriverMileageByIdResponse';
+// @ts-ignore
+import { PayrollDriverMileageClosedByIdResponse } from '../model/payrollDriverMileageClosedByIdResponse';
+// @ts-ignore
+import { PayrollDriverMileageListResponse } from '../model/payrollDriverMileageListResponse';
 // @ts-ignore
 import { PayrollListResponse } from '../model/payrollListResponse';
 // @ts-ignore
@@ -1933,31 +1937,19 @@ export class PayrollService {
     }
 
     /**
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverCommissionClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverCommissionClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverCommissionClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverCommissionClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverCommissionClosedCollapsedListGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverCommissionClosedCollapsedListGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverCommissionClosedCollapsedListGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverCommissionClosedCollapsedListGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2022,35 +2014,18 @@ export class PayrollService {
 
     /**
      * @param driverid 
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverCommissionClosedExpandedListGet(driverid?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (driverid !== undefined && driverid !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>driverid, 'Driverid');
-        }
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2118,9 +2093,9 @@ export class PayrollService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverCommissionByIdResponse>;
-    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverCommissionByIdResponse>>;
-    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverCommissionByIdResponse>>;
+    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverCommissionClosedByIdResponse>;
+    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverCommissionClosedByIdResponse>>;
+    public apiPayrollDriverCommissionClosedGet(id?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverCommissionClosedByIdResponse>>;
     public apiPayrollDriverCommissionClosedGet(id?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2176,7 +2151,7 @@ export class PayrollService {
         }
 
         let localVarPath = `/api/payroll/driver/commission/closed`;
-        return this.httpClient.request<PayrollDriverCommissionByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PayrollDriverCommissionClosedByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -2287,31 +2262,19 @@ export class PayrollService {
     }
 
     /**
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverCommissionListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverCommissionListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverCommissionListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverCommissionListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverCommissionListGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverCommissionListGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverCommissionListGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverCommissionListGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2534,31 +2497,19 @@ export class PayrollService {
     }
 
     /**
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverFlatrateClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverFlatrateClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverFlatrateClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverFlatrateClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverFlatrateClosedCollapsedListGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverFlatrateClosedCollapsedListGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverFlatrateClosedCollapsedListGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverFlatrateClosedCollapsedListGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2623,35 +2574,18 @@ export class PayrollService {
 
     /**
      * @param driverid 
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverFlatrateClosedExpandedListGet(driverid?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (driverid !== undefined && driverid !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>driverid, 'Driverid');
-        }
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2799,9 +2733,9 @@ export class PayrollService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverCommissionResponse>;
-    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverCommissionResponse>>;
-    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverCommissionResponse>>;
+    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverFlatRateByIdResponse>;
+    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverFlatRateByIdResponse>>;
+    public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverFlatRateByIdResponse>>;
     public apiPayrollDriverFlatrateIdGet(id: number, selectedLoadIds: Array<number>, selectedBonusIds: Array<number>, selectedDeducionIds: Array<number>, selectedCreditIds: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiPayrollDriverFlatrateIdGet.');
@@ -2868,7 +2802,7 @@ export class PayrollService {
         }
 
         let localVarPath = `/api/payroll/driver/flatrate/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<PayrollDriverCommissionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PayrollDriverFlatRateByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -2882,31 +2816,19 @@ export class PayrollService {
     }
 
     /**
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverFlatrateListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollListResponse>;
-    public apiPayrollDriverFlatrateListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollListResponse>>;
-    public apiPayrollDriverFlatrateListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollListResponse>>;
-    public apiPayrollDriverFlatrateListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverFlatrateListGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<PayrollDriverFlatRateMinimalResponse>>;
+    public apiPayrollDriverFlatrateListGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<PayrollDriverFlatRateMinimalResponse>>>;
+    public apiPayrollDriverFlatrateListGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<PayrollDriverFlatRateMinimalResponse>>>;
+    public apiPayrollDriverFlatrateListGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -2956,7 +2878,7 @@ export class PayrollService {
         }
 
         let localVarPath = `/api/payroll/driver/flatrate/list`;
-        return this.httpClient.request<PayrollListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<PayrollDriverFlatRateMinimalResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -3129,31 +3051,19 @@ export class PayrollService {
     }
 
     /**
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverMileageClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverMileageClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverMileageClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverMileageClosedCollapsedListGet(searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverMileageClosedCollapsedListGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverMileageClosedCollapsedListGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverMileageClosedCollapsedListGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverMileageClosedCollapsedListGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -3218,35 +3128,18 @@ export class PayrollService {
 
     /**
      * @param driverid 
-     * @param searchTerms 
-     * @param pageIndex 
-     * @param pageSize 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, searchTerms?: Array<string>, pageIndex?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollDriverMileageClosedExpandedListGet(driverid?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (driverid !== undefined && driverid !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>driverid, 'Driverid');
-        }
-        if (searchTerms) {
-            searchTerms.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'SearchTerms');
-            })
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -3314,9 +3207,9 @@ export class PayrollService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverCommissionByIdResponse>;
-    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverCommissionByIdResponse>>;
-    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverCommissionByIdResponse>>;
+    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverMileageClosedByIdResponse>;
+    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverMileageClosedByIdResponse>>;
+    public apiPayrollDriverMileageClosedGet(id?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverMileageClosedByIdResponse>>;
     public apiPayrollDriverMileageClosedGet(id?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -3372,7 +3265,7 @@ export class PayrollService {
         }
 
         let localVarPath = `/api/payroll/driver/mileage/closed`;
-        return this.httpClient.request<PayrollDriverCommissionByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PayrollDriverMileageClosedByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -3394,9 +3287,9 @@ export class PayrollService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverMileageResponse>;
-    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverMileageResponse>>;
-    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverMileageResponse>>;
+    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverMileageByIdResponse>;
+    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverMileageByIdResponse>>;
+    public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverMileageByIdResponse>>;
     public apiPayrollDriverMileageGet(id?: number, lastLoadDate?: string, selectedDeducionIds?: Array<number>, selectedCreditIds?: Array<number>, selectedBonusIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -3474,7 +3367,7 @@ export class PayrollService {
         }
 
         let localVarPath = `/api/payroll/driver/mileage`;
-        return this.httpClient.request<PayrollDriverMileageResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PayrollDriverMileageByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -3563,16 +3456,16 @@ export class PayrollService {
     }
 
     /**
-     * @param fleetType 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollDriverMileageSoloGet(fleetType: FleetType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverMileageListResponse>;
-    public apiPayrollDriverMileageSoloGet(fleetType: FleetType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverMileageListResponse>>;
-    public apiPayrollDriverMileageSoloGet(fleetType: FleetType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverMileageListResponse>>;
-    public apiPayrollDriverMileageSoloGet(fleetType: FleetType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (fleetType === null || fleetType === undefined) {
-            throw new Error('Required parameter fleetType was null or undefined when calling apiPayrollDriverMileageSoloGet.');
+    public apiPayrollDriverMileageSoloGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PayrollDriverMileageListResponse>;
+    public apiPayrollDriverMileageSoloGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PayrollDriverMileageListResponse>>;
+    public apiPayrollDriverMileageSoloGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PayrollDriverMileageListResponse>>;
+    public apiPayrollDriverMileageSoloGet(request: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (request === null || request === undefined) {
+            throw new Error('Required parameter request was null or undefined when calling apiPayrollDriverMileageSoloGet.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -4145,79 +4038,19 @@ export class PayrollService {
     }
 
     /**
-     * @param driverId 
-     * @param ownerId 
      * @param truckId 
-     * @param statusType 
-     * @param totalAmountFrom 
-     * @param totalAmountTo 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollOwnerListClosedExpandedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollOwnerListClosedExpandedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollOwnerListClosedExpandedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollOwnerListClosedExpandedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollOwnerListClosedExpandedGet(truckId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollOwnerListClosedExpandedGet(truckId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollOwnerListClosedExpandedGet(truckId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollOwnerListClosedExpandedGet(truckId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (driverId !== undefined && driverId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>driverId, 'DriverId');
-        }
-        if (ownerId !== undefined && ownerId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>ownerId, 'OwnerId');
-        }
         if (truckId !== undefined && truckId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>truckId, 'TruckId');
-        }
-        if (statusType !== undefined && statusType !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>statusType, 'StatusType');
-        }
-        if (totalAmountFrom !== undefined && totalAmountFrom !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountFrom, 'TotalAmountFrom');
-        }
-        if (totalAmountTo !== undefined && totalAmountTo !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountTo, 'TotalAmountTo');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -4281,79 +4114,19 @@ export class PayrollService {
     }
 
     /**
-     * @param driverId 
-     * @param ownerId 
-     * @param truckId 
-     * @param statusType 
-     * @param totalAmountFrom 
-     * @param totalAmountTo 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollOwnerListClosedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollOwnerListClosedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollOwnerListClosedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollOwnerListClosedGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollOwnerListClosedGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollOwnerListClosedGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollOwnerListClosedGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollOwnerListClosedGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (driverId !== undefined && driverId !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>driverId, 'DriverId');
-        }
-        if (ownerId !== undefined && ownerId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>ownerId, 'OwnerId');
-        }
-        if (truckId !== undefined && truckId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>truckId, 'TruckId');
-        }
-        if (statusType !== undefined && statusType !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>statusType, 'StatusType');
-        }
-        if (totalAmountFrom !== undefined && totalAmountFrom !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountFrom, 'TotalAmountFrom');
-        }
-        if (totalAmountTo !== undefined && totalAmountTo !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountTo, 'TotalAmountTo');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -4417,79 +4190,19 @@ export class PayrollService {
     }
 
     /**
-     * @param driverId 
-     * @param ownerId 
-     * @param truckId 
-     * @param statusType 
-     * @param totalAmountFrom 
-     * @param totalAmountTo 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiPayrollOwnerListOpenGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiPayrollOwnerListOpenGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiPayrollOwnerListOpenGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiPayrollOwnerListOpenGet(driverId?: number, ownerId?: number, truckId?: number, statusType?: number, totalAmountFrom?: number, totalAmountTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiPayrollOwnerListOpenGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiPayrollOwnerListOpenGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiPayrollOwnerListOpenGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiPayrollOwnerListOpenGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (driverId !== undefined && driverId !== null) {
+        if (request !== undefined && request !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>driverId, 'DriverId');
-        }
-        if (ownerId !== undefined && ownerId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>ownerId, 'OwnerId');
-        }
-        if (truckId !== undefined && truckId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>truckId, 'TruckId');
-        }
-        if (statusType !== undefined && statusType !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>statusType, 'StatusType');
-        }
-        if (totalAmountFrom !== undefined && totalAmountFrom !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountFrom, 'TotalAmountFrom');
-        }
-        if (totalAmountTo !== undefined && totalAmountTo !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>totalAmountTo, 'TotalAmountTo');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
+            <any>request, 'request');
         }
 
         let localVarHeaders = this.defaultHeaders;

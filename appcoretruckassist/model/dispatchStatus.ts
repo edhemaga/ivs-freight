@@ -11,14 +11,14 @@
  */
 
 
-export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded' | 'Loading' | 'Offloading' | 'Break' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery';
+export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Canceled' | 'Repair' | 'DispatchedRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded' | 'Loading' | 'Offloading' | 'Break' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery';
 
 export const DispatchStatus = {
     Off: 'Off' as DispatchStatus,
     Available: 'Available' as DispatchStatus,
     Dispatched: 'Dispatched' as DispatchStatus,
     DeadHeading: 'DeadHeading' as DispatchStatus,
-    Cancel: 'Cancel' as DispatchStatus,
+    Canceled: 'Canceled' as DispatchStatus,
     Repair: 'Repair' as DispatchStatus,
     DispatchedRepair: 'DispatchedRepair' as DispatchStatus,
     LoadedRepair: 'LoadedRepair' as DispatchStatus,

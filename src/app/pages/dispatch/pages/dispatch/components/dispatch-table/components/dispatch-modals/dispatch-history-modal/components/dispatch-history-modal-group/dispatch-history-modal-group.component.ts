@@ -13,8 +13,8 @@ import {
     takeUntil,
 } from 'rxjs';
 
-// moment
-import moment from 'moment';
+// services
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // enums
 import { DispatchHistoryModalStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -67,7 +67,12 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
     public selectedFormControlName: string;
 
-    constructor(private formBuilder: UntypedFormBuilder) {}
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+
+        // services
+        private dispatcherService: DispatcherService
+    ) {}
 
     get dispatchHistoryDateStartConfig() {
         return (configData: DispatchInputConfigParams): ITaInput => {
@@ -227,6 +232,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                         ];
 
                         return this.formBuilder.group({
+                            id: item.id,
                             dateStart: [
                                 MethodsCalculationsHelper.convertDateFromBackend(
                                     item.startDate
@@ -319,9 +325,13 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 nextGroupItem
             );
         } else {
-            nextGroupItem
-                ? this.handleSelectedDateBeforeOrSameDateEnd(selectedGroupItem)
-                : this.updateGroupHistoryData(true);
+            const isOngoing = !selectedGroupItem.dateEnd;
+
+            if (nextGroupItem || (!nextGroupItem && !isOngoing)) {
+                this.handleSelectedDateBeforeOrSameDateEnd(selectedGroupItem);
+            } else {
+                this.updateGroupHistoryData(true);
+            }
         }
     }
 
@@ -331,134 +341,84 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
     ): void {
         this.clearInputValidations();
 
-        const isSelectedDateSameOrBeforeNextDate =
-            DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrBeforeNextDate(
-                selectedGroupItem.dateEnd,
-                nextGroupItem.dateStart
-            );
-
-        if (isSelectedDateSameOrBeforeNextDate) {
-            const isDateSameAsNext =
+        if (nextGroupItem) {
+            const isSelectedDateSameOrBeforeNextDate =
                 DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrBeforeNextDate(
                     selectedGroupItem.dateEnd,
-                    nextGroupItem.dateStart,
-                    true
+                    nextGroupItem.dateStart
                 );
 
-            if (isDateSameAsNext) {
-                const isTimeValid =
-                    DispatchHistoryModalDateHelper.checkIsTimeEndBeforeOrSameNextTimeStart(
-                        selectedGroupItem.timeEnd,
-                        nextGroupItem.timeStart
+            if (isSelectedDateSameOrBeforeNextDate) {
+                const isDateSameAsNext =
+                    DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrBeforeNextDate(
+                        selectedGroupItem.dateEnd,
+                        nextGroupItem.dateStart,
+                        true
                     );
 
-                console.log('isTimeValid', isTimeValid);
-
-                const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
-
-                if (isTimeValid && isGroupItemsRowValid) {
-                    const { dateStart, timeStart, dateEnd, timeEnd } =
-                        selectedGroupItem;
-
-                    this.updateGroupHistoryData(
-                        false,
-                        dateStart,
-                        timeStart,
-                        dateEnd,
-                        timeEnd
-                    );
-                } else if (!isTimeValid) {
-                    this.setInputValidationToInvalid(
-                        DispatchHistoryModalStringEnum.TIME_END
-                    );
-                }
+                this.handleDateComparisonSelectedDateEnd(
+                    isDateSameAsNext,
+                    selectedGroupItem,
+                    nextGroupItem
+                );
             } else {
-                this.handleSelectedDateAfterOrSameDateStart(selectedGroupItem);
+                this.setInputValidationToInvalid(
+                    DispatchHistoryModalStringEnum.DATE_END
+                );
             }
         } else {
-            this.setInputValidationToInvalid(
-                DispatchHistoryModalStringEnum.DATE_END
-            );
+            this.handleSelectedDateAfterOrSameDateStart(selectedGroupItem);
         }
     }
 
     private handleSelectTimeStart(
-        selectedGroupItem: DispatchHistoryGroupItem
+        selectedGroupItem: DispatchHistoryGroupItem,
+        previousGroupItem: DispatchHistoryGroupItem
     ): void {
         const isOngoing = !selectedGroupItem.dateEnd;
 
         const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
 
-        if (isGroupItemsRowValid) {
-            if (isOngoing) {
-                this.updateGroupHistoryData(true);
-            } else {
-                const { dateStart, timeStart, dateEnd, timeEnd } =
-                    selectedGroupItem;
+        if (!isGroupItemsRowValid) return;
 
-                const isSameDate =
-                    DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
-                        dateStart,
-                        dateEnd
-                    ).isSelectedDateSameAsSelectedGroupItemDateEnd;
+        this.clearInputValidations();
 
-                if (
-                    !isSameDate ||
-                    DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
-                        timeStart,
-                        timeEnd
-                    )
-                ) {
-                    this.updateGroupHistoryData(
-                        false,
-                        dateStart,
-                        timeStart,
-                        dateEnd,
-                        timeEnd
-                    );
-                } else {
-                    this.setInputValidationToInvalid(
-                        DispatchHistoryModalStringEnum.TIME_START
-                    );
-                }
-            }
+        if (isOngoing) {
+            this.handleDateComparisonSelectedTimeStartOnGoing(
+                selectedGroupItem,
+                previousGroupItem
+            );
+        } else {
+            this.handleDateComparisonSelectedTimeStartNotOnGoing(
+                selectedGroupItem,
+                previousGroupItem
+            );
         }
     }
 
     private handleSelectTimeEnd(
-        selectedGroupItem: DispatchHistoryGroupItem
+        selectedGroupItem: DispatchHistoryGroupItem,
+        nextGroupItem: DispatchHistoryGroupItem
     ): void {
-        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+        this.clearInputValidations();
 
-        if (isGroupItemsRowValid) {
-            const { dateStart, timeStart, dateEnd, timeEnd } =
-                selectedGroupItem;
-
-            const isSameDate =
-                DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
-                    dateStart,
-                    dateEnd
-                ).isSelectedDateSameAsSelectedGroupItemDateEnd;
-
-            if (
-                !isSameDate ||
-                DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
-                    timeStart,
-                    timeEnd
-                )
-            ) {
-                this.updateGroupHistoryData(
-                    false,
-                    dateStart,
-                    timeStart,
-                    dateEnd,
-                    timeEnd
+        if (nextGroupItem) {
+            const isSelectedDateSameOrBeforeNextDate =
+                DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrBeforeNextDate(
+                    selectedGroupItem.dateEnd,
+                    nextGroupItem.dateStart
                 );
-            } else {
-                this.setInputValidationToInvalid(
-                    DispatchHistoryModalStringEnum.TIME_END
+
+            if (isSelectedDateSameOrBeforeNextDate)
+                this.handleDateComparisonSelectedTimeEnd(
+                    selectedGroupItem,
+                    nextGroupItem
                 );
-            }
+        } else {
+            const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+            if (isGroupItemsRowValid)
+                this.handleSameDateTime(selectedGroupItem);
         }
     }
 
@@ -516,23 +476,35 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 previousGroupItem.timeEnd
             );
 
+        const isOngoing = !selectedGroupItem.dateEnd;
+
         const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
 
-        if (isTimeValid && isGroupItemsRowValid) {
-            const { dateStart, timeStart, dateEnd, timeEnd } =
-                selectedGroupItem;
+        if (isOngoing) {
+            if (isTimeValid && isGroupItemsRowValid) {
+                this.updateGroupHistoryData(true);
+            } else if (!isTimeValid) {
+                this.setInputValidationToInvalid(
+                    DispatchHistoryModalStringEnum.TIME_START
+                );
+            }
+        } else {
+            if (isTimeValid && isGroupItemsRowValid) {
+                const { dateStart, timeStart, dateEnd, timeEnd } =
+                    selectedGroupItem;
 
-            this.updateGroupHistoryData(
-                false,
-                dateStart,
-                timeStart,
-                dateEnd,
-                timeEnd
-            );
-        } else if (!isTimeValid) {
-            this.setInputValidationToInvalid(
-                DispatchHistoryModalStringEnum.TIME_START
-            );
+                this.updateGroupHistoryData(
+                    false,
+                    dateStart,
+                    timeStart,
+                    dateEnd,
+                    timeEnd
+                );
+            } else if (!isTimeValid) {
+                this.setInputValidationToInvalid(
+                    DispatchHistoryModalStringEnum.TIME_START
+                );
+            }
         }
     }
 
@@ -598,6 +570,185 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
         }
     }
 
+    private handleDateComparisonSelectedDateEnd(
+        isSameDate: boolean,
+        selectedGroupItem: DispatchHistoryGroupItem,
+        nextGroupItem: DispatchHistoryGroupItem
+    ): void {
+        if (isSameDate) {
+            this.handleSameDateTimeAsNext(selectedGroupItem, nextGroupItem);
+        } else {
+            this.handleSelectedDateAfterOrSameDateStart(selectedGroupItem);
+        }
+    }
+
+    private handleDateComparisonSelectedTimeStartOnGoing(
+        selectedGroupItem: DispatchHistoryGroupItem,
+        previousGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const isDateSameAsPrevious =
+            DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrAfterPreviousDate(
+                selectedGroupItem.dateStart,
+                previousGroupItem?.dateEnd,
+                true
+            );
+
+        const isTimeValid =
+            DispatchHistoryModalDateHelper.checkIsTimeStartAfterOrSamePreviousTimeEnd(
+                selectedGroupItem.timeStart,
+                previousGroupItem?.timeEnd
+            );
+
+        if (isDateSameAsPrevious && !isTimeValid) {
+            this.setInputValidationToInvalid(
+                DispatchHistoryModalStringEnum.TIME_START
+            );
+        } else {
+            this.updateGroupHistoryData(true);
+        }
+    }
+
+    private handleDateComparisonSelectedTimeStartNotOnGoing(
+        selectedGroupItem: DispatchHistoryGroupItem,
+        previousGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const { dateStart, timeStart, dateEnd, timeEnd } = selectedGroupItem;
+
+        const isSameDate =
+            DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                dateStart,
+                dateEnd
+            ).isSelectedDateSameAsSelectedGroupItemDateEnd;
+
+        const isTimeStartBeforeOrSameTimeEnd =
+            DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
+                timeStart,
+                timeEnd
+            );
+
+        const isDateSameAsPrevious =
+            DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrAfterPreviousDate(
+                dateStart,
+                previousGroupItem?.dateEnd,
+                true
+            );
+
+        const isTimeValid =
+            DispatchHistoryModalDateHelper.checkIsTimeStartAfterOrSamePreviousTimeEnd(
+                selectedGroupItem.timeStart,
+                previousGroupItem?.timeEnd
+            );
+
+        const isUpdateGroupHistoryData = previousGroupItem
+            ? ((!isSameDate || isTimeStartBeforeOrSameTimeEnd) &&
+                  !isDateSameAsPrevious) ||
+              (isDateSameAsPrevious && isTimeValid)
+            : !isSameDate || isTimeStartBeforeOrSameTimeEnd;
+
+        if (isUpdateGroupHistoryData) {
+            this.updateGroupHistoryData(
+                false,
+                dateStart,
+                timeStart,
+                dateEnd,
+                timeEnd
+            );
+        } else {
+            this.setInputValidationToInvalid(
+                DispatchHistoryModalStringEnum.TIME_START
+            );
+        }
+    }
+
+    private handleDateComparisonSelectedTimeEnd(
+        selectedGroupItem: DispatchHistoryGroupItem,
+        nextGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+        if (isGroupItemsRowValid) {
+            const isDateSameAsNext =
+                DispatchHistoryModalDateHelper.checkIsSelectedDateSameOrBeforeNextDate(
+                    selectedGroupItem.dateEnd,
+                    nextGroupItem.dateStart,
+                    true
+                );
+
+            if (isDateSameAsNext) {
+                this.handleSameDateTimeAsNext(selectedGroupItem, nextGroupItem);
+            } else {
+                this.handleSameDateTime(selectedGroupItem);
+            }
+        }
+    }
+
+    private handleSameDateTimeAsNext(
+        selectedGroupItem: DispatchHistoryGroupItem,
+        nextGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const isTimeValid =
+            DispatchHistoryModalDateHelper.checkIsTimeEndBeforeOrSameNextTimeStart(
+                selectedGroupItem.timeEnd,
+                nextGroupItem.timeStart
+            );
+
+        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+        if (isTimeValid && isGroupItemsRowValid) {
+            const { dateStart, timeStart, dateEnd, timeEnd } =
+                selectedGroupItem;
+
+            this.updateGroupHistoryData(
+                false,
+                dateStart,
+                timeStart,
+                dateEnd,
+                timeEnd
+            );
+        } else if (!isTimeValid) {
+            this.setInputValidationToInvalid(
+                DispatchHistoryModalStringEnum.TIME_END
+            );
+        }
+    }
+
+    private handleSameDateTime(
+        selectedGroupItem: DispatchHistoryGroupItem
+    ): void {
+        const { dateStart, timeStart, dateEnd, timeEnd } = selectedGroupItem;
+
+        const isGroupItemsRowValid = this.checkIsGroupItemsRowValid();
+
+        const isSameDate =
+            DispatchHistoryModalDateHelper.checkIsSelectedDateBeforeOrSameAsSelectedGroupItemDateEnd(
+                dateStart,
+                dateEnd
+            ).isSelectedDateSameAsSelectedGroupItemDateEnd;
+
+        const isTimeStartBeforeOrSameTimeEnd =
+            DispatchHistoryModalDateHelper.checkIsTimeStartBeforeOrSameTimeEnd(
+                timeStart,
+                timeEnd
+            );
+
+        if (
+            (!isSameDate || isTimeStartBeforeOrSameTimeEnd) &&
+            isGroupItemsRowValid
+        ) {
+            this.updateGroupHistoryData(
+                false,
+                dateStart,
+                timeStart,
+                dateEnd,
+                timeEnd
+            );
+        } else {
+            this.setInputValidationToInvalid(
+                DispatchHistoryModalStringEnum.TIME_END
+            );
+        }
+    }
+
     private updateTotalColumnValue(
         dateStart: string,
         timeStart: string,
@@ -634,12 +785,63 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
         timeEnd?: string
     ): void {
         if (!isSkipUpdateTotalColumn) {
-            console.log('update total column & backend');
             this.updateTotalColumnValue(dateStart, timeStart, dateEnd, timeEnd);
-        }
 
-        // TODO UPDATE BACKEND
-        if (isSkipUpdateTotalColumn) console.log('updating backend');
+            const id = this.getDispatchHistoryGroup(this.groupIndex).at(
+                this.itemIndex
+            ).value.id;
+
+            const formatedDateAndTimeStart =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    dateStart,
+                    timeStart
+                );
+            const formatedDateAndTimeEnd =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    dateEnd,
+                    timeEnd
+                );
+
+            const data = {
+                id,
+                startDate: formatedDateAndTimeStart,
+                endDate: formatedDateAndTimeEnd,
+            };
+
+            console.log('data', data);
+
+            this.dispatcherService
+                .updateDispatchHistoryGroup(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        } else {
+            const id = this.getDispatchHistoryGroup(this.groupIndex).at(
+                this.itemIndex
+            ).value.id;
+
+            const formatedDateAndTimeStart =
+                DispatchHistoryModalDateHelper.createDateAndTimeFormat(
+                    this.getDispatchHistoryGroup(this.groupIndex).at(
+                        this.itemIndex
+                    ).value.dateStart,
+                    this.getDispatchHistoryGroup(this.groupIndex).at(
+                        this.itemIndex
+                    ).value.timeStart
+                );
+
+            const data = {
+                id,
+                startDate: formatedDateAndTimeStart,
+                endDate: '',
+            };
+
+            console.log('data', data);
+
+            this.dispatcherService
+                .updateDispatchHistoryGroup(data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
     }
 
     private updateGroupHistory(
@@ -665,7 +867,10 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                     break;
                 case DispatchHistoryModalStringEnum.TIME_START:
-                    this.handleSelectTimeStart(selectedGroupItem);
+                    this.handleSelectTimeStart(
+                        selectedGroupItem,
+                        previousGroupItem
+                    );
 
                     break;
                 case DispatchHistoryModalStringEnum.DATE_END:
@@ -673,7 +878,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
                     break;
                 case DispatchHistoryModalStringEnum.TIME_END:
-                    this.handleSelectTimeEnd(selectedGroupItem);
+                    this.handleSelectTimeEnd(selectedGroupItem, nextGroupItem);
 
                     break;
                 default:

@@ -5,7 +5,6 @@ import {
     Subject,
     forkJoin,
     tap,
-    BehaviorSubject,
     catchError,
     of,
 } from 'rxjs';
@@ -56,6 +55,7 @@ import {
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
     AssignLoadModalResponse,
+    AssignedLoadListResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -73,15 +73,15 @@ export class LoadService {
     private modalAction: Subject<boolean> = new Subject<null>();
     public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
-    private statusAction: BehaviorSubject<{
+    private statusAction: Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }> = new BehaviorSubject<{
+    }> = new Subject<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
         id: number;
-    }>(null);
+    }>();
     public statusAction$: Observable<{
         dataBack: LoadStatus;
         dataFront: LoadStatus;
@@ -567,12 +567,48 @@ export class LoadService {
         });
     }
 
-    public getDispatchModalData(): Observable<AssignLoadModalResponse> {
-        return this.loadService.apiLoadModalAssignGet();
-    }
-
-    public apiLoadListAssignedIdGet(dispatchId: number) {
-        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+    public getDispatchModalData(
+        isDispatchId: boolean,
+        dispatchId?: number,
+        truckType?: number[],
+        trailerType?: number[],
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        dispatchersId?: number[],
+        dateFrom?: string,
+        dateTo?: string,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
+        if (isDispatchId) {
+            return this.loadService.apiLoadListAssignedIdGet(
+                dispatchId,
+            );
+        }
+        return this.loadService.apiLoadModalAssignGet(
+            dispatchId,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     public getPendingData(

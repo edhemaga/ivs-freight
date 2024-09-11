@@ -170,7 +170,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     public getDetailsOptions(load: LoadResponse): void {
         this.detailsDropdownOptions =
-            LoadDetailsHelper.getDetailsDropdownOptions(load.statusType.name);
+            LoadDetailsHelper.getDetailsDropdownOptions(load);
     }
 
     private getConfigAndOptions(): void {

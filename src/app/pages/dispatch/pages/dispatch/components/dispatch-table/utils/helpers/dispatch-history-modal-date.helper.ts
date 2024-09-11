@@ -22,7 +22,7 @@ export class DispatchHistoryModalDateHelper {
             const seconds = to.diff(from, 'seconds');
 
             if (!years && !days && !hours && !minutes) {
-                return seconds ? seconds + 's' : '1s';
+                return seconds ? seconds + 's' : '0s';
             } else {
                 const totalResult = `${years ? years + 'y' : ''} ${
                     days ? days + 'd' : ''
