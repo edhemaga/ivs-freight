@@ -478,14 +478,6 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             });
 
             this.changeDetectorRef.detectChanges();
-        } else if (!column.sortable) {
-            alert('Kolona nije podesena u konfig tabele da bude sortable');
-        } else if (this.viewData.length <= 1) {
-            alert(
-                'U tabeli ima samo jedan podatak, sort se nece zbog toga odraditi'
-            );
-        } else if (!column.sortName) {
-            alert('Nije postavljen sortName za ovu kolonu');
         }
     }
 

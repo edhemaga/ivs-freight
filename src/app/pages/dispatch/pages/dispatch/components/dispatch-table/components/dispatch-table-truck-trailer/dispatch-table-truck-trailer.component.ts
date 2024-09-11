@@ -51,22 +51,20 @@ export class DispatchTableTruckTrailerComponent {
     @Input() set trailerDropdownWidth(value: number) {
         this._trailerDropdownWidth = Math.round(value - 2);
     }
-
-    @Input() type: string;
-
-    @Input() truck: TruckResponse;
-    @Input() trailer: TrailerResponse;
-
     @Input() set trailerList(values: TrailerDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
     }
-
     @Input() set truckList(values: TruckDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
     }
 
-    @Input() rowIndex: number;
+    @Input() isTrailerAddNewHidden: boolean;
 
+    @Input() truck: TruckResponse;
+    @Input() trailer: TrailerResponse;
+
+    @Input() type: string;
+    @Input() rowIndex: number;
     @Input() isDrag: boolean;
     @Input() isHoveringRow: boolean;
     @Input() isBoardLocked: boolean;
@@ -89,6 +87,12 @@ export class DispatchTableTruckTrailerComponent {
     public _hasAdditionalFieldTruck: boolean = false;
     public _hasAdditionalFieldTrailer: boolean = false;
 
+    public _trailerList: DispatchTrailerListItemModel[] = [];
+    public _truckList: DispatchTruckListItemModel[] = [];
+
+    public _truckDropdownWidth: number;
+    public _trailerDropdownWidth: number;
+
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
     public hasNoResultsTruck: boolean = false;
@@ -96,12 +100,6 @@ export class DispatchTableTruckTrailerComponent {
 
     public truckIndex: number = -1;
     public trailerIndex: number = -1;
-
-    public _truckDropdownWidth: number;
-    public _trailerDropdownWidth: number;
-
-    public _trailerList: DispatchTrailerListItemModel[] = [];
-    public _truckList: DispatchTruckListItemModel[] = [];
 
     public hasAddNew: boolean = false;
 
@@ -193,7 +191,9 @@ export class DispatchTableTruckTrailerComponent {
         });
     }
 
-    public handleTruckTrailerList(values): void {
+    public handleTruckTrailerList(
+        values: DispatchTruckListItemModel[] | TrailerDispatchModalResponse[]
+    ): void {
         if (values) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? (this._truckList = [...values])
