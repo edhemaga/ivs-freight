@@ -29,7 +29,6 @@ export interface ITaInput {
     inputCursorOnRightSide?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
-    pattern?: string;
     autocomplete?: string;
     showCount?: boolean;
     minLength?: number;
@@ -151,5 +150,5 @@ export interface ITaInput {
     isRemovedIconMovedOnLeft?: boolean;
     removeLeadingZero?: boolean;
     negativeLeadingZero?: boolean;
-    minutesGapFive?: boolean
+    minutesGapFive?: boolean;
 }
