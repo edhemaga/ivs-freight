@@ -810,6 +810,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private watchFormChanges() {
         setTimeout(() => {
             this.formService.checkFormChange(this.loadForm);
+             
+            if(this.editData.loadAction === TableStringEnum.CONVERT_TO_TEMPLATE || this.editData.loadAction === TableStringEnum.CONVERT_TO_LOAD && this.loadForm.valid) {
+                this.isFormDirty = true;
+            } 
+
+            if(this.editData.loadAction === TableStringEnum.CONVERT_TO_TEMPLATE) {
+                this.inputService.changeValidators(
+                    this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME)
+                );
+            }
 
             this.formService.formValueChange$
                 .pipe(takeUntil(this.destroy$))
