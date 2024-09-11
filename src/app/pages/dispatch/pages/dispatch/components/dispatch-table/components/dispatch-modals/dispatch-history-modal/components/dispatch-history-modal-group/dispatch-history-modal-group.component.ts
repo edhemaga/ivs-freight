@@ -803,10 +803,10 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
             console.log('data', data);
 
-            /*     this.dispatcherService
+            this.dispatcherService
                 .updateDispatchHistoryGroup(data)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(); */
+                .subscribe();
         } else {
             const id = this.getDispatchHistoryGroup(this.groupIndex).at(
                 this.itemIndex
@@ -830,10 +830,10 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
 
             console.log('data', data);
 
-            /*   this.dispatcherService
+            this.dispatcherService
                 .updateDispatchHistoryGroup(data)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(); */
+                .subscribe();
         }
     }
 

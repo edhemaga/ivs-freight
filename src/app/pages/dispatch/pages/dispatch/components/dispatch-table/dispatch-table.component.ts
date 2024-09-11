@@ -264,6 +264,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             };
         });
 
+        console.log('this.truckList', this.truckList);
+
         this.trailerList = trailersList.map((trailer) => {
             return {
                 ...trailer,
@@ -277,6 +279,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 logoName: DispatchTableStringEnum.CIRCLE_ROUTE,
             };
         });
+
+        console.log('this.trailerList', this.trailerList);
 
         this.driverList = driversList.map((driver) => {
             return {

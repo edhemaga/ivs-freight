@@ -394,7 +394,22 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
             };
         });
 
-        this.groupData = data.map((group, index) => {
+        this.groupData = data.map((group) => {
+            return {
+                ...group,
+                items: group.items.map((item) => {
+                    return {
+                        ...item,
+                        stopOrder: item.status.statusCheckInNumber,
+                        type: DispatchHistoryModalHelper.createStatusOrderValues(
+                            item.status.statusValue.name
+                        ),
+                    };
+                }),
+            };
+        });
+
+        /*   this.groupData = data.map((group, index) => {
             return {
                 ...group,
                 items:
@@ -418,7 +433,7 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                               };
                           }),
             };
-        });
+        }); */
     }
 
     private createDispatchHistoryData(data: DispatchHistoryResponse[]): void {
