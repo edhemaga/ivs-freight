@@ -2160,6 +2160,7 @@
         .popover-item {
             text-transform: unset;
             border-radius: 2px;
+            transition: $transition;
 
             &:hover {
                 background-color: $ta-black !important;
