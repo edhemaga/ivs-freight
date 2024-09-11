@@ -109,6 +109,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
 
+    @Input() sortBy: string;
+    @Input() sortDirection: string;
+
     @Output() onTableUnlockEmitter: EventEmitter<DispatchTableUnlock> =
         new EventEmitter();
 

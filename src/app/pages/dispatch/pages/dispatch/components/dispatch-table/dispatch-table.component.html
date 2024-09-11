@@ -198,6 +198,32 @@
                                                 }}
                                             </div>
                                         </ng-container>
+
+                                        <!-- Sort -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                sortBy ===
+                                                    tableHeaderItem?.sortBy &&
+                                                sortDirection
+                                            "
+                                        >
+                                            <div
+                                                class="d-flex justify-content-center align-items-center sort-indicator-container"
+                                            >
+                                                <svg-icon
+                                                    [svgStyle]="{
+                                                        'width.px': 12,
+                                                        'height.px': 12
+                                                    }"
+                                                    [src]="
+                                                        sortDirection === 'asc'
+                                                            ? dispatchTableSvgRoutes?.sortAscendingArrow
+                                                            : dispatchTableSvgRoutes?.sortDescendingArrow
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </th>
                             </ng-container>

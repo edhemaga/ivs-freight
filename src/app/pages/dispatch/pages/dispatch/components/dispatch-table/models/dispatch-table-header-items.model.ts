@@ -3,5 +3,6 @@ export interface DispatchTableHeaderItems {
     secondTitle?: string;
     icon?: string;
     secondIcon?: string;
+    sortBy?: string;
 }
 [];
