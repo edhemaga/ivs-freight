@@ -4,7 +4,7 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 
 //services
-import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { DispatcherService } from '@pages/dispatch/services';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
@@ -16,8 +16,10 @@ import { LoadStatusHelper } from '@shared/utils/helpers/load-status.helper';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DispatchStatusEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums/dispatch-status.enum';
-import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+import {
+    DispatchTableStringEnum,
+    DispatchStatusEnum,
+} from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
 //models
 import {
