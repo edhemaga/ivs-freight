@@ -10,6 +10,9 @@ import { UntypedFormControl } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// animations
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+
 // serivces
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 import { NotificationService } from '@shared/services/notification.service';
@@ -26,6 +29,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
     selector: 'app-settings-factoring',
     templateUrl: './settings-factoring.component.html',
     styleUrls: ['./settings-factoring.component.scss'],
+    animations: [cardComponentAnimation('showHideCardBody')],
 })
 export class SettingsFactoringComponent
     implements OnInit, OnChanges, OnDestroy
@@ -35,6 +39,8 @@ export class SettingsFactoringComponent
     public factoringPhone: boolean;
     public factoringEmail: boolean;
     public factoringNote: UntypedFormControl = new UntypedFormControl();
+    public isNoteVisible: boolean = false;
+
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         private notificationService: NotificationService,
@@ -93,6 +99,10 @@ export class SettingsFactoringComponent
                 image: false,
             }
         );
+    }
+
+    public toggleNoteVisibility() {
+        this.isNoteVisible = !this.isNoteVisible;
     }
 
     ngOnDestroy(): void {
