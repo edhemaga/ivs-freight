@@ -124,6 +124,7 @@ import {
     ShipperLoadModalResponse,
     LoadShortResponse,
     LoadStatusResponse,
+    LoadBillingAdditionalResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -146,6 +147,7 @@ import {
     LoadAdditionalPayment,
     LoadModalWaitTimeFormField,
     LoadStopRoutes,
+    LoadStop,
 } from './models';
 
 // Svg Routes
@@ -3220,8 +3222,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return dateTime.toISOString();
     }
 
-    private premmapedStops(saveCurrentLoad?: boolean): LoadStopCommand[] {
-        const stops: LoadStopCommand[] = [];
+    private premmapedStops(saveCurrentLoad?: boolean): LoadStop[] {
+        const stops: LoadStop[] = [];
 
         const {
             pickupStop,
@@ -3284,7 +3286,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedPickupStopItems),
                 shape: this.stops?.[0]?.shape,
-            } as any);
+            });
         }
 
         // extra Stops
@@ -3299,7 +3301,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     id: this.isActiveLoad
                         ? item.get(LoadModalStringEnum.ID).value ?? null
                         : null,
-                    stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
+                    stopType: saveCurrentLoad ? this.typeOfExtraStops[index].find(
+                        (item) => item.checked
+                    ) :item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
                         .value,
@@ -3335,7 +3339,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMinutes,
                     items: this.remapStopItems(this.savedExtraStopItems[index]),
                     shape: item.get(LoadModalStringEnum.SHAPE).value,
-                } as any);
+                });
             });
         }
 
@@ -3352,12 +3356,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                // TODO: stops.length + 1 ?? deliveryStopOrder check this
                 stopLoadOrder: stops.length + 1,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
-                ) as any,
+                ),
                 shipperContactId: this.selectedDeliveryShipperContact?.id
                     ? this.selectedDeliveryShipperContact.id
                     : null,
@@ -3381,7 +3384,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMinutes,
                 items: this.remapStopItems(this.savedDeliveryStopItems),
                 shape: this.stops?.[this.stops.length - 1]?.shape,
-            } as any);
+            });
         }
 
         return stops;
@@ -3963,14 +3966,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     driverMessage: form.driverMessage,
                 },
                 pays: this.mapPreviousPaymets(),
-                stops: this.premmapedStops(true) as any,
+                stops: this.premmapedStops(true),
                 baseRate: this.convertNumbers(baseRate),
                 adjustedRate: this.convertNumbers(adjustedRate),
                 driverRate: this.convertNumbers(driverRate),
                 advancePay: this.convertNumbers(advancePay),
                 additionalBillingRates: this.premmapedAdditionalBillingRate(
                     LoadModalStringEnum.CREATE
-                ) as any,
+                ) as LoadBillingAdditionalResponse[],
                 // pickup shipper
                 // billing
                 additionalBillingTypes: this.additionalBillings().value,
@@ -3985,7 +3988,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 totalMinutes: this.totalLegMinutes,
                 emptyMiles: this.emptyMiles,
                 statusType,
-            } as any,
+                deliveryStopOrder: form.deliveryStopOrder || 1
+            },
         };
     }
 
@@ -4052,7 +4056,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    // this.loadNumber = res.loadNumber;
                     this.tags = res.tags;
 
                     // dispatcher
@@ -4423,7 +4426,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 liftgate,
                 driverMessage,
             },
-            stops: this.premmapedStops(),
+            stops: this.premmapedStops() as LoadStopCommand[],
             baseRate: this.convertNumbers(baseRate),
             adjustedRate: this.convertNumbers(adjustedRate),
             driverRate: this.convertNumbers(driverRate),
@@ -4730,7 +4733,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // Check if stops exists and is an array before using it
         const stops =
             loadModalData.stops?.filter((stop) => stop.id !== 0) || [];
-        if (stops.length > 0) {
+        if (stops.length) {
             stops.forEach((stop, index) => {
                 if (index === 0) {
                     this.pickupStatusHistory = stop.statusHistory;

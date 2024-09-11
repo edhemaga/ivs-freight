@@ -1,5 +1,5 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { SelectedStatus } from '@pages/load/pages/load-modal/models';
+import { LoadDataResponse, SelectedStatus } from '@pages/load/pages/load-modal/models';
 import {
     CompanyContactResponse,
     CompanyResponse,
@@ -13,7 +13,8 @@ export interface EditData {
         | LoadResponse
         | CompanyContactResponse
         | RepairResponse
-        | DriverResponse;
+        | DriverResponse
+        | LoadDataResponse;
     type?: string;
     company?: CompanyResponse;
     id: number;
