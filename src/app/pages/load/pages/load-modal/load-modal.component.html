@@ -1,7 +1,7 @@
 <app-ta-modal
     [modalTitle]="modalTitle"
     [editData]="editData"
-    [editName]="isConvertedToTemplate || !isEdit ? null : loadNumber"
+    [editName]="editName"
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&
@@ -37,12 +37,12 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editLoad,
-                    'select-template': !isConvertedToTemplate && !isEdit
+                    'select-template': !isConvertedToTemplate && !isActiveLoad && labelsTemplate.length
                 }"
             >
                 <!-- FTL-LTL Switcher -->
                 <div class="tabs-container">
-                    <ng-container *ngIf="isActiveLoad(); else editLoad">
+                    <ng-container *ngIf="!isActiveLoad; else editLoad">
                         <app-ta-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onTabChange($event, 'ftl-ltl')"
@@ -64,7 +64,7 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !isEdit">
+                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad && labelsTemplate.length">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -97,7 +97,7 @@
 
                         <ng-template #dropdownPopover>
                             <div
-                                class="popover-container load-template-switcher-popover-container"
+                                class="popover-container load-template-switcher-popover-container scrollable-element"
                             >
                                 <ng-container
                                     *ngFor="
@@ -114,7 +114,7 @@
                                             )
                                         "
                                     >
-                                        <p class="m-0">{{ template.name }}</p>
+                                        <p class="m-0 text-truncate">{{ template.name }}</p>
                                     </div>
                                 </ng-container>
                             </div>
@@ -630,7 +630,7 @@
                             </app-ta-custom-card>
                         </div>
 
-                        <ng-container *ngIf="pickupStatusHistory.length">
+                        <ng-container *ngIf="pickupStatusHistory?.length">
                             <app-load-modal-wait-time
                                 [statusHistory]="pickupStatusHistory"
                                 (formChanged)="
@@ -1328,7 +1328,7 @@
                             </app-ta-custom-card>
                         </div>
 
-                        <ng-container *ngIf="deliveryStatusHistory.length">
+                        <ng-container *ngIf="deliveryStatusHistory?.length">
                             <app-load-modal-wait-time
                                 [statusHistory]="deliveryStatusHistory"
                                 (formChanged)="
