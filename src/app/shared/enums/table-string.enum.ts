@@ -528,4 +528,6 @@ export enum TableStringEnum {
     ASSETS_SVG_COMMON_STATES = 'assets/svg/common/states/ic_',
 
     COLUMN_TOGGLE = 'columnToggle',
+    CONVERT_TO_LOAD = 'create-new-load',
+    CONVERT_TO_TEMPLATE = 'create-template-from-load',
 }
