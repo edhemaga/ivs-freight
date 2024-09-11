@@ -1,6 +1,6 @@
 <ng-content> </ng-content>
 <ng-template>
-    <div
+    <div *ngIf="mainTooltip"
         class="tooltip-holder"
         [style]="
             'margin-top: ' +

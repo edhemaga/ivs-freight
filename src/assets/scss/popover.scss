@@ -2151,12 +2151,20 @@
     }
 
     .load-template-switcher-popover-container {
-        max-width: 220px;
-        width: 100%;
+        max-width: 200px;
+        max-height: 184px;
         margin-top: -4px;
+        overflow-y: auto;
+        padding: 4px !important; 
 
         .popover-item {
             text-transform: unset;
+            border-radius: 2px;
+
+            &:hover {
+                background-color: $ta-black !important;
+                color: $white;
+            }
         }
     }
 
