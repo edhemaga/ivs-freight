@@ -632,6 +632,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.isReorderingActive = false;
             this.showReorderButton = true;
+            this.isUnAssignLoadCardOpen = true;
+            setTimeout(() => {
+                this.resizerComponent.setHeights(440, 35);
+            }, 10);
         } else {
             this.isReorderingActive = true;
             this.showReorderButton = false;
