@@ -182,6 +182,7 @@
         class="conversation-list-item"
         appHover
         hoverColor="#eee"
+        appToggleBackground
         [@fadeInOut]
         (click)="selectConversation(item, type)"
     >
@@ -239,6 +240,7 @@
         class="conversation-list-item"
         appHover
         hoverColor="#eee"
+        appToggleBackground
         [@fadeInOut]
         (click)="selectConversation(item, type)"
     >
@@ -370,7 +372,9 @@
     <div
         class="header-arrow d-flex justify-content-center align-content-center"
         appHover
-        [hoverColor]="message ? '#E9EFFD' : '#EEE'"
+        [hoverColor]="
+            state === ChatGroupStateEnum.AllExpanded ? '#E9EFFD' : '#EEEEEE'
+        "
     >
         <ng-container
             *ngTemplateOutlet="

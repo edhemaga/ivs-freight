@@ -44,6 +44,7 @@ import { ChatHeaderClassPipe } from "./utils/pipes/chat-header-class.pipe";
 // Directives
 import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
 import { HoverDirective } from "@pages/chat/utils/directives/hover.directive";
+import { ToggleBackgroundDirective } from "@pages/chat/utils/directives/toggle-background.directive";
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import { HoverDirective } from "@pages/chat/utils/directives/hover.directive";
         // Directives
         DragAndDropDirective,
         HoverDirective,
+        ToggleBackgroundDirective,
 
         // Pipes
         ChatHeaderClassPipe
