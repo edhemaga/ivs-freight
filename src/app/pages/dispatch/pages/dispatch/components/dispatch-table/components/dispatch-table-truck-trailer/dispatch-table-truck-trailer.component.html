@@ -1,7 +1,10 @@
 <div
     class="main_inside truck-trailer-container"
     [class.filled]="type === 'truck' ? !!truck : !!trailer"
-    [ngStyle]="{ background: !truck && !isBoardLocked ? '#fff' : '' }"
+    [ngStyle]="{
+        background:
+            isTrailerAddNewHidden || (!truck && !isBoardLocked) ? '' : '#fff'
+    }"
 >
     <ng-container
         *ngIf="
@@ -15,7 +18,9 @@
         <ng-container
             *ngIf="
                 ((type === 'truck' && !truck) ||
-                    (type === 'trailer' && !trailer)) &&
+                    (type === 'trailer' &&
+                        !trailer &&
+                        !isTrailerAddNewHidden)) &&
                     !isBoardLocked;
                 else selectedTruckTrailer
             "

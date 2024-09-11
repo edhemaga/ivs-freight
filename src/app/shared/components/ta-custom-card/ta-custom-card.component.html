@@ -32,7 +32,10 @@
     >
         <!-- Left side of header -->
 
-        <div class="header-content">
+        <div
+            class="header-content"
+            [class.grey-text]="isGreyTextWhenDisabled && disabledCard"
+        >
             <!-- Checkbox -->
             <ng-container *ngIf="hasCheckbox">
                 <app-ta-checkbox [formControl]="controlName" [label]="''">
@@ -310,13 +313,10 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'h-full': isInheritingParentSize && _isCardOpen
+            'h-full scroll scrollable-element': isInheritingParentSize && _isCardOpen
         }"
         [ngStyle]="{
-            'scrollbar-width':
-                isInheritingParentSize && _isCardOpen
-                    ? 'thin !important'
-                    : 'none'
+            'scrollbar-width': isInheritingParentSize? 'thin !important': 'none'
         }"
         [@.disabled]="disableAnimation"
     >

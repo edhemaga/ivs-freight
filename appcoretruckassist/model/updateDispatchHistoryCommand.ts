@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchHistoryItemCommand } from './dispatchHistoryItemCommand';
 
 
 export interface UpdateDispatchHistoryCommand { 
-    dispatchHistories?: Array<DispatchHistoryItemCommand> | null;
+    id?: number;
+    startDate?: string;
+    endDate?: string;
 }
 

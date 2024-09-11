@@ -9,20 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
+import { DriverShortResponse } from './driverShortResponse';
+import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 
 
 export interface PayrollDriverMileageListResponse { 
     id?: number;
-    driverId?: number | null;
-    driverName?: string | null;
-    driverAvatarFile?: FileResponse;
-    payroll?: string | null;
+    driver?: DriverShortResponse;
+    payrollNumber?: string | null;
     periodStart?: string;
     periodEnd?: string;
     status?: EnumValue;
-    daysUntilPayment?: number;
+    payrollDeadLine?: PayrollDeadlineShortResponse;
     emptyRate?: number | null;
     loadedRate?: number | null;
     perStopRate?: number | null;

@@ -29,6 +29,7 @@ import { CardsModalConfigService } from '@shared/components/ta-shared-modals/car
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { BrokerService } from '@pages/customer/services/broker.service';
 
 // Models
 import {
@@ -168,6 +169,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private cdRef: ChangeDetectorRef,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private brokerService: BrokerService,
 
         //store
         private store: Store,
@@ -220,7 +222,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private upadateStatus(): void {
         this.loadServices.statusAction$
-            .pipe(filter((statusAction) => statusAction !== null))
+            .pipe(
+                takeUntil(this.destroy$),
+                filter((statusAction) => statusAction !== null)
+            )
             .subscribe((status) => {
                 const foundObject = this.viewData.find(
                     (item) => item.id === status.id
@@ -277,22 +282,28 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private confirmationDataSubscribe(): void {
-        this.confiramtionService.confirmationData$.subscribe((res) => {
-            if (res.template === TableStringEnum.COMMENT) return;
-            if (res.type === TableStringEnum.DELETE) {
-                if (this.selectedTab === TableStringEnum.TEMPLATE) {
-                    this.deleteLoadTemplateById(res.id);
-                } else {
-                    this.deleteLoadById(res.id);
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.template === TableStringEnum.COMMENT) return;
+                if (res.type === TableStringEnum.DELETE) {
+                    if (res.template === TableStringEnum.BROKER) {
+                        this.deleteBrokerById(res.id);
+                    } else {
+                        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                            this.deleteLoadTemplateById(res.id);
+                        } else {
+                            this.deleteLoadById(res.id);
+                        }
+                    }
+                } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                    if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                        this.deleteLoadTemplateList(res.array);
+                    } else {
+                        this.deleteLoadList(res.array);
+                    }
                 }
-            } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
-                if (this.selectedTab === TableStringEnum.TEMPLATE) {
-                    this.deleteLoadTemplateList(res.array);
-                } else {
-                    this.deleteLoadList(res.array);
-                }
-            }
-        });
+            });
 
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
@@ -1807,6 +1818,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         this.loadServices.updateNote(noteData);
+    }
+    public deleteBrokerById(id: number): void {
+        this.brokerService
+            .deleteBrokerById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices.triggerModalAction();
+            });
     }
 
     public ngOnDestroy(): void {

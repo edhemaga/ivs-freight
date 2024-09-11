@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/accident.service.ts
 api/account.service.ts
+api/activityLog.service.ts
 api/api.ts
 api/applicant.service.ts
 api/bank.service.ts
@@ -90,6 +91,7 @@ model/accountColorResponse.ts
 model/activateConversationCommand.ts
 model/activateDeactivateEFSFuelCard.ts
 model/activeLoadProgressBarResponse.ts
+model/activityLogModuleFilterResponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
 model/addIntegrationCommand.ts
@@ -290,6 +292,9 @@ model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
+model/companyUserActivityLogListResponse.ts
+model/companyUserActivityLogResponse.ts
+model/companyUserActivityLogResponsePagination.ts
 model/companyUserChatResponse.ts
 model/companyUserChatResponsePagination.ts
 model/companyUserForChatListResponse.ts
@@ -404,7 +409,6 @@ model/dispatchHistoryGroupItemResponse.ts
 model/dispatchHistoryGroupListResponse.ts
 model/dispatchHistoryGroupResponse.ts
 model/dispatchHistoryGroupResponsePagination.ts
-model/dispatchHistoryItemCommand.ts
 model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
@@ -478,6 +482,7 @@ model/educationReviewResponse.ts
 model/emergencyContactResponse.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
+model/entityTypeActivityLogResponse.ts
 model/entityTypeNote.ts
 model/entityTypeReview.ts
 model/enumValue.ts
@@ -642,6 +647,7 @@ model/loadTemplateListResponse.ts
 model/loadTemplateResponse.ts
 model/loadTemplateResponsePagination.ts
 model/loadType.ts
+model/loadWithMilesStopResponse.ts
 model/locationType.ts
 model/loginMobileCommand.ts
 model/longLat.ts
@@ -668,7 +674,7 @@ model/milesStateFilterResponse.ts
 model/milesStopDetailsResponse.ts
 model/milesStopItemResponse.ts
 model/milesStopItemResponsePagination.ts
-model/milesStopPayrollResponse.ts
+model/milesStopShortResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
 model/mobileFuelStopExpensesResponse.ts
 model/mobileFuelStopListResponse.ts
@@ -759,11 +765,15 @@ model/payrollDeductionRecurringType.ts
 model/payrollDeductionResponse.ts
 model/payrollDeductionType.ts
 model/payrollDriverCommissionByIdResponse.ts
+model/payrollDriverCommissionClosedByIdResponse.ts
 model/payrollDriverCommissionResponse.ts
 model/payrollDriverCommissionResponsePagination.ts
+model/payrollDriverFlatRateByIdResponse.ts
 model/payrollDriverFlatRateClosedByIdResponse.ts
+model/payrollDriverFlatRateMinimalResponse.ts
+model/payrollDriverMileageByIdResponse.ts
+model/payrollDriverMileageClosedByIdResponse.ts
 model/payrollDriverMileageListResponse.ts
-model/payrollDriverMileageResponse.ts
 model/payrollFlatRateTotalSum.ts
 model/payrollFuelMinimalResponse.ts
 model/payrollListResponse.ts
@@ -771,6 +781,7 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMainListResponse.ts
 model/payrollMapLocation.ts
+model/payrollMileageTotalSum.ts
 model/payrollMilesShortResponse.ts
 model/payrollMinimalListResponse.ts
 model/payrollMinimalResponse.ts

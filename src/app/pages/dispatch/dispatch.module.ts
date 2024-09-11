@@ -45,6 +45,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
+import { PickupDeliveryBlockComponent } from 'ca-components';
 
 // Pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
@@ -57,6 +58,7 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
+import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
 
 //directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
@@ -78,6 +80,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchHistoryModalComponent,
         DispatchHistoryModalNoContentComponent,
         DispatchHistoryModalNoGroupComponent,
+        DispatchHistoryModalGroupComponent,
         DispatchTableStatusComponent,
         DispatchTableNoteComponent,
         LoadShortDetailsComponent,
@@ -85,7 +88,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        DispatchHistoryModalGroupComponent,
+        DispatchAllowedTruckTrailerPipe,
     ],
     imports: [
         // modules
@@ -106,6 +109,9 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
 
+        //directives
+        ResizableDirective,
+
         // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
@@ -124,11 +130,9 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,
         LoadRequirementComponent,
+        PickupDeliveryBlockComponent,
 
         //  TaMapsComponent,
-
-        //directives
-        ResizableDirective,
     ],
     exports: [ColorFinderPipe],
 })
