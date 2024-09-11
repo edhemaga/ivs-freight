@@ -262,6 +262,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         };
 
         this.selectedDispatches = null;
+        this.isUnAssignLoadCardOpen = true;
+        this.isAssignLoadCardOpen = false;
         this.showReorderButton = false;
     }
 
