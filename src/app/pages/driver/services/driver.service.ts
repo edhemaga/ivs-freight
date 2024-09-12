@@ -34,13 +34,13 @@ import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
+import { DispatcherService } from '@pages/dispatch/services';
 
 // components
 import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.model';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DispatcherService } from '@pages/dispatch/services';
 
 @Injectable({
     providedIn: 'root',
