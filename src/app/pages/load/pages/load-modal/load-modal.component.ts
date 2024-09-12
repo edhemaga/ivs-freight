@@ -1760,7 +1760,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 size: LoadModalStringEnum.SMALL,
             });
         } else {
-            this.selectedBroker = event ? Object.keys(event).length ? event : null : null;
+            this.selectedBroker = event && Object.keys(event).length ? event : null;
 
             if (this.selectedBroker) {
                 this.loadBrokerInputConfig = {
