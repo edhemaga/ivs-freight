@@ -40,6 +40,7 @@ import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.mode
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DispatcherService } from '@pages/dispatch/services';
 
 @Injectable({
     providedIn: 'root',
@@ -59,6 +60,7 @@ export class DriverService {
         private MvrService: MvrService,
         private TestService: TestService,
         private tableService: TruckassistTableService,
+        private dispatcherService: DispatcherService,
 
         // store
         private driversActiveQuery: DriverQuery,
@@ -111,43 +113,52 @@ export class DriverService {
         );
     }
 
-    public addDriver(data: any): Observable<any> {
+    public addDriver(
+        data: any,
+        isDispatchCall: boolean = false
+    ): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.driverService.apiDriverPost().pipe(
             tap((res) => {
                 this.getDriverById(res.id).subscribe({
                     next: (driver: any) => {
-                        driver = {
-                            ...driver,
-                            name: driver.firstName + ' ' + driver.lastName,
-                        };
+                        if (!isDispatchCall) {
+                            driver = {
+                                ...driver,
+                                name: driver.firstName + ' ' + driver.lastName,
+                            };
 
-                        this.driverStore.add(driver);
-                        this.driverMinimimalListStore.add(driver);
+                            this.driverStore.add(driver);
+                            this.driverMinimimalListStore.add(driver);
 
-                        const driverCount = JSON.parse(
-                            localStorage.getItem(
-                                TableStringEnum.DRIVER_TABLE_COUNT
-                            )
-                        );
+                            const driverCount = JSON.parse(
+                                localStorage.getItem(
+                                    TableStringEnum.DRIVER_TABLE_COUNT
+                                )
+                            );
 
-                        driverCount.active++;
+                            if (driverCount) {
+                                driverCount.active++;
 
-                        localStorage.setItem(
-                            TableStringEnum.DRIVER_TABLE_COUNT,
-                            JSON.stringify({
-                                applicant: driverCount.applicant,
-                                active: driverCount.active,
-                                inactive: driverCount.inactive,
-                            })
-                        );
+                                localStorage.setItem(
+                                    TableStringEnum.DRIVER_TABLE_COUNT,
+                                    JSON.stringify({
+                                        applicant: driverCount.applicant,
+                                        active: driverCount.active,
+                                        inactive: driverCount.inactive,
+                                    })
+                                );
+                            }
 
-                        this.tableService.sendActionAnimation({
-                            animation: TableStringEnum.ADD,
-                            data: driver,
-                            id: driver.id,
-                        });
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.ADD,
+                                data: driver,
+                                id: driver.id,
+                            });
+                        } else {
+                            this.dispatcherService.updateDispatcherData = true;
+                        }
                     },
                 });
             })
