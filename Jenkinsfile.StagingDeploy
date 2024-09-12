@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+	
+	tools {
+        nodejs 'nodejs'
+    }
+
+    environment {
+        NODE_OPTIONS = '--max-old-space-size=6144'
+        SSH_PORT = '29879'
+        SSH_USER = 'frontstage'
+        SSH_HOST = 'stage.carriera.io'		
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies for development...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+                sh 'npm run build:production'
+            }
+        }
+
+        stage('Deploy to server') {
+            steps {
+                sshagent (credentials: ['deploy-ssh-key']) {
+                    script {
+                        echo 'Deploying to development server...'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} rm -rf /home/${SSH_USER}/www-tmp'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} mkdir /home/${SSH_USER}/www-tmp'
+                        sh 'scp -P${SSH_PORT} -o StrictHostKeyChecking=no -r ./dist/carrierassist-fe/* ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/www-tmp'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} rm -rf /home/${SSH_USER}/www-old'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} mv /home/${SSH_USER}/www /home/${SSH_USER}/www-old'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} mv /home/${SSH_USER}/www-tmp /home/${SSH_USER}/www'
+                        sh 'ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} chown ${SSH_USER}:${SSH_USER} /home/${SSH_USER}/www -R'
+                    }
+                }
+            }
+        }
+    }
+}
