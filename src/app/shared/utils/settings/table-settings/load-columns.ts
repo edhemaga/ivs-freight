@@ -24,9 +24,9 @@ export function getLoadTemplateColumnDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Name',
+            title: 'Template Name',
             field: 'loadTemplateName',
-            name: 'Name',
+            name: 'Template Name',
             sortName: 'loadNumber',
             hidden: false,
             width: 200,
@@ -40,7 +40,7 @@ export function getLoadTemplateColumnDefinition() {
             progress: null,
             hoverTemplate: null,
             filterable: true,
-            disabled: false,
+            disabled: true,
             export: true,
             resizable: true,
             link: {
