@@ -1,9 +1,27 @@
 @import 'src/theme/variables';
 
 .color-red {
-    color: $ta-red-11
+    color: $ta-red-11;
+    &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+    &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
 }
 
+.load-stop-header-bar-title {
+    &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+    &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+}
 
 .load-stop-container {
     max-width: 616px;
@@ -369,6 +387,15 @@
                 .origin-destination-no-filled-container {
                     p {
                         color: $white;
+                        
+                    &::-moz-selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
+                    &::selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
                     }
                 }
 

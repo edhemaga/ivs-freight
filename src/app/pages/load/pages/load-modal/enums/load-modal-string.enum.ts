@@ -218,4 +218,5 @@ export enum LoadModalStringEnum {
     DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW = 'assign-save-and-assign-new',
     DISPATCH_LOAD_SAVE_CHANGES = 'assign-save-changes',
     DISPATCH_LOAD_CREATE_LOAD = 'assign-create-load',
+    STATUS_TYPE = 'statusType',
 }
