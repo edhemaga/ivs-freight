@@ -1180,7 +1180,10 @@ export class TaInputDropdownComponent
                 }
 
                 if (!this._options.length) {
-                    if (this._template === 'svgtext-dispatch-template') {
+                    if (
+                        this._template === 'svgtext-dispatch-template' &&
+                        !this.inputConfig.isDispatchLocationDropdown
+                    ) {
                         this._options.push({
                             id: 7655,
                             name: 'ADD NEW',
@@ -1191,10 +1194,12 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
+
                     this.inputConfig = {
                         ...this.inputConfig,
                         hideAllItemsInInputDropdown: true,
                     };
+
                     if (
                         (this.inputConfig.name === 'Address' ||
                             this.inputConfig.name === 'RoutingAddress') &&

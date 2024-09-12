@@ -39,12 +39,6 @@ import {
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
 export class DispatchTableTruckTrailerComponent {
-    @Input() set hasAdditionalFieldTruck(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTruck = hasAdditionalField;
-    }
-    @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTrailer = hasAdditionalField;
-    }
     @Input() set truckDropdownWidth(value: number) {
         this._truckDropdownWidth = Math.round(value - 2);
     }
@@ -84,9 +78,6 @@ export class DispatchTableTruckTrailerComponent {
     public truckTrailerFormControl: UntypedFormControl =
         new UntypedFormControl();
 
-    public _hasAdditionalFieldTruck: boolean = false;
-    public _hasAdditionalFieldTrailer: boolean = false;
-
     public _trailerList: DispatchTrailerListItemModel[] = [];
     public _truckList: DispatchTruckListItemModel[] = [];
 
@@ -108,8 +99,6 @@ export class DispatchTableTruckTrailerComponent {
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
             type: this.type,
-            hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
             truckDropdownWidth: this._truckDropdownWidth,
             trailerDropdownWidth: this._trailerDropdownWidth,
         });

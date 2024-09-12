@@ -131,6 +131,9 @@ export interface ITaInput {
     mergeDropdownBodyWithInput?: boolean;
     hideAllItemsInInputDropdown?: boolean;
 
+    // Address Dropdown
+    isDispatchLocationDropdown?: boolean;
+
     // Label dropdown
     dropdownLabel?: boolean;
     dropdownLabelNew?: boolean;

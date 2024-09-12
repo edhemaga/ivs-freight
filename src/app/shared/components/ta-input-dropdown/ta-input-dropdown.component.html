@@ -148,10 +148,11 @@
 <ng-template #taInputDropdownPopover>
     <!--------------------------- Dropdown options --------------------------->
     <div
-        *ngIf="inputConfig?.mergeDropdownBodyWithInput"
+        *ngIf="inputConfig?.mergeDropdownBodyWithInput && _options?.length"
         class="dropdown-options-divider {{ inputConfig.dropdownWidthClass }}"
         [class.dispatch_dropdown]="_template == 'svgtext-dispatch-template'"
     ></div>
+
     <div
         (scroll)="onScrollDropdown($event.target)"
         *ngIf="

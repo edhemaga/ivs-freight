@@ -281,9 +281,6 @@
                             >
                                 <app-dispatch-table-truck-trailer
                                     [type]="'truck'"
-                                    [hasAdditionalFieldTruck]="
-                                        hasAdditionalFieldTruck
-                                    "
                                     [truckDropdownWidth]="
                                         columnSpecifications?.truckWidth
                                     "
@@ -374,9 +371,6 @@
 
                                         <app-dispatch-table-truck-trailer
                                             [type]="'trailer'"
-                                            [hasAdditionalFieldTrailer]="
-                                                hasAdditionalFieldTrailer
-                                            "
                                             [trailerDropdownWidth]="
                                                 columnSpecifications?.trailerWidth
                                             "
@@ -561,6 +555,9 @@
                                     [isHoveringRow]="
                                         isDispatchBoardLocked &&
                                         isHoveringRowIndex === rowIndex
+                                    "
+                                    [isDisplayingAddressInput]="
+                                        isDisplayingAddressInput
                                     "
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
@@ -794,9 +791,6 @@
                             <app-dispatch-table-truck-trailer
                                 [type]="'truck'"
                                 [truck]="addNewTruckData"
-                                [hasAdditionalFieldTruck]="
-                                    hasAdditionalFieldTruck
-                                "
                                 [truckDropdownWidth]="
                                     columnSpecifications?.truckWidth
                                 "
@@ -832,9 +826,6 @@
                         >
                             <app-dispatch-table-truck-trailer
                                 [type]="'trailer'"
-                                [hasAdditionalFieldTrailer]="
-                                    hasAdditionalFieldTrailer
-                                "
                                 [trailerDropdownWidth]="
                                     columnSpecifications?.trailerWidth
                                 "
@@ -929,6 +920,9 @@
                                         showAddAddressFieldIndex
                                     "
                                     [parkingList]="parkingList"
+                                    [isDisplayingAddressInput]="
+                                        isDisplayingAddressInput
+                                    "
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
                                     "
