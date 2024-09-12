@@ -87,7 +87,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
-    public isAssignLoadCardOpen: boolean = true;
+    public isAssignLoadCardOpen: boolean = false;
     public isUnAssignLoadCardOpen: boolean = true;
 
     // Additional load
@@ -207,7 +207,13 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.unassignedLoads = res.unassignedLoads;
-                this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+
+                if(this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length; 
+                } else {
+                    this.isUnAssignLoadCardOpen = true;
+                }
+
                 this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
@@ -256,6 +262,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         };
 
         this.selectedDispatches = null;
+        this.isUnAssignLoadCardOpen = true;
+        this.isAssignLoadCardOpen = false;
         this.showReorderButton = false;
     }
 
@@ -624,6 +632,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.isReorderingActive = false;
             this.showReorderButton = true;
+            this.isUnAssignLoadCardOpen = true;
+            setTimeout(() => {
+                this.resizerComponent.setHeights(440, 35);
+            }, 10);
         } else {
             this.isReorderingActive = true;
             this.showReorderButton = false;

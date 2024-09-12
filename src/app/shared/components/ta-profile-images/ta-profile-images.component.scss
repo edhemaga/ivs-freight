@@ -27,8 +27,9 @@
             &.small.show_hover_animation {
                 &:hover {
                     cursor: pointer;
-                    transform: scale(1.1);
-                    transition: transform 0.3s;
+                    width: 20px;
+                    height: 20px;
+                    transition: width 0.2s ease-in, height 0.2s ease-in;
                 }
             }
 

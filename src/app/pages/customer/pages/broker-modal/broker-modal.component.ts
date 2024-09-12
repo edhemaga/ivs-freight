@@ -224,6 +224,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public brokerName: string = '';
 
     private destroy$ = new Subject<void>();
+    private isUploadInProgress: boolean;
 
     constructor(
         // Form
@@ -305,6 +306,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        if(this.isUploadInProgress) return;
         if (data.action === 'bfb' || data.action === 'dnu') {
             // DNU
             if (data.action === 'dnu' && this.editData) {
@@ -376,35 +378,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.brokerForm);
                     return;
                 }
-                this.addBroker();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
+                this.isUploadInProgress = true;
+                this.addBroker(true);
+                this.setModalSpinner('save and add new', true, false);
                 this.addNewAfterSave = true;
             } else {
                 // Save & Update
                 if (data.action === 'save') {
+
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
                     }
 
+                    this.isUploadInProgress = true;
                     if (this.editData?.type.includes('edit')) {
                         this.updateBroker(this.editData.id);
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: false,
-                        });
+                        this.setModalSpinner(null, true, false);
                     } else {
                         this.addBroker();
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: false,
-                        });
+                        this.setModalSpinner(null, true, false);
                     }
                 }
                 // Delete
@@ -913,7 +906,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addBroker(): void {
+    private addBroker(isSaveAndAddNew?: boolean): void {
         const { creditLimit, brokerContacts, mcNumber, ...form } =
             this.brokerForm.value;
 
@@ -957,7 +950,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.editData?.canOpenModal) {
+                    if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
                                 this.modalService.setProjectionModal({
@@ -1039,27 +1032,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         );
 
                         this.addNewAfterSave = false;
-
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
+                        this.setModalSpinner('save and add new', false, false);
+                        this.isUploadInProgress = false;
+                    } else this.setModalSpinner(null, true, true);
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => this.setModalSpinner(null, false, false)
             });
     }
 
@@ -1113,11 +1090,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
-                                this.modalService.setModalSpinner({
-                                    action: null,
-                                    status: false,
-                                    close: true,
-                                });
+                                this.setModalSpinner(null, false, true);
+
                                 this.modalService.setProjectionModal({
                                     action: 'close',
                                     payload: {
@@ -1135,21 +1109,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
+                    } else this.setModalSpinner(null, true, true);
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => this.setModalSpinner(null, false, false),
             });
     }
 
@@ -1788,6 +1750,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    private setModalSpinner(action: string, status: boolean, close: boolean) {
+        this.modalService.setModalSpinner({
+            action: action,
+            status: status,
+            close: close,
+        }); 
     }
 
     ngOnDestroy(): void {
