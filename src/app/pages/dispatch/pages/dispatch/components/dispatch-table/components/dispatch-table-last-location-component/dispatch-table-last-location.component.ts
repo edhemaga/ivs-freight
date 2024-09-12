@@ -41,11 +41,9 @@ export class DispatchTableLastLocationComponentComponent {
         return DispatchConfig.getDispatchAddressConfig();
     }
 
-    public handleInputSelect(event): void {
+    public handleInputSelect(event: AddressEntity | any): void {
         if (event.valid) {
             this.updateLastLocationEmit.emit(event.address);
-
-            this.isDisplayingAddressInput = false;
         }
     }
 
@@ -53,7 +51,7 @@ export class DispatchTableLastLocationComponentComponent {
         this.isDropdownHidden.emit(true);
     }
 
-    public checkParkingLocation(parkings): void {
+    public checkParkingLocation(parkings: DispatchBoardParking[]): void {
         this.isDisplayParkingIcon = parkings.some(
             (parking) => parking.address.county === this.address.county
         );

@@ -389,11 +389,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }) {
         const { type, index } = event;
 
-        console.log('showAddAddressFieldIndex', this.showAddAddressFieldIndex);
-        console.log('index', index);
-        console.log('type', type);
-        console.log('this.dispatchData', this.dispatchData);
-
         if (!this.dispatchData?.dispatches[index]) {
             this.addNewTruckData = null;
 
@@ -407,8 +402,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             ((type === DispatchTableStringEnum.TRAILER_ID &&
                 !this.dispatchData.dispatches[index].truck) ||
                 (type === DispatchTableStringEnum.TRUCK_ID &&
-                    !this.dispatchData?.dispatches[index].trailer)) &&
-            !this.dispatchData?.dispatches[index].driver
+                    !this.dispatchData.dispatches[index].trailer)) &&
+            !this.dispatchData.dispatches[index].driver
         ) {
             const id = this.dispatchData.dispatches[index].id;
 

@@ -10,7 +10,9 @@
         <app-ta-input-dropdown
             #inputDropdown
             [formControl]="getSuperControl"
-            [template]="'svgtext-dispatch-template'"
+            [template]="
+                isDispatchBoardAddress ? 'svgtext-dispatch-template' : ''
+            "
             [inputConfig]="inputConfig"
             [options]="addresList"
             [activeItem]="activeAddress"

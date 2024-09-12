@@ -9,10 +9,7 @@
         }"
     >
         <ng-container
-            *ngIf="
-                (address?.address || showAddAddressField) === rowIndex &&
-                isDisplayingAddressInput
-            "
+            *ngIf="address?.address || showAddAddressField === rowIndex"
         >
             <ng-container
                 *ngIf="
@@ -26,13 +23,14 @@
                     [inputConfig]="lastLocationAddressConfig"
                     [placeholderType]="'shortAddress'"
                     [activeAddress]="selectedAddress"
+                    [isDispatchBoardAddress]="true"
                     (selectedAddress)="handleInputSelect($event)"
                     (closeDropdown)="onHideDropdown($event)"
                 ></app-ta-input-address-dropdown>
             </ng-container>
 
             <ng-template #addressInfo>
-                <ng-container *ngIf="address.address">
+                <ng-container *ngIf="address?.address">
                     <div class="info-item">
                         <div
                             class="location-field d-flex justify-content-between align-items-center"
