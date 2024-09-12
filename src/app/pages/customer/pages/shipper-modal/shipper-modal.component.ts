@@ -264,7 +264,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
-            this.addShipper();
+            this.addShipper(true);
             this.modalService.setModalSpinner({
                 action: 'save and add new',
                 status: true,
@@ -584,7 +584,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private addShipper() {
+    private addShipper(isSaveAndAddNew?: boolean) {
         const { addressUnit, shipperContacts, longitude, latitude, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
@@ -636,7 +636,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.editData?.canOpenModal) {
+                    if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
                                 this.modalService.setProjectionModal({
