@@ -17,6 +17,7 @@ pipelines:
           name: Build
           script:
             - npm run build:production
+            - npm run postinstall
           artifacts:
             - dist/** # Save build for next steps
       - step:
