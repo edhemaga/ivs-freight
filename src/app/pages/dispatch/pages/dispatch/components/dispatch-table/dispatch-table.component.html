@@ -49,7 +49,6 @@
                                             : true
                                 "
                             >
-                                <!-- <div class="th-div"> -->
                                 <th
                                     class="ta-font-bold"
                                     [ngClass]="{
@@ -893,6 +892,7 @@
                             >
                             </app-dispatch-table-driver>
                         </td>
+
                         <ng-container *ngIf="!columnsToShow[10].hidden">
                             <td class="pre-trip">
                                 <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
@@ -959,6 +959,7 @@
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
+
                         <ng-container *ngIf="!columnsToShow[14].hidden">
                             <td
                                 class="progress-field"
@@ -973,6 +974,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[15].hidden">
                             <td
                                 class="parking-field"
@@ -987,6 +989,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[16].hidden">
                             <td class="box-item">
                                 <div class="main_inside">
@@ -994,6 +997,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[17].hidden">
                             <td
                                 class="note-field"
@@ -1248,9 +1252,11 @@
                                 ></app-dispatch-table-info>
                             </td>
                         </ng-container>
+
                         <ng-template #noParking>
                             <td></td>
                         </ng-template>
+
                         <td colspan="3">
                             <ng-container *ngIf="isAllBoardsList">
                                 <app-dispatch-table-info
@@ -1305,6 +1311,7 @@
                             </ng-container>
                         </div>
                     </div>
+
                     <ng-container *ngIf="dispatchData?.canUnlock">
                         <div>
                             <button
