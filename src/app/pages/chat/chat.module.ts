@@ -21,7 +21,7 @@ import { ChatHeaderComponent } from "@pages/chat/components/shared/chat-header/c
 import { ChatListComponent } from "@pages/chat/components/shared/chat-list/chat-list.component";
 import { ChatListItemComponent } from "@pages/chat/components/shared/chat-list/chat-list-item/chat-list-item.component";
 import { ChatVerticalDividerComponent } from "@pages/chat/components/shared/chat-vertical-divider/chat-vertical-divider.component";
-import { ChatProfileResourcesComponent } from "./components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
+import { ChatProfileResourcesComponent } from "@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
 
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
