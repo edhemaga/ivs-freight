@@ -49,7 +49,6 @@
                                             : true
                                 "
                             >
-                                <!-- <div class="th-div"> -->
                                 <th
                                     class="ta-font-bold"
                                     [ngClass]="{
@@ -196,6 +195,32 @@
                                                 {{
                                                     tableHeaderItem?.secondTitle
                                                 }}
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- Sort -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                sortBy ===
+                                                    tableHeaderItem?.sortBy &&
+                                                sortDirection
+                                            "
+                                        >
+                                            <div
+                                                class="d-flex justify-content-center align-items-center sort-indicator-container"
+                                            >
+                                                <svg-icon
+                                                    [svgStyle]="{
+                                                        'width.px': 12,
+                                                        'height.px': 12
+                                                    }"
+                                                    [src]="
+                                                        sortDirection === 'asc'
+                                                            ? dispatchTableSvgRoutes?.sortAscendingArrow
+                                                            : dispatchTableSvgRoutes?.sortDescendingArrow
+                                                    "
+                                                ></svg-icon>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -377,6 +402,8 @@
                                             "
                                             [isTrailerAddNewHidden]="
                                                 isTrailerAddNewHidden
+                                                    | hiddenAddTrailerPipe
+                                                        : item?.truck
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
@@ -498,6 +525,7 @@
                                     </div>
                                 </div>
                             </td>
+
                             <ng-container *ngIf="!columnsToShow[10].hidden">
                                 <td class="pre-trip">
                                     <app-dispatch-table-pre-trip-inspection
@@ -551,7 +579,7 @@
                                 }"
                             >
                                 <app-dispatch-table-status
-                                    [time]="item.lastStatusDateTime"
+                                    [time]="item.lastStatusPassed"
                                     [status]="item.status"
                                     [dispatchId]="item.id"
                                     [dispatchBoardId]="item?.dispatchBoardId"
@@ -605,6 +633,7 @@
                                     </div>
                                 </div>
                             </td>
+
                             <ng-container *ngIf="!columnsToShow[14].hidden">
                                 <td
                                     class="progress-field"
@@ -654,6 +683,7 @@
                                     ></app-dispatch-table-parking>
                                 </td>
                             </ng-container>
+
                             <ng-container *ngIf="!columnsToShow[16].hidden">
                                 <td class="box-item">
                                     <div class="main_inside filled">
@@ -694,6 +724,7 @@
                                     </div>
                                 </td>
                             </ng-container>
+
                             <ng-container *ngIf="!columnsToShow[17].hidden">
                                 <td
                                     class="note-field"
@@ -871,6 +902,7 @@
                             >
                             </app-dispatch-table-driver>
                         </td>
+
                         <ng-container *ngIf="!columnsToShow[10].hidden">
                             <td class="pre-trip">
                                 <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
@@ -937,6 +969,7 @@
                                 <div class="padding-inside"></div>
                             </div>
                         </td>
+
                         <ng-container *ngIf="!columnsToShow[14].hidden">
                             <td
                                 class="progress-field"
@@ -951,6 +984,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[15].hidden">
                             <td
                                 class="parking-field"
@@ -965,6 +999,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[16].hidden">
                             <td class="box-item">
                                 <div class="main_inside">
@@ -972,6 +1007,7 @@
                                 </div>
                             </td>
                         </ng-container>
+
                         <ng-container *ngIf="!columnsToShow[17].hidden">
                             <td
                                 class="note-field"
@@ -1236,9 +1272,11 @@
                                 ></app-dispatch-table-info>
                             </td>
                         </ng-container>
+
                         <ng-template #noParking>
                             <td></td>
                         </ng-template>
+
                         <td colspan="3">
                             <ng-container *ngIf="isAllBoardsList">
                                 <app-dispatch-table-info
@@ -1293,6 +1331,7 @@
                             </ng-container>
                         </div>
                     </div>
+
                     <ng-container *ngIf="dispatchData?.canUnlock">
                         <div>
                             <button

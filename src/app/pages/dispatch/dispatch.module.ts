@@ -1,4 +1,3 @@
-// Modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,7 +8,7 @@ import { DispatchRoutingModule } from '@pages/dispatch/dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
 
-// Components
+// components
 import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/dispatch-table.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -47,7 +46,7 @@ import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/compo
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 import { PickupDeliveryBlockComponent } from 'ca-components';
 
-// Pipes
+// pipes
 import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
@@ -59,8 +58,9 @@ import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/comp
 import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
+import { DispatchHiddenAddTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-hidden-add-trailer.pipe';
 
-//directives
+// directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
 
 @NgModule({
@@ -89,6 +89,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         HosFilterPipe,
         TooltipWidthPipe,
         DispatchAllowedTruckTrailerPipe,
+        DispatchHiddenAddTrailerPipe,
     ],
     imports: [
         // modules
