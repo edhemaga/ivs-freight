@@ -76,8 +76,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
 
-        this.handleTruckTrailerAdditionalFields();
-
         this.handleHoursOfService();
     }
 
@@ -98,11 +96,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
+
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
 
             this.isDriverEndorsementActive = !this.columnsToShow[6].hidden;
+
+            this.handleTruckTrailerAdditionalFields();
         }
     }
 
@@ -310,12 +311,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     private handleTruckTrailerAdditionalFields(): void {
-        this.hasAdditionalFieldTruck = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.truck?.year
-        );
-        this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.trailer?.year
-        );
+        this.hasAdditionalFieldTruck = !this.columnsToShow[1].hidden;
+
+        this.hasAdditionalFieldTrailer = !this.columnsToShow[3].hidden;
 
         if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
             const currentAdditionalFieldValues = {
