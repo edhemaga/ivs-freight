@@ -52,7 +52,12 @@
             [cardNameCommon]="factoringData?.factoringCompany?.name"
             [haveHeaderText]="true"
             [haveDots]="false"
-            [hasFooter]="false"
+            [noteIcons]="
+                factoringData?.factoringCompany?.note
+                        ? svgRoutes.noteSvgRoute
+                        : svgRoutes.noteEmptySvgRoute
+                "
+            (resizePage)="toggleNoteVisibility()"
             *ngIf="factoringData?.factoringCompany?.name"
         >
             <div class="settings-body-items factoring-body-padding">
@@ -112,14 +117,17 @@
                     "
                 ></div>
             </app-ta-custom-card>
-            <div class="divider"></div>
-            <div class="note-details-holder">
-                <div class="note-item">
+            <div 
+                [ngClass]="{ 'body-show': isNoteVisible }"
+                [@showHideCardBody]="isNoteVisible"
+            >
+                <div class="divider"></div>
+                <div class="card-note">
                     <app-ta-input-note
                         [formControl]="factoringNote"
                         [isVisibleDivider]="false"
                         [isVisibleNote]="true"
-                        [isVisibleArrow]="true"
+                        [isVisibleArrow]="false"
                         [minRows]="1"
                         [placeholder]="'Write something.'"
                         [customClass]="'note-small'"
