@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 
 // Models
-import { ChatNoData } from '@pages/chat/models/chat-no-data.model';
+import { ChatNoData } from '@pages/chat/models';
 
 @Component({
   selector: 'app-chat-list',

@@ -6,13 +6,13 @@ import {
 
 // Models
 import { FileResponse } from 'appcoretruckassist';
-import { ChatLink } from '@pages/chat/models/chat-link.model';
+import { ChatLink } from '@pages/chat/models';
 
 // Enums
-import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums/conversation/conversation-details/chat-user-profile-resource-type.enum';
+import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums';
 
 // Assets
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Component({
   selector: 'app-chat-profile-resources',

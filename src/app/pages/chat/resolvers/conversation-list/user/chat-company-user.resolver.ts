@@ -5,7 +5,7 @@ import { map, Observable } from "rxjs";
 import { CompanyUserChatResponsePagination } from "appcoretruckassist";
 
 // Service
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services";
 
 @Injectable({
     providedIn: 'root'

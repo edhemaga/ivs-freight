@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { ChatMessageResponse } from '@pages/chat/models';
 
 // Enums
-import { ChatImageAspectRatioEnum } from '@pages/chat/enums/conversation/conversation-content/chat-image-aspect-ratio.enum';
+import { ChatImageAspectRatioEnum } from '@pages/chat/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';

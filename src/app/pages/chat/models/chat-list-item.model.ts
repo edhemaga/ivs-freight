@@ -1,6 +1,8 @@
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
-import { ChatConversationStatus } from '@pages/chat/enums/shared/chat-conversation-status.enum';
+import {
+    ChatAttachmentType,
+    ChatConversationStatus
+} from '@pages/chat/enums';
 
 export interface ChatListItem {
     id: number;

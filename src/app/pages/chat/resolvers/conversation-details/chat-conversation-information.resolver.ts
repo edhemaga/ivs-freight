@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot } from "@angular/router";
 
 // Services
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services";
 
 @Injectable({
     providedIn: 'root'

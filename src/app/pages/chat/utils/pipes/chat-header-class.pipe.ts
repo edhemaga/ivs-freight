@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Enums
-import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-list/chat-group-state.enum';
+import { ChatGroupStateEnum } from '@pages/chat/enums';
 
 @Pipe({
     name: 'chatHeaderClass'
@@ -19,7 +19,8 @@ export class ChatHeaderClassPipe implements PipeTransform {
                 return 'empty';
             case state === ChatGroupStateEnum.Expanded && unread:
                 return 'unread-expanded';
-            case state === ChatGroupStateEnum.Expanded || state === ChatGroupStateEnum.AllExpanded:
+            case state === ChatGroupStateEnum.Expanded ||
+                state === ChatGroupStateEnum.AllExpanded:
                 return 'expanded';
             case state === ChatGroupStateEnum.Collapsed && unread:
                 return 'unread-collapsed';

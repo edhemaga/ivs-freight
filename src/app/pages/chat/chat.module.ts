@@ -33,18 +33,22 @@ import { TaSearchComponent } from "@shared/components/ta-search/ta-search.compon
 import { CaProfileImageComponent } from "ca-components";
 
 // Pipes
-import { NameInitialsPipe } from "@shared/pipes/name-initials.pipe";
-import { FormatTimePipe } from "@shared/pipes/format-time.pipe";
-import { FormatDatePipe } from "@shared/pipes/format-date.pipe";
-import { FormatPhonePipe } from "@shared/pipes/format-phone.pipe";
-import { FileExtensionPipe } from "@shared/pipes/file-extension.pipe";
-import { TrackByPropertyPipe } from "@shared/pipes/track-by-property.pipe";
-import { ChatHeaderClassPipe } from "@pages/chat/utils/pipes/chat-header-class.pipe";
+import {
+    NameInitialsPipe,
+    FormatTimePipe,
+    FormatDatePipe,
+    FormatPhonePipe,
+    FileExtensionPipe,
+    TrackByPropertyPipe,
+} from "@shared/pipes";
+import { ChatHeaderClassPipe } from "@pages/chat/utils/pipes";
 
 // Directives
-import { DragAndDropDirective } from "@pages/chat/utils/directives/drag-and-drop.directive";
-import { HoverDirective } from "@pages/chat/utils/directives/hover.directive";
-import { ToggleBackgroundDirective } from "@pages/chat/utils/directives/toggle-background.directive";
+import {
+    DragAndDropDirective,
+    HoverDirective,
+    ToggleBackgroundDirective
+} from "@pages/chat/utils/directives";
 import { HoverSvgDirective } from "@shared/directives/hover-svg.directive";
 
 @NgModule({

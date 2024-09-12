@@ -1,11 +1,15 @@
 // Models
-import { ChatCompanyChannelExtended } from "@pages/chat/models/chat-company-channels-extended.model";
-import { ChatGroupState } from "@pages/chat/models/conversation-list/chat-group-state.model";
+import {
+    ChatGroupState,
+    ChatCompanyChannelExtended
+} from "@pages/chat/models";
 import { CompanyUserChatResponsePagination } from "appcoretruckassist";
 
 // Enums
-import { ChatGroupEnum } from "@pages/chat/enums/conversation/conversation-list/chat-group.enum";
-import { ChatGroupStateEnum } from "@pages/chat/enums/conversation/conversation-list/chat-group-state.enum";
+import {
+    ChatGroupEnum,
+    ChatGroupStateEnum
+} from "@pages/chat/enums";
 
 export class ChatConversationGroupStateConstant {
     static groupsState: ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>[] = [

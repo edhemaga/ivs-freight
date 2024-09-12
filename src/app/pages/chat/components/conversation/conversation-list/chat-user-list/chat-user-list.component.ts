@@ -14,14 +14,14 @@ import {
 } from 'rxjs';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Services
-import { UserChatService } from '@pages/chat/services/chat.service';
+import { UserChatService } from '@pages/chat/services';
 
 // Models
-import { CompanyUserChatResponse, UserType } from 'appcoretruckassist';
-import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
+import { UserType } from 'appcoretruckassist';
+import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models';
 
 @Component({
   selector: 'app-chat-user-list',

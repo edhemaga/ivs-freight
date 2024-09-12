@@ -5,13 +5,13 @@ import {
 } from '@angular/core';
 
 // Assets
-import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
+import { ChatPngRoutes } from '@pages/chat/utils/routes';
 
 // Models
-import { ChatExtendedUploadFile } from '@pages/chat/models/chat-extended-upload-file.model';
+import { ChatExtendedUploadFile } from '@pages/chat/models';
 
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums/conversation/conversation-content/chat-attachment-type.enum';
+import { ChatAttachmentType } from '@pages/chat/enums';
 
 @Component({
   selector: 'app-chat-message-attachment-preview',

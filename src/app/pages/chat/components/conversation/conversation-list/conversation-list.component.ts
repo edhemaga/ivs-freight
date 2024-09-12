@@ -12,10 +12,10 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 // Assets
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
+import { ChatInput } from '@pages/chat/utils/config';
 
 // Models
 import {
@@ -24,23 +24,28 @@ import {
 } from 'appcoretruckassist';
 
 // Models
-import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
-import { ChatGroupState } from '@pages/chat/models/conversation-list/chat-group-state.model';
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import {
+  ChatCompanyChannelExtended,
+  ChatGroupState,
+  ChatMessageResponse
+} from '@pages/chat/models';
 
 // Enums
-import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
-import { ChatGroupEnum } from '@pages/chat/enums/conversation/conversation-list/chat-group.enum';
-import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-list/chat-group-state.enum';
+import {
+  ConversationTypeEnum,
+  ChatGroupEnum,
+  ChatGroupStateEnum
+} from '@pages/chat/enums';
 
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
 // Helpers
-import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Services
-import { ChatHubService } from '@pages/chat/services/chat-hub.service';
+import { ChatHubService } from '@pages/chat/services';
+import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants';
 
 @Component({
   selector: 'app-conversation-list',
@@ -74,31 +79,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public isAdvancedView: boolean = false;
 
   // Create list of states for all groups available
-
-  public groupsState: ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>[] = [
-    {
-      id: ChatGroupEnum.Department,
-      state: ChatGroupStateEnum.Expanded,
-      hasNewMessage: false,
-    }, {
-      id: ChatGroupEnum.Truck,
-      state: ChatGroupStateEnum.Expanded,
-      hasNewMessage: false,
-    },
-    {
-      id: ChatGroupEnum.Dispatch,
-      state: ChatGroupStateEnum.Expanded,
-      hasNewMessage: false,
-    }, {
-      id: ChatGroupEnum.CompanyUser,
-      state: ChatGroupStateEnum.Expanded,
-      hasNewMessage: false,
-    }, {
-      id: ChatGroupEnum.Driver,
-      state: ChatGroupStateEnum.Expanded,
-      hasNewMessage: false,
-    }
-  ];
+  public groupsState = ChatConversationGroupStateConstant.groupsState;
 
   public chatGroupStateEnum = ChatGroupStateEnum;
   public chatGroupEnum = ChatGroupEnum;

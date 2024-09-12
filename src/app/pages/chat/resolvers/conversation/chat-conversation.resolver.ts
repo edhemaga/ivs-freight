@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
 // Service
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services";
 
 @Injectable({
     providedIn: 'root'

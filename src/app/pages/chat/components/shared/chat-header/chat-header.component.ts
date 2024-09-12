@@ -19,7 +19,7 @@ import {
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
+import { ChatInput } from '@pages/chat/utils/config';
 
 @Component({
   selector: 'app-chat-header',

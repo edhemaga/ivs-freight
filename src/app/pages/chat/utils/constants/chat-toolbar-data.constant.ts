@@ -1,5 +1,5 @@
 // Models
-import { ChatTab } from "@pages/chat/models/chat-tab.model";
+import { ChatTab } from "@pages/chat/models";
 
 export class ChatToolbarDataConstant {
     static tabs: ChatTab[] = [

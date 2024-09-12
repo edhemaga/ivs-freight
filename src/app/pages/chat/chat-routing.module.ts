@@ -6,11 +6,13 @@ import { ChatComponent } from "@pages/chat/components/chat/chat.component";
 import { ChatMessagesComponent } from "@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component";
 
 //Resolvers
-import { ChatCompanyUserResolver } from "@pages/chat/resolvers/conversation-list/user/chat-company-user.resolver";
-import { ChatDriverResolver } from "@pages/chat/resolvers/conversation-list/driver/chat-driver.resolver";
-import { ChatCompanyChannelResolver } from "@pages/chat/resolvers/conversation-list/company-channel/chat-company-channel.resolver";
-import { ChatConversationResolver } from "@pages/chat/resolvers/conversation/chat-conversation.resolver";
-import { ChatConversationInformationResolver } from "@pages/chat/resolvers/conversation-details/chat-conversation-information.resolver";
+import {
+    ChatCompanyUserResolver,
+    ChatDriverResolver,
+    ChatCompanyChannelResolver,
+    ChatConversationResolver,
+    ChatConversationInformationResolver
+} from './resolvers';
 
 const routes: Routes = [
     {

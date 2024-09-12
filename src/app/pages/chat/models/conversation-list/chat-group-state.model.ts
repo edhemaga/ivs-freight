@@ -1,6 +1,8 @@
 // Enums
-import { ChatGroupStateEnum } from "@pages/chat/enums/conversation/conversation-list/chat-group-state.enum";
-import { ChatGroupEnum } from "@pages/chat/enums/conversation/conversation-list/chat-group.enum";
+import {
+    ChatGroupEnum,
+    ChatGroupStateEnum
+} from '@pages/chat/enums';
 
 export interface ChatGroupState<T> {
     id: ChatGroupEnum,

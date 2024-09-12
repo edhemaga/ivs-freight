@@ -29,17 +29,23 @@ import {
 } from 'rxjs';
 
 // Assets routes
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
-import { ChatPngRoutes } from '@pages/chat/utils/routes/chat-png-routes';
+import {
+  ChatSvgRoutes,
+  ChatPngRoutes
+} from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config/chat-input.config';
-import { ChatDropzone } from '@pages/chat/utils/config/chat-dropzone.config';
+import {
+  ChatInput,
+  ChatDropzone
+} from '@pages/chat/utils/config';
 
 // Services
-import { UserChatService } from '@pages/chat/services/chat.service';
-import { ChatHubService } from '@pages/chat/services/chat-hub.service';
-import { UserProfileService } from '@pages/chat/services/user-profile.service';
+import {
+  UserChatService,
+  ChatHubService,
+  UserProfileService
+} from '@pages/chat/services';
 
 // Models
 import {
@@ -47,16 +53,17 @@ import {
   ConversationInfoResponse,
   ConversationResponse,
 } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
-import { ChatAttachmentForThumbnail } from '@pages/chat/models/chat-attachment.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import {
+  ChatMessageResponse,
+  ChatAttachmentForThumbnail
+} from '@pages/chat/models';
 
 // Enums
-import { ChatAttachmentHoveredClassStringEnum } from '@pages/chat/enums/shared/chat-attachment-hovered-class-string.enum';
-import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums/shared/chat-attachment-custom-classes.enum';
+import { ChatAttachmentHoveredClassStringEnum, ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Helpers
-import { checkForLink } from '@pages/chat/utils/helpers/link-recognition.helper';
+import { checkForLink } from '@pages/chat/utils/helpers';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

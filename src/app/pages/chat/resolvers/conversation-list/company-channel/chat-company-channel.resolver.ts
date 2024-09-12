@@ -5,7 +5,7 @@ import {
 } from "rxjs";
 
 // Service
-import { UserChatService } from "@pages/chat/services/chat.service";
+import { UserChatService } from "@pages/chat/services";
 
 // Models
 import { ChatCompanyChannelExtended } from "@pages/chat/models/chat-company-channels-extended.model";

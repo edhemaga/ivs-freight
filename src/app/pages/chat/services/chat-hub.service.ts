@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 // SingalR
 import * as signalR from '@microsoft/signalr';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { ChatMessageResponse } from '@pages/chat/models';
 
 // Env
 import { environment } from 'src/environments/environment';
-import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'

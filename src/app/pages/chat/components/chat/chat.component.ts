@@ -15,23 +15,27 @@ import { ChatMessagesComponent } from '@pages/chat/components/conversation/conve
 
 // Models
 import { ConversationType } from 'appcoretruckassist';
-import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
-import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
+import {
+  ChatResolvedData,
+  CompanyUserChatResponsePaginationReduced,
+  ChatTab,
+  ChatCompanyChannelExtended
+} from '@pages/chat/models';
 
 // Enums
-import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
-import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
+import {
+  ChatRoutesEnum,
+  ConversationTypeEnum
+} from '@pages/chat/enums';
 
 // Constants
-import { ChatToolbarDataConstant } from '@pages/chat/utils/constants/chat-toolbar-data.constant';
+import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Service
-import { UserChatService } from "@pages/chat/services/chat.service";
-import { ChatTab } from '@pages/chat/models/chat-tab.model';
-import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
+import { UserChatService } from "@pages/chat/services";
 
 @Component({
   selector: 'app-chat',
