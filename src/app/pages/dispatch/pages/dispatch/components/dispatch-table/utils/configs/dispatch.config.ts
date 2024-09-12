@@ -6,29 +6,19 @@ export class DispatchConfig {
         return {
             name: 'Address',
             type: 'text',
-            label: 'Location',
-            placeholder: 'Location',
             textTransform: 'capitalize',
-            placeholderInsteadOfLabel: true,
-            minLength: 12,
-            maxLength: 256,
-            autoFocus: true,
-            hideErrorMessage: true,
-            blackInput: true,
-            mergeDropdownBodyWithInput: true,
-            dropdownWidthClass: 'w-col-150',
-        };
-    }
-
-    /* 
-           
             isDropdown: true,
-     
+            autoFocus: true,
             hideDropdownArrow: true,
-
+            blackInput: true,
             hideRequiredCheck: true,
             hideDangerMark: true,
-     */
+            hideErrorMessage: true,
+            mergeDropdownBodyWithInput: true,
+            isDispatchLocationDropdown: true,
+            dropdownWidthClass: 'w-col-157',
+        };
+    }
 
     static getTruckTrailerInputConfig(
         config: TruckTrailerConfigParams

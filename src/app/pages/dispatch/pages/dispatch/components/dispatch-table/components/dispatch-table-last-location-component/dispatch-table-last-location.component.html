@@ -2,18 +2,30 @@
     class="main_inside"
     [class.filled]="address?.address || showAddAddressField === rowIndex"
 >
-    <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
+    <div
+        [ngClass]="{
+            hovering: isHoveringRow,
+            'padding-inside': address?.address
+        }"
+    >
         <ng-container
-            *ngIf="address?.address || showAddAddressField === rowIndex"
+            *ngIf="
+                (address?.address || showAddAddressField) === rowIndex &&
+                isDisplayingAddressInput
+            "
         >
             <ng-container
-                *ngIf="showAddAddressField === rowIndex; else addressInfo"
+                *ngIf="
+                    showAddAddressField === rowIndex &&
+                        isDisplayingAddressInput;
+                    else addressInfo
+                "
             >
                 <app-ta-input-address-dropdown
                     [formControl]="truckAddressControl"
-                    [activeAddress]="selectedAddress"
                     [inputConfig]="lastLocationAddressConfig"
                     [placeholderType]="'shortAddress'"
+                    [activeAddress]="selectedAddress"
                     (selectedAddress)="handleInputSelect($event)"
                     (closeDropdown)="onHideDropdown($event)"
                 ></app-ta-input-address-dropdown>

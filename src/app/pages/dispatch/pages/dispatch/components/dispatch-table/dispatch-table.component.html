@@ -891,6 +891,7 @@
                             >
                             </app-dispatch-table-driver>
                         </td>
+
                         <ng-container *ngIf="!columnsToShow[10].hidden">
                             <td class="pre-trip">
                                 <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
@@ -917,6 +918,9 @@
                                         showAddAddressFieldIndex
                                     "
                                     [parkingList]="parkingList"
+                                    [isDisplayingAddressInput]="
+                                        isDisplayingAddressInput
+                                    "
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
                                     "

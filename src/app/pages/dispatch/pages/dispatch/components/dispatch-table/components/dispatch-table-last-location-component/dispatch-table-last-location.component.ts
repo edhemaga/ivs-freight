@@ -22,6 +22,7 @@ export class DispatchTableLastLocationComponentComponent {
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
     @Input() isHoveringRow: boolean;
+    @Input() isDisplayingAddressInput: boolean;
 
     @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
@@ -43,6 +44,8 @@ export class DispatchTableLastLocationComponentComponent {
     public handleInputSelect(event): void {
         if (event.valid) {
             this.updateLastLocationEmit.emit(event.address);
+
+            this.isDisplayingAddressInput = false;
         }
     }
 
