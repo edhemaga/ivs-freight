@@ -19,8 +19,6 @@
     &.unlocked {
         table {
             tr {
-                th {
-                }
                 .resize {
                     position: relative;
                 }
@@ -359,6 +357,11 @@
                         align-items: center;
                         border-radius: 2px;
                         transition: background 0.2s ease-in;
+                        background: red !important;
+
+                        &:hover {
+                            background: green !important;
+                        }
 
                         svg-icon {
                             display: flex;
