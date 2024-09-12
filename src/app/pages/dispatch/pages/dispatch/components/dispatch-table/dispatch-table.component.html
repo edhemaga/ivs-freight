@@ -620,15 +620,15 @@
                                             <ng-container
                                                 *ngIf="pickupDeliveryItem(item)"
                                             >
-                                                <!--     <app-ca-pickup-delivery-block
+                                                <app-ca-pickup-delivery-block
                                                     [loads]="{
-                                                        active: currentDispatchGroupedLoadsResponse.active,
-                                                        closed: currentDispatchGroupedLoadsResponse.closed,
+                                                        active: currentDispatchGroupedLoadsResponse?.active,
+                                                        closed: currentDispatchGroupedLoadsResponse?.closed,
                                                         pending:
-                                                            currentDispatchGroupedLoadsResponse.pending
+                                                            currentDispatchGroupedLoadsResponse?.pending
                                                     }"
                                                     [dispatchResponse]="item"
-                                                ></app-ca-pickup-delivery-block> -->
+                                                ></app-ca-pickup-delivery-block>
                                             </ng-container>
                                         </div>
                                     </div>

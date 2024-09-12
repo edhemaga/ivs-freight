@@ -159,7 +159,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
-    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse;
+    public currentDispatchGroupedLoadsResponse: any;
 
     public shownFields;
 
@@ -215,6 +215,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public pickupDeliveryItem(item: DispatchResponse): boolean {
+        this.currentDispatchGroupedLoadsResponse = item.activeLoad;
+        console.log(item, this.currentDispatchGroupedLoadsResponse, 'iteeeemmm')
         return !!item.activeLoad;
     }
 
@@ -225,6 +227,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (response) => {
                     this.currentDispatchGroupedLoadsResponse = response;
+                    console.log(this.currentDispatchGroupedLoadsResponse, 'sssssssssssss')
                     this.cdRef.detectChanges();
                 },
             });
