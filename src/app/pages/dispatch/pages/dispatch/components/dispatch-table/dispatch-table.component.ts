@@ -435,7 +435,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public onHideDropdown(): void {
         setTimeout(() => {
-            if (this.showAddAddressFieldIndex !== -2) {
+            /*   if (this.showAddAddressFieldIndex !== -2) {
                 this.dispatchData.dispatches[
                     this.showAddAddressFieldIndex
                 ].truck = this.addNewTruckData;
@@ -447,7 +447,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = false;
 
-            this.cdRef.detectChanges();
+            this.cdRef.detectChanges(); */
         }, 3000);
     }
 

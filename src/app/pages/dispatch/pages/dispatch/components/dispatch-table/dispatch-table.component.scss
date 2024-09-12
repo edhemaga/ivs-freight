@@ -19,25 +19,24 @@
     &.unlocked {
         table {
             tr {
-                th {
-                }
                 .resize {
                     position: relative;
                 }
-                .resize {
-                    position: relative;
-                }
+
                 .resize.show-after::after {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     cursor: col-resize;
-                }.resize.show-after::before {
+                }
+
+                .resize.show-after::before {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     cursor: col-resize;
                 }
+
                 .resize::after {
                     display: none;
                     content: '';
@@ -47,6 +46,7 @@
                     height: 100%;
                     width: 8px;
                 }
+
                 .resize::before {
                     display: none;
                     content: '';
@@ -65,6 +65,7 @@
                 .close-icon-show {
                     width: 100%;
                 }
+
                 td {
                     .main_inside {
                         /* Drag & Drop Single*/
@@ -780,7 +781,7 @@
                 &:nth-child(4) {
                     display: none;
                 }
-            }       
+            }
         }
     }
 

@@ -28,14 +28,15 @@ export class DispatchTableLastLocationComponentComponent {
     @Output() isDropdownHidden: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
-    public isDisplayParkingIcon: boolean = false;
     public truckAddressControl: UntypedFormControl = new UntypedFormControl(
         null
     );
 
+    public isDisplayParkingIcon: boolean = false;
+
     constructor() {}
 
-    get LastLocationAddressConfig(): ITaInput {
+    get lastLocationAddressConfig(): ITaInput {
         return DispatchConfig.getDispatchAddressConfig();
     }
 

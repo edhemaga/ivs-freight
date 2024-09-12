@@ -9,26 +9,31 @@ export class DispatchConfig {
             label: 'Location',
             placeholder: 'Location',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-151',
+            placeholderInsteadOfLabel: true,
             minLength: 12,
             maxLength: 256,
             autoFocus: true,
-            placeholderInsteadOfLabel: true,
             hideErrorMessage: true,
             blackInput: true,
+            mergeDropdownBodyWithInput: true,
+            dropdownWidthClass: 'w-col-150',
         };
     }
+
+    /* 
+           
+            isDropdown: true,
+     
+            hideDropdownArrow: true,
+
+            hideRequiredCheck: true,
+            hideDangerMark: true,
+     */
 
     static getTruckTrailerInputConfig(
         config: TruckTrailerConfigParams
     ): ITaInput {
-        const {
-            type,
-            hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer,
-            truckDropdownWidth,
-            trailerDropdownWidth,
-        } = config;
+        const { type, truckDropdownWidth, trailerDropdownWidth } = config;
 
         return {
             name: 'Input Dropdown',
