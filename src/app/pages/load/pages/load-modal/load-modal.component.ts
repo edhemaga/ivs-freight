@@ -149,6 +149,7 @@ import {
     LoadModalWaitTimeFormField,
     LoadStopRoutes,
     LoadStop,
+    LoadShipper
 } from './models';
 
 // Svg Routes
@@ -4703,7 +4704,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return formattedString.trim();
     }
 
-    private formatShipper(shipper: any): ShipperShortResponse {
+    private formatShipper(shipper: ShipperShortResponse): LoadShipper {
         if (!shipper) return null;
     
         const formattedShipper = {
