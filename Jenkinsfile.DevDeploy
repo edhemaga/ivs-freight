@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    tools {
+        dotnetsdk 'nodejs'
+    }
 
     environment {
         NODE_OPTIONS = '--max-old-space-size=6144'
