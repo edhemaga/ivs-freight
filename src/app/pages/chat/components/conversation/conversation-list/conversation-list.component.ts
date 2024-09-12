@@ -192,6 +192,7 @@ export class ConversationListComponent extends Unsubscribe implements OnInit {
     return this.groupsState.find(group => group.id === groupId);
   }
 
+  // TODO implement new message notification
   private findChatGroupByParticipantId(id: number): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
     return this.groupsState.find(group => { console.log(group) })
   }
