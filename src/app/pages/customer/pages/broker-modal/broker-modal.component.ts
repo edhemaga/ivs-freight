@@ -379,7 +379,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 this.isUploadInProgress = true;
-                this.addBroker();
+                this.addBroker(true);
                 this.setModalSpinner('save and add new', true, false);
                 this.addNewAfterSave = true;
             } else {
@@ -906,7 +906,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addBroker(): void {
+    private addBroker(isSaveAndAddNew?: boolean): void {
         const { creditLimit, brokerContacts, mcNumber, ...form } =
             this.brokerForm.value;
 
@@ -950,7 +950,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.editData?.canOpenModal) {
+                    if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
                                 this.modalService.setProjectionModal({
