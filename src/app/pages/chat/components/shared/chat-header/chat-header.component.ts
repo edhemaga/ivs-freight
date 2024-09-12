@@ -10,7 +10,6 @@ import {
   UntypedFormGroup
 } from '@angular/forms';
 import {
-  Subject,
   takeUntil,
   debounceTime
 } from 'rxjs';
@@ -21,14 +20,16 @@ import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 // Config
 import { ChatInput } from '@pages/chat/utils/config';
 
+// Helpers
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
+
 @Component({
   selector: 'app-chat-header',
   templateUrl: './chat-header.component.html',
   styleUrls: ['./chat-header.component.scss'],
   animations: [chatUserListSearchAnimation]
 })
-export class ChatHeaderComponent implements OnInit {
-  private destroy$ = new Subject<void>();
+export class ChatHeaderComponent extends UnsubscribeHelper implements OnInit {
 
   @Input() public isBottomBorderDisplayed: boolean = true;
 
@@ -42,7 +43,9 @@ export class ChatHeaderComponent implements OnInit {
   // Config
   public ChatInput: ChatInput = ChatInput;
 
-  constructor(private formBuilder: UntypedFormBuilder) { }
+  constructor(private formBuilder: UntypedFormBuilder) {
+    super();
+  }
 
   ngOnInit(): void {
     this.creteForm();
@@ -71,6 +74,5 @@ export class ChatHeaderComponent implements OnInit {
   public toggleSearch(isActive?: boolean): void {
     this.isSearchActive = isActive ?? !this.isSearchActive;
   }
-
 
 }

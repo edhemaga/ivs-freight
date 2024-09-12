@@ -23,14 +23,15 @@ import { UserChatService } from '@pages/chat/services';
 import { UserType } from 'appcoretruckassist';
 import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models';
 
+// Helpers
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
+
 @Component({
   selector: 'app-chat-user-list',
   templateUrl: './chat-user-list.component.html',
   styleUrls: ['./chat-user-list.component.scss'],
 })
-export class ChatUserListComponent implements OnInit, OnDestroy {
-
-  private destroy$ = new Subject<void>();
+export class ChatUserListComponent extends UnsubscribeHelper implements OnInit, OnDestroy {
 
   @Input() contactsInfo: CompanyUserChatResponsePaginationReduced;
   @Input() type: string;
@@ -44,7 +45,9 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   // Search
   public isSearchActive: boolean = false;
 
-  constructor(private userChatService: UserChatService) { }
+  constructor(private userChatService: UserChatService) {
+    super();
+  }
 
   ngOnInit(): void { }
 
@@ -104,8 +107,7 @@ export class ChatUserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.completeSubject();
     this.cleanUp();
   }
 }

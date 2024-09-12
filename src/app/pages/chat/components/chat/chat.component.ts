@@ -7,7 +7,6 @@ import {
   ActivatedRoute,
   Router
 } from '@angular/router';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 // Components
@@ -37,13 +36,15 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 // Service
 import { UserChatService } from "@pages/chat/services";
 
+// Helpers
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class ChatComponent extends UnsubscribeHelper implements OnInit, OnDestroy {
 
   public title!: string;
 
@@ -70,7 +71,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     // Services
     private chatService: UserChatService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getResolvedData();
@@ -160,8 +163,4 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

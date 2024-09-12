@@ -63,7 +63,10 @@ import {
 import { ChatAttachmentHoveredClassStringEnum, ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Helpers
-import { checkForLink } from '@pages/chat/utils/helpers';
+import {
+  checkForLink,
+  UnsubscribeHelper
+} from '@pages/chat/utils/helpers';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,7 +74,7 @@ import { checkForLink } from '@pages/chat/utils/helpers';
   templateUrl: './chat-messages.component.html',
   styleUrls: ['./chat-messages.component.scss'],
 })
-export class ChatMessagesComponent implements OnInit, OnDestroy {
+export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, OnDestroy {
 
   @ViewChild('messagesContent') messagesContent: ElementRef;
   @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
@@ -83,8 +86,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
   }
 
   @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
-
-  private destroy$ = new Subject<void>();
 
   //User data
   public currentUserId: number = localStorage.getItem('user')
@@ -151,7 +152,9 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
     private chatService: UserChatService,
     private chatHubService: ChatHubService,
     public userProfileService: UserProfileService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.creteForm();
@@ -425,7 +428,6 @@ export class ChatMessagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatHubService.disconnect();
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.completeSubject();
   }
 }
