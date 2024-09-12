@@ -25,6 +25,9 @@ import { CompanyStore } from '@pages/settings/state/company-state/company-settin
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// svg routes
+import { SettingsFactorySvgRoutes } from './utils/svg-routes/settings-factoring-svg-routes';
+
 @Component({
     selector: 'app-settings-factoring',
     templateUrl: './settings-factoring.component.html',
@@ -40,6 +43,8 @@ export class SettingsFactoringComponent
     public factoringEmail: boolean;
     public factoringNote: UntypedFormControl = new UntypedFormControl();
     public isNoteVisible: boolean = false;
+
+    public svgRoutes = SettingsFactorySvgRoutes;
 
     constructor(
         private settingsCompanyService: SettingsCompanyService,

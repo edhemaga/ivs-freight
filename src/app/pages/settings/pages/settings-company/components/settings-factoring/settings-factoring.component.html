@@ -54,8 +54,8 @@
             [haveDots]="false"
             [noteIcons]="
                 factoringData?.factoringCompany?.note
-                        ? 'assets/svg/truckassist-table/note/Note.svg'
-                        : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                        ? svgRoutes.noteSvgRoute
+                        : svgRoutes.noteEmptySvgRoute
                 "
             (resizePage)="toggleNoteVisibility()"
             *ngIf="factoringData?.factoringCompany?.name"
@@ -119,7 +119,7 @@
             </app-ta-custom-card>
             <div 
                 [ngClass]="{ 'body-show': isNoteVisible }"
-                [@showHideCardBody]="isNoteVisible ? 'true' : 'false'"
+                [@showHideCardBody]="isNoteVisible"
             >
                 <div class="divider"></div>
                 <div class="card-note">
