@@ -1489,6 +1489,18 @@ export class TaInputComponent
             return false;
         }
 
+        if(['full contact name'].includes(this._inputConfig.name.toLowerCase())) {
+            if (
+                this.inputService
+                    .getInputRegexPattern('full contact name')
+                    .test(String.fromCharCode(event.charCode))
+            ) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        }
+
         if (['fuel-store'].includes(this._inputConfig.name.toLowerCase())) {
             if (
                 this.inputService

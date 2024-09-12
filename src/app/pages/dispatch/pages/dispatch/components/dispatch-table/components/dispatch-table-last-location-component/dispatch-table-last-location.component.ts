@@ -22,24 +22,26 @@ export class DispatchTableLastLocationComponentComponent {
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
     @Input() isHoveringRow: boolean;
+    @Input() isDisplayingAddressInput: boolean;
 
     @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
     @Output() isDropdownHidden: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
-    public isDisplayParkingIcon: boolean = false;
     public truckAddressControl: UntypedFormControl = new UntypedFormControl(
         null
     );
 
+    public isDisplayParkingIcon: boolean = false;
+
     constructor() {}
 
-    get LastLocationAddressConfig(): ITaInput {
+    get lastLocationAddressConfig(): ITaInput {
         return DispatchConfig.getDispatchAddressConfig();
     }
 
-    public handleInputSelect(event): void {
+    public handleInputSelect(event: AddressEntity | any): void {
         if (event.valid) {
             this.updateLastLocationEmit.emit(event.address);
         }
@@ -49,7 +51,7 @@ export class DispatchTableLastLocationComponentComponent {
         this.isDropdownHidden.emit(true);
     }
 
-    public checkParkingLocation(parkings): void {
+    public checkParkingLocation(parkings: DispatchBoardParking[]): void {
         this.isDisplayParkingIcon = parkings.some(
             (parking) => parking.address.county === this.address.county
         );

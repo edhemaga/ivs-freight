@@ -561,11 +561,8 @@
                             <ng-container *ngIf="isAssignLoadModal">
                                 <button
                                     (click)="onAction('assign-create-load')"
-                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn pe-auto"
+                                    class="d-flex align-items-center ta-font-bold modal-convert-to-template-btn dispatch-create-load"
                                     type="button"
-                                    [ngClass]="{
-                                        'modal-finish-order-btn': isModalValid
-                                    }"
                                 >
                                     Create Load
                                 </button>

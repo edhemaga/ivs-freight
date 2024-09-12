@@ -58,7 +58,7 @@
                     'dropdown-card': isDropdownCard && !isDropdownModalCard
                 }"
                 [ngStyle]="{
-                    color: _isCardOpen ? '#424242' : '#6C6C6C'
+                    color: _isCardOpen ? '#424242' :  headerLightColor && hasCounter === -1? '#aaaaaa' : '#6C6C6C'
                 }"
             >
                 {{ cardName }}
