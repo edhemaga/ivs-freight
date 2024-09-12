@@ -2,7 +2,6 @@
     [modalTitle]="'Assign Load'"
     [customClass]="loadModalSize"
     [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
-    [isAssignLoadModal]="true"
     [isModalValid]="isModalValid"
     [hasFutureTimeFilter]="true"
     [hasDispatcherFilter]="true"
@@ -14,7 +13,7 @@
     [unassignedLoads]="originalLoads"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
-    (filterActions)="setFilter($event)"
+    (filterActions)="setFilter($event)" 
 >
     <div origin>
         <div class="dispatch-load">
@@ -72,7 +71,7 @@
             <div firstElement #firstElementRef class="h-full-important">
                 <app-ta-custom-card
                     [cardName]="'Assigned'"
-                    [hasCounter]="assignedLoads.length"
+                    [hasCounter]="assignedLoads.length ? assignedLoads.length : -1"
                     [isCardOpen]="isAssignLoadCardOpen"
                     [hasActionSvg]="false"
                     [hasBodyData]="true"
@@ -88,6 +87,7 @@
                     [isInheritingParentSize]="true"
                     [hasDivider]="false"
                     [isInheritingParentSize]="true"
+                    [headerLightColor]="true"
                     (onOpenCard)="isAssignLoadCardOpen = $event"
                     (onActionEvent)="onReorderAction($event)"
                     (cdkDropListDropped)="dropAssigned($event)"
