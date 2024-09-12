@@ -6,6 +6,13 @@
         border-radius: 2px;
         transition: background 0.2s ease-in;
 
+        .truck-trailer-number {
+            max-width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
         .circle-icon {
             position: relative !important;
             bottom: 1px !important;

@@ -25,6 +25,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -169,15 +170,15 @@ export class DispatchTableDriverComponent {
     public addDriver<T extends OpenModal>(event: T): void {
         if (event) {
             if (event.canOpenModal) {
-                this.modalService.setProjectionModal({
-                    action: DispatchTableStringEnum.OPEN,
-                    payload: {
-                        key: DispatchTableStringEnum.DRIVER_MODAL,
-                        value: null,
+                this.modalService.openModal(
+                    DriverModalComponent,
+                    {
+                        size: TableStringEnum.MEDIUM,
                     },
-                    component: DriverModalComponent,
-                    size: DispatchTableStringEnum.SMALL,
-                });
+                    {
+                        isDispatchCall: true,
+                    }
+                );
             } else {
                 this.addDriverEmitter.emit({
                     event: event as DriverMinimalResponse,
