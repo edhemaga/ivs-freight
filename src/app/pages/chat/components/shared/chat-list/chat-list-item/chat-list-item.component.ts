@@ -19,7 +19,7 @@ export class ChatListItemComponent implements OnInit {
 
   @Input() item!: ChatListItem;
 
-  public ChatAttachmentType = ChatAttachmentType;
+  public chatAttachmentType = ChatAttachmentType;
 
   constructor() { }
 

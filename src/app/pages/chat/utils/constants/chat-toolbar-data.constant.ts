@@ -1,7 +1,7 @@
 // Models
 import { ChatTab } from "@pages/chat/models/chat-tab.model";
 
-export class ChatToolbarDataConstants {
+export class ChatToolbarDataConstant {
     static tabs: ChatTab[] = [
         {
             id: 0,

@@ -9,6 +9,7 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup
 } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
@@ -21,8 +22,11 @@ import {
   CompanyUserChatResponse,
   CompanyUserChatResponsePagination
 } from 'appcoretruckassist';
+
+// Models
 import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
-import { ChatGroupStateInterface } from '@pages/chat/models/conversation-list/chat-group-state.interface';
+import { ChatGroupState } from '@pages/chat/models/conversation-list/chat-group-state.model';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
 // Enums
 import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
@@ -31,11 +35,9 @@ import { ChatGroupStateEnum } from '@pages/chat/enums/conversation/conversation-
 
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
-import { BehaviorSubject, take, takeUntil } from 'rxjs';
 
 // Helpers
-import { Unsubscribe } from '@pages/chat/utils/helpers/unsubscribe';
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
 // Services
 import { ChatHubService } from '@pages/chat/services/chat-hub.service';
@@ -46,7 +48,7 @@ import { ChatHubService } from '@pages/chat/services/chat-hub.service';
   styleUrls: ['./conversation-list.component.scss'],
   animations: [chatUserListSearchAnimation]
 })
-export class ConversationListComponent extends Unsubscribe implements OnInit {
+export class ConversationListComponent extends UnsubscribeHelper implements OnInit {
 
   // Data
   @Input() public departments: ChatCompanyChannelExtended[];
@@ -73,29 +75,34 @@ export class ConversationListComponent extends Unsubscribe implements OnInit {
 
   // Create list of states for all groups available
 
-  public groupsState: ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>[] = [
+  public groupsState: ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>[] = [
     {
       id: ChatGroupEnum.Department,
-      state: ChatGroupStateEnum.Expanded
+      state: ChatGroupStateEnum.Expanded,
+      hasNewMessage: false,
     }, {
       id: ChatGroupEnum.Truck,
-      state: ChatGroupStateEnum.Expanded
+      state: ChatGroupStateEnum.Expanded,
+      hasNewMessage: false,
     },
     {
       id: ChatGroupEnum.Dispatch,
-      state: ChatGroupStateEnum.Expanded
+      state: ChatGroupStateEnum.Expanded,
+      hasNewMessage: false,
     }, {
       id: ChatGroupEnum.CompanyUser,
-      state: ChatGroupStateEnum.Expanded
+      state: ChatGroupStateEnum.Expanded,
+      hasNewMessage: false,
     }, {
       id: ChatGroupEnum.Driver,
-      state: ChatGroupStateEnum.Expanded
+      state: ChatGroupStateEnum.Expanded,
+      hasNewMessage: false,
     }
   ];
 
-  public ChatGroupStateEnum = ChatGroupStateEnum;
-  public ChatGroupEnum = ChatGroupEnum;
-  public ConversationTypeEnum = ConversationTypeEnum;
+  public chatGroupStateEnum = ChatGroupStateEnum;
+  public chatGroupEnum = ChatGroupEnum;
+  public conversationTypeEnum = ConversationTypeEnum;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
@@ -105,7 +112,6 @@ export class ConversationListComponent extends Unsubscribe implements OnInit {
     this.initializeChatGroupStates();
     this.creteForm();
     this.listenForNewMessage();
-    // this.listenForSearchTermChange();
   }
 
   private creteForm(): void {
@@ -153,7 +159,7 @@ export class ConversationListComponent extends Unsubscribe implements OnInit {
 
   }
 
-  private showAllChatGroupData(group: ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
+  private showAllChatGroupData(group: ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination>): ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
 
     group.state = ChatGroupStateEnum.AllExpanded;
 
@@ -188,12 +194,12 @@ export class ConversationListComponent extends Unsubscribe implements OnInit {
     return group;
   }
 
-  private findChatGroupState(groupId: ChatGroupEnum): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
+  private findChatGroupState(groupId: ChatGroupEnum): ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
     return this.groupsState.find(group => group.id === groupId);
   }
 
   // TODO implement new message notification
-  private findChatGroupByParticipantId(id: number): ChatGroupStateInterface<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
+  private findChatGroupByParticipantId(id: number): ChatGroupState<ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination> {
     return this.groupsState.find(group => { console.log(group) })
   }
 

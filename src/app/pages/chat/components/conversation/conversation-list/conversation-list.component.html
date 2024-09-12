@@ -17,13 +17,13 @@
             <!-- ngSwitch based on group.id -->
             <ng-container [ngSwitch]="group.id">
                 <!-- Case for Department -->
-                <ng-container *ngSwitchCase="ChatGroupEnum.Department">
+                <ng-container *ngSwitchCase="chatGroupEnum.Department">
                     <ng-container
                         *ngTemplateOutlet="
                             header;
                             context: {
                                 item: {
-                                    title: ChatGroupEnum.Department,
+                                    title: chatGroupEnum.Department,
                                     count: departments.length
                                 },
                                 state: group.state
@@ -32,7 +32,7 @@
                     ></ng-container>
 
                     <ng-container
-                        *ngIf="group.state === ChatGroupStateEnum.Expanded"
+                        *ngIf="group.state === chatGroupStateEnum.Expanded"
                     >
                         <ng-container
                             *ngFor="
@@ -48,7 +48,7 @@
                                             ? listItemAdvanced
                                             : listItemRegular;
                                         context: {
-                                            type: ConversationTypeEnum.CHANNEL,
+                                            type: conversationTypeEnum.CHANNEL,
                                             item: department
                                         }
                                     "
@@ -59,7 +59,7 @@
                 </ng-container>
 
                 <!-- Case for Company User -->
-                <ng-container *ngSwitchCase="ChatGroupEnum.CompanyUser">
+                <ng-container *ngSwitchCase="chatGroupEnum.CompanyUser">
                     <ng-container
                         *ngTemplateOutlet="
                             userListHolder;
@@ -67,8 +67,8 @@
                                 data: group.groupData?.data,
                                 count: group.groupData?.count,
                                 state: group.state,
-                                header_title: ChatGroupEnum.CompanyUser,
-                                type: ConversationTypeEnum.SINGLE_CHAT,
+                                header_title: chatGroupEnum.CompanyUser,
+                                type: conversationTypeEnum.SINGLE_CHAT,
                                 is_round: true
                             }
                         "
@@ -76,7 +76,7 @@
                 </ng-container>
 
                 <!-- Case for Driver -->
-                <ng-container *ngSwitchCase="ChatGroupEnum.Driver">
+                <ng-container *ngSwitchCase="chatGroupEnum.Driver">
                     <ng-container
                         *ngTemplateOutlet="
                             userListHolder;
@@ -84,8 +84,8 @@
                                 data: group.groupData?.data,
                                 count: group.groupData?.count,
                                 state: group.state,
-                                header_title: ChatGroupEnum.Driver,
-                                type: ConversationTypeEnum.SINGLE_CHAT,
+                                header_title: chatGroupEnum.Driver,
+                                type: conversationTypeEnum.SINGLE_CHAT,
                                 is_round: false
                             }
                         "
@@ -146,8 +146,8 @@
     ></ng-container>
     <ng-container
         *ngIf="
-            state === ChatGroupStateEnum.Expanded ||
-            state === ChatGroupStateEnum.AllExpanded
+            state === chatGroupStateEnum.Expanded ||
+            state === chatGroupStateEnum.AllExpanded
         "
     >
         <ng-container
@@ -192,7 +192,7 @@
             >
                 <ng-container [ngSwitch]="type">
                     <ng-container
-                        *ngSwitchCase="ConversationTypeEnum.SINGLE_CHAT"
+                        *ngSwitchCase="conversationTypeEnum.SINGLE_CHAT"
                     >
                         <app-ca-profile-image
                             [avatarImg]="item.avatarFile?.url"
@@ -207,7 +207,7 @@
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
                     </ng-container>
-                    <ng-container *ngSwitchCase="ConversationTypeEnum.CHANNEL">
+                    <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -250,7 +250,7 @@
             >
                 <ng-container [ngSwitch]="type">
                     <ng-container
-                        *ngSwitchCase="ConversationTypeEnum.SINGLE_CHAT"
+                        *ngSwitchCase="conversationTypeEnum.SINGLE_CHAT"
                     >
                         <app-ca-profile-image
                             [avatarImg]="item.avatarFile?.url"
@@ -265,7 +265,7 @@
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
                     </ng-container>
-                    <ng-container *ngSwitchCase="ConversationTypeEnum.CHANNEL">
+                    <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
                         <ng-container
                             *ngTemplateOutlet="
                                 icon;
@@ -358,9 +358,9 @@
     <svg-icon
         class="d-flex justify-content-center align-items-center"
         [ngClass]="
-            (item.state === ChatGroupStateEnum.Expanded && 'icon-0degr') ||
-            (item.state === ChatGroupStateEnum.Collapsed && 'icon-90degr') ||
-            (item.state === ChatGroupStateEnum.AllExpanded && 'icon-180degr')
+            (item.state === chatGroupStateEnum.Expanded && 'icon-0degr') ||
+            (item.state === chatGroupStateEnum.Collapsed && 'icon-90degr') ||
+            (item.state === chatGroupStateEnum.AllExpanded && 'icon-180degr')
         "
         [svgStyle]="{ 'width.px': item.width, 'height.px': item.height }"
         [src]="item.route"
@@ -373,7 +373,7 @@
         class="header-arrow d-flex justify-content-center align-content-center"
         appHover
         [hoverColor]="
-            state === ChatGroupStateEnum.AllExpanded ? '#E9EFFD' : '#EEEEEE'
+            state === chatGroupStateEnum.AllExpanded ? '#E9EFFD' : '#EEEEEE'
         "
     >
         <ng-container

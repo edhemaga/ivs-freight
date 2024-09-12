@@ -5,7 +5,7 @@ import { CompanyUserShortResponse } from 'appcoretruckassist';
 import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
 
 // Enums
-import { ChatImageAspectRatioEnum } from '@pages/chat/enums/conversation/conversation-content/chat-image-aspect-ration.enum';
+import { ChatImageAspectRatioEnum } from '@pages/chat/enums/conversation/conversation-content/chat-image-aspect-ratio.enum';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';

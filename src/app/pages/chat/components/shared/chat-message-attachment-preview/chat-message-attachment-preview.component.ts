@@ -35,7 +35,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
   public isDocument!: boolean;
   public isMedia!: boolean;
   public documentIllustrationPath!: string;
-  public ChatAttachmentType = ChatAttachmentType;
+  public chatAttachmentType = ChatAttachmentType;
 
   public previewWidth: string = 'fit-content';
   public displayMode: 'size' | 'date';

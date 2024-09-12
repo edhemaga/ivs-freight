@@ -2,9 +2,9 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Injectable()
-export abstract class Unsubscribe implements OnDestroy {
+export abstract class UnsubscribeHelper implements OnDestroy {
 
-    unsubscribe$: Subject<void> = new Subject<void>();
+    public unsubscribe$: Subject<void> = new Subject<void>();
 
     completeSubject = (): void => {
         this.unsubscribe$.next();

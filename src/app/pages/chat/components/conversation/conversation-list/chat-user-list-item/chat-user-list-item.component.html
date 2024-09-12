@@ -32,18 +32,18 @@
             </div>
             <div class="chat-list-item-text-content d-flex">
                 <ng-container [ngSwitch]="status">
-                    <ng-container *ngSwitchCase="ChatConversationStatus.TYPING">
+                    <ng-container *ngSwitchCase="chatConversationStatus.TYPING">
                         <div class="chat-list-item-message ta-font-bold">
                             Typing...
                         </div>
                     </ng-container>
 
-                    <ng-container *ngSwitchCase="ChatConversationStatus.UNREAD">
+                    <ng-container *ngSwitchCase="chatConversationStatus.UNREAD">
                         {{
                             contact.companyUser.lastMessage?.content
                         }}</ng-container
                     >
-                    <ng-container *ngSwitchCase="ChatConversationStatus.READ">
+                    <ng-container *ngSwitchCase="chatConversationStatus.READ">
                         {{
                             contact.companyUser.lastMessage?.content
                         }}</ng-container

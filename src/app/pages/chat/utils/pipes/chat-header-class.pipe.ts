@@ -13,21 +13,20 @@ export class ChatHeaderClassPipe implements PipeTransform {
         state: ChatGroupStateEnum,
         unread: boolean
     ): string {
-        if (count === 0) {
-            return 'empty';
+
+        switch (true) {
+            case !count:
+                return 'empty';
+            case state === ChatGroupStateEnum.Expanded && unread:
+                return 'unread-expanded';
+            case state === ChatGroupStateEnum.Expanded || state === ChatGroupStateEnum.AllExpanded:
+                return 'expanded';
+            case state === ChatGroupStateEnum.Collapsed && unread:
+                return 'unread-collapsed';
+            case state === ChatGroupStateEnum.Collapsed:
+                return 'collapsed';
+            default:
+                return '';
         }
-        if (state === ChatGroupStateEnum.Expanded && unread) {
-            return 'unread-expanded';
-        }
-        if (state === ChatGroupStateEnum.Expanded || state === ChatGroupStateEnum.AllExpanded) {
-            return 'expanded';
-        }
-        if (state === ChatGroupStateEnum.Collapsed && unread) {
-            return 'unread-collapsed';
-        }
-        if (state === ChatGroupStateEnum.Collapsed) {
-            return 'collapsed';
-        }
-        return '';
     }
 }

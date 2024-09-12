@@ -23,7 +23,7 @@ import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
 import { ConversationTypeEnum } from '@pages/chat/enums/shared/chat-conversation-type.enum';
 
 // Constants
-import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
+import { ChatToolbarDataConstant } from '@pages/chat/utils/constants/chat-toolbar-data.constant';
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
@@ -56,7 +56,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public ConversationTypeEnum = ConversationTypeEnum;
 
   // Tab and header ribbon configuration
-  public tabs: ChatTab[] = ChatToolbarDataConstants.tabs;
+  public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
 
   public ChatSvgRoutes = ChatSvgRoutes;
 
