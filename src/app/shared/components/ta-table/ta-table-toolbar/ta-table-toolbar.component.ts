@@ -492,6 +492,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             action: TableStringEnum.TAB_SELECTED,
             tabData: selectedTabData,
         });
+
+        // There is bug if popover is open and we click on new tab, data is not updated
+        // If we first close popover then select tab data is changed 
+        this.optionsPopupOpen = false;
+        this.setColumnsOptionsGroups();
     }
 
     public onToolBarAction(actionType: string): void {
@@ -707,7 +712,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     // Reset Table
     public onResetTable(): void {
         this.tableReseting = true;
-        
         if (this.tableConfigurationType) {
             localStorage.removeItem(
                 `table-${this.tableConfigurationType}-Configuration`

@@ -1757,7 +1757,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: 100,
+            starting: data.additionalInfo.starting,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
