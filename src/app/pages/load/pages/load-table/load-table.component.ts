@@ -628,7 +628,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab !== TableStringEnum.TEMPLATE,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                showMoneyFilter: true,
+                showMoneyFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 loadMoneyFilter: true,
                 hideDeleteButton:
                     this.selectedTab !== TableStringEnum.TEMPLATE &&

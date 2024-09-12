@@ -125,6 +125,7 @@ import {
     LoadShortResponse,
     LoadStatusResponse,
     LoadBillingAdditionalResponse,
+    ShipperShortResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -148,6 +149,7 @@ import {
     LoadModalWaitTimeFormField,
     LoadStopRoutes,
     LoadStop,
+    LoadShipper
 } from './models';
 
 // Svg Routes
@@ -1758,7 +1760,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 size: LoadModalStringEnum.SMALL,
             });
         } else {
-            this.selectedBroker = event;
+            this.selectedBroker = event && Object.keys(event).length ? event : null;
 
             if (this.selectedBroker) {
                 this.loadBrokerInputConfig = {
@@ -3311,17 +3313,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     id: this.isActiveLoad
                         ? item.get(LoadModalStringEnum.ID).value ?? null
                         : null,
-                    stopType: saveCurrentLoad ? this.typeOfExtraStops[index].find(
+                    stopType: saveCurrentLoad ? this.typeOfExtraStops[index]?.find(
                         (item) => item.checked
                     ) :item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
                         .value,
-                    shipperId: this.selectedExtraStopShipper[index].id,
+                    shipperId: this.selectedExtraStopShipper[index]?.id,
                     shipper: this.originalShippers.find(
                         (shipper) =>
                             shipper.id ===
-                            this.selectedExtraStopShipper[index].id
+                            this.selectedExtraStopShipper[index]?.id
                     ) as any,
                     dateFrom: this.formatStopDateTime(
                         item.get(LoadModalStringEnum.DATE_FROM).value,
@@ -3332,7 +3334,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         item.get(LoadModalStringEnum.TIME_TO).value
                     ),
                     timeType: saveCurrentLoad
-                        ? this.stopTimeTabsExtraStops[index].find(
+                        ? this.stopTimeTabsExtraStops[index]?.find(
                               (item) => item.checked
                           )
                         : this.stopTimeTabsExtraStops[index].find(
@@ -4702,6 +4704,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return formattedString.trim();
     }
 
+    private formatShipper(shipper: ShipperShortResponse): LoadShipper {
+        if (!shipper) return null;
+    
+        const formattedShipper = {
+            ...shipper,
+            name: shipper.businessName,
+        };
+    
+        if (shipper?.address) {
+            return {
+                ...formattedShipper,
+                address: `${shipper.address.city}, ${shipper.address.stateShortName} ${shipper.address.zipCode}`,
+            };
+        }
+    
+        return formattedShipper;
+    }
+
     private populateLoadModalData(loadModalData: LoadResponse): void {
         if (!loadModalData) return;
 
@@ -4813,11 +4833,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
               )
             : null;
 
-        const editedPickupShipper = {
-            ...stops[0]?.shipper,
-            address: `${pickupStop?.shipper?.address.city}, ${pickupStop?.shipper?.address.stateShortName} ${pickupStop?.shipper?.address.zipCode}`,
-            name: pickupStop?.shipper?.businessName,
-        };
+            const editedPickupShipper = this.formatShipper(pickupStop?.shipper);
+
 
         let deliveryStop;
         // In case we close modal and come back without adding delivery it will add pickup stop to delivery
@@ -4826,11 +4843,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliveryStop = stops[stops.length - 1];
         }
 
-        const editedDeliveryShipper = {
-            ...deliveryStop?.shipper,
-            address: `${deliveryStop?.shipper?.address.city}, ${deliveryStop?.shipper?.address.stateShortName} ${deliveryStop?.shipper?.address.zipCode}`,
-            name: deliveryStop?.shipper?.businessName,
-        };
+        const editedDeliveryShipper = this.formatShipper(deliveryStop?.shipper);
+
 
         // Filter out undefined stops
         const editedStops = stops.filter(
@@ -4972,13 +4986,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             editedStops.forEach((extraStop, index) => {
                 this.createNewExtraStop();
 
-                const editedShipper = extraStop.shipper
-                    ? {
-                          ...extraStop.shipper,
-                          address: `${extraStop.shipper.address.city}, ${extraStop.shipper.address.stateShortName} ${extraStop.shipper.address.zipCode}`,
-                          name: extraStop.shipper.businessName,
-                      }
-                    : {};
+                const editedShipper = extraStop.shipper ? this.formatShipper(extraStop.shipper) : {};
 
                 if (extraStop) extraStop = this.formatStopTimes(extraStop);
 
