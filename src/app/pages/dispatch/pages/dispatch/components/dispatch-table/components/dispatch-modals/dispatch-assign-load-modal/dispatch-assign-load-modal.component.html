@@ -60,7 +60,7 @@
 
             <app-ta-resizer
                 [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 310 : 400 : 30"
-                [initialSecondElementHeight]="selectedDispatches? 400 : 400"
+                [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="30"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
@@ -71,7 +71,7 @@
             <div firstElement #firstElementRef class="h-full-important">
                 <app-ta-custom-card
                     [cardName]="'Assigned'"
-                    [hasCounter]="assignedLoads.length ? assignedLoads.length : -1"
+                    [hasCounter]="assignedLoads.length || -1"
                     [isCardOpen]="isAssignLoadCardOpen"
                     [hasActionSvg]="false"
                     [hasBodyData]="true"
