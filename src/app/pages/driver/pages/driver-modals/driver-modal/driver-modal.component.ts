@@ -1742,7 +1742,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.createPayrollDefaultData(data);
 
-                    if (this.editData) {
+                    if (this.editData?.data) {
                         this.isCardAnimationDisabled = true;
 
                         this.editDriverById(
@@ -1930,7 +1930,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         };
 
         this.driverService
-            .addDriver(newData)
+            .addDriver(newData, this.editData?.isDispatchCall)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
