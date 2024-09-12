@@ -61,6 +61,9 @@ import {
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
+// components
+import { ProgressBarComponent } from 'ca-components';
+
 @Component({
     selector: 'app-dispatch-table',
     templateUrl: './dispatch-table.component.html',
@@ -239,6 +242,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
         )?.length;
+
+        console.log('dispatchData', this.dispatchData);
     }
 
     private getConstantData(): void {
