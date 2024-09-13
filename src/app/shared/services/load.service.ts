@@ -56,6 +56,8 @@ import {
     LoadPossibleStatusesResponse,
     AssignLoadModalResponse,
     AssignedLoadListResponse,
+    SortOrder,
+    LoadSortBy,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -129,6 +131,21 @@ export class LoadService {
         this.statusAction.next(data);
     }
 
+    private getOrderAndSort(sortString: string): { sortBy: LoadSortBy, order: SortOrder } {
+        let order = null;
+        let sortBy = null;
+    
+        if (sortString?.endsWith('Asc')) {
+            order = SortOrder.Ascending;
+            sortBy = sortString.replace(/Asc$/, ''); 
+        } else {
+            order = SortOrder.Descending;
+            sortBy = sortString?.replace(/Desc$/, ''); 
+        }
+    
+        return { sortBy: sortBy as LoadSortBy, order };
+    }
+
     // table operations
     public getLoadList(
         loadType?: number,
@@ -164,7 +181,7 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
-        console.log(sort)
+        const {order, sortBy} = this.getOrderAndSort(sort);
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
@@ -194,10 +211,9 @@ export class LoadService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
-            // TODO: 
-            'Ascending',
-            'LoadNumber',
+            null,
+            order,
+            sortBy,
             search,
             search1,
             search2
