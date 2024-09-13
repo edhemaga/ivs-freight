@@ -186,6 +186,8 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -428,6 +430,8 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -622,6 +626,8 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -662,6 +668,8 @@ export class RepairService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

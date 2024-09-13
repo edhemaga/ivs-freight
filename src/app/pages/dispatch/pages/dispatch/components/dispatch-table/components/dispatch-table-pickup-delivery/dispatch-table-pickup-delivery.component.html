@@ -1,0 +1,31 @@
+<div class="main_inside" [class.filled]="dispatchResponse?.truck">
+    <ng-container *ngIf="dispatchResponse?.truck">
+        <div
+            class="padding-inside"
+            [class.hovering]="
+                isDispatchBoardLocked && isHoveringRowIndex === rowIndex
+            "
+        >
+            <div class="info-item w-100" [class.p-0]="dispatchResponse?.activeLoad">
+                <ng-container
+                    *ngIf="dispatchResponse?.activeLoad; else noActiveLoad"
+                >
+                    <app-ca-pickup-delivery-block
+                        [loads]="{
+                            active: dispatchLoads?.active,
+                            closed: dispatchLoads?.closed,
+                            pending:
+                                dispatchLoads?.pending
+                        }"
+                        [dispatchResponse]="dispatchResponse"
+                    ></app-ca-pickup-delivery-block>
+                </ng-container>
+                <ng-template #noActiveLoad>
+                    <div class="no-active-load ta-font-medium">
+                        NO ACTIVE OR PENDING LOAD
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </ng-container>
+</div>

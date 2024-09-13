@@ -76,6 +76,8 @@ export class PmService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -172,6 +174,8 @@ export class PmService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -199,6 +203,8 @@ export class PmService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
