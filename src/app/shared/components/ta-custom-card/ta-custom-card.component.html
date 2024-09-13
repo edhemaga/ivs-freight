@@ -191,6 +191,7 @@
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
+                    [class.disabled]="isActionDisabled"
                 >
                     <svg-icon
                         class="action-plus-icon"

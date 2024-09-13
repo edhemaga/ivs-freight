@@ -944,6 +944,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return null;
     }
 
+    public get areOriginAndDestinationValid(): boolean {
+        return (
+            this.validatePickupStops(this.loadForm) ===
+                LoadModalStringEnum.VALID_STATUS &&
+            this.validateDeliveryStops(this.loadForm) ===
+                LoadModalStringEnum.VALID_STATUS
+        );
+    }
+
     public validateExtraStops(
         loadFormArray: UntypedFormArray,
         indx: number
@@ -2846,8 +2855,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .filter((item) => item.additionalBillingType !== 6);
     }
 
+    public get areAllStepsValid(): boolean {
+        return this.areOriginAndDestinationValid && this.loadExtraStops().valid;
+    }
+
     public createNewExtraStop(): void {
-        if (!this.selectedPickupShipper || !this.loadExtraStops().valid) return;
+        if (!this.areOriginAndDestinationValid || !this.loadExtraStops().valid)
+            return;
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
@@ -4097,7 +4111,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.paymentMethodsDropdownList = res.paymentMethods;
 
                     // If we are creating new load only enable advace pay
-                    if(!this.editData?.data.id) res.paymentTypes = res.paymentTypes.filter(payment => payment.id === 3);
+                    if (!this.editData?.data.id)
+                        res.paymentTypes = res.paymentTypes.filter(
+                            (payment) => payment.id === 3
+                        );
 
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
