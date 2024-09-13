@@ -1,68 +1,41 @@
+@import 'src/theme/variables.scss';
+
 // --------------------- TRUCKS ---------------------
 .trucks {
-    &.semitruck {
-        svg {
-            path {
-                fill: #26a690;
-            }
-        }
-    }
-
+    &.semitruck,
     &.semisleeper {
         svg {
-            #Ellipse_9856,
-            #Ellipse_9857,
-            #Ellipse_9858,
             path {
-                fill: #ffa726;
+                fill: $ta-blue-18;
             }
         }
     }
 
-    &.boxtruck {
+    &.boxtruck,
+    &.reefertruck &.cargovan {
         svg {
             path {
-                fill: #ef5350;
+                fill: $ta-yellow-5;
             }
         }
     }
 
-    &.cargovan {
+    &.dumptruck,
+    &.cementtruck,
+    &.garbagetruck {
         svg {
             path {
-                fill: #38bdeb;
+                fill: $ta-red-11;
             }
         }
     }
 
-    &.towtruck {
-        svg {
-            path {
-                fill: #ab47bc;
-            }
-        }
-    }
-
-    &.carhauler {
-        svg {
-            path {
-                fill: #f276ef;
-            }
-        }
-    }
-
+    &.towtruck,
+    &.carhauler,
     &.spotter {
         svg {
             path {
-                fill: #8d6e63;
-            }
-        }
-    }
-
-    &.bus {
-        svg {
-            path {
-                fill: #ff7043;
+                fill: $ta-green-2;
             }
         }
     }

@@ -578,6 +578,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTruckModalResponse) => {
+                    console.log('res', res);
+
                     this.apUnits = res.apUnits;
                     this.brakes = res.brakes;
                     this.tags = res.tags;
