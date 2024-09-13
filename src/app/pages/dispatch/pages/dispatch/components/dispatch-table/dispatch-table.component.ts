@@ -161,7 +161,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
-    public currentDispatchGroupedLoadsResponse: any;
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse;
 
     public shownFields;
 
