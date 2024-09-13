@@ -129,21 +129,21 @@ export class ChatComponent extends UnsubscribeHelper implements OnInit, OnDestro
     let totalUnreadCount = 0;
     // Users
     totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
+      return accumulator + 1
     }, 0);
 
     if (archivedUsers)
       totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
-        return accumulator + currentObject.unreadCount
+        return accumulator + 1
       }, 0);
 
     // Drivers
     totalUnreadCount = drivers.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
+      return accumulator + 1
     }, 0);
 
     if (archivedDrivers) totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
+      return accumulator + 1
     }, 0);
 
     return totalUnreadCount;
