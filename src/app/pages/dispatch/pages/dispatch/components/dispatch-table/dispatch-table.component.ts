@@ -76,8 +76,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
 
-        this.handleTruckTrailerAdditionalFields();
-
         this.handleHoursOfService();
     }
 
@@ -98,11 +96,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
+
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
 
             this.isDriverEndorsementActive = !this.columnsToShow[6].hidden;
+
+            this.handleTruckTrailerAdditionalFields();
         }
     }
 
@@ -150,6 +151,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public addNewTruckData: TruckMinimalResponse;
 
     public showAddAddressFieldIndex: number = -1;
+    public isDisplayingAddressInput: boolean = true;
 
     public _isNoteExpanded: boolean = true;
     public parkingCount: number = 0;
@@ -310,12 +312,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     private handleTruckTrailerAdditionalFields(): void {
-        this.hasAdditionalFieldTruck = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.truck?.year
-        );
-        this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.trailer?.year
-        );
+        this.hasAdditionalFieldTruck = !this.columnsToShow[1].hidden;
+
+        this.hasAdditionalFieldTrailer = !this.columnsToShow[3].hidden;
 
         if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
             const currentAdditionalFieldValues = {
@@ -343,6 +342,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         index: number;
     }): void {
         const { type, event, index } = eventParam;
+
+        this.isDisplayingAddressInput = true;
 
         if (type === DispatchTableStringEnum.TRUCK) {
             const allowedTrailerIds = (event as TruckDispatchModalResponse)
@@ -386,6 +387,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }) {
         const { type, index } = event;
 
+        if (!this.dispatchData?.dispatches[index]) {
+            this.addNewTruckData = null;
+
+            this.isTrailerAddNewHidden = false;
+            this.isDisplayingAddressInput = false;
+
+            return;
+        }
+
         if (
             ((type === DispatchTableStringEnum.TRAILER_ID &&
                 !this.dispatchData.dispatches[index].truck) ||
@@ -405,6 +415,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public handleUpdateLastLocationEmit(event: string): void {
+        this.isDisplayingAddressInput = false;
+
         this.updateOrAddDispatchBoardAndSend(
             DispatchTableStringEnum.LOCATION,
             event,
@@ -449,6 +461,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.addNewTruckData = null;
 
             this.isTrailerAddNewHidden = false;
+            this.isDisplayingAddressInput = false;
 
             this.cdRef.detectChanges();
         }, 3000);

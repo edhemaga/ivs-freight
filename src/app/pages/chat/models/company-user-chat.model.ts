@@ -1,5 +1,5 @@
 // Models
-import { CompanyUser } from "@pages/chat/models/company-user.model";
+import { CompanyUser } from "@pages/chat/models";
 import { CompanyUserForChatListResponse } from "appcoretruckassist";
 
 export interface CompanyUserChat extends CompanyUserForChatListResponse {

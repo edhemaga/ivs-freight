@@ -1,6 +1,10 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpHeaders,
+    HttpParams
+} from '@angular/common/http';
 
 // Models
 import {
@@ -12,7 +16,7 @@ import {
     CreateResponse,
     UserType,
 } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { ChatMessageResponse } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -45,16 +49,18 @@ export class UserChatService {
 
     public getCompanyUserList(
         userType: UserType,
-        searchParam?: string
+        pageIndex?: number,
+        pageSize?: number,
+        searchParam?: string,
     ): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
             userType,
+            pageIndex,
+            pageSize,
             null,
             null,
-            null,
-            null,
-            searchParam ?? null,
+            searchParam,
             null
         );
     }

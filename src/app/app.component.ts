@@ -5,16 +5,19 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { filter, map, mergeMap } from 'rxjs';
 
-// animations
+// Animations
 import { scrollButtonAnimation } from '@core/animations/scroll-button.animation';
 import {
     slideLeft,
     slideRight,
 } from '@pages/applicant/animations/applicant-route.animation';
 
-// services
+// Services
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 import { ChatHubService } from '@pages/chat/services/chat-hub.service';
+
+// Pipes
+import { BlockedContentPipe } from '@core/pipes/blocked-content.pipe';
 
 @Component({
     selector: 'app-root',
@@ -47,6 +50,9 @@ export class AppComponent implements OnInit {
         private _: StaticInjectorService,
         private chatHubService: ChatHubService,
 
+        // Pipes
+        private blockedContent: BlockedContentPipe
+
     ) { }
 
     ngOnInit(): void {
@@ -68,8 +74,8 @@ export class AppComponent implements OnInit {
                 this.titleService.setTitle(
                     'CarrierAssist' + ' | ' + event.title
                 );
+                this.connectToChatHub();
             });
-        this.connectToChatHub();
     }
 
     public top(): void {
@@ -82,6 +88,8 @@ export class AppComponent implements OnInit {
     }
 
     private connectToChatHub(): void {
+        if (this.blockedContent.transform(this.currentPage)) return;
+
         this.chatHubService.connect();
     }
 }
