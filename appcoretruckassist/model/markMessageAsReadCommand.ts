@@ -11,9 +11,7 @@
  */
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string | null;
+export interface MarkMessageAsReadCommand { 
+    conversationId?: number;
 }
 

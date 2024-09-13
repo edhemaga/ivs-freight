@@ -9,17 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelModalStopResponse } from './fuelModalStopResponse';
-import { AddressEntity } from './addressEntity';
+import { ActivityLogUserReponse } from './activityLogUserReponse';
 
 
-export interface GetTransactionModalFranchiseStopResponse { 
-    id?: number;
-    businessName?: string | null;
+export interface ActivityLogDepartmentResponse { 
+    id?: number | null;
+    name?: string | null;
     count?: number | null;
-    fuelStopStores?: Array<FuelModalStopResponse> | null;
-    isFranchise?: boolean;
-    favourite?: boolean;
-    address?: AddressEntity;
+    users?: Array<ActivityLogUserReponse> | null;
 }
 

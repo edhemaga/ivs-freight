@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string | null;
+export interface ActivityLogActionFilterResponse { 
+    logoName?: string | null;
+    name?: string | null;
+    actionLogs?: Array<EnumValue> | null;
+    count?: number;
 }
 
