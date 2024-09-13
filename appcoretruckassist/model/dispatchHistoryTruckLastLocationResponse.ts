@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelModalStopResponse } from './fuelModalStopResponse';
 import { AddressEntity } from './addressEntity';
 
 
-export interface GetTransactionModalFranchiseStopResponse { 
-    id?: number;
-    businessName?: string | null;
-    count?: number | null;
-    fuelStopStores?: Array<FuelModalStopResponse> | null;
-    isFranchise?: boolean;
-    favourite?: boolean;
+export interface DispatchHistoryTruckLastLocationResponse { 
     address?: AddressEntity;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 

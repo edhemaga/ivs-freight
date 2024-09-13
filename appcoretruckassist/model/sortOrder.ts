@@ -11,9 +11,10 @@
  */
 
 
-export interface UpdateDispatchHistoryCommand { 
-    id?: number;
-    startDate?: string;
-    endDate?: string | null;
-}
+export type SortOrder = 'Ascending' | 'Descending';
+
+export const SortOrder = {
+    Ascending: 'Ascending' as SortOrder,
+    Descending: 'Descending' as SortOrder
+};
 
