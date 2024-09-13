@@ -16,7 +16,7 @@ import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 export interface CompanyUserChatResponse { 
     companyUser?: CompanyUserShortResponse;
-    unreadCount?: number;
+    hasUnreadMessage?: boolean;
     isFavourite?: boolean;
     userType?: EnumValue;
     conversationId?: number | null;
