@@ -45,6 +45,7 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 import { PickupDeliveryBlockComponent } from 'ca-components';
+import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pickup-delivery/dispatch-table-pickup-delivery.component';
 
 // pipes
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
@@ -83,6 +84,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchHistoryModalGroupComponent,
         DispatchTableStatusComponent,
         DispatchTableNoteComponent,
+        DispatchTablePickupDeliveryComponent,
         LoadShortDetailsComponent,
 
         // pipes
