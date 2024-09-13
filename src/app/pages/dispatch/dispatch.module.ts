@@ -47,7 +47,6 @@ import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/com
 import { PickupDeliveryBlockComponent } from 'ca-components';
 
 // pipes
-import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
@@ -59,6 +58,7 @@ import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispat
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
 import { DispatchHiddenAddTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-hidden-add-trailer.pipe';
+import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
 
 // directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
@@ -90,6 +90,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         TooltipWidthPipe,
         DispatchAllowedTruckTrailerPipe,
         DispatchHiddenAddTrailerPipe,
+        DispatchColorFinderPipe,
     ],
     imports: [
         // modules
@@ -105,7 +106,6 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
-        ColorFinderPipe,
         DispatchTableInfoTextPipe,
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
@@ -135,6 +135,5 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
 
         //  TaMapsComponent,
     ],
-    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}

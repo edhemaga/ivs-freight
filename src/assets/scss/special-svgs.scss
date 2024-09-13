@@ -1,68 +1,42 @@
+@import 'src/theme/variables.scss';
+
 // --------------------- TRUCKS ---------------------
 .trucks {
-    &.semitruck {
-        svg {
-            path {
-                fill: #26a690;
-            }
-        }
-    }
-
+    &.semitruck,
     &.semisleeper {
         svg {
-            #Ellipse_9856,
-            #Ellipse_9857,
-            #Ellipse_9858,
             path {
-                fill: #ffa726;
+                fill: $ta-blue-18;
             }
         }
     }
 
-    &.boxtruck {
-        svg {
-            path {
-                fill: #ef5350;
-            }
-        }
-    }
-
+    &.boxtruck,
+    &.reefertruck,
     &.cargovan {
         svg {
             path {
-                fill: #38bdeb;
+                fill: $ta-yellow-5;
             }
         }
     }
 
-    &.towtruck {
+    &.dumptruck,
+    &.cementtruck,
+    &.garbagetruck {
         svg {
             path {
-                fill: #ab47bc;
+                fill: $ta-red-11;
             }
         }
     }
 
-    &.carhauler {
-        svg {
-            path {
-                fill: #f276ef;
-            }
-        }
-    }
-
+    &.towtruck,
+    &.carhauler,
     &.spotter {
         svg {
             path {
-                fill: #8d6e63;
-            }
-        }
-    }
-
-    &.bus {
-        svg {
-            path {
-                fill: #ff7043;
+                fill: $ta-green-2;
             }
         }
     }
@@ -139,114 +113,46 @@
 
 // --------------------- TRAILERS ---------------------
 .trailers {
+    &.flatbed,
+    &.stepdeck,
+    &.lowboyrgn,
+    &.chassis,
+    &.conestoga,
+    &.sidekit,
+    &.container {
+        svg {
+            path {
+                fill: $ta-blue-18;
+            }
+        }
+    }
+
+    &.dryvan,
     &.reefer {
         svg {
             path {
-                fill: #3074d3;
+                fill: $ta-yellow-5;
             }
         }
     }
 
-    &.dryvan {
-        svg {
-            path {
-                fill: #38bdeb;
-            }
-        }
-    }
-
-    &.sidekit {
-        svg {
-            path {
-                fill: #ab47bc;
-            }
-        }
-    }
-
-    &.conestoga {
-        svg {
-            path {
-                fill: #008496;
-            }
-        }
-    }
-
-    &.dumper {
-        svg {
-            path {
-                fill: #8d6e63;
-            }
-        }
-    }
-
-    &.trailerContainer {
-        svg {
-            path {
-                fill: #ffa726;
-            }
-        }
-    }
-
-    &.tanker {
-        svg {
-            path {
-                fill: #26a690;
-            }
-        }
-    }
-
+    &.enddump,
+    &.bottomdump,
+    &.hopper,
+    &.tanker,
     &.pneumatictanker {
         svg {
             path {
-                fill: #56ab62;
+                fill: $ta-red-11;
             }
         }
     }
 
-    &.carhauler {
-        svg {
-            path {
-                fill: #fd4d96;
-            }
-        }
-    }
-
+    &.carhauler,
     &.carhaulerstigner {
         svg {
             path {
-                fill: #f276ef;
-            }
-        }
-    }
-
-    &.flatbed {
-        svg {
-            path {
-                fill: #ff9800;
-            }
-        }
-    }
-
-    &.lowboyrgn {
-        svg {
-            path {
-                fill: #f76629;
-            }
-        }
-    }
-
-    &.chassis {
-        svg {
-            path {
-                fill: #ef5350;
-            }
-        }
-    }
-
-    &.stepdeck {
-        svg {
-            path {
-                fill: #d80300;
+                fill: $ta-green-2;
             }
         }
     }
