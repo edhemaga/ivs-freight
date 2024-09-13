@@ -216,10 +216,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getMainBoardColumnWidths();
     }
 
-    public pickupDeliveryItem(item: DispatchResponse): boolean {
-        return !!item.activeLoad;
-    }
-
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
         this.dispatcherService
             .getDispatchAssignedloadsId(item.id)
