@@ -614,17 +614,17 @@
                                     >
                                         <div class="info-item p-0 w-100">
                                             <ng-container
-                                                *ngIf="pickupDeliveryItem(item)"
+                                                *ngIf="item?.activeLoad"
                                             >
-                                                <!--     <app-ca-pickup-delivery-block
+                                                <app-ca-pickup-delivery-block
                                                     [loads]="{
-                                                        active: currentDispatchGroupedLoadsResponse.active,
-                                                        closed: currentDispatchGroupedLoadsResponse.closed,
+                                                        active: currentDispatchGroupedLoadsResponse?.active,
+                                                        closed: currentDispatchGroupedLoadsResponse?.closed,
                                                         pending:
-                                                            currentDispatchGroupedLoadsResponse.pending
+                                                            currentDispatchGroupedLoadsResponse?.pending
                                                     }"
                                                     [dispatchResponse]="item"
-                                                ></app-ca-pickup-delivery-block> -->
+                                                ></app-ca-pickup-delivery-block>
                                             </ng-container>
                                         </div>
                                     </div>
@@ -734,6 +734,7 @@
                                         [noteWidth]="noteWidth"
                                         [isNoteExpanded]="_isNoteExpanded"
                                         [isHoveringRowIndex]="
+                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex
                                         "
                                         [rowIndex]="rowIndex"
