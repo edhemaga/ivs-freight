@@ -63,7 +63,7 @@ export class ModalService {
 
     public setProjectionModal(data: {
         action: string;
-        payload: { key: string; value: any; id?: any };
+        payload: { key: string; value: any; id?: any, tab?: number, data?: any, type?: number | string, openedTab?: string };
         component: any;
         size: string;
         type?: string;
@@ -91,6 +91,9 @@ export class ModalService {
                         key: data.payload.key,
                         type: data.type,
                         id: data.payload?.id,
+                        tab: data.payload?.tab,
+                        data: data.payload?.data,
+                        openedTab: data?.payload.openedTab
                     }
                 );
                 clearTimeout(timeout);
