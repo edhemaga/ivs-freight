@@ -10,6 +10,8 @@ export class ChatSvgRoutes {
     static contactStatusIcon: string = 'assets/svg/chat/contact-status-icon.svg';
     static departmentIcon: string = 'assets/svg/chat/department-icon.svg';
     static listOptionsIcon: string = 'assets/svg/chat/list-options-icon.svg';
+    static favoriteIcon: string = 'assets/svg/chat/favorite-icon.svg';
+    static circleIcon: string = 'assets/svg/chat/circle-icon.svg';
 
     // Messages and messages actions
     static faceEmojiIcon: string = 'assets/svg/chat/face-smile-emoji-icon.svg';
@@ -43,4 +45,6 @@ export class ChatSvgRoutes {
 
     // Other
     static linkIcon: string = 'assets/svg/chat/link-icon.svg';
+    static headerArrowDownIcon: string = 'assets/svg/chat/header-arrow-down-icon.svg';
+    static hashIcon: string = 'assets/svg/chat/hash-icon.svg';
 }
