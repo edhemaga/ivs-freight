@@ -190,6 +190,8 @@ export class BrokerService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -643,6 +645,8 @@ export class BrokerService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

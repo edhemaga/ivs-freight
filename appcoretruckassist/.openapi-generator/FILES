@@ -416,6 +416,7 @@ model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
+model/dispatchHistoryTruckLastLocationResponse.ts
 model/dispatchHosCommand.ts
 model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
@@ -631,6 +632,7 @@ model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadShortResponse.ts
+model/loadSortBy.ts
 model/loadStatus.ts
 model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
@@ -937,6 +939,7 @@ model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signupUserCommand.ts
+model/sortOrder.ts
 model/specialCheck.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts

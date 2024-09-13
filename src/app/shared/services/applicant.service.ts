@@ -89,6 +89,8 @@ export class ApplicantService {
             applicantSpecParamsPageSize,
             applicantSpecParamsCompanyId,
             applicantSpecParamsSort,
+            null,
+            null,
             applicantSpecParamsSearch,
             applicantSpecParamsSearch1,
             applicantSpecParamsSearch2
