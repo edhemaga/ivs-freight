@@ -25,7 +25,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
-import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
@@ -41,6 +40,7 @@ import {
     CardDetails,
     DeleteComment,
     DropdownItem,
+    LastStatusPassed,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -78,6 +78,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { LoadStatusHelper } from '@shared/utils/helpers/load-status.helper';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -583,7 +584,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -606,7 +606,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-
     private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -629,7 +628,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab !== TableStringEnum.TEMPLATE,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                showMoneyFilter: true,
+                showMoneyFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 loadMoneyFilter: true,
                 hideDeleteButton:
                     this.selectedTab !== TableStringEnum.TEMPLATE &&
@@ -1227,24 +1226,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 tab: this.selectedTab,
-                time:
-                    (lastStatusPassed?.days
-                        ? lastStatusPassed?.days +
-                          ' ' +
-                          TableStringEnum.DAY +
-                          ' '
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
-                    (lastStatusPassed?.hours
-                        ? lastStatusPassed?.hours +
-                          ' ' +
-                          TableStringEnum.HOURS +
-                          ' '
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
-                    (lastStatusPassed?.minutes
-                        ? lastStatusPassed?.minutes +
-                          ' ' +
-                          TableStringEnum.MINUTES
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time: LoadStatusHelper.calculateStatusTime(
+                    lastStatusPassed as any
+                ), //leave this any for now
             },
             total: miles?.totalMiles,
             empty: miles?.emptyMiles,
@@ -1619,8 +1603,46 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     })
                 )
                 .subscribe();
-        } else if (event.type === TableStringEnum.VIEW_DETAILS)
+        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
             this.router.navigate([`/list/load/${event.id}/details`]);
+        } else if (
+            event.type === TableStringEnum.CONVERT_TO_TEMPLATE ||
+            event.type === TableStringEnum.CONVERT_TO_LOAD
+        ) {
+            this.loadServices
+                .getLoadById(
+                    event.id,
+                    this.selectedTab === TableStringEnum.TEMPLATE
+                )
+                .pipe(
+                    takeUntil(this.destroy$),
+                    tap((load) => {
+                        const editData = {
+                            data: {
+                                ...load,
+                            },
+                            type: event.type,
+                            selectedTab: this.selectedTab,
+                        };
+
+                        this.modalService.openModal(
+                            LoadModalComponent,
+                            { size: TableStringEnum.LOAD },
+                            {
+                                ...editData,
+                                disableButton: false,
+                                loadAction: event.type,
+                                selectedTab:
+                                    event.type ===
+                                    TableStringEnum.CONVERT_TO_TEMPLATE
+                                        ? TableStringEnum.TEMPLATE
+                                        : null,
+                            }
+                        );
+                    })
+                )
+                .subscribe();
+        }
     }
 
     private getSelectedTabTableData(): void {

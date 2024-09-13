@@ -1,18 +1,20 @@
 <ng-content> </ng-content>
 <ng-template>
-    <div
-        class="tooltip-holder"
-        [style]="
-            'margin-top: ' +
-            tooltipMarginTop +
-            '; background-color: ' +
-            tooltipBackground +
-            '; color: ' +
-            tooltipColor +
-            '; text-align: ' +
-            tooltipTextAlign +
-            ' '
-        "
-        [innerHTML]="mainTooltip"
-    ></div>
+    <ng-container *ngIf="mainTooltip">
+        <div
+            class="tooltip-holder"
+            [style]="
+                'margin-top: ' +
+                tooltipMarginTop +
+                '; background-color: ' +
+                tooltipBackground +
+                '; color: ' +
+                tooltipColor +
+                '; text-align: ' +
+                tooltipTextAlign +
+                ' '
+            "
+            [innerHTML]="mainTooltip"
+        ></div>
+    </ng-container>
 </ng-template>

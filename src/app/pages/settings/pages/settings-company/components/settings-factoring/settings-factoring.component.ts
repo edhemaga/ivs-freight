@@ -10,6 +10,9 @@ import { UntypedFormControl } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// animations
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+
 // serivces
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 import { NotificationService } from '@shared/services/notification.service';
@@ -22,10 +25,14 @@ import { CompanyStore } from '@pages/settings/state/company-state/company-settin
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// svg routes
+import { SettingsFactorySvgRoutes } from './utils/svg-routes/settings-factoring-svg-routes';
+
 @Component({
     selector: 'app-settings-factoring',
     templateUrl: './settings-factoring.component.html',
     styleUrls: ['./settings-factoring.component.scss'],
+    animations: [cardComponentAnimation('showHideCardBody')],
 })
 export class SettingsFactoringComponent
     implements OnInit, OnChanges, OnDestroy
@@ -35,6 +42,10 @@ export class SettingsFactoringComponent
     public factoringPhone: boolean;
     public factoringEmail: boolean;
     public factoringNote: UntypedFormControl = new UntypedFormControl();
+    public isNoteVisible: boolean = false;
+
+    public svgRoutes = SettingsFactorySvgRoutes;
+
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         private notificationService: NotificationService,
@@ -93,6 +104,10 @@ export class SettingsFactoringComponent
                 image: false,
             }
         );
+    }
+
+    public toggleNoteVisibility() {
+        this.isNoteVisible = !this.isNoteVisible;
     }
 
     ngOnDestroy(): void {

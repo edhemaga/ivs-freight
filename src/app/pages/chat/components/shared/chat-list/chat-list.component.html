@@ -1,0 +1,24 @@
+<div class="chat-list-container">
+    <div class="chat-header-wrapper">
+        <ng-content select="[header]"></ng-content>
+    </div>
+    <ng-container *ngIf="itemsCount">
+        <div class="contact-container">
+            <div
+                class="contact-wrapper"
+                [ngStyle]="
+                    isSearchActive
+                        ? {
+                              height: 'calc(100% - 58px)',
+                              marginTop: '6px',
+                              position: 'relative',
+                              top: '-6px'
+                          }
+                        : {}
+                "
+            >
+                <ng-content select="[body]"></ng-content>
+            </div>
+        </div>
+    </ng-container>
+</div>

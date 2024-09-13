@@ -92,6 +92,7 @@ export class TaInputAddressDropdownComponent
     @Input() public closedBorder: boolean = false;
     @Input() public incorrectValue: boolean;
     @Input() public hideEmptyLoaded: boolean = false;
+    @Input() public isDispatchBoardAddress: boolean = false;
 
     @Output() selectedAddress: EventEmitter<AddressData> =
         new EventEmitter<AddressData>(null);
