@@ -164,6 +164,7 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
+        console.log(sort)
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
@@ -194,6 +195,9 @@ export class LoadService {
             pageSize,
             companyId,
             sort,
+            // TODO: 
+            'Ascending',
+            'LoadNumber',
             search,
             search1,
             search2
@@ -228,6 +232,8 @@ export class LoadService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -605,6 +611,8 @@ export class LoadService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

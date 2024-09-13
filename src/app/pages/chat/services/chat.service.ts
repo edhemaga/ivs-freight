@@ -60,6 +60,8 @@ export class UserChatService {
             pageSize,
             null,
             null,
+            null,
+            null,
             searchParam,
             null
         );
