@@ -299,9 +299,9 @@ export function getLoadTemplateColumnDefinition() {
         },
         {
             ngTemplate: 'pickup-delivery',
-            title: 'Pickup Delivery',
+            title: 'Pickup & Delivery',
             field: 'loadPickup',
-            name: 'Pickup  Delivery',
+            name: 'Pickup & Delivery',
             sortName: 'pickup',
             pickupDeliveryType: 'pickup',
             hidden: false,
@@ -1122,9 +1122,9 @@ export function getLoadActiveAndPendingColumnDefinition() {
         },
         {
             ngTemplate: 'pickup-delivery',
-            title: 'Pickup Delivery',
+            title: 'Pickup & Delivery',
             field: 'loadPickup',
-            name: 'Pickup  Delivery',
+            name: 'Pickup & Delivery',
             sortName: 'pickup',
             pickupDeliveryType: 'pickup',
             hidden: false,
@@ -1997,9 +1997,9 @@ export function getLoadClosedColumnDefinition() {
         
         {
             ngTemplate: 'pickup-delivery',
-            title: 'Pickup Delivery',
+            title: 'Pickup & Delivery',
             field: 'loadPickup',
-            name: 'Pickup  Delivery',
+            name: 'Pickup & Delivery',
             sortName: 'pickup',
             pickupDeliveryType: 'pickup',
             hidden: false,

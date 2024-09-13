@@ -4095,6 +4095,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     });
 
                     this.paymentMethodsDropdownList = res.paymentMethods;
+
+                    // If we are creating new load only enable advace pay
+                    if(!this.editData?.data.id) res.paymentTypes = res.paymentTypes.filter(payment => payment.id === 3);
+
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
 

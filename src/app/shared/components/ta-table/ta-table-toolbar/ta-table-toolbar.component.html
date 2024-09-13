@@ -848,7 +848,8 @@
                                 <div
                                     class="column-text"
                                     [ngClass]="{
-                                        'selectable-text': !column.isPined
+                                        'selectable-text': !column.isPined,
+                                        'ta-font-bold': !column.hidden
                                     }"
                                 >
                                     {{ column.name || column.title }}
@@ -885,6 +886,9 @@
 
                                     <div
                                         class="column-text selectable-text"
+                                        [ngClass]="{
+                                            'ta-font-bold': column.areAllActive
+                                        }"
                                         (click)="openColumnsGroupDropdown(i)"
                                     >
                                         {{ column.optionsGroupName }}
@@ -969,7 +973,8 @@
                                                 class="column-text"
                                                 [ngClass]="{
                                                     'selectable-text':
-                                                        !columnGroup.isPined
+                                                        !columnGroup.isPined,
+                                                        'ta-font-bold': !columnGroup.hidden
                                                 }"
                                             >
                                                 {{ columnGroup.name }}
