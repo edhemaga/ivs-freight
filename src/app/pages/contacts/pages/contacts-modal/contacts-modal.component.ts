@@ -476,7 +476,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private enableSaving() {
+    private enableSaving(): void {
         // wait for modal to close
         setTimeout(() => {
             this.isUploadInProgress = false;
