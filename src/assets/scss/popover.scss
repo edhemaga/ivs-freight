@@ -434,7 +434,7 @@
                 height: 26px;
                 border-radius: 2px;
                 padding: 0 6px;
-                margin: 0 !important;
+                margin: 0 0 4px 0 !important;
                 display: flex;
                 align-items: center !important;
                 justify-content: unset !important;
@@ -457,7 +457,7 @@
                     width: -moz-fit-content !important;
                     width: fit-content !important;
                     justify-content: unset !important;
-                    font-size: 12px;
+                    font-size: 14px;
                     font-weight: 400;
                     color: $white;
                     transition: font-weight 0.25s;
@@ -486,7 +486,7 @@
                         cursor: pointer;
                         svg {
                             path {
-                                fill: #aaaaaa40;
+                                fill: $muted;
                                 transition: 0.25s;
                             }
                         }
@@ -620,9 +620,9 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: $bw6-2;
+                                background-color: $muted; 
                                 margin-bottom: 0;
-                                border-radius: 1px;
+                                border-radius: 2px;
                                 cursor: pointer;
 
                                 &:hover {
@@ -632,10 +632,11 @@
 
                             .some-selected {
                                 background-image: url('/assets/svg/truckassist-table/some-selected-chack-mark.svg');
-                                background-color: $ta-blue-7;
+                                background-color: $ta-blue-13;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;
+                                background-size: 10px;
 
                                 &:hover {
                                     background-color: $light-blue;
@@ -644,11 +645,12 @@
 
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
-                                background-color: $ta-blue-7;
+                                background-color: $ta-blue-13;
                                 background-image: url('/assets/svg/truckassist-table/check-new.svg') !important;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;
+                                background-size: 12px;
 
                                 &:hover {
                                     background-color: $light-blue;
@@ -674,7 +676,7 @@
                         }
 
                         .column-text {
-                            font-size: 12px;
+                            font-size: 14px;
                             font-weight: 400;
                             color: $white;
                             justify-content: unset !important;
@@ -701,6 +703,7 @@
                         padding: 0 6px;
                         justify-content: unset !important;
                         border-radius: 2px;
+                        margin-bottom: 4px;
 
                         &:hover {
                             background: $ta-light-grey-10;
@@ -709,7 +712,7 @@
                     }
 
                     .group-columns-active {
-                        background: $ta-light-grey-10;
+                        background: $ta-black;
 
                         .group-columns-title {
                             .group-columns-arrow {
@@ -721,7 +724,7 @@
                         }
 
                         .group-columns {
-                            padding: 0 10px 4px 10px;
+                            padding: 0 10px 0 10px;
                             max-height: 400px !important;
                             transition: 0.2s !important;
                         }
@@ -738,6 +741,7 @@
                             padding: 0 6px;
                             justify-content: unset !important;
                             border-radius: 2px;
+                            margin-bottom: 4px;
 
                             .group-columns-arrow {
                                 display: flex;
@@ -752,6 +756,7 @@
                                     display: flex;
                                     transform: rotate(-90deg);
                                     transition: 0.2s;
+                                    margin-right: 3px;
                                 }
                             }
 
@@ -775,6 +780,7 @@
                                 padding: 4px;
                                 justify-content: unset !important;
                                 border-radius: 2px;
+                                margin-bottom: 4px;
 
                                 &:hover {
                                     background: $ta-light-grey-10;

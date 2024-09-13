@@ -1,53 +1,56 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-// Components
-import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
 
 // Models
 import { ConversationType } from 'appcoretruckassist';
-import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
-import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
+import {
+    ChatResolvedData,
+    CompanyUserChatResponsePaginationReduced,
+    ChatTab,
+    ChatCompanyChannelExtended,
+} from '@pages/chat/models';
 
 // Enums
-import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
-import { ConversationTypeEnum } from '@pages/chat/enums/conversation/chat-conversation-type.enum';
+import { ChatRoutesEnum, ConversationTypeEnum } from '@pages/chat/enums';
 
 // Constants
-import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
+import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Service
-import { UserChatService } from '@pages/chat/services/chat.service';
-import { ChatTab } from '@pages/chat/models/chat-tab.model';
-import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
+import { UserChatService } from '@pages/chat/services';
+
+// Helpers
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
+export class ChatComponent
+    extends UnsubscribeHelper
+    implements OnInit, OnDestroy
+{
     public title!: string;
 
+    // Data
+    public departments!: ChatCompanyChannelExtended[];
+    public companyChannels: ChatCompanyChannelExtended[];
     public companyUsers!: CompanyUserChatResponsePaginationReduced;
     public drivers!: CompanyUserChatResponsePaginationReduced;
     public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
     public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
-    public companyChannels!: ChatCompanyChannelExtended[];
 
     public unreadCount!: number;
     public selectedConversation: number;
     public ConversationTypeEnum = ConversationTypeEnum;
 
     // Tab and header ribbon configuration
-    public tabs: ChatTab[] = ChatToolbarDataConstants.tabs;
+    public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
 
     public ChatSvgRoutes = ChatSvgRoutes;
 
@@ -57,7 +60,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
         // Services
         private chatService: UserChatService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.getResolvedData();
@@ -70,7 +75,7 @@ export class ChatComponent implements OnInit, OnDestroy {
                 this.title = res.title;
                 this.drivers = res.drivers;
                 this.companyUsers = res.users;
-                this.companyChannels = res.companyChannels;
+                this.departments = res.departments;
                 this.tabs[0].count =
                     this.drivers.count + this.companyUsers.count;
                 this.unreadCount = this.getUnreadCount(
@@ -78,10 +83,6 @@ export class ChatComponent implements OnInit, OnDestroy {
                     this.drivers
                 );
             });
-    }
-
-    public trackById(index: number, tab: ChatTab): number {
-        return tab.id;
     }
 
     public onSelectTab(item: ChatTab): void {
@@ -122,8 +123,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         archivedDrivers?: CompanyUserChatResponsePaginationReduced
     ): number {
         let totalUnreadCount = 0;
-        // Users
-        /*  totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
+        /*   // Users
+    totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
       return accumulator + currentObject.unreadCount
     }, 0);
 
@@ -139,27 +140,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     if (archivedDrivers) totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
       return accumulator + currentObject.unreadCount
-    }, 0); */
+    }, 0);  */
 
         return totalUnreadCount;
-    }
-
-    public onActivate(component: ChatMessagesComponent): void {
-        if (component instanceof ChatMessagesComponent) {
-            component.userTypingEmitter
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((userId: number) => {
-                    if (userId) {
-                        const driver = this.drivers.data.find((driver) => {
-                            driver.companyUser?.userId === userId;
-                        });
-                    }
-                });
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

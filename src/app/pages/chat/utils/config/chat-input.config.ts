@@ -22,11 +22,11 @@ export class ChatInput {
     static userSearchInput: ITaInput = {
         name: 'searchTerm',
         type: 'text',
-        label: 'Type your message here',
+        label: 'Find Chat',
         placeholderIcon: 'search',
         hideRequiredCheck: true,
         placeholderInsteadOfLabel: true,
-        autoFocus: true,
+        autoFocus: false,
         minLength: 3
     }
 }
