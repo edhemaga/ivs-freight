@@ -5,13 +5,6 @@ pipeline {
         nodejs 'nodejs'
     }
 
-    environment {
-        NODE_OPTIONS = '--max-old-space-size=6144'
-        SSH_PORT = '29879'
-        SSH_USER = 'frontdev'
-        SSH_HOST = '50.171.242.215'		
-    }
-
     stages {
         stage('Install Dependencies') {
             steps {
