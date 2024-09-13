@@ -2855,7 +2855,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .filter((item) => item.additionalBillingType !== 6);
     }
 
-    public get areAllStepsValid(): boolean {
+    public get hasValidSteps(): boolean {
         return this.areOriginAndDestinationValid && this.loadExtraStops().valid;
     }
 
