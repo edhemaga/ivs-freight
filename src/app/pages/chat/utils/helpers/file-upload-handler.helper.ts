@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 
 // Models
-import { ChatAttachmentForThumbnail } from "@pages/chat/models/chat-attachment.model";
+import { ChatAttachmentForThumbnail } from "@pages/chat/models";
 
 export const convertFileToUrl = (file: File): Observable<string | ArrayBuffer> => {
     const reader = new FileReader();
