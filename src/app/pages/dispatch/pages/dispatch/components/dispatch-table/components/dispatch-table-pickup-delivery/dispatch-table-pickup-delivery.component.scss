@@ -10,13 +10,6 @@
                 color: $bw5;
             }
         }
-
-        &.hovering {
-            .info-item {
-                transition: background 0.2s ease-in;
-                background: $bw2;
-            }
-        }
     }
 
     &:hover {
