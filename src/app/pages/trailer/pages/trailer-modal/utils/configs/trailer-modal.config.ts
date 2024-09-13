@@ -25,7 +25,10 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
-                url: options.selectedTrailerType?.logoName,
+                url:
+                    options.selectedTrailerType?.logoName &&
+                    'assets/svg/common/trailers/' +
+                        options.selectedTrailerType?.logoName,
                 template: 'trailer',
                 class: ['Tanker', 'Pneumatic Tanker'].includes(
                     options.selectedTrailerType?.name
