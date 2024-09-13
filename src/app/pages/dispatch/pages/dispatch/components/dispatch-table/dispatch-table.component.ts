@@ -22,7 +22,7 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
-import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
+import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
@@ -67,7 +67,7 @@ import {
     styleUrls: ['./dispatch-table.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [ColorFinderPipe],
+    providers: [DispatchColorFinderPipe],
     animations: [dispatchBackgroundAnimation()],
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
@@ -194,7 +194,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
 
         // Pipes
-        private colorFinderPipe: ColorFinderPipe,
+        private dispatchColorFinderPipe: DispatchColorFinderPipe,
 
         // Services
         private dispatcherService: DispatcherService,
@@ -258,7 +258,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...truck,
                 name: truck.truckNumber,
-                class: this.colorFinderPipe.transform(
+                class: this.dispatchColorFinderPipe.transform(
                     truck.truckType.id,
                     DispatchTableStringEnum.TRUCK
                 ),
@@ -272,7 +272,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...trailer,
                 name: trailer.trailerNumber,
-                class: this.colorFinderPipe.transform(
+                class: this.dispatchColorFinderPipe.transform(
                     trailer.trailerType.id,
                     DispatchTableStringEnum.TRAILER
                 ),
@@ -426,7 +426,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    private handleHoursOfService() {
+    private handleHoursOfService(): void {
         const mappedDispatches = this.dispatchData.dispatches.map(
             (dispatch) => {
                 dispatch.hoursOfService = dispatch.hoursOfService ?? [];

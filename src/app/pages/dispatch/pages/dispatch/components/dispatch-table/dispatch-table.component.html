@@ -295,7 +295,10 @@
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
                                     [isDrag]="isDrag"
-                                    [isActiveLoad]="!!item.activeLoad"
+                                    [isActiveLoad]="
+                                        item?.activeLoad?.statusType?.name ===
+                                        'Active'
+                                    "
                                     [isHoveringRow]="
                                         !isDrag &&
                                         isHoveringRowIndex === rowIndex
@@ -389,7 +392,10 @@
                                                 isDispatchBoardLocked
                                             "
                                             [isDrag]="isDrag"
-                                            [isActiveLoad]="!!item.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [isHoveringRow]="
                                                 !isDrag &&
                                                 isHoveringRowIndex === rowIndex
@@ -487,7 +493,10 @@
                                             [openedDriverDropdown]="
                                                 openedDriverDropdown
                                             "
-                                            [isActiveLoad]="!!item?.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [hoursOfService]="
                                                 item?.hoursOfService
                                             "
@@ -758,7 +767,10 @@
                                             [driver]="item.driver"
                                             [truck]="item.truck"
                                             [trailer]="item.driver"
-                                            [isActiveLoad]="item.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [dispatchId]="item.id"
                                             [isHoveringRow]="
                                                 isDispatchBoardLocked &&
