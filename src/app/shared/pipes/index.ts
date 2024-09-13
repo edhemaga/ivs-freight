@@ -25,7 +25,6 @@ export * from './ng-for-length-filter.pipe';
 export * from './number-ordinal.pipe';
 export * from './progress-bar-colors.pipe';
 export * from './safe-html.pipe';
-export * from './status-pipe.pipe';
 export * from './sum-arrays.pipe';
 export * from './ta-svg.pipe';
 export * from './table-load-status.pipe';
