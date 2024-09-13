@@ -65,7 +65,10 @@
                                         withText: true,
                                         svg: true,
                                         image: false,
-                                        url: selectedTruckType?.logoName,
+                                        url:
+                                            selectedTruckType?.logoName &&
+                                            'assets/svg/common/trucks/' +
+                                                selectedTruckType?.logoName,
                                         template: 'truck',
                                         class: selectedTruckType?.name
                                             ?.trim()
