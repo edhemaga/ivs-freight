@@ -614,7 +614,7 @@
                                     >
                                         <div class="info-item p-0 w-100">
                                             <ng-container
-                                                *ngIf="pickupDeliveryItem(item)"
+                                                *ngIf="item?.activeLoad"
                                             >
                                                 <app-ca-pickup-delivery-block
                                                     [loads]="{

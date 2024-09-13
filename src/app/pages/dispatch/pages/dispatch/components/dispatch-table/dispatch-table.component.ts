@@ -216,12 +216,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getMainBoardColumnWidths();
     }
 
-    public pickupDeliveryItem(item: DispatchResponse): boolean {
-        this.currentDispatchGroupedLoadsResponse = item.activeLoad;
-        console.log(item, this.currentDispatchGroupedLoadsResponse, 'iteeeemmm')
-        return !!item.activeLoad;
-    }
-
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
         this.dispatcherService
             .getDispatchAssignedloadsId(item.id)
@@ -229,7 +223,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (response) => {
                     this.currentDispatchGroupedLoadsResponse = response;
-                    console.log(this.currentDispatchGroupedLoadsResponse, 'sssssssssssss')
                     this.cdRef.detectChanges();
                 },
             });
