@@ -1,7 +1,6 @@
 export * from './active-Items.pipe';
 export * from './bank-card-types.pipe';
 export * from './card-value.pipe';
-export * from './color-finder.pipe';
 export * from './details-active-item.pipe';
 export * from './dispatch-status-color.pipe';
 export * from './dropdown-load-status-color.pipe';
