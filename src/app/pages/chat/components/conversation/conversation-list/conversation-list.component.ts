@@ -65,7 +65,11 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   // New message emitted from hub
   @Input() public newMessage: BehaviorSubject<ChatMessageResponse> = new BehaviorSubject(null);
 
-  @Output() selectedConversation = new EventEmitter<{ id: number, type: ConversationTypeEnum }>();
+  @Output() selectedConversation = new EventEmitter<{
+    id: number[],
+    type: ConversationTypeEnum,
+    group: ChatGroupEnum
+  }>();
 
   public searchForm!: UntypedFormGroup;
 
@@ -184,7 +188,6 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
     return this.groupsState.find(group => { console.log(group) })
   }
 
-
   public toggleChatGroupState(id: ChatGroupEnum, expandAll?: boolean): void {
     this.groupsState = this.groupsState.map(group => {
 
@@ -211,22 +214,29 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
 
   };
 
-  public selectConversation(item: ChatCompanyChannelExtended | CompanyUserChatResponse, type: ConversationTypeEnum): void {
-    if ('companyUser' in item) {
-      this.selectedConversation.emit(
-        {
-          id: item.companyUser?.id,
-          type
-        }
-      );
+  public selectConversation(
+    item: ChatCompanyChannelExtended | CompanyUserChatResponse,
+    type: ConversationTypeEnum,
+    group: ChatGroupEnum
+  ): void {
+
+    if ('participants' in item) {
+      this.selectedConversation.emit({
+        id: [...item.participants.map(participant => { return participant.id })],
+        type,
+        group
+      });
       return;
     }
 
     if ('id' in item) {
-      this.selectedConversation.emit({
-        id: item.id,
-        type
-      });
+      this.selectedConversation.emit(
+        {
+          id: [item.id],
+          type,
+          group
+        }
+      );
       return;
     }
 

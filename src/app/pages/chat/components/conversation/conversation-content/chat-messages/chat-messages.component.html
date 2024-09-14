@@ -8,74 +8,6 @@
                     : '100%'
         }"
     >
-        <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
-            <ng-container [ngSwitch]="remainingParticipants?.length">
-                <div class="messages-header d-flex align-items-center">
-                    <ng-container *ngSwitchCase="1">
-                        <app-ca-profile-image
-                            [avatarImg]="
-                                remainingParticipants[0]?.avatarFile?.url
-                            "
-                            [avatarColor]="{
-                                background: '#DFC2F9',
-                                color: '#9E47EC66'
-                            }"
-                            [textShortName]="
-                                remainingParticipants[0]?.fullName
-                                    | nameInitials
-                            "
-                            [size]="22"
-                            [fontSize]="9"
-                            [isHoverEffect]="false"
-                        ></app-ca-profile-image>
-                        <div class="name ta-font-extra-bold">
-                            {{ remainingParticipants[0].fullName }}
-                        </div>
-
-                        <app-chat-vertical-divider></app-chat-vertical-divider>
-
-                        <svg-icon
-                            class="d-flex justify-content-center align-items-center"
-                            [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                            [src]="ChatSvgRoutes.searchIcon"
-                        >
-                        </svg-icon>
-
-                        <div class="right-icons d-flex">
-                            <div
-                                class="icon-wrapper d-flex justify-content-center align-items-center"
-                                (click)="displayProfileDetails(true)"
-                            >
-                                <svg-icon
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 17
-                                    }"
-                                    [src]="ChatSvgRoutes.informationIcon"
-                                >
-                                </svg-icon>
-                            </div>
-
-                            <app-chat-vertical-divider></app-chat-vertical-divider>
-
-                            <div
-                                class="icon-wrapper d-flex justify-content-center align-items-center"
-                            >
-                                <svg-icon
-                                    class="d-flex justify-content-center align-items-center"
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 17
-                                    }"
-                                    [src]="ChatSvgRoutes.listOptionsIcon"
-                                >
-                                </svg-icon>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </app-chat-header>
         <ng-container *ngIf="!attachmentUploadActive; else upload">
             <div
                 class="messages-content"
@@ -112,7 +44,7 @@
                     </ng-container>
                 </ng-container>
                 <ng-template #emptyConversation>
-                    <div class="d-flex justify-content-center">
+                    <!-- <div class="d-flex justify-content-center">
                         <div class="empty-conversation">
                             <div
                                 class="image-wrapper d-flex justify-content-center"
@@ -126,7 +58,7 @@
                                 {{ remainingParticipants[0]?.fullName }}
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </ng-template>
             </div>
 
@@ -337,23 +269,4 @@
             </div>
         </ng-template>
     </div>
-    <ng-container
-        *ngIf="
-            !attachmentUploadActive &&
-            isProfileDetailsDisplayed &&
-            (userProfileService.getProfile() | async)
-        "
-    >
-        <div class="profile-details-wrapper d-flex">
-            <app-chat-vertical-divider
-                [verticalOffset]="8"
-            ></app-chat-vertical-divider>
-            <div class="profile-details">
-                <app-chat-user-profile
-                    [data]="userProfileService.getProfile() | async"
-                    (isProfileDetailsClosed)="displayProfileDetails($event)"
-                ></app-chat-user-profile>
-            </div>
-        </div>
-    </ng-container>
 </div>

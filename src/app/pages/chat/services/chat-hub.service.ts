@@ -30,7 +30,6 @@ export class ChatHubService {
                 skipNegotiation: false,
                 accessTokenFactory: () => this.token
             })
-            .configureLogging(signalR.LogLevel.Information)
             .withAutomaticReconnect()
             .build();
     }

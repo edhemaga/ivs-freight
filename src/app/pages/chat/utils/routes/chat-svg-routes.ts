@@ -37,7 +37,7 @@ export class ChatSvgRoutes {
 
     // Groups
     static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
-    static dispatchBoardIcon: string = 'assets/svg/chat/dispatch-board-icon.svg';
+    static dispatchBoardIcon: string = 'assets/svg/chat/dispatch-icon.svg';
     static truckIcon: string = 'assets/svg/chat/truck-icon.svg';
     static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
     static repairIcon: string = 'assets/svg/chat/repair-icon.svg';

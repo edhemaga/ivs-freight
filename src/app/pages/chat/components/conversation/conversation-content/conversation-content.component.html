@@ -1,0 +1,116 @@
+<div class="conversation-content-container">
+    <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
+        <ng-container [ngSwitch]="true">
+            <div class="messages-header d-flex align-items-center">
+                <ng-container
+                    *ngSwitchCase="
+                        group === chatGroupEnum.CompanyUser ||
+                        group === chatGroupEnum.Driver
+                    "
+                >
+                    <app-ca-profile-image
+                        [avatarImg]="
+                            conversationParticipants[0]?.avatarFile?.url
+                        "
+                        [avatarColor]="{
+                            background: '#DFC2F9',
+                            color: '#9E47EC66'
+                        }"
+                        [textShortName]="
+                            conversationParticipants[0]?.fullName | nameInitials
+                        "
+                        [size]="22"
+                        [fontSize]="9"
+                        [isHoverEffect]="false"
+                        [isRound]="group === chatGroupEnum.CompanyUser"
+                    ></app-ca-profile-image>
+                    <div class="name ta-font-extra-bold">
+                        {{ conversationParticipants[0].fullName }}
+                    </div>
+
+                    <app-chat-vertical-divider></app-chat-vertical-divider>
+
+                    <svg-icon
+                        class="d-flex justify-content-center align-items-center"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                        [src]="chatSvgRoutes.searchIcon"
+                    >
+                    </svg-icon>
+
+                    <div class="right-icons d-flex">
+                        <div
+                            class="icon-wrapper d-flex justify-content-center align-items-center"
+                            (click)="displayProfileDetails(true)"
+                        >
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 17
+                                }"
+                                [src]="chatSvgRoutes.informationIcon"
+                            >
+                            </svg-icon>
+                        </div>
+
+                        <app-chat-vertical-divider></app-chat-vertical-divider>
+
+                        <div
+                            class="icon-wrapper d-flex justify-content-center align-items-center"
+                        >
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
+                                [src]="chatSvgRoutes.listOptionsIcon"
+                            >
+                            </svg-icon>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngSwitchCase="
+                        group === chatGroupEnum.Department ||
+                        group === chatGroupEnum.Truck ||
+                        group === chatGroupEnum.Dispatch
+                    "
+                >
+                    <div class="messages-header d-flex align-items-center">
+                        <svg-icon
+                            class="d-flex justify-content-center align-items-center"
+                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                            [src]="group | chatGroupCheckForIcon"
+                        >
+                        </svg-icon>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </app-chat-header>
+    <app-chat-messages
+        [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
+        [attachmentUploadActive]="attachmentUploadActive"
+        [conversationParticipants]="conversationParticipants"
+    ></app-chat-messages>
+    <!-- TODO Add on open/close animation -->
+    <ng-container
+        *ngIf="
+            !attachmentUploadActive &&
+                isProfileDetailsDisplayed &&
+                userProfileData | async
+        "
+    >
+        <div class="profile-details-wrapper d-flex">
+            <app-chat-vertical-divider
+                [verticalOffset]="8"
+            ></app-chat-vertical-divider>
+            <div class="profile-details">
+                <app-chat-user-profile
+                    [data]="userProfileData | async"
+                    (isProfileDetailsClosed)="displayProfileDetails($event)"
+                ></app-chat-user-profile>
+            </div>
+        </div>
+    </ng-container>
+</div>

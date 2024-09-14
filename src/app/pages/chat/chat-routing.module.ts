@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 //Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
-import { ChatMessagesComponent } from "@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component";
+import { ConversationContentComponent } from "@pages/chat/components/conversation/conversation-content/conversation-content.component";
 
 //Resolvers
 import {
@@ -29,7 +29,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'conversation/:conversationId',
-                component: ChatMessagesComponent,
+                component: ConversationContentComponent,
                 resolve: {
                     information: ChatConversationInformationResolver,
                     messages: ChatConversationResolver
