@@ -1110,7 +1110,7 @@
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
-                        [stopNumber]="loadForm.get('deliveryStopOrder').value"
+                        [stopNumber]="loadForm.get('deliveryStopOrder').value || 1"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
