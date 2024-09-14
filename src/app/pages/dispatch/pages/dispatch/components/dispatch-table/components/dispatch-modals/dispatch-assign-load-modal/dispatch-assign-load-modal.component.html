@@ -11,13 +11,14 @@
     [hasSearch]="true"
     [isAssignLoadModal]="true"
     [unassignedLoads]="originalLoads"
+    [isReorderingActive]="isReorderingActive"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
     (filterActions)="setFilter($event)" 
 >
     <div origin>
         <div class="dispatch-load">
-            <form [formGroup]="assignLoadForm" class="mb-2">
+            <form [formGroup]="assignLoadForm" class="mb-1">
                 <app-ta-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
@@ -29,7 +30,7 @@
             </form>
 
             <!-- Table header -->
-            <div class="d-grid dispatch-load-grid">
+            <div class="d-grid dispatch-load-grid mb-1">
                 <ng-container
                     *ngFor="
                         let headerItem of tableHeaderItems;
@@ -58,11 +59,13 @@
                 </ng-container>
             </div>
 
+            <div class="divider"></div>
+
             <app-ta-resizer
                 [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 310 : 400 : 30"
                 [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
-                [minHeightSecondElement]="30"
+                [minHeightSecondElement]="40"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
