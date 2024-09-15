@@ -1726,7 +1726,7 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-        <app-ca-map [data]="data"></app-ca-map>
+        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
         <!-- <app-ta-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"
