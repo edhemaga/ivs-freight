@@ -20,6 +20,8 @@
             ></app-navigation-modals>
         </div>
 
+        <div class="navigation-divider"></div>
+
         <div
             class="navigation-middle"
             (mouseenter)="onMidleNavHover(true); onFooterHover(false)"
@@ -176,6 +178,7 @@
                 'close-navigation': !isNavigationHovered
             }"
         ></div>
+        <div class="navigation-divider"></div>
         <div
             class="navigation-bottom"
             (mouseenter)="onMidleNavHover(false); onFooterHover(true)"
