@@ -499,14 +499,14 @@ export class NavigationDataConstants {
             image: 'ic_company.svg',
             action: 'company',
         },
+        // {
+        //     id: 30,
+        //     name: 'Help Center',
+        //     image: 'ic_helpcenter.svg',
+        //     action: 'help',
+        // },
         {
             id: 30,
-            name: 'Help Center',
-            image: 'ic_helpcenter.svg',
-            action: 'help',
-        },
-        {
-            id: 31,
             name: 'Logout',
             image: 'ic_exit.svg',
             action: 'logout',

@@ -173,6 +173,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
                     this.cdRef.detectChanges();
                 }
             });
+            console.log(this.footerData)
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.hasOwnProperty('isNavigationHovered')) {

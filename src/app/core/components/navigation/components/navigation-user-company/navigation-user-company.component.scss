@@ -7,7 +7,7 @@
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-    background-color: rgba(170, 170, 170, 0.1);
+    background-color: #424242;
     position: relative;
     height: fit-content;
     z-index: 99;
@@ -15,13 +15,13 @@
 
     p {
         margin: 0;
-        color: $nav-white;
+        color: #FFFFFFB2;
     }
 
     .user-company-header {
         display: flex;
         align-items: center;
-        margin-bottom: 6px;
+        margin-bottom: 0;
         justify-content: space-between;
         .user-company-header-svg {
             &:hover {
@@ -94,18 +94,20 @@
             -ms-user-select: none;
             user-select: none;
             padding-left: 24px;
+            position: relative;
         }
         span {
             margin-left: 12px;
         }
         .user-company-text-active {
-            color: $nav-white !important;
+            color: #92B1F5 !important;
             font-weight: $nav-font-bold;
             svg {
-                height: 20px;
-                width: 20px;
+                height: 14px;
+                width: 14px;
                 position: absolute;
                 left: 11px;
+                top: 3px;
                 path {
                     fill: $nav-active-lighter;
                 }
