@@ -9,18 +9,22 @@
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-
     transition: $nav-transition-5;
-
     position: relative;
-    width: 36px;
+    width: 34px;
     left: -8px;
     padding-left: 8px;
+    margin-bottom: 4px;
+
+    svg  {
+        height: 18px;
+    }
+
     .route-not-active-svg {
         svg {
             path {
                 transition: fill 0.4s ease;
-                fill: #787878;
+                fill: #919191;
             }
         }
     }
@@ -28,7 +32,7 @@
         svg {
             path {
                 transition: fill 0.4s ease;
-                fill: #e1e1e1;
+                fill: $nav-svg-darker;
             }
         }
     }
@@ -125,9 +129,9 @@
             margin: 0px;
             margin-left: 9px;
             font-size: 14px;
-            line-height: 17px;
-            color: $nav-white;
-            font-weight: 400;
+            line-height: 18px;
+            color: #FFFFFFB2;
+            font-weight: 500;
             width: 181px;
             user-select: none;
         }
@@ -138,7 +142,7 @@
             width: 183px;
         }
         .route-not-active {
-            color: #787878;
+            color: #FFFFFFB2;
         }
         .nav-item-name-active {
             font-weight: 700;
@@ -150,7 +154,7 @@
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
-            height: 12px;
+            height: 18px;
             line-height: 9px;
             opacity: 0;
         }
@@ -313,6 +317,10 @@
     .tooltip-right {
         margin-left: 0px;
     }
+
+    svg path {
+        fill: #919191;
+    }
 }
 @keyframes dude {
     0% {
@@ -339,7 +347,7 @@
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-active-lighter !important;
+            fill: #6692F1 !important;
         }
     }
 }

@@ -76,7 +76,7 @@ export class NavigationModalsComponent {
         NavigationDataConstants.accountingNavigationData;
     public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
-    public Title: string = 'Add Anything';
+    public Title: string = 'Add New';
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
@@ -90,7 +90,7 @@ export class NavigationModalsComponent {
     public changeText(text: boolean) {
         text == true && text
             ? (this.Title = 'Close')
-            : (this.Title = 'Add Anything');
+            : (this.Title = 'Add New');
     }
     public onAction(item: NavigationModal) {
         this.openModal(item);

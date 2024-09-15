@@ -2,20 +2,33 @@
 
 .modal-nav-panel {
     position: absolute;
-    top: 65px;
+    top: 61px;
     z-index: 99;
     height: auto;
     padding: 10px 6px 6px 6px;
     border-radius: 3px;
-    left: 17.8px;
+    left: 18.8px;
     width: 242px;
-    width: 36px;
-    height: 36px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     overflow: hidden;
+    transition: width .3s;
+
+    &:not(.show-modal) {
+        &.hide-modal {
+        }
+    
+        &.opened-navigation  {
+            background-color: #3B73ED66;
+
+            &:hover {
+                background-color: $nav-svg-active;
+            }
+        }
+    }
+
     .modal-inner {
         width: 230px;
         position: absolute;
@@ -48,7 +61,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 path {
-                    fill: $nav-white;
+                    fill: #92B1F5;
                 }
             }
 
@@ -62,10 +75,13 @@
         }
         .title {
             position: absolute;
-            left: 46px;
+            left: 38px;
             top: 8px;
             width: 104px;
+            font-weight: 600;
+            transition: color .3s;
         }
+
         .modal-nav-close-text {
             font-size: $nav-font-size;
             font-weight: $nav-font-bold;
@@ -93,7 +109,7 @@
     }
     .modal-is-open {
         padding-right: 4px;
-        height: 45px;
+        height: 34px;
         background: $nav-svg-active;
         z-index: 9;
         top: 65px;
@@ -105,7 +121,7 @@
     }
     .modal-nav-content {
         height: auto;
-        margin-top: 12px;
+        margin: 4px 0;
 
         .modal-nav-header {
             font-size: $nav-font-size-small;
@@ -121,14 +137,15 @@
                 width: 100%;
                 height: 0.1px;
                 background: $nav-dark;
+                opacity: 0.4;
             }
         }
         .top-header {
-            margin-top: 25px;
+            margin-top: 23px;
         }
         .modal-nav-header:nth-child(1) {
             position: sticky;
-            top: 32px;
+            top: 27px;
             background-color: $nav-svg-active;
             z-index: 8;
         }
@@ -136,7 +153,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 4px 6px;
-
+            padding: 4px 0;
             font-size: 14px;
             color: $nav-white;
             justify-content: space-between;
@@ -171,13 +188,17 @@
     }
 }
 .closed-navigation {
-    background: $nav-transparent;
+    background: #e9effd;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 34px !important;
+
     .modal-inner {
         .modal-nav-close {
             .modal-nav-close-svg {
                 svg {
                     path {
-                        fill: $nav-svg-active;
+                        fill: #6692f1;
                     }
                 }
             }
@@ -214,7 +235,7 @@
                         svg {
                             path {
                                 transition: all 0.3s;
-                                fill: $nav-svg-active;
+                                fill: #FFFFFFB2;
                             }
                         }
                     }
@@ -264,6 +285,8 @@
                         top: 4.1px;
                         left: 6.6px;
                         position: absolute;
+                        width: 16px;
+                        height: 16px;
                     }
                 }
             }

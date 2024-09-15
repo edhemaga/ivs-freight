@@ -42,8 +42,8 @@
     }
     .navigation-top {
         padding: 0px 6px;
-        height: 82px;
-        margin-bottom: 6px;
+        height: 74px;
+        margin-bottom: 4px;
     }
     .navigation-middle {
         overflow-y: scroll;
@@ -136,107 +136,13 @@
         user-select: none;
     }
 
-    .navigation-routes:nth-child(1):hover ~ .new-magic-line {
-        transform: translateY(2px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-        transform: translateY(2px);
-    }
-
-    .navigation-routes:nth-child(2):hover ~ .new-magic-line {
-        transform: translateY(32px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
-        transform: translateY(32px);
-    }
-
-    .navigation-routes:nth-child(3):hover ~ .new-magic-line {
-        transform: translateY(62px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
-        transform: translateY(62px);
-    }
-
-    .navigation-routes:nth-child(4):hover ~ .new-magic-line {
-        transform: translateY(92px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(4) ~ .new-magic-line {
-        transform: translateY(92px);
-    }
-
-    .navigation-routes:nth-child(5):hover ~ .new-magic-line {
-        transform: translateY(122px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(5) ~ .new-magic-line {
-        transform: translateY(122px);
-    }
-
-    .navigation-routes:nth-child(6):hover ~ .new-magic-line {
-        transform: translateY(152px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
-        transform: translateY(152px);
-    }
-
-    .navigation-routes:nth-child(7):hover ~ .new-magic-line {
-        transform: translateY(182px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(7) ~ .new-magic-line {
-        transform: translateY(182px);
-    }
-
-    .navigation-routes:nth-child(8):hover ~ .new-magic-line {
-        transform: translateY(212px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
-        transform: translateY(212px);
-    }
-
-    .navigation-routes:nth-child(9):hover ~ .new-magic-line {
-        transform: translateY(242px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
-        transform: translateY(242px);
-    }
-
-    .navigation-routes:nth-child(10):hover ~ .new-magic-line {
-        transform: translateY(272px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
-        transform: translateY(272px);
-    }
-
-    .navigation-routes:nth-child(11):hover ~ .new-magic-line {
-        transform: translateY(302px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
-        transform: translateY(302px);
-    }
-
-    .navigation-routes:nth-child(12):hover ~ .new-magic-line {
-        transform: translateY(332px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
-        transform: translateY(332px);
-    }
-
-    .navigation-routes:nth-child(13):hover ~ .new-magic-line {
-        transform: translateY(362px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
-        transform: translateY(362px);
-    }
+    @for $i from 1 through 13 {
+        .navigation-routes:nth-child(#{$i}):hover ~ .new-magic-line {
+          transform: translateY(#{($i - 1) * 34 + 1}px) !important;
+        }
+      
+        .new-magic-line-selected:nth-child(#{$i}) ~ .new-magic-line {
+          transform: translateY(#{($i - 1) * 34 + 1}px);
+        }
+      }
 }

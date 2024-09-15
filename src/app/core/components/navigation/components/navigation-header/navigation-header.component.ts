@@ -33,7 +33,7 @@ export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
     @Input() ChangeCloseTextTitle: boolean;
 
-    public Title: string = 'Add Anything';
+    public Title: string = 'Add New';
     public showToolTip: boolean = false;
 
     constructor(
