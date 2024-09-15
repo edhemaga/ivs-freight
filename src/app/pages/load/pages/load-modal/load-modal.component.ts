@@ -154,8 +154,7 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaMapComponent } from 'ca-components';
-import { ICaMapProps } from 'ca-components/lib/components/ca-map/models/map.model';
+import { CaMapComponent, ICaMapProps } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
