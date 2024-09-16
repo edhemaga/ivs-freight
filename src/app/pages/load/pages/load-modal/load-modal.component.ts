@@ -168,7 +168,6 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
         AngularSvgIconModule,
         NgbModule,
         DragDropModule,
-  
 
         // components
         TaAppTooltipV2Component,
@@ -3833,18 +3832,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
 
-                        this.data.routingMarkers = routes.map(routes => {
+                        this.data.routingMarkers = routes.map((routes) => {
                             return {
                                 position: {
                                     lat: routes.latitude,
-                                    lng: routes.longitude
-                                }
-                            }
+                                    lng: routes.longitude,
+                                },
+                            };
                         });
-
-                        console.log("SHOW MEEE", this.data);
-
-                        
 
                         // store in form values
                         if (res?.legs?.length) {

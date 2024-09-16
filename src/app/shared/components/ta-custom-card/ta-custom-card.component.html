@@ -259,7 +259,7 @@
 
             <ng-container *ngIf="isFinishReorderingButtonVisible">
                 <button
-                    class="reodering-button ta-font-bold"
+                    class="reodering-button ta-font-bold reodering-button-finish"
                     (click)="onAction($event, 'reordering')"
                     [ngClass]="{ error: reorderingSaveError }"
                 >

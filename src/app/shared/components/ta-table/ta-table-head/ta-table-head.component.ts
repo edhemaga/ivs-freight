@@ -277,6 +277,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             (tableData) => tableData.isActive
         );
 
+        if(!tableData) return;
         this.tableConfigurationType = tableData.tableConfiguration;
     }
 
