@@ -84,6 +84,29 @@
                         >
                         </svg-icon>
                     </div>
+                    <ng-container
+                        *ngFor="
+                            let participant of conversationParticipant;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        {{ participant }}
+                        <app-ca-profile-image
+                            [avatarImg]="participant?.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="
+                                participant?.fullName | nameInitials
+                            "
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="true"
+                        ></app-ca-profile-image
+                    ></ng-container>
                 </ng-container>
             </div>
         </ng-container>

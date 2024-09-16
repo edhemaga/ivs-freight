@@ -86,7 +86,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
     this.getResolvedData();
     this.getDataOnRouteChange();
     this.userProfileData = this.userProfileService.getProfile();
-    console.log(this.group);
   }
 
   private getResolvedData(): void {
