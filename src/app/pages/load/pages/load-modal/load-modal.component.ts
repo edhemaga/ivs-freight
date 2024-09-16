@@ -154,7 +154,7 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { CaComponentsLibModule } from 'ca-components';
+import { CaMapComponent, ICaMapProps } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -168,7 +168,7 @@ import { CaComponentsLibModule } from 'ca-components';
         AngularSvgIconModule,
         NgbModule,
         DragDropModule,
-        CaComponentsLibModule,
+  
 
         // components
         TaAppTooltipV2Component,
@@ -190,6 +190,7 @@ import { CaComponentsLibModule } from 'ca-components';
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
         TaModalTableComponent,
+        CaMapComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -208,7 +209,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     @Input() editData: EditData;
 
-    data: any = {
+    data: ICaMapProps = {
         center: {
             lat: 41.860119,
             lng: -87.660156,
@@ -3831,6 +3832,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             }),
                         };
+
+                        this.data.routingMarkers = routes.map(routes => {
+                            return {
+                                position: {
+                                    lat: routes.latitude,
+                                    lng: routes.longitude
+                                }
+                            }
+                        });
+
+                        console.log("SHOW MEEE", this.data);
+
+                        
 
                         // store in form values
                         if (res?.legs?.length) {
