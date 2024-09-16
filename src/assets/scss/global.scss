@@ -123,15 +123,15 @@ body {
     margin: 2px 2px 2px 0;
 
     &::-webkit-scrollbar {
-        width: 2px; 
+        width: 2px;
     }
 
     &::-webkit-scrollbar-track {
-        border-radius: 5px; 
+        border-radius: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: $muted; 
+        background: $muted;
         border-radius: 5px;
     }
 }
@@ -343,4 +343,26 @@ app-load-modal {
 
 .ml-3{
     margin-left: 6px;
+}
+.dispatch-load {
+    .ta-custom-card .ta-card-header {
+        height: 33px;
+    }
+
+    .reodering-button {
+        &:hover {
+            color: $ta-black;
+            background-color: $bw-9;
+        }
+
+        &-finish {
+            color: $white;
+            background-color: $ta-blue-14;
+
+            &:hover {
+                color: $white;
+                background-color: $ta-blue-15;
+            }
+        }
+    }
 }
