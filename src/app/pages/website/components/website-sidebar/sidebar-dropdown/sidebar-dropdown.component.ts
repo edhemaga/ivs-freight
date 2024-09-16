@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 
+// Animations
+import { trigger, transition, style, animate } from '@angular/animations';
+
 // services
 import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
     selector: 'app-sidebar-dropdown',
