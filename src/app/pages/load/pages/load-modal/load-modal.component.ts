@@ -154,6 +154,7 @@ import {
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import { CaMapComponent, ICaMapProps } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -167,6 +168,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         AngularSvgIconModule,
         NgbModule,
         DragDropModule,
+  
 
         // components
         TaAppTooltipV2Component,
@@ -188,6 +190,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
         TaModalTableComponent,
+        CaMapComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -205,6 +208,272 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('popover') popover: NgbPopover;
 
     @Input() editData: EditData;
+
+    data: ICaMapProps = {
+        center: {
+            lat: 41.860119,
+            lng: -87.660156,
+        },
+        mapZoom: 1,
+        markers: [],
+        clustermarkers: [],
+        routingMarkers: [],
+        mapOptions: {
+            fullscreenControl: false,
+            disableDefaultUI: true,
+            restriction: {
+                latLngBounds: {
+                    north: 75,
+                    south: 9,
+                    west: -170,
+                    east: -50,
+                },
+                strictBounds: true,
+            },
+            streetViewControl: false,
+            styles: [
+                {
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.icon',
+                    stylers: [
+                        {
+                            visibility: 'on',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.country',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                        {
+                            visibility: 'on',
+                        },
+                        {
+                            weight: 1,
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.stroke',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#bdbdbd',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'landscape',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#ffffff',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    stylers: [
+                        {
+                            saturation: -100,
+                        },
+                        {
+                            lightness: 30,
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.arterial',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#dadada',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.local',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#c9c9c9',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+            ],
+            keyboardShortcuts: false,
+            panControl: true,
+            gestureHandling: 'greedy',
+        },
+    };
 
     private destroy$ = new Subject<void>();
 
@@ -3563,6 +3832,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             }),
                         };
+
+                        this.data.routingMarkers = routes.map(routes => {
+                            return {
+                                position: {
+                                    lat: routes.latitude,
+                                    lng: routes.longitude
+                                }
+                            }
+                        });
+
+                        console.log("SHOW MEEE", this.data);
+
+                        
 
                         // store in form values
                         if (res?.legs?.length) {
