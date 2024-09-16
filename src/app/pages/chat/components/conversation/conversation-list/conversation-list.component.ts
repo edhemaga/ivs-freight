@@ -34,7 +34,8 @@ import {
 import {
   ConversationTypeEnum,
   ChatGroupEnum,
-  ChatGroupStateEnum
+  ChatGroupStateEnum,
+  ChatObjectPropertyEnum
 } from '@pages/chat/enums';
 
 // Animations
@@ -85,9 +86,11 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   // Create list of states for all groups available
   public groupsState = ChatConversationGroupStateConstant.groupsState;
 
+  // Enums
   public chatGroupStateEnum = ChatGroupStateEnum;
   public chatGroupEnum = ChatGroupEnum;
   public conversationTypeEnum = ConversationTypeEnum;
+  private chatObjectPropertyEnum = ChatObjectPropertyEnum;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
@@ -220,7 +223,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
     group: ChatGroupEnum
   ): void {
 
-    if ('participants' in item) {
+    if (this.chatObjectPropertyEnum.PARTICIPANTS in item) {
       this.selectedConversation.emit({
         id: [...item.participants.map(participant => { return participant.id })],
         type,
@@ -229,7 +232,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
       return;
     }
 
-    if ('id' in item) {
+    if (this.chatObjectPropertyEnum.ID in item) {
       this.selectedConversation.emit(
         {
           id: [item.id],

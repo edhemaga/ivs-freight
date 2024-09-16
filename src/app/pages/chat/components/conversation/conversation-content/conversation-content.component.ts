@@ -28,7 +28,7 @@ import {
 } from 'appcoretruckassist';
 
 // Enums
-import { ChatGroupEnum } from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
 import { GetCurrentUserHelper, UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -48,6 +48,7 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   public messages: ChatMessageResponse[] = [];
 
   // Group info
+  public chatConversationType = ChatConversationType;
   public chatGroupEnum = ChatGroupEnum;
 
   //User data
@@ -137,7 +138,9 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
       });
 
     this.activatedRoute.queryParams.subscribe(params => {
-      this.group = params['group'] != this.group ? params['group'] : this.group;
+      this.group = params[this.chatConversationType.CHANNEL] != this.group ?
+        params[this.chatConversationType.CHANNEL] :
+        this.group;
     });
   }
 }
