@@ -298,7 +298,10 @@
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
                                     [isDrag]="isDrag"
-                                    [isActiveLoad]="!!item.activeLoad"
+                                    [isActiveLoad]="
+                                        item?.activeLoad?.statusType?.name ===
+                                        'Active'
+                                    "
                                     [isHoveringRow]="
                                         !isDrag &&
                                         isHoveringRowIndex === rowIndex
@@ -389,7 +392,10 @@
                                                 isDispatchBoardLocked
                                             "
                                             [isDrag]="isDrag"
-                                            [isActiveLoad]="!!item.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [isHoveringRow]="
                                                 !isDrag &&
                                                 isHoveringRowIndex === rowIndex
@@ -487,7 +493,10 @@
                                             [openedDriverDropdown]="
                                                 openedDriverDropdown
                                             "
-                                            [isActiveLoad]="!!item?.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [hoursOfService]="
                                                 item?.hoursOfService
                                             "
@@ -602,33 +611,16 @@
                                     )
                                 "
                             >
-                                <div class="main_inside filled">
-                                    <div
-                                        class="padding-inside"
-                                        [ngClass]="{
-                                            hovering:
-                                                isDispatchBoardLocked &&
-                                                item.dispatcher?.fullName &&
-                                                isHoveringRowIndex === rowIndex
-                                        }"
-                                    >
-                                        <div class="info-item p-0 w-100">
-                                            <ng-container
-                                                *ngIf="pickupDeliveryItem(item)"
-                                            >
-                                                <!--     <app-ca-pickup-delivery-block
-                                                    [loads]="{
-                                                        active: currentDispatchGroupedLoadsResponse.active,
-                                                        closed: currentDispatchGroupedLoadsResponse.closed,
-                                                        pending:
-                                                            currentDispatchGroupedLoadsResponse.pending
-                                                    }"
-                                                    [dispatchResponse]="item"
-                                                ></app-ca-pickup-delivery-block> -->
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                </div>
+                                <app-dispatch-table-pickup-delivery
+                                    [isDispatchBoardLocked]="
+                                        isDispatchBoardLocked
+                                    "
+                                    [isHoveringRowIndex]="isHoveringRowIndex"
+                                    [rowIndex]="rowIndex"
+                                    [dispatchResponse]="item"
+                                    [isDispatchBoardLocked]="isDispatchBoardLocked"
+                                    [dispatchLoads]="currentDispatchGroupedLoadsResponse"
+                                ></app-dispatch-table-pickup-delivery>
                             </td>
 
                             <ng-container *ngIf="!columnsToShow[14].hidden">
@@ -734,6 +726,7 @@
                                         [noteWidth]="noteWidth"
                                         [isNoteExpanded]="_isNoteExpanded"
                                         [isHoveringRowIndex]="
+                                            isDispatchBoardLocked &&
                                             isHoveringRowIndex
                                         "
                                         [rowIndex]="rowIndex"
@@ -754,7 +747,10 @@
                                             [driver]="item.driver"
                                             [truck]="item.truck"
                                             [trailer]="item.driver"
-                                            [isActiveLoad]="item.activeLoad"
+                                            [isActiveLoad]="
+                                                item?.activeLoad?.statusType
+                                                    ?.name === 'Active'
+                                            "
                                             [dispatchId]="item.id"
                                             [isHoveringRow]="
                                                 isDispatchBoardLocked &&
@@ -1322,9 +1318,3 @@
         </ng-container>
     </div>
 </div>
-
-<!-- Pickup and Delivery popover -->
-
-<ng-template #pickupPopover let-data="data">
-    <app-ta-pickup-delivery [customWidth]="340"></app-ta-pickup-delivery>
-</ng-template>

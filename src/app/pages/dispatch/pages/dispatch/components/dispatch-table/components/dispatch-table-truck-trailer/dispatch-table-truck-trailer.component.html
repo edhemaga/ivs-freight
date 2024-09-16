@@ -59,9 +59,9 @@
                             isCircleIconHovering
                                 ? type === 'truck'
                                     ? (truck.truckType.id
-                                      | colorFinder : 'truck' : true)
+                                      | dispatchColorFinder : 'truck' : true)
                                     : (trailer.trailerType.id
-                                      | colorFinder : 'trailer' : true)
+                                      | dispatchColorFinder : 'trailer' : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
@@ -85,9 +85,9 @@
                                 [ngClass]="
                                     type === 'truck'
                                         ? (truck.truckType.id
-                                          | colorFinder : 'truck')
+                                          | dispatchColorFinder : 'truck')
                                         : (trailer.trailerType.id
-                                          | colorFinder : 'trailer')
+                                          | dispatchColorFinder : 'trailer')
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
@@ -111,17 +111,19 @@
                                     [ngClass]="
                                         type === 'truck'
                                             ? (truck.truckType.id
-                                              | colorFinder : 'truck')
+                                              | dispatchColorFinder : 'truck')
                                             : (trailer.trailerType.id
-                                              | colorFinder : 'trailer')
+                                              | dispatchColorFinder : 'trailer')
                                     "
                                     [svgStyle]="{
                                         'height.px': '18'
                                     }"
                                     [src]="
                                         type === 'truck'
-                                            ? truck.truckType.logoName
-                                            : trailer.trailerType.logoName
+                                            ? 'assets/svg/common/trucks/' +
+                                              truck.truckType.logoName
+                                            : 'assets/svg/common/trailers/' +
+                                              trailer.trailerType.logoName
                                     "
                                 ></svg-icon>
                             </ng-container>

@@ -88,6 +88,8 @@ export class TruckService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
