@@ -28,10 +28,10 @@ import {
 } from 'appcoretruckassist';
 
 // Enums
-import { ChatGroupEnum } from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
-import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
+import { GetCurrentUserHelper, UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -48,12 +48,11 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   public messages: ChatMessageResponse[] = [];
 
   // Group info
+  public chatConversationType = ChatConversationType;
   public chatGroupEnum = ChatGroupEnum;
 
   //User data
-  public currentUserId: number = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')).companyUserId
-    : 0;
+  private getCurrentUserHelper = GetCurrentUserHelper;
 
   private conversation!: ConversationResponse;
   public conversationParticipants!: CompanyUserShortResponse[];
@@ -76,7 +75,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
 
     // Services
     private chatService: UserChatService,
-    private chatHubService: ChatHubService,
     public userProfileService: UserProfileService
 
   ) {
@@ -105,7 +103,7 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
               ?.participants
               .filter(
                 participant =>
-                  participant.id !== this.currentUserId
+                  participant.id !== this.getCurrentUserHelper.currentUserId
               );
 
         }
@@ -150,7 +148,9 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
       });
 
     this.activatedRoute.queryParams.subscribe(params => {
-      this.group = params['group'] != this.group ? params['group'] : this.group;
+      this.group = params[this.chatConversationType.CHANNEL] != this.group ?
+        params[this.chatConversationType.CHANNEL] :
+        this.group;
     });
   }
 }

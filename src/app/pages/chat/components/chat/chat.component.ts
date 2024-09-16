@@ -95,7 +95,7 @@ export class ChatComponent
   public createUserConversation(
     selectedConversation: number[],
     chatType: ConversationType,
-    group: ChatGroupEnum
+    channel: ChatGroupEnum
   ): void {
 
     if (!selectedConversation?.length) return;
@@ -110,7 +110,7 @@ export class ChatComponent
             this.router.navigate(
               [ChatRoutesEnum.CONVERSATION, res.id],
               {
-                queryParams: { group }
+                queryParams: { channel }
               }
             );
           }

@@ -3841,8 +3841,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             };
                         });
 
-                        console.log('SHOW MEEE', this.data);
-
                         // store in form values
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {

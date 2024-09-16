@@ -62,6 +62,7 @@ import { ChatAttachmentHoveredClassStringEnum, ChatAttachmentCustomClassEnum } f
 // Helpers
 import {
   checkForLink,
+  GetCurrentUserHelper,
   UnsubscribeHelper
 } from '@pages/chat/utils/helpers';
 
@@ -89,9 +90,7 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
   @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
 
   //User data
-  public currentUserId: number = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')).companyUserId
-    : 0;
+  public getCurrentUserHelper = GetCurrentUserHelper;
 
   private conversation!: ConversationResponse;
 
