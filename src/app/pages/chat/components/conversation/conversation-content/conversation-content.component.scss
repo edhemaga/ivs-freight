@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 .conversation-content-container {
     height: 100%;
 
@@ -26,4 +28,22 @@
             }
         }
     }
+}
+
+.profile-image-wrapper {
+    position: relative;
+    left: -8px;
+    top: 2px;
+    border: 1px solid $white;
+}
+
+.remaining-participants-number {
+    height: 22px;
+    width: 22px;
+    border-radius: 50px;
+    background-color: $ta-light-grey-2;
+    color: $white;
+    line-height: 11px;
+    font-size: 9px;
+    text-align: center;
 }

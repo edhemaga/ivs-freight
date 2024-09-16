@@ -24,51 +24,36 @@
                         [isHoverEffect]="false"
                         [isRound]="group === chatGroupEnum.CompanyUser"
                     ></app-ca-profile-image>
-                    <div class="name ta-font-extra-bold">
-                        {{ conversationParticipants[0].fullName }}
-                    </div>
 
-                    <app-chat-vertical-divider></app-chat-vertical-divider>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            headerLeftSide;
+                            context: {
+                                name: conversationParticipants[0]?.fullName
+                            }
+                        "
+                    ></ng-container>
 
-                    <svg-icon
-                        class="d-flex justify-content-center align-items-center"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-                        [src]="chatSvgRoutes.searchIcon"
-                    >
+                    <ng-container
+                        *ngTemplateOutlet="headerRightSide"
+                    ></ng-container>
+
+                    <!-- TODO move to chat header -->
+                    <!-- <div
+                        class="icon-wrapper d-flex justify-content-center align-items-center"
+                        (click)="displayProfileDetails(true)"
+                        >
+                        <svg-icon
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 17
+                        }"
+                        [src]="chatSvgRoutes.informationIcon"
+                        >
                     </svg-icon>
-
-                    <div class="right-icons d-flex">
-                        <div
-                            class="icon-wrapper d-flex justify-content-center align-items-center"
-                            (click)="displayProfileDetails(true)"
-                        >
-                            <svg-icon
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 17
-                                }"
-                                [src]="chatSvgRoutes.informationIcon"
-                            >
-                            </svg-icon>
-                        </div>
-
-                        <app-chat-vertical-divider></app-chat-vertical-divider>
-
-                        <div
-                            class="icon-wrapper d-flex justify-content-center align-items-center"
-                        >
-                            <svg-icon
-                                class="d-flex justify-content-center align-items-center"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                [src]="chatSvgRoutes.listOptionsIcon"
-                            >
-                            </svg-icon>
-                        </div>
-                    </div>
+                </div> -->
                 </ng-container>
+
                 <ng-container
                     *ngSwitchCase="
                         group === chatGroupEnum.Department ||
@@ -84,28 +69,23 @@
                         >
                         </svg-icon>
                     </div>
+
                     <ng-container
-                        *ngFor="
-                            let participant of conversationParticipant;
-                            let ind = index;
-                            trackBy: '' | trackByProperty
+                        *ngTemplateOutlet="
+                            headerLeftSide;
+                            context: {
+                                name: conversationParticipants[0]?.fullName
+                            }
                         "
-                    >
-                        {{ participant }}
-                        <app-ca-profile-image
-                            [avatarImg]="participant?.avatarFile?.url"
-                            [avatarColor]="{
-                                background: '#DFC2F9',
-                                color: '#9E47EC66'
-                            }"
-                            [textShortName]="
-                                participant?.fullName | nameInitials
-                            "
-                            [size]="22"
-                            [fontSize]="9"
-                            [isHoverEffect]="false"
-                            [isRound]="true"
-                        ></app-ca-profile-image
+                    ></ng-container>
+
+                    <ng-container
+                        *ngTemplateOutlet="
+                            headerRightSide;
+                            context: {
+                                participants: conversationParticipants
+                            }
+                        "
                     ></ng-container>
                 </ng-container>
             </div>
@@ -137,3 +117,89 @@
         </div>
     </ng-container>
 </div>
+
+<ng-template #headerLeftSide let-name="name">
+    <div class="name ta-font-extra-bold">
+        {{ name }}
+    </div>
+
+    <app-chat-vertical-divider></app-chat-vertical-divider>
+
+    <svg-icon
+        class="d-flex justify-content-center align-items-center"
+        [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+        [src]="chatSvgRoutes.searchIcon"
+    >
+    </svg-icon>
+</ng-template>
+
+<ng-template #headerRightSide let-participants="participants">
+    <div class="right-icons d-flex">
+        <ng-container *ngIf="participants">
+            <ng-container
+                *ngTemplateOutlet="
+                    participantsIconList;
+                    context: {
+                        participants: participants
+                    }
+                "
+            ></ng-container>
+        </ng-container>
+
+        <app-chat-vertical-divider></app-chat-vertical-divider>
+
+        <div
+            class="icon-wrapper d-flex justify-content-center align-items-center"
+        >
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+                [src]="chatSvgRoutes.listOptionsIcon"
+            >
+            </svg-icon>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #participantsIconList let-participants="participants">
+    <ng-container
+        *ngFor="
+            let participant of participants;
+            let ind = index;
+            trackBy: '' | trackByProperty
+        "
+    >
+        <ng-container [ngSwitch]="true">
+            <ng-container *ngSwitchCase="ind <= 4">
+                <!-- TODO Add border radius if driver, participant?.userType.name -->
+                <div
+                    [ngClass]="ind !== 0 && 'profile-image-wrapper'"
+                    [ngStyle]="participant && '{border-radius: 50px}'"
+                >
+                    <app-ca-profile-image
+                        [avatarImg]="participant?.avatarFile?.url"
+                        [avatarColor]="{
+                            background: '#DFC2F9',
+                            color: '#9E47EC66'
+                        }"
+                        [textShortName]="participant?.fullName | nameInitials"
+                        [size]="22"
+                        [fontSize]="9"
+                        [isHoverEffect]="false"
+                        [isRound]="true"
+                    ></app-ca-profile-image>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="ind === 5">
+                <div
+                    class="remaining-participants-number profile-image-wrapper align-content-center ta-font-extra-bold"
+                >
+                    <div>+{{ participants?.length - 5 }}</div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-template>
