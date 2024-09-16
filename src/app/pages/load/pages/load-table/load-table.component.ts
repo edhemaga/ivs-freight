@@ -180,8 +180,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.sendLoadData();
-
         this.resetColumns();
 
         this.getSelectedTabTableData();
@@ -442,7 +440,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices
-                    .getAllLoads(this.backLoadFilterQuery)
+                    .getAllLoads(this.backLoadFilterQuery, this.selectedTab)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
                         this.sendLoadData();
@@ -673,131 +671,135 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
-        const loadCount = JSON.parse(
-            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
-        );
 
-        const loadTemplateData =
-            this.selectedTab === TableStringEnum.TEMPLATE
-                ? this.getTabData(TableStringEnum.TEMPLATE)
-                : [];
 
-        const loadPendingData =
-            this.selectedTab === TableStringEnum.PENDING
-                ? this.getTabData(TableStringEnum.PENDING)
-                : [];
+        this.loadServices.getAllLoads(this.backLoadFilterQuery, this.selectedTab).pipe(takeUntil(this.destroy$)).subscribe(response => {
+            const loadCount = JSON.parse(
+                localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+            );
+    
+            const loadTemplateData =
+                this.selectedTab === TableStringEnum.TEMPLATE
+                    ? this.getTabData(TableStringEnum.TEMPLATE)
+                    : [];
+    
+            const loadPendingData =
+                this.selectedTab === TableStringEnum.PENDING
+                    ? this.getTabData(TableStringEnum.PENDING)
+                    : [];
+    
+            const loadActiveData =
+                this.selectedTab === TableStringEnum.ACTIVE
+                    ? this.getTabData(TableStringEnum.ACTIVE)
+                    : [];
+    
+            const repairClosedData =
+                this.selectedTab === TableStringEnum.CLOSED
+                    ? this.getTabData(TableStringEnum.CLOSED)
+                    : [];
 
-        const loadActiveData =
-            this.selectedTab === TableStringEnum.ACTIVE
-                ? this.getTabData(TableStringEnum.ACTIVE)
-                : [];
-
-        const repairClosedData =
-            this.selectedTab === TableStringEnum.CLOSED
-                ? this.getTabData(TableStringEnum.CLOSED)
-                : [];
-
-        this.tableData = [
-            {
-                title: TableStringEnum.TEMPLATE_2,
-                field: TableStringEnum.TEMPLATE,
-                length: loadCount?.templateCount,
-                data: loadTemplateData,
-                extended: false,
-                gridNameTitle: TableStringEnum.LOAD,
-                moneyCountSelected: false,
-                ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadTemplateData,
-                    TableStringEnum.LTL,
-                    TableStringEnum.TYPE
-                ),
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadTemplateData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
-                stateName: TableStringEnum.LOADS,
-                tableConfiguration: 'LOAD_TEMPLATE',
-                isActive: this.selectedTab === TableStringEnum.TEMPLATE,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.TEMPLATE,
-                    'LOAD_TEMPLATE'
-                ),
-            },
-            {
-                title: TableStringEnum.PENDING_2,
-                field: TableStringEnum.PENDING,
-                length: loadCount?.pendingCount,
-                data: loadPendingData,
-                extended: false,
-                moneyCountSelected: false,
-                gridNameTitle: TableStringEnum.LOAD,
-                ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadPendingData,
-                    TableStringEnum.LTL,
-                    TableStringEnum.TYPE
-                ),
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadPendingData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
-                stateName: TableStringEnum.LOADS,
-                tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === TableStringEnum.PENDING,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.PENDING,
-                    'LOAD_REGULAR'
-                ),
-            },
-            {
-                title: TableStringEnum.ACTIVE_2,
-                field: TableStringEnum.ACTIVE,
-                length: loadCount?.activeCount,
-                data: loadActiveData,
-                moneyCountSelected: false,
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadActiveData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
-                extended: false,
-                gridNameTitle: TableStringEnum.LOAD,
-                stateName: TableStringEnum.LOADS,
-                tableConfiguration: 'LOAD_REGULAR',
-                isActive: this.selectedTab === TableStringEnum.ACTIVE,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.ACTIVE,
-                    'LOAD_REGULAR'
-                ),
-            },
-            {
-                title: TableStringEnum.CLOSED_2,
-                field: TableStringEnum.CLOSED,
-                length: loadCount?.closedCount,
-                moneyCountSelected: false,
-                data: repairClosedData,
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    repairClosedData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
-                extended: false,
-                gridNameTitle: TableStringEnum.LOAD,
-                stateName: TableStringEnum.LOADS,
-                tableConfiguration: 'LOAD_CLOSED',
-                isActive: this.selectedTab === TableStringEnum.CLOSED,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.CLOSED,
-                    'LOAD_CLOSED'
-                ),
-            },
-        ];
-
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
-        this.setLoadData(td);
-        this.updateCardView();
-        this.cdRef.detectChanges();
+            this.tableData = [
+                {
+                    title: TableStringEnum.TEMPLATE_2,
+                    field: TableStringEnum.TEMPLATE,
+                    length: loadCount?.templateCount,
+                    data: loadTemplateData,
+                    extended: false,
+                    gridNameTitle: TableStringEnum.LOAD,
+                    moneyCountSelected: false,
+                    ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                        loadTemplateData,
+                        TableStringEnum.LTL,
+                        TableStringEnum.TYPE
+                    ),
+                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                        loadTemplateData,
+                        TableStringEnum.FTL,
+                        TableStringEnum.TYPE
+                    ),
+                    stateName: TableStringEnum.LOADS,
+                    tableConfiguration: 'LOAD_TEMPLATE',
+                    isActive: this.selectedTab === TableStringEnum.TEMPLATE,
+                    gridColumns: this.getGridColumns(
+                        TableStringEnum.TEMPLATE,
+                        'LOAD_TEMPLATE'
+                    ),
+                },
+                {
+                    title: TableStringEnum.PENDING_2,
+                    field: TableStringEnum.PENDING,
+                    length: loadCount?.pendingCount,
+                    data: loadPendingData,
+                    extended: false,
+                    moneyCountSelected: false,
+                    gridNameTitle: TableStringEnum.LOAD,
+                    ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                        loadPendingData,
+                        TableStringEnum.LTL,
+                        TableStringEnum.TYPE
+                    ),
+                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                        loadPendingData,
+                        TableStringEnum.FTL,
+                        TableStringEnum.TYPE
+                    ),
+                    stateName: TableStringEnum.LOADS,
+                    tableConfiguration: 'LOAD_REGULAR',
+                    isActive: this.selectedTab === TableStringEnum.PENDING,
+                    gridColumns: this.getGridColumns(
+                        TableStringEnum.PENDING,
+                        'LOAD_REGULAR'
+                    ),
+                },
+                {
+                    title: TableStringEnum.ACTIVE_2,
+                    field: TableStringEnum.ACTIVE,
+                    length: loadCount?.activeCount,
+                    data: loadActiveData,
+                    moneyCountSelected: false,
+                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                        loadActiveData,
+                        TableStringEnum.FTL,
+                        TableStringEnum.TYPE
+                    ),
+                    extended: false,
+                    gridNameTitle: TableStringEnum.LOAD,
+                    stateName: TableStringEnum.LOADS,
+                    tableConfiguration: 'LOAD_REGULAR',
+                    isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                    gridColumns: this.getGridColumns(
+                        TableStringEnum.ACTIVE,
+                        'LOAD_REGULAR'
+                    ),
+                },
+                {
+                    title: TableStringEnum.CLOSED_2,
+                    field: TableStringEnum.CLOSED,
+                    length: loadCount?.closedCount,
+                    moneyCountSelected: false,
+                    data: repairClosedData,
+                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                        repairClosedData,
+                        TableStringEnum.FTL,
+                        TableStringEnum.TYPE
+                    ),
+                    extended: false,
+                    gridNameTitle: TableStringEnum.LOAD,
+                    stateName: TableStringEnum.LOADS,
+                    tableConfiguration: 'LOAD_CLOSED',
+                    isActive: this.selectedTab === TableStringEnum.CLOSED,
+                    gridColumns: this.getGridColumns(
+                        TableStringEnum.CLOSED,
+                        'LOAD_CLOSED'
+                    ),
+                },
+            ];
+    
+            const td = this.tableData.find((t) => t.field === this.selectedTab);
+            this.setLoadData(td);
+            this.updateCardView();
+            this.cdRef.detectChanges();
+        })
     }
 
     private getGridColumns(activeTab: string, configType: string): void {
