@@ -64,6 +64,7 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   // User Profile Data
   public userProfileData!: Observable<ConversationInfoResponse>;
   public isProfileDetailsDisplayed: boolean = false;
+  public isGroupMembersDisplayed: boolean = false;
 
   // Assets
   public chatSvgRoutes = ChatSvgRoutes;
@@ -128,6 +129,15 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
           this.userProfileService.setProfile(data);
         })
     }
+  }
+
+  public displayGroupParticipants(): void {
+    if (
+      this.group === this.chatGroupEnum.Department ||
+      this.group === this.chatGroupEnum.Truck ||
+      this.group === this.chatGroupEnum.Dispatch
+    )
+      this.isGroupMembersDisplayed = true;
   }
 
   private getDataOnRouteChange(): void {

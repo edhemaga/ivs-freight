@@ -135,17 +135,18 @@
 
 <ng-template #headerRightSide let-participants="participants">
     <div class="right-icons d-flex">
-        <ng-container *ngIf="participants">
-            <ng-container
-                *ngTemplateOutlet="
-                    participantsIconList;
-                    context: {
-                        participants: participants
-                    }
-                "
-            ></ng-container>
-        </ng-container>
-
+        <div (click)="displayGroupParticipants()">
+            <ng-container *ngIf="participants">
+                <ng-container
+                    *ngTemplateOutlet="
+                        participantsIconList;
+                        context: {
+                            participants: participants
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+        </div>
         <app-chat-vertical-divider></app-chat-vertical-divider>
 
         <div
