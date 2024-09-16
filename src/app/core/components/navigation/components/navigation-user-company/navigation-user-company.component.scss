@@ -7,7 +7,7 @@
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-    background-color: #424242;
+    background-color: $nav-dark-bg;
     position: relative;
     height: fit-content;
     z-index: 99;
@@ -15,7 +15,7 @@
 
     p {
         margin: 0;
-        color: #FFFFFFB2;
+        color: $nav-text-color;
     }
 
     .user-company-header {
@@ -100,7 +100,7 @@
             margin-left: 12px;
         }
         .user-company-text-active {
-            color: #92B1F5 !important;
+            color: $nav-light-icon !important;
             font-weight: $nav-font-bold;
             svg {
                 height: 14px;

@@ -27,7 +27,7 @@
         svg {
             path {
                 transition: fill 0.4s ease;
-                fill: #919191;
+                fill: $nav-svg-hover;
             }
         }
     }
@@ -237,7 +237,7 @@
         .nav-item-arrow {
             svg {
                 path {
-                    fill: $nav-white;
+                    fill: $nav-svg-hover;
                     transition: fill 0.4s ease;
                 }
             }
@@ -322,7 +322,7 @@
     }
 
     svg path {
-        fill: #919191;
+        fill: $nav-svg-hover;
     }
 }
 @keyframes dude {
@@ -350,7 +350,7 @@
 .nav-item-svg-active {
     svg {
         path {
-            fill: #6692F1 !important;
+            fill: $nav-close-icon-active !important;
         }
     }
 }
@@ -358,7 +358,7 @@
 .route-clicked-svg {
     svg {
         path {
-            fill: #FFFFFFB2 !important;
+            fill: $nav-text-color !important;
         }
     }
 }

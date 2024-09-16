@@ -17,11 +17,8 @@
     transition: width .3s;
 
     &:not(.show-modal) {
-        &.hide-modal {
-        }
-    
         &.opened-navigation  {
-            background-color: #3B73ED66;
+            background-color: $nav-blue-bg;
 
             &:hover {
                 background-color: $nav-svg-active;
@@ -61,7 +58,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 path {
-                    fill: #92B1F5;
+                    fill: $nav-light-icon;
                 }
             }
 
@@ -188,7 +185,7 @@
     }
 }
 .closed-navigation {
-    background: #e9effd;
+    background: $nav-close-icon;
     width: 34px !important;
     height: 34px !important;
     border-radius: 34px !important;
@@ -198,7 +195,7 @@
             .modal-nav-close-svg {
                 svg {
                     path {
-                        fill: #6692f1;
+                        fill: $nav-close-icon-active;
                     }
                 }
             }
@@ -235,7 +232,7 @@
                         svg {
                             path {
                                 transition: all 0.3s;
-                                fill: #FFFFFFB2;
+                                fill: $nav-text-color;
                             }
                         }
                     }

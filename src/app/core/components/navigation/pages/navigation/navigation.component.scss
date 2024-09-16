@@ -152,11 +152,19 @@
 
     @for $i from 1 through 13 {
         .navigation-routes:nth-child(#{$i}):hover ~ .new-magic-line {
-          transform: translateY(#{($i - 1) * 34 + 1}px) !important;
+          transform: translateY(#{($i - 1) * 34 + 1}px);
         }
       
         .new-magic-line-selected:nth-child(#{$i}) ~ .new-magic-line {
           transform: translateY(#{($i - 1) * 34 + 1}px);
         }
+      }
+
+      .navigation-routes:nth-child(14):hover  ~ .new-magic-line {
+        transform: translateY(708px);
+      }
+      
+      .new-magic-line-selected:nth-child(14) ~ .new-magic-line {
+        transform: translateY(708px);
       }
 }

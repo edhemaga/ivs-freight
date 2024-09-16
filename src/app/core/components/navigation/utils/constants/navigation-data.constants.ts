@@ -5,6 +5,8 @@ import { NavigationUserPanel } from '@core/components/navigation/models/navigati
 import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
 
 export class NavigationDataConstants {
+    static title =  'Add New'
+    static close =  'Close'
     static navigationData: Navigation[] = [
         {
             id: 1,

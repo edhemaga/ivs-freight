@@ -66,7 +66,7 @@
             font-size: $nav-font-size;
             position: relative;
             top: 4px;
-            color: #FFFFFFB2;
+            color: $nav-text-color;
         }
         .route-not-active {
             color: #787878;
