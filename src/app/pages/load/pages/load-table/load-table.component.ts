@@ -51,6 +51,7 @@ import {
     LoadListResponse,
     LoadStatus,
     LoadTemplateListResponse,
+    TableType,
 } from 'appcoretruckassist';
 import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 import { LoadTemplate } from '@pages/load/pages/load-table/models/load-template.model';
@@ -718,11 +719,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         TableStringEnum.TYPE
                     ),
                     stateName: TableStringEnum.LOADS,
-                    tableConfiguration: 'LOAD_TEMPLATE',
+                    tableConfiguration: TableType.LoadTemplate,
                     isActive: this.selectedTab === TableStringEnum.TEMPLATE,
                     gridColumns: this.getGridColumns(
                         TableStringEnum.TEMPLATE,
-                        'LOAD_TEMPLATE'
+                        TableType.LoadTemplate
                     ),
                 },
                 {
@@ -744,11 +745,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         TableStringEnum.TYPE
                     ),
                     stateName: TableStringEnum.LOADS,
-                    tableConfiguration: 'LOAD_REGULAR',
+                    tableConfiguration: TableType.LoadRegular,
                     isActive: this.selectedTab === TableStringEnum.PENDING,
                     gridColumns: this.getGridColumns(
                         TableStringEnum.PENDING,
-                        'LOAD_REGULAR'
+                        TableType.LoadRegular
                     ),
                 },
                 {
@@ -765,11 +766,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     extended: false,
                     gridNameTitle: TableStringEnum.LOAD,
                     stateName: TableStringEnum.LOADS,
-                    tableConfiguration: 'LOAD_REGULAR',
+                    tableConfiguration: TableType.LoadRegular,
                     isActive: this.selectedTab === TableStringEnum.ACTIVE,
                     gridColumns: this.getGridColumns(
                         TableStringEnum.ACTIVE,
-                        'LOAD_REGULAR'
+                        TableType.LoadRegular
                     ),
                 },
                 {
@@ -786,11 +787,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     extended: false,
                     gridNameTitle: TableStringEnum.LOAD,
                     stateName: TableStringEnum.LOADS,
-                    tableConfiguration: 'LOAD_CLOSED',
+                    tableConfiguration: TableType.LoadClosed,
                     isActive: this.selectedTab === TableStringEnum.CLOSED,
                     gridColumns: this.getGridColumns(
                         TableStringEnum.CLOSED,
-                        'LOAD_CLOSED'
+                        TableType.LoadClosed
                     ),
                 },
             ];
