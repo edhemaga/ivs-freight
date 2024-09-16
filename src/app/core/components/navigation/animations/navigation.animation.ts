@@ -87,9 +87,9 @@ export const smoothHeight = (type: string) =>
         state(
             'false',
             style({
-                width: '36px',
-                height: '36px',
-                borderRadius: '36px',
+                width: '120px',
+                height: '34px',
+                borderRadius: '34px',
             })
         ),
         transition('false <=> true', [animate('0.15s ease-in-out')]),

@@ -21,6 +21,7 @@
             'open-trouble': openHavingTroubleContent
         }"
     >
+    <ng-container *ngIf="openHavingTroubleContent" @fadeAnimation>
         <ng-container *ngIf="displayResetPasswordBtn">
             <div
                 class="d-flex flex-column justify-content-center password-container"
@@ -50,5 +51,6 @@
                 ></app-sidebar-resend-btn>
             </div>
         </ng-container>
+    </ng-container>
     </div>
 </div>

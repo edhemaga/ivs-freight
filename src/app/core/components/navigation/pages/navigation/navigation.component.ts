@@ -25,7 +25,6 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 // components
 import { NavigationHeaderComponent } from '@core/components/navigation/components/navigation-header/navigation-header.component';
 import { NavigationModalsComponent } from '@core/components/navigation/components/navigation-modals/navigation-modals.component';
-import { NavigationFooterComponent } from '@core/components/navigation/components/navigation-footer/navigation-footer.component';
 import { NavigationUserProfileComponent } from '@core/components/navigation/components/navigation-user-profile/navigation-user-profile.component';
 import { NavigationUserCompanyComponent } from '@core/components/navigation/components/navigation-user-company/navigation-user-company.component';
 import { NavigationSubrouteCardComponent } from '@core/components/navigation/components/navigation-subroute-card/navigation-subroute-card.component';
@@ -48,7 +47,6 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
         ReactiveFormsModule,
         NavigationHeaderComponent,
         NavigationModalsComponent,
-        NavigationFooterComponent,
         NavigationUserProfileComponent,
         NavigationUserCompanyComponent,
         NavigationSubrouteCardComponent,
