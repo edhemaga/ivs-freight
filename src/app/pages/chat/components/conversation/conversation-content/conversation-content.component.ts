@@ -1,40 +1,44 @@
 import {
   Component,
+  OnInit,
   Input,
-  OnInit
+  Output
 } from '@angular/core';
 import {
   ActivatedRoute,
   Router
 } from '@angular/router';
 import {
-  Observable,
   takeUntil
 } from 'rxjs';
 
 // Services
 import {
-  ChatHubService,
   UserChatService,
-  UserProfileService
 } from '@pages/chat/services';
 
 // Models
 import { ChatMessageResponse } from '@pages/chat/models';
 import {
   CompanyUserShortResponse,
-  ConversationInfoResponse,
   ConversationResponse
 } from 'appcoretruckassist';
 
 // Enums
-import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
+import {
+  ChatConversationType,
+  ChatGroupEnum
+} from '@pages/chat/enums';
 
 // Helpers
-import { GetCurrentUserHelper, UnsubscribeHelper } from '@pages/chat/utils/helpers';
+import {
+  GetCurrentUserHelper,
+  UnsubscribeHelper
+} from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-conversation-content',
@@ -44,6 +48,10 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 export class ConversationContentComponent extends UnsubscribeHelper implements OnInit {
 
   @Input() group: ChatGroupEnum;
+  @Input() public attachmentUploadActive: boolean = false;
+
+  @Output() isProfileDetailsDisplayed: EventEmitter<boolean> = new EventEmitter();
+  @Output() isConversationParticipantsDisplayed: EventEmitter<boolean> = new EventEmitter();
 
   public messages: ChatMessageResponse[] = [];
 
@@ -57,14 +65,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   private conversation!: ConversationResponse;
   public conversationParticipants!: CompanyUserShortResponse[];
 
-  // Attachment upload
-  public attachmentUploadActive: boolean = false;
-
-  // User Profile Data
-  public userProfileData!: Observable<ConversationInfoResponse>;
-  public isProfileDetailsDisplayed: boolean = false;
-  public isGroupMembersDisplayed: boolean = false;
-
   // Assets
   public chatSvgRoutes = ChatSvgRoutes;
 
@@ -75,7 +75,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
 
     // Services
     private chatService: UserChatService,
-    public userProfileService: UserProfileService
 
   ) {
     super();
@@ -84,7 +83,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   ngOnInit(): void {
     this.getResolvedData();
     this.getDataOnRouteChange();
-    this.userProfileData = this.userProfileService.getProfile();
   }
 
   private getResolvedData(): void {
@@ -110,32 +108,8 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
       );
   }
 
-  public displayProfileDetails(value: boolean): void {
-
-    if (this.isProfileDetailsDisplayed && !value) {
-      this.isProfileDetailsDisplayed = value;
-      return;
-    }
-
-    if (this.conversation?.id && value) {
-
-      this.chatService
-        .getAllConversationFiles(this.conversation.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((data: ConversationInfoResponse) => {
-          this.isProfileDetailsDisplayed = value;
-          this.userProfileService.setProfile(data);
-        })
-    }
-  }
-
   public displayGroupParticipants(): void {
-    if (
-      this.group === this.chatGroupEnum.Department ||
-      this.group === this.chatGroupEnum.Truck ||
-      this.group === this.chatGroupEnum.Dispatch
-    )
-      this.isGroupMembersDisplayed = true;
+    this.isConversationParticipantsDisplayed.emit(true);
   }
 
   private getDataOnRouteChange(): void {
@@ -144,7 +118,7 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
       .pipe(
         takeUntil(this.destroy$))
       .subscribe(() => {
-        this.isProfileDetailsDisplayed = false;
+        this.isProfileDetailsDisplayed.emit(false);
       });
 
     this.activatedRoute.queryParams.subscribe(params => {

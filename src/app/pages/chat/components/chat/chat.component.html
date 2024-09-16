@@ -96,11 +96,18 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="chat-main-content">
-        <!-- USER TYPES LIST -->
+    <div
+        class="chat-main-content"
+        [ngStyle]="{
+            'grid-template-columns':
+                (isProfileDetailsDisplayed && userProfileData | async) ||
+                isGroupMembersDisplayed
+                    ? 'max-content auto max-content'
+                    : 'max-content auto'
+        }"
+    >
+        <!-- User list -->
         <div class="chat-lists">
-            <!-- COMPANY USERS -->
             <app-conversation-list
                 [departments]="departments"
                 [companyUsers]="companyUsers"
@@ -111,15 +118,50 @@
             ></app-conversation-list>
         </div>
 
-        <!-- MESSAGES -->
+        <!-- Messages -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
-                <router-outlet></router-outlet>
+                <router-outlet (activate)="onActivate($event)"></router-outlet>
             </ng-container>
 
             <ng-template #noConversation>
                 <app-chat-messages-not-selected></app-chat-messages-not-selected>
             </ng-template>
+        </div>
+
+        <!-- Profile details -->
+        <!-- TODO Add on open/close animation -->
+        <div>
+            <ng-container *ngIf="!attachmentUploadActive">
+                <div class="profile-details-wrapper d-flex">
+                    <app-chat-vertical-divider
+                        [verticalOffset]="8"
+                    ></app-chat-vertical-divider>
+                    <ng-container [ngSwitch]="true">
+                        <ng-container
+                            *ngSwitchCase="
+                                isProfileDetailsDisplayed && userProfileData
+                                    | async
+                            "
+                        >
+                            <div class="profile-details">
+                                <app-chat-user-profile
+                                    [data]="userProfileData | async"
+                                    (isProfileDetailsClosed)="
+                                        displayProfileDetails($event)
+                                    "
+                                ></app-chat-user-profile>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="isGroupMembersDisplayed">
+                            <app-chat-channel-participant-list
+                                [participants]="conversationParticipants"
+                            ></app-chat-channel-participant-list>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

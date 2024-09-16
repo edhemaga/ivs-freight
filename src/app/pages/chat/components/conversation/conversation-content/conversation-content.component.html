@@ -1,4 +1,5 @@
 <div class="conversation-content-container">
+    <!-- Header with basic information -->
     <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
         <ng-container [ngSwitch]="true">
             <div class="messages-header d-flex align-items-center">
@@ -91,31 +92,13 @@
             </div>
         </ng-container>
     </app-chat-header>
+
+    <!-- Messages  -->
     <app-chat-messages
         [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
         [attachmentUploadActive]="attachmentUploadActive"
         [conversationParticipants]="conversationParticipants"
     ></app-chat-messages>
-    <!-- TODO Add on open/close animation -->
-    <ng-container
-        *ngIf="
-            !attachmentUploadActive &&
-                isProfileDetailsDisplayed &&
-                userProfileData | async
-        "
-    >
-        <div class="profile-details-wrapper d-flex">
-            <app-chat-vertical-divider
-                [verticalOffset]="8"
-            ></app-chat-vertical-divider>
-            <div class="profile-details">
-                <app-chat-user-profile
-                    [data]="userProfileData | async"
-                    (isProfileDetailsClosed)="displayProfileDetails($event)"
-                ></app-chat-user-profile>
-            </div>
-        </div>
-    </ng-container>
 </div>
 
 <ng-template #headerLeftSide let-name="name">
@@ -179,7 +162,6 @@
                 <div
                     class="profile-illustration-wrapper"
                     [ngClass]="ind > 0 && 'left-offset'"
-                    [ngStyle]="participant && '{border-radius: 50px}'"
                 >
                     <app-ca-profile-image
                         [avatarImg]="participant?.avatarFile?.url"

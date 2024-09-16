@@ -177,10 +177,9 @@
 
     .chat-main-content {
         height: calc(100dvh - 75px);
-        width: calc(100% + 12px);
+        width: 100%;
 
         display: grid;
-        grid-template-columns: min-content auto min-content;
         column-gap: 12px;
         margin-top: 12px;
 
@@ -201,6 +200,19 @@
         .group-wrapper {
             height: fit-content;
         }
+    }
+}
+
+.profile-details-wrapper {
+    height: 100%;
+    width: 100%;
+
+    min-width: 280px;
+    max-width: 320px;
+
+    .profile-details {
+        height: 100%;
+        overflow-y: scroll;
     }
 }
 
