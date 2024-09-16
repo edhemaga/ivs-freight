@@ -176,7 +176,8 @@
     }
 
     .chat-main-content {
-        height: calc(100dvh - 75px);
+        //TODO needs to be refactored
+        height: calc(100dvh - 45px);
         width: 100%;
 
         display: grid;

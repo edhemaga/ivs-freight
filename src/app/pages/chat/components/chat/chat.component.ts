@@ -69,7 +69,7 @@ export class ChatComponent
   // User Profile Data
   public userProfileData!: Observable<ConversationInfoResponse>;
   public isProfileDetailsDisplayed: boolean = false;
-  public isGroupMembersDisplayed: boolean = false;
+  public isGroupMembersDisplayed!: Observable<boolean>;
 
   // Tab and header ribbon configuration
   public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -203,20 +203,9 @@ export class ChatComponent
     }
   }
 
-  public displayGroupParticipants(isDisplayed: Observable<boolean>): void {
-    isDisplayed
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (arg: boolean) => {
-          if (arg !== undefined)
-            this.isGroupMembersDisplayed = arg;
-          console.log(this.isGroupMembersDisplayed);
-        })
-  }
 
   public onActivate(event: ConversationContentComponent): void {
-    this.displayGroupParticipants(event?.
-      isConversationParticipantsDisplayed);
-
+    this.isGroupMembersDisplayed = event?.isConversationParticipantsDisplayed;
   }
+
 }

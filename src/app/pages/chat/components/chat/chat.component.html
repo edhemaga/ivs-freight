@@ -101,7 +101,7 @@
         [ngStyle]="{
             'grid-template-columns':
                 (isProfileDetailsDisplayed && userProfileData | async) ||
-                isGroupMembersDisplayed
+                (isGroupMembersDisplayed | async)
                     ? 'max-content auto max-content'
                     : 'max-content auto'
         }"
@@ -134,14 +134,11 @@
         <div>
             <ng-container *ngIf="!attachmentUploadActive">
                 <div class="profile-details-wrapper d-flex">
-                    <app-chat-vertical-divider
-                        [verticalOffset]="8"
-                    ></app-chat-vertical-divider>
                     <ng-container [ngSwitch]="true">
                         <ng-container
                             *ngSwitchCase="
-                                isProfileDetailsDisplayed && userProfileData
-                                    | async
+                                isProfileDetailsDisplayed &&
+                                (userProfileData | async)
                             "
                         >
                             <div class="profile-details">
@@ -154,7 +151,9 @@
                             </div>
                         </ng-container>
 
-                        <ng-container *ngSwitchCase="isGroupMembersDisplayed">
+                        <ng-container
+                            *ngSwitchCase="isGroupMembersDisplayed | async"
+                        >
                             <app-chat-channel-participant-list
                                 [participants]="conversationParticipants"
                             ></app-chat-channel-participant-list>
