@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// modules
+// Modules
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
@@ -12,35 +12,33 @@ import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-// routing
+// Routing
 import { AppRoutingModule } from '@app/app-routing.module';
 
-// components
+// Components
 import { AppComponent } from '@app/app.component';
 import { NavigationComponent } from '@core/components/navigation/pages/navigation/navigation.component';
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 
-// pipes
+// Pipes
 import { ChangeLogoPipe } from '@core/components/navigation/pipes/change-logo.pipe';
 import { BlockedContentPipe } from '@core/pipes/blocked-content.pipe';
 
-// interceptors
+// Interceptors
 import { AppInterceptor } from '@core/interceptors/app.inteceptor';
 import { RefreshTokenInterceptor } from '@core/interceptors/refresh-token.interceptor';
 
-// config
+// Config
 import { configFactory } from '@core/configs/app.config';
 
-// services
+// Services
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
-import { CaComponentsLibModule } from 'ca-components';
-
-// lottie
+// Lottie
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
@@ -85,7 +83,6 @@ function playerFactory() {
         ReusableTemplatesComponent,
         // routing
         AppRoutingModule,
-        CaComponentsLibModule,
     ],
     providers: [
         {
@@ -113,6 +110,7 @@ function playerFactory() {
         StaticInjectorService,
         DatePipe,
         CurrencyPipe,
+        BlockedContentPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],

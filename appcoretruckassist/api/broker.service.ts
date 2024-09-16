@@ -51,6 +51,8 @@ import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { GetBrokerListResponse } from '../model/getBrokerListResponse';
 // @ts-ignore
+import { LoadSortBy } from '../model/loadSortBy';
+// @ts-ignore
 import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
 // @ts-ignore
 import { MultipleChangeBanFlagCommand } from '../model/multipleChangeBanFlagCommand';
@@ -58,6 +60,8 @@ import { MultipleChangeBanFlagCommand } from '../model/multipleChangeBanFlagComm
 import { MultipleChangeDnuFlagCommand } from '../model/multipleChangeDnuFlagCommand';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
+// @ts-ignore
+import { SortOrder } from '../model/sortOrder';
 // @ts-ignore
 import { StatusSetMultipleBrokerCommand } from '../model/statusSetMultipleBrokerCommand';
 
@@ -1358,16 +1362,18 @@ export class BrokerService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetBrokerListResponse>;
-    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetBrokerListResponse>>;
-    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetBrokerListResponse>>;
-    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetBrokerListResponse>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetBrokerListResponse>>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetBrokerListResponse>>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ban !== undefined && ban !== null) {
@@ -1433,6 +1439,14 @@ export class BrokerService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1628,16 +1642,18 @@ export class BrokerService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerLoadsResponse>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerLoadsResponse>>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerLoadsResponse>>;
-    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerLoadsResponse>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerLoadsResponse>>;
+    public apiBrokerLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -1759,6 +1775,14 @@ export class BrokerService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

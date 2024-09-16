@@ -1586,10 +1586,9 @@ table.truckassist-table-body-style {
                             .status-time {
                                 font-size: 10px;
                                 display: none;
-                                font-weight: bold;
-                                color: $muted;
-                                height: 12px;
-                                line-height: 12px;
+                                font-size: 11px;
+                                color: $ta-black;
+                                line-height: 11px;
 
                                 &::selection {
                                     color: $muted;

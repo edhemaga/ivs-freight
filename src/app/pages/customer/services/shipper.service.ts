@@ -169,6 +169,8 @@ export class ShipperService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -363,6 +365,8 @@ export class ShipperService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -399,6 +403,8 @@ export class ShipperService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -485,6 +491,8 @@ export class ShipperService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

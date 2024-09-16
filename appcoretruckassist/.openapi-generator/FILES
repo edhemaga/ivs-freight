@@ -91,7 +91,10 @@ model/accountColorResponse.ts
 model/activateConversationCommand.ts
 model/activateDeactivateEFSFuelCard.ts
 model/activeLoadProgressBarResponse.ts
+model/activityLogActionFilterResponse.ts
+model/activityLogDepartmentResponse.ts
 model/activityLogModuleFilterResponse.ts
+model/activityLogUserReponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
 model/addIntegrationCommand.ts
@@ -413,6 +416,7 @@ model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
+model/dispatchHistoryTruckLastLocationResponse.ts
 model/dispatchHosCommand.ts
 model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
@@ -628,6 +632,7 @@ model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadShortResponse.ts
+model/loadSortBy.ts
 model/loadStatus.ts
 model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
@@ -656,6 +661,7 @@ model/mapMarkerListResponse.ts
 model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
+model/markMessageAsReadCommand.ts
 model/markerNamesResponse.ts
 model/markerNamesResponsePagination.ts
 model/medicalCertificateFeedbackResponse.ts
@@ -935,6 +941,7 @@ model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signupUserCommand.ts
+model/sortOrder.ts
 model/specialCheck.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts

@@ -22,11 +22,10 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
-import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
+import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -48,13 +47,12 @@ import {
     UpdateDispatchCommand,
     DispatchModalResponse,
     DriverListResponse,
-    TrailerListResponse,
-    TrailerMinimalResponse,
-    TruckListResponse,
     TruckMinimalResponse,
     DriverMinimalResponse,
     DispatchResponse,
     DispatchGroupedLoadsResponse,
+    TruckDispatchModalResponse,
+    TrailerDispatchModalResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -69,7 +67,7 @@ import {
     styleUrls: ['./dispatch-table.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [ColorFinderPipe],
+    providers: [DispatchColorFinderPipe],
     animations: [dispatchBackgroundAnimation()],
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
@@ -77,8 +75,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
-
-        this.handleTruckTrailerAdditionalFields();
 
         this.handleHoursOfService();
     }
@@ -93,33 +89,41 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.setColumnsWidth();
     }
 
-    @Input() toolbarWidth: number = 0;
+    @Input() set isNoteExpanded(value: boolean) {
+        this._isNoteExpanded = value;
+    }
+
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
+
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
 
             this.isDriverEndorsementActive = !this.columnsToShow[6].hidden;
+
+            this.handleTruckTrailerAdditionalFields();
         }
     }
 
+    @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
 
-    @Input() set isNoteExpanded(value: boolean) {
-        this._isNoteExpanded = value;
-    }
+    @Input() sortBy: string;
+    @Input() sortDirection: string;
 
     @Output() onTableUnlockEmitter: EventEmitter<DispatchTableUnlock> =
         new EventEmitter();
 
     @Output() onToggleNoteEmitter: EventEmitter<boolean> = new EventEmitter();
 
+    private destroy$ = new Subject<void>();
+
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
-    private destroy$ = new Subject<void>();
     public columnsToShow: DispatchColumn[];
+
     public isDrag: boolean = false;
 
     public checkForEmpty: string;
@@ -137,14 +141,17 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public hasAdditionalFieldTrailer: boolean = false;
     public hasLargeFieldParking: boolean = false;
 
-    public truckList: TruckListResponse[];
-    public trailerList: TrailerListResponse[];
+    public isTrailerAddNewHidden = false;
+
+    public truckList: TruckDispatchModalResponse[];
+    public trailerList: TrailerDispatchModalResponse[];
     public driverList: DriverListResponse[];
     public parkingList: ParkingDispatchModalResponse[];
 
     public addNewTruckData: TruckMinimalResponse;
 
     public showAddAddressFieldIndex: number = -1;
+    public isDisplayingAddressInput: boolean = true;
 
     public _isNoteExpanded: boolean = true;
     public parkingCount: number = 0;
@@ -154,8 +161,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public columnFields = DispatchTableConstants.COLUMN_FIELDS;
 
-    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse =
-        {};
+    public currentDispatchGroupedLoadsResponse: DispatchGroupedLoadsResponse;
 
     public shownFields;
 
@@ -189,12 +195,11 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
 
         // Pipes
-        private colorFinderPipe: ColorFinderPipe,
+        private dispatchColorFinderPipe: DispatchColorFinderPipe,
 
         // Services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService,
-        private tableService: TruckassistTableService
+        private parkingService: ParkingService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -209,10 +214,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
-    }
-
-    public pickupDeliveryItem(item: DispatchResponse): boolean {
-        return !!item.activeLoad;
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -254,7 +255,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...truck,
                 name: truck.truckNumber,
-                class: this.colorFinderPipe.transform(
+                class: this.dispatchColorFinderPipe.transform(
                     truck.truckType.id,
                     DispatchTableStringEnum.TRUCK
                 ),
@@ -268,7 +269,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...trailer,
                 name: trailer.trailerNumber,
-                class: this.colorFinderPipe.transform(
+                class: this.dispatchColorFinderPipe.transform(
                     trailer.trailerType.id,
                     DispatchTableStringEnum.TRAILER
                 ),
@@ -307,12 +308,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     private handleTruckTrailerAdditionalFields(): void {
-        this.hasAdditionalFieldTruck = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.truck?.year
-        );
-        this.hasAdditionalFieldTrailer = this.dispatchData.dispatches.some(
-            (dispatch) => !!dispatch?.trailer?.year
-        );
+        this.hasAdditionalFieldTruck = !this.columnsToShow[1].hidden;
+
+        this.hasAdditionalFieldTrailer = !this.columnsToShow[3].hidden;
 
         if (this.hasAdditionalFieldTruck || this.hasAdditionalFieldTrailer) {
             const currentAdditionalFieldValues = {
@@ -336,12 +334,19 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public handleAddTruckTrailerClick(eventParam: {
         type: string;
-        event: TruckMinimalResponse | TrailerMinimalResponse;
+        event: TruckDispatchModalResponse | TrailerDispatchModalResponse;
         index: number;
     }): void {
         const { type, event, index } = eventParam;
 
+        this.isDisplayingAddressInput = true;
+
         if (type === DispatchTableStringEnum.TRUCK) {
+            const allowedTrailerIds = (event as TruckDispatchModalResponse)
+                .allowedTrailerIds;
+
+            this.isTrailerAddNewHidden = !allowedTrailerIds;
+
             if (index) {
                 this.dispatchData = {
                     ...this.dispatchData,
@@ -378,6 +383,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }) {
         const { type, index } = event;
 
+        if (!this.dispatchData?.dispatches[index]) {
+            this.addNewTruckData = null;
+
+            this.isTrailerAddNewHidden = false;
+            this.isDisplayingAddressInput = false;
+
+            return;
+        }
+
         if (
             ((type === DispatchTableStringEnum.TRAILER_ID &&
                 !this.dispatchData.dispatches[index].truck) ||
@@ -397,6 +411,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public handleUpdateLastLocationEmit(event: string): void {
+        this.isDisplayingAddressInput = false;
+
         this.updateOrAddDispatchBoardAndSend(
             DispatchTableStringEnum.LOCATION,
             event,
@@ -404,7 +420,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         );
     }
 
-    private handleHoursOfService() {
+    private handleHoursOfService(): void {
         const mappedDispatches = this.dispatchData.dispatches.map(
             (dispatch) => {
                 dispatch.hoursOfService = dispatch.hoursOfService ?? [];
@@ -439,6 +455,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.showAddAddressFieldIndex = -1;
 
             this.addNewTruckData = null;
+
+            this.isTrailerAddNewHidden = false;
+            this.isDisplayingAddressInput = false;
 
             this.cdRef.detectChanges();
         }, 3000);
@@ -691,7 +710,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     // CDL DRAG AND DROP
 
     dropList<T>(event: CdkDragDrop<T>): void {
-        console.log('event', event);
         const { currentIndex, previousIndex } = event;
 
         const dispatchBoardId = this.dispatchData.id;
@@ -714,9 +732,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         };
 
         this.isDispatchBoardChangeInProgress = true;
-
-        console.log('dispatchBoardId', dispatchBoardId);
-        console.log('dispatches', dispatches);
 
         this.dispatcherService
             .reorderDispatchboard(data)
@@ -906,7 +921,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     cdkDragStartedTrailer(event, indx) {
-        console.log('END TRAILER');
         this.startIndexTrailer = indx;
         this.isDrag = true;
         /*  this.draggingType = DispatchTableStringEnum.TRUCK; */
@@ -914,7 +928,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     cdkDragStartedDriver(event, indx) {
-        console.log('END DRIVER');
         this.startIndexDriver = indx;
         this.isDrag = true;
         this.draggingType = 'driver';

@@ -2,7 +2,7 @@
 import { DropZoneConfig } from "@shared/components/ta-upload-files/models/dropzone-config.model";
 
 // Assets
-import { ChatSvgRoutes } from "../routes/chat-svg-routes";
+import { ChatSvgRoutes } from "@pages/chat/utils/routes";
 
 export class ChatDropzone {
     static inputDropzone: DropZoneConfig = {

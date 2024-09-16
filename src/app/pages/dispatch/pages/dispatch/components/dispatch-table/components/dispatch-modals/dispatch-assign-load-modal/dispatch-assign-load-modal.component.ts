@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     CDK_DRAG_CONFIG,
@@ -21,6 +21,7 @@ import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constan
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
 import {
@@ -28,24 +29,31 @@ import {
     AssignedLoadResponse,
     AssignLoadModalResponse,
     DispatchLoadModalResponse,
+    EnumValue,
     LoadResponse,
     LoadStopResponse,
     ReorderDispatchLoadsCommand,
 } from 'appcoretruckassist';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { MapRoute } from '@shared/models/map-route.model';
+import { DispatchBoardAssignLoadFilterOptions } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-board-assign-load-filter-options.model.ts';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 
 // Helpers
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
+// Consts
+import { DispatchAssignLoadModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-assign-load-modal.constants';
 @Component({
     selector: 'app-dispatch-assign-load-modal',
     templateUrl: './dispatch-assign-load-modal.component.html',
@@ -55,6 +63,8 @@ import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/co
     ],
 })
 export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
+    @ViewChild('resizerComponent') resizerComponent: TaResizerComponent;
+
     // Svg
     public svgIcons = DispatchParkingSvgRoutes;
 
@@ -77,7 +87,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
-    public isAssignLoadCardOpen: boolean = true;
+    public isAssignLoadCardOpen: boolean = false;
     public isUnAssignLoadCardOpen: boolean = true;
 
     // Additional load
@@ -93,15 +103,21 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public selectedDispatches: any = null;
     public isMapLoaderVisible: boolean = false;
 
+    public backLoadFilterQuery: DispatchBoardAssignLoadFilterOptions;
+
     public tableHeaderItems =
         DispatchAssignLoadModalHelper.getTableHeaderItems();
+    public dispatchFutureTimes: EnumValue[];
+    public isLoading: boolean;
+    public originalLoads: AssignedLoadResponse[] = null;
 
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
         private modalService: ModalService,
         private dispatchService: DispatcherService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnInit(): void {
@@ -122,6 +138,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private initializeForm(): void {
+        this.backLoadFilterQuery = {
+            ...DispatchAssignLoadModalConstants.BACK_FILTER,
+        };
         this.assignLoadForm = this.formBuilder.group({
             dispatchId: [null],
         });
@@ -135,12 +154,67 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             });
         }
 
+        const {
+            dispatchFutureTime,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2,
+        } = this.backLoadFilterQuery;
+
         this.loadService
-            .getDispatchModalData()
+            .getDispatchModalData(
+                false,
+                dispatchFutureTime,
+                truckType,
+                trailerType,
+                _long,
+                lat,
+                distance,
+                dispatchersId,
+                dateFrom,
+                dateTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                search,
+                search1,
+                search2
+            )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignLoadModalResponse) => {
+                if (!this.originalLoads) {
+                    this.originalLoads = res.unassignedLoads;
+                    this.updateFilters();
+
+                    this.tableService.sendActionAnimation({
+                        animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
+                        data: res.dispatches,
+                        id: null,
+                    });
+                }
+
                 this.unassignedLoads = res.unassignedLoads;
-                this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+
+                if(this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length; 
+                } else {
+                    this.isUnAssignLoadCardOpen = true;
+                }
+
+                this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
                 if (this.editData?.dispatchId) {
@@ -188,6 +262,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         };
 
         this.selectedDispatches = null;
+        this.isUnAssignLoadCardOpen = true;
+        this.isAssignLoadCardOpen = false;
         this.showReorderButton = false;
     }
 
@@ -351,6 +427,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                 break;
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD:
+                if (this.isReorderingActive) {
+                    return;
+                }
                 this.ngbActiveModal.close();
 
                 this.createNewLoad();
@@ -405,12 +484,15 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public selectLoad(loadId: number, isAssigned: boolean) {
         if (!this.isAdditonalViewOpened) return;
+        this.isLoading = true;
 
         this.isAssignedLoad = isAssigned;
+        this.selectedLoad = null;
 
         this.fetchLoadById(loadId, (load) => {
-            this.selectedLoad = load;
+            this.selectedLoad = { ...load };
             this.getLoadStopRoutes(load.stops);
+            this.isLoading = false;
 
             // Hide right side of modal
             this.additionalPartVisibility({ action: '', isOpen: true });
@@ -440,6 +522,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             const [movedLoad] = this.assignedLoads.splice(loadIndex, 1);
 
             this.unassignedLoads.push(movedLoad);
+            this.isUnAssignLoadCardOpen = true;
         } else {
             const loadIndex = this.assignedLoads.findIndex(
                 (load) => load.id === loadId
@@ -448,17 +531,62 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             const [movedLoad] = this.unassignedLoads.splice(loadIndex, 1);
 
             this.assignedLoads.push(movedLoad);
+            this.isAssignLoadCardOpen = true;
         }
 
         if (isIconClick || loadId === this.selectedLoad?.id)
             this.isAssignedLoad = !isAssignedList;
 
         this.drawAssignedLoadRoutes();
+        this.updateFilters();
+    }
+
+    private updateFilters(): void {
+        this.tableService.sendActionAnimation({
+            animation: 'load-list-update',
+            data: this.originalLoads,
+        });
     }
 
     private getLoadsForDispatchId(dispatchId: number) {
+        const {
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2,
+        } = this.backLoadFilterQuery;
+
         this.loadService
-            .apiLoadListAssignedIdGet(dispatchId)
+            .getDispatchModalData(
+                true,
+                dispatchId,
+                truckType,
+                trailerType,
+                _long,
+                lat,
+                distance,
+                dispatchersId,
+                dateFrom,
+                dateTo,
+                pageIndex,
+                pageSize,
+                companyId,
+                sort,
+                search,
+                search1,
+                search2
+            )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: AssignedLoadListResponse) => {
                 this.assignedLoads = res.assignedLoads;
@@ -504,10 +632,17 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.isReorderingActive = false;
             this.showReorderButton = true;
+            this.isUnAssignLoadCardOpen = true;
+            setTimeout(() => {
+                this.resizerComponent.setHeights(440, 35);
+            }, 10);
         } else {
             this.isReorderingActive = true;
             this.showReorderButton = false;
             this.isUnAssignLoadCardOpen = false;
+            setTimeout(() => {
+                this.resizerComponent.setHeights(440, 35);
+            }, 10);
         }
     }
 
@@ -550,56 +685,55 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public setFilter(data): void {
-        // In progress, waiting for backend
-        // switch (data?.filterType) {
-        //     case LoadFilterStringEnum.USER_FILTER:
-        //         break;
-        //     case LoadFilterStringEnum.TIME_FILTER:
-        //         // if (data.queryParams?.timeSelected) {
-        //         //     const { fromDate, toDate } =
-        //         //         RepairTableDateFormaterHelper.getDateRange(
-        //         //             data.queryParams?.timeSelected,
-        //         //             data.queryParams.year ?? null
-        //         //         );
-        //         //     this.backLoadFilterQuery.dateTo = toDate;
-        //         //     this.backLoadFilterQuery.dateFrom = fromDate;
-        //         // } else {
-        //         //     this.backLoadFilterQuery.dateTo = null;
-        //         //     this.backLoadFilterQuery.dateFrom = null;
-        //         // }
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.MONEY_FILTER:
-        //         // this.backLoadFilterQuery.rateFrom =
-        //         //     data.queryParams?.firstFormFrom ?? null;
-        //         // this.backLoadFilterQuery.rateTo =
-        //         //     data.queryParams?.firstFormTo ?? null;
-        //         // this.backLoadFilterQuery.paidFrom =
-        //         //     data.queryParams?.secondFormFrom ?? null;
-        //         // this.backLoadFilterQuery.paidTo =
-        //         //     data.queryParams?.secondFormTo ?? null;
-        //         // this.backLoadFilterQuery.dueFrom =
-        //         //     data.queryParams?.thirdFormFrom ?? null;
-        //         // this.backLoadFilterQuery.dueTo =
-        //         //     data.queryParams?.thirdFormTo ?? null;
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.LOCATION_FILTER:
-        //         // this.backLoadFilterQuery.longitude =
-        //         //     data.queryParams?.longValue ?? null;
-        //         // this.backLoadFilterQuery.latitude =
-        //         //     data.queryParams?.latValue ?? null;
-        //         // this.backLoadFilterQuery.distance =
-        //         //     data.queryParams?.rangeValue ?? null;
-        //         // this.loadBackFilter(this.backLoadFilterQuery);
-        //         break;
-        //     case LoadFilterStringEnum.TRUCK_FILTER:
-        //         break;
-        //     case LoadFilterStringEnum.TRAILER_FILTER:
-        //         break;
-        //     default:
-        //         break;
-        // } - Waiting for backend
+        switch (data?.filterType) {
+            case LoadFilterStringEnum.USER_FILTER:
+                this.backLoadFilterQuery.dispatchersId = data.queryParams
+                    ? data.queryParams
+                    : null;
+                break;
+            case LoadFilterStringEnum.TIME_FILTER:
+                const selectedTime = this.dispatchFutureTimes.find(
+                    (futureTimes) =>
+                        futureTimes.name.toLowerCase() ===
+                        data.queryParams?.timeSelected.toLowerCase()
+                )?.id;
+                if (selectedTime === 15) {
+                    const { fromDate, toDate } =
+                        RepairTableDateFormaterHelper.getDateRange(
+                            data.queryParams?.timeSelected,
+                            data.queryParams.year ?? null
+                        );
+                    this.backLoadFilterQuery.dateTo = toDate;
+                    this.backLoadFilterQuery.dateFrom = fromDate;
+                } else {
+                    this.backLoadFilterQuery.dateTo = null;
+                    this.backLoadFilterQuery.dateFrom = null;
+                }
+                this.backLoadFilterQuery.dispatchFutureTime = selectedTime;
+                break;
+            case LoadFilterStringEnum.LOCATION_FILTER:
+                this.backLoadFilterQuery._long =
+                    data.queryParams?.longValue ?? null;
+                this.backLoadFilterQuery.lat =
+                    data.queryParams?.latValue ?? null;
+                this.backLoadFilterQuery.distance =
+                    data.queryParams?.rangeValue ?? null;
+                break;
+            case LoadFilterStringEnum.TRUCK_FILTER:
+                this.backLoadFilterQuery.truckType = data.queryParams
+                    ? data.queryParams
+                    : null;
+                break;
+            case LoadFilterStringEnum.TRAILER_FILTER:
+                this.backLoadFilterQuery.trailerType = data.queryParams
+                    ? data.queryParams
+                    : null;
+                break;
+            default:
+                break;
+        }
+
+        this.loadModalData();
     }
 
     public ngOnDestroy(): void {

@@ -1,4 +1,3 @@
-// Modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,7 +8,7 @@ import { DispatchRoutingModule } from '@pages/dispatch/dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
 
-// Components
+// components
 import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/dispatch-table.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -46,9 +45,9 @@ import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.com
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
 import { PickupDeliveryBlockComponent } from 'ca-components';
+import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pickup-delivery/dispatch-table-pickup-delivery.component';
 
-// Pipes
-import { ColorFinderPipe } from '@shared/pipes/color-finder.pipe';
+// pipes
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
 import { TooltipWidthPipe } from '@pages/dispatch/pipes/tooltip-width.pipe';
 import { CdkIdPipe } from '@pages/dispatch/pipes/cdk-id.pipe';
@@ -58,8 +57,11 @@ import { DispatchTableInfoTextPipe } from '@pages/dispatch/pages/dispatch/compon
 import { DispatchTableHeaderShowPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-header-show.pipe';
 import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-group/dispatch-history-modal-group.component';
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
+import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
+import { DispatchHiddenAddTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-hidden-add-trailer.pipe';
+import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
 
-//directives
+// directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
 
 @NgModule({
@@ -79,14 +81,18 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchHistoryModalComponent,
         DispatchHistoryModalNoContentComponent,
         DispatchHistoryModalNoGroupComponent,
+        DispatchHistoryModalGroupComponent,
         DispatchTableStatusComponent,
         DispatchTableNoteComponent,
+        DispatchTablePickupDeliveryComponent,
         LoadShortDetailsComponent,
 
         // pipes
         HosFilterPipe,
         TooltipWidthPipe,
-        DispatchHistoryModalGroupComponent,
+        DispatchAllowedTruckTrailerPipe,
+        DispatchHiddenAddTrailerPipe,
+        DispatchColorFinderPipe,
     ],
     imports: [
         // modules
@@ -102,10 +108,12 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         CdkIdPipe,
         CdkConnectPipe,
         HosTimePipe,
-        ColorFinderPipe,
         DispatchTableInfoTextPipe,
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
+
+        //directives
+        ResizableDirective,
 
         // components
         TaAppTooltipV2Component,
@@ -128,10 +136,6 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         PickupDeliveryBlockComponent,
 
         //  TaMapsComponent,
-
-        //directives
-        ResizableDirective,
     ],
-    exports: [ColorFinderPipe],
 })
 export class DispatchModule {}

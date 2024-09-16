@@ -32,7 +32,10 @@
     >
         <!-- Left side of header -->
 
-        <div class="header-content">
+        <div
+            class="header-content"
+            [class.grey-text]="isGreyTextWhenDisabled && disabledCard"
+        >
             <!-- Checkbox -->
             <ng-container *ngIf="hasCheckbox">
                 <app-ta-checkbox [formControl]="controlName" [label]="''">
@@ -55,7 +58,7 @@
                     'dropdown-card': isDropdownCard && !isDropdownModalCard
                 }"
                 [ngStyle]="{
-                    color: _isCardOpen ? '#424242' : '#6C6C6C'
+                    color: _isCardOpen ? '#424242' :  headerLightColor && hasCounter === -1? '#aaaaaa' : '#6C6C6C'
                 }"
             >
                 {{ cardName }}
@@ -188,6 +191,7 @@
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
+                    [class.disabled]="isActionDisabled"
                 >
                     <svg-icon
                         class="action-plus-icon"
@@ -310,13 +314,10 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'h-full': isInheritingParentSize && _isCardOpen
+            'h-full scroll scrollable-element': isInheritingParentSize && _isCardOpen
         }"
         [ngStyle]="{
-            'scrollbar-width':
-                isInheritingParentSize && _isCardOpen
-                    ? 'thin !important'
-                    : 'none'
+            'scrollbar-width': isInheritingParentSize? 'thin !important': 'none'
         }"
         [@.disabled]="disableAnimation"
     >

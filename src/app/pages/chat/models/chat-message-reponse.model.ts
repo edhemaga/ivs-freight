@@ -3,7 +3,8 @@ import {
     EnumValue,
     FileResponse
 } from "appcoretruckassist/model/models";
-import { ChatLink } from "@pages/chat/models/chat-link.model";
+
+import { ChatLink } from "@pages/chat/models";
 
 export interface ChatMessageResponse {
     id: number;

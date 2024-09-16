@@ -74,7 +74,7 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             : tableHeadTitle === TableHeadTitleStringEnum.BUSSINESS_NAME
             ? TableHeadTitleStringEnum.BROKER_2
             : tableHeadTitle === TableHeadTitleStringEnum.TRUCK_3
-            ? TableHeadTitleStringEnum.REQUIREM
+            ? TableHeadTitleStringEnum.ASSIGNED
             : tableHeadTitle === TableHeadTitleStringEnum.LOADED
             ? TableHeadTitleStringEnum.MILES
             : tableHeadTitle === TableHeadTitleStringEnum.RATE

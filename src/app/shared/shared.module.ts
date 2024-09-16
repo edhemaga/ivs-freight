@@ -1,4 +1,3 @@
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -69,7 +68,7 @@ import { CaMainTableHiddenRowsPipe } from './components/ca-main-table/pipes/ca-m
         DragDropModule,
         ScrollingModule,
         NgxMaskModule,
-       // Ng5SliderModule,
+        // Ng5SliderModule,
         // NgxDropzoneModule,
         // CroppieModule,
         NgxSliderModule,

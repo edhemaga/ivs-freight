@@ -52,6 +52,8 @@ export class TodoService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

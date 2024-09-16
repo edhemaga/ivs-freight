@@ -28,6 +28,7 @@ export interface UpdateLoadTemplateCommand {
     weight?: number | null;
     loadRequirements?: LoadRequirementsCommand;
     note?: string | null;
+    baseRate?: number;
     adjustedRate?: number | null;
     revisedRate?: number | null;
     tonuRate?: number | null;

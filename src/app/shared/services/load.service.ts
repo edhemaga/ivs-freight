@@ -55,6 +55,9 @@ import {
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
     AssignLoadModalResponse,
+    AssignedLoadListResponse,
+    SortOrder,
+    LoadSortBy,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -128,6 +131,21 @@ export class LoadService {
         this.statusAction.next(data);
     }
 
+    private getOrderAndSort(sortString: string): { sortBy: LoadSortBy, order: SortOrder } {
+        let order = null;
+        let sortBy = null;
+    
+        if (sortString?.endsWith('Asc')) {
+            order = SortOrder.Ascending;
+            sortBy = sortString.replace(/Asc$/, ''); 
+        } else {
+            order = SortOrder.Descending;
+            sortBy = sortString?.replace(/Desc$/, ''); 
+        }
+    
+        return { sortBy: sortBy as LoadSortBy, order };
+    }
+
     // table operations
     public getLoadList(
         loadType?: number,
@@ -163,6 +181,7 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
+        const {order, sortBy} = this.getOrderAndSort(sort);
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
@@ -192,7 +211,9 @@ export class LoadService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
+            null,
+            order,
+            sortBy,
             search,
             search1,
             search2
@@ -227,6 +248,8 @@ export class LoadService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -566,12 +589,50 @@ export class LoadService {
         });
     }
 
-    public getDispatchModalData(): Observable<AssignLoadModalResponse> {
-        return this.loadService.apiLoadModalAssignGet();
-    }
-
-    public apiLoadListAssignedIdGet(dispatchId: number) {
-        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+    public getDispatchModalData(
+        isDispatchId: boolean,
+        dispatchId?: number,
+        truckType?: number[],
+        trailerType?: number[],
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        dispatchersId?: number[],
+        dateFrom?: string,
+        dateTo?: string,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
+        if (isDispatchId) {
+            return this.loadService.apiLoadListAssignedIdGet(
+                dispatchId,
+            );
+        }
+        return this.loadService.apiLoadModalAssignGet(
+            dispatchId,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
     }
 
     public getPendingData(
