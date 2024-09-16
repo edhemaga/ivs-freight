@@ -4,7 +4,7 @@ $nav-dark: #2f2f2f;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
-$nav-svg-active: #3074d3;
+$nav-svg-active: #3B73ED;
 $nav-svg-darker: #aaaaaa;
 
 $nav-text-color-dadada: #dadada;
@@ -55,6 +55,16 @@ $user-busy-status: #ffb74d;
 $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
+
+$nav-dark-bg: #424242;
+$nav-blue-bg: #3B73ED66;
+$nav-light-icon: #92B1F5;
+$nav-close-icon: #e9effd;
+$nav-close-icon-active: #6692f1;
+$nav-text-color: #FFFFFFB2;
+$nav-icon-orange: #FAB15C;
+$nav-icon-red: #E66767;
+
 
 $files: #ffcc80;
 
@@ -126,3 +136,10 @@ $notification: #e57373;
     }
 }
 // ------------ end
+
+.dark-nav .navigation-divider {
+    background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%);
+    height: 4px;
+    width: calc(100% - 12px);
+    margin: 0 auto 4px auto;
+}
