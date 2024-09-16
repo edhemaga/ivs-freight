@@ -5,11 +5,23 @@ import { WebsiteActionsService } from '@pages/website/services/website-actions.s
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
     selector: 'app-sidebar-dropdown',
     templateUrl: './sidebar-dropdown.component.html',
     styleUrls: ['./sidebar-dropdown.component.scss'],
+    animations: [
+        trigger('fadeAnimation', [
+          transition(':enter', [
+            style({ opacity: 0 }),
+            animate('500ms', style({ opacity: 1 }))
+          ]),
+          transition(':leave', [
+            animate('500ms', style({ opacity: 0 }))
+          ])
+        ])
+      ]
 })
 export class SidebarDropdownComponent {
     @Input() displayResendConfirmationBtn: boolean = true;
