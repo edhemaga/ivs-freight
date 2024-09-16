@@ -135,7 +135,7 @@
 
 <ng-template #headerRightSide let-participants="participants">
     <div class="right-icons d-flex">
-        <div (click)="displayGroupParticipants()">
+        <div class="d-flex" (click)="displayGroupParticipants()">
             <ng-container *ngIf="participants">
                 <ng-container
                     *ngTemplateOutlet="
@@ -177,7 +177,8 @@
             <ng-container *ngSwitchCase="ind <= 4">
                 <!-- TODO Add border radius if driver, participant?.userType.name -->
                 <div
-                    [ngClass]="ind !== 0 && 'profile-image-wrapper'"
+                    class="profile-illustration-wrapper"
+                    [ngClass]="ind > 0 && 'left-offset'"
                     [ngStyle]="participant && '{border-radius: 50px}'"
                 >
                     <app-ca-profile-image

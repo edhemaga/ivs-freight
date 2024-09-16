@@ -12,6 +12,9 @@
         }
 
         .right-icons {
+            &:hover() {
+                cursor: pointer;
+            }
             margin: auto 0 auto auto;
 
             .icon-wrapper {
@@ -30,16 +33,18 @@
     }
 }
 
-.profile-image-wrapper {
+.profile-illustration-wrapper {
+    height: 22px;
+    width: 22px;
     position: relative;
-    left: -8px;
-    top: 2px;
     border: 1px solid $white;
 }
 
+.left-offset {
+    left: -6px;
+}
+
 .remaining-participants-number {
-    height: 22px;
-    width: 22px;
     border-radius: 50px;
     background-color: $ta-light-grey-2;
     color: $white;
