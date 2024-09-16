@@ -51,7 +51,10 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   @Input() public attachmentUploadActive: boolean = false;
 
   @Output() isProfileDetailsDisplayed: EventEmitter<boolean> = new EventEmitter();
-  @Output() isConversationParticipantsDisplayed: EventEmitter<boolean> = new EventEmitter();
+  @Output() isConversationParticipantsDisplayed: EventEmitter<{
+    isDisplayed: boolean,
+    conversationParticipants: CompanyUserShortResponse[]
+  }> = new EventEmitter();
 
   public messages: ChatMessageResponse[] = [];
 
@@ -72,10 +75,6 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
     //Router
     private router: Router,
     private activatedRoute: ActivatedRoute,
-
-    // Services
-    private chatService: UserChatService,
-
   ) {
     super();
   }
@@ -109,7 +108,7 @@ export class ConversationContentComponent extends UnsubscribeHelper implements O
   }
 
   public displayGroupParticipants(): void {
-    this.isConversationParticipantsDisplayed.emit(true);
+    this.isConversationParticipantsDisplayed.emit({ isDisplayed: true, conversationParticipants: this.conversationParticipants });
   }
 
   private getDataOnRouteChange(): void {

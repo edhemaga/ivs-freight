@@ -1,3 +1,28 @@
-<div class="channel-participants-wrapper"></div>
-
-<p>chat-channel-participant-list works!</p>
+<div class="channel-participants-container">
+    <div
+        class="channel-participants-wrapper d-flex justify-content-center align-items-center ml-0 mr-auto"
+    >
+        <div
+            class="left-arrow d-flex justify-content-center align-items-center"
+        >
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 8, 'height.px': 14 }"
+                [src]="chatSvgRoutes.arrowLeftIcon"
+            >
+            </svg-icon>
+        </div>
+        <div class="participants ta-font-extra-bold">Participants</div>
+        <div class="count ta-font-extra-bold">
+            {{ conversationParticipants?.length }}
+        </div>
+    </div>
+    <div class="search">
+        <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
+            <app-ta-input
+                formControlName="searchTerm"
+                [inputConfig]="chatInput.userSearchInput('User')"
+            ></app-ta-input>
+        </div>
+    </div>
+</div>

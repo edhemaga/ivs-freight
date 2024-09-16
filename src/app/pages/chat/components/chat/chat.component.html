@@ -101,7 +101,7 @@
         [ngStyle]="{
             'grid-template-columns':
                 (isProfileDetailsDisplayed && userProfileData | async) ||
-                (isGroupMembersDisplayed | async)
+                isGroupMembersDisplayed
                     ? 'max-content auto max-content'
                     : 'max-content auto'
         }"
@@ -134,30 +134,33 @@
         <div>
             <ng-container *ngIf="!attachmentUploadActive">
                 <div class="profile-details-wrapper d-flex">
-                    <ng-container [ngSwitch]="true">
-                        <ng-container
-                            *ngSwitchCase="
-                                isProfileDetailsDisplayed &&
-                                (userProfileData | async)
-                            "
-                        >
-                            <div class="profile-details">
-                                <app-chat-user-profile
-                                    [data]="userProfileData | async"
-                                    (isProfileDetailsClosed)="
-                                        displayProfileDetails($event)
-                                    "
-                                ></app-chat-user-profile>
-                            </div>
-                        </ng-container>
+                    <ng-container
+                        *ngIf="
+                            isProfileDetailsDisplayed &&
+                            (userProfileData | async)
+                        "
+                    >
+                        <div class="profile-details">
+                            <app-chat-user-profile
+                                [data]="userProfileData | async"
+                                (isProfileDetailsClosed)="
+                                    displayProfileDetails($event)
+                                "
+                            ></app-chat-user-profile>
+                        </div>
+                    </ng-container>
 
-                        <ng-container
-                            *ngSwitchCase="isGroupMembersDisplayed | async"
-                        >
-                            <app-chat-channel-participant-list
-                                [participants]="conversationParticipants"
-                            ></app-chat-channel-participant-list>
-                        </ng-container>
+                    <ng-container
+                        *ngIf="
+                            isGroupMembersDisplayed &&
+                            conversationParticipants.length
+                        "
+                    >
+                        <app-chat-channel-participant-list
+                            [conversationParticipants]="
+                                conversationParticipants
+                            "
+                        ></app-chat-channel-participant-list>
                     </ng-container>
                 </div>
             </ng-container>

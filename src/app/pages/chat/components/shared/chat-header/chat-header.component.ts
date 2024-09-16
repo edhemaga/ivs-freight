@@ -41,7 +41,7 @@ export class ChatHeaderComponent extends UnsubscribeHelper implements OnInit {
   public searchForm!: UntypedFormGroup;
 
   // Config
-  public ChatInput: ChatInput = ChatInput;
+  public chatInput = ChatInput;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();

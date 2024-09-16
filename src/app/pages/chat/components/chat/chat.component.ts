@@ -7,6 +7,7 @@ import { ConversationContentComponent } from '@pages/chat/components/conversatio
 
 // Models
 import {
+  CompanyUserShortResponse,
   ConversationInfoResponse,
   ConversationType
 } from 'appcoretruckassist';
@@ -61,15 +62,17 @@ export class ChatComponent
 
   public unreadCount!: number;
   public selectedConversation: number;
+
   public ConversationTypeEnum = ConversationTypeEnum;
 
   // Attachment upload
   public attachmentUploadActive: boolean = false;
 
   // User Profile Data
-  public userProfileData!: Observable<ConversationInfoResponse>;
   public isProfileDetailsDisplayed: boolean = false;
-  public isGroupMembersDisplayed!: Observable<boolean>;
+  public userProfileData!: Observable<ConversationInfoResponse>;
+  public isGroupMembersDisplayed: boolean = false;
+  public conversationParticipants!: CompanyUserShortResponse[];
 
   // Tab and header ribbon configuration
   public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -192,10 +195,10 @@ export class ChatComponent
     }
 
     // TODO remove commented values
-    if (/*this.conversation?.id &&*/ value) {
+    if (this.selectedConversation && value) {
 
       this.chatService
-        .getAllConversationFiles(/*this.conversation.id*/ 0)
+        .getAllConversationFiles(this.selectedConversation)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: ConversationInfoResponse) => {
           this.isProfileDetailsDisplayed = value;
@@ -206,7 +209,12 @@ export class ChatComponent
 
 
   public onActivate(event: ConversationContentComponent): void {
-    this.isGroupMembersDisplayed = event?.isConversationParticipantsDisplayed;
+    event?.
+      isConversationParticipantsDisplayed.
+      subscribe(arg => {
+        this.isGroupMembersDisplayed = arg.isDisplayed;
+        this.conversationParticipants = arg.conversationParticipants;
+      });
   }
 
 }

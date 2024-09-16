@@ -80,7 +80,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public titleIcon: string;
 
   // Config
-  public ChatInput = ChatInput;
+  public chatInput = ChatInput;
   public isAdvancedView: boolean = false;
 
   // Create list of states for all groups available

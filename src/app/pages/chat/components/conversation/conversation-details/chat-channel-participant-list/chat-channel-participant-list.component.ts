@@ -1,10 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup
+} from '@angular/forms';
 
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
 
-// Helpers
+// Utils
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
+import { ChatInput } from '@pages/chat/utils/config';
+
+// Assets
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Component({
   selector: 'app-chat-channel-participant-list',
@@ -15,9 +27,26 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
 
   @Input() public conversationParticipants!: CompanyUserShortResponse[];
 
-  constructor() {
+  public isSearchActive: boolean = false;
+
+  public searchForm!: UntypedFormGroup;
+
+  // Assets
+  public chatSvgRoutes = ChatSvgRoutes;
+  public chatInput = ChatInput;
+
+
+  constructor(private formBuilder: UntypedFormBuilder) {
     super();
+    this.creteForm();
   }
 
-  ngOnInit(): void { console.log(this.conversationParticipants); }
+
+  private creteForm(): void {
+    this.searchForm = this.formBuilder.group({
+      searchTerm: [null]
+    });
+  }
+
+  ngOnInit(): void { }
 }
