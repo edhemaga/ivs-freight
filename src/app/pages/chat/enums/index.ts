@@ -10,3 +10,4 @@ export * from './conversation/conversation-details/chat-user-profile-resource-ty
 export * from './conversation/conversation-list/chat-group.enum';
 export * from './conversation/conversation-list/chat-group-state.enum';
 export * from './routes/chat-routes.enum';
+export * from './shared/chat-local-storage-value.enum';

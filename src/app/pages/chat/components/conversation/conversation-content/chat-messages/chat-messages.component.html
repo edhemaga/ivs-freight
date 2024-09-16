@@ -30,7 +30,9 @@
                     >
                         <ng-container *ngIf="message">
                             <app-chat-message
-                                [currentUserId]="currentUserId"
+                                [currentUserId]="
+                                    getCurrentUserHelper.currentUserId
+                                "
                                 [message]="message"
                                 [isDateDisplayed]="
                                     (message.createdAt | formatTime) !==
