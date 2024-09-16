@@ -731,6 +731,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Column
     public onToaggleColumn(column: any, index: number): void {
+        if(column.isPined || column.disabled) return;
+
         clearTimeout(this.timeOutToaggleColumn);
 
         this.timeOutToaggleColumn = setTimeout(() => {
@@ -850,6 +852,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getActiveTableData();
     }
+
+    public identity(index: number, item: any): number {
+        return item.id;
+    }
+
 
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {
