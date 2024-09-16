@@ -1,4 +1,3 @@
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -68,7 +67,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         DragDropModule,
         ScrollingModule,
         NgxMaskModule,
-       // Ng5SliderModule,
+        // Ng5SliderModule,
         // NgxDropzoneModule,
         // CroppieModule,
         NgxSliderModule,

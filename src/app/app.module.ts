@@ -38,8 +38,6 @@ import { WebsiteUserLoggedService } from '@pages/website/services/website-user-l
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
-import { CaComponentsLibModule } from 'ca-components';
-
 // Lottie
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -82,7 +80,6 @@ function playerFactory() {
 
         // routing
         AppRoutingModule,
-        CaComponentsLibModule,
     ],
     providers: [
         {
@@ -110,9 +107,9 @@ function playerFactory() {
         StaticInjectorService,
         DatePipe,
         CurrencyPipe,
-        BlockedContentPipe
+        BlockedContentPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
