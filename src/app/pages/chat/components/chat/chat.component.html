@@ -106,26 +106,15 @@
                 [companyUsers]="companyUsers"
                 [drivers]="drivers"
                 (selectedConversation)="
-                    createUserConversation($event.id, $event.type)
+                    createUserConversation($event.id, $event.type, $event.group)
                 "
             ></app-conversation-list>
-            <!-- <app-chat-user-list
-                (selectedUser)="
-                    createUserConversation(
-                        $event,
-                        ConversationTypeEnum.SINGLE_CHAT
-                    )
-                "
-                [type]="'User'"
-                [contactsInfo]="companyUsers"
-            >
-            </app-chat-user-list> -->
         </div>
 
         <!-- MESSAGES -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
-                <router-outlet (activate)="onActivate($event)"></router-outlet>
+                <router-outlet></router-outlet>
             </ng-container>
 
             <ng-template #noConversation>

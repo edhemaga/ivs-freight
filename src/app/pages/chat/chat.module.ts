@@ -11,6 +11,7 @@ import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
+import { ConversationContentComponent } from "@pages/chat/components/conversation/conversation-content/conversation-content.component";
 import { ConversationListComponent } from "@pages/chat/components/conversation/conversation-list/conversation-list.component";
 import { ChatUserListComponent } from "@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component";
 import { ChatMessageComponent } from "@pages/chat/components/conversation/conversation-content/chat-message/chat-message.component";
@@ -41,7 +42,7 @@ import {
     FileExtensionPipe,
     TrackByPropertyPipe,
 } from "@shared/pipes";
-import { ChatHeaderClassPipe } from "@pages/chat/utils/pipes";
+import { ChatHeaderClassPipe, ChatHeaderGroupIconPipe } from "@pages/chat/utils/pipes";
 
 // Directives
 import {
@@ -60,6 +61,7 @@ import { HoverSvgDirective } from "@shared/directives/hover-svg.directive";
         ChatUserListComponent,
 
         // Conversations
+        ConversationContentComponent,
         ChatMessagesComponent,
         ChatMessageComponent,
         ChatMessageAttachmentPreviewComponent,
@@ -78,7 +80,8 @@ import { HoverSvgDirective } from "@shared/directives/hover-svg.directive";
         ToggleBackgroundDirective,
 
         // Pipes
-        ChatHeaderClassPipe
+        ChatHeaderClassPipe,
+        ChatHeaderGroupIconPipe
     ],
     providers: [
         // Pipes
