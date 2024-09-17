@@ -8,6 +8,7 @@ export * from './conversation/conversation-content/chat-attachment-type.enum';
 export * from './conversation/conversation-content/chat-image-aspect-ratio.enum';
 export * from './conversation/conversation-details/chat-user-profile-resource-type.enum';
 export * from './conversation/conversation-details/chat-conversation-type.enum';
+export * from './shared/chat-grid-layout.enum';
 export * from './conversation/conversation-list/chat-group.enum';
 export * from './conversation/conversation-list/chat-group-state.enum';
 export * from './conversation/conversation-list/chat-object-property.enum';

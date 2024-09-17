@@ -27,6 +27,7 @@ import {
 
 // Enums
 import {
+  ChatGridLayout,
   ChatGroupEnum,
   ChatRoutesEnum,
   ConversationTypeEnum
@@ -84,7 +85,9 @@ export class ChatComponent
   // Tab and header ribbon configuration
   public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
 
-  public ChatSvgRoutes = ChatSvgRoutes;
+  // Assets and enums
+  public chatSvgRoutes = ChatSvgRoutes;
+  public chatGridLayout = ChatGridLayout;
 
   constructor(
     private activatedRoute: ActivatedRoute,
