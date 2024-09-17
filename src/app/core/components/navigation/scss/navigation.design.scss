@@ -137,7 +137,6 @@ $notification: #e57373;
     }
 }
 // ------------ end
-
 .navigation-divider {
     background: none;
     height: 4px;
@@ -145,7 +144,8 @@ $notification: #e57373;
     margin: 0 auto 4px auto;
 }
 
-.dark-nav .navigation-divider{
-    background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%)
-}
+// TODO: 
+// .dark-nav .navigation-divider{
+//     background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%)
+// }
 

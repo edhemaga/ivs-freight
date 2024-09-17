@@ -15,7 +15,18 @@
         'disable-cursor':
             selectedRoute == route.name &&
             !subrouteContainerOpened &&
-            !route.arrow
+            !route.arrow,
+            'nav-item-active-box':
+                (route.isRouteActive ||
+                    footerRouteActive ||
+                    route.isSubrouteActive) &&
+                footerRouteActive &&
+                !navigationIsOpened &&
+                !isSettingsPanelOpen &&
+                !isUserPanelOpen &&
+                selectedRoute == route.name &&
+                !middleIsHovered &&
+                !footerHovered, 
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
@@ -33,22 +44,6 @@
             [name]="route.name"
         ></app-ta-tooltip-slide>
     </div>
-    <div
-        [ngClass]="{
-            'nav-item-active-box':
-                (route.isRouteActive ||
-                    footerRouteActive ||
-                    route.isSubrouteActive) &&
-                footerRouteActive &&
-                !navigationIsOpened &&
-                !isSettingsPanelOpen &&
-                !isUserPanelOpen &&
-                selectedRoute == route.name &&
-                !middleIsHovered &&
-                !footerHovered, 
-        }"
-        class="nav-item-box"
-    ></div>
 
     <svg-icon
         class="{{ class }}"

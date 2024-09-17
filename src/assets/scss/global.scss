@@ -341,7 +341,7 @@ app-load-modal {
     overflow-y: auto !important;
 }
 
-.ml-3{
+.ml-3 {
     margin-left: 6px;
 }
 .dispatch-load {
@@ -362,6 +362,42 @@ app-load-modal {
             &:hover {
                 color: $white;
                 background-color: $ta-blue-15;
+            }
+        }
+    }
+}
+
+// TODO:
+.nav-item-box {
+    display: none;
+}
+
+.dark-nav {
+    .navigation-routes-last {
+        background-color: $ta-black-2 !important;
+    }
+}
+
+.dark-nav {
+    .nav-item {
+        margin-left: 6px !important;
+        margin-right: 6px;
+        width: 236px !important;
+        padding-right: 6px;
+
+        &:hover {
+            background-color: $bw6-2 !important;
+        }
+    }
+
+    .nav-item-arrow {
+        margin-left: 4px !important;
+    }
+
+    .subroute-item {
+        &:hover {
+            svg path {
+                fill: $white-4 !important;
             }
         }
     }

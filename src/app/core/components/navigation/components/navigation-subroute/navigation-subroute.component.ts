@@ -11,6 +11,7 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // animations
 import {
@@ -35,7 +36,7 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
         test('test'),
     ],
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
+    imports: [CommonModule, FormsModule, RouterModule, AngularSvgIconModule],
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;

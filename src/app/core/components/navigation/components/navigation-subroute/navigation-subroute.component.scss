@@ -4,10 +4,10 @@
     position: relative;
     .subroutes {
         height: 28px;
-        width: 230px;
+        width: calc(100% - 12px);
         position: relative;
-        left: -7px;
         bottom: 3px;
+        margin-left: 6px;
         border-radius: 3px;
         color: $nav-text-color;
         font-weight: $nav-font-medium;
@@ -18,11 +18,15 @@
         -ms-user-select: none;
         user-select: none;
 
+        &:hover {
+            background-color: $nav-text-color;
+        }
+
         margin-bottom: 1px;
 
         .nav-item-arrow_top {
             position: absolute;
-            right: -6px;
+            right: 4px;
             opacity: 0;
             top: 7px;
             width: 12.6px;
@@ -51,18 +55,18 @@
             opacity: 0;
             position: absolute;
             top: 4px;
-            left: 16px;
+            left: 8px;
 
             svg {
                 path {
-                    fill: $nav-svg-active;
+                    fill: $nav-light-icon;
                 }
             }
         }
 
         .subroutes-item {
             margin: 0;
-            margin-left: 45px;
+            margin-left: 37px;
             font-size: $nav-font-size;
             position: relative;
             top: 4px;
@@ -116,13 +120,13 @@
             transition: $nav-transition;
             opacity: 1;
             svg {
-                height: 18px;
-                width: 18px;
+                width: 14px;
+                height: 14px;
             }
         }
         .subroutes-item {
             font-weight: 700 !important;
-            color: $nav-active-lighter;
+            color: $nav-light-icon;
         }
     }
 }

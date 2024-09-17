@@ -2,29 +2,28 @@
 
 .holder {
     position: relative;
-    left: -8px;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
 
     .parent {
-        position: relative;
-        left: -20px;
-
-        .subroute-container {
-            padding-left: 8px;
-        }
+        height: auto;
+        width: 238px;
+        position: absolute;
+        z-index: 0;
+        height: 100%;
+        left: 6px;
         .subroute-card {
+            padding-left: 8px;
             border-radius: 2px;
-            background: rgba(170, 170, 170, 10%);
-            height: auto;
-            width: 238px;
-            position: absolute;
-            z-index: 99999999999999;
-            left: 20px;
+            background: $nav-dark-bg;
             z-index: -1;
             max-height: 500px;
             transition: max-height 0.28s ease-in;
+            left: 6px;
+            height: 100%;
         }
+        
         .slow-animatiton {
             max-height: 0;
             transition: max-height 0.3s ease-out;

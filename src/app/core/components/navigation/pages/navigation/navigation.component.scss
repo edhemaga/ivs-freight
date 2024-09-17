@@ -48,7 +48,6 @@
         overflow-x: hidden;
         position: relative;
         height: auto;
-        padding: 0px 6px;
         height: 100%;
         flex: 1;
     }
@@ -82,7 +81,6 @@
     .navigation-routes {
         display: flex;
         flex-wrap: wrap;
-        padding-left: 8px;
         padding-bottom: 1px;
         padding-top: 1px;
         position: relative;
@@ -96,6 +94,8 @@
             position: sticky;
              bottom: 0;
              z-index: 2;
+             background-color: $nav-white;
+             transition: $nav-transition;
 
             .navigation-divider {
                 width: calc(100% - 6px);
