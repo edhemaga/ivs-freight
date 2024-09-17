@@ -240,6 +240,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private getConstantData(): void {
         this.dispatchTableHeaderItems = DispatchTableConstants.HEADER_ITEMS;
+
+        console.log('dispatchTableHeaderItems', this.dispatchTableHeaderItems);
     }
 
     private handleTruckTrailerDriverParkingLists(
@@ -1106,6 +1108,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 : event.column.field;
 
         this.resizedColumnsWidth[columnFieldName] = event.width + 11;
+
+        console.log('resizedColumnsWidth', this.resizedColumnsWidth);
 
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;

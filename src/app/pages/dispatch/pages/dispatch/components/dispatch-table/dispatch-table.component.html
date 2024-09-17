@@ -425,15 +425,9 @@
                                 #columnField
                                 class="driver-field"
                                 [ngStyle]="{
-                                    width: isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px',
-                                    'min-width': isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px',
-                                    'max-width': isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px'
+                                    width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                    'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                    'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
                                 }"
                             >
                                 <div
@@ -838,15 +832,9 @@
                             #columnField
                             class="driver-field"
                             [ngStyle]="{
-                                width: isDriverEndorsementActive
-                                    ? '302px'
-                                    : '242px',
-                                'min-width': isDriverEndorsementActive
-                                    ? '302px'
-                                    : '242px',
-                                'max-width': isDriverEndorsementActive
-                                    ? '302px'
-                                    : '242px'
+                                width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
                             }"
                         >
                             <app-dispatch-table-driver
@@ -1049,15 +1037,9 @@
                             <td
                                 class="driver-field"
                                 [ngStyle]="{
-                                    width: isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px',
-                                    'min-width': isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px',
-                                    'max-width': isDriverEndorsementActive
-                                        ? '302px'
-                                        : '242px'
+                                    width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                    'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                    'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
                                 }"
                             >
                                 <div class="main_inside"></div>

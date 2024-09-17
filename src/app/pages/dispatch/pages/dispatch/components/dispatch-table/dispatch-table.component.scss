@@ -247,10 +247,12 @@
             }
 
             &.pickup-delivery {
-                width: 340px;
+                .resize {
+                    width: 100%;
 
-                div {
-                    flex: 1;
+                    div {
+                        flex: 1;
+                    }
                 }
 
                 .icon {
@@ -511,9 +513,9 @@
             }
 
             &.pickup-delivery-field {
-                min-width: 342px !important;
-                max-width: 342px !important;
-                width: 342px !important;
+                min-width: 302px;
+                max-width: 422px;
+                width: 342px;
             }
 
             &.progress-field {

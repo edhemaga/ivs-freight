@@ -115,12 +115,32 @@ export class ResizableDirective implements OnInit {
 
         const newWidth = this.startWidth + (event.clientX - this.startX);
 
+        console.log('onMouseMove newWidth', newWidth);
+        console.log('onMouseMove minWidth', this.minWidth);
+        console.log('onMouseMove maxWidth', this.maxWidth);
+
         // Apply width constraints
         if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
             this.renderer.setStyle(
                 this.el.nativeElement,
                 DispatchTableStringEnum.WIDTH,
                 `${newWidth}px`
+            );
+
+            this.isColumnResized = true;
+        } else if (newWidth < this.minWidth) {
+            this.renderer.setStyle(
+                this.el.nativeElement,
+                DispatchTableStringEnum.WIDTH,
+                `${this.minWidth}px`
+            );
+
+            this.isColumnResized = true;
+        } else if (newWidth > this.maxWidth) {
+            this.renderer.setStyle(
+                this.el.nativeElement,
+                DispatchTableStringEnum.WIDTH,
+                `${this.maxWidth}px`
             );
 
             this.isColumnResized = true;
@@ -255,9 +275,12 @@ export class ResizableDirective implements OnInit {
             case DispatchTableStringEnum.DRIVER_1:
                 const driverMinWidth = this._columns[6]?.hidden
                     ? this._columns[4]?.minWidth
-                    : this._columns[4]?.minWidth + 60;
+                    : this._columns[4]?.minWidth + 80;
 
-                if (this.el.nativeElement.offsetWidth < driverMinWidth - 9)
+                if (
+                    this.el.nativeElement.offsetWidth > 50 &&
+                    this.el.nativeElement.offsetWidth < driverMinWidth - 9
+                )
                     this.renderer.setStyle(
                         this.el.nativeElement,
                         DispatchTableStringEnum.WIDTH,
@@ -266,6 +289,20 @@ export class ResizableDirective implements OnInit {
 
                 this.maxWidth = this._columns[4]?.width;
                 this.minWidth = driverMinWidth;
+
+                // const driverMinWidth = this._columns[6]?.hidden
+                //     ? this._columns[4]?.minWidth
+                //     : this._columns[4]?.minWidth + 80;
+
+                // if (this.el.nativeElement.offsetWidth < driverMinWidth - 9)
+                //     this.renderer.setStyle(
+                //         this.el.nativeElement,
+                //         DispatchTableStringEnum.WIDTH,
+                //         `${driverMinWidth - 9}px`
+                //     );
+
+                // this.maxWidth = this._columns[4]?.width;
+                // this.minWidth = driverMinWidth;
                 break;
             case DispatchTableStringEnum.TRUCK_1:
                 const truckMinWidth = this._columns[1]?.hidden
@@ -296,8 +333,16 @@ export class ResizableDirective implements OnInit {
                 this.minWidth = this._columns[11]?.minWidth;
                 break;
             case DispatchTableStringEnum.PICKUP:
-                this.maxWidth = this._columns[13]?.minWidth;
+                this.maxWidth = this._columns[13]?.width;
                 this.minWidth = this._columns[13]?.minWidth;
+
+                console.log(
+                    'checkWidth pickup _columns[13]',
+                    this._columns[13]
+                );
+                console.log('checkWidth pickup maxWidth', this.maxWidth);
+                console.log('checkWidth pickup minWidth', this.minWidth);
+
                 break;
         }
 
