@@ -39,6 +39,8 @@ import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspecti
 // @ts-ignore
 import { RoadsideInspectionSummaryResponse } from '../model/roadsideInspectionSummaryResponse';
 // @ts-ignore
+import { SortOrder } from '../model/sortOrder';
+// @ts-ignore
 import { UpdateViolationDescriptionCommand } from '../model/updateViolationDescriptionCommand';
 // @ts-ignore
 import { ViolationCommand } from '../model/violationCommand';
@@ -151,16 +153,18 @@ export class ViolationService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
-    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiViolationClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -262,6 +266,14 @@ export class ViolationService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -738,16 +750,18 @@ export class ViolationService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
@@ -813,6 +827,14 @@ export class ViolationService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -892,16 +914,18 @@ export class ViolationService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionMinimalListResponse>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionMinimalListResponse>>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionMinimalListResponse>>;
-    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionMinimalListResponse>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionMinimalListResponse>>;
+    public apiViolationListMinimalGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageIndex !== undefined && pageIndex !== null) {
@@ -919,6 +943,14 @@ export class ViolationService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1004,16 +1036,18 @@ export class ViolationService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -1055,6 +1089,14 @@ export class ViolationService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
