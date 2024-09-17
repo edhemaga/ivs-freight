@@ -206,7 +206,6 @@ export class ChatComponent
       return;
     }
 
-    // TODO remove commented values
     if (this.selectedConversation && value) {
 
       this.chatService

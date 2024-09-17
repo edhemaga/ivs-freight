@@ -65,7 +65,23 @@
         <div
             class="table-actions d-flex justify-content-end align-items-center"
         >
-            <div class="action-div active-options d-flex align-items-center">
+            <div
+                class="icon-wrapper d-flex justify-content-center align-items-center"
+                (click)="displayProfileDetails(true)"
+            >
+                <svg-icon
+                    [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                    }"
+                    [src]="chatSvgRoutes.informationIcon"
+                >
+                </svg-icon>
+            </div>
+
+            <app-chat-vertical-divider></app-chat-vertical-divider>
+
+            <div class="d-flex align-items-center">
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -76,9 +92,7 @@
 
             <app-chat-vertical-divider></app-chat-vertical-divider>
 
-            <div
-                class="settings-icon action-div active-options d-flex align-items-center"
-            >
+            <div class="settings-icon d-flex align-items-center">
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"

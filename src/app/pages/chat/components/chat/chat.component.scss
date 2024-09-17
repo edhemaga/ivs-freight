@@ -115,6 +115,11 @@
             .settings-icon {
                 margin-right: 8px;
             }
+            .icon-wrapper {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
 
         .new-chat {
