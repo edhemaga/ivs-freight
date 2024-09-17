@@ -1,30 +1,20 @@
 <div class="nav-header">
-    <div class="nav-header-top">
+    <div class="nav-header-top position-relative" (click)="redirectToDashboard()">
         <svg-icon
             class="nav-header-top-logo close"
-            src="assets/svg/applicant/new-logo.svg"
-            (click)="redirectToDashboard()"
+            src="assets/svg/logo.svg"
         ></svg-icon>
+ 
+            <svg-icon
+            class="nav-header-top-text close ml-3 position-absolute"
+            src="assets/svg/logo-text.svg"
+            [class.opacity-0]="!isNavigationHovered"
+        ></svg-icon> 
     </div>
     <div
         class="nav-header-bottom"
         [ngClass]="{ 'expand-width': isNavigationHovered }"
-    >
-        <div class="nav-header-bottom-rightSide">
-            <div
-                [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-                class="nav-header-bottom-rightSide-search"
-                (click)="onAction('Search')"
-            >
-                <p
-                    *ngIf="isNavigationHovered"
-                    [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-                    class="ta-font-bold"
-                >
-                    Add Anything
-                </p>
-            </div>
-        </div>
+    > 
         <div
             class="svg-holder"
             (mouseenter)="showToolTip = true"

@@ -1,4 +1,5 @@
 <app-ta-modal
+[isVisibleMap]="true"
     [modalTitle]="modalTitle"
     [editData]="editData"
     [editName]="editName"
@@ -1109,7 +1110,7 @@
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
-                        [stopNumber]="loadForm.get('deliveryStopOrder').value"
+                        [stopNumber]="loadForm.get('deliveryStopOrder').value || 1"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1725,7 +1726,7 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-
+        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
         <!-- <app-ta-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"

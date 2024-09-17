@@ -1,0 +1,19 @@
+import { Component, Input } from '@angular/core';
+
+// Models
+import { DispatchGroupedLoadsResponse, DispatchResponse } from 'appcoretruckassist';
+
+@Component({
+    selector: 'app-dispatch-table-pickup-delivery',
+    templateUrl: './dispatch-table-pickup-delivery.component.html',
+    styleUrls: ['./dispatch-table-pickup-delivery.component.scss'],
+})
+export class DispatchTablePickupDeliveryComponent {
+    @Input() public dispatchResponse: DispatchResponse;
+    @Input() public isHoveringRowIndex: number;
+    @Input() public rowIndex: number;
+    @Input() public isDispatchBoardLocked: boolean;
+    @Input() public dispatchLoads: DispatchGroupedLoadsResponse;
+
+    constructor() {}
+}

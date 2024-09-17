@@ -188,7 +188,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.selectedTab = changes.selectedTab.currentValue;
 
             const td = this.tableData.find((t) => t.field === this.selectedTab);
-
+            if(!td) return;
             this.listName = td.gridNameTitle;
 
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
@@ -328,6 +328,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     private getActiveTableData(): void {
         const td = this.tableData.find((table) => table.isActive);
+        if(!td) return;
 
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
@@ -730,6 +731,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Column
     public onToaggleColumn(column: any, index: number): void {
+        if(column.isPined || column.disabled) return;
+
         clearTimeout(this.timeOutToaggleColumn);
 
         this.timeOutToaggleColumn = setTimeout(() => {
@@ -849,6 +852,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getActiveTableData();
     }
+
+    public identity(index: number, item: any): number {
+        return item.id;
+    }
+
 
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {

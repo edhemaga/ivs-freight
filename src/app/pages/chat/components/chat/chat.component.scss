@@ -176,11 +176,13 @@
     }
 
     .chat-main-content {
+        height: calc(100dvh - 75px);
+        width: calc(100% + 12px);
+
         display: grid;
         grid-template-columns: min-content auto min-content;
-        gap: 12px;
+        column-gap: 12px;
         margin-top: 12px;
-        height: calc(100dvh - 75px);
 
         .chat-lists {
             overflow-y: scroll;

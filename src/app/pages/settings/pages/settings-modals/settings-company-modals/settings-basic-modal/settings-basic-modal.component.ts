@@ -131,7 +131,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public companyForm: UntypedFormGroup;
 
-    public isFormDirty: boolean;
+    public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
 
     public disableCardAnimation: boolean = false;
