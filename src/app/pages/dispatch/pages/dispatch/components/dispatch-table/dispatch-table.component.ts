@@ -233,8 +233,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
 
-        console.log(' this.dispatchData ', this.dispatchData);
-
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
         )?.length;
@@ -291,9 +289,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 folder: DispatchTableStringEnum.COMMON,
             };
         });
-
-        console.log('truckList', this.truckList);
-        console.log('trailerList', this.trailerList);
 
         this.parkingList = JSON.parse(JSON.stringify(parkings));
 

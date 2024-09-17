@@ -282,16 +282,17 @@
                                     'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
                                 }"
                             >
-                                <!--  | allowedTruckTrailer
-                                                : true
-                                                : item?.trailer?.id -->
                                 <app-dispatch-table-truck-trailer
                                     [type]="'truck'"
                                     [truckDropdownWidth]="
                                         columnSpecifications?.truckWidth
                                     "
                                     [truck]="item?.truck"
-                                    [truckList]="truckList"
+                                    [truckList]="
+                                        truckList
+                                            | allowedTruckTrailer
+                                                : item?.allowedTruckIds
+                                    "
                                     [isYearShown]="!columnsToShow[1].hidden"
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"

@@ -1,26 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AllowedTruckTrailer } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/allowed-truck-trailer.model';
-import { TrailerDispatchModalResponse } from 'appcoretruckassist';
+
+// models
+import {
+    TrailerDispatchModalResponse,
+    TruckDispatchModalResponse,
+} from 'appcoretruckassist';
 
 @Pipe({
     name: 'allowedTruckTrailer',
 })
 export class DispatchAllowedTruckTrailerPipe implements PipeTransform {
-    transform /* <T extends AllowedTruckTrailer> */(
-        trailerList: TrailerDispatchModalResponse[],
-        allowedTrailerIds: number[]
+    transform(
+        truckTrailerList: (
+            | TruckDispatchModalResponse
+            | TrailerDispatchModalResponse
+        )[],
+        allowedTruckTrailerIds: number[]
     ) {
-        console.log('trailerList', trailerList);
-        console.log('allowedTrailerIds', allowedTrailerIds);
-
-        return trailerList?.filter((trailer) =>
-            allowedTrailerIds?.includes(trailer.id)
+        return truckTrailerList?.filter((item) =>
+            allowedTruckTrailerIds?.includes(item.id)
         );
-
-        /*   if (!truckTrailerId) return list;
-
-        return isTruckList
-            ? list?.filter((truck) => truck.allowedTrailerIds)
-            : list?.filter((trailer) => trailer.allowedTruckIds); */
     }
 }
