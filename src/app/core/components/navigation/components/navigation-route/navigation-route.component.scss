@@ -16,6 +16,21 @@
     padding-left: 8px;
     margin-bottom: 4px;
 
+    .nav-item-active-box {
+        background-color: $nav-hover-ligh;
+    }
+    
+    .nav-item-box {
+        width: 36px;
+        height: 28px;
+        position: absolute;
+        left: 0px;
+        content: '';
+        z-index: -1;
+        border-radius: 3px;
+        padding: 5px 9px;
+        top: 0px;
+    }
 
     .nav-item-img-active  {
         svg  {
@@ -45,6 +60,9 @@
     &:hover {
         svg path {
             fill: $nav-dark-bg !important;
+        }
+        .nav-item-box  {
+            background-color: $nav-hover-ligh;
         }
     }
 
@@ -288,29 +306,7 @@
 .hide-tooltip {
     display: none;
 }
-.nav-item-active-box {
-    width: 36px;
-    height: 28px;
-    position: absolute;
-    left: 0px;
-    content: '';
-    z-index: -1;
-    border-radius: 3px;
-    padding: 5px 9px;
-    top: 0px;
-    background-color: $nav-hover-ligh;
-}
-.box-animation-closed-nav {
-    animation: animateBackground 0.25s forwards;
-}
-@keyframes animateBackground {
-    from {
-        background-color: $nav-dark;
-    }
-    to {
-        background-color: $nav-hover-ligh;
-    }
-}
+
 .subroute-item {
     padding-left: 8px;
     .nav-item-active-box {

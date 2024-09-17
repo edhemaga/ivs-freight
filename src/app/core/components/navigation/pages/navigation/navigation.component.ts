@@ -278,7 +278,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
             event.target.classList.contains('tooltip') ||
             event.target.classList.contains('panel-name') ||
             event.target.classList?.contains('user-profile') ||
-            event.target.classList.contains('magic-line-footer') ||
             event.target.parentElement?.parentElement?.classList.contains(
                 'modal-nav-close-svg'
             ) ||
@@ -296,7 +295,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target.classList.contains('item-settings') ||
                 event.target.classList.contains('navigation-middle') ||
                 event.target.classList.contains('navigation-top') ||
-                event.target.classList.contains('magic-line-footer') ||
                 event.target.classList.contains('navigation-bottom') ||
                 event.target.classList.contains('subroutes-item') ||
                 event.target.parentElement?.classList.contains(

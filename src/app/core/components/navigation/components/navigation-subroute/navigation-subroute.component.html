@@ -9,9 +9,6 @@
     <div
         *ngFor="let item of subroute.route; trackBy: identity"
         class="subroutes"
-        [ngClass]="{
-            'new-magic-line-selected': isActiveRouteOnReload(item.route)
-        }"
         [routerLink]="item.route"
         [ngClass]="{
             'subroute-active': selectedSubRoute == item.name
@@ -36,6 +33,4 @@
             src="assets/svg/common/arrow_top_right.svg"
         ></svg-icon>
     </div>
-
-    <div *ngIf="openCloseContainer" class="new-magic-line"></div>
 </div>

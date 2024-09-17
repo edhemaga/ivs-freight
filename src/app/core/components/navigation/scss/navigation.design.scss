@@ -49,7 +49,6 @@ $nav-font-extrabold: 800;
 
 $nav-transparent: rgba(48, 116, 211, 0.2);
 $wrapper-line: #b7b7b7;
-$magic-line-transition: all 0.2s ease-in;
 
 $user-busy-status: #ffb74d;
 $user-busy-status-hover: #ffa726;
@@ -139,9 +138,14 @@ $notification: #e57373;
 }
 // ------------ end
 
-.dark-nav .navigation-divider {
-    background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%);
+.navigation-divider {
+    background: none;
     height: 4px;
     width: calc(100% - 12px);
     margin: 0 auto 4px auto;
 }
+
+.dark-nav .navigation-divider{
+    background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%)
+}
+

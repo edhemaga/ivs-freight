@@ -27,9 +27,7 @@
         margin: 12px;
     }
 
-    .new-magic-line {
-        width: 36px;
-    }
+   
     .dark-nav {
         background: $nav-dark !important;
         width: 250px !important;
@@ -115,58 +113,4 @@
         left: 8px;
         z-index: -1;
     }
-
-    .new-magic-line {
-        display: inline-block;
-        position: absolute;
-        left: 6px;
-        top: 0px;
-        content: '';
-        height: 28px;
-        background: $nav-hover-ligh;
-        border-radius: 3px;
-        transition: $magic-line-transition;
-        z-index: -1;
-    }
-    .animate-magic-line {
-        width: 238px;
-        background: $nav-hover-color;
-        animation: magiclinecolortransition 1s ease;
-    }
-    @keyframes magiclinecolortransition {
-        from {
-            background-color: transparent;
-        }
-        to {
-            background-color: $nav-hover-color;
-        }
-    }
-
-    .magic-line-width {
-        width: 36px !important;
-    }
-    .new-magic-line-selected {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    @for $i from 1 through 13 {
-        .navigation-routes:nth-child(#{$i}):hover ~ .new-magic-line {
-          transform: translateY(#{($i - 1) * 34 + 1}px);
-        }
-      
-        .new-magic-line-selected:nth-child(#{$i}) ~ .new-magic-line {
-          transform: translateY(#{($i - 1) * 34 + 1}px);
-        }
-      }
-
-      .navigation-routes:nth-child(14):hover  ~ .new-magic-line {
-        transform: translateY(716px);
-      }
-      
-      .new-magic-line-selected:nth-child(14) ~ .new-magic-line {
-        transform: translateY(716px);
-      }
 }

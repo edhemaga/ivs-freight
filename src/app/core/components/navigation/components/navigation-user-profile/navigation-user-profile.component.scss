@@ -245,28 +245,6 @@
             }
         }
     }
-    div {
-        .new-magic-line {
-            display: inline-block;
-            position: absolute;
-            left: 0px;
-            bottom: 0px;
-            content: '';
-            height: 28px;
-            width: 232px;
-            background: $nav-hover-color;
-            border-radius: 3px;
-            transition: $magic-line-transition;
-            z-index: -1;
-        }
-
-        .new-magic-line-selected {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-    }
 }
 .hide-panel {
     max-height: 0;
