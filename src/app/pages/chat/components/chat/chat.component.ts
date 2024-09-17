@@ -214,6 +214,9 @@ export class ChatComponent
     }
   }
 
+  public closeGroupMembersOverview($event: boolean): void {
+    this.isGroupMembersDisplayed = $event;
+  }
 
   public onActivate(event: ConversationContentComponent): void {
     event?.

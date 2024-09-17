@@ -160,6 +160,9 @@
                             [conversationParticipants]="
                                 conversationParticipants
                             "
+                            (closeGroupMembersOverviewEvent)="
+                                closeGroupMembersOverview($event.value)
+                            "
                         ></app-chat-channel-participant-list>
                     </ng-container>
                 </div>

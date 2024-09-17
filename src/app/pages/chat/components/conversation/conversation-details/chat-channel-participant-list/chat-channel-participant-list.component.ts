@@ -1,8 +1,11 @@
 import {
   Component,
   Input,
-  OnInit
+  OnInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
+
 import {
   UntypedFormBuilder,
   UntypedFormGroup
@@ -31,6 +34,8 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 export class ChatChannelParticipantListComponent extends UnsubscribeHelper implements OnInit {
 
   @Input() public conversationParticipants: CompanyUserShortResponse[] = [];
+
+  @Output() public closeGroupMembersOverviewEvent: EventEmitter<boolean> = new EventEmitter;
 
   public searchConversationParticipants!: CompanyUserShortResponse[];
 
@@ -78,13 +83,9 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
         });
   }
 
-  // TODO Remove, only for test purposes
-  ngOnInit(): void {
-    this.conversationParticipants = [
-      ...this.conversationParticipants,
-      ...this.conversationParticipants,
-      ...this.conversationParticipants,
-      ...this.conversationParticipants
-    ]
+  public closeOverview(): void {
+    this.closeGroupMembersOverviewEvent.emit(false);
   }
+
+  ngOnInit(): void { }
 }
