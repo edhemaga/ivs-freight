@@ -347,7 +347,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            if (index) {
+            if (index >= 0) {
                 this.dispatchData = {
                     ...this.dispatchData,
                     dispatches: this.dispatchData.dispatches.map(
@@ -514,7 +514,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             trailerId: trailer?.id ?? null,
             driverId: driver?.id ?? null,
             coDriverId: coDriver?.id ?? null,
-            location,
+            location: location?.address ? location : null,
             note,
             loadIds: [],
             hoursOfService: null,

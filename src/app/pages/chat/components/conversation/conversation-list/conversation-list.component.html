@@ -2,7 +2,9 @@
     <div class="conversation-list-search" [formGroup]="searchForm">
         <app-ta-input
             formControlName="searchTerm"
-            [inputConfig]="ChatInput.userSearchInput"
+            [inputConfig]="
+                chatInput.userSearchInput(chatSearchPlaceholdersEnum.CHAT)
+            "
         ></app-ta-input>
     </div>
     <div class="conversation-list-wrapper">
