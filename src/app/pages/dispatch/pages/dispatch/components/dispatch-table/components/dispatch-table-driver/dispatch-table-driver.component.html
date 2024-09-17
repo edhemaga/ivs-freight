@@ -76,7 +76,14 @@
                             </span>
                         </div>
                     </ng-container>
-                    <div class="driver-items-hold d-flex align-items-center">
+                    <div
+                        class="driver-items-hold d-flex align-items-center"
+                        [ngStyle]="{
+                            'max-width': isBoardLocked
+                                ? '100%'
+                                : 'calc( 100% - 53px )'
+                        }"
+                    >
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <ng-container *ngIf="isHosShown">
                                 <div
