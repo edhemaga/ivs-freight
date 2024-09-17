@@ -639,8 +639,8 @@
         (mousedown)="selectLastOneForSelection()"
         (mouseup)="selectLastOneAfterMoseUp()"
         (paste)="onDatePaste($event)"
-        (blur)="onBlur()"
         (keydown)="changeSelection($event, true)"
+        (click)="toggleDropdownOptions()"
         [ngStyle]="{
             'padding-left': _inputConfig.isIconHidden ? '2px' : '27px'
         }"
@@ -720,10 +720,7 @@
             #span1
             class="main"
             tabindex="0"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
         ></span>
         <span>
@@ -736,10 +733,7 @@
             #span2
             class="main"
             tabindex="1"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
         ></span>
         <span>
@@ -752,10 +746,7 @@
             #span3
             class="main"
             tabindex="2"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
         ></span>
     </div>
