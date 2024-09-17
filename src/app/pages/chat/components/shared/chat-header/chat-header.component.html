@@ -11,7 +11,9 @@
         <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
             <app-ta-input
                 formControlName="searchTerm"
-                [inputConfig]="chatInput.userSearchInput('Chat')"
+                [inputConfig]="
+                    chatInput.userSearchInput(chatSearchPlaceHolders.CHAT)
+                "
                 (clear)="toggleSearch(false)"
             ></app-ta-input>
         </div>

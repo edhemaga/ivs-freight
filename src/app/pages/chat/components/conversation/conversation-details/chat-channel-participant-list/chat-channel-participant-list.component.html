@@ -22,7 +22,9 @@
         <div class="form-wrapper" [formGroup]="searchForm">
             <app-ta-input
                 formControlName="searchTerm"
-                [inputConfig]="chatInput.userSearchInput('User')"
+                [inputConfig]="
+                    chatInput.userSearchInput(chatSearchPlaceHolders.USER)
+                "
             ></app-ta-input>
         </div>
     </div>

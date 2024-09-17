@@ -15,7 +15,6 @@ import {
   debounceTime
 } from 'rxjs/operators';
 
-
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
 
@@ -25,6 +24,7 @@ import { ChatInput } from '@pages/chat/utils/config';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+import { ChatSearchPlaceHolders } from '@pages/chat/enums';
 
 @Component({
   selector: 'app-chat-channel-participant-list',
@@ -46,7 +46,7 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
   // Assets
   public chatSvgRoutes = ChatSvgRoutes;
   public chatInput = ChatInput;
-
+  public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
