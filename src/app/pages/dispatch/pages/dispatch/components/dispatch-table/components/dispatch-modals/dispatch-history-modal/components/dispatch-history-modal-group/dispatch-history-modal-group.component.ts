@@ -832,7 +832,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
             const data = {
                 id,
                 startDate: formatedDateAndTimeStart,
-                endDate: '',
+                endDate: null,
             };
 
             console.log('data', data);

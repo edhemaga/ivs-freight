@@ -842,7 +842,7 @@ export function getLoadActiveAndPendingColumnDefinition() {
             progress: null,
             hoverTemplate: null,
             filterable: true,
-            disabled: false,
+            disabled: true,
             export: true,
             resizable: true,
             link: {

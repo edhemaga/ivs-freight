@@ -8,16 +8,16 @@
     [hasTruckTypeFilter]="true"
     [hasTrailerTypeFilter]="true"
     [hasLocationFilter]="true"
-    [hasSearch]="true"
     [isAssignLoadModal]="true"
     [unassignedLoads]="originalLoads"
+    [isReorderingActive]="isReorderingActive"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
     (filterActions)="setFilter($event)" 
 >
     <div origin>
         <div class="dispatch-load">
-            <form [formGroup]="assignLoadForm" class="mb-2">
+            <form [formGroup]="assignLoadForm" class="mb-1">
                 <app-ta-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
@@ -29,7 +29,7 @@
             </form>
 
             <!-- Table header -->
-            <div class="d-grid dispatch-load-grid">
+            <div class="d-grid dispatch-load-grid mb-1">
                 <ng-container
                     *ngFor="
                         let headerItem of tableHeaderItems;
@@ -58,14 +58,17 @@
                 </ng-container>
             </div>
 
+            <div class="divider"></div>
+
             <app-ta-resizer
                 [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 310 : 400 : 30"
                 [initialSecondElementHeight]="400"
                 [minHeightFirstElement]="30"
-                [minHeightSecondElement]="30"
+                [minHeightSecondElement]="40"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
+                [isResizeEnabled]="assignedLoads.length || unassignedLoads.length"
                 #resizerComponent
             >
             <div firstElement #firstElementRef class="h-full-important">
@@ -106,6 +109,7 @@
                                 trackBy: trackByIdentity
                             "
                             [cdkDragDisabled]="!isReorderingActive"
+                            cdkDragBoundary=".ta-card-body"
                             cdkDrag
                         >
                             <div
@@ -286,6 +290,7 @@
                 [initialSecondElementHeight]="390"
                 [minHeightFirstElement]="35"
                 [minHeightSecondElement]="40"
+                [isResizeEnabled]="assignedLoads.length || unassignedLoads.length"
             >
                 <div firstElement class="h-full">
                     <app-ta-custom-card

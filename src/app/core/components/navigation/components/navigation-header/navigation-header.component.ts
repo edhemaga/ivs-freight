@@ -15,6 +15,9 @@ import { NavigationService } from '@core/components/navigation/services/navigati
 // components
 import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
+// Const
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+
 @Component({
     selector: 'app-navigation-header',
     templateUrl: './navigation-header.component.html',
@@ -33,7 +36,7 @@ export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
     @Input() ChangeCloseTextTitle: boolean;
 
-    public Title: string = 'Add Anything';
+    public Title: string = NavigationDataConstants.title;
     public showToolTip: boolean = false;
 
     constructor(

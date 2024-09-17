@@ -11,11 +11,9 @@ import {
   QueryList,
   ViewChildren,
   Output,
-  EventEmitter
+  EventEmitter,
+  Input
 } from '@angular/core';
-import {
-  ActivatedRoute,
-} from '@angular/router';
 import {
   UntypedFormGroup,
   UntypedFormBuilder,
@@ -24,7 +22,6 @@ import {
   BehaviorSubject,
   debounceTime,
   map,
-  Subject,
   takeUntil
 } from 'rxjs';
 
@@ -65,6 +62,7 @@ import { ChatAttachmentHoveredClassStringEnum, ChatAttachmentCustomClassEnum } f
 // Helpers
 import {
   checkForLink,
+  GetCurrentUserHelper,
   UnsubscribeHelper
 } from '@pages/chat/utils/helpers';
 
@@ -85,16 +83,16 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
     if (event.key === 'Escape') this.attachmentUploadActive = false;
   }
 
+  @Input() public attachmentUploadActive: boolean = false;
+  @Input() public isProfileDetailsDisplayed: boolean = false;
+  @Input() public conversationParticipants!: CompanyUserShortResponse[];
+
   @Output() userTypingEmitter: EventEmitter<number> = new EventEmitter();
 
   //User data
-  public currentUserId: number = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')).companyUserId
-    : 0;
+  public getCurrentUserHelper = GetCurrentUserHelper;
 
-  public remainingParticipants: CompanyUserShortResponse[];
   private conversation!: ConversationResponse;
-  public isProfileDetailsDisplayed: boolean = false;
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
@@ -113,7 +111,6 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
   public currentMessage!: string;
 
   // Attachment upload
-  public attachmentUploadActive: boolean = false;
   public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
   public hoveredAttachment!: ChatAttachmentForThumbnail;
 
@@ -142,9 +139,6 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
     private renderer: Renderer2,
     private el: ElementRef,
 
-    //Router
-    private activatedRoute: ActivatedRoute,
-
     // Form
     private formBuilder: UntypedFormBuilder,
 
@@ -158,30 +152,12 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
 
   ngOnInit(): void {
     this.creteForm();
-    this.getResolvedData();
     this.connectToHub();
     this.listenForTyping();
   }
 
   ngAfterContentChecked(): void {
     this.cdref.detectChanges();
-  }
-
-  private getResolvedData(): void {
-    this.activatedRoute
-      .data
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          this.messages = [...res.messages?.pagination?.data];
-
-          // Conversation participants
-          this.conversation = res.information;
-          this.remainingParticipants = this.conversation
-            ?.participants
-            .filter(participant => participant.id !== this.currentUserId);
-        }
-      );
   }
 
   private connectToHub(): void {
@@ -214,7 +190,7 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
       .subscribe((companyUserId: number) => {
 
         const filteredUser: CompanyUserShortResponse =
-          this.remainingParticipants
+          this.conversationParticipants
             .find(user =>
               user.id === companyUserId
             );
@@ -263,25 +239,6 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
 
   public enableChatInput(): void {
     this.isChatTypingActivated = true;
-  }
-
-  public displayProfileDetails(value: boolean): void {
-
-    if (this.isProfileDetailsDisplayed && !value) {
-      this.isProfileDetailsDisplayed = value;
-      return;
-    }
-
-    if (this.conversation?.id && value) {
-
-      this.chatService
-        .getAllConversationFiles(this.conversation.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((data: ConversationInfoResponse) => {
-          this.isProfileDetailsDisplayed = value;
-          this.userProfileService.setProfile(data);
-        })
-    }
   }
 
   // TODO implement emoji selection
@@ -369,7 +326,6 @@ export class ChatMessagesComponent extends UnsubscribeHelper implements OnInit, 
     this.clearHoveredAttachment();
     this.isChatTypingBlurred = true;
   }
-
 
 
   public listenForTyping(): void {
