@@ -28,7 +28,9 @@ export interface DispatchResponse {
     dispatchBoardId?: number | null;
     dispatcher?: CompanyUserShortResponse;
     truck?: TruckMinimalResponse;
+    allowedTrailerIds?: Array<number> | null;
     trailer?: TrailerMinimalResponse;
+    allowedTruckIds?: Array<number> | null;
     driver?: DriverDispatchResponse;
     coDriver?: DriverDispatchResponse;
     phone?: string | null;

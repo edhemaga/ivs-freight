@@ -11,11 +11,13 @@
  */
 import { AssignedLoadResponse } from './assignedLoadResponse';
 import { EnumValue } from './enumValue';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 
 
 export interface AssignLoadModalResponse { 
     dispatches?: Array<DispatchLoadModalResponse> | null;
+    dispatchers?: Array<CompanyUserShortResponse> | null;
     unassignedLoadsCount?: number;
     unassignedLoads?: Array<AssignedLoadResponse> | null;
     dispatchFutureTimes?: Array<EnumValue> | null;

@@ -290,9 +290,8 @@
                                     [truck]="item?.truck"
                                     [truckList]="
                                         truckList
-                                            | allowedTruckTrailerPipe
-                                                : true
-                                                : item?.trailer?.id
+                                            | allowedTruckTrailer
+                                                : item?.allowedTruckIds
                                     "
                                     [isYearShown]="!columnsToShow[1].hidden"
                                     [rowIndex]="rowIndex"
@@ -380,9 +379,8 @@
                                             [trailer]="item?.trailer"
                                             [trailerList]="
                                                 trailerList
-                                                    | allowedTruckTrailerPipe
-                                                        : false
-                                                        : item?.truck?.id
+                                                    | allowedTruckTrailer
+                                                        : item?.allowedTrailerIds
                                             "
                                             [isYearShown]="
                                                 !columnsToShow[3].hidden
@@ -401,9 +399,7 @@
                                                 isHoveringRowIndex === rowIndex
                                             "
                                             [isTrailerAddNewHidden]="
-                                                isTrailerAddNewHidden
-                                                    | hiddenAddTrailerPipe
-                                                        : item?.truck
+                                                item?.truck | hiddenAddTrailer
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
@@ -618,8 +614,12 @@
                                     [isHoveringRowIndex]="isHoveringRowIndex"
                                     [rowIndex]="rowIndex"
                                     [dispatchResponse]="item"
-                                    [isDispatchBoardLocked]="isDispatchBoardLocked"
-                                    [dispatchLoads]="currentDispatchGroupedLoadsResponse"
+                                    [isDispatchBoardLocked]="
+                                        isDispatchBoardLocked
+                                    "
+                                    [dispatchLoads]="
+                                        currentDispatchGroupedLoadsResponse
+                                    "
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
