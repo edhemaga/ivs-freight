@@ -379,7 +379,7 @@
                                             [trailerList]="
                                                 trailerList
                                                     | allowedTruckTrailer
-                                                        : item?.truck?.id
+                                                        : item?.allowedTrailerIds
                                             "
                                             [isYearShown]="
                                                 !columnsToShow[3].hidden
@@ -613,8 +613,12 @@
                                     [isHoveringRowIndex]="isHoveringRowIndex"
                                     [rowIndex]="rowIndex"
                                     [dispatchResponse]="item"
-                                    [isDispatchBoardLocked]="isDispatchBoardLocked"
-                                    [dispatchLoads]="currentDispatchGroupedLoadsResponse"
+                                    [isDispatchBoardLocked]="
+                                        isDispatchBoardLocked
+                                    "
+                                    [dispatchLoads]="
+                                        currentDispatchGroupedLoadsResponse
+                                    "
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
