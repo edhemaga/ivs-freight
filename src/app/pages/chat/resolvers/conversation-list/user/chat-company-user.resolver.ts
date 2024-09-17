@@ -20,7 +20,7 @@ export class ChatCompanyUserResolver {
     constructor(private userChatService: UserChatService) { }
 
     resolve(): Observable<CompanyUserChatResponsePagination> {
-        return this.userChatService.getCompanyUserList(chatSearchPlaceHolders.USER).pipe(
+        return this.userChatService.getCompanyUserList(this.chatSearchPlaceHolders.USER).pipe(
             map(res => {
                 return res.pagination
             })
