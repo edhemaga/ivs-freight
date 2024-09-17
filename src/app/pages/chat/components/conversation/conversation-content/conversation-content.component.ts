@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   Input,
-  Output
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -11,11 +12,6 @@ import {
 import {
   takeUntil
 } from 'rxjs';
-
-// Services
-import {
-  UserChatService,
-} from '@pages/chat/services';
 
 // Models
 import { ChatMessageResponse } from '@pages/chat/models';
@@ -38,7 +34,6 @@ import {
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
-import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-conversation-content',

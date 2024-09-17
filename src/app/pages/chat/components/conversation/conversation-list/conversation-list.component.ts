@@ -92,7 +92,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public chatGroupEnum = ChatGroupEnum;
   public conversationTypeEnum = ConversationTypeEnum;
   private chatObjectPropertyEnum = ChatObjectPropertyEnum;
-  public chatSearchPlaceHolders = ChatSearchPlaceHolders;
+  public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();

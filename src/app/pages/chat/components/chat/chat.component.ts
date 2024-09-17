@@ -7,7 +7,10 @@ import {
   ActivatedRoute,
   Router
 } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import {
+  Observable,
+  takeUntil
+} from 'rxjs';
 
 // Components
 import { ConversationContentComponent } from '@pages/chat/components/conversation/conversation-content/conversation-content.component';
@@ -47,7 +50,6 @@ import {
 
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -102,7 +104,7 @@ export class ChatComponent
 
   ngOnInit(): void {
     this.getResolvedData();
-    this.userProfileData = this.userProfileService.getProfile();
+    this.setUserProfileData();
   }
 
   private getResolvedData(): void {
@@ -217,16 +219,22 @@ export class ChatComponent
     }
   }
 
+  private setUserProfileData(): void {
+    this.userProfileData = this.userProfileService.getProfile();
+
+  }
+
   public closeGroupMembersOverview($event: boolean): void {
     this.isGroupMembersDisplayed = $event;
   }
 
   public onActivate(event: ConversationContentComponent): void {
     event?.
-      isConversationParticipantsDisplayed.
-      subscribe(arg => {
-        this.isGroupMembersDisplayed = arg.isDisplayed;
-        this.conversationParticipants = arg.conversationParticipants;
+      isConversationParticipantsDisplayed
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(emittedData => {
+        this.isGroupMembersDisplayed = emittedData.isDisplayed;
+        this.conversationParticipants = emittedData.conversationParticipants;
       });
   }
 

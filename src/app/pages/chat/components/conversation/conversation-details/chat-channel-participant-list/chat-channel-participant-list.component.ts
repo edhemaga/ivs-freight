@@ -50,10 +50,12 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
+  }
+
+  ngOnInit(): void {
     this.creteForm();
     this.listenForSearchTermChange();
   }
-
 
   private creteForm(): void {
     this.searchForm = this.formBuilder.group({
@@ -72,9 +74,9 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
         debounceTime(350)
       )
       .subscribe(
-        (arg: { searchTerm: string }) => {
+        (search: { searchTerm: string }) => {
 
-          const searchTerm: string = arg.searchTerm.toLowerCase().trim();
+          const searchTerm: string = search.searchTerm.toLowerCase().trim();
 
           this.searchConversationParticipants = this.conversationParticipants
             .filter(participant =>
@@ -87,5 +89,5 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
     this.closeGroupMembersOverviewEvent.emit(false);
   }
 
-  ngOnInit(): void { }
+
 }
