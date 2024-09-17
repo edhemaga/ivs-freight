@@ -78,6 +78,10 @@
                 opacity: 1;
                 z-index: 9;
             }
+
+            .subroutes-item:not(.route-not-active ) {
+                color: $nav-white;
+            }
         }
         .nav-item-arrow_top {
             z-index: 9;
@@ -130,7 +134,7 @@
         content: '';
         height: 27px;
         width: 231px;
-        background: $nav-hover-color;
+        background: #6C6C6C;
         border-radius: 2px;
         transition: $magic-line-transition;
         z-index: -1;

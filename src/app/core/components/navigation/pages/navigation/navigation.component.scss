@@ -15,7 +15,7 @@
     font-weight: $nav-font-medium;
     transition: $nav-transition;
     .nav-holder {
-        height: 100%;
+        height: calc(100vh - 24px);
         display: flex;
         flex-direction: column;
         background: $nav-white;
@@ -49,7 +49,6 @@
         overflow-y: scroll;
         overflow-x: hidden;
         position: relative;
-        max-height: 740px;
         height: auto;
         padding: 0px 6px;
         height: 100%;
@@ -96,6 +95,9 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+            position: sticky;
+             bottom: 0;
+             z-index: 2;
 
             .navigation-divider {
                 width: calc(100% - 6px);
@@ -161,10 +163,10 @@
       }
 
       .navigation-routes:nth-child(14):hover  ~ .new-magic-line {
-        transform: translateY(708px);
+        transform: translateY(716px);
       }
       
       .new-magic-line-selected:nth-child(14) ~ .new-magic-line {
-        transform: translateY(708px);
+        transform: translateY(716px);
       }
 }

@@ -16,6 +16,7 @@
     padding-left: 8px;
     margin-bottom: 4px;
 
+
     .nav-item-img-active  {
         svg  {
             height: 18px;
@@ -37,8 +38,16 @@
                 transition: fill 0.4s ease;
                 fill: $nav-svg-darker;
             }
+        } 
+    }
+
+    
+    &:hover {
+        svg path {
+            fill: $nav-dark-bg !important;
         }
     }
+
     .tooltip-right {
         margin-left: -8px;
         position: fixed;
@@ -267,6 +276,10 @@
                 }
             }
         }
+        
+        svg path {
+            fill: $nav-icon-hover-fill !important;
+        }
     }
 }
 .disable-cursor {
@@ -323,6 +336,7 @@
 
     svg path {
         fill: $nav-svg-hover;
+        transition: fill .3s ease-in-out;
     }
 }
 @keyframes dude {
@@ -350,7 +364,7 @@
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-close-icon-active !important;
+            fill: $nav-close-icon-active;
         }
     }
 }
