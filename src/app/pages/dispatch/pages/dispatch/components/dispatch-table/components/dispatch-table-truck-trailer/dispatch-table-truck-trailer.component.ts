@@ -196,7 +196,7 @@ export class DispatchTableTruckTrailerComponent {
 
         this.hasAddNew = !values?.length;
 
-        if (!values.length && !findAllAssigned) {
+        if (!values?.length && !findAllAssigned) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? this._truckList.unshift({
                       id: 7656,

@@ -1,1 +1,173 @@
-<p>chat-channel-participant-list works!</p>
+<div class="channel-participants-container">
+    <div
+        class="channel-participants-header d-flex justify-content-center align-items-center ml-0 mr-auto"
+    >
+        <div
+            class="left-arrow d-flex justify-content-center align-items-center"
+            (click)="closeOverview()"
+        >
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 8, 'height.px': 14 }"
+                [src]="chatSvgRoutes.arrowLeftIcon"
+            >
+            </svg-icon>
+        </div>
+        <div class="participants ta-font-extra-bold">Participants</div>
+        <div class="count ta-font-extra-bold">
+            {{ conversationParticipants?.length }}
+        </div>
+    </div>
+    <div class="search">
+        <div class="form-wrapper" [formGroup]="searchForm">
+            <app-ta-input
+                formControlName="searchTerm"
+                [inputConfig]="
+                    chatInput.userSearchInput(chatSearchPlaceHolders.USER)
+                "
+            ></app-ta-input>
+        </div>
+    </div>
+
+    <ng-container *ngIf="searchConversationParticipants?.length">
+        <ng-container
+            *ngTemplateOutlet="
+                userItemList;
+                context: {
+                    participants: searchConversationParticipants
+                }
+            "
+        ></ng-container>
+    </ng-container>
+    <ng-container
+        *ngIf="
+            conversationParticipants?.length &&
+            !searchConversationParticipants?.length
+        "
+    >
+        <ng-container
+            *ngTemplateOutlet="
+                userItemList;
+                context: {
+                    participants: conversationParticipants
+                }
+            "
+        ></ng-container>
+    </ng-container>
+</div>
+
+<ng-template #userItemList let-participants="participants">
+    <div class="users-wrapper">
+        <div class="users-holder">
+            <ng-container
+                *ngFor="
+                    let participant of participants;
+                    let ind = index;
+                    trackBy: '' | trackByProperty
+                "
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        userItem;
+                        context: {
+                            item: participant
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #userItem let-item="item">
+    <div
+        class="conversation-list-item"
+        appHover
+        hoverColor="#eee"
+        appToggleBackground
+    >
+        <div class="conversation-list-item-advanced d-flex flex-grow-1">
+            <div
+                class="icon-advanced d-flex justify-content-center align-items-center"
+            >
+                <app-ca-profile-image
+                    [avatarImg]="item?.avatarFile?.url"
+                    [avatarColor]="{
+                        background: '#DFC2F9',
+                        color: '#9E47EC66'
+                    }"
+                    [textShortName]="item?.fullName | nameInitials"
+                    [size]="32"
+                    [fontSize]="11"
+                    [isHoverEffect]="false"
+                    [isRound]="false"
+                ></app-ca-profile-image>
+            </div>
+            <div class="conversation-list-item-advanced-details">
+                <div class="conversation-list-item-advanced-details-top">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            itemTitle;
+                            context: {
+                                item
+                            }
+                        "
+                    ></ng-container>
+                </div>
+                <div
+                    class="conversation-list-item-advanced-details-bottom d-flex flex-grow-1 justify-content-between"
+                >
+                    <div class="status">Status</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #itemTitle let-item="item">
+    <div class="item d-flex flex-grow-1 justify-content-between">
+        <div
+            class="title title-color ta-font-regular d-flex align-items-center justify-content-center"
+        >
+            <div>
+                {{ item.fullName }}
+            </div>
+        </div>
+        <div
+            class="ta-font-medium d-flex align-items-center justify-content-center"
+        >
+            <div>
+                <ng-container [ngSwitch]="true">
+                    <ng-container *ngSwitchCase="chatSvgRoutes?.isFavourite">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 13,
+                                        height: 13,
+                                        route: ChatSvgRoutes.favoriteIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="item?.unreadCount">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 6,
+                                        height: 6,
+                                        route: chatSvgRoutes.circleIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault></ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>

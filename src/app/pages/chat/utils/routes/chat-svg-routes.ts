@@ -42,6 +42,7 @@ export class ChatSvgRoutes {
     static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
     static repairIcon: string = 'assets/svg/chat/repair-icon.svg';
     static generalIcon: string = 'assets/svg/chat/general-icon.svg';
+    static arrowLeftIcon: string = 'assets/svg/chat/arrow-left-icon.svg';
 
     // Other
     static linkIcon: string = 'assets/svg/chat/link-icon.svg';

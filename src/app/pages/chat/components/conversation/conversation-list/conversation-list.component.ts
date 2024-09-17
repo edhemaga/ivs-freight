@@ -35,7 +35,8 @@ import {
   ConversationTypeEnum,
   ChatGroupEnum,
   ChatGroupStateEnum,
-  ChatObjectPropertyEnum
+  ChatObjectPropertyEnum,
+  ChatSearchPlaceHolders
 } from '@pages/chat/enums';
 
 // Animations
@@ -80,7 +81,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public titleIcon: string;
 
   // Config
-  public ChatInput = ChatInput;
+  public chatInput = ChatInput;
   public isAdvancedView: boolean = false;
 
   // Create list of states for all groups available
@@ -91,6 +92,7 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public chatGroupEnum = ChatGroupEnum;
   public conversationTypeEnum = ConversationTypeEnum;
   private chatObjectPropertyEnum = ChatObjectPropertyEnum;
+  public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
