@@ -561,7 +561,9 @@
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
                                     "
-                                    (isDropdownHidden)="onHideDropdown()"
+                                    (isDropdownHidden)="
+                                        handleLastLocationDropdownClose()
+                                    "
                                 >
                                 </app-dispatch-table-last-location>
                             </td>
@@ -900,7 +902,9 @@
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
                                     "
-                                    (isDropdownHidden)="onHideDropdown()"
+                                    (isDropdownHidden)="
+                                        handleLastLocationDropdownClose()
+                                    "
                                 >
                                 </app-dispatch-table-last-location>
                             </ng-container>
