@@ -282,18 +282,16 @@
                                     'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
                                 }"
                             >
+                                <!--  | allowedTruckTrailer
+                                                : true
+                                                : item?.trailer?.id -->
                                 <app-dispatch-table-truck-trailer
                                     [type]="'truck'"
                                     [truckDropdownWidth]="
                                         columnSpecifications?.truckWidth
                                     "
                                     [truck]="item?.truck"
-                                    [truckList]="
-                                        truckList
-                                            | allowedTruckTrailerPipe
-                                                : true
-                                                : item?.trailer?.id
-                                    "
+                                    [truckList]="truckList"
                                     [isYearShown]="!columnsToShow[1].hidden"
                                     [rowIndex]="rowIndex"
                                     [isBoardLocked]="isDispatchBoardLocked"
@@ -380,8 +378,7 @@
                                             [trailer]="item?.trailer"
                                             [trailerList]="
                                                 trailerList
-                                                    | allowedTruckTrailerPipe
-                                                        : false
+                                                    | allowedTruckTrailer
                                                         : item?.truck?.id
                                             "
                                             [isYearShown]="
@@ -401,9 +398,7 @@
                                                 isHoveringRowIndex === rowIndex
                                             "
                                             [isTrailerAddNewHidden]="
-                                                isTrailerAddNewHidden
-                                                    | hiddenAddTrailerPipe
-                                                        : item?.truck
+                                                item?.truck | hiddenAddTrailer
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
