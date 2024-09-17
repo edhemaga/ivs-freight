@@ -78,6 +78,7 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
         });
   }
 
+  // TODO Remove, only for test purposes
   ngOnInit(): void {
     this.conversationParticipants = [
       ...this.conversationParticipants,
