@@ -264,19 +264,6 @@ export class ResizableDirective implements OnInit {
                 this.maxWidth = driverMaxWidth;
                 this.minWidth = driverMinWidth;
 
-                // const driverMinWidth = this._columns[6]?.hidden
-                //     ? this._columns[4]?.minWidth
-                //     : this._columns[4]?.minWidth + 80;
-
-                // if (this.el.nativeElement.offsetWidth < driverMinWidth - 9)
-                //     this.renderer.setStyle(
-                //         this.el.nativeElement,
-                //         DispatchTableStringEnum.WIDTH,
-                //         `${driverMinWidth - 9}px`
-                //     );
-
-                // this.maxWidth = this._columns[4]?.width;
-                // this.minWidth = driverMinWidth;
                 break;
             case DispatchTableStringEnum.TRUCK_1:
                 const truckMaxWidth = this._columns[1]?.hidden
