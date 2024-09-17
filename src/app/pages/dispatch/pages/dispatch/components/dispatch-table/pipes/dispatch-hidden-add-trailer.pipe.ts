@@ -2,14 +2,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TruckResponse } from 'appcoretruckassist';
 
 @Pipe({
-    name: 'hiddenAddTrailerPipe',
+    name: 'hiddenAddTrailer',
 })
 export class DispatchHiddenAddTrailerPipe implements PipeTransform {
-    transform(isTrailerAddNewHidden: boolean, truck: TruckResponse) {
+    transform(truck: TruckResponse) {
         return (
-            isTrailerAddNewHidden ||
-            truck?.truckType.id === 2 ||
-            truck?.truckType.id === 5
+            truck?.truckType.id === 3 ||
+            truck?.truckType.id === 4 ||
+            truck?.truckType.id === 5 ||
+            truck?.truckType.id === 6 ||
+            truck?.truckType.id === 7 ||
+            truck?.truckType.id === 8
         );
     }
 }

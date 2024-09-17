@@ -11,24 +11,22 @@ import { ChatMessageResponse } from '@pages/chat/models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ChatHubService {
-
     private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;
     private static hubConnection: signalR.HubConnection;
 
     private establishInitialConnection(): void {
-
         if (!this.token) return;
 
         ChatHubService.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
-                accessTokenFactory: () => this.token
+                accessTokenFactory: () => this.token,
             })
             .withAutomaticReconnect()
             .build();
@@ -41,33 +39,29 @@ export class ChatHubService {
 
         if (
             !ChatHubService.hubConnection &&
-            ChatHubService.hubConnection?.state !== signalR.HubConnectionState.Connecting &&
-            ChatHubService.hubConnection?.state !== signalR.HubConnectionState.Connected
+            ChatHubService.hubConnection?.state !==
+                signalR.HubConnectionState.Connecting &&
+            ChatHubService.hubConnection?.state !==
+                signalR.HubConnectionState.Connected
         )
             return;
 
-        ChatHubService.hubConnection
-            .start()
-            .then();
+        ChatHubService.hubConnection.start().then();
 
-        ChatHubService.hubConnection.
-            onclose(() => {
-                ChatHubService.hubConnection.start();
-            });
+        ChatHubService.hubConnection.onclose(() => {
+            ChatHubService.hubConnection.start();
+        });
     }
 
     public disconnect(): void {
-        ChatHubService.hubConnection
-            .stop()
-            .then();
+        ChatHubService.hubConnection.stop().then();
     }
 
     public static receiveMessage(): Observable<ChatMessageResponse> {
         return new Observable<ChatMessageResponse>((observer) => {
-            ChatHubService.hubConnection.on('ReceiveMessage',
-                (
-                    newMessage: ChatMessageResponse
-                ) => {
+            ChatHubService.hubConnection.on(
+                'ReceiveMessage',
+                (newMessage: ChatMessageResponse) => {
                     return observer.next(newMessage);
                 }
             );
@@ -83,13 +77,13 @@ export class ChatHubService {
 
     public receiveTypingNotification(): Observable<number> {
         return new Observable<number>((observer) => {
-            ChatHubService.hubConnection.on('ReceiveTypingNotification',
+            ChatHubService.hubConnection.on(
+                'ReceiveTypingNotification',
                 (companyUserId: number) => {
                     observer.next(companyUserId);
-                });
+                }
+            );
             observer.next(0);
-        })
+        });
     }
-
-
 }
