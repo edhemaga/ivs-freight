@@ -5,6 +5,8 @@ import { NavigationUserPanel } from '@core/components/navigation/models/navigati
 import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
 
 export class NavigationDataConstants {
+    static title =  'Add New'
+    static close =  'Close'
     static navigationData: Navigation[] = [
         {
             id: 1,
@@ -292,6 +294,42 @@ export class NavigationDataConstants {
             files: 83,
             construction: true,
         },
+        {
+            id: 34,
+            image: 'ic_company.svg',
+            name: 'Company',
+            arrow: 'assets/svg/common/ic_arrow-down.svg',
+            isRouteActive: false,
+            isSubrouteActive: false,
+            route: [
+                {
+                    name: 'Settings',
+                    image: 'ic_settings.svg',
+                    route: '/company/settings',
+                    activeRouteFlegId: 34, 
+                },
+                {
+                    name: 'Location',
+                    image: 'ic_location.svg',
+                    route: '/company/location',
+                    activeRouteFlegId: 34,
+                },
+                {
+                    name: 'Document',
+                    image: 'ic_document.svg',
+                    route: '/company/document',
+                    activeRouteFlegId: 34,
+                },
+                {
+                    name: 'Custom Agreement',
+                    image: 'assets/svg/applicant/case.svg',
+                    route: '/custom-agreement',
+                    construction: true,
+                    activeRouteFlegId: 34,
+                },
+            ],
+        }
+        
     ];
 
     static generalNavigationData: NavigationModal[] = [
@@ -499,14 +537,14 @@ export class NavigationDataConstants {
             image: 'ic_company.svg',
             action: 'company',
         },
+        // {
+        //     id: 30,
+        //     name: 'Help Center',
+        //     image: 'ic_helpcenter.svg',
+        //     action: 'help',
+        // },
         {
             id: 30,
-            name: 'Help Center',
-            image: 'ic_helpcenter.svg',
-            action: 'help',
-        },
-        {
-            id: 31,
             name: 'Logout',
             image: 'ic_exit.svg',
             action: 'logout',
@@ -563,10 +601,41 @@ export class NavigationDataConstants {
                     construction: true,
                 },
                 {
-                    name: 'User',
-                    image: 'assets/svg/common/ic_user.svg',
-                    route: '/user',
+                    name: 'Custom Agreement',
+                    image: 'assets/svg/applicant/case.svg',
+                    route: '/custom-agreement',
                     construction: true,
+                    activeRouteFlegId: 34,
+                },
+            ],
+        },
+    ];
+
+    static footerNavigation: Navigation[]  = [
+        {
+            id: 34,
+            image: 'ic_company.svg',
+            name: 'Company',
+            arrow: 'assets/svg/common/ic_arrow-down.svg',
+            isRouteActive: false,
+            isSubrouteActive: false,
+            route: [
+                {
+                    name: 'Settings',
+                    image: 'ic_settings.svg',
+                    route: '/company/settings',
+                    activeRouteFlegId: 34, 
+                },
+                {
+                    name: 'Location',
+                    image: 'ic_location.svg',
+                    route: '/company/location',
+                    activeRouteFlegId: 34,
+                },
+                {
+                    name: 'Document',
+                    image: 'ic_document.svg',
+                    route: '/company/document',
                     activeRouteFlegId: 34,
                 },
                 {
@@ -574,31 +643,8 @@ export class NavigationDataConstants {
                     image: 'assets/svg/applicant/case.svg',
                     route: '/custom-agreement',
                     construction: true,
-
                     activeRouteFlegId: 34,
-                },
-                {
-                    name: 'Training Material',
-                    image: 'assets/svg/applicant/book.svg',
-                    route: '/training-material',
-                    activeRouteFlegId: 34,
-                    construction: true,
-                },
-                {
-                    name: 'Billing',
-                    image: 'assets/svg/common/ic_billing.svg',
-                    route: '/billing',
-                    activeRouteFlegId: 34,
-                    construction: true,
-                },
-                {
-                    name: 'Integration',
-                    image: 'assets/svg/common/ic_integration.svg',
-                    route: '/integration',
-                    activeRouteFlegId: 34,
-                    construction: true,
                 },
             ],
-        },
-    ];
+        }]
 }
