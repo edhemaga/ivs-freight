@@ -16,7 +16,10 @@ import { OnDestroy } from '@angular/core';
 
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
+import {
+    CaFilterComponent,
+    CaSearchMultipleStatesComponent,
+} from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
@@ -42,6 +45,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
         MoneyFilterPipe,
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
+        CaFilterComponent,
     ],
 })
 export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
@@ -140,6 +144,12 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
+        console.log(
+            event,
+            'senddddd',
+            this.activeTableData
+            //.data[0].status
+        );
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 

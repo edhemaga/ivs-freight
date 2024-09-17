@@ -383,16 +383,16 @@
 
                         <ng-container *ngIf="moneyFilter">
                             <span class="ic-hed">
-                                <app-ta-filter
+                                <app-ca-filter
                                     [type]="'moneyFilter'"
                                     [icon]="'dollar'"
                                     [filterTitle]="'Money Filter'"
                                     [subType]="'all'"
-                                    [moneyFilter]="true"
-                                    [loadType]="true"
+                                    [isMoneyFilter]="true"
+                                    [isLoadType]="true"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ta-filter>
+                                </app-ca-filter>
                             </span>
                         </ng-container>
                     </div>

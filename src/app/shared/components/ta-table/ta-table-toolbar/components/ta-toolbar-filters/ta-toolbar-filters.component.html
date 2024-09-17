@@ -369,7 +369,7 @@
     </app-ta-filter>
 
     <!-- STATUS FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showStatusFilter ||
             options.toolbarActions.showStatusDispatchFilter
@@ -386,8 +386,9 @@
                 ? 'order-' + options.toolbarActions.filtersOrder.status
                 : ''
         "
+        [loadStatusOptionsArray]="activeTableData.data[0].status"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- PARKING FILTER -->
     <app-ta-filter
@@ -445,16 +446,18 @@
     </app-ta-filter>
 
     <!-- MONEY FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showMoneyFilter"
         [type]="'moneyFilter'"
         [icon]="'dollar'"
         [filterTitle]="'Money Filter'"
         [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
-        [moneyFilter]="true"
-        [fuelType]="options.toolbarActions.fuelMoneyFilter"
-        [loadType]="options.toolbarActions.loadMoneyFilter"
+        [isMoneyFilter]="true"
+        [isMilesFilter]="false"
+        [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
+        [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTruckPmFilter
@@ -465,7 +468,7 @@
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">

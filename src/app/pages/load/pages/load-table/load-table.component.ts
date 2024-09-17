@@ -394,19 +394,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         break;
                     case LoadFilterStringEnum.MONEY_FILTER:
                         this.backLoadFilterQuery.rateFrom =
-                            res.queryParams?.firstFormFrom ?? null;
+                            res.queryParams?.moneyArray[0].from ?? null;
                         this.backLoadFilterQuery.rateTo =
-                            res.queryParams?.firstFormTo ?? null;
+                            res.queryParams?.moneyArray[0].to ?? null;
 
                         this.backLoadFilterQuery.paidFrom =
-                            res.queryParams?.secondFormFrom ?? null;
+                            res.queryParams?.moneyArray[1].from ?? null;
                         this.backLoadFilterQuery.paidTo =
-                            res.queryParams?.secondFormTo ?? null;
+                            res.queryParams?.moneyArray[1].to ?? null;
 
                         this.backLoadFilterQuery.dueFrom =
-                            res.queryParams?.thirdFormFrom ?? null;
+                            res.queryParams?.moneyArray[2].from ?? null;
                         this.backLoadFilterQuery.dueTo =
-                            res.queryParams?.thirdFormTo ?? null;
+                            res.queryParams?.moneyArray[2].to ?? null;
 
                         this.loadBackFilter(this.backLoadFilterQuery);
 
