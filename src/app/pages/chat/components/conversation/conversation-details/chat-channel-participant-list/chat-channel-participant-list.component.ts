@@ -7,6 +7,11 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup
 } from '@angular/forms';
+import {
+  takeUntil,
+  debounceTime
+} from 'rxjs/operators';
+
 
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
@@ -25,7 +30,9 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ChatChannelParticipantListComponent extends UnsubscribeHelper implements OnInit {
 
-  @Input() public conversationParticipants!: CompanyUserShortResponse[];
+  @Input() public conversationParticipants: CompanyUserShortResponse[] = [];
+
+  public searchConversationParticipants!: CompanyUserShortResponse[];
 
   public isSearchActive: boolean = false;
 
@@ -39,6 +46,7 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
     this.creteForm();
+    this.listenForSearchTermChange();
   }
 
 
@@ -48,5 +56,34 @@ export class ChatChannelParticipantListComponent extends UnsubscribeHelper imple
     });
   }
 
-  ngOnInit(): void { }
+  private listenForSearchTermChange(): void {
+
+    if (!this.searchForm) return;
+
+    this.searchForm
+      .valueChanges
+      .pipe(
+        takeUntil(this.destroy$),
+        debounceTime(350)
+      )
+      .subscribe(
+        (arg: { searchTerm: string }) => {
+
+          const searchTerm: string = arg.searchTerm.toLowerCase().trim();
+
+          this.searchConversationParticipants = this.conversationParticipants
+            .filter(participant =>
+              participant.fullName.toLowerCase().includes(searchTerm)
+            );
+        });
+  }
+
+  ngOnInit(): void {
+    this.conversationParticipants = [
+      ...this.conversationParticipants,
+      ...this.conversationParticipants,
+      ...this.conversationParticipants,
+      ...this.conversationParticipants
+    ]
+  }
 }
