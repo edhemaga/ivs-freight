@@ -17,6 +17,8 @@ export class DispatchAllowedTruckTrailerPipe implements PipeTransform {
         )[],
         allowedTruckTrailerIds: number[]
     ) {
+        if (!allowedTruckTrailerIds) return truckTrailerList;
+
         return truckTrailerList?.filter((item) =>
             allowedTruckTrailerIds?.includes(item.id)
         );
