@@ -51,7 +51,8 @@ export class NavigationSubrouteComponent implements OnChanges {
     @Input() otherContainerOpened: boolean;
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
-
+    @Input() isLastChild: boolean;
+    
     public isMagicLineActive: boolean = false;
     public doAnimation: boolean = false;
 

@@ -15,10 +15,33 @@
         }"
         (click)="onSubrouteAction(item); subrouteIndex(index)"
     >
+    <ng-container *ngIf="selectedSubRoute !== item.name && item.image">
         <svg-icon
+            class="{{ class }}"
+            class="nav-item-img-active"
+            [src]="'assets/svg/common/' + item.image"
+            [ngClass]="{
+                'nav-item-img': !item.construction,
+                'route-clicked-svg':
+                    item.isRouteActive &&
+                    item.arrow &&
+                    closeDropdownOnNavClose &&
+                    !isSettingsPanelOpen &&
+                    !isUserPanelOpen,
+                'nav-item-svg-active': selectedRoute === item.name,
+                'route-not-active-svg': item.construction && navigationIsOpened,
+                'route-closed-nav-svg-not-active':
+                    item.construction && !navigationIsOpened
+            }"
+        ></svg-icon>
+    </ng-container>
+
+        <ng-container *ngIf="selectedSubRoute === item.name ">
+            <svg-icon
             class="subroutes-active-checkpoint"
             src="assets/svg/common/ic_confirm.svg"
         ></svg-icon>
+        </ng-container>
         <p
             class="subroutes-item ta-font-regular"
             [ngClass]="{
@@ -34,8 +57,8 @@
             tooltipBackground="#424242"
             [mainTooltip]="'New Tab'"
             tooltipColor="#ffff"
-            tooltipMarginTop="-9px"
-            tooltipMarginLeft="8px"
+            [tooltipMarginTop]="isLastChild ? '0' : '-9px'"
+            [tooltipMarginLeft]="isLastChild ? '20px' : '13px'"
             tooltipTextAlign="right"
         >
             <svg-icon
