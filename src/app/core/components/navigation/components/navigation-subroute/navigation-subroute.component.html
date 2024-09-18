@@ -11,7 +11,8 @@
         class="subroutes"
         [routerLink]="item.route"
         [ngClass]="{
-            'subroute-active': selectedSubRoute == item.name
+            'subroute-active': selectedSubRoute == item.name,
+            'pe-none': item.construction
         }"
         (click)="onSubrouteAction(item); subrouteIndex(index)"
     >
