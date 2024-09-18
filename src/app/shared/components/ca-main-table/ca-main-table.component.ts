@@ -15,6 +15,7 @@ import { CaMainTableHiddenRowsPipe } from './pipes/ca-main-table-hidden-rows/ca-
 import {
     CdkDrag,
     CdkDragDrop,
+    CdkDragMove,
     CdkDragPlaceholder,
     CdkDropList,
     CdkDropListGroup,
@@ -79,8 +80,13 @@ export class CaMainTableComponent implements OnInit {
         });
     }
 
+    dropHeader(event: CdkDragDrop<string[]>) {
+        console.log('THIS IS DROPPEEDD', event);
+        moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    }
+
     drop(event: CdkDragDrop<string[]>) {
         console.log('THIS IS DROPPEEDD', event);
-        //moveItemInArray(this.data$, event.previousIndex, event.currentIndex);
+        moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
     }
 }

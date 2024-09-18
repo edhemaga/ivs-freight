@@ -83,3 +83,11 @@
         }
     }
 }
+
+.cdk_th_div{
+    display: table-cell;
+
+    th{
+        display: block;
+    }
+}

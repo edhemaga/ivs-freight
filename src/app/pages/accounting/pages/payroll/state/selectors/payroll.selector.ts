@@ -41,14 +41,19 @@ export const selectPayrollLoad = createSelector(selectPayrollState, (state) => {
 export const selectPayrollOpenedReport = createSelector(
     selectPayrollState,
     (state) => {
-        return state.payrollOpenedReport;
+        return {
+            ...state.payrollOpenedReport,
+            fullName: state.payrollOpenedReport?.driver?.fullName,
+            userId: state.payrollOpenedReport?.driver?.id,
+            avatar: state.payrollOpenedReport?.driver?.avatarFile,
+        };
     }
 );
 
 export const selectPayrollDriverMileageStops = createSelector(
     selectPayrollState,
     (state) => {
-        if( !state.payrollOpenedReport ) return [];
+        if (!state.payrollOpenedReport) return [];
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
                 return old.milesStops.concat(load);

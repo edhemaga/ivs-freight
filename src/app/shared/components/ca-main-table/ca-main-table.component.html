@@ -1,67 +1,98 @@
-<table class="ca-main-table" cdkDropListGroup>
-    <thead>
-        <tr>
-            <th
-                *ngFor="
-                    let col of columns
-                        | caMainTableHiddenRows : hideFieldsToHide;
-                    let indx = index
-                "
-                [class]="col.cellCustomClasses"
-            >
-                <ng-container [ngSwitch]="col.headerCellType">
-                    <!-- Template cell -->
-                    <ng-container *ngSwitchCase="'template'">
-                        <ng-container
-                            *ngTemplateOutlet="
-                                col.headerTemplate;
-                                context: { $implicit: col.header, index: indx }
-                            "
-                        ></ng-container>
-                    </ng-container>
-                    <div *ngSwitchDefault class="th-content-container">
-                        {{ col.header }}
-                    </div>
-                </ng-container>
-            </th>
-        </tr>
-    </thead>
-    <tbody
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        class="table-body-list"
-    >
-        <ng-container *ngFor="let row of data$ | async; let rowIndex = index">
+<div class="ca-main-table-holder">
+    <table class="ca-main-table" cdkDropListGroup>
+        <thead>
             <tr
-                cdkDrag
-                cdkDragPreviewContainer="parent"
-                (click)="onPressRow(row)"
-                class="table-tr"
+                cdkDropList
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="dropHeader($event)"
+                class="table-body-list th-table-body-list"
             >
-                <ng-container *cdkDragPlaceholder>
-                    <tr class="drag-placeholder">
-                        <td colspan="12">Moving: {{ row.property1 }}</td>
-                    </tr>
-                </ng-container>
-                <td
+                <div
+                    cdkDragLockAxis="x"
+                    cdkDrag
+                    cdkDragPreviewContainer="parent"
                     *ngFor="
                         let col of columns
-                            | caMainTableHiddenRows : hideFieldsToHide
+                            | caMainTableHiddenRows : hideFieldsToHide;
+                        let indx = index
                     "
+                    class="cdk_th_div table-tr"
                     [class]="col.cellCustomClasses"
                 >
                     <ng-container
                         *ngTemplateOutlet="
-                            rowTemplate;
-                            context: { row: row, col: col, index: rowIndex }
+                            headerThTemplate;
+                            context: {
+                                $implicit: col,
+                                index: indx
+                            }
                         "
-                    >
-                    </ng-container>
-                </td>
+                    ></ng-container>
+                </div>
             </tr>
+        </thead>
+        <tbody
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+            class="table-body-list"
+        >
+            <ng-container *ngFor="let row of data$ | async; let rowIndex = index">
+                <tr
+                    cdkDragLockAxis="y"
+                    cdkDrag
+                    cdkDragPreviewContainer="parent"
+                    (click)="onPressRow(row)"
+                    class="table-tr"
+                >
+                    <!-- <ng-container *cdkDragPlaceholder>
+                        <tr class="drag-placeholder">
+                            <td colspan="12">Moving: {{ row.property1 }}</td>
+                        </tr>
+                    </ng-container> -->
+                    <td
+                        *ngFor="
+                            let col of columns
+                                | caMainTableHiddenRows : hideFieldsToHide
+                        "
+                        [class]="col.cellCustomClasses"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                rowTemplate;
+                                context: { row: row, col: col, index: rowIndex }
+                            "
+                        >
+                        </ng-container>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
+
+
+<ng-template #headerThTemplate let-col let-indx="index">
+    <th>
+        <ng-container [ngSwitch]="col.headerCellType">
+            <!-- Template cell -->
+            <ng-container *ngSwitchCase="'template'">
+                <ng-container
+                    *ngTemplateOutlet="
+                        col.headerTemplate;
+                        context: {
+                            $implicit: col.header,
+                            index: indx
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+            <div *ngSwitchDefault class="th-content-container">
+                {{ col.header }}
+            </div>
         </ng-container>
-    </tbody>
-</table>
+    </th>
+</ng-template>
+
 <ng-template #rowTemplate let-row="row" let-col="col" let-index="index">
     <div class="td-container">
         <div class="td-content-container">

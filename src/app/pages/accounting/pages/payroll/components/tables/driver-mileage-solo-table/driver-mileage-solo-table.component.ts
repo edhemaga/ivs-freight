@@ -29,7 +29,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
 
     @Input() title: string;
     @Input() expandTable: boolean;
-    
+
     columns: ColumnConfig[];
     tableData$: Observable<PayrollDriverMileageListResponse[]>;
 

@@ -27,6 +27,7 @@ import { Observable } from 'rxjs';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import { ColumnConfig } from '@shared/models/table-models/main-table.model';
 import { MilesStopShortResponse } from 'appcoretruckassist';
+import { ICaMapProps } from 'ca-components';
 
 @Component({
     selector: 'app-payroll-report',
@@ -46,10 +47,280 @@ export class PayrollReportComponent implements OnInit {
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
 
+    @ViewChild('customFeeTemplate', { static: false })
+    public readonly customFeeTemplate!: ElementRef;
+
     reportMainData: any = { loads: [], truck: {}, owner: {}, driver: {} };
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
     title: string = '';
+
+
+    data: ICaMapProps = {
+        center: {
+            lat: 41.860119,
+            lng: -87.660156,
+        },
+        mapZoom: 1,
+        markers: [],
+        clustermarkers: [],
+        routingMarkers: [],
+        mapOptions: {
+            fullscreenControl: false,
+            disableDefaultUI: true,
+            restriction: {
+                latLngBounds: {
+                    north: 75,
+                    south: 9,
+                    west: -170,
+                    east: -50,
+                },
+                strictBounds: true,
+            },
+            streetViewControl: false,
+            styles: [
+                {
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.icon',
+                    stylers: [
+                        {
+                            visibility: 'on',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.country',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                        {
+                            visibility: 'on',
+                        },
+                        {
+                            weight: 1,
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.stroke',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#bdbdbd',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'landscape',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#ffffff',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    stylers: [
+                        {
+                            saturation: -100,
+                        },
+                        {
+                            lightness: 30,
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.arterial',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#dadada',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.local',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#c9c9c9',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+            ],
+            keyboardShortcuts: false,
+            panControl: true,
+            gestureHandling: 'greedy',
+        },
+    };
 
     public payAmount: UntypedFormControl = new UntypedFormControl();
 
@@ -76,6 +347,7 @@ export class PayrollReportComponent implements OnInit {
                 field: '',
                 sortable: true,
                 cellType: 'template',
+                cellCustomClasses: 'text-center',
                 template: this.customCountTemplate, // Pass the template reference
             },
             {
@@ -84,13 +356,56 @@ export class PayrollReportComponent implements OnInit {
                 cellType: 'template',
                 template: this.customLocationTypeLoad, // Pass the template reference
             },
-            // {
-            //     header: 'Period ST',
-            //     field: 'periodStart',
-            //     pipeType: 'date',
-            //     pipeString: 'shortDate',
-            //     cellType: 'text', // Pass the template reference
-            // },
+            {
+                header: 'DATE',
+                field: 'date',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'TIME',
+                field: 'time',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'LEG',
+                field: 'leg',
+                cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-right',
+            },
+            {
+                header: 'EMPTY',
+                field: 'empty',
+                cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-right',
+            },
+            {
+                header: 'LOADED',
+                field: 'loaded',
+                cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-right',
+            },
+            {
+                header: 'MILES',
+                field: 'miles',
+                cellType: 'text', // Pass the template reference
+                cellCustomClasses: 'text-right',
+            },
+            {
+                header: '',
+                field: 'extraStopFee',
+                cellType: 'template', // Pass the template reference
+                template: this.customFeeTemplate,
+                cellCustomClasses: 'text-center',
+            },
+            {
+                header: 'SUBTOTAL',
+                field: 'subtotal',
+                cellType: 'text',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
+            },
             // {
             //     header: 'Status',
             //     field: 'payrollDeadLine',
@@ -157,12 +472,20 @@ export class PayrollReportComponent implements OnInit {
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
 
+        this.payrollFacadeService.selectPayrollOpenedReport$.subscribe(
+            (payroll) => {
+                console.log('PAYROLL MAIN INFO', payroll);
+            }
+        );
+
         this.payrollMileageDriverLoads$ =
             this.payrollFacadeService.selectPayrollReportDriverMileageLoads$;
 
-            this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(aa => {
-                console.log("LOAD INFO", aa);
-            })
+        this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
+            (aa) => {
+                console.log('LOAD INFO', aa);
+            }
+        );
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
             (payroll) => {
                 console.log('PAYROLLL', payroll);

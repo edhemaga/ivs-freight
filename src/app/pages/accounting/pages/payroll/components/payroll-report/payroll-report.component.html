@@ -47,6 +47,7 @@
                 ></app-ca-main-table>
             </div>
             <div class="map-holder">
+                <app-ca-map [data]="data"></app-ca-map>
                 <!-- <agm-map
                     [latitude]="mapLatitude"
                     [longitude]="mapLongitude"
@@ -62,11 +63,11 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <!-- <app-ca-period-content
+            <app-ca-period-content
                 [isOpen]="true"
                 [type]="'MILEAGE'"
                 [componentData]="payrollReport$ | async"
-            ></app-ca-period-content> -->
+            ></app-ca-period-content>
         </div>
     </div>
 </div>
@@ -74,6 +75,12 @@
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
     <div class="custom-load-index">{{ index }}</div>
+</ng-template>
+
+<ng-template #customFeeTemplate let-data let-index="index">
+    <div *ngIf="data" class="custom-fee-template">
+        +{{ data | currency : 'USD' : 'symbol' : '1.0-0' }}
+    </div>
 </ng-template>
 
 <ng-template #customLocationTypeLoad let-data let-index="index">
@@ -86,7 +93,6 @@
             <div class="load-description-stop-type">
                 {{ data.stopType.name }}
             </div>
-            <!-- <div>{{ data.orderNumber }}</div> -->
         </div>
     </div>
 </ng-template>
