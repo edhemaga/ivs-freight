@@ -43,6 +43,7 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
 @Component({
     selector: 'app-navigation-modals',
@@ -50,7 +51,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule],
+    imports: [CommonModule, FormsModule, AngularSvgIconModule, TaTooltipSlideComponent],
     animations: [
         smoothHeight('showHideDetails'),
         moveElementsTopDownModal('moveTopDown'),
@@ -76,7 +77,9 @@ export class NavigationModalsComponent {
         NavigationDataConstants.accountingNavigationData;
     public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
-    public Title: string = NavigationDataConstants.title;
+    public addNew = NavigationDataConstants.title;
+    public Title: string = this.addNew;
+    public isAddNewHovered: boolean = false;
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
@@ -90,7 +93,7 @@ export class NavigationModalsComponent {
     public changeText(text: boolean) {
         text == true && text
             ? (this.Title = NavigationDataConstants.close)
-            : (this.Title = NavigationDataConstants.title);
+            : (this.Title = this.addNew);
     }
     public onAction(item: NavigationModal) {
         this.openModal(item);
@@ -251,5 +254,9 @@ export class NavigationModalsComponent {
 
     public identity(index: number, item: NavigationModal): number {
         return item.id;
+    }
+    
+    public hoveredArrow(isHovered: boolean): void {
+        this.isAddNewHovered = isHovered;
     }
 }

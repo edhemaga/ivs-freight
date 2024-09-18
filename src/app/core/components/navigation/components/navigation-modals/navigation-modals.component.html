@@ -12,8 +12,19 @@
         'modal-media-query-height':
             isNavigationHoveredAndPanelOpen && isNavigationHovered
     }"
+            (mouseenter)="hoveredArrow(true)"
+            (mouseleave)="hoveredArrow(false)"
     [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
 >
+<div
+    class="tooltip-right"
+>
+    <app-ta-tooltip-slide
+        *ngIf="isAddNewHovered && !isNavigationHovered"
+        [show]="isAddNewHovered"
+        [name]="addNew"
+    ></app-ta-tooltip-slide>
+</div>
     <div class="modal-inner">
         <div
             (mouseenter)="
@@ -42,16 +53,6 @@
                 ></svg-icon>
                 <span class="title">{{ Title }}</span>
             </p>
-            <div
-                class="tooltip-right"
-                [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
-            >
-                <app-ta-tooltip-slide
-                    *ngIf="!isNavigationHovered"
-                    [show]="showToolTip"
-                    [name]="Title"
-                ></app-ta-tooltip-slide>
-            </div>
         </div>
 
         <div

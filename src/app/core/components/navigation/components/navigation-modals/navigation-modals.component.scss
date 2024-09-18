@@ -94,12 +94,6 @@
             cursor: pointer;
             right: 5px;
         }
-        .tooltip-right {
-            position: fixed;
-            top: 68px;
-            left: 18px;
-            z-index: -1;
-        }
     }
     .closed-modal {
         width: 36px;
@@ -319,4 +313,11 @@
         height: 200px !important;
         overflow-y: scroll;
     }
+}
+
+
+.tooltip-right {
+    margin-left: -8px;
+    position: fixed;
+    margin-top: -8px;
 }
