@@ -29,6 +29,9 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
+// Const
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
 @Component({
     selector: 'app-navigation-subroute',
     templateUrl: './navigation-subroute.component.html',
@@ -52,7 +55,7 @@ export class NavigationSubrouteComponent implements OnChanges {
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
     @Input() isLastChild: boolean;
-    
+    public icons = NavigationDataConstants.icons;
     public isMagicLineActive: boolean = false;
     public doAnimation: boolean = false;
 

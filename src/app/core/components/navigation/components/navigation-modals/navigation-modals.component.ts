@@ -90,6 +90,7 @@ export class NavigationModalsComponent {
     public title: string = this.addNew;
 
     public isAddNewHovered: boolean = false;
+    public icons = NavigationDataConstants.icons;
 
     constructor(
         private modalService: ModalService,

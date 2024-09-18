@@ -15,6 +15,7 @@ import { NavigationService } from '@core/components/navigation/services/navigati
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
   
 @Component({
     selector: 'app-navigation-header',
@@ -34,6 +35,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 export class NavigationHeaderComponent {
     @Input() isNavigationHovered: boolean = false;
     @Input() ChangeCloseTextTitle: boolean;
+    public icons = NavigationDataConstants.icons;
     constructor(
         private navigationService: NavigationService,
         private router: Router

@@ -2,12 +2,12 @@
     <div class="nav-header-top position-relative" (click)="redirectToDashboard()">
         <svg-icon
             class="nav-header-top-logo close"
-            src="assets/svg/logo.svg"
+            [src]="icons.logo"
         ></svg-icon>
  
             <svg-icon
             class="nav-header-top-text close ml-3 position-absolute"
-            src="assets/svg/logo-text.svg"
+            [src]="icons.logoText"
             [class.opacity-0]="!isNavigationHovered"
         ></svg-icon> 
     </div>
@@ -29,7 +29,7 @@
             tooltipTextAlign="right"
         >
             <svg-icon
-                src="assets/svg/common/ic_search.svg"
+                [src]="icons.search"
                 [ngClass]="{ 'dark-svg': isNavigationHovered }"
             ></svg-icon>
         </div>

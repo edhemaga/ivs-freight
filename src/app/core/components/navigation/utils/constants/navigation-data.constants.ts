@@ -5,8 +5,8 @@ import { NavigationUserPanel } from '@core/components/navigation/models/navigati
 import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
 
 export class NavigationDataConstants {
-    static title =  'Add New'
-    static close =  'Close'
+    static title = 'Add New';
+    static close = 'Close';
     static navigationData: Navigation[] = [
         {
             id: 1,
@@ -306,7 +306,7 @@ export class NavigationDataConstants {
                     name: 'Settings',
                     image: 'ic_settings.svg',
                     route: '/company/settings',
-                    activeRouteFlegId: 34, 
+                    activeRouteFlegId: 34,
                 },
                 {
                     name: 'Location',
@@ -356,8 +356,7 @@ export class NavigationDataConstants {
                     construction: true,
                 },
             ],
-        }
-        
+        },
     ];
 
     static generalNavigationData: NavigationModal[] = [
@@ -639,7 +638,7 @@ export class NavigationDataConstants {
         },
     ];
 
-    static footerNavigation: Navigation[]  = [
+    static footerNavigation: Navigation[] = [
         {
             id: 34,
             image: 'ic_company.svg',
@@ -652,7 +651,7 @@ export class NavigationDataConstants {
                     name: 'Settings',
                     image: 'ic_settings.svg',
                     route: '/company/settings',
-                    activeRouteFlegId: 34, 
+                    activeRouteFlegId: 34,
                 },
                 {
                     name: 'Location',
@@ -674,5 +673,16 @@ export class NavigationDataConstants {
                     activeRouteFlegId: 34,
                 },
             ],
-        }]
+        },
+    ];
+
+    static icons = {
+        common: 'assets/svg/common/',
+        newTab: 'assets/svg/common/arrow_top_right.svg',
+        confirm: 'assets/svg/common/ic_confirm.svg',
+        logo: 'assets/svg/logo.svg',
+        logoText: 'assets/svg/logo-text.svg',
+        search: 'assets/svg/common/ic_search.svg',
+        plus: 'assets/svg/common/ic_plus.svg'
+    }
 }

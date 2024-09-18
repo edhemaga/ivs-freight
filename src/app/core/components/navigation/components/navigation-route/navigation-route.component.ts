@@ -32,6 +32,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
 import { Navigation } from '@core/components/navigation/models/navigation.model';
 
+
+// Const
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
 @Component({
     selector: 'app-navigation-route',
     templateUrl: './navigation-route.component.html',
@@ -74,6 +78,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Output() routeWithSubRouteClicked = new EventEmitter<boolean>();
     @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
     @Input() isLocalDropdownOpen: boolean = false;
+    public icons = NavigationDataConstants.icons;
 
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;

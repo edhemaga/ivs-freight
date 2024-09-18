@@ -160,7 +160,7 @@
         >
         <svg-icon
             class="nav-item-arrow_top"
-            src="assets/svg/common/arrow_top_right.svg"
+            [src]="icons.newTab"
             (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
             (mouseenter)="hoveredArrow(true)"
             (mouseleave)="hoveredArrow(false)"

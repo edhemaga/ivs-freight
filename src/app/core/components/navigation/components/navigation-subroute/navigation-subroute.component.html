@@ -19,7 +19,7 @@
             <svg-icon
                 class="{{ class }}"
                 class="nav-item-img-active"
-                [src]="'assets/svg/common/' + item.image"
+                [src]="icons.common + item.image"
                 [ngClass]="{
                     'nav-item-img': !item.construction,
                     'route-clicked-svg':
@@ -40,7 +40,7 @@
         <ng-container *ngIf="selectedSubRoute === item.name">
             <svg-icon
                 class="subroutes-active-checkpoint"
-                src="assets/svg/common/ic_confirm.svg"
+                [src]="icons.confirm"
             ></svg-icon>
         </ng-container>
         <p
@@ -67,7 +67,7 @@
                 (click)="
                     openLinkInNewWindow(item.route);
                 "
-                src="assets/svg/common/arrow_top_right.svg"
+                [src]="icons.newTab"
             ></svg-icon>
         </div>
     </div>
