@@ -352,7 +352,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            if (index) {
+            if (index >= 0) {
                 this.dispatchData = {
                     ...this.dispatchData,
                     dispatches: this.dispatchData.dispatches.map(
@@ -415,16 +415,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    public handleUpdateLastLocationEmit(event: string): void {
-        this.isDisplayingAddressInput = false;
-
-        this.updateOrAddDispatchBoardAndSend(
-            DispatchTableStringEnum.LOCATION,
-            event,
-            this.showAddAddressFieldIndex
-        );
-    }
-
     private handleHoursOfService(): void {
         const mappedDispatches = this.dispatchData.dispatches.map(
             (dispatch) => {
@@ -449,23 +439,29 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
     }
 
-    public onHideDropdown(): void {
-        setTimeout(() => {
-            if (this.showAddAddressFieldIndex !== -2) {
-                this.dispatchData.dispatches[
-                    this.showAddAddressFieldIndex
-                ].truck = this.addNewTruckData;
-            }
+    public handleUpdateLastLocationEmit(address: string): void {
+        this.isDisplayingAddressInput = false;
 
-            this.showAddAddressFieldIndex = -1;
+        this.updateOrAddDispatchBoardAndSend(
+            DispatchTableStringEnum.LOCATION,
+            address,
+            this.showAddAddressFieldIndex
+        );
+    }
 
-            this.addNewTruckData = null;
+    public handleLastLocationDropdownClose(): void {
+        if (this.showAddAddressFieldIndex !== -2)
+            this.dispatchData.dispatches[this.showAddAddressFieldIndex].truck =
+                this.addNewTruckData;
 
-            this.isTrailerAddNewHidden = false;
-            this.isDisplayingAddressInput = false;
+        this.showAddAddressFieldIndex = -1;
 
-            this.cdRef.detectChanges();
-        }, 3000);
+        this.addNewTruckData = null;
+
+        this.isTrailerAddNewHidden = false;
+        this.isDisplayingAddressInput = false;
+
+        this.cdRef.detectChanges();
     }
 
     private setCreateUpdateOptionalProperties<T>(
@@ -519,7 +515,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             trailerId: trailer?.id ?? null,
             driverId: driver?.id ?? null,
             coDriverId: coDriver?.id ?? null,
-            location,
+            location: location?.address ? location : null,
             note,
             loadIds: [],
             hoursOfService: null,

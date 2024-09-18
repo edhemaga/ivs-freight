@@ -50,7 +50,7 @@
                     <svg-icon
                         class="d-flex justify-content-center align-items-center"
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        [src]="ChatSvgRoutes.unreadMessageIcon"
+                        [src]="chatSvgRoutes.unreadMessageIcon"
                     >
                     </svg-icon>
                 </div>
@@ -69,7 +69,7 @@
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="ChatSvgRoutes.burgerMenuIcon"
+                    [src]="chatSvgRoutes.burgerMenuIcon"
                 >
                 </svg-icon>
             </div>
@@ -82,47 +82,43 @@
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="ChatSvgRoutes.settingsIcon"
+                    [src]="chatSvgRoutes.settingsIcon"
                 >
                 </svg-icon>
             </div>
 
             <div class="d-flex justify-content-center align-items-center">
                 <div class="new-chat d-flex">
-                    <svg-icon class="d-flex" [src]="ChatSvgRoutes.plusIcon">
+                    <svg-icon class="d-flex" [src]="chatSvgRoutes.plusIcon">
                     </svg-icon>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="chat-main-content">
-        <!-- USER TYPES LIST -->
+    <div
+        class="chat-main-content"
+        [ngStyle]="{
+            'grid-template-columns':
+                (isProfileDetailsDisplayed && userProfileData | async) ||
+                isGroupMembersDisplayed
+                    ? chatGridLayout.MAX_AUTO_MAX
+                    : chatGridLayout.MAX_AUTO
+        }"
+    >
+        <!-- User list -->
         <div class="chat-lists">
-            <!-- COMPANY USERS -->
             <app-conversation-list
                 [departments]="departments"
                 [companyUsers]="companyUsers"
                 [drivers]="drivers"
                 (selectedConversation)="
-                    createUserConversation($event.id, $event.type)
+                    createUserConversation($event.id, $event.type, $event.group)
                 "
             ></app-conversation-list>
-            <!-- <app-chat-user-list
-                (selectedUser)="
-                    createUserConversation(
-                        $event,
-                        ConversationTypeEnum.SINGLE_CHAT
-                    )
-                "
-                [type]="'User'"
-                [contactsInfo]="companyUsers"
-            >
-            </app-chat-user-list> -->
         </div>
 
-        <!-- MESSAGES -->
+        <!-- Messages -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
                 <router-outlet (activate)="onActivate($event)"></router-outlet>
@@ -131,6 +127,46 @@
             <ng-template #noConversation>
                 <app-chat-messages-not-selected></app-chat-messages-not-selected>
             </ng-template>
+        </div>
+
+        <!-- Profile details -->
+        <!-- TODO Add on open/close animation -->
+        <div>
+            <ng-container *ngIf="!attachmentUploadActive">
+                <div class="profile-details-wrapper d-flex">
+                    <ng-container
+                        *ngIf="
+                            isProfileDetailsDisplayed &&
+                            (userProfileData | async)
+                        "
+                    >
+                        <div class="profile-details">
+                            <app-chat-user-profile
+                                [data]="userProfileData | async"
+                                (isProfileDetailsClosed)="
+                                    displayProfileDetails($event)
+                                "
+                            ></app-chat-user-profile>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            isGroupMembersDisplayed &&
+                            conversationParticipants.length
+                        "
+                    >
+                        <app-chat-channel-participant-list
+                            [conversationParticipants]="
+                                conversationParticipants
+                            "
+                            (closeGroupMembersOverviewEvent)="
+                                closeGroupMembersOverview($event.value)
+                            "
+                        ></app-chat-channel-participant-list>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

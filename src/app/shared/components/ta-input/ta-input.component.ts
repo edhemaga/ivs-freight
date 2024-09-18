@@ -362,7 +362,7 @@ export class TaInputComponent
                 this.selectionInput = -1;
             }
 
-            this.t2.toggle();
+            this.toggleDropdownOptions()
         }
 
         // Dropdown
@@ -2189,8 +2189,6 @@ export class TaInputComponent
     selectionInput: number = -1;
 
     setSelection(e) {
-        e.preventDefault();
-        e.stopPropagation();
 
         const element = e.target;
         this.focusInput = true;

@@ -192,11 +192,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         if (this.parentWidth && this.isAllOpen) {
             setTimeout(() => {
                 const parentWidth = this.elRef.nativeElement
-                    .closest(this.parentWidth)
-                    .getBoundingClientRect();
+                    ?.closest(this.parentWidth)
+                    ?.getBoundingClientRect();
                 this._parentWidth = this.isDispatch
-                    ? parentWidth.width - 2
-                    : parentWidth.width;
+                    ? parentWidth?.width - 2
+                    : parentWidth?.width;
                 this.ref.detectChanges();
             }, 1000);
         }

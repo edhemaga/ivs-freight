@@ -681,6 +681,10 @@ ngb-modal-window[aria-hidden='true'] {
                     color: $white;
                 }
 
+                .dispatch-create-load {
+                    padding: 6px 31px !important;
+                }
+
                 .modal-convert-to-template-btn {
                     outline: none;
                     border: none;
@@ -695,10 +699,6 @@ ngb-modal-window[aria-hidden='true'] {
                     -ms-user-select: none;
                     user-select: none;
                     transition: background-color 0.3s, color 0.3s;
-                    
-                    &.dispatch-create-load  {
-                        padding: 6px 31px;
-                    }
 
                     &:hover {
                         background-color: $ta-black;
@@ -1067,3 +1067,4 @@ ngb-modal-window.modal {
         }
     }
 }
+

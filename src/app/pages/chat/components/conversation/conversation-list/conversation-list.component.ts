@@ -34,7 +34,9 @@ import {
 import {
   ConversationTypeEnum,
   ChatGroupEnum,
-  ChatGroupStateEnum
+  ChatGroupStateEnum,
+  ChatObjectPropertyEnum,
+  ChatSearchPlaceHolders
 } from '@pages/chat/enums';
 
 // Animations
@@ -65,7 +67,11 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   // New message emitted from hub
   @Input() public newMessage: BehaviorSubject<ChatMessageResponse> = new BehaviorSubject(null);
 
-  @Output() selectedConversation = new EventEmitter<{ id: number, type: ConversationTypeEnum }>();
+  @Output() selectedConversation = new EventEmitter<{
+    id: number[],
+    type: ConversationTypeEnum,
+    group: ChatGroupEnum
+  }>();
 
   public searchForm!: UntypedFormGroup;
 
@@ -75,15 +81,18 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
   public titleIcon: string;
 
   // Config
-  public ChatInput = ChatInput;
+  public chatInput = ChatInput;
   public isAdvancedView: boolean = false;
 
   // Create list of states for all groups available
   public groupsState = ChatConversationGroupStateConstant.groupsState;
 
+  // Enums
   public chatGroupStateEnum = ChatGroupStateEnum;
   public chatGroupEnum = ChatGroupEnum;
   public conversationTypeEnum = ConversationTypeEnum;
+  private chatObjectPropertyEnum = ChatObjectPropertyEnum;
+  public chatSearchPlaceholdersEnum = ChatSearchPlaceHolders;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();
@@ -184,7 +193,6 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
     return this.groupsState.find(group => { console.log(group) })
   }
 
-
   public toggleChatGroupState(id: ChatGroupEnum, expandAll?: boolean): void {
     this.groupsState = this.groupsState.map(group => {
 
@@ -211,22 +219,29 @@ export class ConversationListComponent extends UnsubscribeHelper implements OnIn
 
   };
 
-  public selectConversation(item: ChatCompanyChannelExtended | CompanyUserChatResponse, type: ConversationTypeEnum): void {
-    if ('companyUser' in item) {
-      this.selectedConversation.emit(
-        {
-          id: item.companyUser?.id,
-          type
-        }
-      );
+  public selectConversation(
+    item: ChatCompanyChannelExtended | CompanyUserChatResponse,
+    type: ConversationTypeEnum,
+    group: ChatGroupEnum
+  ): void {
+
+    if (this.chatObjectPropertyEnum.PARTICIPANTS in item) {
+      this.selectedConversation.emit({
+        id: [...item.participants.map(participant => { return participant.id })],
+        type,
+        group
+      });
       return;
     }
 
-    if ('id' in item) {
-      this.selectedConversation.emit({
-        id: item.id,
-        type
-      });
+    if (this.chatObjectPropertyEnum.ID in item) {
+      this.selectedConversation.emit(
+        {
+          id: [item.id],
+          type,
+          group
+        }
+      );
       return;
     }
 

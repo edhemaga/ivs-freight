@@ -14,6 +14,9 @@ import {
   debounceTime
 } from 'rxjs';
 
+// Enums
+import { ChatSearchPlaceHolders } from '@pages/chat/enums';
+
 // Animations
 import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
 
@@ -41,7 +44,10 @@ export class ChatHeaderComponent extends UnsubscribeHelper implements OnInit {
   public searchForm!: UntypedFormGroup;
 
   // Config
-  public ChatInput: ChatInput = ChatInput;
+  public chatInput = ChatInput;
+
+  // Enums
+  public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
   constructor(private formBuilder: UntypedFormBuilder) {
     super();

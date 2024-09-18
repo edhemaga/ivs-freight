@@ -20,6 +20,7 @@ import { LoadRequirementsResponse } from './loadRequirementsResponse';
 export interface AssignedLoadResponse { 
     id?: number;
     loadNumber?: string | null;
+    dispatchOrder?: number | null;
     referenceNumber?: string | null;
     status?: LoadStatusResponse;
     type?: EnumValue;
