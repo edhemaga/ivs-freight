@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EMPTY } from 'rxjs';
 
 // Store
 import { PayrollStore } from '@pages/accounting/pages/payroll/state/payroll.store';
@@ -52,8 +53,10 @@ export class PayrollService {
         // return this.payrollService.apiPayrollDriverMileageIdGet(id);
     }
 
+    // This gives error after Open API generator run
     getPayrollList() {
-        return this.payrollService.apiPayrollListGet();
+        return EMPTY;
+        // return this.payrollService.apiPayrollListGet();
     }
 
     set payrollList(data) {
