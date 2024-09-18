@@ -68,6 +68,13 @@
         }
     }
 
+    span.reset-selection-color {
+        &::selection {
+            background-color: transparent !important;
+            color: $ta-black-2 !important;
+        }
+    }
+
     &.focus {
         opacity: 1;
         padding-left: 35px;

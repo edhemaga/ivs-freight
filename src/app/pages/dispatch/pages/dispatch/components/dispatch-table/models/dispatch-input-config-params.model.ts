@@ -5,4 +5,5 @@ export interface DispatchInputConfigParams {
     groupIndex: number;
     itemIndex: number;
     groupItem?: UntypedFormControl;
+    isHoveringRow?: boolean
 }
