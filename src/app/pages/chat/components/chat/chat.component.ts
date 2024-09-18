@@ -30,6 +30,7 @@ import {
 
 // Enums
 import {
+  ChatConversationProfileDetailsType,
   ChatGridLayout,
   ChatGroupEnum,
   ChatRoutesEnum,
@@ -94,6 +95,7 @@ export class ChatComponent
   // Assets and enums
   public chatSvgRoutes = ChatSvgRoutes;
   public chatGridLayout = ChatGridLayout;
+  public chatConversationProfileDetailsType = ChatConversationProfileDetailsType;
 
   constructor(
     private activatedRoute: ActivatedRoute,

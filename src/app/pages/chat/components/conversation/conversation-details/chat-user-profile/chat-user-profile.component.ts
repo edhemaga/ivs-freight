@@ -14,6 +14,7 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
 import {
+  ChatConversationProfileDetailsType,
   ChatSearchPlaceHolders,
   ChatUserProfileResourceTypeEnum
 } from '@pages/chat/enums';
@@ -26,14 +27,16 @@ import {
 export class ChatUserProfileComponent implements OnInit {
 
   @Input() data: ConversationInfoResponse;
+  @Input() profileDetailsType!: ChatConversationProfileDetailsType;
 
   @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // Assets route
-  public ChatSvgRoutes = ChatSvgRoutes;
+  public chatSvgRoutes = ChatSvgRoutes;
 
   // Enums
   public chatSearchPlaceHolders = ChatSearchPlaceHolders;
+  public chatConversationProfileDetailsType = ChatConversationProfileDetailsType;
 
   // Attachment and links status
   public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
