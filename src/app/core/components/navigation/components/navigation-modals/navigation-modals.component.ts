@@ -11,8 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
-
+import {  NavigationModal } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 

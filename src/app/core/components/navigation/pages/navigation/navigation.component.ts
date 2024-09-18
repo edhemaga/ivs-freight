@@ -1,4 +1,3 @@
-import { Navigation } from '@core/components/navigation/models/navigation.model';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -32,7 +31,7 @@ import { NavigationRouteComponent } from '@core/components/navigation/components
 import { NavigationSubrouteComponent } from '@core/components/navigation/components/navigation-subroute/navigation-subroute.component';
 
 // models
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
+import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
 
 @Component({
     selector: 'app-navigation',

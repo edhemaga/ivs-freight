@@ -21,16 +21,12 @@ import {
     test,
 } from '@core/components/navigation/animations/navigation.animation';
 
-// models
-import { Navigation } from '@core/components/navigation/models/navigation.model';
-import { NavigationSubRoute } from '@core/components/navigation/models/navigation-subroute.model';
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
-
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Const
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+import { NavigationSubRoute, NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
 
 @Component({
     selector: 'app-navigation-subroute',

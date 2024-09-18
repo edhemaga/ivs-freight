@@ -29,9 +29,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
-import { Navigation } from '@core/components/navigation/models/navigation.model';
-
+import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
 
 // Const
 import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';

@@ -1,9 +1,5 @@
-import { Navigation } from '@core/components/navigation/models/navigation.model';
-import { NavigationSettings } from '@core/components/navigation/models/navigation-settings.model';
-import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
-import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
-import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
-
+// models
+import {  NavigationModal, NavigationUserPanel, NavigationFooterData, Navigation, NavigationSettings } from '@core/components/navigation/models';
 export class NavigationDataConstants {
     static title = 'Add New';
     static close = 'Close';
