@@ -5,16 +5,46 @@
     align-items: center;
     height: 28px;
     line-height: 27px;
-    width: auto;
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-    transition: $nav-transition-5;
+    transition: $nav-transition-015;
     position: relative;
-    width: 34px;
-    left: -8px;
-    padding-left: 8px;
     margin-bottom: 4px;
+    border-radius: 2px;
+    width: 36px;
+    margin-left: 6px;
+
+    svg-icon {
+        margin-left: 8px;
+    }
+    
+    &:hover {
+        background-color: $nav-hover-ligh;
+
+        p {
+            color: $nav-white !important;
+        }
+
+        svg path {
+            fill: $nav-icon-grey;
+        }
+    } 
+
+    &.nav-item-active-box {
+        background-color: $nav-hover-ligh;
+    }
+    
+    .nav-item-box {
+        height: 28px;
+        position: absolute;
+        left: 0px;
+        content: '';
+        z-index: -1;
+        border-radius: 3px;
+        padding: 5px 9px;
+        top: 0px;
+    }
 
     .nav-item-img-active  {
         svg  {
@@ -37,13 +67,18 @@
                 transition: fill 0.4s ease;
                 fill: $nav-svg-darker;
             }
+        } 
+    }
+
+    
+    &:hover { 
+        .route-closed-nav-svg-not-active {
+            svg path {
+                fill: $nav-dark-bg;
+            }
         }
     }
-    .tooltip-right {
-        margin-left: -8px;
-        position: fixed;
-        margin-top: -28px;
-    }
+
     .message-container {
         position: relative;
     }
@@ -76,7 +111,7 @@
     }
     .message {
         position: relative;
-        right: 8px;
+        right: 2px;
         background: rgba(229, 115, 115, 20%);
         border-radius: 50%;
         color: $notification;
@@ -114,17 +149,26 @@
     }
     .nav-item-arrow_top {
         opacity: 0;
-        margin-right: 17px;
+        margin-left: 4px;
+
         svg {
             width: 12px;
             height: 12px;
+            path {
+                transition:  $nav-transition-015;
+            }
+        }
+
+        &:hover {
+            svg path {
+                fill: $nav-white !important;
+            }
         }
     }
     .nav-item-rightSide {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 238px;
         line-height: 16px;
         padding-top: 2px;
 
@@ -151,6 +195,7 @@
             font-weight: 700;
             color: $nav-active-lighter;
             display: flex;
+
         }
         .nav-item-arrow {
             right: 0px;
@@ -178,6 +223,7 @@
         .active-text {
             font-weight: $nav-font-bold;
             color: $nav-white;
+            transition: $nav-transition !important;
         }
     }
 
@@ -230,20 +276,7 @@
     color: $nav-white !important;
     font-weight: 700 !important;
 }
-.nav-width {
-    width: 238px;
-    &:hover {
-        .nav-item-img,
-        .nav-item-arrow {
-            svg {
-                path {
-                    fill: $nav-svg-hover;
-                    transition: fill 0.4s ease;
-                }
-            }
-        }
-    }
-}
+
 .nav-item-parent-active {
     &:hover {
         .nav-item-img {
@@ -266,40 +299,17 @@
                     color: #558ddd;
                 }
             }
-        }
+        } 
     }
 }
-.disable-cursor {
-    cursor: default;
-}
+
 .hide-tooltip {
     display: none;
 }
-.nav-item-active-box {
-    width: 36px;
-    height: 28px;
-    position: absolute;
-    left: 0px;
-    content: '';
-    z-index: -1;
-    border-radius: 3px;
-    padding: 5px 9px;
-    top: 0px;
-    background-color: $nav-hover-ligh;
-}
-.box-animation-closed-nav {
-    animation: animateBackground 0.25s forwards;
-}
-@keyframes animateBackground {
-    from {
-        background-color: $nav-dark;
-    }
-    to {
-        background-color: $nav-hover-ligh;
-    }
-}
+
 .subroute-item {
-    padding-left: 8px;
+    // width: 42px;
+
     .nav-item-active-box {
         left: 8px;
     }
@@ -307,7 +317,7 @@
         opacity: 0;
         transition: all 0.5s ease-in-out;
         .nav-item-name {
-            margin-left: 1px;
+            margin-left: 10px;
             transition: all 0.1s;
             .animation-text {
                 animation: dude 0.3s 1 forwards;
@@ -317,12 +327,17 @@
             display: none;
         }
     }
-    .tooltip-right {
-        margin-left: 0px;
-    }
+   
 
     svg path {
         fill: $nav-svg-hover;
+        transition: fill .3s ease-in-out;
+    }
+
+    &:hover {
+        svg path {
+            fill: $nav-icon-hover-fill;
+        }
     }
 }
 @keyframes dude {
@@ -333,24 +348,22 @@
         transform: translateX(0px);
     }
 }
-.nav-item-active-box-active {
-    width: 238px;
-    background-color: $nav-hover-color;
-    position: absolute;
-    height: 28px;
-    border-radius: 3px;
-    z-index: -1;
-    left: 0px;
-}
+
 .subroute-item {
     .nav-item-active-box {
         left: 8px;
+    }
+
+    &:hover {
+        svg path {
+            fill: $nav-dark-bg;
+        }
     }
 }
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-close-icon-active !important;
+            fill: $nav-close-icon-active;
         }
     }
 }
@@ -360,18 +373,5 @@
         path {
             fill: $nav-text-color !important;
         }
-    }
-}
-.nav-item-hover {
-    width: 238px;
-    height: 28px;
-    position: absolute;
-    left: 0px;
-    content: '';
-    z-index: -1;
-    border-radius: 3px;
-    transition: all 0.3s ease-in-out;
-    .nav-item-arrow_top {
-        opacity: 1;
     }
 }

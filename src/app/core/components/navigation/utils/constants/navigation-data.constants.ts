@@ -1,12 +1,8 @@
-import { Navigation } from '@core/components/navigation/models/navigation.model';
-import { NavigationSettings } from '@core/components/navigation/models/navigation-settings.model';
-import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
-import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
-import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
-
+// models
+import {  NavigationModal, NavigationUserPanel, NavigationFooterData, Navigation, NavigationSettings } from '@core/components/navigation/models';
 export class NavigationDataConstants {
-    static title =  'Add New'
-    static close =  'Close'
+    static title = 'Add New';
+    static close = 'Close';
     static navigationData: Navigation[] = [
         {
             id: 1,
@@ -17,10 +13,10 @@ export class NavigationDataConstants {
         },
         {
             id: 2,
-            name: 'Dispatch',
+            name: 'Dispatch Board',
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
-            construction: true,
+            construction: false,
             isRouteActive: true,
         },
         {
@@ -306,7 +302,7 @@ export class NavigationDataConstants {
                     name: 'Settings',
                     image: 'ic_settings.svg',
                     route: '/company/settings',
-                    activeRouteFlegId: 34, 
+                    activeRouteFlegId: 34,
                 },
                 {
                     name: 'Location',
@@ -321,15 +317,42 @@ export class NavigationDataConstants {
                     activeRouteFlegId: 34,
                 },
                 {
+                    name: 'User',
+                    image: 'ic_user.svg',
+                    route: '/company/user',
+                    construction: false,
+                    activeRouteFlegId: 34,
+                },
+                {
                     name: 'Custom Agreement',
-                    image: 'assets/svg/applicant/case.svg',
+                    image: 'case.svg',
                     route: '/custom-agreement',
                     construction: true,
                     activeRouteFlegId: 34,
                 },
+                {
+                    name: 'Training Material',
+                    image: 'book.svg',
+                    route: '/training-material',
+                    activeRouteFlegId: 34,
+                    construction: true,
+                },
+                {
+                    name: 'Billing',
+                    image: 'ic_billing.svg',
+                    route: '/billing',
+                    activeRouteFlegId: 34,
+                    construction: true,
+                },
+                {
+                    name: 'Integration',
+                    image: 'ic_integration.svg',
+                    route: '/integration',
+                    activeRouteFlegId: 34,
+                    construction: true,
+                },
             ],
-        }
-        
+        },
     ];
 
     static generalNavigationData: NavigationModal[] = [
@@ -611,7 +634,7 @@ export class NavigationDataConstants {
         },
     ];
 
-    static footerNavigation: Navigation[]  = [
+    static footerNavigation: Navigation[] = [
         {
             id: 34,
             image: 'ic_company.svg',
@@ -624,7 +647,7 @@ export class NavigationDataConstants {
                     name: 'Settings',
                     image: 'ic_settings.svg',
                     route: '/company/settings',
-                    activeRouteFlegId: 34, 
+                    activeRouteFlegId: 34,
                 },
                 {
                     name: 'Location',
@@ -646,5 +669,16 @@ export class NavigationDataConstants {
                     activeRouteFlegId: 34,
                 },
             ],
-        }]
+        },
+    ];
+
+    static icons = {
+        common: 'assets/svg/common/',
+        newTab: 'assets/svg/common/arrow_top_right.svg',
+        confirm: 'assets/svg/common/ic_confirm.svg',
+        logo: 'assets/svg/logo.svg',
+        logoText: 'assets/svg/logo-text.svg',
+        search: 'assets/svg/common/ic_search.svg',
+        plus: 'assets/svg/common/ic_plus.svg'
+    }
 }
