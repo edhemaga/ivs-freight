@@ -80,8 +80,13 @@ export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeStartConfig(
         configData: DispatchInputConfigParams
     ): ITaInput {
-        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
-            configData;
+        const {
+            isInputHoverRows,
+            groupIndex,
+            itemIndex,
+            groupItem,
+            isHoveringRow,
+        } = configData;
 
         return {
             name: 'timepicker',
@@ -91,14 +96,14 @@ export class DispatchHistoryModalConfig {
             hideClear: true,
             hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][1],
-            isInputBackgroundRemoved:
-                !isInputHoverRows[groupIndex][itemIndex][1],
             blackInput:
                 groupItem.get('timeStart').value &&
                 !isInputHoverRows[groupIndex][itemIndex][1],
             customClass: !isInputHoverRows[groupIndex][itemIndex][1]
-                ? ''
+                ? 'time-picker-opacity'
                 : 'datetimeclass',
+            isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 
@@ -130,8 +135,13 @@ export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeEndConfig(
         configData: DispatchInputConfigParams
     ): ITaInput {
-        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
-            configData;
+        const {
+            isInputHoverRows,
+            groupIndex,
+            itemIndex,
+            groupItem,
+            isHoveringRow,
+        } = configData;
 
         return {
             name: 'timepicker',
@@ -141,14 +151,14 @@ export class DispatchHistoryModalConfig {
             hideClear: true,
             hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][3],
-            isInputBackgroundRemoved:
-                !isInputHoverRows[groupIndex][itemIndex][3],
             blackInput:
                 groupItem.get('timeEnd').value &&
                 !isInputHoverRows[groupIndex][itemIndex][3],
             customClass: !isInputHoverRows[groupIndex][itemIndex][3]
-                ? ''
+                ? 'time-picker-opacity'
                 : 'datetimeclass',
+            isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 }
