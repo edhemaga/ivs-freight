@@ -20,7 +20,7 @@ export class NavigationDataConstants {
             name: 'Dispatch Board',
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
-            construction: true,
+            construction: false,
             isRouteActive: true,
         },
         {
