@@ -3,6 +3,7 @@
 .conversation-content-container {
     height: 100%;
 
+    background-color: $white;
     border-radius: 2px;
 
     .messages-header {
@@ -14,7 +15,7 @@
         }
 
         .right-icons {
-            &:hover() {
+            &:hover {
                 cursor: pointer;
             }
             margin: auto 0 auto auto;
