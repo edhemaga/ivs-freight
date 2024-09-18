@@ -268,6 +268,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                     clearTimeout(timeout);
                 });
+            } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
+                this.companyForm
+                    .get('starting')
+                    .setValue('100');
             }
         } else {
             this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
@@ -1174,6 +1178,24 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         let newData: CreateDivisionCompanyCommand = {
             ...form,
+            additionalInfo: {
+                prefix: form.prefix,
+                starting: form.starting,
+                sufix: form.suffix,
+                factorByDefault: form.factorByDefault,
+                autoInvoicing: form.autoInvoicing,
+                preferredLoadType: form.prefferedLoadTabs,
+                fleetType: form.fleetType,
+                hazMat: form.hazMat,
+                customerPayTerm: form.customerPayTerm,
+                customerCredit: form.customerCredit,
+                mvrMonths: form.mvrMonths,
+                truckInspectionMonths: form.truckInspectionMonths,
+                trailerInspectionMonths: form.trailerInspectionMonths,
+                driverMiles: form.driverMiles,
+                driverComission: form.driverCommission,
+                driverFlatRate: form.driverFlatRate
+            },
             address: {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
@@ -1255,6 +1277,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             logo: /* this.editData.company.logo
                 ? this.editData.company.logo
                 : */ null,
+            // Additional Info Tab
+            prefix: this.editData.company.additionalInfo?.prefix,
+            starting: this.editData.company.additionalInfo?.starting,
+            suffix: this.editData.company.additionalInfo?.sufix,
+            autoInvoicing: this.editData.company.additionalInfo?.autoInvoicing,
+            factorByDefault: this.editData.company.additionalInfo?.factorByDefault,
+            preferredLoadType: this.editData.company.additionalInfo?.preferredLoadType,
+            fleetType: this.editData.company.additionalInfo?.fleetType,
+            customerPayTerm: this.editData.company.additionalInfo?.customerPayTerm,
+            customerCredit: this.editData.company.additionalInfo?.customerCredit,
+            mvrMonths: this.editData.company.additionalInfo?.mvrMonths,
+            truckInspectionMonths: this.editData.company.additionalInfo?.truckInspectionMonths,
+            trailerInspectionMonths: this.editData.company.additionalInfo?.trailerInspectionMonths
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1334,51 +1369,56 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public updateCompanyDivision(id: number) {
-        const {
-            addressUnit,
-            departmentContacts,
-            bankAccounts,
-            bankCards,
-            ...form
-        } = this.companyForm.value;
+        const form = this.companyForm.value;
 
-        let newData: UpdateDivisionCompanyCommand = {
+        let newData : UpdateDivisionCompanyCommand = {
             id: id,
             ...form,
+            additionalInfo: {
+                prefix: form.prefix,
+                starting: form.starting,
+                sufix: form.suffix,
+                factorByDefault: form.factorByDefault,
+                autoInvoicing: form.autoInvoicing,
+                preferredLoadType: form.prefferedLoadTabs,
+                fleetType: form.fleetType,
+                hazMat: form.hazMat,
+                customerPayTerm: form.customerPayTerm,
+                customerCredit: form.customerCredit,
+                mvrMonths: form.mvrMonths,
+                truckInspectionMonths: form.truckInspectionMonths,
+                trailerInspectionMonths: form.trailerInspectionMonths,
+                driverMiles: form.driverMiles,
+                driverComission: form.driverCommission,
+                driverFlatRate: form.driverFlatRate
+            },
             address: {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit: form.addressUnit,
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
         };
 
-        for (let index = 0; index < departmentContacts.length; index++) {
-            departmentContacts[index].departmentId =
+        for (let index = 0; index < form.departmentContacts.length; index++) {
+            form.departmentContacts[index].departmentId =
                 this.selectedDepartmentFormArray[index].id;
         }
 
-        for (let index = 0; index < bankAccounts.length; index++) {
-            bankAccounts[index].bankId =
+        for (let index = 0; index < form.bankAccounts.length; index++) {
+            form.bankAccounts[index].bankId =
                 this.selectedBankAccountFormArray[index].id;
         }
 
-        for (let index = 0; index < bankCards.length; index++) {
-            bankCards[index].expireDate =
+        for (let index = 0; index < form.bankCards.length; index++) {
+            form.bankCards[index].expireDate =
                 MethodsCalculationsHelper.convertDateToBackend(
-                    bankCards[index].expireDate
+                    form.bankCards[index].expireDate
                 );
         }
 
-        newData = {
-            ...newData,
-            departmentContacts,
-            bankAccounts,
-            bankCards,
-        };
-
         this.settingsCompanyService
-            .updateCompanyDivision(newData)
+            .updateCompanyDivision({...newData})
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
