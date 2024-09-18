@@ -15,32 +15,33 @@
         }"
         (click)="onSubrouteAction(item); subrouteIndex(index)"
     >
-    <ng-container *ngIf="selectedSubRoute !== item.name && item.image">
-        <svg-icon
-            class="{{ class }}"
-            class="nav-item-img-active"
-            [src]="'assets/svg/common/' + item.image"
-            [ngClass]="{
-                'nav-item-img': !item.construction,
-                'route-clicked-svg':
-                    item.isRouteActive &&
-                    item.arrow &&
-                    closeDropdownOnNavClose &&
-                    !isSettingsPanelOpen &&
-                    !isUserPanelOpen,
-                'nav-item-svg-active': selectedRoute === item.name,
-                'route-not-active-svg': item.construction && navigationIsOpened,
-                'route-closed-nav-svg-not-active':
-                    item.construction && !navigationIsOpened
-            }"
-        ></svg-icon>
-    </ng-container>
-
-        <ng-container *ngIf="selectedSubRoute === item.name ">
+        <ng-container *ngIf="selectedSubRoute !== item.name && item.image">
             <svg-icon
-            class="subroutes-active-checkpoint"
-            src="assets/svg/common/ic_confirm.svg"
-        ></svg-icon>
+                class="{{ class }}"
+                class="nav-item-img-active"
+                [src]="'assets/svg/common/' + item.image"
+                [ngClass]="{
+                    'nav-item-img': !item.construction,
+                    'route-clicked-svg':
+                        item.isRouteActive &&
+                        item.arrow &&
+                        closeDropdownOnNavClose &&
+                        !isSettingsPanelOpen &&
+                        !isUserPanelOpen,
+                    'nav-item-svg-active': selectedRoute === item.name,
+                    'route-not-active-svg':
+                        item.construction && navigationIsOpened,
+                    'route-closed-nav-svg-not-active':
+                        item.construction && !navigationIsOpened
+                }"
+            ></svg-icon>
+        </ng-container>
+
+        <ng-container *ngIf="selectedSubRoute === item.name">
+            <svg-icon
+                class="subroutes-active-checkpoint"
+                src="assets/svg/common/ic_confirm.svg"
+            ></svg-icon>
         </ng-container>
         <p
             class="subroutes-item ta-font-regular"
@@ -64,7 +65,7 @@
             <svg-icon
                 class="nav-item-arrow_top"
                 (click)="
-                    openLinkInNewWindow(item.route); $event.stopPropagation()
+                    openLinkInNewWindow(item.route);
                 "
                 src="assets/svg/common/arrow_top_right.svg"
             ></svg-icon>

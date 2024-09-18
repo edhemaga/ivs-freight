@@ -83,6 +83,7 @@ export class NavigationSubrouteComponent implements OnChanges {
         }
     }
     public openLinkInNewWindow(route) {
+        event.stopPropagation();
         if( route.constuction ) return;
         window.open(route, '_blank');
     }

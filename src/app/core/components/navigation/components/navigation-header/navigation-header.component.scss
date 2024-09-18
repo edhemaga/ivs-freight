@@ -42,11 +42,7 @@
             align-items: center;
             gap: 4px;
             padding-left: 2px;
-            .tooltip-right {
-                left: 18px;
-                position: fixed;
-                top: 69px;
-            }
+
             .hide-tooltip {
                 display: none;
             }
@@ -118,11 +114,6 @@
                         }
                     }
                 }
-            }
-            .tooltip-right {
-                position: absolute;
-                right: 29px;
-                bottom: 26px;
             }
         }
         .nav-header-bottom-rightSide {

@@ -79,11 +79,6 @@
         }
     }
 
-    .tooltip-right {
-        margin-left: -8px;
-        position: fixed;
-        margin-top: -28px;
-    }
     .message-container {
         position: relative;
     }
@@ -332,9 +327,7 @@
             display: none;
         }
     }
-    .tooltip-right {
-        margin-left: 0px;
-    }
+   
 
     svg path {
         fill: $nav-svg-hover;

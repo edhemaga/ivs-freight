@@ -27,24 +27,22 @@
                 (selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board')) &&
                 !middleIsHovered &&
                 !footerHovered, 
-    }"
-    (mouseenter)="onNavItemHover(true); showToolTip = true"
-    (mouseleave)="onNavItemHover(false); showToolTip = false"
+    }" 
     (click)="
         onRouteAction(route.id, route.construction);
         routeWithSubRoutesClick(route.arrow)
     "
+            ngbTooltip
+            mainContent
+            position="right"
+            tooltipBackground="#424242"
+            [mainTooltip]="navigationIsOpened ? '' : route.name"
+            tooltipColor="#ffff"
+            tooltipMarginTop="-2px"
+            tooltipMarginLeft="12px"
+            tooltipTextAlign="right"
 >
-    <div
-        class="tooltip-right"
-        [ngClass]="{ 'hide-tooltip': navigationIsOpened }"
-    >
-        <app-ta-tooltip-slide
-            [show]="showToolTip"
-            [name]="route.name"
-        ></app-ta-tooltip-slide>
-    </div>
-
+ 
     <svg-icon
         class="{{ class }}"
         class="nav-item-img-active"
@@ -157,7 +155,7 @@
             [mainTooltip]="'New Tab'"
             tooltipColor="#ffff"
             tooltipMarginTop="-6px"
-            tooltipMarginLeft="12px"
+            tooltipMarginLeft="16px"
             tooltipTextAlign="right"
         >
         <svg-icon

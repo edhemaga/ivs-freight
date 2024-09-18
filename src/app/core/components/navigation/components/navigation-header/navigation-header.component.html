@@ -17,21 +17,21 @@
     > 
         <div
             class="svg-holder"
-            (mouseenter)="showToolTip = true"
-            (mouseleave)="showToolTip = false"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            ngbTooltip
+            mainContent
+            position="right"
+            tooltipBackground="#424242"
+            [mainTooltip]="'Search'"
+            tooltipColor="#ffff"
+            tooltipMarginTop="-2px"
+            tooltipMarginLeft="16px"
+            tooltipTextAlign="right"
         >
             <svg-icon
                 src="assets/svg/common/ic_search.svg"
                 [ngClass]="{ 'dark-svg': isNavigationHovered }"
             ></svg-icon>
-
-            <div class="tooltip-right">
-                <app-ta-tooltip-slide
-                    [show]="showToolTip"
-                    [name]="'Search'"
-                ></app-ta-tooltip-slide>
-            </div>
         </div>
     </div>
 </div>

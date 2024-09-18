@@ -26,7 +26,6 @@ import { NavigationService } from '@core/components/navigation/services/navigati
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
@@ -42,9 +41,9 @@ import { Navigation } from '@core/components/navigation/models/navigation.model'
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
-        TaTooltipSlideComponent,
         ReactiveFormsModule,
-        NgbModule, TaAppTooltipV2Component
+        NgbModule,
+        TaAppTooltipV2Component,
     ],
     animations: [
         navigationRouteAnimation('showHideDetails'),
