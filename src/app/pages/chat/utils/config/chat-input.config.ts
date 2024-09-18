@@ -19,14 +19,16 @@ export class ChatInput {
 
     }
 
-    static userSearchInput: ITaInput = {
-        name: 'searchTerm',
-        type: 'text',
-        label: 'Find Chat',
-        placeholderIcon: 'search',
-        hideRequiredCheck: true,
-        placeholderInsteadOfLabel: true,
-        autoFocus: false,
-        minLength: 3
+    static userSearchInput = (text?: string): ITaInput => {
+        return {
+            name: 'searchTerm',
+            type: 'text',
+            label: `Find ${text ?? 'Chat'}`,
+            placeholderIcon: 'search',
+            hideRequiredCheck: true,
+            placeholderInsteadOfLabel: true,
+            autoFocus: false,
+            minLength: 3
+        }
     }
 }

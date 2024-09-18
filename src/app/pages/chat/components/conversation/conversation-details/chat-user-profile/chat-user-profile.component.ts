@@ -13,8 +13,10 @@ import { ConversationInfoResponse } from 'appcoretruckassist';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums';
-
+import {
+  ChatSearchPlaceHolders,
+  ChatUserProfileResourceTypeEnum
+} from '@pages/chat/enums';
 
 @Component({
   selector: 'app-chat-user-profile',
@@ -29,6 +31,9 @@ export class ChatUserProfileComponent implements OnInit {
 
   // Assets route
   public ChatSvgRoutes = ChatSvgRoutes;
+
+  // Enums
+  public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
   // Attachment and links status
   public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
