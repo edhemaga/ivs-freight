@@ -13,7 +13,13 @@
     .wrapper-elements {
         position: relative;
         .items {
+            border-radius: 2px;
+            transition: $nav-transition-015;
             &:hover {
+                background: $nav-text-color-grey;
+                .user-content-text  {
+                    color: $nav-white
+                }
                 svg {
                     path {
                         fill: $nav-white;
@@ -72,6 +78,7 @@
 
         .user-content-text {
             margin-left: 7px;
+            transition: color $nav-transition-015;
         }
 
         .user-content-svg {
@@ -243,28 +250,6 @@
             to {
                 transform: translateY(90px);
             }
-        }
-    }
-    div {
-        .new-magic-line {
-            display: inline-block;
-            position: absolute;
-            left: 0px;
-            bottom: 0px;
-            content: '';
-            height: 28px;
-            width: 232px;
-            background: $nav-hover-color;
-            border-radius: 3px;
-            transition: $magic-line-transition;
-            z-index: -1;
-        }
-
-        .new-magic-line-selected {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
     }
 }

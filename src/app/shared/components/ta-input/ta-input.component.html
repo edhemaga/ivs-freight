@@ -639,8 +639,8 @@
         (mousedown)="selectLastOneForSelection()"
         (mouseup)="selectLastOneAfterMoseUp()"
         (paste)="onDatePaste($event)"
-        (blur)="onBlur()"
         (keydown)="changeSelection($event, true)"
+        (click)="toggleDropdownOptions()"
         [ngStyle]="{
             'padding-left': _inputConfig.isIconHidden ? '2px' : '27px'
         }"
@@ -706,17 +706,21 @@
                 _inputConfig.multipleLabel?.labels.length &&
                 !_inputConfig.multipleInputValues?.options.length &&
                 !_inputConfig.isDisabled,
-            dark: _inputConfig.customClass === 'datetimeclass dark'
+            dark: _inputConfig.customClass === 'datetimeclass dark',
+            'time-picker-opacity': _inputConfig.customClass === 'time-picker-opacity',
+            'dispatch-history-default-color': 
+                _inputConfig.customClass === 'time-picker-opacity' && 
+                _inputConfig.hideDropdownArrow && !focusInput,
+            'dispatch-history-row-hover': 
+                _inputConfig.customClass === 'time-picker-opacity' && 
+                _inputConfig.isHoverRow && _inputConfig.hideDropdownArrow && !focusInput,
         }"
     >
         <span
             #span1
             class="main"
             tabindex="0"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
         ></span>
         <span>
@@ -729,10 +733,7 @@
             #span2
             class="main"
             tabindex="1"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
         ></span>
         <span>
@@ -745,10 +746,7 @@
             #span3
             class="main"
             tabindex="2"
-            (focus)="onFocus($event)"
-            (mouseup)="setSelection($event)"
             (keydown)="changeSelection($event)"
-            (blur)="onBlur()"
             [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
         ></span>
     </div>

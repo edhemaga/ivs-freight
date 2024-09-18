@@ -40,17 +40,18 @@
                     display: none;
                     content: '';
                     position: absolute;
-                    right: -3px;
+                    right: -5px;
                     top: 0;
                     height: 100%;
                     width: 8px;
+                    z-index: 2;
                 }
 
                 .resize::before {
                     display: none;
                     content: '';
                     position: absolute;
-                    right: 0;
+                    right: -2px;
                     top: 50%;
                     transform: translateY(-50%);
                     height: 14px;
@@ -247,10 +248,12 @@
             }
 
             &.pickup-delivery {
-                width: 340px;
+                .resize {
+                    width: 100%;
 
-                div {
-                    flex: 1;
+                    div {
+                        flex: 1;
+                    }
                 }
 
                 .icon {
@@ -511,9 +514,9 @@
             }
 
             &.pickup-delivery-field {
-                min-width: 342px !important;
-                max-width: 342px !important;
-                width: 342px !important;
+                min-width: 302px;
+                max-width: 422px;
+                width: 342px;
             }
 
             &.progress-field {
