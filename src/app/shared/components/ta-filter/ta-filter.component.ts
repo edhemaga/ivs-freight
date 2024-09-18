@@ -894,7 +894,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
             });
     }
-    
+
     private createTrailerTypeGroups(
         loadRequirements: AssignedLoadResponse[]
     ): { name: string; logo: string; count: number }[] {
@@ -907,8 +907,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 count: number;
                 id: number;
                 trailerType: {
-                    id: number
-                }
+                    id: number;
+                };
             };
         } = {};
 
@@ -932,8 +932,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         count: 1,
                         id,
                         trailerType: {
-                            id
-                        }
+                            id,
+                        },
                     };
                 }
             }
@@ -953,8 +953,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 count: number;
                 id: number;
                 truckType: {
-                    id: number
-                }
+                    id: number;
+                };
             };
         } = {};
 
@@ -976,19 +976,19 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         logo: logo,
                         count: 1,
                         id,
-                        truckType: {id}
+                        truckType: { id },
                     };
                 }
             }
         });
         return Object.values(truckTypeGroups);
     }
-    
+
     private watchTableServiceValueChanges(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                 if (this.type === ToolbarFilterStringEnum.TRUCK_TYPE_FILTER) {
+                if (this.type === ToolbarFilterStringEnum.TRUCK_TYPE_FILTER) {
                     if (res?.animation === 'truck-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -1111,7 +1111,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 } else if (this.type === ToolbarFilterStringEnum.USER_FILTER) {
                     if (res?.animation === 'dispatch-data-update') {
                         const newData = res.data.map((type: any) => {
-                            type['name'] = `${type?.driver?.firstName} ${type?.driver?.lastName}`;
+                            type['name'] =
+                                type?.fullName ??
+                                `${type?.driver?.firstName} ${type?.driver?.lastName}`;
                             type['count'] = type.loadCount;
                             return type;
                         });
@@ -1148,8 +1150,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 }
                             );
                         }
-                    } else if(res?.animation === 'load-list-update') {
-                        if(this.isAssignLoadModal) this.truckArray =this.createTruckTypeGroups(res.data);
+                    } else if (res?.animation === 'load-list-update') {
+                        if (this.isAssignLoadModal)
+                            this.truckArray = this.createTruckTypeGroups(
+                                res.data
+                            );
                     }
                 } else if (
                     this.type === ToolbarFilterStringEnum.TRAILER_FILTER
@@ -1183,8 +1188,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 }
                             );
                         }
-                    } else if(res?.animation === 'load-list-update') {
-                        if(this.isAssignLoadModal) this.trailerArray =this.createTrailerTypeGroups(res.data);
+                    } else if (res?.animation === 'load-list-update') {
+                        if (this.isAssignLoadModal)
+                            this.trailerArray = this.createTrailerTypeGroups(
+                                res.data
+                            );
                     }
                 }
             });
@@ -2306,7 +2314,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public getBackendData(type: any, subType?: string): void {
-        if(this.isAssignLoadModal) return;
+        if (this.isAssignLoadModal) return;
         switch (this.type) {
             case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER: {
                 this.filterService.getTruckType();
@@ -2385,7 +2393,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             case ToolbarFilterStringEnum.TRUCK_FILTER:
                 this.truckArray.sort((a, b) => {
-                    if(this.isDispatchFilter) {
+                    if (this.isDispatchFilter) {
                         if (this.isAscendingSortOrder) {
                             return a.count - b.count;
                         } else {
@@ -2404,7 +2412,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             case ToolbarFilterStringEnum.TRAILER_FILTER:
                 this.trailerArray.sort((a, b) => {
-                    if(this.isDispatchFilter) {
+                    if (this.isDispatchFilter) {
                         if (this.isAscendingSortOrder) {
                             return a.count - b.count;
                         } else {
@@ -2465,16 +2473,16 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 this.isAscendingSortOrder = !this.isAscendingSortOrder;
                 break;
 
-                case ToolbarFilterStringEnum.PARKING_FILTER:
-                    this.loadParkingOptionsArray.sort((a, b) => {
-                        if (this.isAscendingSortOrder) {
-                            return a.count - b.count;
-                        } else {
-                            return b.count - a.count;
-                        }
-                    });
-                    this.isAscendingSortOrder = !this.isAscendingSortOrder;
-                    break;
+            case ToolbarFilterStringEnum.PARKING_FILTER:
+                this.loadParkingOptionsArray.sort((a, b) => {
+                    if (this.isAscendingSortOrder) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+                this.isAscendingSortOrder = !this.isAscendingSortOrder;
+                break;
 
             default:
                 break;
