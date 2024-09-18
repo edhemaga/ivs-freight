@@ -166,6 +166,9 @@
                         <div class="profile-details">
                             <app-chat-user-profile
                                 [data]="userProfileData | async"
+                                [profileDetailsType]="
+                                    chatConversationProfileDetailsType.REPAIR
+                                "
                                 (isProfileDetailsClosed)="
                                     displayProfileDetails($event)
                                 "

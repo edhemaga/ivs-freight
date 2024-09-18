@@ -55,7 +55,6 @@
     }
 
     .additional-info {
-        min-height: 86px;
         height: fit-content;
 
         &-row {
@@ -65,6 +64,19 @@
 
             svg-icon {
                 margin-right: 4px;
+            }
+
+            &-text {
+                line-height: 14px;
+                font-size: 11px;
+
+                &.highlighted {
+                    color: $ta-black;
+                }
+
+                &.muted {
+                    color: $bw5;
+                }
             }
         }
     }

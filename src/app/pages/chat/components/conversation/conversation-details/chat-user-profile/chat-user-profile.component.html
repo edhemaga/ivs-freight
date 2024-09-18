@@ -9,13 +9,14 @@
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    [src]="ChatSvgRoutes.noBorderXIcon"
+                    [src]="chatSvgRoutes.noBorderXIcon"
                 >
                 </svg-icon>
             </div>
         </div>
     </app-chat-header>
 
+    <!-- TODO Move to template -->
     <div class="basic-info">
         <div class="d-flex align-content-center align-items-center">
             <app-ca-profile-image
@@ -51,41 +52,38 @@
         <div class="horizontal-border"></div>
     </div>
 
-    <!-- TODO razdvojiti po grupama -->
-    <div class="additional-info">
-        <div class="additional-info-row d-flex ta-font-regular">
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="ChatSvgRoutes.phoneIcon"
+    <ng-container [ngSwitch]="profileDetailsType">
+        <div class="additional-info">
+            <ng-container
+                *ngSwitchCase="
+                    chatConversationProfileDetailsType.COMPANY_OR_DRIVER
+                "
             >
-            </svg-icon>
-            {{
-                data.userAdditionalInformation?.phone ?? '(123) 456-7890'
-                    | formatPhoneP
-            }}
-        </div>
-        <div class="additional-info-row d-flex ta-font-regular">
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="ChatSvgRoutes.emailIcon"
+                <ng-container
+                    *ngTemplateOutlet="
+                        phoneAndEmail;
+                        context: {
+                            item: data?.userAdditionalInformation
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
+            <ng-container
+                *ngSwitchCase="chatConversationProfileDetailsType.REPAIR"
             >
-            </svg-icon>
-            {{ data.userAdditionalInformation?.email }}
-        </div>
-        <div class="additional-info-row d-flex ta-font-regular">
-            <svg-icon
-                class="d-flex justify-content-center align-items-center"
-                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                [src]="ChatSvgRoutes.companyIcon"
-            >
-            </svg-icon>
-            {{ data.userAdditionalInformation?.companyName }}
-        </div>
+                <ng-container
+                    *ngTemplateOutlet="
+                        userRepair;
+                        context: {
+                            item: data?.userAdditionalInformation
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
 
-        <div class="horizontal-border"></div>
-    </div>
+            <div class="horizontal-border"></div>
+        </div>
+    </ng-container>
 
     <app-chat-profile-resources
         [title]="'Media'"
@@ -112,3 +110,118 @@
         [hasHorizontalBorder]="false"
     ></app-chat-profile-resources>
 </div>
+
+<ng-template #userOrDriver let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #userRepair let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Office',
+                    path: chatSvgRoutes.starIcon,
+                    value: data?.office,
+                    noDataMessage: 'No office provided' | uppercase,
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #phoneAndEmail let-item="item">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Phone',
+                    path: chatSvgRoutes.phoneIcon,
+                    value: item?.phone,
+                    noDataMessage: 'No phone provided'
+                }
+            }
+        "
+    >
+    </ng-container>
+
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'E-mail',
+                    path: chatSvgRoutes.emailIcon,
+                    value: item?.email,
+                    noDataMessage: 'No e-mail provided'
+                }
+            }
+        "
+    >
+    </ng-container>
+</ng-template>
+
+<ng-template #row let-item="item">
+    <div
+        class="additional-info-row d-flex justify-content-between align-content-center ta-font-regular"
+    >
+        <div class="d-flex">
+            <ng-container
+                *ngTemplateOutlet="
+                    icon;
+                    context: {
+                        path: item.path
+                    }
+                "
+            ></ng-container>
+            <div
+                class="additional-info-row-text"
+                [ngClass]="item.isHighlighted && 'ta-font-bold highlighted'"
+            >
+                {{ item?.value || item.noDataMessage }}
+            </div>
+        </div>
+        <div class="additional-info-row-text muted ta-font-regular">
+            {{ item.title }}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #icon let-path="path">
+    <svg-icon
+        class="d-flex justify-content-center align-items-center"
+        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+        [src]="path"
+    >
+    </svg-icon>
+</ng-template>
+
+<!-- 
+  <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="chatSvgRoutes.companyIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.companyName }}
+        </div> -->
