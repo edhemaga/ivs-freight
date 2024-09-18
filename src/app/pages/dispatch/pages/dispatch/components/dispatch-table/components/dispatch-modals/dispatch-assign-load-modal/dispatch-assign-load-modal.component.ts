@@ -201,7 +201,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                     this.tableService.sendActionAnimation({
                         animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
-                        data: res.dispatches,
+                        data: res.dispatchers,
                         id: null,
                     });
                 }

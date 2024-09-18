@@ -11,6 +11,8 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // animations
 import {
@@ -19,10 +21,12 @@ import {
     test,
 } from '@core/components/navigation/animations/navigation.animation';
 
-// models
-import { Navigation } from '@core/components/navigation/models/navigation.model';
-import { NavigationSubRoute } from '@core/components/navigation/models/navigation-subroute.model';
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
+// Components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// Const
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+import { NavigationSubRoute, NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
 
 @Component({
     selector: 'app-navigation-subroute',
@@ -35,7 +39,7 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
         test('test'),
     ],
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
+    imports: [CommonModule, FormsModule, RouterModule, AngularSvgIconModule, NgbModule, TaAppTooltipV2Component],
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;
@@ -46,7 +50,8 @@ export class NavigationSubrouteComponent implements OnChanges {
     @Input() otherContainerOpened: boolean;
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
-
+    @Input() isLastChild: boolean;
+    public icons = NavigationDataConstants.icons;
     public isMagicLineActive: boolean = false;
     public doAnimation: boolean = false;
 
@@ -77,6 +82,7 @@ export class NavigationSubrouteComponent implements OnChanges {
         }
     }
     public openLinkInNewWindow(route) {
+        event.stopPropagation();
         if( route.constuction ) return;
         window.open(route, '_blank');
     }

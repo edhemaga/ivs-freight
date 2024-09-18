@@ -9,14 +9,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// pipes
-import { DynamicNavHeightPipe } from '@core/components/navigation/pipes/dynamic-nav-card.pipe';
 @Component({
     selector: 'app-navigation-subroute-card',
     templateUrl: './navigation-subroute-card.component.html',
     styleUrls: ['./navigation-subroute-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, DynamicNavHeightPipe],
+    imports: [CommonModule, FormsModule],
 })
 export class NavigationSubrouteCardComponent implements OnChanges {
     @Input() isNavigationCardActive: boolean;

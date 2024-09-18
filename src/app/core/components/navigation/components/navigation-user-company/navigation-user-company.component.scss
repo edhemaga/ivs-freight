@@ -16,6 +16,7 @@
     p {
         margin: 0;
         color: $nav-text-color;
+        transition: color $nav-transition-015;
     }
 
     .user-company-header {
@@ -82,6 +83,8 @@
         padding: 5px 14px 5px 0px;
         width: 100%;
         cursor: pointer;
+        transition:  $nav-transition-015;
+
         .user-company-text {
             font-size: $nav-font-size;
             font-weight: $nav-font-regular;
@@ -115,11 +118,15 @@
         }
 
         &:hover {
-            background-color: $nav-hover-color;
+            background: $nav-text-color-grey;
             color: $nav-white;
             border-radius: 3px;
 
             .user-company-text-active {
+                color: $nav-white !important;
+            }
+
+            p {
                 color: $nav-white !important;
             }
         }
