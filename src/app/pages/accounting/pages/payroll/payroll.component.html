@@ -10,7 +10,9 @@
 
         <div class="payroll-tables-holder">
             <ng-container
-                *ngFor="let payroll of (payrollCountsResponse$ | async).payrollData"
+                *ngFor="
+                    let payroll of (payrollCountsResponse$ | async).payrollData
+                "
             >
                 <div class="card-holder">
                     <app-ca-payroll-list-summary-overview

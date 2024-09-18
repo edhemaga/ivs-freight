@@ -25,9 +25,8 @@ import {
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { Observable } from 'rxjs';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
-import { ColumnConfig } from '@shared/models/table-models/main-table.model';
 import { MilesStopShortResponse } from 'appcoretruckassist';
-import { ICaMapProps } from 'ca-components';
+import { ICaMapProps, ColumnConfig } from 'ca-components';
 
 @Component({
     selector: 'app-payroll-report',
@@ -468,7 +467,7 @@ export class PayrollReportComponent implements OnInit {
         this.payrollFacadeService.getPayrollDriverMileageReport(
             `${this.reportId}`
         );
-        this.loading$ = this.payrollFacadeService.payrollLoading$;
+        this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
 

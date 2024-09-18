@@ -7,6 +7,7 @@ export const payrollState: PayrollState = {
     payrollCounts: {},
     payrollDriverMileage: [],
     loading: false,
+    reportLoading: false,
 };
 
 export const payrollReducer = createReducer(
@@ -37,13 +38,13 @@ export const payrollReducer = createReducer(
 
     on(PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver, (state) => ({
         ...state,
-        loading: true,
+        reportLoading: true,
     })),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,
         (state) => ({
             ...state,
-            loading: false,
+            reportLoading: false,
         })
     ),
     // Payroll Get Driver Solo Mileage
@@ -53,7 +54,7 @@ export const payrollReducer = createReducer(
             return {
                 ...state,
                 payrollOpenedReport: data.payroll,
-                loading: false,
+                reportLoading: false,
             };
         }
     )

@@ -38,6 +38,13 @@ export const selectPayrollLoad = createSelector(selectPayrollState, (state) => {
     return state.loading;
 });
 
+export const selectPayrollReportLoading = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.reportLoading;
+    }
+);
+
 export const selectPayrollOpenedReport = createSelector(
     selectPayrollState,
     (state) => {

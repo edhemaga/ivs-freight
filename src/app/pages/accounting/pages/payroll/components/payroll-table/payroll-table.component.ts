@@ -7,7 +7,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { PayrollFacadeService } from '../../state/services/payroll.service';
-import { ColumnConfig } from '@shared/models/table-models/main-table.model';
+import { ColumnConfig } from 'ca-components';
 
 @Component({
     selector: 'app-payroll-table',

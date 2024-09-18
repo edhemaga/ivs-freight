@@ -10,6 +10,7 @@ export interface PayrollState {
     payrollDriverMileage: PayrollDriverMileageListResponse[];
     payrollOpenedReport?: PayrollDriverMileageByIdResponse;
     loading: boolean;
+    reportLoading: boolean;
 }
 
 export interface IPayrollCountsSelector {

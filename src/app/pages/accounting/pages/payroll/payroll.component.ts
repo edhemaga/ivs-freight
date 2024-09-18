@@ -26,10 +26,9 @@ import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 import { PayrollFacadeService } from './state/services/payroll.service';
-import { PayrollCountsResponse } from 'appcoretruckassist';
 import { IPayrollCountsSelector } from './state/models/payroll.model';
 import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { PayrollListSummaryOverview } from 'ca-components/lib/models/payroll-list-summary.model';
+import { PayrollListSummaryOverview } from 'ca-components';
 
 @Component({
     selector: 'app-payroll',

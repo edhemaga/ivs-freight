@@ -7,6 +7,7 @@ import {
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
     selectPayrollOpenedReport,
+    selectPayrollReportLoading,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
 } from '../selectors/payroll.selector';
@@ -32,6 +33,10 @@ export class PayrollFacadeService {
 
     public payrollLoading$: Observable<boolean> = this.store.pipe(
         select(selectPayrollLoad)
+    );
+
+    public payrollReportLoading$: Observable<boolean> = this.store.pipe(
+        select(selectPayrollReportLoading)
     );
 
     public selectPayrollOpenedReport$: Observable<PayrollDriverMileageResponse> =

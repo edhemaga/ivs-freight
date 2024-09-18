@@ -9,11 +9,11 @@ import {
     ViewChild,
 } from '@angular/core';
 import { PayrollFacadeService } from '../../../state/services/payroll.service';
-import { ColumnConfig } from '@shared/models/table-models/main-table.model';
 import { Observable } from 'rxjs';
 import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import { AfterViewInit } from '@angular/core';
 import { TemplateManagerService } from '@shared/services/template-manager.service';
+import { ColumnConfig } from 'ca-components';
 
 @Component({
     selector: 'app-driver-mileage-solo-table',
@@ -73,7 +73,7 @@ export class DriverMileageSoloTableComponent implements OnInit, AfterViewInit {
                 header: 'Period ST',
                 field: 'periodStart',
                 pipeType: 'date',
-                pipeString: 'shortDate',
+                pipeString: 'MM/dd/yy',
                 cellType: 'text', // Pass the template reference
             },
             {

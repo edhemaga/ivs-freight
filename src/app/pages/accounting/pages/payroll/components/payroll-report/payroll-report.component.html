@@ -30,16 +30,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <app-payroll-table
-                [tableSettings]="tableSettings"
-                [tableType]="'report'"
-                [tableSettingsResizable]="tableSettingsResizable"
-                [isResizableTable]="true"
-                [tableAddClas]="'resizable-table'"
-            ></app-payroll-table> -->
             <div class="small-table-holder-main">
-                <!-- [hideFieldsToHide]="expandTable"
-                    (onPressEvent)="selectPayrollReport($event)" -->
                 <app-ca-main-table
                     *ngIf="!(loading$ | async)"
                     [columns]="columns"
@@ -63,11 +54,26 @@
     </div>
     <div class="right-report-info">
         <div class="report-card">
-            <app-ca-period-content
-                [isOpen]="true"
-                [type]="'MILEAGE'"
-                [componentData]="payrollReport$ | async"
-            ></app-ca-period-content>
+            <div
+                class="report-card-title d-flex align-items-center justify-content-between"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="payroll_report_title">
+                        Period
+                        {{
+                            (payrollReport$ | async).periodStart
+                                | date : 'MM/dd/yy'
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-table-holder-main">
+                <app-ca-period-content
+                    [isOpen]="true"
+                    [type]="'MILEAGE'"
+                    [componentData]="payrollReport$ | async"
+                ></app-ca-period-content>
+            </div>
         </div>
     </div>
 </div>
