@@ -21,6 +21,14 @@
     
     &:hover {
         background-color: $nav-hover-ligh;
+
+        p {
+            color: $nav-white !important;
+        }
+
+        svg path {
+            fill: $nav-icon-grey !important;
+        }
     } 
 
     &.nav-item-active-box {
@@ -151,6 +159,15 @@
         svg {
             width: 12px;
             height: 12px;
+            path {
+                transition:  $nav-transition-015;
+            }
+        }
+
+        &:hover {
+            svg path {
+                fill: $nav-white !important;
+            }
         }
     }
     .nav-item-rightSide {
@@ -288,9 +305,7 @@
         } 
     }
 }
-.disable-cursor {
-    cursor: default;
-}
+
 .hide-tooltip {
     display: none;
 }

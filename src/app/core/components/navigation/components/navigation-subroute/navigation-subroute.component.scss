@@ -4,10 +4,10 @@
     position: relative;
     .subroutes {
         height: 28px;
-        width: calc(100% - 12px);
+        width: calc(100% - 18px);
         position: relative;
         bottom: 3px;
-        margin-left: 6px;
+        margin-left: 10px;
         border-radius: 3px;
         color: $nav-text-color;
         font-weight: $nav-font-medium;
@@ -37,6 +37,10 @@
                 width: 12.6px;
                 height: 12.6px;
                 display: flex;
+
+                path {
+                    transition: $nav-transition-015;
+                }
             }
         }
         &:nth-child(1) {
@@ -66,7 +70,7 @@
 
         .subroutes-item {
             margin: 0;
-            margin-left: 37px;
+            margin-left: 32px;
             font-size: $nav-font-size;
             position: relative;
             top: 4px;
@@ -83,7 +87,7 @@
                 z-index: 9;
             }
 
-            .subroutes-item:not(.route-not-active ) {
+            .subroutes-item:not(.route-not-active) {
                 color: $nav-white;
             }
         }
