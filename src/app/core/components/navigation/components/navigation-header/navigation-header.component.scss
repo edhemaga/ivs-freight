@@ -84,7 +84,7 @@
             width: 34px;
             height: 34px;
             position: absolute;
-            right: 8px;    
+            right: 8px;
             top: -2px;
             display: flex;
             align-items: center;
@@ -92,12 +92,21 @@
             z-index: 11;
             background: $nav-dark-bg;
             border-radius: 50%;
+            transition: $nav-transition;
+
+            &:hover {
+                background-color: $nav-text-color-grey;
+            }
 
             svg {
                 width: 16px;
                 height: 16px;
                 position: relative;
                 top: -1px;
+
+                path {
+                    transition: $nav-transition;
+                }
             }
 
             cursor: pointer;

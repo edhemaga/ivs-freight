@@ -200,6 +200,7 @@
             font-weight: 700;
             color: $nav-active-lighter;
             display: flex;
+
         }
         .nav-item-arrow {
             right: 0px;
@@ -227,6 +228,7 @@
         .active-text {
             font-weight: $nav-font-bold;
             color: $nav-white;
+            transition: $nav-transition !important;
         }
     }
 

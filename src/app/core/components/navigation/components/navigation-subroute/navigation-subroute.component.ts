@@ -12,6 +12,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // animations
 import {
@@ -25,6 +26,9 @@ import { Navigation } from '@core/components/navigation/models/navigation.model'
 import { NavigationSubRoute } from '@core/components/navigation/models/navigation-subroute.model';
 import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
 
+// Components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
 @Component({
     selector: 'app-navigation-subroute',
     templateUrl: './navigation-subroute.component.html',
@@ -36,7 +40,7 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
         test('test'),
     ],
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, AngularSvgIconModule],
+    imports: [CommonModule, FormsModule, RouterModule, AngularSvgIconModule, NgbModule, TaAppTooltipV2Component],
 })
 export class NavigationSubrouteComponent implements OnChanges {
     @Input() subroute: Navigation;

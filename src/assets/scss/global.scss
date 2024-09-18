@@ -385,8 +385,33 @@ app-load-modal {
         width: 236px !important;
         padding-right: 6px;
 
+        .nav-item-arrow_top {
+            path {
+                fill: $white-4 !important;
+            }
+        }
+
         &:hover {
-            background-color: $bw6-2 !important;
+            background-color: $ta-black !important;
+
+            .nav-item-img-active {
+                svg path {
+                    fill: $ta-light-grey-6 !important;
+                }
+            }
+        }
+
+        &.nav-item-parent-active {
+            &:hover {
+                .animation-text,
+                .nav-item-name-active {
+                    color: $ta-blue-19 !important;
+                }
+
+                .nav-item-img-active svg path {
+                    fill: $ta-blue-19 !important;
+                }
+            }
         }
     }
 

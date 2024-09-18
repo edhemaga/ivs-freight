@@ -27,10 +27,24 @@
         >
             {{ item.name }}
         </p>
-        <svg-icon
-            class="nav-item-arrow_top"
-            (click)="openLinkInNewWindow(item.route); $event.stopPropagation()"
-            src="assets/svg/common/arrow_top_right.svg"
-        ></svg-icon>
+        <div
+            ngbTooltip
+            mainContent
+            position="right"
+            tooltipBackground="#424242"
+            [mainTooltip]="'New Tab'"
+            tooltipColor="#ffff"
+            tooltipMarginTop="-9px"
+            tooltipMarginLeft="8px"
+            tooltipTextAlign="right"
+        >
+            <svg-icon
+                class="nav-item-arrow_top"
+                (click)="
+                    openLinkInNewWindow(item.route); $event.stopPropagation()
+                "
+                src="assets/svg/common/arrow_top_right.svg"
+            ></svg-icon>
+        </div>
     </div>
 </div>

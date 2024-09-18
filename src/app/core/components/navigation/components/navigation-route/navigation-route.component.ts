@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // animations
 import {
@@ -26,6 +27,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
 import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
@@ -42,6 +44,7 @@ import { Navigation } from '@core/components/navigation/models/navigation.model'
         AngularSvgIconModule,
         TaTooltipSlideComponent,
         ReactiveFormsModule,
+        NgbModule, TaAppTooltipV2Component
     ],
     animations: [
         navigationRouteAnimation('showHideDetails'),

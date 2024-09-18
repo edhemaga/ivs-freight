@@ -11,7 +11,7 @@
     [ngClass]="{
         'nav-width': navigationIsOpened,
         'nav-item-parent-active':
-            selectedRoute == route.name && !subrouteContainerOpened,
+            selectedRoute == route.name,
         'disable-cursor':
             selectedRoute == route.name &&
             !subrouteContainerOpened &&
@@ -146,8 +146,21 @@
             *ngIf="route.arrow"
             src="{{ route.arrow }}"
         ></svg-icon>
+        
+        <ng-container 
+        *ngIf="navigationIsOpened && !route.arrow && !message && !files">
+        <div
+            ngbTooltip
+            mainContent
+            position="right"
+            tooltipBackground="#424242"
+            [mainTooltip]="'New Tab'"
+            tooltipColor="#ffff"
+            tooltipMarginTop="-6px"
+            tooltipMarginLeft="12px"
+            tooltipTextAlign="right"
+        >
         <svg-icon
-            *ngIf="navigationIsOpened && !route.arrow && !message && !files"
             class="nav-item-arrow_top"
             src="assets/svg/common/arrow_top_right.svg"
             (click)="openLinkInNewWindow(route.route); $event.stopPropagation()"
@@ -155,5 +168,7 @@
             (mouseleave)="hoveredArrow(false)"
             [ngClass]="{ 'hovered-arrow': arrowHovered }"
         ></svg-icon>
+        </div>
+    </ng-container>
     </div>
 </div>
