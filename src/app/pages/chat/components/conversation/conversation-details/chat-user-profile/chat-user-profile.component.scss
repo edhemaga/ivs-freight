@@ -58,6 +58,7 @@
         height: fit-content;
 
         &-row {
+            height: 26px;
             line-height: 18px;
             font-size: 14px;
             padding: 4px 6px;
@@ -67,7 +68,7 @@
             }
 
             &-text {
-                line-height: 14px;
+                // line-height: 14px;
                 font-size: 11px;
 
                 &.highlighted {

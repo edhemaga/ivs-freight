@@ -96,6 +96,18 @@
                 ></ng-container>
             </ng-container>
 
+            <ng-container
+                *ngSwitchCase="chatConversationProfileDetailsType.SAFETY"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        safety;
+                        context: {
+                            item: data?.userAdditionalInformation
+                        }
+                    "
+                ></ng-container>
+            </ng-container>
             <div class="horizontal-border"></div>
         </div>
     </ng-container>
@@ -210,8 +222,95 @@
                     leftSideIcon: {
                         path: chatSvgRoutes.steeringWheelIcon
                     },
+                    value: data?.driver?.fullName,
+                    noDataMessage: 'No driver provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data?.userAdditionalInformation
+            }
+        "
+    ></ng-container>
+</ng-template>
+
+<ng-template #safety let-data="data">
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    leftSideIcon: {
+                        path: chatSvgRoutes.truckIcon
+                    },
+                    rightSideIcon: {
+                        path: chatSvgRoutes.reeferTruckIcon,
+                        width: 40,
+                        height: 16
+                    },
+                    value: data?.isReeferTruck && 'Reefer Truck',
+                    noDataMessage: 'No reefer truck provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Dispatch Board',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.dispatchBoardIcon
+                    },
+                    value: data?.teamBoard && 'Team Board',
+                    noDataMessage: 'No team board provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Driver',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.steeringWheelIcon
+                    },
                     value: data?.driver,
                     noDataMessage: 'No driver provided',
+                    isHighlighted: true
+                }
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            phoneAndEmail;
+            context: {
+                item: data?.userAdditionalInformation
+            }
+        "
+    ></ng-container>
+    <ng-container
+        *ngTemplateOutlet="
+            row;
+            context: {
+                item: {
+                    title: 'Co-Driver',
+                    leftSideIcon: {
+                        path: chatSvgRoutes.steeringWheelCIcon
+                    },
+                    value: data?.codriver?.fullName,
+                    noDataMessage: 'No co-driver provided',
                     isHighlighted: true
                 }
             }
@@ -278,7 +377,7 @@
                 "
             ></ng-container>
             <div
-                class="additional-info-row-text"
+                class="additional-info-row-text d-flex align-content-center"
                 [ngClass]="item.isHighlighted && 'ta-font-bold highlighted'"
             >
                 {{ item?.value || item.noDataMessage }}
