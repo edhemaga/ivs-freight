@@ -8,7 +8,7 @@ import {
     ViewChild,
     ViewContainerRef,
     OnDestroy,
-    AfterViewInit,
+    AfterContentInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -40,7 +40,7 @@ import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-dat
     ],
 })
 export class TaCustomDatetimePickersComponent
-    implements OnInit, OnDestroy, AfterViewInit
+    implements OnInit, OnDestroy, AfterContentInit
 {
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
@@ -140,7 +140,7 @@ export class TaCustomDatetimePickersComponent
         });
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit() {
         this.setTimeValue();
         this.changeOpened();
     }
