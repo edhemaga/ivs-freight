@@ -67,9 +67,15 @@
         >
             <div
                 class="icon-wrapper d-flex justify-content-center align-items-center"
+                [ngStyle]="{
+                    backgroundColor: isProfileDetailsDisplayed
+                        ? '#424242'
+                        : '#ffffff'
+                }"
                 (click)="displayProfileDetails(true)"
             >
                 <svg-icon
+                    class="d-flex"
                     [svgStyle]="{
                         'width.px': 18,
                         'height.px': 18
@@ -81,7 +87,9 @@
 
             <app-chat-vertical-divider></app-chat-vertical-divider>
 
-            <div class="d-flex align-items-center">
+            <div
+                class="icon-wrapper d-flex justify-content-center align-items-center"
+            >
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -92,7 +100,9 @@
 
             <app-chat-vertical-divider></app-chat-vertical-divider>
 
-            <div class="settings-icon d-flex align-items-center">
+            <div
+                class="icon-wrapper settings-icon d-flex justify-content-center align-items-center"
+            >
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -144,7 +154,6 @@
         </div>
 
         <!-- Profile details -->
-        <!-- TODO Add on open/close animation -->
         <div>
             <ng-container *ngIf="!attachmentUploadActive">
                 <div class="profile-details-wrapper d-flex">
@@ -170,14 +179,17 @@
                             conversationParticipants.length
                         "
                     >
-                        <app-chat-channel-participant-list
-                            [conversationParticipants]="
-                                conversationParticipants
-                            "
-                            (closeGroupMembersOverviewEvent)="
-                                closeGroupMembersOverview($event.value)
-                            "
-                        ></app-chat-channel-participant-list>
+                        <div class="profile-details">
+                            <app-chat-channel-participant-list
+                                [[@fadeInOutHorizontal]]
+                                [conversationParticipants]="
+                                    conversationParticipants
+                                "
+                                (closeGroupMembersOverviewEvent)="
+                                    closeGroupMembersOverview($event.value)
+                                "
+                            ></app-chat-channel-participant-list>
+                        </div>
                     </ng-container>
                 </div>
             </ng-container>

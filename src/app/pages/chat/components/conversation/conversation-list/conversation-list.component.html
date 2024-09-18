@@ -43,7 +43,7 @@
                                 trackBy: '' | trackByProperty
                             "
                         >
-                            <div [@fadeInOut]>
+                            <div [@fadeInOutVertical]>
                                 <ng-container
                                     *ngTemplateOutlet="
                                         isAdvancedView
@@ -190,7 +190,7 @@
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
+        [@fadeInOutVertical]
         (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-regular d-flex">
@@ -253,7 +253,7 @@
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
+        [@fadeInOutVertical]
         (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-advanced d-flex flex-grow-1">

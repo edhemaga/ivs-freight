@@ -116,6 +116,11 @@
                 margin-right: 8px;
             }
             .icon-wrapper {
+                width: 26px;
+                height: 26px;
+
+                border-radius: 2px;
+
                 &:hover {
                     cursor: pointer;
                 }
@@ -215,10 +220,11 @@
 
 .profile-details-wrapper {
     // TODO inspect this height: 100%;
-    width: 100%;
-
     min-width: 280px;
     max-width: 320px;
+    width: 100%;
+
+    background-color: $white;
 
     .profile-details {
         // TODO inspect this height: 100%;

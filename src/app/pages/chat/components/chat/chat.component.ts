@@ -51,10 +51,14 @@ import {
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
+// Animations
+import { chatFadeHorizontallyAnimation } from '@shared/animations';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+  animations: [chatFadeHorizontallyAnimation]
 })
 export class ChatComponent
   extends UnsubscribeHelper
