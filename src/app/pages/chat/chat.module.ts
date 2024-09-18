@@ -11,6 +11,7 @@ import { ChatRoutingModule } from "@pages/chat/chat-routing.module";
 
 // Components
 import { ChatComponent } from "@pages/chat/components/chat/chat.component";
+import { ConversationContentComponent } from "@pages/chat/components/conversation/conversation-content/conversation-content.component";
 import { ConversationListComponent } from "@pages/chat/components/conversation/conversation-list/conversation-list.component";
 import { ChatUserListComponent } from "@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component";
 import { ChatMessageComponent } from "@pages/chat/components/conversation/conversation-content/chat-message/chat-message.component";
@@ -21,7 +22,10 @@ import { ChatHeaderComponent } from "@pages/chat/components/shared/chat-header/c
 import { ChatListComponent } from "@pages/chat/components/shared/chat-list/chat-list.component";
 import { ChatListItemComponent } from "@pages/chat/components/shared/chat-list/chat-list-item/chat-list-item.component";
 import { ChatVerticalDividerComponent } from "@pages/chat/components/shared/chat-vertical-divider/chat-vertical-divider.component";
+
+// Conversation details
 import { ChatProfileResourcesComponent } from "@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component";
+import { ChatChannelParticipantListComponent } from "@pages/chat/components/conversation/conversation-details/chat-channel-participant-list/chat-channel-participant-list.component";
 
 //Shared components
 import { TaProfileImagesComponent } from "@shared/components/ta-profile-images/ta-profile-images.component";
@@ -41,7 +45,10 @@ import {
     FileExtensionPipe,
     TrackByPropertyPipe,
 } from "@shared/pipes";
-import { ChatHeaderClassPipe } from "@pages/chat/utils/pipes";
+import {
+    ChatHeaderClassPipe,
+    ChatHeaderGroupIconPipe
+} from "@pages/chat/utils/pipes";
 
 // Directives
 import {
@@ -60,10 +67,14 @@ import { HoverSvgDirective } from "@shared/directives/hover-svg.directive";
         ChatUserListComponent,
 
         // Conversations
+        ConversationContentComponent,
         ChatMessagesComponent,
         ChatMessageComponent,
         ChatMessageAttachmentPreviewComponent,
+
+        // Conversation details
         ChatUserProfileComponent,
+        ChatChannelParticipantListComponent,
 
         // Auxillary components
         ChatHeaderComponent,
@@ -78,7 +89,8 @@ import { HoverSvgDirective } from "@shared/directives/hover-svg.directive";
         ToggleBackgroundDirective,
 
         // Pipes
-        ChatHeaderClassPipe
+        ChatHeaderClassPipe,
+        ChatHeaderGroupIconPipe
     ],
     providers: [
         // Pipes

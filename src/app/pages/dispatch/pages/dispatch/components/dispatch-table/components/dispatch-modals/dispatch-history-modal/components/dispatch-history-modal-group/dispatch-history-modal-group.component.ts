@@ -99,6 +99,10 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                     groupIndex,
                     itemIndex,
                     groupItem,
+                    isHoveringRow:
+                        this.isHoveringGroupIndex === groupIndex &&
+                        this.isHoveringGroupItemIndex ===
+                            groupIndex + itemIndex,
                 }
             );
         };
@@ -126,6 +130,9 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 groupIndex,
                 itemIndex,
                 groupItem,
+                isHoveringRow:
+                    this.isHoveringGroupIndex === groupIndex &&
+                    this.isHoveringGroupItemIndex === groupIndex + itemIndex,
             });
         };
     }
@@ -825,7 +832,7 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
             const data = {
                 id,
                 startDate: formatedDateAndTimeStart,
-                endDate: '',
+                endDate: null,
             };
 
             console.log('data', data);

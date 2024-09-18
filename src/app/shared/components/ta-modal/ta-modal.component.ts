@@ -152,7 +152,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() showCloseBusinessButton = false;
     @Input() isAdditionalAssignLoadModalVisible = false;    
     @Input() isAssignLoadModal: boolean = false;
-
+    @Input() isReorderingActive: boolean = false;
+    
     // -----------------
 
     @Input() specificCaseModalName: boolean;

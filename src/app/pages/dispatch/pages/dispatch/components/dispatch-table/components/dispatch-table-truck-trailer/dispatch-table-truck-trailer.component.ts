@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // svg routes
@@ -38,7 +45,7 @@ import {
     templateUrl: './dispatch-table-truck-trailer.component.html',
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
-export class DispatchTableTruckTrailerComponent {
+export class DispatchTableTruckTrailerComponent implements OnChanges {
     @Input() set truckDropdownWidth(value: number) {
         this._truckDropdownWidth = Math.round(value - 2);
     }
@@ -95,6 +102,14 @@ export class DispatchTableTruckTrailerComponent {
     public hasAddNew: boolean = false;
 
     constructor(private modalService: ModalService) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            this.type === DispatchTableStringEnum.TRUCK &&
+            !changes?.truck?.currentValue
+        )
+            this.truckTrailerFormControl.reset();
+    }
 
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
@@ -196,7 +211,7 @@ export class DispatchTableTruckTrailerComponent {
 
         this.hasAddNew = !values?.length;
 
-        if (!values.length && !findAllAssigned) {
+        if (!values?.length && !findAllAssigned) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? this._truckList.unshift({
                       id: 7656,

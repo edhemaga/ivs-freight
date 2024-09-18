@@ -9,18 +9,25 @@
     font-weight: $nav-font-medium;
     font-size: $nav-font-size;
     color: $nav-text-color;
-
     transition: $nav-transition-5;
-
     position: relative;
-    width: 36px;
+    width: 34px;
     left: -8px;
     padding-left: 8px;
+    margin-bottom: 4px;
+
+    .nav-item-img-active  {
+        svg  {
+            height: 18px;
+            width: 18px;
+        }
+    }
+
     .route-not-active-svg {
         svg {
             path {
                 transition: fill 0.4s ease;
-                fill: #787878;
+                fill: $nav-svg-hover;
             }
         }
     }
@@ -28,7 +35,7 @@
         svg {
             path {
                 transition: fill 0.4s ease;
-                fill: #e1e1e1;
+                fill: $nav-svg-darker;
             }
         }
     }
@@ -125,9 +132,9 @@
             margin: 0px;
             margin-left: 9px;
             font-size: 14px;
-            line-height: 17px;
-            color: $nav-white;
-            font-weight: 400;
+            line-height: 18px;
+            color: #FFFFFFB2;
+            font-weight: 500;
             width: 181px;
             user-select: none;
         }
@@ -138,7 +145,7 @@
             width: 183px;
         }
         .route-not-active {
-            color: #787878;
+            color: #FFFFFFB2;
         }
         .nav-item-name-active {
             font-weight: 700;
@@ -150,8 +157,8 @@
             transform: rotate(0deg);
             transition: $nav-transition;
             width: 12px;
-            height: 12px;
-            line-height: 9px;
+            height: 18px;
+            line-height: 18px;
             opacity: 0;
         }
         .nav-openend-svg {
@@ -230,7 +237,7 @@
         .nav-item-arrow {
             svg {
                 path {
-                    fill: $nav-white;
+                    fill: $nav-svg-hover;
                     transition: fill 0.4s ease;
                 }
             }
@@ -313,6 +320,10 @@
     .tooltip-right {
         margin-left: 0px;
     }
+
+    svg path {
+        fill: $nav-svg-hover;
+    }
 }
 @keyframes dude {
     0% {
@@ -339,7 +350,7 @@
 .nav-item-svg-active {
     svg {
         path {
-            fill: $nav-active-lighter !important;
+            fill: $nav-close-icon-active !important;
         }
     }
 }
@@ -347,7 +358,7 @@
 .route-clicked-svg {
     svg {
         path {
-            fill: $nav-white !important;
+            fill: $nav-text-color !important;
         }
     }
 }

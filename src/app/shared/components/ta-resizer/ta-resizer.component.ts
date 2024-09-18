@@ -31,7 +31,7 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isFirstElementOpen: boolean = true;
     @Input() isSecondElementOpen: boolean = true;
     @Input() isLoadList: boolean = false;
-
+    @Input() isResizeEnabled: boolean = false;
     public firstElementHeight: number;
     public secondElementHeight: number;
     public isDragging = false;
@@ -100,6 +100,8 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onMouseDown(event: MouseEvent): void {
+        if(!this.isResizeEnabled) return;
+        
         this.isDragging = true;
         this.renderer.setStyle(document.body, 'cursor', 'row-resize');
         event.preventDefault();

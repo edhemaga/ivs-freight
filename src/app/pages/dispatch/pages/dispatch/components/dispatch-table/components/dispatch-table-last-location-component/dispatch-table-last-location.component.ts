@@ -18,6 +18,7 @@ export class DispatchTableLastLocationComponentComponent {
     @Input() set parkingList(value: DispatchBoardParking[]) {
         if (this.address) this.checkParkingLocation(value);
     }
+
     @Input() address?: AddressEntity = null;
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
@@ -41,14 +42,17 @@ export class DispatchTableLastLocationComponentComponent {
         return DispatchConfig.getDispatchAddressConfig();
     }
 
-    public handleInputSelect(event: AddressEntity | any): void {
-        if (event.valid) {
-            this.updateLastLocationEmit.emit(event.address);
-        }
+    public handleInputSelect(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) this.updateLastLocationEmit.emit(event.address);
+
+        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
     }
 
     public onHideDropdown(): void {
-        this.isDropdownHidden.emit(true);
+        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
     }
 
     public checkParkingLocation(parkings: DispatchBoardParking[]): void {
