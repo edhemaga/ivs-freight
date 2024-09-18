@@ -103,6 +103,7 @@ export class DispatchHistoryModalConfig {
                 ? 'time-picker-opacity'
                 : 'datetimeclass',
             isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 
@@ -156,7 +157,8 @@ export class DispatchHistoryModalConfig {
             customClass: !isInputHoverRows[groupIndex][itemIndex][3]
                 ? 'time-picker-opacity'
                 : 'datetimeclass',
-                isHoverRow: isHoveringRow,
+            isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 }
