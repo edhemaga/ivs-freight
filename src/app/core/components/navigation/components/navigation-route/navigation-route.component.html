@@ -24,7 +24,7 @@
                 !navigationIsOpened &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen &&
-                selectedRoute == route.name &&
+                (selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board')) &&
                 !middleIsHovered &&
                 !footerHovered, 
     }"

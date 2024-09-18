@@ -27,7 +27,7 @@
         }
 
         svg path {
-            fill: $nav-icon-grey !important;
+            fill: $nav-icon-grey;
         }
     } 
 
@@ -337,6 +337,12 @@
     svg path {
         fill: $nav-svg-hover;
         transition: fill .3s ease-in-out;
+    }
+
+    &:hover {
+        svg path {
+            fill: $nav-icon-hover-fill;
+        }
     }
 }
 @keyframes dude {

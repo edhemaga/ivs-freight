@@ -402,3 +402,7 @@ app-load-modal {
         }
     }
 }
+
+.animation .nav-item.nav-item-active-box:hover svg path {
+    fill: $ta-blue-15 !important;
+}
