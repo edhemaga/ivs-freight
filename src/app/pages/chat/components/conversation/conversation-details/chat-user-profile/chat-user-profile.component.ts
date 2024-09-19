@@ -31,6 +31,9 @@ export class ChatUserProfileComponent implements OnInit {
 
   @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  // TODO connect to hub, replace dummy value
+  public activityStatus: string = 'Offline';
+
   // Assets route
   public chatSvgRoutes = ChatSvgRoutes;
 

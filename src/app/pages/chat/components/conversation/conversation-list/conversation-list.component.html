@@ -49,11 +49,11 @@
                                         isAdvancedView
                                             ? listItemAdvanced
                                             : listItemRegular;
-                                        group_id: group.id;
                                         context: {
                                             type: conversationTypeEnum.CHANNEL,
                                             item: department,
-                                            group: group.id
+                                            group: group.id,
+                                            group_id: group.id
                                         }
                                     "
                                 ></ng-container>
