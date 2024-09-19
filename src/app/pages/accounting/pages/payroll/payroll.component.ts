@@ -44,7 +44,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     activeViewMode: string = 'List';
     tableData: any[] = [];
     tableData$: Observable<any> = of(
-        Array.from({ length: 1000 }, () => ({
+        Array.from({ length: 10000 }, () => ({
             driver: 'Neki',
             payrollNumber: 'fsadfdsafda',
             periodStart: '20/20/24',
