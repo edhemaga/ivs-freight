@@ -190,6 +190,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public files: UploadFile[] | FileResponse[] = [];
     public filesForDelete: any[] = [];
     public companyUser: SignInResponse = null;
+    public isDocumentsCardOpen: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -413,6 +414,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+        this.isDocumentsCardOpen = !!res.files.length;
+        
         if (res.bank) {
             this.selectedBank =
                 this.banks.find((bank) => bank.id === res.bank.id) ?? null;

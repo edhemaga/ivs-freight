@@ -202,6 +202,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    public isDocumentsCardOpen: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -1344,7 +1345,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         // documents
         this.documents = editData.files;
-
+        this.isDocumentsCardOpen = !!editData.files.length;
+        
         // patch form
         this.repairOrderForm.patchValue({
             invoice,
