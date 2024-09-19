@@ -3,7 +3,6 @@
 .dispatch-table {
     position: relative;
 
-    /* Unlocked Table */
     .table-container-dispatch.table-container-dispatch {
         width: 100% !important;
         display: flex;
@@ -16,9 +15,13 @@
         padding-bottom: 8px;
     }
 
+    /* Unlocked Table */
+
     &.unlocked {
         table {
             tr {
+                /* Resize */
+
                 .resize {
                     position: relative;
                 }

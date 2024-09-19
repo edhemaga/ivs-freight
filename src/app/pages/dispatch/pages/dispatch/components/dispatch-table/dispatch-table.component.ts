@@ -711,7 +711,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         const dispatchBoardId = this.dispatchData.id;
         const dispatchDataDispatches = this.dispatchData.dispatches;
 
-        const dispatches = [
+        if (
+            dispatchDataDispatches[previousIndex].order ===
+            dispatchDataDispatches[currentIndex].order
+        )
+            return;
+
+        moveItemInArray(dispatchDataDispatches, previousIndex, currentIndex);
+
+        /*  const dispatches = [
             {
                 id: dispatchDataDispatches[currentIndex].id,
                 order: dispatchDataDispatches[previousIndex].order,
@@ -721,6 +729,23 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 order: dispatchDataDispatches[currentIndex].order,
             },
         ];
+ */
+        console.log(
+            'this.dispatchData.dispatches',
+            this.dispatchData.dispatches
+        );
+
+        const dispatches = this.dispatchData.dispatches.map(
+            (dispatch, index) => {
+                console.log('dispatch', dispatch);
+                console.log('index', index);
+
+                return {
+                    id: dispatch.id,
+                    order: index + 1,
+                };
+            }
+        );
 
         const data = {
             dispatchBoardId,
@@ -741,20 +766,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe(() => {
-                [
+                /*   [
                     dispatchDataDispatches[currentIndex].order,
                     dispatchDataDispatches[previousIndex].order,
                 ] = [
                     dispatchDataDispatches[previousIndex].order,
                     dispatchDataDispatches[currentIndex].order,
                 ];
-
-                moveItemInArray(
-                    dispatchDataDispatches,
-                    previousIndex,
-                    currentIndex
-                );
-
+ */
                 this.isDispatchBoardChangeInProgress = false;
 
                 this.cdRef.detectChanges();
