@@ -96,7 +96,6 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 // constants
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
-import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
 
 @Titles()
 @Component({
@@ -229,7 +228,6 @@ export class TaTableBodyComponent
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
         private sanitizer: DomSanitizer,
-        private statusService: LoadTableStatusConstants,
         private loadService: LoadService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}

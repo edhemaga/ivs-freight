@@ -3,5 +3,5 @@ export enum ChatGroupEnum {
     Truck = 'Truck Channel',
     Dispatch = 'Dispatch Board',
     CompanyUser = 'Company User',
-    Driver = 'Driver'
+    Driver = 'Driver',
 }

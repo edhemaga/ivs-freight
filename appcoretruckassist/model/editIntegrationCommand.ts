@@ -18,5 +18,6 @@ export interface EditIntegrationCommand {
     password?: string | null;
     twoFactorAuthSecret?: string | null;
     integrationProviderId?: number;
+    differences?: { [key: string]: string; } | null;
 }
 
