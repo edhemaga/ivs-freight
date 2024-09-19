@@ -1,5 +1,13 @@
 <div class="table-container d-flex">
-    <div class="payroll-main" [class.open]="!tableExpanded">
+    dddxs
+    <app-ca-main-table
+    *ngIf="showTable"
+    [hideFieldsToHide]="true"
+    [columns]="columns"
+    [data$]="tableData$"
+    (onPressEvent)="selectPayrollReport($event)"
+></app-ca-main-table>
+    <!-- <div class="payroll-main" [class.open]="!tableExpanded">
         <app-ta-table-toolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
@@ -38,5 +46,16 @@
         <app-payroll-report
             [reportTableData]="reportTableData"
         ></app-payroll-report>
-    </div>
+    </div> -->
 </div>
+
+<ng-template #customCell>
+    <div>
+        <app-ca-note
+        [note]="''"
+        [openedAll]="false"
+        [parking]="false"
+    >
+    </app-ca-note>
+    </div>
+</ng-template>

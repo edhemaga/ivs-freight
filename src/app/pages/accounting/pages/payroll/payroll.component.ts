@@ -4,8 +4,11 @@ import {
     OnInit,
     ViewEncapsulation,
     AfterViewInit,
+    ViewChild,
+    ElementRef,
+    ChangeDetectorRef,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -19,6 +22,7 @@ import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
+import { ColumnConfig } from 'ca-components';
 
 @Component({
     selector: 'app-payroll',
@@ -31,10 +35,26 @@ import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.quer
 export class PayrollComponent implements OnInit, AfterViewInit {
     tableOptions: any = {};
 
+    columns: ColumnConfig[];
+    showTable: boolean = false;
+
+    //tableData: any;
+
+    
+
     selectedTab = 'open';
     activeViewMode: string = 'List';
     tableData: any[] = [];
-    columns: any[] = [];
+    tableData$: Observable<any> = of(Array.from({ length: 1000 }, () => ({
+        driver: 'Neki',
+        payrollNumber: 'fsadfdsafda',
+        periodStart: '20/20/24',
+        payrollDeadLine: '20/20/24',
+        salary: 120,
+        total: 130,
+    })))
+    ;
+    // columns: any[] = [];
     tableContainerWidth: number = 0;
     viewData: any[] = [];
     resizeObserver: ResizeObserver;
@@ -47,6 +67,9 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     tableExpanded: boolean = true;
     reportTableData: any = {};
 
+    @ViewChild('customCell', { static: false })
+    public readonly customCellTemplate!: ElementRef;
+
     constructor(
         // Store
         private driversActiveQuery: DriverQuery,
@@ -54,13 +77,140 @@ export class PayrollComponent implements OnInit, AfterViewInit {
         private payrollQuery: PayrollQuery,
 
         // Pipes
-        private nameInitialsPipe: NameInitialsPipe
+        private nameInitialsPipe: NameInitialsPipe,
+        private chng: ChangeDetectorRef
     ) {}
 
+    selectPayrollReport(e: any) {}
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+        this.columns = [
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Salary',
+                field: 'salary',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellCustomClasses: 'text-center',
+                cellType: 'text', // Pass the template reference
+                hiddeOnTableReduce: false,
+            },
+            {
+                header: 'Total',
+                field: 'total',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
+                // Pass the template reference
+            },
+            {
+                header: 'Salary',
+                field: 'salary',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellCustomClasses: 'text-center',
+                cellType: 'text', // Pass the template reference
+                hiddeOnTableReduce: false,
+            },
+            {
+                header: 'Total',
+                field: 'total',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
+                // Pass the template reference
+            },
+            {
+                header: 'Salary',
+                field: 'salary',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellCustomClasses: 'text-center',
+                cellType: 'text', // Pass the template reference
+                hiddeOnTableReduce: false,
+            },
+            {
+                header: 'Total',
+                field: 'total',
+                pipeType: 'currency',
+                pipeString: 'USD',
+                cellType: 'text',
+                cellCustomClasses: 'text-right',
+                textCustomClasses: 'b-600',
+                // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Payroll',
+                field: 'payrollNumber',
+                cellType: 'template',
+                template: this.customCellTemplate, // Pass the template reference
+                hiddeOnTableReduce: false,
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Status',
+                field: 'payrollDeadLine',
+                cellType: 'template',
+                template: this.customCellTemplate, // Pass the template reference
+            },
+        ];
+
+        this.showTable = true;
+        this.chng.detectChanges();
+        // setTimeout(() => {
+        //     this.observTableContainer();
+        // }, 10);
     }
 
     expandTable(data: any) {
@@ -79,43 +229,38 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.initTableOptions();
-
-        this.payrollData = this.payrollQuery.payrolldata$;
-
-        const driverActiveData =
-            this.selectedTab === 'open' ? this.getTabData('active') : [];
-
-        this.tableData = [
-            {
-                title: 'Open',
-                field: 'open',
-                length: 0,
-                data: driverActiveData,
-                extended: true,
-                gridNameTitle: 'Payroll',
-                stateName: 'open',
-                tableConfiguration: 'APPLICANT',
-                isActive: this.selectedTab === 'open',
-                gridColumns: getPayrollDriverMilesDefinition(),
-            },
-            {
-                title: 'Closed',
-                field: 'closed',
-                length: 0,
-                data: [],
-                extended: false,
-                gridNameTitle: 'Payroll',
-                stateName: 'closed',
-                tableConfiguration: 'DRIVER',
-                isActive: this.selectedTab === 'closed',
-                gridColumns: [],
-            },
-        ];
-
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        this.setDriverData(td);
+        // this.initTableOptions();
+        // this.payrollData = this.payrollQuery.payrolldata$;
+        // const driverActiveData =
+        //     this.selectedTab === 'open' ? this.getTabData('active') : [];
+        // this.tableData = [
+        //     {
+        //         title: 'Open',
+        //         field: 'open',
+        //         length: 0,
+        //         data: driverActiveData,
+        //         extended: true,
+        //         gridNameTitle: 'Payroll',
+        //         stateName: 'open',
+        //         tableConfiguration: 'APPLICANT',
+        //         isActive: this.selectedTab === 'open',
+        //         gridColumns: getPayrollDriverMilesDefinition(),
+        //     },
+        //     {
+        //         title: 'Closed',
+        //         field: 'closed',
+        //         length: 0,
+        //         data: [],
+        //         extended: false,
+        //         gridNameTitle: 'Payroll',
+        //         stateName: 'closed',
+        //         tableConfiguration: 'DRIVER',
+        //         isActive: this.selectedTab === 'closed',
+        //         gridColumns: [],
+        //     },
+        // ];
+        // const td = this.tableData.find((t) => t.field === this.selectedTab);
+        // this.setDriverData(td);
     }
 
     setDriverData(td: any) {
