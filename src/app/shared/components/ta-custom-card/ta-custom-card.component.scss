@@ -150,12 +150,14 @@
                 cursor: pointer !important;
 
                 &:hover {
-                    background: $ta-blue-16;
+                    &:not(.disabled) {
+                        background: $ta-blue-16;
 
-                    .action-plus-icon {
-                        svg {
-                            path {
-                                fill: $ta-blue-15;
+                        .action-plus-icon {
+                            svg {
+                                path {
+                                    fill: $ta-blue-15;
+                                }
                             }
                         }
                     }
@@ -166,6 +168,18 @@
                         path {
                             fill: $ta-blue-13;
                             transition: fill 0.3s ease-in-out;
+                        }
+                    }
+                }
+
+                &.disabled {
+                    pointer-events: none;
+                    .action-plus-icon {
+                        svg {
+                            path {
+                                fill: $muted;
+                                pointer-events: none;
+                            }
                         }
                     }
                 }
@@ -576,8 +590,10 @@
     .ta-counter {
         background-color: $ta-light-grey-6 !important;
     }
-} 
+}
 
 .scrollable-element {
-    padding-bottom: 38px !important;
+    &:not(.pb-0) {
+        padding-bottom: 38px !important;
+    }
 }

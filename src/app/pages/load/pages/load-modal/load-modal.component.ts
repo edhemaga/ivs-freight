@@ -125,6 +125,7 @@ import {
     LoadShortResponse,
     LoadStatusResponse,
     LoadBillingAdditionalResponse,
+    ShipperShortResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -148,10 +149,12 @@ import {
     LoadModalWaitTimeFormField,
     LoadStopRoutes,
     LoadStop,
+    LoadShipper,
 } from './models';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import { CaMapComponent, ICaMapProps } from 'ca-components';
 
 @Component({
     selector: 'app-load-modal',
@@ -186,6 +189,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
         TaModalTableComponent,
+        CaMapComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -203,6 +207,272 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('popover') popover: NgbPopover;
 
     @Input() editData: EditData;
+
+    data: ICaMapProps = {
+        center: {
+            lat: 41.860119,
+            lng: -87.660156,
+        },
+        mapZoom: 1,
+        markers: [],
+        clustermarkers: [],
+        routingMarkers: [],
+        mapOptions: {
+            fullscreenControl: false,
+            disableDefaultUI: true,
+            restriction: {
+                latLngBounds: {
+                    north: 75,
+                    south: 9,
+                    west: -170,
+                    east: -50,
+                },
+                strictBounds: true,
+            },
+            streetViewControl: false,
+            styles: [
+                {
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.icon',
+                    stylers: [
+                        {
+                            visibility: 'on',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.country',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                        {
+                            visibility: 'on',
+                        },
+                        {
+                            weight: 1,
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    elementType: 'labels.text.stroke',
+                    stylers: [
+                        {
+                            color: '#f5f5f5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#bdbdbd',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'landscape',
+                    elementType: 'labels',
+                    stylers: [
+                        {
+                            visibility: 'off',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#ffffff',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road',
+                    stylers: [
+                        {
+                            saturation: -100,
+                        },
+                        {
+                            lightness: 30,
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.arterial',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#757575',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#dadada',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#616161',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'road.local',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#e5e5e5',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#eeeeee',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [
+                        {
+                            color: '#c9c9c9',
+                        },
+                    ],
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [
+                        {
+                            color: '#9e9e9e',
+                        },
+                    ],
+                },
+            ],
+            keyboardShortcuts: false,
+            panControl: true,
+            gestureHandling: 'greedy',
+        },
+    };
 
     private destroy$ = new Subject<void>();
 
@@ -810,12 +1080,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private watchFormChanges() {
         setTimeout(() => {
             this.formService.checkFormChange(this.loadForm);
-             
-            if(this.editData?.loadAction === TableStringEnum.CONVERT_TO_TEMPLATE || this.editData?.loadAction === TableStringEnum.CONVERT_TO_LOAD && this.loadForm.valid) {
-                this.isFormDirty = true;
-            } 
 
-            if(this.editData?.loadAction === TableStringEnum.CONVERT_TO_TEMPLATE) {
+            if (
+                this.editData?.loadAction ===
+                    TableStringEnum.CONVERT_TO_TEMPLATE ||
+                (this.editData?.loadAction ===
+                    TableStringEnum.CONVERT_TO_LOAD &&
+                    this.loadForm.valid)
+            ) {
+                this.isFormDirty = true;
+            }
+
+            if (
+                this.editData?.loadAction ===
+                TableStringEnum.CONVERT_TO_TEMPLATE
+            ) {
                 this.inputService.changeValidators(
                     this.loadForm.get(LoadModalStringEnum.TEMPLATE_NAME)
                 );
@@ -931,6 +1210,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         return null;
+    }
+
+    public get areOriginAndDestinationValid(): boolean {
+        return (
+            this.validatePickupStops(this.loadForm) ===
+                LoadModalStringEnum.VALID_STATUS &&
+            this.validateDeliveryStops(this.loadForm) ===
+                LoadModalStringEnum.VALID_STATUS
+        );
     }
 
     public validateExtraStops(
@@ -1352,16 +1640,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
-                    this.modalService.openModal(
-                        BrokerModalComponent,
-                        { size: TableStringEnum.SMALL },
-                        {
+                    this.modalService.setProjectionModal({
+                        action: LoadModalStringEnum.OPEN,
+                        payload: {
+                            key: LoadModalStringEnum.LOAD_MODAL,
+                            value: this.getPreviusModalValues(),
                             id: this.selectedBroker.id,
                             data: this.selectedBroker,
-                            type: TableStringEnum.EDIT,
                             openedTab: TableStringEnum.CONTRACT,
-                        }
-                    );
+                        },
+                        type: TableStringEnum.EDIT,
+                        component: BrokerModalComponent,
+                        size: LoadModalStringEnum.SMALL,
+                    });
                 } else {
                     if (event) {
                         this.selectedBrokerContact = {
@@ -1758,7 +2049,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 size: LoadModalStringEnum.SMALL,
             });
         } else {
-            this.selectedBroker = event;
+            this.selectedBroker =
+                event && Object.keys(event).length ? event : null;
 
             if (this.selectedBroker) {
                 this.loadBrokerInputConfig = {
@@ -2831,8 +3123,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .filter((item) => item.additionalBillingType !== 6);
     }
 
+    public get hasValidSteps(): boolean {
+        return this.areOriginAndDestinationValid && this.loadExtraStops().valid;
+    }
+
     public createNewExtraStop(): void {
-        if (!this.selectedPickupShipper || !this.loadExtraStops().valid) return;
+        if (!this.areOriginAndDestinationValid || !this.loadExtraStops().valid)
+            return;
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
@@ -3311,17 +3608,19 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     id: this.isActiveLoad
                         ? item.get(LoadModalStringEnum.ID).value ?? null
                         : null,
-                    stopType: saveCurrentLoad ? this.typeOfExtraStops[index].find(
-                        (item) => item.checked
-                    ) :item.get(LoadModalStringEnum.STOP_TYPE).value,
+                    stopType: saveCurrentLoad
+                        ? this.typeOfExtraStops[index]?.find(
+                              (item) => item.checked
+                          )
+                        : item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
                         .value,
-                    shipperId: this.selectedExtraStopShipper[index].id,
+                    shipperId: this.selectedExtraStopShipper[index]?.id,
                     shipper: this.originalShippers.find(
                         (shipper) =>
                             shipper.id ===
-                            this.selectedExtraStopShipper[index].id
+                            this.selectedExtraStopShipper[index]?.id
                     ) as any,
                     dateFrom: this.formatStopDateTime(
                         item.get(LoadModalStringEnum.DATE_FROM).value,
@@ -3332,7 +3631,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         item.get(LoadModalStringEnum.TIME_TO).value
                     ),
                     timeType: saveCurrentLoad
-                        ? this.stopTimeTabsExtraStops[index].find(
+                        ? this.stopTimeTabsExtraStops[index]?.find(
                               (item) => item.checked
                           )
                         : this.stopTimeTabsExtraStops[index].find(
@@ -3532,6 +3831,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 };
                             }),
                         };
+
+                        this.data.routingMarkers = routes.map((routes) => {
+                            return {
+                                position: {
+                                    lat: routes.latitude,
+                                    lng: routes.longitude,
+                                },
+                            };
+                        });
 
                         // store in form values
                         if (res?.legs?.length) {
@@ -3998,7 +4306,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 totalMinutes: this.totalLegMinutes,
                 emptyMiles: this.emptyMiles,
                 statusType,
-                deliveryStopOrder: form.deliveryStopOrder || 1
+                deliveryStopOrder: form.deliveryStopOrder || 1,
             },
         };
     }
@@ -4078,6 +4386,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     });
 
                     this.paymentMethodsDropdownList = res.paymentMethods;
+
+                    // If we are creating new load only enable advace pay
+                    if (!this.editData?.data.id)
+                        res.paymentTypes = res.paymentTypes.filter(
+                            (payment) => payment.id === 3
+                        );
+
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
 
@@ -4702,6 +5017,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return formattedString.trim();
     }
 
+    private formatShipper(shipper: ShipperShortResponse): LoadShipper {
+        if (!shipper) return null;
+
+        const formattedShipper = {
+            ...shipper,
+            name: shipper.businessName,
+        };
+
+        if (shipper?.address) {
+            return {
+                ...formattedShipper,
+                address: `${shipper.address.city}, ${shipper.address.stateShortName} ${shipper.address.zipCode}`,
+            };
+        }
+
+        return formattedShipper;
+    }
+
     private populateLoadModalData(loadModalData: LoadResponse): void {
         if (!loadModalData) return;
 
@@ -4813,11 +5146,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
               )
             : null;
 
-        const editedPickupShipper = {
-            ...stops[0]?.shipper,
-            address: `${pickupStop?.shipper?.address.city}, ${pickupStop?.shipper?.address.stateShortName} ${pickupStop?.shipper?.address.zipCode}`,
-            name: pickupStop?.shipper?.businessName,
-        };
+        const editedPickupShipper = this.formatShipper(pickupStop?.shipper);
 
         let deliveryStop;
         // In case we close modal and come back without adding delivery it will add pickup stop to delivery
@@ -4826,11 +5155,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliveryStop = stops[stops.length - 1];
         }
 
-        const editedDeliveryShipper = {
-            ...deliveryStop?.shipper,
-            address: `${deliveryStop?.shipper?.address.city}, ${deliveryStop?.shipper?.address.stateShortName} ${deliveryStop?.shipper?.address.zipCode}`,
-            name: deliveryStop?.shipper?.businessName,
-        };
+        const editedDeliveryShipper = this.formatShipper(deliveryStop?.shipper);
 
         // Filter out undefined stops
         const editedStops = stops.filter(
@@ -4973,11 +5298,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.createNewExtraStop();
 
                 const editedShipper = extraStop.shipper
-                    ? {
-                          ...extraStop.shipper,
-                          address: `${extraStop.shipper.address.city}, ${extraStop.shipper.address.stateShortName} ${extraStop.shipper.address.zipCode}`,
-                          name: extraStop.shipper.businessName,
-                      }
+                    ? this.formatShipper(extraStop.shipper)
                     : {};
 
                 if (extraStop) extraStop = this.formatStopTimes(extraStop);

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // svg routes
@@ -38,13 +45,7 @@ import {
     templateUrl: './dispatch-table-truck-trailer.component.html',
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
-export class DispatchTableTruckTrailerComponent {
-    @Input() set hasAdditionalFieldTruck(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTruck = hasAdditionalField;
-    }
-    @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTrailer = hasAdditionalField;
-    }
+export class DispatchTableTruckTrailerComponent implements OnChanges {
     @Input() set truckDropdownWidth(value: number) {
         this._truckDropdownWidth = Math.round(value - 2);
     }
@@ -84,9 +85,6 @@ export class DispatchTableTruckTrailerComponent {
     public truckTrailerFormControl: UntypedFormControl =
         new UntypedFormControl();
 
-    public _hasAdditionalFieldTruck: boolean = false;
-    public _hasAdditionalFieldTrailer: boolean = false;
-
     public _trailerList: DispatchTrailerListItemModel[] = [];
     public _truckList: DispatchTruckListItemModel[] = [];
 
@@ -105,11 +103,17 @@ export class DispatchTableTruckTrailerComponent {
 
     constructor(private modalService: ModalService) {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            this.type === DispatchTableStringEnum.TRUCK &&
+            !changes?.truck?.currentValue
+        )
+            this.truckTrailerFormControl.reset();
+    }
+
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
             type: this.type,
-            hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
             truckDropdownWidth: this._truckDropdownWidth,
             trailerDropdownWidth: this._trailerDropdownWidth,
         });
@@ -207,7 +211,7 @@ export class DispatchTableTruckTrailerComponent {
 
         this.hasAddNew = !values?.length;
 
-        if (!values.length && !findAllAssigned) {
+        if (!values?.length && !findAllAssigned) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? this._truckList.unshift({
                       id: 7656,

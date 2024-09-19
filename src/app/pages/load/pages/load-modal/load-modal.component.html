@@ -1,4 +1,5 @@
 <app-ta-modal
+[isVisibleMap]="true"
     [modalTitle]="modalTitle"
     [editData]="editData"
     [editName]="editName"
@@ -97,7 +98,7 @@
 
                         <ng-template #dropdownPopover>
                             <div
-                                class="popover-container load-template-switcher-popover-container scrollable-element"
+                                class="popover-container load-template-switcher-popover-container scrollable-element pb-0"
                             >
                                 <ng-container
                                     *ngFor="
@@ -380,6 +381,7 @@
                     [isCardOpen]="true"
                     [hasCounter]="loadExtraStops().length + 2"
                     [hasActionSvg]="true"
+                    [isActionDisabled]="!hasValidSteps"
                     [hasBodyData]="true"
                     [hasArrow]="false"
                     [animationMarginParams]="{
@@ -1108,7 +1110,7 @@
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
-                        [stopNumber]="loadForm.get('deliveryStopOrder').value"
+                        [stopNumber]="loadForm.get('deliveryStopOrder').value || 1"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1727,7 +1729,7 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-
+        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
         <!-- <app-ta-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"

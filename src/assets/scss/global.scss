@@ -94,7 +94,7 @@ body {
         .table-inner-modal
     ):not(.scrollable):not(.columns-scroll.items-scroll):not(
         .scrollable-element
-    ):not(.dropdown-options.scroll) {
+    ):not(.dropdown-options.scroll):not(.navigation-middle) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -123,15 +123,15 @@ body {
     margin: 2px 2px 2px 0;
 
     &::-webkit-scrollbar {
-        width: 2px; 
+        width: 2px;
     }
 
     &::-webkit-scrollbar-track {
-        border-radius: 5px; 
+        border-radius: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: $muted; 
+        background: $muted;
         border-radius: 5px;
     }
 }
@@ -339,4 +339,134 @@ app-load-modal {
     scrollbar-width: thin !important;
     padding-bottom: 30px;
     overflow-y: auto !important;
+}
+
+.ml-3 {
+    margin-left: 6px;
+}
+.dispatch-load {
+    .ta-custom-card .ta-card-header {
+        height: 33px;
+    }
+
+    .reodering-button {
+        &:hover {
+            color: $ta-black;
+            background-color: $bw-9;
+        }
+
+        &-finish {
+            color: $white;
+            background-color: $ta-blue-14;
+
+            &:hover {
+                color: $white;
+                background-color: $ta-blue-15;
+            }
+        }
+    }
+}
+
+// TODO:
+.nav-item-box {
+    display: none;
+}
+
+.dark-nav {
+    .navigation-routes-last {
+        background-color: $ta-black-2 !important;
+    }
+}
+
+.dark-nav {
+    .nav-item {
+        margin-left: 6px !important;
+        margin-right: 6px;
+        width: 236px !important;
+        padding-right: 6px;
+
+        .nav-item-arrow_top {
+            path {
+                fill: $white-4 !important;
+            }
+        }
+
+        &:hover {
+            background-color: $ta-black !important;
+
+            .nav-item-img-active {
+                svg path {
+                    fill: $ta-light-grey-6 !important;
+                }
+            }
+        }
+
+        &.nav-item-parent-active {
+            &:hover {
+                .animation-text,
+                .nav-item-name-active {
+                    color: $ta-blue-19 !important;
+                }
+
+                .nav-item-img-active svg path {
+                    fill: $ta-blue-19 !important;
+                }
+            }
+        }
+    }
+
+    .nav-item-arrow {
+        margin-left: 4px !important;
+    }
+
+    .subroute-item {
+        &:hover {
+            svg path {
+                fill: $white-4 !important;
+            }
+        }
+    }
+}
+
+.animation .nav-item.nav-item-active-box:hover svg path {
+    fill: $ta-blue-15 !important;
+}
+
+.navigation-routes-last .subroutes-container {
+    .subroutes {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 3px;
+
+        .subroutes-item {
+            top: 0 !important;
+            margin-left: 12px !important;
+            flex: 1;
+        }
+
+        .nav-item-img {
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .subroutes-active-checkpoint {
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            margin-right: 4px;
+        }
+
+        .nav-item-arrow_top {
+            position: relative !important;
+            top: 0 !important
+        }
+    }
+
+    .nav-item-img-active {
+        width: 18px;
+        height: 24px;
+    }
 }

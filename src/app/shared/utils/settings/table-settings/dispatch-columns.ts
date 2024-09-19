@@ -11,7 +11,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
             resizable: true,
             width: 320,
-            minWidth: 160,
+            minWidth: 100,
         },
         {
             ngTemplate: 'text',
@@ -32,7 +32,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
 
             width: 320,
-            minWidth: 160,
+            minWidth: 100,
         },
         {
             ngTemplate: 'text',
@@ -54,7 +54,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
 
             width: 400,
-            minWidth: 240,
+            minWidth: 160,
         },
         {
             ngTemplate: 'text',

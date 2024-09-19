@@ -12,11 +12,14 @@
         class="ta-resizer-handle position-relative"
         (mousedown)="onMouseDown($event)"
         [class.ta-resizer-handle-focus]="isDragging"
+        [class.resize-cursor]="isResizeEnabled"
     >
-        <svg-icon
-            [src]="svgRoutes.drag"
-            class="ta-resizer-container-icon d-flex align-items-center justify-content-center position-absolute rounded-circle"
-        ></svg-icon>
+        <ng-container *ngIf="isResizeEnabled">
+            <svg-icon
+                [src]="svgRoutes.drag"
+                class="ta-resizer-container-icon d-flex align-items-center justify-content-center position-absolute rounded-circle"
+            ></svg-icon>
+        </ng-container>
     </div>
     <div
         [ngStyle]="{ 'height.px': secondElementHeight }"

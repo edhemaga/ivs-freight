@@ -1,0 +1,405 @@
+<div class="conversation-list-container">
+    <div class="conversation-list-search" [formGroup]="searchForm">
+        <app-ta-input
+            formControlName="searchTerm"
+            [inputConfig]="
+                chatInput.userSearchInput(chatSearchPlaceholdersEnum.CHAT)
+            "
+        ></app-ta-input>
+    </div>
+    <div class="conversation-list-wrapper">
+        <!-- Loop through each group in groupsState -->
+        <ng-container
+            *ngFor="
+                let group of groupsState;
+                let ind = index;
+                trackBy: '' | trackByProperty : 'state'
+            "
+        >
+            <!-- ngSwitch based on group.id -->
+            <ng-container [ngSwitch]="group.id">
+                <!-- Case for Department -->
+                <ng-container *ngSwitchCase="chatGroupEnum.Department">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            header;
+                            context: {
+                                item: {
+                                    title: chatGroupEnum.Department,
+                                    count: departments.length
+                                },
+                                state: group.state
+                            }
+                        "
+                    ></ng-container>
+
+                    <ng-container
+                        *ngIf="group.state === chatGroupStateEnum.Expanded"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let department of group.groupData;
+                                let ind = index;
+                                trackBy: '' | trackByProperty
+                            "
+                        >
+                            <div [@fadeInOut]>
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        isAdvancedView
+                                            ? listItemAdvanced
+                                            : listItemRegular;
+                                        group_id: group.id;
+                                        context: {
+                                            type: conversationTypeEnum.CHANNEL,
+                                            item: department,
+                                            group: group.id
+                                        }
+                                    "
+                                ></ng-container>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+
+                <!-- Case for Company User -->
+                <ng-container *ngSwitchCase="chatGroupEnum.CompanyUser">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            userListHolder;
+                            context: {
+                                data: group.groupData?.data,
+                                count: group.groupData?.count,
+                                state: group.state,
+                                header_title: chatGroupEnum.CompanyUser,
+                                type: conversationTypeEnum.SINGLE_CHAT,
+                                is_round: true,
+                                group_id: group.id
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+
+                <!-- Case for Driver -->
+                <ng-container *ngSwitchCase="chatGroupEnum.Driver">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            userListHolder;
+                            context: {
+                                data: group.groupData?.data,
+                                count: group.groupData?.count,
+                                state: group.state,
+                                header_title: chatGroupEnum.Driver,
+                                type: conversationTypeEnum.SINGLE_CHAT,
+                                is_round: false,
+                                group_id: group.id
+                            }
+                        "
+                    ></ng-container>
+                </ng-container>
+                <ng-container *ngSwitchDefault> </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #header let-item="item" let-unread="unread" let-state="state">
+    <!-- Since title uses enum values, it is unique and therefore can be used as id -->
+    <div class="header d-flex">
+        <div
+            class="icon-regular d-flex justify-content-center align-items-center"
+            (click)="toggleChatGroupState(item.title, true)"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    headerArrowIcon;
+                    context: {
+                        state
+                    }
+                "
+            ></ng-container>
+        </div>
+        <div
+            class="header-details d-flex flex-grow-1 justify-content-between"
+            [ngClass]="item.count | chatHeaderClass : state : unread"
+            (click)="toggleChatGroupState(item.title)"
+        >
+            <div class="title ta-font-bold">
+                {{ item.title }}
+            </div>
+            <div class="count ta-font-bold">
+                {{ item.count }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template
+    #userListHolder
+    let-group_id="group_id"
+    let-state="state"
+    let-data="data"
+    let-count="count"
+    let-header_title="header_title"
+    let-type="type"
+    let-is_round="is_round"
+>
+    <ng-container
+        *ngTemplateOutlet="
+            header;
+            context: { item: { title: header_title, count: count }, state }
+        "
+    ></ng-container>
+    <ng-container
+        *ngIf="
+            state === chatGroupStateEnum.Expanded ||
+            state === chatGroupStateEnum.AllExpanded
+        "
+    >
+        <ng-container
+            *ngFor="
+                let item of data;
+                let ind = index;
+                trackBy: '' | trackByProperty : companyUser?.id
+            "
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    isAdvancedView ? listItemAdvanced : listItemRegular;
+                    context: {
+                        type: type,
+                        group: group_id,
+                        item: {
+                            id: item.companyUser?.id,
+                            name: item.companyUser?.fullName,
+                            avatarFile: item.companyUser?.avatarFile,
+                            isRound: is_round,
+                            isFavourite: item.isFavourite,
+                            unreadCount: item.unreadCount
+                        }
+                    }
+                "
+            ></ng-container>
+        </ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #listItemRegular let-item="item" let-type="type" let-group="group">
+    <div
+        class="conversation-list-item"
+        appHover
+        hoverColor="#eee"
+        appToggleBackground
+        [@fadeInOut]
+        (click)="selectConversation(item, type, group)"
+    >
+        <div class="conversation-list-item-regular d-flex">
+            <div
+                class="icon-regular d-flex justify-content-center align-items-center"
+            >
+                <ng-container [ngSwitch]="type">
+                    <ng-container
+                        *ngSwitchCase="conversationTypeEnum.SINGLE_CHAT"
+                    >
+                        <app-ca-profile-image
+                            [avatarImg]="item.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="item.name | nameInitials"
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="item.isRound"
+                        ></app-ca-profile-image>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 18,
+                                        height: 18,
+                                        route: ChatSvgRoutes.hashIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <ng-container
+                *ngTemplateOutlet="
+                    itemTitle;
+                    context: {
+                        item: item
+                    }
+                "
+            ></ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template
+    #listItemAdvanced
+    let-item="item"
+    let-type="type"
+    let-group="group"
+>
+    <div
+        class="conversation-list-item"
+        appHover
+        hoverColor="#eee"
+        appToggleBackground
+        [@fadeInOut]
+        (click)="selectConversation(item, type, group)"
+    >
+        <div class="conversation-list-item-advanced d-flex flex-grow-1">
+            <div
+                class="icon-advanced d-flex justify-content-center align-items-center"
+            >
+                <ng-container [ngSwitch]="type">
+                    <ng-container
+                        *ngSwitchCase="conversationTypeEnum.SINGLE_CHAT"
+                    >
+                        <app-ca-profile-image
+                            [avatarImg]="item.avatarFile?.url"
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="item.name | nameInitials"
+                            [size]="32"
+                            [fontSize]="11"
+                            [isHoverEffect]="false"
+                            [isRound]="item.isRound"
+                        ></app-ca-profile-image>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 29,
+                                        height: 29,
+                                        route: ChatSvgRoutes.hashIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="conversation-list-item-advanced-details">
+                <div class="conversation-list-item-advanced-details-top">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            itemTitle;
+                            context: {
+                                item: item
+                            }
+                        "
+                    ></ng-container>
+                </div>
+                <div
+                    class="conversation-list-item-advanced-details-bottom d-flex flex-grow-1 justify-content-between"
+                >
+                    <div class="mesage">{{ item.lastMessage?.content }}</div>
+                    <div class="date">
+                        {{ item.lastMessage?.createdAt | formatTime }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #itemTitle let-item="item">
+    <div class="item d-flex flex-grow-1 justify-content-between">
+        <div
+            class="title title-color ta-font-regular d-flex align-items-center justify-content-center"
+        >
+            <div>
+                {{ item.name }}
+            </div>
+        </div>
+        <div
+            class="ta-font-regular d-flex align-items-center justify-content-center"
+        >
+            <div>
+                <ng-container [ngSwitch]="true">
+                    <ng-container *ngSwitchCase="item?.isFavourite">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 13,
+                                        height: 13,
+                                        route: ChatSvgRoutes.favoriteIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="item?.unreadCount">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                icon;
+                                context: {
+                                    item: {
+                                        width: 6,
+                                        height: 6,
+                                        route: ChatSvgRoutes.circleIcon
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault></ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #icon let-item="item">
+    <svg-icon
+        class="d-flex justify-content-center align-items-center"
+        [ngClass]="
+            (item.state === chatGroupStateEnum.Expanded && 'icon-0degr') ||
+            (item.state === chatGroupStateEnum.Collapsed && 'icon-90degr') ||
+            (item.state === chatGroupStateEnum.AllExpanded && 'icon-180degr')
+        "
+        [svgStyle]="{ 'width.px': item.width, 'height.px': item.height }"
+        [src]="item.route"
+    >
+    </svg-icon>
+</ng-template>
+
+<ng-template #headerArrowIcon let-state="state" let-message="message">
+    <div
+        class="header-arrow d-flex justify-content-center align-content-center"
+        appHover
+        [hoverColor]="
+            state === chatGroupStateEnum.AllExpanded ? '#E9EFFD' : '#EEEEEE'
+        "
+    >
+        <ng-container
+            *ngTemplateOutlet="
+                icon;
+                context: {
+                    item: {
+                        width: 18,
+                        height: 18,
+                        route: ChatSvgRoutes.headerArrowDownIcon,
+                        state
+                    }
+                }
+            "
+        ></ng-container>
+    </div>
+</ng-template>

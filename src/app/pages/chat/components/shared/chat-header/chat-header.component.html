@@ -1,0 +1,24 @@
+<div class="header-wrapper">
+    <div
+        class="header-content"
+        [ngStyle]="{
+            height: isSearchActive ? 'fit-content' : '26px'
+        }"
+    >
+        <ng-content></ng-content>
+    </div>
+    <ng-container *ngIf="isSearchActive; else border">
+        <div [@fadeInOut] class="form-wrapper" [formGroup]="searchForm">
+            <app-ta-input
+                formControlName="searchTerm"
+                [inputConfig]="
+                    chatInput.userSearchInput(chatSearchPlaceHolders.CHAT)
+                "
+                (clear)="toggleSearch(false)"
+            ></app-ta-input>
+        </div>
+    </ng-container>
+    <ng-template #border>
+        <div class="horizontal-border"></div>
+    </ng-template>
+</div>

@@ -3,7 +3,7 @@
     [class.filled]="type === 'truck' ? !!truck : !!trailer"
     [ngStyle]="{
         background:
-            isTrailerAddNewHidden || (!truck && !isBoardLocked) ? '' : '#fff'
+            isTrailerAddNewHidden || (!truck && isBoardLocked) ? '' : '#fff'
     }"
 >
     <ng-container
@@ -59,9 +59,9 @@
                             isCircleIconHovering
                                 ? type === 'truck'
                                     ? (truck.truckType.id
-                                      | colorFinder : 'truck' : true)
+                                      | dispatchColorFinder : 'truck' : true)
                                     : (trailer.trailerType.id
-                                      | colorFinder : 'trailer' : true)
+                                      | dispatchColorFinder : 'trailer' : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
@@ -70,7 +70,14 @@
                                 : '0 0 0 6px'
                         }"
                     >
-                        <div class="d-flex align-items-center">
+                        <div
+                            class="d-flex align-items-center"
+                            [ngStyle]="{
+                                'max-width': isBoardLocked
+                                    ? '100%'
+                                    : 'calc( 100% - 26px )'
+                            }"
+                        >
                             <!-- Circle Icon -->
 
                             <svg-icon
@@ -78,9 +85,9 @@
                                 [ngClass]="
                                     type === 'truck'
                                         ? (truck.truckType.id
-                                          | colorFinder : 'truck')
+                                          | dispatchColorFinder : 'truck')
                                         : (trailer.trailerType.id
-                                          | colorFinder : 'trailer')
+                                          | dispatchColorFinder : 'trailer')
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
@@ -104,17 +111,19 @@
                                     [ngClass]="
                                         type === 'truck'
                                             ? (truck.truckType.id
-                                              | colorFinder : 'truck')
+                                              | dispatchColorFinder : 'truck')
                                             : (trailer.trailerType.id
-                                              | colorFinder : 'trailer')
+                                              | dispatchColorFinder : 'trailer')
                                     "
                                     [svgStyle]="{
                                         'height.px': '18'
                                     }"
                                     [src]="
                                         type === 'truck'
-                                            ? truck.truckType.logoName
-                                            : trailer.trailerType.logoName
+                                            ? 'assets/svg/common/trucks/' +
+                                              truck.truckType.logoName
+                                            : 'assets/svg/common/trailers/' +
+                                              trailer.trailerType.logoName
                                     "
                                 ></svg-icon>
                             </ng-container>
@@ -122,7 +131,9 @@
                             <!-- Text -->
 
                             <ng-template #notHoveringCircleIcon>
-                                <p class="m-0 ta-font-bold">
+                                <p
+                                    class="m-0 ta-font-bold truck-trailer-number"
+                                >
                                     {{
                                         type === 'truck'
                                             ? truck.truckNumber

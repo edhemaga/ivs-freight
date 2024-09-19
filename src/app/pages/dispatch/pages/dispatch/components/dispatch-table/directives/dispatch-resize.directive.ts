@@ -30,11 +30,25 @@ export class ResizableDirective implements OnInit {
         this.checkWidth();
     }
     @Input() set isNoteExpanded(value: boolean) {
-        const valueChanged = this._isNoteExpanded !== value;
-
-        this._isNoteExpanded = value;
-
-        this.checkWidth(valueChanged);
+        this.setExpandedValue(
+            this._isNoteExpanded,
+            value,
+            DispatchTableStringEnum.NOTE
+        );
+    }
+    @Input() set hasAdditionalFieldTruck(value: boolean) {
+        this.setExpandedValue(
+            this._hasAdditionalFieldTruck,
+            value,
+            DispatchTableStringEnum.TRUCK_1
+        );
+    }
+    @Input() set hasAdditionalFieldTrailer(value: boolean) {
+        this.setExpandedValue(
+            this._hasAdditionalFieldTrailer,
+            value,
+            DispatchTableStringEnum.TRAILER_1
+        );
     }
     @Output() onResizeAction = new EventEmitter<{
         width: number;
@@ -54,6 +68,9 @@ export class ResizableDirective implements OnInit {
     private mouseMoveListener;
 
     private isColumnResized: boolean = false;
+
+    private _hasAdditionalFieldTruck: boolean = false;
+    private _hasAdditionalFieldTrailer: boolean = false;
 
     constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -100,11 +117,15 @@ export class ResizableDirective implements OnInit {
 
         // Apply width constraints
         if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
-            this.renderer.setStyle(
-                this.el.nativeElement,
-                DispatchTableStringEnum.WIDTH,
-                `${newWidth}px`
-            );
+            this.setNewWidthValue(newWidth);
+
+            this.isColumnResized = true;
+        } else if (newWidth < this.minWidth) {
+            this.setNewWidthValue(this.minWidth);
+
+            this.isColumnResized = true;
+        } else if (newWidth > this.maxWidth) {
+            this.setNewWidthValue(this.maxWidth);
 
             this.isColumnResized = true;
         }
@@ -136,45 +157,47 @@ export class ResizableDirective implements OnInit {
         }
     }
 
-    private checkWidth(isNoteResized?: boolean): void {
+    private checkWidth(isColumnResized?: boolean): void {
         switch (this.title) {
             case DispatchTableStringEnum.NOTE:
-                this.maxWidth = this._columns[17]?.width;
-                this.minWidth = this._columns[17]?.minWidth;
+                const noteMinWidth = this._isNoteExpanded
+                    ? this._columns[17]?.minWidth
+                    : this.isResizeEnabled
+                    ? 32
+                    : 25;
+                const noteMaxWidth = this._isNoteExpanded
+                    ? this._columns[17]?.width
+                    : this.isResizeEnabled
+                    ? 32
+                    : 25;
 
-                if (isNoteResized) {
-                    const minNoteValue = this.isResizeEnabled ? 30 : 23;
+                const minWidthValue = this._isNoteExpanded
+                    ? noteMinWidth - 9
+                    : noteMinWidth;
 
-                    const noteMinWidth =
-                        !this._isNoteExpanded &&
-                        this.el.nativeElement.offsetWidth >= 23
-                            ? minNoteValue
-                            : this.el.nativeElement.offsetWidth <
-                              this.minWidth - 11
-                            ? this.minWidth - 11
-                            : this.el.nativeElement.offsetWidth;
-
-                    this.renderer.setStyle(
-                        this.el.nativeElement,
-                        DispatchTableStringEnum.WIDTH,
-                        `${noteMinWidth}px`
+                if (
+                    this.el.nativeElement.offsetWidth > 20 &&
+                    this.el.nativeElement.offsetWidth < minWidthValue
+                )
+                    this.setNewWidthValue(
+                        this._isNoteExpanded ? noteMinWidth + 32 : noteMinWidth
                     );
-                }
 
+                if (this.el.nativeElement.offsetWidth > noteMaxWidth)
+                    this.setNewWidthValue(noteMaxWidth);
+
+                this.maxWidth = noteMaxWidth;
+                this.minWidth = noteMinWidth;
                 break;
             case DispatchTableStringEnum.DISPATCHER_1:
                 this.maxWidth = this._columns[16]?.width;
                 this.minWidth = this._columns[16]?.minWidth;
 
                 const dispatcherMinWidth = this.isResizeEnabled
-                    ? this.minWidth - 4
-                    : this.minWidth - 11;
+                    ? this.minWidth - 2
+                    : this.minWidth - 9;
 
-                this.renderer.setStyle(
-                    this.el.nativeElement,
-                    DispatchTableStringEnum.WIDTH,
-                    `${dispatcherMinWidth}px`
-                );
+                this.setNewWidthValue(dispatcherMinWidth);
 
                 break;
             case DispatchTableStringEnum.PROGRESS:
@@ -186,14 +209,10 @@ export class ResizableDirective implements OnInit {
                 this.minWidth = this._columns[10]?.minWidth;
 
                 const inspectionMinWidth = this.isResizeEnabled
-                    ? this.minWidth - 4
-                    : this.minWidth - 11;
+                    ? this.minWidth - 2
+                    : this.minWidth - 9;
 
-                this.renderer.setStyle(
-                    this.el.nativeElement,
-                    DispatchTableStringEnum.WIDTH,
-                    `${inspectionMinWidth}px`
-                );
+                this.setNewWidthValue(inspectionMinWidth);
 
                 break;
             case DispatchTableStringEnum.PARKING_1:
@@ -201,27 +220,76 @@ export class ResizableDirective implements OnInit {
                 this.minWidth = this._columns[15]?.minWidth;
                 break;
             case DispatchTableStringEnum.TRAILER_1:
-                this.maxWidth = this._columns[2]?.width;
-                this.minWidth = this._columns[2]?.minWidth;
+                const trailerMaxWidth = this._columns[3]?.hidden
+                    ? this._columns[2]?.width - 40
+                    : this._columns[2]?.width;
+                const trailerMinWidth = this._columns[3]?.hidden
+                    ? this._columns[2]?.minWidth
+                    : this._columns[2]?.minWidth + 40;
+
+                if (isColumnResized && this.el.nativeElement.offsetWidth > 50) {
+                    if (
+                        this.el.nativeElement.offsetWidth <
+                        trailerMinWidth + 11
+                    )
+                        this.setNewWidthValue(trailerMinWidth + 11);
+                    else if (
+                        this.el.nativeElement.offsetWidth >
+                        trailerMaxWidth - 9
+                    )
+                        this.setNewWidthValue(trailerMaxWidth - 9);
+                }
+
+                this.maxWidth = trailerMaxWidth;
+                this.minWidth = trailerMinWidth;
                 break;
             case DispatchTableStringEnum.DRIVER_1:
+                const driverMaxWidth = this._columns[6]?.hidden
+                    ? this._columns[4]?.width - 40
+                    : this._columns[4]?.width;
                 const driverMinWidth = this._columns[6]?.hidden
                     ? this._columns[4]?.minWidth
-                    : this._columns[4]?.minWidth + 60;
+                    : this._columns[4]?.minWidth + 80;
 
-                if (this.el.nativeElement.offsetWidth < driverMinWidth - 11)
-                    this.renderer.setStyle(
-                        this.el.nativeElement,
-                        DispatchTableStringEnum.WIDTH,
-                        `${driverMinWidth - 11}px`
-                    );
+                if (this.el.nativeElement.offsetWidth > 50) {
+                    if (this.el.nativeElement.offsetWidth < driverMinWidth - 9)
+                        this.setNewWidthValue(driverMinWidth - 9);
+                    else if (
+                        this.el.nativeElement.offsetWidth >
+                        driverMaxWidth - 9
+                    )
+                        this.setNewWidthValue(driverMaxWidth - 9);
+                }
 
-                this.maxWidth = this._columns[4]?.width;
+                this.maxWidth = driverMaxWidth;
                 this.minWidth = driverMinWidth;
+
                 break;
             case DispatchTableStringEnum.TRUCK_1:
-                this.maxWidth = this._columns[0]?.width;
-                this.minWidth = this._columns[0]?.minWidth;
+                const truckMaxWidth = this._columns[1]?.hidden
+                    ? this._columns[0]?.width - 40
+                    : this._columns[0]?.width;
+                const truckMinWidth = this._columns[1]?.hidden
+                    ? this._columns[0]?.minWidth
+                    : this._columns[0]?.minWidth + 40;
+
+                if (isColumnResized && this.el.nativeElement.offsetWidth > 50) {
+                    if (
+                        this.el.nativeElement.offsetWidth <
+                        truckMinWidth + 11
+                    ) {
+                        this.setNewWidthValue(truckMinWidth + 11);
+                    } else if (
+                        this.el.nativeElement.offsetWidth >
+                        truckMaxWidth - 9
+                    ) {
+                        this.setNewWidthValue(truckMaxWidth - 9);
+                    }
+                }
+
+                this.maxWidth = truckMaxWidth;
+                this.minWidth = truckMinWidth;
+
                 break;
             case DispatchTableStringEnum.STATUS:
                 this.maxWidth = this._columns[12]?.width;
@@ -232,7 +300,7 @@ export class ResizableDirective implements OnInit {
                 this.minWidth = this._columns[11]?.minWidth;
                 break;
             case DispatchTableStringEnum.PICKUP:
-                this.maxWidth = this._columns[13]?.minWidth;
+                this.maxWidth = this._columns[13]?.width;
                 this.minWidth = this._columns[13]?.minWidth;
                 break;
         }
@@ -244,11 +312,58 @@ export class ResizableDirective implements OnInit {
                 (this.title === DispatchTableStringEnum.NOTE &&
                     !this._isNoteExpanded))
         ) {
-            this.maxWidth = 30;
-            this.minWidth = 30;
+            this.maxWidth = 32;
+            this.minWidth = 32;
         } else {
-            this.maxWidth = this.maxWidth - 11;
-            this.minWidth = this.minWidth - 11;
+            this.maxWidth = this.maxWidth - 9;
+            this.minWidth = this.minWidth - 9;
         }
+    }
+
+    private setExpandedValue(
+        currentValue: boolean,
+        newValue: boolean,
+        type: string
+    ): void {
+        const valueChanged = currentValue !== newValue;
+
+        switch (type) {
+            case DispatchTableStringEnum.NOTE:
+                this._isNoteExpanded = newValue;
+                break;
+            case DispatchTableStringEnum.TRUCK_1:
+                this._hasAdditionalFieldTruck = newValue;
+                break;
+            case DispatchTableStringEnum.TRAILER_1:
+                this._hasAdditionalFieldTrailer = newValue;
+                break;
+        }
+
+        this.checkWidth(valueChanged);
+    }
+
+    public setNewWidthValue(newWidth: number): void {
+        this.renderer.setStyle(
+            this.el.nativeElement,
+            DispatchTableStringEnum.WIDTH,
+            `${newWidth}px`
+        );
+
+        const columnTitle =
+            this.title === DispatchTableStringEnum.DRIVER_1
+                ? DispatchTableStringEnum.NAME
+                : this.title === DispatchTableStringEnum.PICKUP
+                ? DispatchTableStringEnum.PICKUP_DELIVERY
+                : this.title;
+
+        const currentColumn = this._columns.find(
+            (column) => column.title.toLowerCase() === columnTitle.toLowerCase()
+        );
+
+        if (currentColumn)
+            this.onResizeAction.emit({
+                width: this.el.nativeElement.offsetWidth,
+                column: currentColumn,
+            });
     }
 }

@@ -20,8 +20,10 @@
             ></app-navigation-modals>
         </div>
 
+        <div class="navigation-divider"></div>
+
         <div
-            class="navigation-middle"
+            class="navigation-middle d-flex flex-column"
             (mouseenter)="onMidleNavHover(true); onFooterHover(false)"
             (mouseleave)="onMidleNavHover(false); onFooterHover(false)"
         >
@@ -29,15 +31,21 @@
                 class="navigation-routes"
                 *ngFor="
                     let item of navigation;
+                    let last = last;
                     let ind = index;
                     trackBy: identity
                 "
-                [ngClass]="{
-                    'new-magic-line-selected':
-                        isActiveRouteOnReload(item.name) ||
-                        selectedRoute == item.name
-                }"
+                [class.navigation-routes-last]="last"
             >
+                <ng-container *ngIf="last">
+                    <div
+                        [ngClass]="{
+                            'open-navigation': isNavigationHovered,
+                            'close-navigation': !isNavigationHovered
+                        }"
+                    ></div>
+                    <div class="navigation-divider"></div>
+                </ng-container>
                 <app-navigation-route
                     [activeLink]="item.isRouteActive"
                     *ngIf="!item.arrow"
@@ -122,6 +130,7 @@
                             subrouteClicked
                         "
                         [subroute]="item"
+                        [isLastChild]="last"
                         [selectedSubRoute]="selectedSubRoute"
                         [isActiveSubroute]="isActiveSubroute"
                         [isNavigationHovered]="isNavigationHovered"
@@ -132,72 +141,12 @@
                     </app-navigation-subroute>
                 </app-navigation-subroute-card>
             </div>
-            <div
-                *ngIf="
-                    (middleIsHovered &&
-                        !isSettingsPanelOpen &&
-                        !isActiveSubroute &&
-                        !isUserPanelOpen &&
-                        !isModalPanelOpen &&
-                        !openedDropdown) ||
-                    (isNavigationHovered &&
-                        footerRouteActive &&
-                        !footerHovered &&
-                        !isActiveSubroute &&
-                        !isSettingsPanelOpen &&
-                        !isModalPanelOpen &&
-                        !isUserCompanyDetailsOpen &&
-                        !isUserPanelOpen &&
-                        !openedDropdown &&
-                        selectedRoute != 'Company' &&
-                        selectedRoute != 'Notifications')
-                "
-                [@showHideDetails]="
-                    !subrouteContainerOpened &&
-                    !isActiveSubroute &&
-                    isModalPanelOpen &&
-                    !footerRouteActive &&
-                    isActiveMagicLine &&
-                    isNavigationHovered
-                        ? 'false'
-                        : 'true'
-                "
-                class="new-magic-line"
-                [ngClass]="{
-                    'animate-magic-line': isNavigationHovered,
-                    'magic-line-width': !isNavigationHovered
-                }"
-            ></div>
         </div>
-        <!-- Open nav on click -->
-        <div
-            [ngClass]="{
-                'open-navigation': isNavigationHovered,
-                'close-navigation': !isNavigationHovered
-            }"
-        ></div>
         <div
             class="navigation-bottom"
             (mouseenter)="onMidleNavHover(false); onFooterHover(true)"
             (mouseleave)="onMidleNavHover(false); onFooterHover(false)"
         >
-            <app-navigation-footer
-                (click)="onHoveredNavigation(true)"
-                [subrouteContainerOpened]="openedDropdown"
-                [isNavigationHovered]="isNavigationHovered"
-                [isUserCompanyDetailsOpen]="isUserCompanyDetailsOpen"
-                [isSettingsPanelOpen]="isSettingsPanelOpen"
-                [isUserPanelOpen]="isUserPanelOpen"
-                [isModalPanelOpen]="isModalPanelOpen"
-                [isActiveFooterRouteClick]="isActiveFooterRoute"
-                [showHideLineIfSettingsActive]="middleIsHovered"
-                [isActiveSubroute]="isActiveSubroute"
-                [selectedRoute]="selectedRoute"
-                [selectedSubRoute]="selectedSubRoute"
-                (onActivateFooterRoutes)="onActivateFooterRoute($event)"
-            >
-            </app-navigation-footer>
-
             <app-navigation-user-profile
                 (click)="onHoveredNavigation(true)"
                 [isNavigationHovered]="

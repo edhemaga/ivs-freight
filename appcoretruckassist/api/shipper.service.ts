@@ -25,6 +25,8 @@ import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
 import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
+import { LoadSortBy } from '../model/loadSortBy';
+// @ts-ignore
 import { LocationType } from '../model/locationType';
 // @ts-ignore
 import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
@@ -44,6 +46,8 @@ import { ShipperMinimalListResponse } from '../model/shipperMinimalListResponse'
 import { ShipperModalResponse } from '../model/shipperModalResponse';
 // @ts-ignore
 import { ShipperResponse } from '../model/shipperResponse';
+// @ts-ignore
+import { SortOrder } from '../model/sortOrder';
 // @ts-ignore
 import { StatusSetMultipleShipperCommand } from '../model/statusSetMultipleShipperCommand';
 
@@ -311,16 +315,18 @@ export class ShipperService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
-    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiShipperClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, addedNew?: boolean, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, lastFrom?: number, lastTo?: number, ppgFrom?: number, ppgTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -422,6 +428,14 @@ export class ShipperService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -903,16 +917,18 @@ export class ShipperService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperListResponse>;
-    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperListResponse>>;
-    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperListResponse>>;
-    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperListResponse>;
+    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperListResponse>>;
+    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperListResponse>>;
+    public apiShipperListGet(stateIds?: Array<number>, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (stateIds) {
@@ -948,6 +964,14 @@ export class ShipperService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1126,16 +1150,18 @@ export class ShipperService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperListResponse>;
-    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperListResponse>>;
-    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperListResponse>>;
-    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperListResponse>;
+    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperListResponse>>;
+    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperListResponse>>;
+    public apiShipperListmapGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -1187,6 +1213,14 @@ export class ShipperService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1291,16 +1325,18 @@ export class ShipperService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperLoadsResponse>;
-    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperLoadsResponse>>;
-    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperLoadsResponse>>;
-    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<ShipperLoadsResponse>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<ShipperLoadsResponse>>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<ShipperLoadsResponse>>;
+    public apiShipperLoadsGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -1422,6 +1458,14 @@ export class ShipperService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

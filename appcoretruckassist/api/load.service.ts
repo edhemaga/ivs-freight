@@ -57,6 +57,8 @@ import { LoadPossibleStatusesResponse } from '../model/loadPossibleStatusesRespo
 // @ts-ignore
 import { LoadResponse } from '../model/loadResponse';
 // @ts-ignore
+import { LoadSortBy } from '../model/loadSortBy';
+// @ts-ignore
 import { LoadStatus } from '../model/loadStatus';
 // @ts-ignore
 import { LoadStatusHistoryCommand } from '../model/loadStatusHistoryCommand';
@@ -76,6 +78,8 @@ import { LoadType } from '../model/loadType';
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { RevertLoadStatusCommand } from '../model/revertLoadStatusCommand';
+// @ts-ignore
+import { SortOrder } from '../model/sortOrder';
 // @ts-ignore
 import { UpdateLoadStatusCommand } from '../model/updateLoadStatusCommand';
 // @ts-ignore
@@ -569,6 +573,81 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiLoadInvoiceIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiLoadInvoiceIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiLoadInvoiceIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiLoadInvoiceIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiLoadInvoiceIdGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/load/invoice/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiLoadListAssignedIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignedLoadListResponse>;
     public apiLoadListAssignedIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignedLoadListResponse>>;
     public apiLoadListAssignedIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignedLoadListResponse>>;
@@ -747,16 +826,18 @@ export class LoadService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -878,6 +959,14 @@ export class LoadService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1278,16 +1367,18 @@ export class LoadService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
-    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AssignLoadModalResponse>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AssignLoadModalResponse>>;
+    public apiLoadModalAssignGet(dispatchFutureTime?: number, truckType?: Array<number>, trailerType?: Array<number>, _long?: number, lat?: number, distance?: number, dispatcherIds?: Array<number>, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchFutureTime !== undefined && dispatchFutureTime !== null) {
@@ -1347,6 +1438,14 @@ export class LoadService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -2865,16 +2964,18 @@ export class LoadService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadTemplateListResponse>;
-    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadTemplateListResponse>>;
-    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadTemplateListResponse>>;
-    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadTemplateListResponse>;
+    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadTemplateListResponse>>;
+    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadTemplateListResponse>>;
+    public apiLoadTemplateListGet(loadType?: number, revenueFrom?: number, revenueTo?: number, loadId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -2908,6 +3009,14 @@ export class LoadService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

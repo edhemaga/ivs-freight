@@ -18,38 +18,44 @@ export class DispatchTableLastLocationComponentComponent {
     @Input() set parkingList(value: DispatchBoardParking[]) {
         if (this.address) this.checkParkingLocation(value);
     }
+
     @Input() address?: AddressEntity = null;
     @Input() rowIndex: number = 0;
     @Input() showAddAddressField: number = 0;
     @Input() isHoveringRow: boolean;
+    @Input() isDisplayingAddressInput: boolean;
 
     @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
     @Output() isDropdownHidden: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
-    public isDisplayParkingIcon: boolean = false;
     public truckAddressControl: UntypedFormControl = new UntypedFormControl(
         null
     );
 
+    public isDisplayParkingIcon: boolean = false;
+
     constructor() {}
 
-    get LastLocationAddressConfig(): ITaInput {
+    get lastLocationAddressConfig(): ITaInput {
         return DispatchConfig.getDispatchAddressConfig();
     }
 
-    public handleInputSelect(event): void {
-        if (event.valid) {
-            this.updateLastLocationEmit.emit(event.address);
-        }
+    public handleInputSelect(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) this.updateLastLocationEmit.emit(event.address);
+
+        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
     }
 
     public onHideDropdown(): void {
-        this.isDropdownHidden.emit(true);
+        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
     }
 
-    public checkParkingLocation(parkings): void {
+    public checkParkingLocation(parkings: DispatchBoardParking[]): void {
         this.isDisplayParkingIcon = parkings.some(
             (parking) => parking.address.county === this.address.county
         );

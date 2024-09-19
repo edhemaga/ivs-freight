@@ -1,0 +1,60 @@
+@import 'src/theme/variables';
+
+.conversation-content-container {
+    height: 100%;
+
+    border-radius: 2px;
+
+    .messages-header {
+        height: 100%;
+
+        .name {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+
+        .right-icons {
+            &:hover() {
+                cursor: pointer;
+            }
+            margin: auto 0 auto auto;
+
+            .icon-wrapper {
+                width: 26px;
+                height: 26px;
+            }
+
+            svg-icon {
+                padding: 0 4px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .conversation-content {
+        display: block;
+    }
+}
+
+.profile-illustration-wrapper {
+    height: 22px;
+    width: 22px;
+    position: relative;
+    border: 1px solid $white;
+}
+
+.left-offset {
+    left: -6px;
+}
+
+.remaining-participants-number {
+    border-radius: 50px;
+    background-color: $ta-light-grey-2;
+    color: $white;
+    line-height: 11px;
+    font-size: 9px;
+    text-align: center;
+}

@@ -26,8 +26,11 @@
     }
 
     &-handle {
-        cursor: row-resize;
         height: 10px;
+
+        &.resize-cursor {
+            cursor: row-resize;
+        }
 
         &:before {
             content: '';

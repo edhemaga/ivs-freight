@@ -1,0 +1,114 @@
+<div class="user-profile-wrapper">
+    <app-chat-header>
+        <div class="d-flex">
+            <div class="header-text ta-font-extra-bold">Profile</div>
+            <div
+                class="d-flex header-close-icon"
+                (click)="closeProfileDetails()"
+            >
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    [src]="ChatSvgRoutes.noBorderXIcon"
+                >
+                </svg-icon>
+            </div>
+        </div>
+    </app-chat-header>
+
+    <div class="basic-info">
+        <div class="d-flex align-content-center align-items-center">
+            <app-ca-profile-image
+                [avatarImg]="data.userAdditionalInformation?.avatarFile?.url"
+                [avatarColor]="{ background: '#DFC2F9', color: '#9E47EC66' }"
+                [textShortName]="
+                    data.userAdditionalInformation?.firstName.concat(
+                        ' ',
+                        data.userAdditionalInformation?.lastName
+                    ) | nameInitials
+                "
+                [size]="74"
+                [fontSize]="30"
+                [isHoverEffect]="false"
+                [isRound]="
+                    data.userAdditionalInformation?.userType?.name !== 'Driver'
+                "
+            ></app-ca-profile-image>
+            <div class="text">
+                <div class="text-name ta-font-semi-bold">
+                    {{ data.userAdditionalInformation?.firstName }}
+                    {{ data.userAdditionalInformation?.lastName }}
+                </div>
+                <div class="text-type ta-font-medium">
+                    {{
+                        data.userAdditionalInformation?.userType?.name ||
+                            chatSearchPlaceHolders.USER
+                    }}
+                </div>
+                <div>Active</div>
+            </div>
+        </div>
+        <div class="horizontal-border"></div>
+    </div>
+
+    <div class="additional-info">
+        <div class="title ta-font-extra-bold">Additional info</div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.phoneIcon"
+            >
+            </svg-icon>
+            {{
+                data.userAdditionalInformation?.phone ?? '(123) 456-7890'
+                    | formatPhoneP
+            }}
+        </div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.emailIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.email }}
+        </div>
+        <div class="additional-info-row d-flex ta-font-regular">
+            <svg-icon
+                class="d-flex justify-content-center align-items-center"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                [src]="ChatSvgRoutes.companyIcon"
+            >
+            </svg-icon>
+            {{ data.userAdditionalInformation?.companyName }}
+        </div>
+
+        <div class="horizontal-border"></div>
+    </div>
+
+    <app-chat-profile-resources
+        [title]="'Media'"
+        [customClass]="'media-content'"
+        [count]="data.mediaCount"
+        [resources]="data.media"
+        [type]="ChatUserProfileResourceTypeEnum.MEDIA"
+    ></app-chat-profile-resources>
+
+    <app-chat-profile-resources
+        [title]="'Files'"
+        [customClass]="'files-content'"
+        [count]="data.filesCount"
+        [resources]="data.files"
+        [type]="ChatUserProfileResourceTypeEnum.FILES"
+    ></app-chat-profile-resources>
+
+    <app-chat-profile-resources
+        [title]="'Links'"
+        [customClass]="'links-content'"
+        [count]="data?.linksCount"
+        [resources]="data?.links"
+        [type]="ChatUserProfileResourceTypeEnum.LINKS"
+        [hasHorizontalBorder]="false"
+    ></app-chat-profile-resources>
+</div>

@@ -10,6 +10,8 @@ export class ChatSvgRoutes {
     static contactStatusIcon: string = 'assets/svg/chat/contact-status-icon.svg';
     static departmentIcon: string = 'assets/svg/chat/department-icon.svg';
     static listOptionsIcon: string = 'assets/svg/chat/list-options-icon.svg';
+    static favoriteIcon: string = 'assets/svg/chat/favorite-icon.svg';
+    static circleIcon: string = 'assets/svg/chat/circle-icon.svg';
 
     // Messages and messages actions
     static faceEmojiIcon: string = 'assets/svg/chat/face-smile-emoji-icon.svg';
@@ -35,12 +37,15 @@ export class ChatSvgRoutes {
 
     // Groups
     static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
-    static dispatchBoardIcon: string = 'assets/svg/chat/dispatch-board-icon.svg';
+    static dispatchBoardIcon: string = 'assets/svg/chat/dispatch-icon.svg';
     static truckIcon: string = 'assets/svg/chat/truck-icon.svg';
     static safetyIcon: string = 'assets/svg/chat/safety-icon.svg';
     static repairIcon: string = 'assets/svg/chat/repair-icon.svg';
     static generalIcon: string = 'assets/svg/chat/general-icon.svg';
+    static arrowLeftIcon: string = 'assets/svg/chat/arrow-left-icon.svg';
 
     // Other
     static linkIcon: string = 'assets/svg/chat/link-icon.svg';
+    static headerArrowDownIcon: string = 'assets/svg/chat/header-arrow-down-icon.svg';
+    static hashIcon: string = 'assets/svg/chat/hash-icon.svg';
 }

@@ -129,7 +129,7 @@
             <div *ngIf="item.rent" class="divider"></div>
             <div *ngIf="item.rent" class="settings-progress-container">
                 <app-ta-progress-expiration
-                    [expireDate]="getRentDate(item.monthlyDay.id)"
+                    [expireDate]="getRentDate(item.monthlyDay?.id)"
                     [startDate]="currentDate"
                     [expiresSettings]="'settings-parking'"
                     [customText]="generateTextForProgressBar(item)"

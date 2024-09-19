@@ -11,12 +11,17 @@
     user-select: none;
 
     .nav-header-top {
-        padding: 0 4px;
+        padding: 0 4px 0 6px;
         overflow: hidden;
         .nav-header-top-logo {
             svg {
                 cursor: pointer;
             }
+        }
+
+        &-text {
+            top: 2px;
+            left: 32px;
         }
     }
 
@@ -37,11 +42,7 @@
             align-items: center;
             gap: 4px;
             padding-left: 2px;
-            .tooltip-right {
-                left: 18px;
-                position: fixed;
-                top: 69px;
-            }
+
             .hide-tooltip {
                 display: none;
             }
@@ -76,15 +77,34 @@
             }
         }
         .svg-holder {
-            width: 25px;
-            height: 25px;
+            width: 34px;
+            height: 34px;
             position: absolute;
             right: 8px;
-            top: 4px;
+            top: -2px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 11;
+            background: $nav-dark-bg;
+            border-radius: 50%;
+            transition: $nav-transition;
+
+            &:hover {
+                background-color: $nav-text-color-grey;
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+                position: relative;
+                top: -1px;
+
+                path {
+                    transition: $nav-transition;
+                }
+            }
+
             cursor: pointer;
             &:hover {
                 .dark-svg {
@@ -94,11 +114,6 @@
                         }
                     }
                 }
-            }
-            .tooltip-right {
-                position: absolute;
-                right: 29px;
-                bottom: 26px;
             }
         }
         .nav-header-bottom-rightSide {

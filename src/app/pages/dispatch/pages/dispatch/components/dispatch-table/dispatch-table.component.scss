@@ -19,14 +19,10 @@
     &.unlocked {
         table {
             tr {
-                th {
-                }
                 .resize {
                     position: relative;
                 }
-                .resize {
-                    position: relative;
-                }
+
                 .resize.show-after::after {
                     display: flex;
                     justify-content: space-between;
@@ -39,20 +35,23 @@
                     align-items: center;
                     cursor: col-resize;
                 }
+
                 .resize::after {
                     display: none;
                     content: '';
                     position: absolute;
-                    right: -3px;
+                    right: -5px;
                     top: 0;
                     height: 100%;
                     width: 8px;
+                    z-index: 2;
                 }
+
                 .resize::before {
                     display: none;
                     content: '';
                     position: absolute;
-                    right: 0;
+                    right: -2px;
                     top: 50%;
                     transform: translateY(-50%);
                     height: 14px;
@@ -66,6 +65,7 @@
                 .close-icon-show {
                     width: 100%;
                 }
+
                 td {
                     .main_inside {
                         /* Drag & Drop Single*/
@@ -248,10 +248,12 @@
             }
 
             &.pickup-delivery {
-                width: 340px;
+                .resize {
+                    width: 100%;
 
-                div {
-                    flex: 1;
+                    div {
+                        flex: 1;
+                    }
                 }
 
                 .icon {
@@ -477,9 +479,9 @@
         th,
         td {
             &.box-item {
-                min-width: 34px;
-                max-width: 34px;
-                width: 34px;
+                min-width: 36px;
+                max-width: 36px;
+                width: 36px;
             }
 
             &.truck-field,
@@ -489,9 +491,9 @@
             }
 
             &.pre-trip {
-                min-width: 34px;
-                max-width: 34px;
-                width: 34px;
+                min-width: 36px;
+                max-width: 36px;
+                width: 36px;
             }
             &.driver-field {
                 min-width: 240px;
@@ -512,9 +514,9 @@
             }
 
             &.pickup-delivery-field {
-                min-width: 340px !important;
-                max-width: 340px !important;
-                width: 340px !important;
+                min-width: 302px;
+                max-width: 422px;
+                width: 342px;
             }
 
             &.progress-field {
