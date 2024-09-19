@@ -11,6 +11,7 @@
  */
 import { UpdateBankCardCommand } from './updateBankCardCommand';
 import { UpdateDepartmentContactCommand } from './updateDepartmentContactCommand';
+import { CompanyAdditionalInfo } from './companyAdditionalInfo';
 import { UpdateBankAccountCommand } from './updateBankAccountCommand';
 import { AddressEntity } from './addressEntity';
 
@@ -32,6 +33,7 @@ export interface CreateDivisionCompanyCommand {
     timeZone?: number | null;
     currency?: number | null;
     logo?: string | null;
+    additionalInfo?: CompanyAdditionalInfo;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;
