@@ -40,7 +40,7 @@ import {
 } from '@pages/chat/enums';
 
 // Animations
-import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
+import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertically.animation';
 
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -53,7 +53,7 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
   selector: 'app-conversation-list',
   templateUrl: './conversation-list.component.html',
   styleUrls: ['./conversation-list.component.scss'],
-  animations: [chatUserListSearchAnimation]
+  animations: [chatFadeVerticallyAnimation]
 })
 export class ConversationListComponent extends UnsubscribeHelper implements OnInit {
 

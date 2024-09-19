@@ -30,6 +30,7 @@ import {
 
 // Enums
 import {
+  ChatConversationProfileDetailsType,
   ChatGridLayout,
   ChatGroupEnum,
   ChatRoutesEnum,
@@ -51,10 +52,14 @@ import {
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
+// Animations
+import { chatFadeHorizontallyAnimation } from '@shared/animations';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+  animations: [chatFadeHorizontallyAnimation]
 })
 export class ChatComponent
   extends UnsubscribeHelper
@@ -90,6 +95,7 @@ export class ChatComponent
   // Assets and enums
   public chatSvgRoutes = ChatSvgRoutes;
   public chatGridLayout = ChatGridLayout;
+  public chatConversationProfileDetailsType = ChatConversationProfileDetailsType;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -206,7 +212,6 @@ export class ChatComponent
       return;
     }
 
-    // TODO remove commented values
     if (this.selectedConversation && value) {
 
       this.chatService
