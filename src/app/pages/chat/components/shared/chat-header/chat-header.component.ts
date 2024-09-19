@@ -18,7 +18,7 @@ import {
 import { ChatSearchPlaceHolders } from '@pages/chat/enums';
 
 // Animations
-import { chatUserListSearchAnimation } from '@shared/animations/chat.animation';
+import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertically.animation';
 
 // Config
 import { ChatInput } from '@pages/chat/utils/config';
@@ -30,7 +30,7 @@ import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
   selector: 'app-chat-header',
   templateUrl: './chat-header.component.html',
   styleUrls: ['./chat-header.component.scss'],
-  animations: [chatUserListSearchAnimation]
+  animations: [chatFadeVerticallyAnimation]
 })
 export class ChatHeaderComponent extends UnsubscribeHelper implements OnInit {
 

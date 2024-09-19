@@ -34,6 +34,12 @@ export class ChatSvgRoutes {
     static phoneIcon: string = 'assets/svg/chat/phone-icon.svg';
     static emailIcon: string = 'assets/svg/chat/email-icon.svg';
     static companyIcon: string = 'assets/svg/chat/company-icon.svg';
+    static starIcon: string = 'assets/svg/chat/star-icon.svg';
+    static steeringWheelIcon: string = 'assets/svg/chat/steering-wheel-icon.svg';
+    static steeringWheelCIcon: string = 'assets/svg/chat/steering-wheel-c-icon.svg';
+    static carHaulerIcon: string = 'assets/svg/chat/car-hauler-icon.svg';
+    static reeferTruckIcon: string = 'assets/svg/chat/reefer-truck-icon.svg';
+    static peopleIcon: string = 'assets/svg/chat/people-icon.svg';
 
     // Groups
     static notificationIcon: string = 'assets/svg/chat/notification-icon.svg';
@@ -48,4 +54,6 @@ export class ChatSvgRoutes {
     static linkIcon: string = 'assets/svg/chat/link-icon.svg';
     static headerArrowDownIcon: string = 'assets/svg/chat/header-arrow-down-icon.svg';
     static hashIcon: string = 'assets/svg/chat/hash-icon.svg';
+    static circleOfflineIcon: string = 'assets/svg/chat/circle-offline-icon.svg'
+
 }
