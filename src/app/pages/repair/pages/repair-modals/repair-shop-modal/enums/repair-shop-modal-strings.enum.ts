@@ -24,4 +24,7 @@ export enum RepairShopModalStringEnum {
     OPEN_HOURS_SAME_ALL_DAYS = 'openHoursSameAllDays',
     START_TIME_ALL_DAYS = 'startTimeAllDays',
     END_TIME_ALL_DAYS = 'endTimeAllDays',
+    COMPANY_OWNED = 'companyOwned',
+    WEEKLY_DAY = 'weeklyDay',
+    PAY_PERIOD = 'payPeriod'
 }

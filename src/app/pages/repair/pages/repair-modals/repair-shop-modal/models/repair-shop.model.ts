@@ -1,4 +1,4 @@
-import { RepairShopServiceTypeCommand, RepairShopContactCommand, AddressEntity } from "appcoretruckassist";
+import { RepairShopServiceTypeCommand, RepairShopContactCommand, AddressEntity, PayPeriod, DayOfWeek } from "appcoretruckassist";
 
 export interface CreateShopModel {
     name: string;
@@ -7,20 +7,20 @@ export interface CreateShopModel {
     email: string;
     pinned: boolean;
     note: string;
-    // companyOwned: boolean;
+    companyOwned: boolean;
     bankId: number;
     account: string;
     routing: string;
     // rent: number;
-    // payPeriod: PayPeriod;
-    // weeklyDay: DayOfWeek;
+    payPeriod: number;
+    weeklyDay: number;
     // monthlyDay: number;
     longitude: number;
     latitude: number;
-    openHoursSameAllDays: boolean;
-    openAlways: boolean;
-    startTimeAllDays: string;
-    endTimeAllDays: string;
+    // openHoursSameAllDays: boolean;
+    // openAlways: boolean;
+    // startTimeAllDays: string;
+    // endTimeAllDays: string;
     serviceTypes: Array<RepairShopServiceTypeCommand>;
     // openHours: Array<RepairShopOpenHoursCommand>;
     contacts: Array<RepairShopContactCommand>;

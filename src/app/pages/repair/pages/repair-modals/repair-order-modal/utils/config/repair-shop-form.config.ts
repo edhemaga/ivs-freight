@@ -86,6 +86,31 @@ export class RepairShopConfig {
         };
     }
 
+    static getPayPeriodConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay Period',
+            type: 'text',
+            label: 'Pay Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163'
+        };
+    }
+
+    static getDayConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay',
+            type: 'text',
+            label: 'Day Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163'
+        };
+    }
+
+
     static getAccountNumberInputConfig(isBankSelected: boolean): ITaInput {
         return {
             name: 'account-bank',

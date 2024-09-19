@@ -3,9 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-// services
-import { DropDownService } from '@shared/services/drop-down.service';
-import { NotificationService } from '@shared/services/notification.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
@@ -18,8 +15,6 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 // core
 import { RepairShopResponse } from 'appcoretruckassist';
 
-// utils
-import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -37,24 +32,14 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         private settingsLocationService: SettingsLocationService,
         private repairShopSrv: CompanyRepairShopService,
         private tableService: TruckassistTableService,
-        private cdRef: ChangeDetectorRef,
-        private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        private notificationService: NotificationService,
         private FormatCurrencyPipe: FormatCurrencyPipe,
         private repairService: RepairService,
         private activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res.animation) {
-                    this.getRepairShopList();
-                    this.cdRef.detectChanges();
-                }
-            });
+        this.getRepairShopList();
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -78,24 +63,10 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         this.initOptions();
     }
     public getRepairShopById(id: number) {
-        this.repairService
-            .getRepairShopById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.repairShopDataId = item));
+        this.settingsLocationService.onModalAction({modalName: 'repairshop'}, id );
     }
     public repairDropActions(any: any, actions: string) {
         this.getRepairShopById(any.id);
-        setTimeout(() => {
-            const name = DropActionNameHelper.dropActionNameDriver(
-                any,
-                actions
-            );
-            this.dropDownService.dropActionCompanyLocation(
-                any,
-                name,
-                this.repairShopDataId
-            );
-        }, 150);
     }
 
     public deleteRepairShopById(id: number) {
