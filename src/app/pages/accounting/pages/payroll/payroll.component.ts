@@ -40,20 +40,19 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     //tableData: any;
 
-    
-
     selectedTab = 'open';
     activeViewMode: string = 'List';
     tableData: any[] = [];
-    tableData$: Observable<any> = of(Array.from({ length: 1000 }, () => ({
-        driver: 'Neki',
-        payrollNumber: 'fsadfdsafda',
-        periodStart: '20/20/24',
-        payrollDeadLine: '20/20/24',
-        salary: 120,
-        total: 130,
-    })))
-    ;
+    tableData$: Observable<any> = of(
+        Array.from({ length: 1000 }, () => ({
+            driver: 'Neki',
+            payrollNumber: 'fsadfdsafda',
+            periodStart: '20/20/24',
+            payrollDeadLine: '20/20/24',
+            salary: 120,
+            total: 130,
+        }))
+    );
     // columns: any[] = [];
     tableContainerWidth: number = 0;
     viewData: any[] = [];
