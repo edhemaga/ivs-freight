@@ -1,8 +1,8 @@
 // Models
-import { DropZoneConfig } from "@shared/components/ta-upload-files/models/dropzone-config.model";
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
 // Assets
-import { ChatSvgRoutes } from "@pages/chat/utils/routes";
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 export class ChatDropzone {
     static inputDropzone: DropZoneConfig = {
@@ -11,6 +11,6 @@ export class ChatDropzone {
         dropZoneAvailableFiles:
             'application/pdf, application/zip, application/docx, image/png, image/jpeg, image/jpg',
         multiple: true,
-        globalDropZone: false
-    }
+        globalDropZone: false,
+    };
 }

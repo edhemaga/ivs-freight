@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 // Models
 import { FileResponse } from 'appcoretruckassist';
@@ -15,31 +11,30 @@ import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Component({
-  selector: 'app-chat-profile-resources',
-  templateUrl: './chat-profile-resources.component.html',
-  styleUrls: ['./chat-profile-resources.component.scss']
+    selector: 'app-chat-profile-resources',
+    templateUrl: './chat-profile-resources.component.html',
+    styleUrls: ['./chat-profile-resources.component.scss'],
 })
 export class ChatProfileResourcesComponent implements OnInit {
+    @Input() public title!: string;
+    @Input() public hasHorizontalBorder: boolean = true;
+    @Input() public customClass!: string;
+    @Input() public count: number = 0;
+    @Input() public type: ChatUserProfileResourceTypeEnum;
 
-  @Input() public title!: string;
-  @Input() public hasHorizontalBorder: boolean = true;
-  @Input() public customClass!: string;
-  @Input() public count: number = 0;
-  @Input() public type: ChatUserProfileResourceTypeEnum;
+    // Resources
+    @Input() resources: Array<FileResponse | ChatLink | null>;
 
-  // Resources
-  @Input() resources: Array<FileResponse | ChatLink | null>;
+    // Assets
+    public ChatSvgRoutes = ChatSvgRoutes;
 
-  // Assets 
-  public ChatSvgRoutes = ChatSvgRoutes;
+    public isExpanded: boolean = false;
 
-  public isExpanded: boolean = false;
+    constructor() {}
 
-  constructor() { }
+    ngOnInit(): void {}
 
-  ngOnInit(): void { }
-
-  public toggleShowAll(): void {
-    this.isExpanded = !this.isExpanded;
-  }
+    public toggleShowAll(): void {
+        this.isExpanded = !this.isExpanded;
+    }
 }

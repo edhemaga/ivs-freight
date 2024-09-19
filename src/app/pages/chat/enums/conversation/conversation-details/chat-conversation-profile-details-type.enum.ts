@@ -6,5 +6,5 @@ export enum ChatConversationProfileDetailsType {
     DEPARTMENT,
     DISPATCH_BOARD,
     SAFETY,
-    TRUCK
+    TRUCK,
 }

@@ -1,10 +1,10 @@
 import {
     CompanyUserShortResponse,
     EnumValue,
-    FileResponse
-} from "appcoretruckassist/model/models";
+    FileResponse,
+} from 'appcoretruckassist/model/models';
 
-import { ChatLink } from "@pages/chat/models";
+import { ChatLink } from '@pages/chat/models';
 
 export interface ChatMessageResponse {
     id: number;

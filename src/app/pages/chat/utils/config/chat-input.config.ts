@@ -1,7 +1,10 @@
-import { ITaInput } from "@shared/components/ta-input/config/ta-input.config";
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class ChatInput {
-    static messageInput = (isChatTypingActivated: boolean, hasAttachments: boolean): ITaInput => {
+    static messageInput = (
+        isChatTypingActivated: boolean,
+        hasAttachments: boolean
+    ): ITaInput => {
         return {
             name: 'message',
             type: 'text',
@@ -11,13 +14,9 @@ export class ChatInput {
             autoFocus: true,
             blackInput: true,
             customClass:
-                isChatTypingActivated &&
-                    hasAttachments
-                    ? 'rounded-top-0'
-                    : ''
-        }
-
-    }
+                isChatTypingActivated && hasAttachments ? 'rounded-top-0' : '',
+        };
+    };
 
     static userSearchInput = (text?: string): ITaInput => {
         return {
@@ -28,7 +27,7 @@ export class ChatInput {
             hideRequiredCheck: true,
             placeholderInsteadOfLabel: true,
             autoFocus: false,
-            minLength: 3
-        }
-    }
+            minLength: 3,
+        };
+    };
 }

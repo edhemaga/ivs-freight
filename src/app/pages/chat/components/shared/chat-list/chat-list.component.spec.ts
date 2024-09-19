@@ -3,19 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChatListComponent } from '@pages/chat/components/shared/chat-list/chat-list.component';
 
 describe('ChatListComponent', () => {
-  let component: ChatListComponent;
-  let fixture: ComponentFixture<ChatListComponent>;
+    let component: ChatListComponent;
+    let fixture: ComponentFixture<ChatListComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChatListComponent]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [ChatListComponent],
+        });
+        fixture = TestBed.createComponent(ChatListComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-    fixture = TestBed.createComponent(ChatListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });
