@@ -5244,6 +5244,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files || [];
+        this.isDocumentsCardOpen = !!files.length
         this.handleOpenCloseDocumentsCard(!!this.documents.length);
 
         // comments
