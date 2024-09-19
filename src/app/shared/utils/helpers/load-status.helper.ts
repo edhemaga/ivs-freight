@@ -2,6 +2,8 @@ import { LastStatusPassed } from '@shared/models/card-models/card-table-data.mod
 
 export class LoadStatusHelper {
     static calculateStatusTime(lastStatusPassed: LastStatusPassed): string {
+        if(!lastStatusPassed) return '';
+        
         const { days, hours, minutes, seconds } = lastStatusPassed;
 
         // If the change just occurred in less than 5 minutes
