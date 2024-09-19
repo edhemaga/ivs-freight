@@ -2,12 +2,12 @@
     <div class="nav-header-top position-relative" (click)="redirectToDashboard()">
         <svg-icon
             class="nav-header-top-logo close"
-            src="assets/svg/logo.svg"
+            [src]="icons.logo"
         ></svg-icon>
  
             <svg-icon
             class="nav-header-top-text close ml-3 position-absolute"
-            src="assets/svg/logo-text.svg"
+            [src]="icons.logoText"
             [class.opacity-0]="!isNavigationHovered"
         ></svg-icon> 
     </div>
@@ -17,21 +17,21 @@
     > 
         <div
             class="svg-holder"
-            (mouseenter)="showToolTip = true"
-            (mouseleave)="showToolTip = false"
             [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+            ngbTooltip
+            mainContent
+            position="right"
+            tooltipBackground="#424242"
+            [mainTooltip]="'Search'"
+            tooltipColor="#ffff"
+            tooltipMarginTop="-2px"
+            tooltipMarginLeft="16px"
+            tooltipTextAlign="right"
         >
             <svg-icon
-                src="assets/svg/common/ic_search.svg"
+                [src]="icons.search"
                 [ngClass]="{ 'dark-svg': isNavigationHovered }"
             ></svg-icon>
-
-            <div class="tooltip-right">
-                <app-ta-tooltip-slide
-                    [show]="showToolTip"
-                    [name]="'Search anything'"
-                ></app-ta-tooltip-slide>
-            </div>
         </div>
     </div>
 </div>

@@ -20,7 +20,6 @@ import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-
 import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
 import {
-    LoadActiveState,
     LoadActiveStore,
 } from '@pages/load/state/load-active-state/load-active.store';
 import {

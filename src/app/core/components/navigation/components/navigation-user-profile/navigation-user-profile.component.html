@@ -77,14 +77,6 @@
                 </p>
             </div>
         </div>
-
-        <div
-            *ngIf="isNavigationHovered && isUserPanelOpen"
-            [@showHideDetails]="
-                isNavigationHovered && isUserPanelOpen ? 'true' : 'false'
-            "
-            class="new-magic-line"
-        ></div>
     </div>
 
     <div class="panel-user" (click)="onUserPanelClose()">

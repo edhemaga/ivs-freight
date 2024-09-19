@@ -42,11 +42,7 @@
             align-items: center;
             gap: 4px;
             padding-left: 2px;
-            .tooltip-right {
-                left: 18px;
-                position: fixed;
-                top: 69px;
-            }
+
             .hide-tooltip {
                 display: none;
             }
@@ -84,7 +80,7 @@
             width: 34px;
             height: 34px;
             position: absolute;
-            right: 8px;    
+            right: 8px;
             top: -2px;
             display: flex;
             align-items: center;
@@ -92,12 +88,21 @@
             z-index: 11;
             background: $nav-dark-bg;
             border-radius: 50%;
+            transition: $nav-transition;
+
+            &:hover {
+                background-color: $nav-text-color-grey;
+            }
 
             svg {
                 width: 16px;
                 height: 16px;
                 position: relative;
                 top: -1px;
+
+                path {
+                    transition: $nav-transition;
+                }
             }
 
             cursor: pointer;
@@ -109,11 +114,6 @@
                         }
                     }
                 }
-            }
-            .tooltip-right {
-                position: absolute;
-                right: 29px;
-                bottom: 26px;
             }
         }
         .nav-header-bottom-rightSide {

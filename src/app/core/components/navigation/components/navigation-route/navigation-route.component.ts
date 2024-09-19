@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // animations
 import {
@@ -25,11 +26,13 @@ import { NavigationService } from '@core/components/navigation/services/navigati
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
-import { Navigation } from '@core/components/navigation/models/navigation.model';
+import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
+
+// Const
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
 
 @Component({
     selector: 'app-navigation-route',
@@ -40,8 +43,9 @@ import { Navigation } from '@core/components/navigation/models/navigation.model'
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
-        TaTooltipSlideComponent,
         ReactiveFormsModule,
+        NgbModule,
+        TaAppTooltipV2Component,
     ],
     animations: [
         navigationRouteAnimation('showHideDetails'),
@@ -72,6 +76,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Output() routeWithSubRouteClicked = new EventEmitter<boolean>();
     @Output() hideSubrouteFromChild = new EventEmitter<boolean>();
     @Input() isLocalDropdownOpen: boolean = false;
+    public icons = NavigationDataConstants.icons;
 
     public activeRouteName: string;
     public activeRouteIdFromLocalStorage: number;

@@ -12,15 +12,26 @@
         'modal-media-query-height':
             isNavigationHoveredAndPanelOpen && isNavigationHovered
     }"
+    (mouseenter)="hoveredArrow(true)"
+    (mouseleave)="hoveredArrow(false)"
     [@showHideDetails]="isNavigationHoveredAndPanelOpen ? true : false"
+    ngbTooltip
+    mainContent
+    position="right"
+    tooltipBackground="#424242"
+    [mainTooltip]="!isNavigationHovered? addNew : ''"
+    tooltipColor="#ffff"
+    tooltipMarginTop="-2px"
+    tooltipMarginLeft="12px"
+    tooltipTextAlign="right"
 >
     <div class="modal-inner">
         <div
             (mouseenter)="
-                changeTextHoverOnCloseModal = true; showToolTip = true
+                changeTextHoverOnCloseModal = true; 
             "
             (mouseleave)="
-                changeTextHoverOnCloseModal = false; showToolTip = false
+                changeTextHoverOnCloseModal = false; 
             "
             (click)="OpenMainModal(!isModalPanelOpen)"
             class="modal-nav-close"
@@ -38,27 +49,19 @@
                         'closed-modal': !isModalPanelOpen,
                         'opened-modal': isModalPanelOpen
                     }"
-                    src="assets/svg/common/ic_plus.svg"
+                    [src]="icons.plus"
                 ></svg-icon>
-                <span class="title">{{ Title }}</span>
+                <span class="title ta-font-medium">{{ title }}</span>
             </p>
-            <div
-                class="tooltip-right"
-                [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
-            >
-                <app-ta-tooltip-slide
-                    *ngIf="!isNavigationHovered"
-                    [show]="showToolTip"
-                    [name]="Title"
-                ></app-ta-tooltip-slide>
-            </div>
         </div>
 
         <div
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold top-header">GENERAL <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold top-header">
+                GENERAL <span></span>
+            </p>
             <div class="modal-nav-routes first-modal">
                 <p
                     class="ta-font-medium modal-item"
@@ -84,7 +87,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">TOOLS <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                TOOLS <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
@@ -105,7 +110,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">REPAIR <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                REPAIR <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
@@ -125,7 +132,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">FUEL <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                FUEL <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
@@ -145,7 +154,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">SAFETY <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                SAFETY <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
@@ -165,7 +176,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">ACCOUNTING <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                ACCOUNTING <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
@@ -185,7 +198,9 @@
             class="modal-nav-content"
             *ngIf="isNavigationHovered && isModalPanelOpen"
         >
-            <p class="modal-nav-header ta-font-extra-bold">REQUEST <span></span></p>
+            <p class="modal-nav-header ta-font-extra-bold">
+                REQUEST <span></span>
+            </p>
             <div class="modal-nav-routes">
                 <p
                     class="ta-font-regular"
