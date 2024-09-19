@@ -7,6 +7,7 @@ export interface DispatchProgressBarData {
     gpsInfo?: {
         gpsheading?: string;
         gpsTime?: string;
+        gpsheadingColor?: string;
     };
     mileagesPercent?: string;
     gpsLocationIcon?: string;

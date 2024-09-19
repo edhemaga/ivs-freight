@@ -60,9 +60,7 @@ import {
     DispatchTableHeaderItems,
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
-
-// components
-import { ProgressBarComponent } from 'ca-components';
+import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-progress-bar-data.model';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -189,6 +187,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         note: null,
     };
 
+    public progressBarData: DispatchProgressBarData[] = [];
+
     startIndexTrailer: number;
     startIndexDriver: number;
 
@@ -240,6 +240,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             (item) => item.parkingSlot
         )?.length;
 
+        this.getProgressBarData();
         console.log('dispatchData', this.dispatchData);
     }
 
@@ -1111,6 +1112,66 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;
         else this.setColumnsWidth();
+    }
+
+    public getProgressBarData(): void {
+        this.dispatchData.dispatches.forEach((dispatch, index) => {
+            this.progressBarData.push(null);
+            console.log('dispatch.loadProgress', dispatch.loadProgress);
+
+            if (dispatch.loadProgress?.activeLoadProgressBar) {
+                const dispatchLoadProgress =
+                    this.dispatchData.dispatches[index].loadProgress
+                        .activeLoadProgressBar;
+                console.log('dispatch', dispatch);
+
+                const dispatchStopData = dispatchLoadProgress.loadStops.map(
+                    (stop) => {
+                        return {
+                            type: stop.stopType?.name,
+                            heading: stop.title,
+                            position: stop.progressBarPercentage > 100 ? 100 : stop.progressBarPercentage,
+                            location: stop.address?.address,
+                            mileage: stop.isVisited
+                                ? (
+                                      dispatchLoadProgress.truckPositionMileage -
+                                      stop.cumulativeTotalLegMiles
+                                  ).toFixed(1) + ' mi ago'
+                                : 'in ' +
+                                  (
+                                      stop.cumulativeTotalLegMiles -
+                                      dispatchLoadProgress.truckPositionMileage
+                                  ).toFixed(1) +
+                                  ' mi',
+                            time: stop.departedFrom ?? stop.expectedAt,
+                        };
+                    }
+                );
+
+                const formattedProgressData: DispatchProgressBarData = {
+                    currentPosition:
+                        dispatchLoadProgress.truckPositionPercentage ?? 0,
+                    mileageInfo: dispatchLoadProgress.milesLeftToDeliveryLoad + ' mi',
+                    gpsTitle: dispatchLoadProgress.truckPositionMileage + ' mi',
+                    mileagesPercent:
+                        dispatchLoadProgress.truckPositionPercentage + '%',
+                    gpsProgress: dispatchStopData,
+                    gpsInfo: {
+                        gpsheading: 'NO GPS DEVICE',
+                        //gpsTime: '3:47',
+                        gpsheadingColor: '#AAAAAA',
+                    },
+                    gpsIcon: 'assets/ca-components/svg/map/no_gps_status.svg',
+                };
+
+                this.progressBarData[index] = formattedProgressData;
+
+                console.log(
+                    'progressBarData[index]',
+                    this.progressBarData[index]
+                );
+            }
+        });
     }
 
     ngOnDestroy(): void {
