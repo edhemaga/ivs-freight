@@ -11,11 +11,12 @@ import { PayrollService } from '@pages/accounting/services/payroll.service';
 export class PayrolldResolver  {
     constructor(private payrollService: PayrollService) {}
 
-    resolve(): Observable<any> {
-        return this.payrollService.getPayrollList().pipe(
-            tap((result) => {
-                this.payrollService.payrollList = result;
-            })
-        );
+    resolve() {
+        // : Observable<any>
+        // return this.payrollService.getPayrollList().pipe(
+        //     tap((result) => {
+        //         this.payrollService.payrollList = result;
+        //     })
+        // );
     }
 }
