@@ -14,7 +14,10 @@
                 isDispatchBoardAddress ? 'svgtext-dispatch-template' : ''
             "
             [inputConfig]="inputConfig"
-            [options]="addresList"
+            [options]="addressList?.length ? addressList : [{
+                id: 7654,
+                name: 'No Results',
+            }]"
             [activeItem]="activeAddress"
             [incorrectValue]="incorrectValue"
             (incorrectEvent)="onIncorrectInput($event)"
