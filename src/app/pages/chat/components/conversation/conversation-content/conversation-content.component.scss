@@ -1,7 +1,7 @@
 @import 'src/theme/variables';
 
 .conversation-content-container {
-    height: 100%;
+    height: calc(100dvh - 75px);
 
     background-color: $white;
     border-radius: 2px;
