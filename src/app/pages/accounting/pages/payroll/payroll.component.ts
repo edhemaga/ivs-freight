@@ -69,6 +69,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     @ViewChild('customCell', { static: false })
     public readonly customCellTemplate!: ElementRef;
 
+    @ViewChild('customIndex', { static: false })
+    public readonly customIndex!: ElementRef;
+
+
+    
     constructor(
         // Store
         private driversActiveQuery: DriverQuery,
@@ -84,6 +89,11 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.columns = [
             {
+                header: '',
+                cellType: 'template',
+                template: this.customIndex
+            },
+            {
                 header: 'Period ST',
                 field: 'periodStart',
                 cellType: 'text', // Pass the template reference
@@ -159,31 +169,6 @@ export class PayrollComponent implements OnInit, AfterViewInit {
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
                 // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
-            },
-            {
-                header: 'Period ST',
-                field: 'periodStart',
-                cellType: 'text', // Pass the template reference
             },
             {
                 header: 'Payroll',
@@ -203,6 +188,31 @@ export class PayrollComponent implements OnInit, AfterViewInit {
                 cellType: 'template',
                 template: this.customCellTemplate, // Pass the template reference
             },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            },
+            {
+                header: 'Period ST',
+                field: 'periodStart',
+                cellType: 'text', // Pass the template reference
+            }
         ];
 
         this.showTable = true;
