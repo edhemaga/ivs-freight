@@ -1,4 +1,4 @@
 export interface ChatViewTypeEnum {
-    REGULAR,
-    ADVANCED,
+    REGULAR;
+    ADVANCED;
 }

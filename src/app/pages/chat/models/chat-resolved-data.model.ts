@@ -1,9 +1,8 @@
 // Models
 import {
     CompanyUserChatResponsePaginationReduced,
-    ChatCompanyChannelExtended
-} from "@pages/chat/models";
-
+    ChatCompanyChannelExtended,
+} from '@pages/chat/models';
 
 export interface ChatResolvedData {
     title: string;
