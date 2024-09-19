@@ -1,4 +1,4 @@
-import { CompanyUserChatResponse } from "appcoretruckassist";
+import { CompanyUserChatResponse } from 'appcoretruckassist';
 
 export interface CompanyUserChatResponsePaginationReduced {
     count: number;
