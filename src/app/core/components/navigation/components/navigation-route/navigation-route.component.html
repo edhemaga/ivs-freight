@@ -11,7 +11,7 @@
     [ngClass]="{
         'nav-width': navigationIsOpened,
         'nav-item-parent-active':
-            selectedRoute == route.name,
+            selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
         'disable-cursor':
             selectedRoute == route.name &&
             !subrouteContainerOpened &&
@@ -55,7 +55,7 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active': selectedRoute === route.name,
+            'nav-item-svg-active': selectedRoute === route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
             'route-not-active-svg': route.construction && navigationIsOpened,
             'route-closed-nav-svg-not-active':
                 route.construction && !navigationIsOpened
@@ -82,7 +82,7 @@
         <p
             class="nav-item-name"
             [ngClass]="{
-                'nav-item-name-active': selectedRoute == route.name,
+                'nav-item-name-active': selectedRoute == route.name || (selectedRoute === 'Dispatch' && route.name === 'Dispatch Board'),
 
                 'active-text':
                     route.isRouteActive &&
