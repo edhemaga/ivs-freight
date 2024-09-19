@@ -26,7 +26,7 @@
 
         .nav-item-arrow_top {
             position: absolute;
-            right: 4px;
+            right: 2px;
             opacity: 0;
             top: 7px;
             width: 12.6px;
@@ -93,6 +93,9 @@
         }
         .nav-item-arrow_top {
             z-index: 9;
+            svg path {
+                fill: $nav-text-color;
+            }
 
             &:hover {
                 svg {
