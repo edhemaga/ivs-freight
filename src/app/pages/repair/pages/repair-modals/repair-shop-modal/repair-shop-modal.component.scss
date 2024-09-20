@@ -70,6 +70,11 @@
             }
         }
     }
+
+    &-address {
+        display: grid;
+        grid-template-columns: 364px 1fr;
+    }
 }
 
 .service-types {
@@ -145,4 +150,32 @@
             background-color: $ta-blue-15;
         }
     }
+}
+
+.phone-ext-email-small-modal {
+    grid-template-columns: 196px 248px;
+
+    .phone-extension {
+        column-gap: 8px;
+        grid-template-columns: 164px 1fr;
+
+        .extension-field {
+            padding: 6px;
+            position: relative;
+            width: 26px;
+            height: 26px;
+            svg {
+                height: 16px;
+                width: 16px;
+
+                path {
+                    fill: $muted;
+                }
+            }
+        }
+    } 
+}
+
+.custom-bank-row {
+    grid-template-columns: 160px 100px 172px;
 }

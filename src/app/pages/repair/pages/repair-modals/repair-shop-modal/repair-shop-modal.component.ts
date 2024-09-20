@@ -244,12 +244,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return this.editData?.data || this.editData?.id;
     }
 
-    public get showCompanyOwned(): boolean {
+    public get isCompanyOwnedOptionAvailable(): boolean {
         return this.editData?.companyOwned;
     }
 
     public get modalTitle(): string {
-        if (this.showCompanyOwned) {
+        if (this.isCompanyOwnedOptionAvailable) {
             return this.isEditMode
                 ? RepairShopModalEnum.COMPANY_MODAL_TITLE_EDIT
                 : RepairShopModalEnum.COMPANY_MODAL_TITLE_ADD;

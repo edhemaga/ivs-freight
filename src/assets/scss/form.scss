@@ -664,13 +664,14 @@
                 height: 100%;
                 path {
                     fill: $muted;
+                    transition: fill 0.3s ease-in-out;
                 }
             }
         }
 
         &:hover {
-            background-color: #e5e5e5;
-            color: #2f2f2f;
+            background-color: $bw-9;
+            color: $ta-black;
 
             svg-icon {
                 svg {
@@ -691,17 +692,17 @@
             svg-icon {
                 svg {
                     path {
-                        fill: $ta-blue-13;
+                        fill: $ta-blue-14;
                     }
                 }
             }
 
             p {
-                color: $ta-blue-13;
+                color: $ta-blue-14;
             }
 
             &:hover {
-                background: $ta-blue-22;
+                background: $ta-blue-17;
 
                 svg-icon {
                     svg {
