@@ -462,12 +462,7 @@ export class LoadModalConfig {
             label: 'Trailer Requirement',
             isDropdown: true,
             isDisabled:
-                selectedTruckReq?.id === 3 ||
-                selectedTruckReq?.id === 4 ||
-                selectedTruckReq?.id === 5 ||
-                selectedTruckReq?.id === 6 ||
-                selectedTruckReq?.id === 7 ||
-                selectedTruckReq?.id === 8
+                selectedTruckReq?.id >= 3 && selectedTruckReq?.id <= 8
                     ? true
                     : false,
             dropdownImageInput: {

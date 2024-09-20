@@ -205,7 +205,8 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
-    @ViewChild('trailerInputDropdown') trailerInputDropdown: TaInputDropdownComponent;
+    @ViewChild('trailerInputDropdown')
+    trailerInputDropdown: TaInputDropdownComponent;
 
     @Input() editData: EditData;
 
@@ -1877,12 +1878,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.selectedTruckReq = event;
 
                 if (
-                    this.selectedTruckReq?.id === 3 ||
-                    this.selectedTruckReq?.id === 4 ||
-                    this.selectedTruckReq?.id === 5 ||
-                    this.selectedTruckReq?.id === 6 ||
-                    this.selectedTruckReq?.id === 7 ||
-                    this.selectedTruckReq?.id === 8
+                    this.selectedTruckReq?.id >= 3 &&
+                    this.selectedTruckReq?.id <= 8
                 ) {
                     this.selectedTrailerReq = null;
                     this.trailerInputDropdown?.superControl.reset();
