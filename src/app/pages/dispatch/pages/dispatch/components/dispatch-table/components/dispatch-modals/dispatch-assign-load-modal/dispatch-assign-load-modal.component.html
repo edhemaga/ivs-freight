@@ -69,10 +69,12 @@
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
                 [isResizeEnabled]="assignedLoads.length || unassignedLoads.length"
+                (firstElementHeightChange)="onFirstElementHeightChange($event)"
+                (secondElementHeightChange)="onSecondElementHeightChange($event)"
                 #resizerComponent
             >
             <div firstElement #firstElementRef class="h-full-important">
-                <app-ta-custom-card
+                <app-ta-custom-card 
                     [cardName]="'Assigned'"
                     [hasCounter]="assignedLoads.length || -1"
                     [isCardOpen]="isAssignLoadCardOpen"
@@ -86,11 +88,14 @@
                     "
                     [isFinishReorderingButtonVisible]="isReorderingActive"
                     [hasXAxisBottomPadding]="false"
-                    [hasScrollBody]="true"
                     [isInheritingParentSize]="true"
-                    [hasDivider]="false"
-                    [isInheritingParentSize]="true"
+                    [hasDivider]="false" 
                     [headerLightColor]="true"
+                    [cardHeight]="firstElementHeight"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
                     (onOpenCard)="isAssignLoadCardOpen = $event"
                     (onActionEvent)="onReorderAction($event)"
                     (cdkDropListDropped)="dropAssigned($event)"
@@ -162,6 +167,11 @@
                     [isInheritingParentSize]="true"
                     [disabledCard]="isReorderingActive"
                     [hasDivider]="false"
+                    [cardHeight]="secondElementHeight"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
                     [isGreyTextWhenDisabled]="true"
                     (onOpenCard)="toggleUnAssignedList()"
                 >
@@ -306,7 +316,6 @@
                         }"
                         [hasXAxisBottomPadding]="true"
                         [hasDivider]="false"
-                        [hasScrollBody]="true"
                         [isInheritingParentSize]="true"
                     >
                         <app-load-details-item-stops-main

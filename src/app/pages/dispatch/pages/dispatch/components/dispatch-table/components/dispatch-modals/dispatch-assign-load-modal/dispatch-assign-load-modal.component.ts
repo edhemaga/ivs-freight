@@ -111,6 +111,9 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isLoading: boolean;
     public originalLoads: AssignedLoadResponse[] = null;
 
+    public firstElementHeight!: number;
+    public secondElementHeight!: number;
+
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
@@ -208,8 +211,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                 this.unassignedLoads = res.unassignedLoads;
 
-                if(this.selectedDispatches) {
-                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length; 
+                if (this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
                 } else {
                     this.isUnAssignLoadCardOpen = true;
                 }
@@ -740,5 +743,13 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    public onFirstElementHeightChange(height: number) {
+        this.firstElementHeight = height;
+    }
+
+    public onSecondElementHeightChange(height: number) {
+        this.secondElementHeight = height;
     }
 }

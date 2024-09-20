@@ -473,6 +473,12 @@
 
     // Card body
     .ta-card-body {
+        &.set-max-height{
+            transition: max-height 0.3s ease-in-out;
+            will-change: max-height;
+            max-height: 50px;
+        }
+        
         &.scroll {
             overflow-y: scroll !important;
             scrollbar-width: none !important; /* Firefox */
@@ -589,11 +595,5 @@
     }
     .ta-counter {
         background-color: $ta-light-grey-6 !important;
-    }
-}
-
-.scrollable-element {
-    &:not(.pb-0) {
-        padding-bottom: 38px !important;
     }
 }
