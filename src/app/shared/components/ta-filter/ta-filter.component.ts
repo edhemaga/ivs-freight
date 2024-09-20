@@ -2335,9 +2335,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             case ToolbarFilterStringEnum.STATE_FILTER: {
                 this.filterService.getStateData();
             }
-            case ToolbarFilterStringEnum.STATUS_FILTER: {
-                this.filterService.getDispatchFilterData();
-            }
             case ToolbarFilterStringEnum.PARKING_FILTER: {
                 this.filterService.getDispatchFilterData();
             }
@@ -2353,9 +2350,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
-                } else if (this.isDispatchFilter) {
-                    this.filterService.getDispatchFilterData();
-                } else {
+                } else if (!this.isDispatchFilter) {
                     this.filterService.getTruckData();
                 }
                 break;
@@ -2364,9 +2359,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTrailerData();
                     this.filterService.getPmData('trailer');
-                } else if (this.isDispatchFilter) {
-                    this.filterService.getDispatchFilterData();
-                } else {
+                } else if (!this.isDispatchFilter) {
                     this.filterService.getTrailerData();
                 }
                 break;
