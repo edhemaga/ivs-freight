@@ -1016,8 +1016,9 @@
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="
+                                option.truck?.logoName &&
                                 'assets/svg/common/trucks/' +
-                                option.truck?.logoName
+                                    option.truck?.logoName
                             "
                             [className]="
                                 option?.truck?.logoName?.replace('.svg', '')
@@ -1069,8 +1070,9 @@
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="
+                                option?.trailer?.logoName &&
                                 'assets/svg/common/trucks/' +
-                                option?.trailer?.logoName
+                                    option?.trailer?.logoName
                             "
                             [className]="
                                 option?.trailer?.logoName?.replace('.svg', '')

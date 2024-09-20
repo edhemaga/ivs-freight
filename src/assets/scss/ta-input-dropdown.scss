@@ -1743,59 +1743,41 @@
 
 .dropdown-trailer-hover {
     &:hover {
-        // TRUCKS
-        .ic_truck_semi-truck {
-            svg {
-                path {
-                    fill: $ta-green;
-                }
-            }
-        }
-
+        .ic_truck_semi-truck,
         .ic_truck_semi-wSleeper {
             svg {
                 path {
-                    fill: $ta-yellow-1;
+                    fill: $ta-blue-18;
                 }
             }
         }
 
-        .ic_truck_box-truck {
-            svg {
-                path {
-                    fill: $ta-red-10;
-                }
-            }
-        }
-
+        .ic_truck_box-truck,
+        .ic_truck_reefer,
         .ic_truck_cargo-van {
             svg {
                 path {
-                    fill: $ta-blue-13;
+                    fill: $ta-yellow-5;
                 }
             }
         }
 
-        .ic_truck_tow-truck {
+        .ic_truck_dump,
+        .ic_truck_cement,
+        .ic_truck_garbage {
             svg {
                 path {
-                    fill: $ta-purple-1;
+                    fill: $ta-red-11;
                 }
             }
         }
 
-        .ic_truck_car-hauler {
-            svg {
-                path {
-                    fill: $ta-red-18;
-                }
-            }
-        }
-
+        .ic_truck_tow-truck,
+        .ic_truck_car-hauler,
         .ic_truck_spotter {
             svg {
                 path {
-                    fill: $ta-orange-5;
+                    fill: $ta-green-2;
                 }
             }
         }
