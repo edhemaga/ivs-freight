@@ -461,10 +461,7 @@ export class LoadModalConfig {
             type: 'text',
             label: 'Trailer Requirement',
             isDropdown: true,
-            isDisabled:
-                selectedTruckReq?.id >= 3 && selectedTruckReq?.id <= 8
-                    ? true
-                    : false,
+            isDisabled: selectedTruckReq?.id >= 3 && selectedTruckReq?.id <= 8,
             dropdownImageInput: {
                 withText: true,
                 svg: true,
