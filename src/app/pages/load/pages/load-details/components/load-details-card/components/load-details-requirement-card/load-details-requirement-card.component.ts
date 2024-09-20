@@ -40,6 +40,7 @@ export class LoadDetailsRequirementCardComponent implements OnChanges {
     public requirementDataArray: CreatedData[] = [];
 
     public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
+    public showRequirement: boolean;
 
     constructor() {}
 
@@ -90,5 +91,7 @@ export class LoadDetailsRequirementCardComponent implements OnChanges {
 
             this.requirementDataArray.push(data);
         });
+
+        this.showRequirement = !!this.requirementDataArray.length;
     }
 }

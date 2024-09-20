@@ -1,10 +1,10 @@
 <div class="load-requirement-container">
     <app-ta-custom-card
         [cardName]="'Load Detail & Requirement'"
-        [isCardOpen]="requirementDataArray.length"
+        [isCardOpen]="showRequirement"
         [bodyTemplate]="'card'"
-        [disabledCard]="!requirementDataArray.length"
-        [hasArrow]="requirementDataArray.length"
+        [disabledCard]="!showRequirement"
+        [hasArrow]="showRequirement"
         [animationMarginParams]="{
             marginTop: '6px',
             marginBottom: '6px'
