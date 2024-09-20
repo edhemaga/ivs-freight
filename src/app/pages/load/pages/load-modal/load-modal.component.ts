@@ -5295,66 +5295,68 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // extra stops
         if (editedStops.length) {
-            editedStops.forEach((extraStop, index) => {
-                this.createNewExtraStop();
+            setTimeout(() => {
+                editedStops.forEach((extraStop, index) => {
+                    this.createNewExtraStop();
 
-                const editedShipper = extraStop.shipper
-                    ? this.formatShipper(extraStop.shipper)
-                    : {};
+                    const editedShipper = extraStop.shipper
+                        ? this.formatShipper(extraStop.shipper)
+                        : {};
 
-                if (extraStop) extraStop = this.formatStopTimes(extraStop);
+                    if (extraStop) extraStop = this.formatStopTimes(extraStop);
 
-                this.loadExtraStops()
-                    .at(index)
-                    .patchValue({
-                        id: extraStop.id,
-                        stopType: extraStop.stopType.name,
-                        stopOrder: extraStop.stopLoadOrder,
-                        stopLoadOrder: extraStop.stopLoadOrder,
-                        shipperId: extraStop.shipper?.id,
-                        shipperContactId: extraStop.shipperContact?.id,
-                        dateFrom: extraStop
-                            ? this.convertDate(extraStop.dateFrom)
-                            : null,
-                        dateTo: extraStop
-                            ? this.convertDate(extraStop.dateTo)
-                            : null,
-                        timeType: extraStop.timeType.name.toUpperCase(),
-                        timeFrom: extraStop?.timeFrom,
-                        timeTo: extraStop?.timeTo,
-                        arrive: extraStop?.arrive,
-                        depart: extraStop?.depart,
-                        legMiles: extraStop?.legMiles,
-                        legHours: extraStop?.legHours,
-                        legMinutes: extraStop?.legMinutes,
-                        items: extraStop?.items,
-                        openClose: false,
-                        statusHistory: extraStop?.statusHistory,
-                        waitTime: extraStop
-                            ? this.formatTimeDifference(extraStop.wait)
-                            : null,
-                    });
+                    this.loadExtraStops()
+                        .at(index)
+                        .patchValue({
+                            id: extraStop.id,
+                            stopType: extraStop.stopType.name,
+                            stopOrder: extraStop.stopLoadOrder,
+                            stopLoadOrder: extraStop.stopLoadOrder,
+                            shipperId: extraStop.shipper?.id,
+                            shipperContactId: extraStop.shipperContact?.id,
+                            dateFrom: extraStop
+                                ? this.convertDate(extraStop.dateFrom)
+                                : null,
+                            dateTo: extraStop
+                                ? this.convertDate(extraStop.dateTo)
+                                : null,
+                            timeType: extraStop.timeType.name.toUpperCase(),
+                            timeFrom: extraStop?.timeFrom,
+                            timeTo: extraStop?.timeTo,
+                            arrive: extraStop?.arrive,
+                            depart: extraStop?.depart,
+                            legMiles: extraStop?.legMiles,
+                            legHours: extraStop?.legHours,
+                            legMinutes: extraStop?.legMinutes,
+                            items: extraStop?.items,
+                            openClose: false,
+                            statusHistory: extraStop?.statusHistory,
+                            waitTime: extraStop
+                                ? this.formatTimeDifference(extraStop.wait)
+                                : null,
+                        });
 
-                this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
+                    this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
-                if (editedShipper)
-                    this.onSelectDropdown(
-                        editedShipper,
-                        LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
+                    if (editedShipper)
+                        this.onSelectDropdown(
+                            editedShipper,
+                            LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
+                            index
+                        );
+
+                    this.onTabChange(
+                        extraStop.stopType,
+                        LoadModalStringEnum.STOP_TAB,
                         index
                     );
-
-                this.onTabChange(
-                    extraStop.stopType,
-                    LoadModalStringEnum.STOP_TAB,
-                    index
-                );
-                this.onTabChange(
-                    extraStop.timeType,
-                    LoadModalStringEnum.EXTRA_STOPS_TIME,
-                    index
-                );
-            });
+                    this.onTabChange(
+                        extraStop.timeType,
+                        LoadModalStringEnum.EXTRA_STOPS_TIME,
+                        index
+                    );
+                });
+            }, 500);
         }
         // tabs
         if (type) {

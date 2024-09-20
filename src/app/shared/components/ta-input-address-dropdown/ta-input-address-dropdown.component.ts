@@ -126,7 +126,7 @@ export class TaInputAddressDropdownComponent
     }
 
     //Address data
-    public addresList: AddressList[];
+    public addressList: AddressList[];
     private searchLayers: AutocompleteSearchLayer[];
     public currentAddressData: AddressData;
 
@@ -173,7 +173,7 @@ export class TaInputAddressDropdownComponent
                                 isLoading: false,
                             },
                         };
-                        this.addresList = [];
+                        this.addressList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
                         this.inputConfig.name == 'RoutingAddress'
@@ -239,7 +239,7 @@ export class TaInputAddressDropdownComponent
                     },
                 };
 
-                this.addresList = res.addresses.map((item, indx) => {
+                this.addressList = res.addresses.map((item, indx) => {
                     return {
                         name: item,
                         id: indx,
@@ -325,7 +325,7 @@ export class TaInputAddressDropdownComponent
                 } else {
                     this.onClearInputEvent();
                     this.currentAddressData = null;
-                    this.addresList = [];
+                    this.addressList = [];
                 }
                 this.inputDropdown?.popoverRef?.close();
                 break;
@@ -366,7 +366,7 @@ export class TaInputAddressDropdownComponent
 
     public clearInput(e: KeyboardEvent): void {
         this.currentAddressData = null;
-        this.addresList = [];
+        this.addressList = [];
         this.getSuperControl.setValue(null);
         this.activeAddress = null;
         this.inputDropdown?.inputRef?.clearInput(e);
