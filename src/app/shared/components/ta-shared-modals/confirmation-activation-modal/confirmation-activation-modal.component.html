@@ -140,8 +140,13 @@
                             <ng-container *ngSwitchCase="'Status'">
                                 <div class="d-flex w-100 gap-2">
                                     <div class="m-0 status-title ta-font-bold">
-                                        This status change requires manual truck
-                                        location entry.
+                                        This status change
+                                        {{
+                                            editData.data.nameFront !==
+                                            'Unassigned'
+                                                ? 'requires manual truck location entry.'
+                                                : 'will remove load status history and all previous statuses.'
+                                        }}
                                     </div>
                                 </div>
 
@@ -152,9 +157,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="m-0 text-2">
-                                        Unit {{ editData.modalSecondTitle }}
-                                    </div>
+                                    <ng-container
+                                        *ngIf="editData.modalSecondTitle"
+                                    >
+                                        <div class="m-0 text-2">
+                                            Unit {{ editData.modalSecondTitle }}
+                                        </div>
+                                    </ng-container>
                                 </div>
 
                                 <div

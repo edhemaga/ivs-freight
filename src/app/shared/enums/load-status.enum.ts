@@ -53,4 +53,5 @@ export enum LoadStatusEnum {
     RepairDispatched,
     RepairLoaded,
     RepairOffloaded,
+    Canceled,
 }
