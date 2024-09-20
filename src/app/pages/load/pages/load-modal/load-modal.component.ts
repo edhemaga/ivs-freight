@@ -205,6 +205,7 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
+    @ViewChild('trailerInputDropdown') trailerInputDropdown: TaInputDropdownComponent;
 
     @Input() editData: EditData;
 
@@ -820,7 +821,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get getTrailerInputConfig(): ITaInput {
-        return LoadModalConfig.getTrailerInputConfig(this.selectedTrailerReq);
+        return LoadModalConfig.getTrailerInputConfig(
+            this.selectedTrailerReq,
+            this.selectedTruckReq
+        );
     }
 
     public getExtraStopsDateToTimeToInputConfig(label: string): ITaInput {
@@ -1871,6 +1875,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.TRUCK_REQ:
                 this.selectedTruckReq = event;
+
+                if (
+                    this.selectedTruckReq?.id === 3 ||
+                    this.selectedTruckReq?.id === 4 ||
+                    this.selectedTruckReq?.id === 5 ||
+                    this.selectedTruckReq?.id === 6 ||
+                    this.selectedTruckReq?.id === 7 ||
+                    this.selectedTruckReq?.id === 8
+                ) {
+                    this.selectedTrailerReq = null;
+                    this.trailerInputDropdown?.superControl.reset();
+                }
 
                 break;
             case LoadModalStringEnum.TRAILER_REQ:

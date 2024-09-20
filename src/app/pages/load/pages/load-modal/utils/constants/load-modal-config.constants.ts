@@ -278,7 +278,7 @@ export class LoadModalConfig {
         label: 'Reference No.',
         isRequired: true,
         textTransform: 'uppercase',
-        maxLength: 16
+        maxLength: 16,
     };
 
     static getPickupDateFromInputConfig(pickupDateRange: boolean): ITaInput {
@@ -453,13 +453,23 @@ export class LoadModalConfig {
     }
 
     static getTrailerInputConfig(
-        selectedTrailerReq: TrailerTypeResponse
+        selectedTrailerReq: TrailerTypeResponse,
+        selectedTruckReq?: TruckTypeResponse
     ): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Trailer Requirement',
             isDropdown: true,
+            isDisabled:
+                selectedTruckReq?.id === 3 ||
+                selectedTruckReq?.id === 4 ||
+                selectedTruckReq?.id === 5 ||
+                selectedTruckReq?.id === 6 ||
+                selectedTruckReq?.id === 7 ||
+                selectedTruckReq?.id === 8
+                    ? true
+                    : false,
             dropdownImageInput: {
                 withText: true,
                 svg: true,
