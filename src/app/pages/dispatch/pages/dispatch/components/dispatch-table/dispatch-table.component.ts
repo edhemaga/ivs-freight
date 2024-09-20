@@ -53,6 +53,7 @@ import {
     DispatchGroupedLoadsResponse,
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
+    AddressEntity,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -347,7 +348,27 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            if (index >= 0) {
+            console.log('eventParam', eventParam);
+
+            this.dispatcherService
+                .getDispatchTruckLastLocation(event.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((truckLastLocation) => {
+                    console.log('truckLastLocation', truckLastLocation);
+                    if (truckLastLocation?.address?.address) {
+                        this.isDispatchBoardChangeInProgress = true;
+
+                        /*                         this.cdRef.detectChanges(); */
+
+                        /*     this.addNewTruckData = event;
+
+                        this.handleUpdateLastLocationEmit(
+                            truckLastLocation.address
+                        ); */
+                    }
+                });
+
+            /*     if (index >= 0) {
                 this.dispatchData = {
                     ...this.dispatchData,
                     dispatches: this.dispatchData.dispatches.map(
@@ -367,7 +388,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 this.addNewTruckData = event;
 
                 this.showAddAddressFieldIndex = -2;
-            }
+            } */
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.TRAILER_ID,
@@ -434,7 +455,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
     }
 
-    public handleUpdateLastLocationEmit(address: string): void {
+    public handleUpdateLastLocationEmit(address: AddressEntity): void {
         this.isDisplayingAddressInput = false;
 
         this.updateOrAddDispatchBoardAndSend(
