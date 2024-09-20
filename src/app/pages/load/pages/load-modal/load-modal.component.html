@@ -1677,8 +1677,8 @@
 
             <div class="load-modal-row">
                 <app-ta-custom-card
-                    [cardName]="'Document'"
-                    [isCardOpen]="isDocumentsCardOpen"
+                    [cardName]="'Document'" 
+                    [isCardOpen]="!!documents.length"
                     [hasBodyData]="true"
                     [hasDivider]="true"
                     [hasCounter]="documents?.length"

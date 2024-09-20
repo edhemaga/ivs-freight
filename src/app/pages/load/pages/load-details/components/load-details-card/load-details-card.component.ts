@@ -98,10 +98,6 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
             this.getLoadsDropdown();
     }
 
-    public get isLoadFiles() : boolean {
-        return !!this.load?.files?.length;
-    } 
-
     private createForm(): void {
         this.cardForm = this.formBuilder.group({
             driverMessage: [this.load.loadRequirements?.driverMessage],

@@ -122,8 +122,8 @@
                     <app-ta-custom-card
                         [cardName]="'Document'"
                         [hasCounter]="load?.files?.length || -1"
-                        [isCardOpen]="isLoadFiles"
-                        [disabledCard]="!isLoadFiles"
+                        [isCardOpen]="!!load?.files?.length"
+                        [disabledCard]="!load?.files?.length"
                         [bodyTemplate]="'card'"
                         [animationMarginParams]="{
                             marginTop: '6px',
