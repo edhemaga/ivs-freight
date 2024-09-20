@@ -24,5 +24,6 @@ export interface ApiCdlPostRequest {
     Note?: string;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;
+    Differences?: { [key: string]: string; };
 }
 

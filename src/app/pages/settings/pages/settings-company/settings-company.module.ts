@@ -39,6 +39,7 @@ import { HidePasswordPipe } from '@shared/pipes/hide-password.pipe';
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 import { BankCardTypesPipe } from '@shared/pipes/bank-card-types.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
+import { SettingsCompanyAdditionalInfoHasDataPipe } from './pipes';
 
 @NgModule({
     imports: [
@@ -74,6 +75,7 @@ import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
         SafeHtmlPipe,
         BankCardTypesPipe,
         TaSvgPipe,
+        SettingsCompanyAdditionalInfoHasDataPipe
     ],
     exports: [SharedModule],
     declarations: [
