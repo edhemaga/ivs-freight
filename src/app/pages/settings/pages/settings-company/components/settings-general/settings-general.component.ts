@@ -34,7 +34,7 @@ import { SettingsCompanyProperties } from '@pages/settings/models/settings-compa
 import { Subject, takeUntil } from 'rxjs';
 
 // routes
-import { SettingsGeneralSvgRoutes } from './utils/svg-routes/settings-general-svg-routes';
+import { SettingsGeneralSvgRoutes } from '../../utils/svg-routes/settings-general-svg-routes';
 
 @Component({
     selector: 'app-settings-general',
