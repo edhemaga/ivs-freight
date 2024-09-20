@@ -537,6 +537,7 @@
                             </ng-container>
 
                             <td
+                                #columnField
                                 class="location-field"
                                 [ngStyle]="{
                                     width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
@@ -557,6 +558,9 @@
                                     "
                                     [isDisplayingAddressInput]="
                                         isDisplayingAddressInput
+                                    "
+                                    [locationDropdownWidth]="
+                                        columnSpecifications?.locationWidth
                                     "
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
@@ -877,6 +881,7 @@
                         </ng-container>
 
                         <td
+                            #columnField
                             class="location-field"
                             [ngStyle]="{
                                 width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
@@ -898,6 +903,9 @@
                                     [parkingList]="parkingList"
                                     [isDisplayingAddressInput]="
                                         isDisplayingAddressInput
+                                    "
+                                    [locationDropdownWidth]="
+                                        columnSpecifications?.locationWidth
                                     "
                                     (updateLastLocationEmit)="
                                         handleUpdateLastLocationEmit($event)
@@ -1056,6 +1064,7 @@
                             </ng-container>
 
                             <td
+                                #columnField
                                 class="location-field"
                                 [ngStyle]="{
                                     width: resizedColumnsWidth['city'] ? resizedColumnsWidth['city'] + 'px' : '162px',
