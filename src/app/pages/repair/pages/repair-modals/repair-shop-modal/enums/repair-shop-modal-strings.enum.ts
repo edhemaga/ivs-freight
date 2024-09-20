@@ -26,5 +26,7 @@ export enum RepairShopModalStringEnum {
     END_TIME_ALL_DAYS = 'endTimeAllDays',
     COMPANY_OWNED = 'companyOwned',
     WEEKLY_DAY = 'weeklyDay',
-    PAY_PERIOD = 'payPeriod'
+    PAY_PERIOD = 'payPeriod',
+    MONTHLY_DAYS = 'monthlyDays',
+    RENT = 'rent'
 }

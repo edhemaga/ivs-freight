@@ -11,10 +11,10 @@ export interface CreateShopModel {
     bankId: number;
     account: string;
     routing: string;
-    // rent: number;
+    rent: number;
     payPeriod: number;
     weeklyDay: number;
-    // monthlyDay: number;
+    monthlyDay: number;
     longitude: number;
     latitude: number;
     // openHoursSameAllDays: boolean;

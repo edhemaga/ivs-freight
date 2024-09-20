@@ -205,8 +205,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public files: UploadFile[] | FileResponse[] = [];
     public filesForDelete: any[] = [];
     public companyUser: SignInResponse = null;
-    daysOfWeekDropdown: EnumValue[];
-    payPeriodsDropdown: EnumValue[];
+    public daysOfWeekDropdown: EnumValue[];
+    public payPeriodsDropdown: EnumValue[];
+    public daysOfMonthDropdown: EnumValue[];
+    public selectedPayPeriod: EnumValue;
+    public selectedWeeklyDay: EnumValue;
+    public selectedMonthlyDays: EnumValue;
+    public isMonthlyPeriodSeleced: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -239,7 +244,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return this.editData?.data || this.editData?.id;
     }
 
+    public get showCompanyOwned(): boolean {
+        return this.editData?.companyOwned;
+    }
+
     public get modalTitle(): string {
+        if (this.showCompanyOwned) {
+            return this.isEditMode
+                ? RepairShopModalEnum.COMPANY_MODAL_TITLE_EDIT
+                : RepairShopModalEnum.COMPANY_MODAL_TITLE_ADD;
+        }
+
         return this.isEditMode
             ? RepairShopModalEnum.MODAL_TITLE_EDIT
             : RepairShopModalEnum.MODAL_TITLE_ADD;
@@ -302,6 +317,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return RepairShopConfig.getDayConfig();
     }
 
+    public get payMonthlyConfig(): ITaInput {
+        return RepairShopConfig.getMonthlyPeriodConfig();
+    }
+
     get accountNumberInputConfig(): ITaInput {
         return RepairShopConfig.getAccountNumberInputConfig(
             this.isBankSelected
@@ -312,6 +331,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return RepairShopConfig.getRoutingNumberInputConfig(
             this.isBankSelected
         );
+    }
+
+    public get rentInputConfig(): ITaInput {
+        return RepairShopConfig.getRentInputConfig();
     }
 
     public get getServiceCounter(): number {
@@ -364,9 +387,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ],
             [RepairShopModalStringEnum.LONGITUDE]: [null],
             [RepairShopModalStringEnum.LATITUDE]: [null],
-            [RepairShopModalStringEnum.COMPANY_OWNED]: [null],
+            [RepairShopModalStringEnum.COMPANY_OWNED]: [true],
             [RepairShopModalStringEnum.WEEKLY_DAY]: [null],
             [RepairShopModalStringEnum.PAY_PERIOD]: [null],
+            [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
+            [RepairShopModalStringEnum.RENT]: [null],
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -392,6 +417,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.departments = dropdowns.departments;
                     this.payPeriodsDropdown = dropdowns.payPeriods;
                     this.daysOfWeekDropdown = dropdowns.daysOfWeek;
+                    this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
                         this.repairShopForm.patchValue({
@@ -429,12 +455,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.LATITUDE]:
                                 repairShop.latitude,
                             [RepairShopModalStringEnum.COMPANY_OWNED]:
-                                repairShop.companyId,
+                                repairShop.companyOwned,
                             [RepairShopModalStringEnum.WEEKLY_DAY]:
                                 repairShop.weeklyDay,
-                                [RepairShopModalStringEnum.PAY_PERIOD]:
-                                    repairShop.payPeriod,
-                                
+                            [RepairShopModalStringEnum.PAY_PERIOD]:
+                                repairShop.payPeriod,
+                            [RepairShopModalStringEnum.MONTHLY_DAYS]:
+                                repairShop.monthlyDay,
+                            [RepairShopModalStringEnum.RENT]: repairShop.rent,
                         });
                         this.mapEditData(repairShop);
                     }
@@ -450,6 +478,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+        if (res.payPeriod) {
+            this.selectedPayPeriod =
+                this.payPeriodsDropdown.find(
+                    (payPeriod) => payPeriod.id === res.payPeriod.id
+                ) ?? null;
+        }
+
+        if (res.weeklyDay) {
+            this.selectedWeeklyDay =
+                this.daysOfWeekDropdown.find(
+                    (weeklyDay) => weeklyDay.id === res.weeklyDay.id
+                ) ?? null;
+        }
+
+        if (res.monthlyDay) {
+            this.selectedMonthlyDays =
+                this.daysOfMonthDropdown.find(
+                    (monthlyDay) => monthlyDay.id === res.monthlyDay.id
+                ) ?? null;
+        }
+
         if (res.bank) {
             this.selectedBank =
                 this.banks.find((bank) => bank.id === res.bank.id) ?? null;
@@ -466,7 +515,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.contacts = res.contacts;
+        this.checkForPayPeriodMethod(res.payPeriod);
         this.mapRatings(res);
+    }
+
+    private checkForPayPeriodMethod(payPeriod: EnumValue | null) {
+        this.isMonthlyPeriodSeleced = payPeriod?.id === 2;
     }
 
     private preSelectService(shopServiceType?: EnumValue): void {
@@ -636,6 +690,36 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.checkBankField();
     }
 
+    public onPayPeriodSelect(event: EnumValue): void {
+        this.selectedPayPeriod = event;
+        this.onWeeklyDaySelected(null);
+        this.onMonthlyDaySelected(null);
+        this.checkForPayPeriodMethod(event);
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.PAY_PERIOD)
+                .patchValue(null);
+    }
+
+    public onWeeklyDaySelected(event: EnumValue): void {
+        this.selectedWeeklyDay = event;
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.WEEKLY_DAY)
+                .patchValue(null);
+    }
+
+    public onMonthlyDaySelected(event: EnumValue): void {
+        this.selectedMonthlyDays = event;
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.MONTHLY_DAYS)
+                .patchValue(null);
+    }
+
     private checkBankField(): void {
         const timeout = setTimeout(async () => {
             this.isBankSelected =
@@ -768,13 +852,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             // endTimeAllDays: !this.isDaysVisible
             //     ? this.openHours.value.at(0).endTime
             //     : null,
-            weeklyDay: 1,
             // monthlyDay: null,
             // openHours: [],
-            payPeriod: 1,
+            weeklyDay: this.selectedWeeklyDay
+                ? this.selectedWeeklyDay.id
+                : null,
+            payPeriod: this.selectedPayPeriod
+                ? this.selectedPayPeriod.id
+                : null,
+            monthlyDay: this.selectedMonthlyDays
+                ? this.selectedMonthlyDays.id
+                : null,
             // TODO: Check meaning of this fields since we are not showing them on FE
             companyOwned: true,
-            // rent: 1,
+            rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
         };
         return repairModel;
     }

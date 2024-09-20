@@ -94,7 +94,7 @@ export class RepairShopConfig {
             minLength: 2,
             maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163'
+            dropdownWidthClass: 'w-col-163',
         };
     }
 
@@ -106,10 +106,32 @@ export class RepairShopConfig {
             minLength: 2,
             maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163'
+            dropdownWidthClass: 'w-col-163',
         };
     }
 
+    static getMonthlyPeriodConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay',
+            type: 'text',
+            label: 'Monthly Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163',
+        };
+    }
+
+    static getRentInputConfig(): ITaInput {
+        return {
+            name: 'Rent',
+            type: 'text',
+            label: 'Rent',
+            placeholderIcon: 'dollar',
+            thousandSeparator: true,
+            placeholderIconColor: 'blue',
+        };
+    }
 
     static getAccountNumberInputConfig(isBankSelected: boolean): ITaInput {
         return {

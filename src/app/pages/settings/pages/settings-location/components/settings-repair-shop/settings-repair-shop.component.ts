@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -63,7 +63,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         this.initOptions();
     }
     public getRepairShopById(id: number) {
-        this.settingsLocationService.onModalAction({modalName: 'repairshop'}, id );
+        this.settingsLocationService.onModalAction({modalName: 'repairshop'}, id, true );
     }
     public repairDropActions(any: any, actions: string) {
         this.getRepairShopById(any.id);
@@ -76,7 +76,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
             .subscribe();
     }
     public onAction(modal: { modalName: string; type: string }) {
-        this.settingsLocationService.onModalAction(modal);
+        this.settingsLocationService.onModalAction(modal, '', true);
     }
     public getRepairShopList() {
         this.repairShopSrv
