@@ -1,5 +1,5 @@
 <app-ta-modal
-[isVisibleMap]="true"
+    [isVisibleMap]="true"
     [modalTitle]="modalTitle"
     [editData]="editData"
     [editName]="editName"
@@ -38,7 +38,10 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editLoad,
-                    'select-template': !isConvertedToTemplate && !isActiveLoad && labelsTemplate.length
+                    'select-template':
+                        !isConvertedToTemplate &&
+                        !isActiveLoad &&
+                        labelsTemplate.length
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -65,7 +68,13 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad && labelsTemplate.length">
+                <ng-container
+                    *ngIf="
+                        !isConvertedToTemplate &&
+                        !isActiveLoad &&
+                        labelsTemplate.length
+                    "
+                >
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -115,7 +124,9 @@
                                             )
                                         "
                                     >
-                                        <p class="m-0 text-truncate">{{ template.name }}</p>
+                                        <p class="m-0 text-truncate">
+                                            {{ template.name }}
+                                        </p>
                                     </div>
                                 </ng-container>
                             </div>
@@ -278,6 +289,7 @@
                             ></app-ta-input-dropdown>
 
                             <app-ta-input-dropdown
+                                #trailerInputDropdown
                                 formControlName="trailerTypeId"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="getTrailerInputConfig"
@@ -1110,7 +1122,9 @@
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
-                        [stopNumber]="loadForm.get('deliveryStopOrder').value || 1"
+                        [stopNumber]="
+                            loadForm.get('deliveryStopOrder').value || 1
+                        "
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
