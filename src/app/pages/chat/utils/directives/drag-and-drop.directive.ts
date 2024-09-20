@@ -3,8 +3,8 @@ import {
     EventEmitter,
     HostBinding,
     HostListener,
-    Output
-} from "@angular/core";
+    Output,
+} from '@angular/core';
 
 @Directive({
     selector: '[dragAndDrop]',

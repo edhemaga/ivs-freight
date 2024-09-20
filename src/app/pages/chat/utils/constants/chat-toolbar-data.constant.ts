@@ -1,5 +1,5 @@
 // Models
-import { ChatTab } from "@pages/chat/models";
+import { ChatTab } from '@pages/chat/models';
 
 export class ChatToolbarDataConstant {
     static tabs: ChatTab[] = [
@@ -13,7 +13,7 @@ export class ChatToolbarDataConstant {
             id: 1,
             name: 'Archive',
             count: 0,
-            checked: false
-        }
+            checked: false,
+        },
     ];
 }

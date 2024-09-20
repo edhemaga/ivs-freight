@@ -43,17 +43,17 @@
                                 trackBy: '' | trackByProperty
                             "
                         >
-                            <div [@fadeInOut]>
+                            <div [@fadeInOutVertical]>
                                 <ng-container
                                     *ngTemplateOutlet="
                                         isAdvancedView
                                             ? listItemAdvanced
                                             : listItemRegular;
-                                        group_id: group.id;
                                         context: {
                                             type: conversationTypeEnum.CHANNEL,
                                             item: department,
-                                            group: group.id
+                                            group: group.id,
+                                            group_id: group.id
                                         }
                                     "
                                 ></ng-container>
@@ -190,7 +190,7 @@
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
+        [@fadeInOutVertical]
         (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-regular d-flex">
@@ -253,7 +253,7 @@
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
+        [@fadeInOutVertical]
         (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-advanced d-flex flex-grow-1">

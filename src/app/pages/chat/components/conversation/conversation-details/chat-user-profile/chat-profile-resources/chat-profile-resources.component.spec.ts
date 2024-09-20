@@ -3,19 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChatProfileResourcesComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-profile-resources/chat-profile-resources.component';
 
 describe('ChatProfileResourcesComponent', () => {
-  let component: ChatProfileResourcesComponent;
-  let fixture: ComponentFixture<ChatProfileResourcesComponent>;
+    let component: ChatProfileResourcesComponent;
+    let fixture: ComponentFixture<ChatProfileResourcesComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChatProfileResourcesComponent]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [ChatProfileResourcesComponent],
+        });
+        fixture = TestBed.createComponent(ChatProfileResourcesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-    fixture = TestBed.createComponent(ChatProfileResourcesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

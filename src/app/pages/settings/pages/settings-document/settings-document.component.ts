@@ -16,6 +16,7 @@ import {
     CreateWithUploadsResponse,
     FileResponse,
 } from 'appcoretruckassist/model/models';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { DocumentActionConfig } from '@pages/settings/pages/settings-document/models/document-action-config';
 
 // constants
@@ -39,6 +40,9 @@ export class SettingsDocumentComponent
     public documents: File[] = [];
     public tags: string[] = [];
     public showDropzone: boolean = false;
+
+    public dropZoneConfig: DropZoneConfig =
+        SettingsDocumentsConstants.DROPZONE_CONFIG;
 
     public selectedTab: string = SettingsDocumentsConstants.SELECTED_TAB;
     public tableOptions: TableBodyOptionActions =

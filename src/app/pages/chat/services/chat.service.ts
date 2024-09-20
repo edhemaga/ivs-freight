@@ -1,10 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import {
-    HttpClient,
-    HttpHeaders,
-    HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Models
 import {
@@ -36,7 +32,7 @@ export class UserChatService {
 
     // Headers
     private headers = new HttpHeaders({
-        'Authorization': `bearer ${this.token}`,
+        Authorization: `bearer ${this.token}`,
     });
 
     constructor(
@@ -45,13 +41,13 @@ export class UserChatService {
         // Services
         private chatService: ChatService,
         private formDataService: FormDataService
-    ) { }
+    ) {}
 
     public getCompanyUserList(
         userType: UserType,
         pageIndex?: number,
         pageSize?: number,
-        searchParam?: string,
+        searchParam?: string
     ): Observable<CompanyUserForChatListResponse> {
         return this.chatService.apiChatUserListGet(
             null,
@@ -68,9 +64,10 @@ export class UserChatService {
     }
 
     public getCompanyChannels(): Observable<ConversationResponse[]> {
-        return this.http.get<ConversationResponse[]>(`${environment.API_ENDPOINT}/api/chat/companychannels`,
+        return this.http.get<ConversationResponse[]>(
+            `${environment.API_ENDPOINT}/api/chat/companychannels`,
             {
-                headers: this.headers
+                headers: this.headers,
             }
         );
     }
@@ -79,7 +76,7 @@ export class UserChatService {
         return this.http.get<ConversationResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${id}`,
             {
-                headers: this.headers
+                headers: this.headers,
             }
         );
     }
@@ -90,13 +87,13 @@ export class UserChatService {
                 'MessageSpecParams.ConversationId': id,
             },
         });
-        return this.http.get<ChatMessageResponse[]>
-            (`${environment.API_ENDPOINT}/api/chat/message/list`,
-                {
-                    params,
-                    headers: this.headers
-                }
-            );
+        return this.http.get<ChatMessageResponse[]>(
+            `${environment.API_ENDPOINT}/api/chat/message/list`,
+            {
+                params,
+                headers: this.headers,
+            }
+        );
     }
 
     public createConversation(
@@ -105,14 +102,14 @@ export class UserChatService {
     ): Observable<CreateResponse> {
         const conversationParticipants: CreateConversationCommand = {
             participantIds: participants,
-            conversationType: chatType
+            conversationType: chatType,
         };
 
         return this.http.post(
             `${environment.API_ENDPOINT}/api/chat/conversation`,
             conversationParticipants,
             { headers: this.headers }
-        )
+        );
     }
 
     public sendMessage(
@@ -123,15 +120,15 @@ export class UserChatService {
     ): Observable<any> {
         if (!conversationId) return;
 
-        const attachments: File[] = attachmentsList.map(item => {
-            return item.realFile
-        })
+        const attachments: File[] = attachmentsList.map((item) => {
+            return item.realFile;
+        });
 
-        const links = linksList?.map(link => {
+        const links = linksList?.map((link) => {
             return {
-                url: link
-            }
-        })
+                url: link,
+            };
+        });
 
         const data = { conversationId, content, attachments, links };
 
@@ -144,12 +141,13 @@ export class UserChatService {
         );
     }
 
-    public getAllConversationFiles(conversationId: number): Observable<ConversationInfoResponse> {
-
+    public getAllConversationFiles(
+        conversationId: number
+    ): Observable<ConversationInfoResponse> {
         return this.http.get<ConversationInfoResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
             {
-                headers: this.headers
+                headers: this.headers,
             }
         );
     }

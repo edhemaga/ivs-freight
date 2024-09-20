@@ -20,6 +20,9 @@ import { SignInResponse } from 'appcoretruckassist';
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
 import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
+// Const
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
 @Component({
     selector: 'app-navigation-user-company',
     templateUrl: './navigation-user-company.component.html',
@@ -32,6 +35,7 @@ export class NavigationUserCompanyComponent implements OnInit {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
     public userCompanies: any[];
     @Output() companiesExists = new EventEmitter<boolean>();
+    public icons = NavigationDataConstants.icons;
 
     constructor(
         private navigationService: NavigationService,

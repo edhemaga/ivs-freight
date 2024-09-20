@@ -1,7 +1,6 @@
 <div class="ta-upload {{ customClassName }} documents">
-    <div class="documents_holder">
+    <ng-container *ngIf="showDropzone">
         <app-ta-upload-dropzone
-            *ngIf="showDropzone"
             (onFileEvent)="onUploadFiles($event)"
             [isRequired]="isRequired"
             [showRequired]="showRequired"
@@ -9,7 +8,10 @@
             [dropzoneFocus]="dropzoneFocus"
             (closeDropzone)="dropZoneClose()"
             [customClassName]="customClassName"
+            [dropZoneConfig]="dropZoneConfig"
         ></app-ta-upload-dropzone>
+    </ng-container>
+    <div class="documents_holder">
         <ng-container
             *ngFor="let file of _files; let ind = index; trackBy: identity"
         >

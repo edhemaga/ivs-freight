@@ -23,7 +23,6 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -800,7 +799,7 @@ export class DropDownService {
 
                 case DropActionsStringEnum.EDIT_REPAIR_SHOP:
                     this.modalService.openModal(
-                        SettingsRepairshopModalComponent,
+                        RepairShopModalComponent,
                         {
                             size: DropActionsStringEnum.SMALL,
                         },

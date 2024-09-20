@@ -1,3 +1,3 @@
 export enum ChatLocalStorageValue {
-    USER = 'user'
+    USER = 'user',
 }

@@ -1,4 +1,4 @@
-import { FileResponse } from "appcoretruckassist";
+import { FileResponse } from 'appcoretruckassist';
 
 export interface CompanyUser {
     id: number;

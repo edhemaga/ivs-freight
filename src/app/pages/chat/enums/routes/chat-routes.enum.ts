@@ -1,3 +1,3 @@
 export enum ChatRoutesEnum {
-    CONVERSATION = "chat/conversation"
+    CONVERSATION = 'chat/conversation',
 }
