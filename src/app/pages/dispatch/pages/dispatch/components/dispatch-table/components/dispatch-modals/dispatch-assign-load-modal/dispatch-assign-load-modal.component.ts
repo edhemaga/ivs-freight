@@ -762,16 +762,16 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-
-    public onFirstElementHeightChange(height: number) {
+    public onFirstElementHeightChange(height: number): void {
         this.firstElementHeight = height;
     }
 
-    public onSecondElementHeightChange(height: number) {
+    public onSecondElementHeightChange(height: number): void {
         this.secondElementHeight = height;
+    }
+
+    public ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
