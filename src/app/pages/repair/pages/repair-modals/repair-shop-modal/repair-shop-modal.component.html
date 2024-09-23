@@ -304,14 +304,14 @@
                                 "
                                 (click)="toggleWorkingDay(ind)"
                                 [ngClass]="{
-                                    active: openHour.get('isWorkingDay').value
+                                    active: openHour.get(RepairShopModalStringEnum.IS_WORKING_DAY).value
                                 }"
                                 class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                             >
                                 <p class="ta-font-bold text-uppercase">
                                     {{
                                         openHour
-                                            .get('dayLabel')
+                                            .get(RepairShopModalStringEnum.DAY_LABEL)
                                             .value.slice(0, 3)
                                     }}
                                 </p>
@@ -354,7 +354,7 @@
                                 [formGroupName]="ind"
                             >
                                 <ng-container
-                                    *ngIf="openHour.get('isWorkingDay').value"
+                                    *ngIf="openHour.get(RepairShopModalStringEnum.IS_WORKING_DAY).value"
                                 >
                                     <div
                                         class="timeline__card timeline__card-inputs"
@@ -362,7 +362,7 @@
                                         <div
                                             class="ta-font-medium text-color-black text-size-14"
                                         >
-                                            {{ openHour.get('dayLabel').value }}
+                                            {{ openHour.get(RepairShopModalStringEnum.DAY_LABEL).value }}
                                         </div>
 
                                         <div class="d-flex flex-column">
@@ -382,7 +382,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     openHour.get(
-                                                        'isDoubleShift'
+                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
                                             >
@@ -420,7 +420,7 @@
                                             <ng-container
                                                 *ngIf="
                                                     openHour.get(
-                                                        'isDoubleShift'
+                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
                                             >
@@ -448,7 +448,10 @@
                                         >
                                             <svg-icon
                                                 [src]="
-                                                    repairShopModalSvgRoutes.plusIcon
+                                                    openHour.get(RepairShopModalStringEnum.DOUBLE_SHIFT)
+                                                        .value
+                                                        ? repairShopModalSvgRoutes.minusIcon
+                                                        : repairShopModalSvgRoutes.plusIcon
                                                 "
                                                 class="svg-fill-muted"
                                             ></svg-icon>
