@@ -16,7 +16,6 @@ import { OnDestroy } from '@angular/core';
 
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
@@ -27,6 +26,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -41,7 +41,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
         FormatCurrencyPipe,
         MoneyFilterPipe,
         TaSpecialFilterComponent,
-        CaSearchMultipleStatesComponent,
+        CaSearchMultipleStatesComponent
     ],
 })
 export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
