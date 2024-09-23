@@ -4658,13 +4658,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillingTypes;
 
                     if (this.editData) {
+                        this.isConvertedToTemplate =
+                            this.editData.selectedTab ===
+                            TableStringEnum.TEMPLATE;
                         this.populateLoadModalData(
                             (this.editData.data ??
                                 this.editData) as LoadResponse
                         );
-                        this.isConvertedToTemplate =
-                            this.editData.selectedTab ===
-                            TableStringEnum.TEMPLATE;
                     } else {
                         this.watchFormChanges();
                     }
@@ -5079,10 +5079,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = loadModalData;
 
         this.isEditingMode = true;
-
         // Check if stops exists and is an array before using it
-        const stops =
-            loadModalData.stops?.filter((stop) => stop.id !== 0) || [];
+        const stops = this.formatStop(loadModalData.stops);
+            
         if (stops.length) {
             stops.forEach((stop, index) => {
                 if (index === 0) {
@@ -5436,6 +5435,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             generalCommodity?.name.toLowerCase() ===
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
+    }
+    formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
+        const _stops = stops?.filter((stop) => stop.id !== 0) || [];
+
+        if(!this.isConvertedToTemplate) return _stops;
+
+        // Clear stop values
+        _stops.forEach(stop => {
+            stop.arrive = null;
+            stop.depart = null;
+            stop.statusHistory = [];
+        });
+
+        return _stops;
     }
 
     public pickupStatusHistoryChange(
