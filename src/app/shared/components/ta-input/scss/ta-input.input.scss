@@ -77,6 +77,10 @@
             background-color: $default-focus-content-selection;
             color: $default-focus-content;
         }
+
+        &.blue-dropdown {
+            background-color: $default-focus-input-blue-commands
+        }
     }
 
     &.valid-focus-in,
