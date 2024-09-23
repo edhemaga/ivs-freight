@@ -212,7 +212,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public selectedWeeklyDay: EnumValue;
     public selectedMonthlyDays: EnumValue;
     public isMonthlyPeriodSeleced: boolean;
-    public workingDaysLabel: EnumValue[];
+    public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -418,12 +418,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.departments = dropdowns.departments;
                     this.payPeriodsDropdown = dropdowns.payPeriods;
                     this.daysOfWeekDropdown = dropdowns.daysOfWeek;
-                    this.workingDaysLabel = dropdowns.daysOfWeek.map((day) => {
-                        return {
-                            id: day.id,
-                            name: day.name.slice(0, 3),
-                        };
-                    });
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
@@ -470,7 +464,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.MONTHLY_DAYS]:
                                 repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
-                            [RepairShopModalStringEnum.HOLIDAY]: true
+                            [RepairShopModalStringEnum.HOLIDAY]: true,
                         });
                         this.mapEditData(repairShop);
                     }
@@ -595,43 +589,54 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public addShopToFavorite(): void {
         this.favoriteField.patchValue(!this.isFavorite);
     }
+
     private patchWorkingDayTime(
         item: any,
         startTime: Date,
-        endTime: Date
+        endTime: Date,
+        isWorkingDay: boolean
     ): void {
         item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
         item.get(RepairShopModalStringEnum.END_TIME)?.patchValue(endTime);
+        item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.patchValue(
+            isWorkingDay
+        );
     }
 
     private initWorkingHours(): void {
-        RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
+        this.workingDaysLabel.forEach((day) =>
             this.openHours.push(
                 RepairShopHelper.createOpenHour(day, this.formBuilder)
             )
         );
-
-        console.log(this.openHours);
     }
 
     // Working hours
-    public toggleWorkingDay(day: any, index: number): void {
+    public toggleWorkingDay(index: number): void {
         const newWorkingDay = this.openHours.at(index);
-        day.active = !day.active;
 
-        const startTime = day.active
+        // Toggle value
+        const dayActiveField = this.openHours.at(index).get('isWorkingDay');
+        dayActiveField.patchValue(!dayActiveField.value);
+
+        const startTime = dayActiveField.value
             ? this.isOpenAllDay
                 ? OpenWorkingHours.MIDNIGHT
                 : OpenWorkingHours.EIGHTAM
             : null;
 
-        const endTime = day.active
+        const endTime = dayActiveField.value
             ? this.isOpenAllDay
                 ? OpenWorkingHours.MIDNIGHT
                 : OpenWorkingHours.FIVEPM
             : null;
 
-        this.patchWorkingDayTime(newWorkingDay, startTime as any, endTime as any);
+        this.patchWorkingDayTime(
+            newWorkingDay,
+            startTime as any,
+            endTime as any,
+            dayActiveField.value
+        );
     }
 
     public toggle247WorkingHours(): void {
@@ -650,7 +655,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         this.openHours.controls.forEach((item) => {
             if (item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value) {
-                this.patchWorkingDayTime(item, startTime, endTime);
+                this.patchWorkingDayTime(item, startTime, endTime, true);
             }
         });
     }

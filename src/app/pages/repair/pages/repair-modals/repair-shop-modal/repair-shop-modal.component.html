@@ -299,15 +299,21 @@
                         >
                             <div
                                 *ngFor="
-                                    let day of workingDaysLabel;
-                                    let index = index
+                                    let openHour of openHours.controls;
+                                    let ind = index
                                 "
-                                (click)="toggleWorkingDay(day, index)"
-                                [ngClass]="{ active: day.active }"
+                                (click)="toggleWorkingDay(ind)"
+                                [ngClass]="{
+                                    active: openHour.get('isWorkingDay').value
+                                }"
                                 class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                             >
                                 <p class="ta-font-bold text-uppercase">
-                                    {{ day.name }}
+                                    {{
+                                        openHour
+                                            .get('dayLabel')
+                                            .value.slice(0, 3)
+                                    }}
                                 </p>
                             </div>
                             <div class="timeline__card">
@@ -348,10 +354,7 @@
                                 [formGroupName]="ind"
                             >
                                 <ng-container
-                                    *ngIf="
-                                        workingDaysLabel &&
-                                        workingDaysLabel[ind]?.active
-                                    "
+                                    *ngIf="openHour.get('isWorkingDay').value"
                                 >
                                     <div
                                         class="timeline__card timeline__card-inputs"
@@ -456,15 +459,15 @@
 
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
-                        [cardName]="'Document'"
-                        [isCardOpen]="!!files?.length"
-                        [hasBodyData]="true"
-                        [hasDivider]="true"
-                        [hasCounter]="files?.length"
-                        [animationMarginParams]="{
-                            marginTop: '0',
-                            marginBottom: '0'
-                        }"
+                            [cardName]="'Document'"
+                            [isCardOpen]="!!files?.length"
+                            [hasBodyData]="true"
+                            [hasDivider]="true"
+                            [hasCounter]="files?.length"
+                            [animationMarginParams]="{
+                                marginTop: '0',
+                                marginBottom: '0'
+                            }"
                         >
                             <app-ta-upload-files
                                 (onFileEvent)="onFilesEvent($event)"
