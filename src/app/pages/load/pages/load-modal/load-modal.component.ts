@@ -5436,7 +5436,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
     }
-    formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
+
+    private formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
         const _stops = stops?.filter((stop) => stop.id !== 0) || [];
 
         if(!this.isConvertedToTemplate) return _stops;
