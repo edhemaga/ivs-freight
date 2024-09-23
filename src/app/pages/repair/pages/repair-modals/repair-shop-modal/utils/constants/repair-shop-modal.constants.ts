@@ -13,7 +13,6 @@ const endTime = MethodsCalculationsHelper.convertTimeFromBackend(
 
 export class RepairShopConstants {
     static OPEN_HOUR_DAYS: WorkingHoursType = [
-        OpenHourDays.MON_FRI,
         OpenHourDays.Sunday,
         OpenHourDays.Monday,
         OpenHourDays.Tuesday,
@@ -24,13 +23,6 @@ export class RepairShopConstants {
     ];
 
     static DEFAULT_OPEN_HOUR_DAYS = [
-        {
-            dayLabel: OpenHourDays.MON_FRI,
-            dayOfWeek: -1,
-            isWorkingDay: true,
-            startTime,
-            endTime,
-        },
         {
             dayLabel: OpenHourDays.Monday,
             dayOfWeek: 1,

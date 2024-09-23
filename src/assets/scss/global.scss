@@ -470,3 +470,9 @@ app-load-modal {
         height: 24px;
     }
 }
+
+.pl {
+    &-0 {
+        padding-left: 0 !important;
+    }
+}

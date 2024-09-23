@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 // THIN
 .ta-font-thin {
     font-weight: 100 !important;
@@ -33,4 +35,19 @@
 // BLACK
 .ta-font-black {
     font-weight: 900 !important;
+}
+
+.text-color {
+    &-black {
+        color: $ta-black;
+    }
+}
+
+.text {
+    &-size {
+        &-14 {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
 }

@@ -75,6 +75,11 @@
         display: grid;
         grid-template-columns: 364px 1fr;
     }
+
+    &-copy-icon svg {
+        width: 14px;
+        height: 18px;
+    }
 }
 
 .service-types {
@@ -82,23 +87,31 @@
 }
 
 .timeline__card {
-    grid-template-columns: 1fr repeat(2, 140px);
-    padding: 0 10px;
+    grid-template-columns: 120px 154px 154px 18px;
     border-radius: 2px;
     display: grid;
     grid-template-rows: 34px;
     align-items: center;
-    column-gap: 12px;
+    column-gap: 5px;
     row-gap: 2px;
     margin-bottom: 2px;
     position: relative;
+
+    &-inputs {
+        grid-template-columns: 90px 160px 160px 31px;
+    }
+
+    &-icon-plus {
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
 
     &-range {
         font-size: 11px;
         line-height: 14px;
         color: $muted;
-        text-transform: uppercase;
-        padding-left: 32px;
     }
 
     &-label {
@@ -173,9 +186,13 @@
                 }
             }
         }
-    } 
+    }
 }
 
 .custom-bank-row {
     grid-template-columns: 160px 100px 172px;
+}
+
+.text-color-red {
+    color: $ta-red-11;
 }

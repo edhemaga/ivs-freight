@@ -17,6 +17,7 @@ export interface CreateShopModel {
     monthlyDay: number;
     longitude: number;
     latitude: number;
+    holiday: boolean;
     // openHoursSameAllDays: boolean;
     // openAlways: boolean;
     // startTimeAllDays: string;

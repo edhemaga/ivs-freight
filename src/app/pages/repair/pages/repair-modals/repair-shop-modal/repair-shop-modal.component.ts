@@ -212,6 +212,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public selectedWeeklyDay: EnumValue;
     public selectedMonthlyDays: EnumValue;
     public isMonthlyPeriodSeleced: boolean;
+    public workingDaysLabel: EnumValue[];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -273,7 +274,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ? this.RepairShopModalEnum.REMOVE_FAVORITE
             : this.RepairShopModalEnum.ADD_FAVORITE;
     }
-
     // Open hours
     public get openHours(): UntypedFormArray {
         return this.repairShopForm.get(
@@ -392,6 +392,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.PAY_PERIOD]: [null],
             [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
             [RepairShopModalStringEnum.RENT]: [null],
+            [RepairShopModalStringEnum.HOLIDAY]: [null],
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -417,6 +418,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.departments = dropdowns.departments;
                     this.payPeriodsDropdown = dropdowns.payPeriods;
                     this.daysOfWeekDropdown = dropdowns.daysOfWeek;
+                    this.workingDaysLabel = dropdowns.daysOfWeek.map((day) => {
+                        return {
+                            id: day.id,
+                            name: day.name.slice(0, 3),
+                        };
+                    });
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
@@ -463,6 +470,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.MONTHLY_DAYS]:
                                 repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
+                            [RepairShopModalStringEnum.HOLIDAY]: true
                         });
                         this.mapEditData(repairShop);
                     }
@@ -587,7 +595,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public addShopToFavorite(): void {
         this.favoriteField.patchValue(!this.isFavorite);
     }
-
     private patchWorkingDayTime(
         item: any,
         startTime: Date,
@@ -603,26 +610,28 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopHelper.createOpenHour(day, this.formBuilder)
             )
         );
+
+        console.log(this.openHours);
     }
 
-    public toggleDays(): void {
-        this.isDaysVisible = !this.isDaysVisible;
-    }
-
-    public addNewWorkingDays(index: number): void {
+    // Working hours
+    public toggleWorkingDay(day: any, index: number): void {
         const newWorkingDay = this.openHours.at(index);
-        const isShopOpen =
-            newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value ===
-            null;
-        const startTime = isShopOpen
-            ? this.convertTime(OpenWorkingHours.EIGHTAM)
+        day.active = !day.active;
+
+        const startTime = day.active
+            ? this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.EIGHTAM
             : null;
 
-        const endTime = isShopOpen
-            ? this.convertTime(OpenWorkingHours.FIVEPM)
+        const endTime = day.active
+            ? this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.FIVEPM
             : null;
 
-        this.patchWorkingDayTime(newWorkingDay, startTime, endTime);
+        this.patchWorkingDayTime(newWorkingDay, startTime as any, endTime as any);
     }
 
     public toggle247WorkingHours(): void {
@@ -866,6 +875,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             // TODO: Check meaning of this fields since we are not showing them on FE
             companyOwned: true,
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),
         };
         return repairModel;
     }

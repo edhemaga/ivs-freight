@@ -28,5 +28,6 @@ export enum RepairShopModalStringEnum {
     WEEKLY_DAY = 'weeklyDay',
     PAY_PERIOD = 'payPeriod',
     MONTHLY_DAYS = 'monthlyDays',
-    RENT = 'rent'
+    RENT = 'rent',
+    HOLIDAY = 'holiday'
 }
