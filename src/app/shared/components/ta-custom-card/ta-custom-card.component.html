@@ -1,7 +1,6 @@
 <div
     class="ta-custom-card"
     [class.dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
-    [class.h-full]="isInheritingParentSize && _isCardOpen"
 >
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
@@ -58,7 +57,11 @@
                     'dropdown-card': isDropdownCard && !isDropdownModalCard
                 }"
                 [ngStyle]="{
-                    color: _isCardOpen ? '#424242' :  headerLightColor && hasCounter === -1? '#aaaaaa' : '#6C6C6C'
+                    color: _isCardOpen
+                        ? '#424242'
+                        : headerLightColor && hasCounter === -1
+                        ? '#aaaaaa'
+                        : '#6C6C6C'
                 }"
             >
                 {{ cardName }}
@@ -314,11 +317,12 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'h-full scroll scrollable-element': isInheritingParentSize && _isCardOpen
+            'scrollable-element overflow-auto': isInheritingParentSize,
+            'set-max-height': isInheritingParentSize
         }"
-        [ngStyle]="{
-            'scrollbar-width': isInheritingParentSize? 'thin !important': 'none'
-        }"
+        [ngStyle]="{ 
+             'max-height': isInheritingParentSize ? cardHeight - 40 + 'px' : 'auto',
+            }"
         [@.disabled]="disableAnimation"
     >
         <div

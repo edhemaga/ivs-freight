@@ -58,6 +58,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 })
 export class TaCustomCardComponent implements OnInit {
     @ViewChild('noteContainer') noteContainer: any;
+    @Input() cardHeight!: number;
 
     @Input() animationsDisabled = true;
     @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'

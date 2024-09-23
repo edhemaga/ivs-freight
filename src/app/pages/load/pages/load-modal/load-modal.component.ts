@@ -647,8 +647,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
-    public isDocumentsCardOpen: boolean = false;
-
     // comments
     public comments: CommentResponse[] = [];
 
@@ -4245,10 +4243,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         setTimeout(() => this.addNewLoadModal(), 200);
     }
 
-    public handleOpenCloseDocumentsCard(openClose: boolean): void {
-        this.isDocumentsCardOpen = openClose;
-    }
-
     private getPreviusModalValues(): EditData | LoadShortResponse {
         return this.loadModalData();
     }
@@ -5257,7 +5251,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files || [];
-        this.handleOpenCloseDocumentsCard(!!this.documents.length);
 
         // comments
         this.comments = comments;

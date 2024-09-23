@@ -413,6 +413,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+        
         if (res.bank) {
             this.selectedBank =
                 this.banks.find((bank) => bank.id === res.bank.id) ?? null;

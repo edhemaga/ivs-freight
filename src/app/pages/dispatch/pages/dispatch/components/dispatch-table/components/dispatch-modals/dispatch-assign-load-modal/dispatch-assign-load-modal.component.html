@@ -61,18 +61,20 @@
             <div class="divider"></div>
 
             <app-ta-resizer
-                [initialFirstElementHeight]="selectedDispatches? unassignedLoads.length ? 310 : 400 : 30"
-                [initialSecondElementHeight]="400"
+                [initialFirstElementHeight]="_initialFirstElementHeight"
+                [initialSecondElementHeight]="_initialSecondElementHeight"
                 [minHeightFirstElement]="30"
                 [minHeightSecondElement]="40"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
                 [isResizeEnabled]="assignedLoads.length || unassignedLoads.length"
+                (firstElementHeightChange)="onFirstElementHeightChange($event)"
+                (secondElementHeightChange)="onSecondElementHeightChange($event)"
                 #resizerComponent
             >
             <div firstElement #firstElementRef class="h-full-important">
-                <app-ta-custom-card
+                <app-ta-custom-card 
                     [cardName]="'Assigned'"
                     [hasCounter]="assignedLoads.length || -1"
                     [isCardOpen]="isAssignLoadCardOpen"
@@ -86,12 +88,15 @@
                     "
                     [isFinishReorderingButtonVisible]="isReorderingActive"
                     [hasXAxisBottomPadding]="false"
-                    [hasScrollBody]="true"
                     [isInheritingParentSize]="true"
-                    [hasDivider]="false"
-                    [isInheritingParentSize]="true"
+                    [hasDivider]="false" 
                     [headerLightColor]="true"
-                    (onOpenCard)="isAssignLoadCardOpen = $event"
+                    [cardHeight]="firstElementHeight"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                    (onOpenCard)="toggleAssignList()"
                     (onActionEvent)="onReorderAction($event)"
                     (cdkDropListDropped)="dropAssigned($event)"
                     cdkDropList
@@ -162,8 +167,13 @@
                     [isInheritingParentSize]="true"
                     [disabledCard]="isReorderingActive"
                     [hasDivider]="false"
+                    [cardHeight]="secondElementHeight"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
                     [isGreyTextWhenDisabled]="true"
-                    (onOpenCard)="isUnAssignLoadCardOpen = $event"
+                    (onOpenCard)="toggleUnAssignedList()"
                 >
                     <ng-container
                         *ngIf="
@@ -287,7 +297,7 @@
 
             <app-ta-resizer
                 [initialFirstElementHeight]="200"
-                [initialSecondElementHeight]="390"
+                [initialSecondElementHeight]="200"
                 [minHeightFirstElement]="35"
                 [minHeightSecondElement]="40"
                 [isResizeEnabled]="assignedLoads.length || unassignedLoads.length"
@@ -306,7 +316,6 @@
                         }"
                         [hasXAxisBottomPadding]="true"
                         [hasDivider]="false"
-                        [hasScrollBody]="true"
                         [isInheritingParentSize]="true"
                     >
                         <app-load-details-item-stops-main
