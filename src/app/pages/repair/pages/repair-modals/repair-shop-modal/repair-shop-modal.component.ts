@@ -616,7 +616,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         const newWorkingDay = this.openHours.at(index);
 
         // Toggle value
-        const dayActiveField = this.openHours.at(index).get('isWorkingDay');
+        const dayActiveField = this.openHours.at(index).get(RepairShopModalStringEnum.IS_WORKING_DAY);
         dayActiveField.patchValue(!dayActiveField.value);
 
         const startTime = dayActiveField.value
@@ -637,6 +637,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             endTime as any,
             dayActiveField.value
         );
+    }
+
+    public toggleDoubleWorkingTime(index: number): void {
+        const dayActiveField = this.openHours.at(index).get(RepairShopModalStringEnum.DOUBLE_SHIFT);
+        dayActiveField.patchValue(!dayActiveField.value);
+
+        
     }
 
     public toggle247WorkingHours(): void {

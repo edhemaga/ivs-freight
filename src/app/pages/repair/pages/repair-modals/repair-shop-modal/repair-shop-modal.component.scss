@@ -87,24 +87,34 @@
 }
 
 .timeline__card {
-    grid-template-columns: 120px 154px 154px 18px;
-    border-radius: 2px;
     display: grid;
+    grid-template-columns: 120px 154px 154px 18px;
     grid-template-rows: 34px;
     align-items: center;
     column-gap: 5px;
     row-gap: 2px;
     margin-bottom: 2px;
     position: relative;
+    border-radius: 2px;
 
     &-inputs {
         grid-template-columns: 90px 160px 160px 31px;
     }
 
     &-icon-plus {
+        opacity: 0;
+        transition: $transition; 
+        cursor: pointer;
+
         svg {
             width: 14px;
             height: 14px;
+        }
+    }
+
+    &:hover {
+        .timeline__card-icon-plus {
+            opacity: 1;
         }
     }
 

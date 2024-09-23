@@ -365,38 +365,92 @@
                                             {{ openHour.get('dayLabel').value }}
                                         </div>
 
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                name: 'timepicker',
-                                                type: 'text',
-                                                placeholderIcon: 'time',
-                                                customClass: 'datetimeclass',
-                                                hideClear: true
-                                            }"
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.START_TIME
-                                            "
-                                        ></app-ta-input>
+                                        <div class="d-flex flex-column">
+                                            <app-ta-input
+                                                [inputConfig]="{
+                                                    name: 'timepicker',
+                                                    type: 'text',
+                                                    placeholderIcon: 'time',
+                                                    customClass:
+                                                        'datetimeclass',
+                                                    hideClear: true
+                                                }"
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.START_TIME
+                                                "
+                                            ></app-ta-input>
+                                            <ng-container
+                                                *ngIf="
+                                                    openHour.get(
+                                                        'isDoubleShift'
+                                                    ).value
+                                                "
+                                            >
+                                                <app-ta-input
+                                                    [inputConfig]="{
+                                                        name: 'timepicker',
+                                                        type: 'text',
+                                                        placeholderIcon: 'time',
+                                                        customClass:
+                                                            'datetimeclass',
+                                                        hideClear: true
+                                                    }"
+                                                    [formControlName]="
+                                                        RepairShopModalStringEnum.SECOND_START_TIME
+                                                    "
+                                                ></app-ta-input>
+                                            </ng-container>
+                                        </div>
 
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                name: 'timepicker',
-                                                type: 'text',
-                                                placeholderIcon: 'time',
-                                                customClass: 'datetimeclass',
-                                                hideClear: true
-                                            }"
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.END_TIME
-                                            "
-                                        ></app-ta-input>
+                                        <div class="d-flex flex-column">
+                                            <app-ta-input
+                                                [inputConfig]="{
+                                                    name: 'timepicker',
+                                                    type: 'text',
+                                                    placeholderIcon: 'time',
+                                                    customClass:
+                                                        'datetimeclass',
+                                                    hideClear: true
+                                                }"
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.END_TIME
+                                                "
+                                            ></app-ta-input>
 
-                                        <div class="d-flex justify-content-end">
+                                            <ng-container
+                                                *ngIf="
+                                                    openHour.get(
+                                                        'isDoubleShift'
+                                                    ).value
+                                                "
+                                            >
+                                                <app-ta-input
+                                                    [inputConfig]="{
+                                                        name: 'timepicker',
+                                                        type: 'text',
+                                                        placeholderIcon: 'time',
+                                                        customClass:
+                                                            'datetimeclass',
+                                                        hideClear: true
+                                                    }"
+                                                    [formControlName]="
+                                                        RepairShopModalStringEnum.SECOND_END_TIME
+                                                    "
+                                                ></app-ta-input>
+                                            </ng-container>
+                                        </div>
+
+                                        <div
+                                            class="d-flex justify-content-end timeline__card-icon-plus"
+                                            (click)="
+                                                toggleDoubleWorkingTime(ind)
+                                            "
+                                        >
                                             <svg-icon
                                                 [src]="
                                                     repairShopModalSvgRoutes.plusIcon
                                                 "
-                                                class="timeline__card-icon-plus svg-fill-muted"
+                                                class="svg-fill-muted"
                                             ></svg-icon>
                                         </div>
                                     </div>

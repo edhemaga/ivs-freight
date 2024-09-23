@@ -1,6 +1,7 @@
 
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { OpenHourDays, OpenWorkingHours } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { OpenHours } from '../../models';
 
 export type WorkingHoursType = OpenHourDays[];
 
@@ -22,13 +23,16 @@ export class RepairShopConstants {
         OpenHourDays.Saturday,
     ];
 
-    static DEFAULT_OPEN_HOUR_DAYS = [
+    static DEFAULT_OPEN_HOUR_DAYS: OpenHours[] = [
         {
             dayLabel: OpenHourDays.Monday,
             dayOfWeek: 1,
             isWorkingDay: true,
             startTime,
             endTime,
+            isDoubleShift: false,
+            secondEndTime: endTime,
+            secondStartTime: startTime
         },
         {
             dayLabel: OpenHourDays.Tuesday,
@@ -36,6 +40,9 @@ export class RepairShopConstants {
             isWorkingDay: true,
             startTime,
             endTime,
+            isDoubleShift: false,
+            secondEndTime: endTime,
+            secondStartTime: startTime
         },
         {
             dayLabel: OpenHourDays.Wednesday,
@@ -43,6 +50,9 @@ export class RepairShopConstants {
             isWorkingDay: true,
             startTime,
             endTime,
+            isDoubleShift: false,
+            secondEndTime: endTime,
+            secondStartTime: startTime
         },
         {
             dayLabel: OpenHourDays.Thursday,
@@ -50,6 +60,9 @@ export class RepairShopConstants {
             isWorkingDay: true,
             startTime,
             endTime,
+            isDoubleShift: false,
+            secondEndTime: endTime,
+            secondStartTime: startTime
         },
         {
             dayLabel: OpenHourDays.Friday,
@@ -57,6 +70,9 @@ export class RepairShopConstants {
             isWorkingDay: true,
             startTime,
             endTime,
+            isDoubleShift: false,
+            secondEndTime: endTime,
+            secondStartTime: startTime
         },
         {
             dayLabel: OpenHourDays.Saturday,
@@ -64,6 +80,9 @@ export class RepairShopConstants {
             isWorkingDay: false,
             startTime: null,
             endTime: null,
+            isDoubleShift: false,
+            secondEndTime: null,
+            secondStartTime: null
         },
         {
             dayLabel: OpenHourDays.Sunday,
@@ -71,6 +90,9 @@ export class RepairShopConstants {
             isWorkingDay: false,
             startTime: null,
             endTime: null,
+            isDoubleShift: false,
+            secondEndTime: null,
+            secondStartTime: null
         },
     ];
 }
