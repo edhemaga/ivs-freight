@@ -1132,11 +1132,10 @@
 .load-requirements-load-second-row {
     display: grid;
     grid-template-columns: 100px 120px 150px 117px 81px;
-    grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    margin-bottom: 22px;
+    margin-bottom: 1rem;
 }
 
 .load-modal-row {

@@ -205,6 +205,8 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
+    @ViewChild('trailerInputDropdown')
+    trailerInputDropdown: TaInputDropdownComponent;
 
     @Input() editData: EditData;
 
@@ -645,8 +647,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
-    public isDocumentsCardOpen: boolean = false;
-
     // comments
     public comments: CommentResponse[] = [];
 
@@ -820,7 +820,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get getTrailerInputConfig(): ITaInput {
-        return LoadModalConfig.getTrailerInputConfig(this.selectedTrailerReq);
+        return LoadModalConfig.getTrailerInputConfig(
+            this.selectedTrailerReq,
+            this.selectedTruckReq
+        );
     }
 
     public getExtraStopsDateToTimeToInputConfig(label: string): ITaInput {
@@ -1871,6 +1874,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.TRUCK_REQ:
                 this.selectedTruckReq = event;
+
+                if (
+                    this.selectedTruckReq?.id >= 3 &&
+                    this.selectedTruckReq?.id <= 8
+                ) {
+                    this.selectedTrailerReq = null;
+                    this.trailerInputDropdown?.superControl.reset();
+                }
 
                 break;
             case LoadModalStringEnum.TRAILER_REQ:
@@ -4232,10 +4243,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         setTimeout(() => this.addNewLoadModal(), 200);
     }
 
-    public handleOpenCloseDocumentsCard(openClose: boolean): void {
-        this.isDocumentsCardOpen = openClose;
-    }
-
     private getPreviusModalValues(): EditData | LoadShortResponse {
         return this.loadModalData();
     }
@@ -5244,7 +5251,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files || [];
-        this.handleOpenCloseDocumentsCard(!!this.documents.length);
 
         // comments
         this.comments = comments;
@@ -5294,66 +5300,68 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // extra stops
         if (editedStops.length) {
-            editedStops.forEach((extraStop, index) => {
-                this.createNewExtraStop();
+            setTimeout(() => {
+                editedStops.forEach((extraStop, index) => {
+                    this.createNewExtraStop();
 
-                const editedShipper = extraStop.shipper
-                    ? this.formatShipper(extraStop.shipper)
-                    : {};
+                    const editedShipper = extraStop.shipper
+                        ? this.formatShipper(extraStop.shipper)
+                        : {};
 
-                if (extraStop) extraStop = this.formatStopTimes(extraStop);
+                    if (extraStop) extraStop = this.formatStopTimes(extraStop);
 
-                this.loadExtraStops()
-                    .at(index)
-                    .patchValue({
-                        id: extraStop.id,
-                        stopType: extraStop.stopType.name,
-                        stopOrder: extraStop.stopLoadOrder,
-                        stopLoadOrder: extraStop.stopLoadOrder,
-                        shipperId: extraStop.shipper?.id,
-                        shipperContactId: extraStop.shipperContact?.id,
-                        dateFrom: extraStop
-                            ? this.convertDate(extraStop.dateFrom)
-                            : null,
-                        dateTo: extraStop
-                            ? this.convertDate(extraStop.dateTo)
-                            : null,
-                        timeType: extraStop.timeType.name.toUpperCase(),
-                        timeFrom: extraStop?.timeFrom,
-                        timeTo: extraStop?.timeTo,
-                        arrive: extraStop?.arrive,
-                        depart: extraStop?.depart,
-                        legMiles: extraStop?.legMiles,
-                        legHours: extraStop?.legHours,
-                        legMinutes: extraStop?.legMinutes,
-                        items: extraStop?.items,
-                        openClose: false,
-                        statusHistory: extraStop?.statusHistory,
-                        waitTime: extraStop
-                            ? this.formatTimeDifference(extraStop.wait)
-                            : null,
-                    });
+                    this.loadExtraStops()
+                        .at(index)
+                        .patchValue({
+                            id: extraStop.id,
+                            stopType: extraStop.stopType.name,
+                            stopOrder: extraStop.stopLoadOrder,
+                            stopLoadOrder: extraStop.stopLoadOrder,
+                            shipperId: extraStop.shipper?.id,
+                            shipperContactId: extraStop.shipperContact?.id,
+                            dateFrom: extraStop
+                                ? this.convertDate(extraStop.dateFrom)
+                                : null,
+                            dateTo: extraStop
+                                ? this.convertDate(extraStop.dateTo)
+                                : null,
+                            timeType: extraStop.timeType.name.toUpperCase(),
+                            timeFrom: extraStop?.timeFrom,
+                            timeTo: extraStop?.timeTo,
+                            arrive: extraStop?.arrive,
+                            depart: extraStop?.depart,
+                            legMiles: extraStop?.legMiles,
+                            legHours: extraStop?.legHours,
+                            legMinutes: extraStop?.legMinutes,
+                            items: extraStop?.items,
+                            openClose: false,
+                            statusHistory: extraStop?.statusHistory,
+                            waitTime: extraStop
+                                ? this.formatTimeDifference(extraStop.wait)
+                                : null,
+                        });
 
-                this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
+                    this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
-                if (editedShipper)
-                    this.onSelectDropdown(
-                        editedShipper,
-                        LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
+                    if (editedShipper)
+                        this.onSelectDropdown(
+                            editedShipper,
+                            LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
+                            index
+                        );
+
+                    this.onTabChange(
+                        extraStop.stopType,
+                        LoadModalStringEnum.STOP_TAB,
                         index
                     );
-
-                this.onTabChange(
-                    extraStop.stopType,
-                    LoadModalStringEnum.STOP_TAB,
-                    index
-                );
-                this.onTabChange(
-                    extraStop.timeType,
-                    LoadModalStringEnum.EXTRA_STOPS_TIME,
-                    index
-                );
-            });
+                    this.onTabChange(
+                        extraStop.timeType,
+                        LoadModalStringEnum.EXTRA_STOPS_TIME,
+                        index
+                    );
+                });
+            }, 500);
         }
         // tabs
         if (type) {

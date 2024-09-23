@@ -21,6 +21,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 // Pipes
 import { PayrollTablePipe } from '@pages/accounting/pages/payroll/components/payroll-table/pipes/payroll-table.pipe';
 import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/components/payroll-table/pipes/payroll-row-border.pipe';
+import { CaMainTableComponent, CaNoteComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -46,6 +47,8 @@ import { PayrollRowBorderTablePipe } from '@pages/accounting/pages/payroll/compo
         TaInputComponent,
         TaProfileImagesComponent,
         TaCustomCardComponent,
+        CaMainTableComponent,
+        CaNoteComponent
     ],
     exports: [PayrollTableComponent],
 })
