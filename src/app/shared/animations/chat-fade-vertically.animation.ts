@@ -6,8 +6,8 @@ import {
     trigger,
 } from '@angular/animations';
 
-export const chatUserListSearchAnimation =
-    trigger('fadeInOut', [
+export const chatFadeVerticallyAnimation =
+    trigger('fadeInOutVertical', [
         state('*', style(
             { 'overflow-y': 'hidden' }
         )),
@@ -18,7 +18,7 @@ export const chatUserListSearchAnimation =
             style(
                 { height: '*' }
             ),
-            animate(350, style(
+            animate(250, style(
                 { height: 0 }
             ))
         ]),
@@ -26,7 +26,7 @@ export const chatUserListSearchAnimation =
             style(
                 { height: '0' }
             ),
-            animate(350, style(
+            animate(250, style(
                 { height: '*' }
             ))
         ])

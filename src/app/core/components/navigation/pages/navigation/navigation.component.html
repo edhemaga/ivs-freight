@@ -36,11 +36,6 @@
                     trackBy: identity
                 "
                 [class.navigation-routes-last]="last"
-                [ngClass]="{
-                    'new-magic-line-selected':
-                        isActiveRouteOnReload(item.name) ||
-                        selectedRoute == item.name
-                }"
             >
                 <ng-container *ngIf="last">
                     <div
@@ -135,6 +130,7 @@
                             subrouteClicked
                         "
                         [subroute]="item"
+                        [isLastChild]="last"
                         [selectedSubRoute]="selectedSubRoute"
                         [isActiveSubroute]="isActiveSubroute"
                         [isNavigationHovered]="isNavigationHovered"
@@ -145,42 +141,6 @@
                     </app-navigation-subroute>
                 </app-navigation-subroute-card>
             </div>
-            <div
-                *ngIf="
-                    (middleIsHovered &&
-                        !isSettingsPanelOpen &&
-                        !isActiveSubroute &&
-                        !isUserPanelOpen &&
-                        !isModalPanelOpen &&
-                        !openedDropdown) ||
-                    (isNavigationHovered &&
-                        footerRouteActive &&
-                        !footerHovered &&
-                        !isActiveSubroute &&
-                        !isSettingsPanelOpen &&
-                        !isModalPanelOpen &&
-                        !isUserCompanyDetailsOpen &&
-                        !isUserPanelOpen &&
-                        !openedDropdown &&
-                        selectedRoute != 'Company' &&
-                        selectedRoute != 'Notifications')
-                "
-                [@showHideDetails]="
-                    !subrouteContainerOpened &&
-                    !isActiveSubroute &&
-                    isModalPanelOpen &&
-                    !footerRouteActive &&
-                    isActiveMagicLine &&
-                    isNavigationHovered
-                        ? 'false'
-                        : 'true'
-                "
-                class="new-magic-line"
-                [ngClass]="{
-                    'animate-magic-line': isNavigationHovered,
-                    'magic-line-width': !isNavigationHovered
-                }"
-            ></div>
         </div>
         <div
             class="navigation-bottom"

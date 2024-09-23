@@ -111,6 +111,11 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isLoading: boolean;
     public originalLoads: AssignedLoadResponse[] = null;
 
+    public firstElementHeight!: number;
+    public secondElementHeight!: number;
+    public _initialSecondElementHeight: number = 400;
+    public _initialFirstElementHeight: number = 400;
+
     constructor(
         private formBuilder: FormBuilder,
         private loadService: LoadService,
@@ -201,15 +206,15 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                     this.tableService.sendActionAnimation({
                         animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
-                        data: res.dispatches,
+                        data: res.dispatchers,
                         id: null,
                     });
                 }
 
                 this.unassignedLoads = res.unassignedLoads;
 
-                if(this.selectedDispatches) {
-                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length; 
+                if (this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
                 } else {
                     this.isUnAssignLoadCardOpen = true;
                 }
@@ -218,6 +223,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                 this.mapDispatchers(res.dispatches);
                 if (this.editData?.dispatchId) {
+                    this.resetHeight();
                     const dispatchIndex = this.labelsDispatches.find(
                         (dispatch) => dispatch.id === this.editData.dispatchId
                     );
@@ -229,12 +235,19 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.clearInputValue();
                     this.assignedLoads = [];
                     this.closeLoadDetails();
+                    this._initialSecondElementHeight = 400;
                 }
             });
     }
 
+    private resetHeight(): void {
+        this._initialFirstElementHeight = 220;
+        this._initialSecondElementHeight = 220;
+    }
+
     public selectNewDispatcher(event: { id: number }) {
         this.editData.dispatchId = event?.id ?? null;
+        this.resetHeight();
 
         this.loadModalData();
         this.closeLoadDetails();
@@ -731,6 +744,30 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         }
 
         this.loadModalData();
+    }
+
+    public toggleUnAssignedList(): void {
+        this.isUnAssignLoadCardOpen = !this.isUnAssignLoadCardOpen;
+        this.setUnAssignCardFullHeight();
+    }
+
+    public toggleAssignList(): void {
+        this.isAssignLoadCardOpen = !this.isAssignLoadCardOpen;
+        this.setUnAssignCardFullHeight();
+    }
+
+    private setUnAssignCardFullHeight(): void {
+        if (this.isUnAssignLoadCardOpen && !this.isAssignLoadCardOpen) {
+            this._initialSecondElementHeight = 400;
+        }
+    }
+
+    public onFirstElementHeightChange(height: number): void {
+        this.firstElementHeight = height;
+    }
+
+    public onSecondElementHeightChange(height: number): void {
+        this.secondElementHeight = height;
     }
 
     public ngOnDestroy(): void {

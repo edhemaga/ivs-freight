@@ -1,19 +1,7 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup
-} from '@angular/forms';
-import {
-  takeUntil,
-  debounceTime
-} from 'rxjs/operators';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
@@ -27,67 +15,63 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 import { ChatSearchPlaceHolders } from '@pages/chat/enums';
 
 @Component({
-  selector: 'app-chat-channel-participant-list',
-  templateUrl: './chat-channel-participant-list.component.html',
-  styleUrls: ['./chat-channel-participant-list.component.scss']
+    selector: 'app-chat-channel-participant-list',
+    templateUrl: './chat-channel-participant-list.component.html',
+    styleUrls: ['./chat-channel-participant-list.component.scss'],
 })
-export class ChatChannelParticipantListComponent extends UnsubscribeHelper implements OnInit {
+export class ChatChannelParticipantListComponent
+    extends UnsubscribeHelper
+    implements OnInit
+{
+    @Input() public conversationParticipants: CompanyUserShortResponse[] = [];
 
-  @Input() public conversationParticipants: CompanyUserShortResponse[] = [];
+    @Output() public closeGroupMembersOverviewEvent: EventEmitter<boolean> =
+        new EventEmitter();
 
-  @Output() public closeGroupMembersOverviewEvent: EventEmitter<boolean> = new EventEmitter;
+    public searchConversationParticipants!: CompanyUserShortResponse[];
 
-  public searchConversationParticipants!: CompanyUserShortResponse[];
+    public isSearchActive: boolean = false;
 
-  public isSearchActive: boolean = false;
+    public searchForm!: UntypedFormGroup;
 
-  public searchForm!: UntypedFormGroup;
+    // Assets
+    public chatSvgRoutes = ChatSvgRoutes;
+    public chatInput = ChatInput;
+    public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
-  // Assets
-  public chatSvgRoutes = ChatSvgRoutes;
-  public chatInput = ChatInput;
-  public chatSearchPlaceHolders = ChatSearchPlaceHolders;
+    constructor(private formBuilder: UntypedFormBuilder) {
+        super();
+    }
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    super();
-  }
+    ngOnInit(): void {
+        this.creteForm();
+        this.listenForSearchTermChange();
+    }
 
-  ngOnInit(): void {
-    this.creteForm();
-    this.listenForSearchTermChange();
-  }
-
-  private creteForm(): void {
-    this.searchForm = this.formBuilder.group({
-      searchTerm: [null]
-    });
-  }
-
-  private listenForSearchTermChange(): void {
-
-    if (!this.searchForm) return;
-
-    this.searchForm
-      .valueChanges
-      .pipe(
-        takeUntil(this.destroy$),
-        debounceTime(350)
-      )
-      .subscribe(
-        (search: { searchTerm: string }) => {
-
-          const searchTerm: string = search.searchTerm.toLowerCase().trim();
-
-          this.searchConversationParticipants = this.conversationParticipants
-            .filter(participant =>
-              participant.fullName.toLowerCase().includes(searchTerm)
-            );
+    private creteForm(): void {
+        this.searchForm = this.formBuilder.group({
+            searchTerm: [null],
         });
-  }
+    }
 
-  public closeOverview(): void {
-    this.closeGroupMembersOverviewEvent.emit(false);
-  }
+    private listenForSearchTermChange(): void {
+        if (!this.searchForm) return;
 
+        this.searchForm.valueChanges
+            .pipe(takeUntil(this.destroy$), debounceTime(350))
+            .subscribe((search: { searchTerm: string }) => {
+                const searchTerm: string = search.searchTerm
+                    .toLowerCase()
+                    .trim();
 
+                this.searchConversationParticipants =
+                    this.conversationParticipants.filter((participant) =>
+                        participant.fullName.toLowerCase().includes(searchTerm)
+                    );
+            });
+    }
+
+    public closeOverview(): void {
+        this.closeGroupMembersOverviewEvent.emit(false);
+    }
 }

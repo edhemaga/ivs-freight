@@ -122,7 +122,7 @@
                     <app-ta-custom-card
                         [cardName]="'Document'"
                         [hasCounter]="load?.files?.length || -1"
-                        [isCardOpen]="load?.files?.length"
+                        [isCardOpen]="!!load?.files?.length"
                         [disabledCard]="!load?.files?.length"
                         [bodyTemplate]="'card'"
                         [animationMarginParams]="{

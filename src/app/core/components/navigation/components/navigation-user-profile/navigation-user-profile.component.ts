@@ -20,8 +20,7 @@ import {
 } from '@core/components/navigation/animations/navigation.animation';
 
 // models
-import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
-
+import {  NavigationUserPanel } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 

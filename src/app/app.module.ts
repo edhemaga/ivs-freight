@@ -19,7 +19,6 @@ import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { NavigationComponent } from '@core/components/navigation/pages/navigation/navigation.component';
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
-import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 
 // Pipes
@@ -56,7 +55,6 @@ function playerFactory() {
         BrowserAnimationsModule,
         HttpClientModule,
         SharedModule,
-        TaTooltipSlideComponent,
         LottieModule.forRoot({ player: playerFactory }),
         // AgmCoreModule.forRoot({
         //     apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',

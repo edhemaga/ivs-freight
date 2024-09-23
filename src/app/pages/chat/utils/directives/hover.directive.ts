@@ -3,17 +3,16 @@ import {
     ElementRef,
     HostListener,
     Input,
-    Renderer2
+    Renderer2,
 } from '@angular/core';
 
 @Directive({
-    selector: '[appHover]'
+    selector: '[appHover]',
 })
 export class HoverDirective {
-
     @Input() hoverColor: string = '';
 
-    constructor(private el: ElementRef, private renderer: Renderer2) { }
+    constructor(private el: ElementRef, private renderer: Renderer2) {}
 
     // Listen for mouseenter event
     @HostListener('mouseenter') onMouseEnter() {

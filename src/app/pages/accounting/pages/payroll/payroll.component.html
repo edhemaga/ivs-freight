@@ -1,5 +1,17 @@
-<div class="table-container d-flex">
-    <div class="payroll-main" [class.open]="!tableExpanded">
+<div class="table-container d-flex flex-column">
+    <div>
+        <h2>Test Table with 10K rows</h2>
+    </div>
+   
+    <app-ca-main-table
+    *ngIf="showTable"
+    [hideFieldsToHide]="true"
+    [columns]="columns"
+    [data$]="tableData$"
+    (onPressEvent)="selectPayrollReport($event)"
+></app-ca-main-table>
+
+    <!-- <div class="payroll-main" [class.open]="!tableExpanded">
         <app-ta-table-toolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
@@ -30,5 +42,20 @@
             [reportId]="reportTableData?.id"
             [reportTableData]="reportTableData"
         ></app-payroll-report>
-    </div>
+    </div> -->
 </div>
+
+<ng-template #customIndex let-index="index">
+    <div>{{index}}</div>
+</ng-template>
+
+<ng-template #customCell>
+    <div>
+        <app-ca-note
+        [note]="''"
+        [openedAll]="false"
+        [parking]="false"
+    >
+    </app-ca-note>
+    </div>
+</ng-template>

@@ -1,19 +1,15 @@
-import {
-    Pipe,
-    PipeTransform
-} from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 // Enums
-import { ChatGroupEnum } from "@pages/chat/enums";
+import { ChatGroupEnum } from '@pages/chat/enums';
 
 // Routes
-import { ChatSvgRoutes } from "@pages/chat/utils/routes";
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Pipe({
-    name: 'chatGroupCheckForIcon'
+    name: 'chatGroupCheckForIcon',
 })
 export class ChatHeaderGroupIconPipe implements PipeTransform {
-
     transform(group: ChatGroupEnum): string {
         switch (group) {
             case ChatGroupEnum.Department:

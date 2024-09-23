@@ -6,5 +6,5 @@ export interface ChatLink {
         title: string;
         imageUrl: string;
         type?: string;
-    }
+    };
 }

@@ -2,7 +2,7 @@ import { TruckTrailerConfigParams } from '@pages/dispatch/pages/dispatch/compone
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class DispatchConfig {
-    static getDispatchAddressConfig(): ITaInput {
+    static getDispatchAddressConfig(locationDropdownWidth: number): ITaInput {
         return {
             name: 'Address',
             type: 'text',
@@ -16,7 +16,7 @@ export class DispatchConfig {
             hideErrorMessage: true,
             mergeDropdownBodyWithInput: true,
             isDispatchLocationDropdown: true,
-            dropdownWidthClass: 'w-col-157',
+            dropdownWidthClass: `w-col-${locationDropdownWidth}`,
         };
     }
 
