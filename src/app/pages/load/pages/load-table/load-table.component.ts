@@ -672,135 +672,138 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
+        this.loadServices
+            .getAllLoads(this.backLoadFilterQuery, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
 
+                const loadTemplateData =
+                    this.selectedTab === TableStringEnum.TEMPLATE
+                        ? this.getTabData(TableStringEnum.TEMPLATE)
+                        : [];
 
-        this.loadServices.getAllLoads(this.backLoadFilterQuery, this.selectedTab).pipe(takeUntil(this.destroy$)).subscribe(response => {
-            const loadCount = JSON.parse(
-                localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
-            );
-    
-            const loadTemplateData =
-                this.selectedTab === TableStringEnum.TEMPLATE
-                    ? this.getTabData(TableStringEnum.TEMPLATE)
-                    : [];
-    
-            const loadPendingData =
-                this.selectedTab === TableStringEnum.PENDING
-                    ? this.getTabData(TableStringEnum.PENDING)
-                    : [];
-    
-            const loadActiveData =
-                this.selectedTab === TableStringEnum.ACTIVE
-                    ? this.getTabData(TableStringEnum.ACTIVE)
-                    : [];
-    
-            const repairClosedData =
-                this.selectedTab === TableStringEnum.CLOSED
-                    ? this.getTabData(TableStringEnum.CLOSED)
-                    : [];
+                const loadPendingData =
+                    this.selectedTab === TableStringEnum.PENDING
+                        ? this.getTabData(TableStringEnum.PENDING)
+                        : [];
 
-            this.tableData = [
-                {
-                    title: TableStringEnum.TEMPLATE_2,
-                    field: TableStringEnum.TEMPLATE,
-                    length: loadCount?.templateCount,
-                    data: loadTemplateData,
-                    extended: false,
-                    gridNameTitle: TableStringEnum.LOAD,
-                    moneyCountSelected: false,
-                    ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                        loadTemplateData,
-                        TableStringEnum.LTL,
-                        TableStringEnum.TYPE
-                    ),
-                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                        loadTemplateData,
-                        TableStringEnum.FTL,
-                        TableStringEnum.TYPE
-                    ),
-                    stateName: TableStringEnum.LOADS,
-                    tableConfiguration: TableType.LoadTemplate,
-                    isActive: this.selectedTab === TableStringEnum.TEMPLATE,
-                    gridColumns: this.getGridColumns(
-                        TableStringEnum.TEMPLATE,
-                        TableType.LoadTemplate
-                    ),
-                },
-                {
-                    title: TableStringEnum.PENDING_2,
-                    field: TableStringEnum.PENDING,
-                    length: loadCount?.pendingCount,
-                    data: loadPendingData,
-                    extended: false,
-                    moneyCountSelected: false,
-                    gridNameTitle: TableStringEnum.LOAD,
-                    ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                        loadPendingData,
-                        TableStringEnum.LTL,
-                        TableStringEnum.TYPE
-                    ),
-                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                        loadPendingData,
-                        TableStringEnum.FTL,
-                        TableStringEnum.TYPE
-                    ),
-                    stateName: TableStringEnum.LOADS,
-                    tableConfiguration: TableType.LoadRegular,
-                    isActive: this.selectedTab === TableStringEnum.PENDING,
-                    gridColumns: this.getGridColumns(
-                        TableStringEnum.PENDING,
-                        TableType.LoadRegular
-                    ),
-                },
-                {
-                    title: TableStringEnum.ACTIVE_2,
-                    field: TableStringEnum.ACTIVE,
-                    length: loadCount?.activeCount,
-                    data: loadActiveData,
-                    moneyCountSelected: false,
-                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                        loadActiveData,
-                        TableStringEnum.FTL,
-                        TableStringEnum.TYPE
-                    ),
-                    extended: false,
-                    gridNameTitle: TableStringEnum.LOAD,
-                    stateName: TableStringEnum.LOADS,
-                    tableConfiguration: TableType.LoadRegular,
-                    isActive: this.selectedTab === TableStringEnum.ACTIVE,
-                    gridColumns: this.getGridColumns(
-                        TableStringEnum.ACTIVE,
-                        TableType.LoadRegular
-                    ),
-                },
-                {
-                    title: TableStringEnum.CLOSED_2,
-                    field: TableStringEnum.CLOSED,
-                    length: loadCount?.closedCount,
-                    moneyCountSelected: false,
-                    data: repairClosedData,
-                    ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                        repairClosedData,
-                        TableStringEnum.FTL,
-                        TableStringEnum.TYPE
-                    ),
-                    extended: false,
-                    gridNameTitle: TableStringEnum.LOAD,
-                    stateName: TableStringEnum.LOADS,
-                    tableConfiguration: TableType.LoadClosed,
-                    isActive: this.selectedTab === TableStringEnum.CLOSED,
-                    gridColumns: this.getGridColumns(
-                        TableStringEnum.CLOSED,
-                        TableType.LoadClosed
-                    ),
-                },
-            ];
-    
-            const td = this.tableData.find((t) => t.field === this.selectedTab);
-            this.setLoadData(td);
-            this.updateCardView();
-            this.cdRef.detectChanges();
-        })
+                const loadActiveData =
+                    this.selectedTab === TableStringEnum.ACTIVE
+                        ? this.getTabData(TableStringEnum.ACTIVE)
+                        : [];
+
+                const repairClosedData =
+                    this.selectedTab === TableStringEnum.CLOSED
+                        ? this.getTabData(TableStringEnum.CLOSED)
+                        : [];
+
+                this.tableData = [
+                    {
+                        title: TableStringEnum.TEMPLATE_2,
+                        field: TableStringEnum.TEMPLATE,
+                        length: loadCount?.templateCount,
+                        data: loadTemplateData,
+                        extended: false,
+                        gridNameTitle: TableStringEnum.LOAD,
+                        moneyCountSelected: false,
+                        ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                            loadTemplateData,
+                            TableStringEnum.LTL,
+                            TableStringEnum.TYPE
+                        ),
+                        ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                            loadTemplateData,
+                            TableStringEnum.FTL,
+                            TableStringEnum.TYPE
+                        ),
+                        stateName: TableStringEnum.LOADS,
+                        tableConfiguration: TableType.LoadTemplate,
+                        isActive: this.selectedTab === TableStringEnum.TEMPLATE,
+                        gridColumns: this.getGridColumns(
+                            TableStringEnum.TEMPLATE,
+                            TableType.LoadTemplate
+                        ),
+                    },
+                    {
+                        title: TableStringEnum.PENDING_2,
+                        field: TableStringEnum.PENDING,
+                        length: loadCount?.pendingCount,
+                        data: loadPendingData,
+                        extended: false,
+                        moneyCountSelected: false,
+                        gridNameTitle: TableStringEnum.LOAD,
+                        ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                            loadPendingData,
+                            TableStringEnum.LTL,
+                            TableStringEnum.TYPE
+                        ),
+                        ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                            loadPendingData,
+                            TableStringEnum.FTL,
+                            TableStringEnum.TYPE
+                        ),
+                        stateName: TableStringEnum.LOADS,
+                        tableConfiguration: TableType.LoadRegular,
+                        isActive: this.selectedTab === TableStringEnum.PENDING,
+                        gridColumns: this.getGridColumns(
+                            TableStringEnum.PENDING,
+                            TableType.LoadRegular
+                        ),
+                    },
+                    {
+                        title: TableStringEnum.ACTIVE_2,
+                        field: TableStringEnum.ACTIVE,
+                        length: loadCount?.activeCount,
+                        data: loadActiveData,
+                        moneyCountSelected: false,
+                        ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                            loadActiveData,
+                            TableStringEnum.FTL,
+                            TableStringEnum.TYPE
+                        ),
+                        extended: false,
+                        gridNameTitle: TableStringEnum.LOAD,
+                        stateName: TableStringEnum.LOADS,
+                        tableConfiguration: TableType.LoadRegular,
+                        isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                        gridColumns: this.getGridColumns(
+                            TableStringEnum.ACTIVE,
+                            TableType.LoadRegular
+                        ),
+                    },
+                    {
+                        title: TableStringEnum.CLOSED_2,
+                        field: TableStringEnum.CLOSED,
+                        length: loadCount?.closedCount,
+                        moneyCountSelected: false,
+                        data: repairClosedData,
+                        ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                            repairClosedData,
+                            TableStringEnum.FTL,
+                            TableStringEnum.TYPE
+                        ),
+                        extended: false,
+                        gridNameTitle: TableStringEnum.LOAD,
+                        stateName: TableStringEnum.LOADS,
+                        tableConfiguration: TableType.LoadClosed,
+                        isActive: this.selectedTab === TableStringEnum.CLOSED,
+                        gridColumns: this.getGridColumns(
+                            TableStringEnum.CLOSED,
+                            TableType.LoadClosed
+                        ),
+                    },
+                ];
+
+                const td = this.tableData.find(
+                    (t) => t.field === this.selectedTab
+                );
+                this.setLoadData(td);
+                this.updateCardView();
+                this.cdRef.detectChanges();
+            });
     }
 
     private getGridColumns(activeTab: string, configType: string): void {
@@ -843,52 +846,51 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTruckTooltipColor(truckName: string): string {
-        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
-            return TooltipColorsStringEnum.YELLOW;
-        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (truckName === TruckNameStringEnum.SPOTTER) {
-            return TooltipColorsStringEnum.BROWN;
+        switch (truckName) {
+            case TruckNameStringEnum.SEMI_TRUCK:
+            case TruckNameStringEnum.SEMI_SLEEPER:
+                return TooltipColorsStringEnum.BLUE;
+            case TruckNameStringEnum.BOX_TRUCK:
+            case TruckNameStringEnum.REEFER_TRUCK:
+            case TruckNameStringEnum.CARGO_VAN:
+                return TooltipColorsStringEnum.YELLOW;
+            case TruckNameStringEnum.DUMP_TRUCK:
+            case TruckNameStringEnum.CEMENT_TRUCK:
+            case TruckNameStringEnum.GARBAGE_TRUCK:
+                return TooltipColorsStringEnum.RED;
+            case TruckNameStringEnum.TOW_TRUCK:
+            case TruckNameStringEnum.CAR_HAULER:
+            case TruckNameStringEnum.SPOTTER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
 
     private setTrailerTooltipColor(trailerName: string): string {
-        if (trailerName === TrailerNameStringEnum.REEFER) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
-            return TooltipColorsStringEnum.DARK_BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (trailerName === TrailerNameStringEnum.TANKER) {
-            return TooltipColorsStringEnum.GREEN;
-        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
-            return TooltipColorsStringEnum.BROWN;
-        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
-            return TooltipColorsStringEnum.ORANGE;
-        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
-            return TooltipColorsStringEnum.GOLD;
-        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
-            return TooltipColorsStringEnum.YELLOW;
+        switch (trailerName) {
+            case TrailerNameStringEnum.FLAT_BED:
+            case TrailerNameStringEnum.STEP_DECK:
+            case TrailerNameStringEnum.LOW_BOY_RGN:
+            case TrailerNameStringEnum.CHASSIS:
+            case TrailerNameStringEnum.CONESTOGA:
+            case TrailerNameStringEnum.SIDE_KIT:
+            case TrailerNameStringEnum.CONTAINER:
+                return TooltipColorsStringEnum.BLUE;
+            case TrailerNameStringEnum.DRY_VAN:
+            case TrailerNameStringEnum.REEFER:
+                return TooltipColorsStringEnum.YELLOW;
+            case TrailerNameStringEnum.END_DUMP:
+            case TrailerNameStringEnum.BOTTOM_DUMP:
+            case TrailerNameStringEnum.HOPPER:
+            case TrailerNameStringEnum.TANKER:
+            case TrailerNameStringEnum.PNEUMATIC_TANKER:
+                return TooltipColorsStringEnum.RED;
+            case TrailerNameStringEnum.CAR_HAULER:
+            case TrailerNameStringEnum.CAR_HAULER_STINGER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
     private mapTemplateData(data: LoadModel): LoadTemplate {
@@ -1174,18 +1176,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTruckColor: this.setTruckTooltipColor(
                 loadRequirements?.truckType?.name
             ),
-            truckTypeClass: loadRequirements?.truckType?.logoName
-                ? loadRequirements?.truckType?.logoName.replace(
-                      TableStringEnum.SVG,
-                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTrailerTypeClass: loadRequirements?.trailerType?.logoName
-                ? loadRequirements?.trailerType?.logoName.replace(
-                      TableStringEnum.SVG,
-                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            truckTypeClass: loadRequirements?.truckType?.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
+            tableTrailerTypeClass: loadRequirements?.trailerType?.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
             tableTruckName: loadRequirements?.truckType?.name,
             loadTrailerNumber: loadRequirements?.trailerType?.logoName,
             loadTruckNumber:
