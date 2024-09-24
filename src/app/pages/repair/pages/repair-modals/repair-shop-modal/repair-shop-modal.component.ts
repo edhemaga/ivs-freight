@@ -281,6 +281,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         ) as UntypedFormArray;
     }
 
+    public get holidayHours(): UntypedFormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.HOLIDAY
+        ) as UntypedFormArray;
+    }
+
     public get nameInputConfig(): ITaInput {
         return RepairShopConfig.getNameInputConfig();
     }
@@ -392,7 +398,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.PAY_PERIOD]: [null],
             [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
             [RepairShopModalStringEnum.RENT]: [null],
-            [RepairShopModalStringEnum.HOLIDAY]: [null],
+            [RepairShopModalStringEnum.HOLIDAY]: this.formBuilder.array([]),
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -609,6 +615,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopHelper.createOpenHour(day, this.formBuilder)
             )
         );
+
+        this.holidayHours.push(
+            RepairShopHelper.createOpenHour(
+                {
+                    ...RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS[0],
+                    [RepairShopModalStringEnum.DAY_LABEL]: 'Holiday',
+                    [RepairShopModalStringEnum.IS_WORKING_DAY]: false,
+                },
+                this.formBuilder
+            )
+        );
     }
 
     // Working hours
@@ -639,6 +656,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             endTime as any,
             dayActiveField.value
         );
+    }
+
+    public toggleDoubleWorkingTimeForHoliday(): void {
+        const dayActiveField = this.holidayHours
+            .at(0)
+            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
+        dayActiveField.patchValue(!dayActiveField.value);
     }
 
     public toggleDoubleWorkingTime(index: number): void {
