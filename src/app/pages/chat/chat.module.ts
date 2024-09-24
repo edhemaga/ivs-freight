@@ -125,4 +125,4 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         HoverSvgDirective,
     ],
 })
-export class ChatModule { }
+export class ChatModule {}

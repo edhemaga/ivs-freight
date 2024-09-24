@@ -97,7 +97,7 @@ export class ChatMessagesComponent
 
     // Messages
     public messages: ChatMessageResponse[] = [];
-    private isMessageSendable: boolean = true;
+    private isMessageSendable: boolean = false;
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;

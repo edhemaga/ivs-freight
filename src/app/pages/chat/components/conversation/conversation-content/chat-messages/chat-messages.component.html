@@ -190,78 +190,96 @@
                                 : { height: '24px' }
                         "
                     >
-                        <div class="d-flex justify-content-center icon-wrapper">
-                            <div
-                                class="d-flex justify-content-center icon"
-                                (click)="openEmojiSelection()"
-                            >
-                                <svg-icon
-                                    class="pointer d-flex justify-content-center align-items-center"
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 17
-                                    }"
-                                    [src]="ChatSvgRoutes.faceEmojiIcon"
-                                ></svg-icon>
-                            </div>
-                        </div>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: ChatSvgRoutes.faceEmojiIcon,
+                                        action: openEmojiSelection
+                                    }
+                                }
+                            "
+                        ></ng-container>
                         <app-chat-vertical-divider></app-chat-vertical-divider>
 
-                        <div class="d-flex justify-content-center icon-wrapper">
-                            <div
-                                (click)="uploadAttachmentDragAndDrop()"
-                                class="d-flex justify-content-center icon"
-                            >
-                                <svg-icon
-                                    class="pointer d-flex justify-content-center align-items-center"
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 17
-                                    }"
-                                    [src]="ChatSvgRoutes.documentIcon"
-                                ></svg-icon>
-                            </div>
-                        </div>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: ChatSvgRoutes.documentIcon,
+                                        action: uploadAttachmentDragAndDrop
+                                    }
+                                }
+                            "
+                        ></ng-container>
 
                         <app-chat-vertical-divider></app-chat-vertical-divider>
 
-                        <div class="d-flex justify-content-center icon-wrapper">
-                            <div
-                                class="d-flex justify-content-center icon"
-                                (click)="sendMessage()"
-                            >
-                                <svg-icon
-                                    class="pointer d-flex justify-content-center align-items-center"
-                                    [ngClass]="
-                                        isMessageSendable &&
-                                        ChatAttachmentCustomClassEnum.BLUE_ICON
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 17
-                                    }"
-                                    [src]="ChatSvgRoutes.sendMessageIcon"
-                                ></svg-icon>
-                            </div>
-                        </div>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        text: 'Send Message',
+                                        icon: ChatSvgRoutes.sendMessageIcon,
+                                        action: sendMessage,
+                                        customClass:
+                                            isMessageSendable &&
+                                            ChatAttachmentCustomClassEnum.BLUE
+                                    }
+                                }
+                            "
+                        ></ng-container>
                     </div>
                 </div>
             </div>
         </ng-container>
-        <ng-template #upload>
-            <div class="upload-wrapper">
-                <app-ta-upload-files
-                    #filesUpload
-                    [files]="[]"
-                    [showDropzone]="true"
-                    [dropzoneFocus]="false"
-                    [dropZoneConfig]="ChatDropzone.inputDropzone"
-                    [size]="'large'"
-                    [customClassName]="'no-background-color full-height expand'"
-                    [hasSlider]="false"
-                    (onFileEvent)="addAttachments($event.files)"
-                ></app-ta-upload-files>
-            </div>
-        </ng-template>
     </div>
 </div>
+
+<ng-template #upload>
+    <div class="upload-wrapper">
+        <app-ta-upload-files
+            #filesUpload
+            [files]="[]"
+            [showDropzone]="true"
+            [dropzoneFocus]="false"
+            [dropZoneConfig]="ChatDropzone.inputDropzone"
+            [size]="'large'"
+            [customClassName]="'no-background-color full-height expand'"
+            [hasSlider]="false"
+            (onFileEvent)="addAttachments($event.files)"
+        ></app-ta-upload-files>
+    </div>
+</ng-template>
+
+<ng-template #iconAction let-item="item">
+    <div
+        class="icon-wrapper d-flex justify-content-center align-content-center"
+    >
+        <div
+            class="icon d-flex justify-content-center align-content-center"
+            (click)="item.action()"
+        >
+            <ng-container *ngIf="item.text">
+                <div
+                    class="item-text d-flex justify-content-center align-content-center ta-font-bold"
+                >
+                    <div class="text">{{ item.text }}</div>
+                </div>
+            </ng-container>
+
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [ngClass]="item.customClass"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+                [src]="item.icon"
+            ></svg-icon>
+        </div>
+    </div>
+</ng-template>
