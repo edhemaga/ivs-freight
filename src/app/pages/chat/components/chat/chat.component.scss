@@ -211,6 +211,35 @@
         .conversation-wrapper {
             width: 100%;
             overflow: hidden;
+
+            .not-selected-wrapper {
+                height: 100%;
+                background: linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, 1) 0%,
+                    rgba(238, 238, 238, 1) 50%,
+                    rgba(238, 238, 238, 1) 100%
+                );
+
+                .content {
+                    height: 100%;
+                    flex-wrap: wrap;
+
+                    .text {
+                        color: $bw5;
+                        margin-top: 17px;
+                        text-align: center;
+
+                        &-main {
+                            font-size: 20px;
+                        }
+
+                        &-auxillary {
+                            font-size: 11px;
+                        }
+                    }
+                }
+            }
         }
 
         .group-wrapper {
@@ -225,10 +254,9 @@
     max-width: 320px;
     width: 100%;
 
-    background-color: $white;
-    border-radius: 2px;
-
     .profile-details {
+        border-radius: 2px;
+        background-color: $white;
         overflow-y: scroll;
     }
 }
@@ -251,4 +279,8 @@
 
 .divider {
     height: 8px;
+}
+
+.full-height {
+    height: calc(100% - 48px);
 }
