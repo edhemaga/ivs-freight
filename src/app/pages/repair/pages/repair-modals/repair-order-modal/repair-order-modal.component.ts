@@ -201,7 +201,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public tags: TagResponse[] = [];
 
     // enums
-    public modalTableTypeEnum = ModalTableTypeEnum;
+    public modalTableTypeEnum = ModalTableTypeEnum; 
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -1344,7 +1344,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         // documents
         this.documents = editData.files;
-
+        
         // patch form
         this.repairOrderForm.patchValue({
             invoice,
