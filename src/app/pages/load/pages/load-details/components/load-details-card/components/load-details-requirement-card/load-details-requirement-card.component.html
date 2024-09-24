@@ -1,7 +1,7 @@
 <div class="load-requirement-container">
     <app-ta-custom-card
         [cardName]="'Load Detail & Requirement'"
-        [isCardOpen]="requirementDataArray.length"
+        [isCardOpen]="!!requirementDataArray.length"
         [bodyTemplate]="'card'"
         [disabledCard]="!requirementDataArray.length"
         [hasArrow]="requirementDataArray.length"

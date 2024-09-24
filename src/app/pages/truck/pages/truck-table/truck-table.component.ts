@@ -598,25 +598,30 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTruckTooltipColor(truckName: string): string {
-        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
-            return TooltipColorsStringEnum.YELLOW;
-        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (truckName === TruckNameStringEnum.SPOTTER) {
-            return TooltipColorsStringEnum.BROWN;
+        switch (truckName) {
+            case TruckNameStringEnum.SEMI_TRUCK:
+            case TruckNameStringEnum.SEMI_SLEEPER:
+                return TooltipColorsStringEnum.BLUE;
+            case TruckNameStringEnum.BOX_TRUCK:
+            case TruckNameStringEnum.REEFER_TRUCK:
+            case TruckNameStringEnum.CARGO_VAN:
+                return TooltipColorsStringEnum.YELLOW;
+            case TruckNameStringEnum.DUMP_TRUCK:
+            case TruckNameStringEnum.CEMENT_TRUCK:
+            case TruckNameStringEnum.GARBAGE_TRUCK:
+                return TooltipColorsStringEnum.RED;
+            case TruckNameStringEnum.TOW_TRUCK:
+            case TruckNameStringEnum.CAR_HAULER:
+            case TruckNameStringEnum.SPOTTER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
 
     // TODO any type
     private mapTruckData(data: any): any {
+        console.log('data', data);
         const {
             id,
             axles,
@@ -688,10 +693,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? vin.substr(vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
-            truckTypeClass: truckType.logoName.replace(
-                TableStringEnum.SVG,
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            ),
+            truckTypeClass: truckType.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
             tabelLength: truckLength?.name
                 ? DataFilterHelper.getLengthNumber(truckLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,

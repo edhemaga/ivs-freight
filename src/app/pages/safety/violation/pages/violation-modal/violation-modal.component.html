@@ -489,7 +489,7 @@
                         [cardName]="'Document'"
                         [disableAnimation]="disableCardAnimation"
                         [hasCounter]="documents.length ? documents.length : 0"
-                        [isCardOpen]="documents.length > 0"
+                        [isCardOpen]="!!documents.length"
                     >
                         <app-ta-upload-files
                             (onFileEvent)="onFilesEvent($event)"
