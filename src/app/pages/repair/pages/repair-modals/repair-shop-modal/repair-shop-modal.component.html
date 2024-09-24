@@ -358,10 +358,15 @@
 
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
-                            [cardName]="'Document'"
-                            [disableAnimation]="disableCardAnimation"
-                            [hasCounter]="files.length"
-                            [isCardOpen]="files.length"
+                        [cardName]="'Document'"
+                        [isCardOpen]="isDocumentsCardOpen"
+                        [hasBodyData]="true"
+                        [hasDivider]="true"
+                        [hasCounter]="files?.length"
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0'
+                        }"
                         >
                             <app-ta-upload-files
                                 (onFileEvent)="onFilesEvent($event)"

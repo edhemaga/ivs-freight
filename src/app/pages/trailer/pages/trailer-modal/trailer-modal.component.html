@@ -132,7 +132,7 @@
                                 documents.length ? documents.length : 0
                             "
                             [cardName]="'Document'"
-                            [isCardOpen]="documents.length > 0"
+                            [isCardOpen]="!!documents.length"
                         >
                             <app-ta-upload-files
                                 [files]="documents"

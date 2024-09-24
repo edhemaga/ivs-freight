@@ -990,15 +990,6 @@
             <svg-icon
                 *ngIf="item?.logoName && item?.isSvg"
                 class="{{ item?.subFolder }}"
-                [ngClass]="{
-                    'dispatch-semi-truck': item.id === 1,
-                    'dispatch-semi-sleeper': item.id === 2,
-                    'dispatch-box-truck': item.id === 3,
-                    'dispatch-cargo-van': item.id === 4,
-                    'dispatch-tow-truck': item.id === 5,
-                    'dispatch-car-hauler': item.id === 6,
-                    'dispatch-spotter': item.id === 7
-                }"
                 [src]="item?.logoName"
             ></svg-icon>
 
@@ -1308,7 +1299,8 @@
             'merge-dropdown-body-with-input':
                 _inputConfig.mergeDropdownBodyWithInput,
             'dispatch-dropdown': template == 'svgtext-dispatch-template',
-            'ta-font-bold text-uppercase': _inputConfig.statusStyle
+            'ta-font-bold text-uppercase': _inputConfig.statusStyle,
+            'blue-dropdown': _inputConfig.isBlueDropdown && (_inputConfig.isItemSelected || _inputConfig.isDisplayingCustomPeriodRange)
         }"
         (keypress)="onKeypress($event)"
         (keydown)="onKeydown($event)"
