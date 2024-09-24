@@ -118,6 +118,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
+
+        // services
         private loadService: LoadService,
         private modalService: ModalService,
         private dispatchService: DispatcherService,
@@ -222,11 +224,14 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
+
                 if (this.editData?.dispatchId) {
                     this.resetHeight();
+
                     const dispatchIndex = this.labelsDispatches.find(
                         (dispatch) => dispatch.id === this.editData.dispatchId
                     );
+
                     if (dispatchIndex) {
                         this.onDispatchChange(dispatchIndex);
                         this.getLoadsForDispatchId(this.editData.dispatchId);
@@ -247,6 +252,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
     public selectNewDispatcher(event: { id: number }) {
         this.editData.dispatchId = event?.id ?? null;
+
         this.resetHeight();
 
         this.loadModalData();
@@ -347,7 +353,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onDispatchChange(dispatch: any) {
+    public onDispatchChange(dispatch: any): void {
         this.selectedDispatches = {
             ...dispatch,
             name: dispatch?.truck?.name
@@ -377,7 +383,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     {
                         id: dispatch?.truck?.id,
                         value: dispatch?.truck?.name,
-                        logoName: dispatch?.truck?.logoName,
+                        logoName:
+                            dispatch?.truck?.logoName &&
+                            LoadModalStringEnum.TRUCKS_SVG_ROUTE +
+                                dispatch?.truck?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
@@ -386,7 +395,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     },
                     {
                         value: dispatch?.trailer?.name,
-                        logoName: dispatch?.trailer?.logoName,
+                        logoName:
+                            dispatch?.trailer?.logoName &&
+                            LoadModalStringEnum.TRAILERS_SVG_ROUTE +
+                                dispatch?.trailer?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
