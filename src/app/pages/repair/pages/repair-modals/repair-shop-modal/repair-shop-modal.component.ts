@@ -902,23 +902,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             longitude: this.getFromFieldValue(
                 RepairShopModalStringEnum.LONGITUDE
             ),
-            // openAlways: this.getFromFieldValue(
-            //     RepairShopModalStringEnum.OPEN_ALWAYS
-            // ),
+            openAlways: this.getFromFieldValue(
+                RepairShopModalStringEnum.OPEN_ALWAYS
+            ),
             contacts: this.mapContacts(),
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            // TODO: HOURS NOT DONE yet
-            // openHoursSameAllDays: !this.isDaysVisible,
-            // startTimeAllDays: !this.isDaysVisible
-            //     ? this.openHours.value.at(0).startTime
-            //     : null,
-            // endTimeAllDays: !this.isDaysVisible
-            //     ? this.openHours.value.at(0).endTime
-            //     : null,
-            // monthlyDay: null,
-            // openHours: [],
+            openHours: [],
             weeklyDay: this.selectedWeeklyDay
                 ? this.selectedWeeklyDay.id
                 : null,
@@ -928,9 +919,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             monthlyDay: this.selectedMonthlyDays
                 ? this.selectedMonthlyDays.id
                 : null,
-            // TODO: Check meaning of this fields since we are not showing them on FE
-            companyOwned: true,
+            companyOwned: this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            // TODO: Holiday should go inside open hours as well
             holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),
         };
         return repairModel;
