@@ -616,7 +616,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         const newWorkingDay = this.openHours.at(index);
 
         // Toggle value
-        const dayActiveField = this.openHours.at(index).get(RepairShopModalStringEnum.IS_WORKING_DAY);
+        const dayActiveField = this.openHours
+            .at(index)
+            .get(RepairShopModalStringEnum.IS_WORKING_DAY);
         dayActiveField.patchValue(!dayActiveField.value);
 
         const startTime = dayActiveField.value
@@ -640,10 +642,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public toggleDoubleWorkingTime(index: number): void {
-        const dayActiveField = this.openHours.at(index).get(RepairShopModalStringEnum.DOUBLE_SHIFT);
+        const dayActiveField = this.openHours
+            .at(index)
+            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
         dayActiveField.patchValue(!dayActiveField.value);
-
-        
     }
 
     public toggle247WorkingHours(): void {
@@ -669,6 +671,24 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public convertTime(time: string): Date {
         return MethodsCalculationsHelper.convertTimeFromBackend(time);
+    }
+
+    public applyMondayToAllDays(): void {
+        const monday = this.openHours.controls[0];
+
+        this.openHours.controls.forEach((item, index) => {
+            if (
+                item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value &&
+                index
+            ) {
+                item.patchValue({
+                    ...monday.value,
+                    [RepairShopModalStringEnum.DAY_LABEL]: item.get(
+                        RepairShopModalStringEnum.DAY_LABEL
+                    ).value,
+                });
+            }
+        });
     }
 
     // Services
