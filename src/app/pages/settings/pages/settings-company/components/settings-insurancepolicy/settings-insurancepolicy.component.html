@@ -1,14 +1,16 @@
 <div class="settings-insurancepolicy">
-    <div class="settings-header">
-        <div class="settings-name">
-            <p>Insurance Policy</p>
+    <div class="settings-header d-flex align-items-center justify-items-center">
+        <div class="settings-name d-flex flex-1 align-items-center">
+            <p class="ta-font-extra-bold text-size-16 text-color-black">
+                Insurance Policy
+            </p>
         </div>
 
         <div class="settings-header-button">
             <div class="border-left"></div>
             <svg-icon
                 src="assets/svg/common/ic_plus.svg"
-                class="settings-plus-button"
+                class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                 (click)="
                     onAction({
                         modalName: 'insurance-policy',

@@ -36,6 +36,7 @@ $settings-fontsize: 14px;
 $settings-transition: all 0.3s ease-in-out;
 
 $settings-box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+$settings-icon-background: #e9effd;
 
 // Default settings
 p {
@@ -48,6 +49,13 @@ p {
     display: grid;
     grid-template-rows: 32px 1fr;
     row-gap: 12px;
+
+    &-grid {
+        width: 100%;
+        display: grid;
+        grid-template-rows: 32px auto;
+        row-gap: 12px;
+    }
 
     .settings-col-1 {
         grid-template-rows: 1 / 2;
@@ -67,23 +75,16 @@ p {
 // Settings Header global
 .settings-header {
     width: 100%;
+    background-color: $settings-background;
+    border-radius: $settings-borderRadius;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
 
     .no-factoring-data {
         justify-content: flex-end !important;
     }
+
     .settings-name {
-        height: 100%;
-        flex: 1;
-        padding: 6px 12px;
-        color: $settings-gray;
-        background-color: $settings-background;
-        font-weight: $settings-font-extrabold;
-        border-radius: $settings-borderRadius;
+        padding: 7px 8px;
         user-select: none;
     }
 
@@ -109,67 +110,24 @@ p {
         position: relative;
         padding-right: 1px;
         .settings-edit-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 26px;
             height: 26px;
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
         }
 
         .settings-plus-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             margin-left: 2px;
-            svg {
-                path {
-                    fill: $settings-blue-dark;
-                }
-            }
+            border-radius: 2px;
+
             &:hover {
-                transform: $settings-transition;
-                background-color: #6d82c7;
-                width: 28px;
-                height: 28px;
-                justify-content: center;
-                display: flex;
-                align-items: center;
-                border-radius: 2px;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-background;
-                    }
-                }
+                background-color: $settings-icon-background;
             }
         }
 
         .settings-trash-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 26px;
             height: 26px;
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-red-dark;
-                    }
-                }
-            }
         }
     }
 
@@ -208,16 +166,6 @@ p {
         max-width: 200px;
         margin-right: 13px;
         p {
-            color: #424242;
-            font-size: 26px;
-            font-weight: 900;
-            line-height: 32px;
-            margin-left: 0px !important;
-            margin: 0;
-
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
     }
@@ -246,70 +194,24 @@ p {
             }
 
             .settings-edit-button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
-                &:hover {
-                    transform: $settings-transition;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-gray-dark;
-                        }
-                    }
-                }
             }
 
             .settings-plus-button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
                 margin-left: 2px;
+                border-radius: 2px;
 
-                svg {
-                    path {
-                        fill: $settings-blue-dark;
-                    }
-                }
                 &:hover {
-                    transform: $settings-transition;
-                    background-color: #6d82c7;
-
-                    border-radius: 2px;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-background;
-                        }
-                    }
+                    background-color: $settings-icon-background;
                 }
             }
 
             .settings-trash-button {
-                //position: absolute;
-                //top: 48%;
-                //left: 50%;
-                //transform: translate(-50%, -50%);
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
-
-                &:hover {
-                    transform: $settings-transition;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-red-dark;
-                        }
-                    }
-                }
             }
         }
     }

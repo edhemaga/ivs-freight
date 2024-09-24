@@ -1,24 +1,32 @@
-<div class="settings-parking">
+<div class="settings-grid">
     <div class="toolbar-general-cmp">
         <div class="icon-text-wrapper">
-            <p class="disable-selection">Location</p>
+            <p
+                class="disable-selection text-color-black text-size-26 ta-font-black"
+            >
+                Location
+            </p>
         </div>
-        <div class="settings-header">
-            <div class="settings-name d-flex align-items-center">
+
+        <div
+            class="settings-header d-flex align-items-center justify-items-center"
+        >
+            <div class="settings-name d-flex flex-1 align-items-center">
+                <p class="ta-font-extra-bold text-size-16 text-color-black">
+                    Parking
+                </p>
                 <app-ta-counter
                     [count]="parkingData?.count"
-                    [countColor]="'#919191'"
-                    [countBackground]="'#F3F3F3'"
-                    [countHeight]="'24px'"
-                    [countWidth]="'24px'"
+                    [countBackground]="'#6C6C6C'"
+                    [countColor]="'#ffffff'"
+                    countBorderRadius="60px"
+                    [marginLeft]="'4px'"
                 ></app-ta-counter>
-                <p>Parking</p>
             </div>
-            <div class="settings-header-button">
-                <div class="border-left"></div>
+            <div class="settings-header-button c-pointer">
                 <svg-icon
                     src="assets/svg/common/ic_plus.svg"
-                    class="settings-plus-button"
+                    class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                     (click)="onAction({ modalName: 'parking' })"
                 ></svg-icon>
             </div>

@@ -36,18 +36,3 @@
 .ta-font-black {
     font-weight: 900 !important;
 }
-
-.text-color {
-    &-black {
-        color: $ta-black;
-    }
-}
-
-.text {
-    &-size {
-        &-14 {
-            font-size: 14px;
-            line-height: 18px;
-        }
-    }
-}

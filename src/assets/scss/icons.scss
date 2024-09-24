@@ -24,7 +24,7 @@
     &-hover {
         &-black {
             svg path {
-                transition: fill 0.3s;
+                transition: $transition;
             }
 
             &:hover {
@@ -35,12 +35,35 @@
         }
         &-blue-15 {
             svg path {
-                transition: fill 0.3s;
+                transition: $transition;
             }
 
             &:hover {
                 svg path {
                     fill: $ta-blue-15;
+                }
+            }
+        }
+        &-bw6-2 {
+            svg path {
+                transition: $transition;
+            }
+
+            &:hover {
+                svg path {
+                    fill: $bw6-2;
+                }
+            }
+        }
+
+        &-trash-red {
+            svg path {
+                transition: $transition;
+            }
+
+            &:hover {
+                svg path {
+                    fill: $settings-trash-red;
                 }
             }
         }

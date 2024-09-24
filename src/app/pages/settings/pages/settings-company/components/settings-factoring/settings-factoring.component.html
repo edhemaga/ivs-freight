@@ -1,7 +1,9 @@
 <div class="settings-factoring">
-    <div class="settings-header">
-        <div class="settings-name">
-            <p>Factoring Company</p>
+    <div class="settings-header d-flex align-items-center justify-items-center">
+        <div class="settings-name d-flex flex-1 align-items-center">
+            <p class="ta-font-extra-bold text-size-16 text-color-black">
+                Factoring Company
+            </p>
         </div>
 
         <div
@@ -14,7 +16,7 @@
             <div class="settings-header-button">
                 <svg-icon
                     src="ic_pen.svg"
-                    class="settings-edit-button"
+                    class="settings-edit-button d-flex align-items-center justify-content-center svg-hover-bw6-2 c-pointer"
                     (click)="
                         onAction({
                             modalName: 'factoring',
@@ -33,7 +35,7 @@
                 <div class="border-left"></div>
                 <svg-icon
                     src="assets/svg/common/ic_trash.svg"
-                    class="settings-trash-button"
+                    class="settings-trash-button svg-fill-muted svg-hover-trash-red d-flex align-items-center justify-content-center c-pointer"
                     (click)="onDeleteFactoringCompany()"
                 ></svg-icon>
             </div>
@@ -42,7 +44,7 @@
             <div class="border-left"></div>
             <svg-icon
                 src="assets/svg/common/ic_plus.svg"
-                class="settings-plus-button"
+                class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                 (click)="onAction({ modalName: 'basic', type: 'new' })"
             ></svg-icon>
         </div>
@@ -54,9 +56,9 @@
             [haveDots]="false"
             [noteIcons]="
                 factoringData?.factoringCompany?.note
-                        ? svgRoutes.noteSvgRoute
-                        : svgRoutes.noteEmptySvgRoute
-                "
+                    ? svgRoutes.noteSvgRoute
+                    : svgRoutes.noteEmptySvgRoute
+            "
             (resizePage)="toggleNoteVisibility()"
             *ngIf="factoringData?.factoringCompany?.name"
         >
@@ -117,7 +119,7 @@
                     "
                 ></div>
             </app-ta-custom-card>
-            <div 
+            <div
                 [ngClass]="{ 'body-show': isNoteVisible }"
                 [@showHideCardBody]="isNoteVisible"
             >
