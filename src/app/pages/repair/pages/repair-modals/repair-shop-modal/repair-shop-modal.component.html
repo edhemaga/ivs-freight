@@ -226,10 +226,10 @@
                             </ng-container>
                         </app-ta-checkbox-card>
                     </ng-container>
+
                     <!-- Repair Shop Services -->
                     <app-ta-custom-card
                         [cardName]="'Service'"
-                        [disableAnimation]="disableCardAnimation"
                         [hasCounter]="getServiceCounter"
                         [isCardOpen]="true"
                         [disabledCard]="true"
@@ -280,12 +280,11 @@
                             </div>
                         </div>
                     </app-ta-custom-card>
+
                     <!-- Open Hours -->
-                    <!-- isCardOpen: Close card since backend not working now neither does frontend-->
                     <app-ta-custom-card
                         (onActionEvent)="toggle247WorkingHours($event)"
                         [cardName]="'Work Hours'"
-                        [disableAnimation]="disableCardAnimation"
                         [has24Hours]="true"
                         [hasBodyData]="true"
                         [is24Hours]="isOpenAllDay"
