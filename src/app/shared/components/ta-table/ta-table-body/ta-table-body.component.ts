@@ -221,6 +221,7 @@ export class TaTableBodyComponent
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
     public loadId: number;
+    public isActionInProgress: boolean = false;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -933,6 +934,9 @@ export class TaTableBodyComponent
 
     // Dropdown Actions
     onDropAction(action: any) {
+        if (this.isActionInProgress) return;
+        this.isActionInProgress = true;
+
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
             this.mySelection = [];
@@ -958,9 +962,15 @@ export class TaTableBodyComponent
             });
         }
 
+        this.enableNewAction();
         this.tooltip.close();
     }
-
+    private enableNewAction(): void {
+        setTimeout(() => {
+            this.isActionInProgress = false;
+        }, 300);
+    }
+    
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
         this.onRemoveClickEventListener();
