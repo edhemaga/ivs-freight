@@ -348,47 +348,45 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            console.log('eventParam', eventParam);
-
             this.dispatcherService
                 .getDispatchTruckLastLocation(event.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((truckLastLocation) => {
-                    console.log('truckLastLocation', truckLastLocation);
                     if (truckLastLocation?.address?.address) {
                         this.isDispatchBoardChangeInProgress = true;
 
-                        /*                         this.cdRef.detectChanges(); */
-
-                        /*     this.addNewTruckData = event;
+                        this.addNewTruckData = event;
 
                         this.handleUpdateLastLocationEmit(
                             truckLastLocation.address
-                        ); */
+                        );
+                    } else {
+                        if (index >= 0) {
+                            this.dispatchData = {
+                                ...this.dispatchData,
+                                dispatches: this.dispatchData.dispatches.map(
+                                    (dispatch, i) =>
+                                        i === index
+                                            ? { ...dispatch, truck: event }
+                                            : dispatch
+                                ),
+                            };
+
+                            this.parkingCount =
+                                this.dispatchData?.dispatches?.filter(
+                                    (item) => item.parkingSlot
+                                )?.length;
+
+                            this.showAddAddressFieldIndex = index;
+                        } else {
+                            this.addNewTruckData = event;
+
+                            this.showAddAddressFieldIndex = -2;
+                        }
                     }
+
+                    this.cdRef.detectChanges();
                 });
-
-            /*     if (index >= 0) {
-                this.dispatchData = {
-                    ...this.dispatchData,
-                    dispatches: this.dispatchData.dispatches.map(
-                        (dispatch, i) =>
-                            i === index
-                                ? { ...dispatch, truck: event }
-                                : dispatch
-                    ),
-                };
-
-                this.parkingCount = this.dispatchData?.dispatches?.filter(
-                    (item) => item.parkingSlot
-                )?.length;
-
-                this.showAddAddressFieldIndex = index;
-            } else {
-                this.addNewTruckData = event;
-
-                this.showAddAddressFieldIndex = -2;
-            } */
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.TRAILER_ID,
