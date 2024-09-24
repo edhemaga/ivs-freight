@@ -281,7 +281,7 @@
                 }
 
                 &.active {
-                    background-color: $ta-blue-13;
+                    background-color: $ta-blue-14;
 
                     p {
                         color: $white;
@@ -473,12 +473,12 @@
 
     // Card body
     .ta-card-body {
-        &.set-max-height{
+        &.set-max-height {
             transition: max-height 0.3s ease-in-out;
             will-change: max-height;
             max-height: 50px;
         }
-        
+
         &.scroll {
             overflow-y: scroll !important;
             scrollbar-width: none !important; /* Firefox */

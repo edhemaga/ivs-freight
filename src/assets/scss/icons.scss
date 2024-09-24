@@ -1,10 +1,63 @@
 @import 'src/theme/variables';
 
 .svg {
+    // Colors
     &-fill {
         &-muted {
             svg path {
                 fill: $muted;
+            }
+        }
+        &-light-grey-6 {
+            svg path {
+                fill: $ta-light-grey-6;
+            }
+        }
+        &-blue-13 {
+            svg path {
+                fill: $ta-blue-13;
+            }
+        }
+    }
+
+    // Hovers
+    &-hover {
+        &-black {
+            svg path {
+                transition: fill 0.3s;
+            }
+
+            &:hover {
+                svg path {
+                    fill: $ta-black;
+                }
+            }
+        }
+        &-blue-15 {
+            svg path {
+                transition: fill 0.3s;
+            }
+
+            &:hover {
+                svg path {
+                    fill: $ta-blue-15;
+                }
+            }
+        }
+    }
+
+    // Sizes
+    &-size {
+        &-14 {
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+        &-16 {
+            svg {
+                width: 16px;
+                height: 16px;
             }
         }
     }

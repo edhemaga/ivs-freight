@@ -4,22 +4,6 @@
     &__favorite {
         position: relative;
         bottom: 1px;
-        cursor: pointer;
-
-        svg path {
-            transition: fill 0.3s ease-in-out;
-        }
-
-        &:hover svg path {
-            fill: $ta-black;
-        }
-
-        &-active svg path {
-            fill: $ta-blue-13;
-            &:hover {
-                fill: $ta-blue-15;
-            }
-        }
     }
 
     // Override tabs to match figma design
@@ -75,11 +59,6 @@
         display: grid;
         grid-template-columns: 364px 1fr;
     }
-
-    &-copy-icon svg {
-        width: 14px;
-        height: 18px;
-    }
 }
 
 .service-types {
@@ -88,29 +67,31 @@
 
 .timeline__card {
     display: grid;
-    grid-template-columns: 120px 154px 154px 18px;
+    grid-template-columns: 122px 156px 156px 20px;
     grid-template-rows: 34px;
     align-items: center;
-    column-gap: 5px;
+    column-gap: 2px;
     row-gap: 2px;
     margin-bottom: 2px;
     position: relative;
     border-radius: 2px;
 
+    &-double-shift {
+        margin-top: 2px;
+    }
+
     &-inputs {
-        grid-template-columns: 90px 160px 160px 31px;
+        grid-template-columns: 93px 162px 162px 33px;
         grid-template-rows: auto;
+    }
+
+    &-day-label {
+        height: 26px;
     }
 
     &-icon-plus {
         opacity: 0;
-        transition: $transition; 
-        cursor: pointer;
-
-        svg {
-            width: 14px;
-            height: 14px;
-        }
+        transition: $transition;
     }
 
     &:hover {
@@ -126,28 +107,12 @@
     }
 
     &-label {
-        cursor: pointer;
         color: $ta-black-2;
         font-weight: 500;
         font-size: 14px;
         line-height: 14px;
         -webkit-user-select: none;
         user-select: none;
-    }
-
-    &-icon {
-        svg {
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-        &-rotate {
-            svg {
-                transform: rotate(180deg);
-                path {
-                    fill: $ta-blue-13;
-                }
-            }
-        }
     }
 
     &-hover {
@@ -188,14 +153,6 @@
             position: relative;
             width: 26px;
             height: 26px;
-            svg {
-                height: 16px;
-                width: 16px;
-
-                path {
-                    fill: $muted;
-                }
-            }
         }
     }
 }
