@@ -97,8 +97,8 @@ export class ChatComponent
     }
 
     ngOnInit(): void {
-        this.getResolvedData();
         this.setUserProfileData();
+        this.getDataOnLoad();
     }
 
     private getResolvedData(): void {
@@ -118,6 +118,17 @@ export class ChatComponent
                     this.drivers
                 );
             });
+    }
+
+    private getDataOnLoad(): void {
+        this.getResolvedData();
+
+        const urlTree = this.router.parseUrl(this.router.url);
+        // Get route parameters
+        const segments = urlTree.root.children['primary'].segments;
+        if (segments.length > 1) {
+            this.selectedConversation = Number(segments[2].path) ?? 0;
+        }
     }
 
     public onSelectTab(item: ChatTab): void {
@@ -195,20 +206,18 @@ export class ChatComponent
     }
 
     public displayProfileDetails(value: boolean): void {
-        if (this.isProfileDetailsDisplayed && !value) {
+        if (!this.selectedConversation) {
             this.isProfileDetailsDisplayed = value;
             return;
         }
 
-        if (this.selectedConversation && value) {
-            this.chatService
-                .getAllConversationFiles(this.selectedConversation)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((data: ConversationInfoResponse) => {
-                    this.isProfileDetailsDisplayed = value;
-                    this.userProfileService.setProfile(data);
-                });
-        }
+        this.chatService
+            .getAllConversationFiles(this.selectedConversation)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: ConversationInfoResponse) => {
+                this.isProfileDetailsDisplayed = value;
+                this.userProfileService.setProfile(data);
+            });
     }
 
     private setUserProfileData(): void {

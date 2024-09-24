@@ -1299,7 +1299,8 @@
             'merge-dropdown-body-with-input':
                 _inputConfig.mergeDropdownBodyWithInput,
             'dispatch-dropdown': template == 'svgtext-dispatch-template',
-            'ta-font-bold text-uppercase': _inputConfig.statusStyle
+            'ta-font-bold text-uppercase': _inputConfig.statusStyle,
+            'blue-dropdown': _inputConfig.isBlueDropdown && (_inputConfig.isItemSelected || _inputConfig.isDisplayingCustomPeriodRange)
         }"
         (keypress)="onKeypress($event)"
         (keydown)="onKeydown($event)"
