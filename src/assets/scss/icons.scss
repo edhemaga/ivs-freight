@@ -1,87 +1,66 @@
 @import 'src/theme/variables';
+@mixin svg-fill($color) {
+    svg path {
+        fill: $color;
+    }
+}
+
+@mixin svg-hover($color) {
+    svg path {
+        transition: $transition;
+    }
+
+    &:hover {
+        svg path {
+            fill: $color;
+        }
+    }
+}
+
+@mixin svg-size($width, $height) {
+    svg {
+        width: $width;
+        height: $height;
+    }
+}
 
 .svg {
     // Colors
     &-fill {
         &-muted {
-            svg path {
-                fill: $muted;
-            }
+            @include svg-fill($muted);
         }
         &-light-grey-6 {
-            svg path {
-                fill: $ta-light-grey-6;
-            }
+            @include svg-fill($ta-light-grey-6);
         }
         &-blue-13 {
-            svg path {
-                fill: $ta-blue-13;
-            }
+            @include svg-fill($ta-blue-13);
         }
     }
 
     // Hovers
     &-hover {
         &-black {
-            svg path {
-                transition: $transition;
-            }
-
-            &:hover {
-                svg path {
-                    fill: $ta-black;
-                }
-            }
+            @include svg-hover($ta-black);
         }
         &-blue-15 {
-            svg path {
-                transition: $transition;
-            }
-
-            &:hover {
-                svg path {
-                    fill: $ta-blue-15;
-                }
-            }
+            @include svg-hover($ta-blue-15);
         }
         &-bw6-2 {
-            svg path {
-                transition: $transition;
-            }
-
-            &:hover {
-                svg path {
-                    fill: $bw6-2;
-                }
-            }
+            @include svg-hover($bw6-2);
         }
-
         &-trash-red {
-            svg path {
-                transition: $transition;
-            }
-
-            &:hover {
-                svg path {
-                    fill: $settings-trash-red;
-                }
-            }
+            @include svg-hover($settings-trash-red);
         }
     }
 
     // Sizes
     &-size {
         &-14 {
-            svg {
-                width: 14px;
-                height: 14px;
-            }
+            @include svg-size(14px, 14px);
         }
         &-16 {
-            svg {
-                width: 16px;
-                height: 16px;
-            }
+            @include svg-size(16px, 16px);
         }
     }
 }
