@@ -124,8 +124,7 @@
         class="chat-main-content"
         [ngStyle]="{
             'grid-template-columns':
-                (isProfileDetailsDisplayed && userProfileData | async) ||
-                isGroupMembersDisplayed
+                isProfileDetailsDisplayed || isGroupMembersDisplayed
                     ? chatGridLayout.MAX_AUTO_MAX
                     : chatGridLayout.MAX_AUTO
         }"
@@ -149,7 +148,9 @@
             </ng-container>
 
             <ng-template #noConversation>
-                <app-chat-messages-not-selected></app-chat-messages-not-selected>
+                <ng-container
+                    *ngTemplateOutlet="conversationNotSelected"
+                ></ng-container>
             </ng-template>
         </div>
 
@@ -157,12 +158,7 @@
         <div>
             <ng-container *ngIf="!attachmentUploadActive">
                 <div class="profile-details-wrapper d-flex">
-                    <ng-container
-                        *ngIf="
-                            isProfileDetailsDisplayed &&
-                            (userProfileData | async)
-                        "
-                    >
+                    <ng-container *ngIf="isProfileDetailsDisplayed">
                         <div class="profile-details">
                             <app-chat-user-profile
                                 [data]="userProfileData | async"
@@ -184,7 +180,7 @@
                     >
                         <div class="profile-details">
                             <app-chat-channel-participant-list
-                                [[@fadeInOutHorizontal]]
+                                [@fadeInOutHorizontal]
                                 [conversationParticipants]="
                                     conversationParticipants
                                 "
@@ -199,3 +195,28 @@
         </div>
     </div>
 </div>
+
+<ng-template #conversationNotSelected>
+    <div class="not-selected-wrapper">
+        <app-chat-header>
+            <div class="text ta-font-extra-bold">Conversation</div>
+        </app-chat-header>
+
+        <div class="content d-flex align-content-center justify-content-center">
+            <div>
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 226, 'height.px': 250 }"
+                    [src]="chatSvgRoutes.notSelectedIllustrationIcon"
+                >
+                </svg-icon>
+                <div class="text">
+                    <div class="text-main ta-font-bold">
+                        Select an item to read
+                    </div>
+                    <div class="text-auxillary">Nothing is selected</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

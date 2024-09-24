@@ -987,7 +987,7 @@
                             _options[0].name === 'No Results',
                         active: option.id === _activeItem?.id
                     }"
-                    class="dropdown-option dropdown-double-column load-dispatches-ttd-template dropdown-trailer-hover"
+                    class="dropdown-option dropdown-double-column load-dispatches-ttd-template"
                 >
                     <!-- No Results -->
                     <div
@@ -1011,13 +1011,19 @@
                         *ngIf="_options[0].name !== 'No Results'"
                         class="load-dispatches-container  {{
                             option?.truck?.subFolder
+                        }} {{
+                            option?.truck?.truckType?.name
+                                .trim()
+                                .replace(' ', '')
+                                .toLowerCase()
                         }}"
                     >
                         <svg-icon
                             class="load-dispatches-svg"
-                            [src]="option.truck?.logoName"
-                            [className]="
-                                option?.truck?.logoName?.replace('.svg', '')
+                            [src]="
+                                option.truck?.logoName &&
+                                'assets/svg/common/trucks/' +
+                                    option.truck?.logoName
                             "
                         ></svg-icon>
                         <div
@@ -1049,7 +1055,14 @@
                     <!-- Trailer -->
                     <div
                         *ngIf="_options[0].name !== 'No Results'"
-                        class="load-dispatches-container"
+                        class="load-dispatches-container  {{
+                            option?.trailer?.subFolder
+                        }} {{
+                            option?.trailer?.trailerType?.name
+                                .trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                        }}"
                         [ngClass]="{
                             trailerContainer: option?.trailer?.logoType
                                 ? option?.trailer?.logoType
@@ -1065,9 +1078,10 @@
                     >
                         <svg-icon
                             class="load-dispatches-svg"
-                            [src]="option?.trailer?.logoName"
-                            [className]="
-                                option?.trailer?.logoName?.replace('.svg', '')
+                            [src]="
+                                option?.trailer?.logoName &&
+                                'assets/svg/common/trailers/' +
+                                    option?.trailer?.logoName
                             "
                         ></svg-icon>
                         <div

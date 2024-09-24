@@ -78,5 +78,6 @@ export interface ApiDriverPostRequest {
     Payroll_MailNotification?: boolean;
     Payroll_PushNotification?: boolean;
     Payroll_SmsNotification?: boolean;
+    Differences?: { [key: string]: string; };
 }
 
