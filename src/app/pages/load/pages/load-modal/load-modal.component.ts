@@ -205,6 +205,8 @@ import { CaMapComponent, ICaMapProps } from 'ca-components';
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
+    @ViewChild('trailerInputDropdown')
+    trailerInputDropdown: TaInputDropdownComponent;
 
     @Input() editData: EditData;
 
@@ -645,8 +647,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public filesForDelete: number[] = [];
     public tags: TagResponse[] = [];
 
-    public isDocumentsCardOpen: boolean = false;
-
     // comments
     public comments: CommentResponse[] = [];
 
@@ -820,7 +820,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get getTrailerInputConfig(): ITaInput {
-        return LoadModalConfig.getTrailerInputConfig(this.selectedTrailerReq);
+        return LoadModalConfig.getTrailerInputConfig(
+            this.selectedTrailerReq,
+            this.selectedTruckReq
+        );
     }
 
     public getExtraStopsDateToTimeToInputConfig(label: string): ITaInput {
@@ -1334,11 +1337,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TAB:
-                this.selectExtraStopType[indx] = this.editData
-                    ? event.id === 1
-                        ? 3000 + indx
-                        : 4000 + indx
-                    : event.id;
+                const orderNumber = event.id === 1 || this.editData && event.id > 3000 && event.id < 4000 ? 3000 + indx : 4000 + indx;
+
+                this.selectExtraStopType[indx] = orderNumber;
 
                 this.typeOfExtraStops[indx] = this.typeOfExtraStops[indx].map(
                     (typeOfExtraStop) => {
@@ -1348,12 +1349,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     }
                 );
-
                 this.loadExtraStops()
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
                     .patchValue(
-                        (event.id ? event.id : event)
+                        orderNumber
                             .toString()
                             .startsWith(LoadModalStringEnum.NUMBER_4)
                             ? LoadModalStringEnum.DELIVERY_2
@@ -1871,6 +1871,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.TRUCK_REQ:
                 this.selectedTruckReq = event;
+
+                if (
+                    this.selectedTruckReq?.id >= 3 &&
+                    this.selectedTruckReq?.id <= 8
+                ) {
+                    this.selectedTrailerReq = null;
+                    this.trailerInputDropdown?.superControl.reset();
+                }
 
                 break;
             case LoadModalStringEnum.TRAILER_REQ:
@@ -4232,10 +4240,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         setTimeout(() => this.addNewLoadModal(), 200);
     }
 
-    public handleOpenCloseDocumentsCard(openClose: boolean): void {
-        this.isDocumentsCardOpen = openClose;
-    }
-
     private getPreviusModalValues(): EditData | LoadShortResponse {
         return this.loadModalData();
     }
@@ -4651,13 +4655,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillingTypes;
 
                     if (this.editData) {
+                        this.isConvertedToTemplate =
+                            this.editData.selectedTab ===
+                            TableStringEnum.TEMPLATE;
                         this.populateLoadModalData(
                             (this.editData.data ??
                                 this.editData) as LoadResponse
                         );
-                        this.isConvertedToTemplate =
-                            this.editData.selectedTab ===
-                            TableStringEnum.TEMPLATE;
                     } else {
                         this.watchFormChanges();
                     }
@@ -5072,10 +5076,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = loadModalData;
 
         this.isEditingMode = true;
-
         // Check if stops exists and is an array before using it
-        const stops =
-            loadModalData.stops?.filter((stop) => stop.id !== 0) || [];
+        const stops = this.formatStop(loadModalData.stops);
         if (stops.length) {
             stops.forEach((stop, index) => {
                 if (index === 0) {
@@ -5244,7 +5246,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files || [];
-        this.handleOpenCloseDocumentsCard(!!this.documents.length);
 
         // comments
         this.comments = comments;
@@ -5430,6 +5431,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             generalCommodity?.name.toLowerCase() ===
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
+    }
+
+    private formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
+        const _stops = stops?.filter((stop) => stop.id !== 0) || [];
+
+        if (!this.isConvertedToTemplate) return _stops;
+
+        // Clear stop values
+        _stops.forEach((stop) => {
+            stop.arrive = null;
+            stop.depart = null;
+            stop.statusHistory = [];
+        });
+
+        return _stops;
     }
 
     public pickupStatusHistoryChange(

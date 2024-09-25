@@ -18,7 +18,7 @@ export class HighlightSearchPipe implements PipeTransform {
                 return b.text.length - a.text.length;
             });
             chips.forEach((item) => {
-                if (item.text && text) {
+                if (item.text && text && text !== 'No Results') {
                     let pattern = item.text
                         .toString()
                         .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');

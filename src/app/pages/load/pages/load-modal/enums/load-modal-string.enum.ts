@@ -219,4 +219,7 @@ export enum LoadModalStringEnum {
     DISPATCH_LOAD_SAVE_CHANGES = 'assign-save-changes',
     DISPATCH_LOAD_CREATE_LOAD = 'assign-create-load',
     STATUS_TYPE = 'statusType',
+
+    TRUCKS_SVG_ROUTE = 'assets/svg/common/trucks/',
+    TRAILERS_SVG_ROUTE = 'assets/svg/common/trailers/',
 }

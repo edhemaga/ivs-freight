@@ -64,4 +64,6 @@ export class ChatSvgRoutes {
     static hashIcon: string = 'assets/svg/chat/hash-icon.svg';
     static circleOfflineIcon: string =
         'assets/svg/chat/circle-offline-icon.svg';
+    static notSelectedIllustrationIcon: string =
+        'assets/svg/chat/not-selected-illustration-icon.svg';
 }
