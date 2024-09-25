@@ -101,7 +101,8 @@ export class ChatMessagesComponent
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;
-    public messageToReply!: ChatMessageResponse;
+    public messageToReply: BehaviorSubject<ChatMessageResponse | null> =
+        new BehaviorSubject(null);
 
     // Attachment upload
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
@@ -212,20 +213,26 @@ export class ChatMessagesComponent
 
         this.isMessageSendable = false;
 
-        this.chatService
-            .sendMessage(
-                this.conversation.id,
-                1,
-                message,
-                this.attachments$.value,
-                this.links
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.isMessageSendable = true;
-                this.attachments$.next([]);
-                this.messageForm.reset();
-            });
+        this.messageToReply.subscribe((mes) => {
+            let parentMessageId: number;
+            if (mes.senderId) parentMessageId = mes.senderId;
+
+            this.chatService
+                .sendMessage(
+                    this.conversation.id,
+                    1,
+                    message,
+                    this.attachments$.value,
+                    this.links,
+                    parentMessageId
+                )
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    this.isMessageSendable = true;
+                    this.attachments$.next([]);
+                    this.messageForm.reset();
+                });
+        });
     }
 
     private creteForm(): void {
@@ -383,7 +390,11 @@ export class ChatMessagesComponent
     }
 
     public handleMessageReply(messageToReply: ChatMessageResponse): void {
-        this.messageToReply = messageToReply;
+        this.messageToReply.next(messageToReply);
+    }
+
+    public closeReply(): void {
+        this.messageToReply.next(null);
     }
 
     ngOnDestroy(): void {

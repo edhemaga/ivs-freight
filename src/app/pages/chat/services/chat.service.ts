@@ -117,7 +117,8 @@ export class UserChatService {
         messageType: number,
         content: string,
         attachmentsList?: UploadFile[],
-        linksList?: string[]
+        linksList?: string[],
+        parentMessageId?: number
     ): Observable<any> {
         if (!conversationId) return;
 
@@ -137,6 +138,7 @@ export class UserChatService {
             content,
             attachments,
             links,
+            parentMessageId,
         };
 
         this.formDataService.extractFormDataFromFunction(data);

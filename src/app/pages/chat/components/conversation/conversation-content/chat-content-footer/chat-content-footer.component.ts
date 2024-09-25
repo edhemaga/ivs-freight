@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 // Models
 import { ChatMessageResponse } from '@pages/chat/models';
@@ -19,7 +20,10 @@ export class ChatContentFooterComponent
     implements OnInit
 {
     @Input() currentUserTyping!: string;
-    @Input() replyMessage: ChatMessageResponse | null = null;
+    @Input() replyMessage: BehaviorSubject<ChatMessageResponse | null> =
+        new BehaviorSubject(null);
+
+    @Output() closeReplyEvent: EventEmitter<boolean> = new EventEmitter();
 
     // Assets route
     public chatSvgRoutes = ChatSvgRoutes;
@@ -29,10 +33,8 @@ export class ChatContentFooterComponent
     }
 
     public closeReply(): void {
-        this.replyMessage = null;
+        this.closeReplyEvent.emit(true);
     }
 
-    ngOnInit(): void {
-        console.log(this.replyMessage);
-    }
+    ngOnInit(): void {}
 }
