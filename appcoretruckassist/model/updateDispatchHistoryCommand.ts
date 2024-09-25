@@ -14,6 +14,6 @@
 export interface UpdateDispatchHistoryCommand { 
     id?: number;
     startDate?: string;
-    endDate?: string;
+    endDate?: string | null;
 }
 

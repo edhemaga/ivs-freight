@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // svg routes
@@ -38,35 +45,27 @@ import {
     templateUrl: './dispatch-table-truck-trailer.component.html',
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
-export class DispatchTableTruckTrailerComponent {
-    @Input() set hasAdditionalFieldTruck(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTruck = hasAdditionalField;
-    }
-    @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTrailer = hasAdditionalField;
-    }
+export class DispatchTableTruckTrailerComponent implements OnChanges {
     @Input() set truckDropdownWidth(value: number) {
         this._truckDropdownWidth = Math.round(value - 2);
     }
     @Input() set trailerDropdownWidth(value: number) {
         this._trailerDropdownWidth = Math.round(value - 2);
     }
-
-    @Input() type: string;
-
-    @Input() truck: TruckResponse;
-    @Input() trailer: TrailerResponse;
-
     @Input() set trailerList(values: TrailerDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
     }
-
     @Input() set truckList(values: TruckDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
     }
 
-    @Input() rowIndex: number;
+    @Input() isTrailerAddNewHidden: boolean;
 
+    @Input() truck: TruckResponse;
+    @Input() trailer: TrailerResponse;
+
+    @Input() type: string;
+    @Input() rowIndex: number;
     @Input() isDrag: boolean;
     @Input() isHoveringRow: boolean;
     @Input() isBoardLocked: boolean;
@@ -86,8 +85,11 @@ export class DispatchTableTruckTrailerComponent {
     public truckTrailerFormControl: UntypedFormControl =
         new UntypedFormControl();
 
-    public _hasAdditionalFieldTruck: boolean = false;
-    public _hasAdditionalFieldTrailer: boolean = false;
+    public _trailerList: DispatchTrailerListItemModel[] = [];
+    public _truckList: DispatchTruckListItemModel[] = [];
+
+    public _truckDropdownWidth: number;
+    public _trailerDropdownWidth: number;
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
 
@@ -97,21 +99,21 @@ export class DispatchTableTruckTrailerComponent {
     public truckIndex: number = -1;
     public trailerIndex: number = -1;
 
-    public _truckDropdownWidth: number;
-    public _trailerDropdownWidth: number;
-
-    public _trailerList: DispatchTrailerListItemModel[] = [];
-    public _truckList: DispatchTruckListItemModel[] = [];
-
     public hasAddNew: boolean = false;
 
     constructor(private modalService: ModalService) {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            this.type === DispatchTableStringEnum.TRUCK &&
+            !changes?.truck?.currentValue
+        )
+            this.truckTrailerFormControl.reset();
+    }
+
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
             type: this.type,
-            hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
             truckDropdownWidth: this._truckDropdownWidth,
             trailerDropdownWidth: this._trailerDropdownWidth,
         });
@@ -193,7 +195,9 @@ export class DispatchTableTruckTrailerComponent {
         });
     }
 
-    public handleTruckTrailerList(values): void {
+    public handleTruckTrailerList(
+        values: DispatchTruckListItemModel[] | TrailerDispatchModalResponse[]
+    ): void {
         if (values) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? (this._truckList = [...values])
@@ -207,7 +211,7 @@ export class DispatchTableTruckTrailerComponent {
 
         this.hasAddNew = !values?.length;
 
-        if (!values.length && !findAllAssigned) {
+        if (!values?.length && !findAllAssigned) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? this._truckList.unshift({
                       id: 7656,

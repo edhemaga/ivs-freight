@@ -1,9 +1,27 @@
 @import 'src/theme/variables';
 
 .color-red {
-    color: $ta-red-11
+    color: $ta-red-11;
+    &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+    &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
 }
 
+.load-stop-header-bar-title {
+    &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+    &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+    }
+}
 
 .load-stop-container {
     max-width: 616px;
@@ -11,6 +29,8 @@
     padding: 0;
     border-radius: 2px;
     overflow: hidden;
+    margin-left: 1px;
+    transition: padding 0.3s ease-in-out;
 
     // Stop Header
     .load-stop-header-bar {
@@ -275,17 +295,23 @@
     // Stop Body
     .load-stop-body {
         .content-holder {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            will-change: height, opacity;
             &.innactive {
-                height: 0px !important;
-                overflow: hidden !important;
-                opacity: 0 !important;
-                margin-top: 0px !important;
-                margin-bottom: 0px !important;
+                height: 0;
+                opacity: 0;
+                overflow: hidden;
+                margin-bottom: 0 !important;
             }
 
             &.active {
-                overflow: visible !important;
-                opacity: 1 !important;
+                opacity: 1;
+                overflow: hidden;
+                transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                height: 100%;
             }
         }
     }
@@ -369,6 +395,15 @@
                 .origin-destination-no-filled-container {
                     p {
                         color: $white;
+                        
+                    &::-moz-selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
+                    &::selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
                     }
                 }
 

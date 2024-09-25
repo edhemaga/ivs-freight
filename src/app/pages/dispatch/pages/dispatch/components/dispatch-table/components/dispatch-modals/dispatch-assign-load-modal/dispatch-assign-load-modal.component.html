@@ -2,21 +2,22 @@
     [modalTitle]="'Assign Load'"
     [customClass]="loadModalSize"
     [isAdditionalAssignLoadModalVisible]="isAdditonalViewOpened"
-    [isAssignLoadModal]="true"
     [isModalValid]="isModalValid"
-    [hasTimeFilter]="true"
+    [hasFutureTimeFilter]="true"
     [hasDispatcherFilter]="true"
     [hasTruckTypeFilter]="true"
     [hasTrailerTypeFilter]="true"
     [hasLocationFilter]="true"
-    [hasSearch]="true"
+    [isAssignLoadModal]="true"
+    [unassignedLoads]="originalLoads"
+    [isReorderingActive]="isReorderingActive"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
     (filterActions)="setFilter($event)"
 >
     <div origin>
         <div class="dispatch-load">
-            <form [formGroup]="assignLoadForm" class="mb-2">
+            <form [formGroup]="assignLoadForm" class="mb-1">
                 <app-ta-input-dropdown
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
@@ -28,7 +29,7 @@
             </form>
 
             <!-- Table header -->
-            <div class="d-grid dispatch-load-grid">
+            <div class="d-grid dispatch-load-grid mb-1">
                 <ng-container
                     *ngFor="
                         let headerItem of tableHeaderItems;
@@ -57,33 +58,49 @@
                 </ng-container>
             </div>
 
+            <div class="divider"></div>
+
             <app-ta-resizer
-                [initialFirstElementHeight]="220"
-                [initialSecondElementHeight]="440"
+                [initialFirstElementHeight]="_initialFirstElementHeight"
+                [initialSecondElementHeight]="_initialSecondElementHeight"
                 [minHeightFirstElement]="30"
-                [minHeightSecondElement]="30"
+                [minHeightSecondElement]="40"
                 [isFirstElementOpen]="isAssignLoadCardOpen"
                 [isSecondElementOpen]="isUnAssignLoadCardOpen"
                 [isLoadList]="true"
+                [isResizeEnabled]="
+                    assignedLoads.length || unassignedLoads.length
+                "
+                (firstElementHeightChange)="onFirstElementHeightChange($event)"
+                (secondElementHeightChange)="
+                    onSecondElementHeightChange($event)
+                "
+                #resizerComponent
             >
-                <div firstElement class="h-full">
+                <div firstElement #firstElementRef class="h-full-important">
                     <app-ta-custom-card
                         [cardName]="'Assigned'"
-                        [hasCounter]="assignedLoads.length"
+                        [hasCounter]="assignedLoads.length || -1"
                         [isCardOpen]="isAssignLoadCardOpen"
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
-                        [hasArrow]="showReorderButton"
+                        [hasArrow]="assignedLoads.length && !isReorderingActive"
                         [isReorderingButtonVisible]="
                             !isReorderingActive &&
                             assignedLoads.length > 1 &&
                             isAssignLoadCardOpen
                         "
                         [isFinishReorderingButtonVisible]="isReorderingActive"
-                        [hasScrollBody]="true"
-                        [hasDivider]="false"
+                        [hasXAxisBottomPadding]="false"
                         [isInheritingParentSize]="true"
-                        (onOpenCard)="isAssignLoadCardOpen = $event"
+                        [hasDivider]="false"
+                        [headerLightColor]="true"
+                        [cardHeight]="firstElementHeight"
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0'
+                        }"
+                        (onOpenCard)="toggleAssignList()"
                         (onActionEvent)="onReorderAction($event)"
                         (cdkDropListDropped)="dropAssigned($event)"
                         cdkDropList
@@ -101,6 +118,7 @@
                                     trackBy: trackByIdentity
                                 "
                                 [cdkDragDisabled]="!isReorderingActive"
+                                cdkDragBoundary=".ta-card-body"
                                 cdkDrag
                             >
                                 <div
@@ -123,13 +141,11 @@
                                 ></app-load-short-details>
                             </div>
                         </ng-container>
-
                         <ng-template #showNoAssignedLoads>
                             <div
                                 class="d-flex flex-column align-items-center justify-content-center"
                             >
                                 <svg-icon [src]="svgIcons.noLoads"></svg-icon>
-
                                 <div
                                     class="ta-font-bold dispatch-load-no-results-title"
                                 >
@@ -144,19 +160,26 @@
                         </ng-template>
                     </app-ta-custom-card>
                 </div>
-
-                <div secondElement class="h-full">
+                <div secondElement #secondElementRef class="h-full-important">
                     <app-ta-custom-card
                         [cardName]="'Unassigned'"
                         [hasCounter]="unassignedLoads.length"
                         [isCardOpen]="isUnAssignLoadCardOpen"
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
-                        [hasArrow]="true"
+                        [hasArrow]="
+                            unassignedLoads.length && assignedLoads.length
+                        "
                         [isInheritingParentSize]="true"
                         [disabledCard]="isReorderingActive"
                         [hasDivider]="false"
-                        (onOpenCard)="isUnAssignLoadCardOpen = $event"
+                        [cardHeight]="secondElementHeight"
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0'
+                        }"
+                        [isGreyTextWhenDisabled]="true"
+                        (onOpenCard)="toggleUnAssignedList()"
                     >
                         <ng-container
                             *ngIf="
@@ -186,7 +209,6 @@
                                 ></app-load-short-details>
                             </div>
                         </ng-container>
-
                         <ng-template #showNoUnassignedLoads>
                             <div
                                 class="d-flex flex-column align-items-center justify-content-center"
@@ -211,6 +233,19 @@
     </div>
 
     <div assignLoadModal class="d-flex flex-column h-full position-relative">
+        <ng-container *ngIf="isLoading">
+            <div class="dispatch-load-map-loader position-absolute">
+                <div
+                    class="position-absolute top-50 start-50 translate-middle d-flex align-items-center justify-content-center flex-column gap-2"
+                >
+                    <div
+                        class="dispatch-load-map-loader-box d-flex align-items-center justify-content-center"
+                    >
+                        <div class="dispatch-load-map-loader-box-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
         <ng-container *ngIf="selectedLoad; else modalTitle">
             <div class="modal-header d-flex justify-content-between">
                 <div class="modal-header-leftside">
@@ -268,9 +303,12 @@
 
             <app-ta-resizer
                 [initialFirstElementHeight]="200"
-                [initialSecondElementHeight]="390"
+                [initialSecondElementHeight]="200"
                 [minHeightFirstElement]="35"
                 [minHeightSecondElement]="40"
+                [isResizeEnabled]="
+                    assignedLoads.length || unassignedLoads.length
+                "
             >
                 <div firstElement class="h-full">
                     <app-ta-custom-card
@@ -280,14 +318,12 @@
                         [hasCounter]="selectedLoad?.stops.length"
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
-                        [hasArrow]="false"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
                         [hasXAxisBottomPadding]="true"
                         [hasDivider]="false"
-                        [hasScrollBody]="true"
                         [isInheritingParentSize]="true"
                     >
                         <app-load-details-item-stops-main
@@ -310,10 +346,10 @@
                         class="d-flex justify-content-center align-items-center dispatch-load-map"
                     >
                         <!-- <app-ta-maps
-                            [mapType]="'routing'"
-                            [routes]="loadStopRoutes"
-                            [ngStyle]="{ width: '100%', height: '540px' }"
-                        ></app-ta-maps> -->
+                                [mapType]="'routing'"
+                                [routes]="loadStopRoutes"
+                                [ngStyle]="{ width: '100%', height: '540px' }"
+                            ></app-ta-maps> -->
                     </div>
                 </div>
             </app-ta-resizer>

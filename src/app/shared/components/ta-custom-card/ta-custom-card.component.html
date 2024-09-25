@@ -1,7 +1,6 @@
 <div
     class="ta-custom-card"
     [class.dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
-    [class.h-full]="isInheritingParentSize && _isCardOpen"
 >
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
@@ -32,7 +31,10 @@
     >
         <!-- Left side of header -->
 
-        <div class="header-content">
+        <div
+            class="header-content"
+            [class.grey-text]="isGreyTextWhenDisabled && disabledCard"
+        >
             <!-- Checkbox -->
             <ng-container *ngIf="hasCheckbox">
                 <app-ta-checkbox [formControl]="controlName" [label]="''">
@@ -55,7 +57,11 @@
                     'dropdown-card': isDropdownCard && !isDropdownModalCard
                 }"
                 [ngStyle]="{
-                    color: _isCardOpen ? '#424242' : '#6C6C6C'
+                    color: _isCardOpen
+                        ? '#424242'
+                        : headerLightColor && hasCounter === -1
+                        ? '#aaaaaa'
+                        : '#6C6C6C'
                 }"
             >
                 {{ cardName }}
@@ -188,6 +194,7 @@
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
+                    [class.disabled]="isActionDisabled"
                 >
                     <svg-icon
                         class="action-plus-icon"
@@ -255,7 +262,7 @@
 
             <ng-container *ngIf="isFinishReorderingButtonVisible">
                 <button
-                    class="reodering-button ta-font-bold"
+                    class="reodering-button ta-font-bold reodering-button-finish"
                     (click)="onAction($event, 'reordering')"
                     [ngClass]="{ error: reorderingSaveError }"
                 >
@@ -310,14 +317,12 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'h-full': isInheritingParentSize && _isCardOpen
+            'scrollable-element overflow-auto': isInheritingParentSize,
+            'set-max-height': isInheritingParentSize
         }"
-        [ngStyle]="{
-            'scrollbar-width':
-                isInheritingParentSize && _isCardOpen
-                    ? 'thin !important'
-                    : 'none'
-        }"
+        [ngStyle]="{ 
+             'max-height': isInheritingParentSize ? cardHeight - 40 + 'px' : 'auto',
+            }"
         [@.disabled]="disableAnimation"
     >
         <div

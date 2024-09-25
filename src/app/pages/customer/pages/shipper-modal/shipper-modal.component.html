@@ -142,14 +142,14 @@
                         <ng-template #coordinatesContainer>
                             <div class="col-3">
                                 <app-ta-input
-                                    formControlName="longitude"
-                                    [inputConfig]="getLongitudeInputConfig"
+                                    formControlName="latitude"
+                                    [inputConfig]="getLatitudeInputConfig"
                                 ></app-ta-input>
                             </div>
                             <div class="col-3">
                                 <app-ta-input
-                                    formControlName="latitude"
-                                    [inputConfig]="getLatitudeInputConfig"
+                                    formControlName="longitude"
+                                    [inputConfig]="getLongitudeInputConfig"
                                 ></app-ta-input>
                             </div>
                             <div class="col-6">
@@ -319,7 +319,7 @@
                             "
                             [cardName]="'Document'"
                             [disableAnimation]="disableCardAnimation"
-                            [isCardOpen]="documents.length > 0"
+                            [isCardOpen]="!!documents.length"
                         >
                             <app-ta-upload-files
                                 [files]="documents"

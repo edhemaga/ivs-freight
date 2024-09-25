@@ -27,6 +27,7 @@ import { TaUploadFilesCarouselComponent } from '@shared/components/ta-upload-fil
 import { FileEvent } from '@shared/models/file-event.model';
 import { Tags } from '@shared/models/tags.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
 //Services
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
@@ -89,6 +90,7 @@ export class TaUploadFilesNoSliderComponent
     @Input() feedbackText: string;
 
     @Input() categoryTag: string;
+    @Input() dropZoneConfig: DropZoneConfig;
 
     public _files: UploadFile[] = [];
     public currentSlide: number = 0;

@@ -97,6 +97,9 @@ import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 
+// svg routes
+import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
+
 @Component({
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
@@ -131,10 +134,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public companyForm: UntypedFormGroup;
 
-    public isFormDirty: boolean;
+    public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
 
     public disableCardAnimation: boolean = false;
+    public svgRoutes = SettingsModalSvgRoutes;
 
     // tabs
     public selectedTab: number = 1;
@@ -268,6 +272,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
                     clearTimeout(timeout);
                 });
+            } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
+                this.companyForm
+                    .get('starting')
+                    .setValue('100');
             }
         } else {
             this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
@@ -1169,11 +1177,40 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             departmentContacts,
             bankAccounts,
             bankCards,
+            prefix,
+            starting,
+            suffix,
+            factorByDefault,
+            autoInvoicing,
+            preferredLoadType,
+            fleetType,
+            customerPayTerm,
+            customerCredit,
+            mvrMonths,
+            truckInspectionMonths,
+            trailerInspectionMonths,
             ...form
         } = this.companyForm.value;
 
-        let newData: CreateDivisionCompanyCommand = {
+        const newData: CreateDivisionCompanyCommand = {
             ...form,
+            additionalInfo: {
+                prefix,
+                starting,
+                sufix: suffix,
+                factorByDefault,
+                autoInvoicing,
+                preferredLoadType,
+                fleetType,
+                customerPayTerm,
+                customerCredit,
+                mvrMonths,
+                truckInspectionMonths,
+                trailerInspectionMonths
+            },
+            departmentContacts,
+            bankAccounts,
+            bankCards,
             address: {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
@@ -1199,15 +1236,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 );
         }
 
-        newData = {
-            ...newData,
-            departmentContacts,
-            bankAccounts,
-            bankCards,
-        };
-
         this.settingsCompanyService
-            .addCompanyDivision(newData)
+            .addCompanyDivision({...newData})
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1228,33 +1258,51 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompanyDivision() {
+        const {
+            additionalInfo,
+            ...company
+        } = this.editData?.company;
+
         this.companyForm.patchValue({
             // -------------------- Basic Tab
-            name: this.editData.company.name,
-            usDot: this.editData.company.usDot,
-            ein: this.editData.company.ein,
-            mc: this.editData.company.mc,
-            phone: this.editData.company.phone,
-            email: this.editData.company.email,
-            fax: this.editData.company.fax,
-            webUrl: this.editData.company.webUrl,
-            address: this.editData.company.address.address,
-            addressUnit: this.editData.company.address.addressUnit,
-            irp: this.editData.company.irp,
-            ifta: this.editData.company.ifta,
-            toll: this.editData.company.toll,
-            scac: this.editData.company.scac,
+            name: company.name,
+            usDot: company.usDot,
+            ein: company.ein,
+            mc: company.mc,
+            phone: company.phone,
+            email: company.email,
+            fax: company.fax,
+            webUrl: company.webUrl,
+            address: company.address?.address,
+            addressUnit: company.address?.addressUnit,
+            irp: company.irp,
+            ifta: company.ifta,
+            toll: company.toll,
+            scac: company.scac,
             timeZone:
-                this.editData.company.timeZone?.id !== 0
-                    ? this.editData.company.timeZone.name
+                company.timeZone?.id !== 0
+                    ? company.timeZone?.name
                     : null,
             currency:
-                this.editData.company.currency?.id !== 0
-                    ? this.editData.company.currency.name
+                company.currency?.id !== 0
+                    ? company.currency?.name
                     : null,
             logo: /* this.editData.company.logo
                 ? this.editData.company.logo
                 : */ null,
+            // Additional Info Tab
+            prefix: additionalInfo?.prefix,
+            starting: additionalInfo?.starting,
+            suffix: additionalInfo?.sufix,
+            autoInvoicing: additionalInfo?.autoInvoicing,
+            factorByDefault: additionalInfo?.factorByDefault,
+            preferredLoadType: additionalInfo?.preferredLoadType,
+            fleetType: additionalInfo?.fleetType,
+            customerPayTerm: additionalInfo?.customerPayTerm,
+            customerCredit: additionalInfo?.customerCredit,
+            mvrMonths: additionalInfo?.mvrMonths,
+            truckInspectionMonths: additionalInfo?.truckInspectionMonths,
+            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1339,12 +1387,41 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             departmentContacts,
             bankAccounts,
             bankCards,
+            prefix,
+            starting,
+            suffix,
+            factorByDefault,
+            autoInvoicing,
+            preferredLoadType,
+            fleetType,
+            customerPayTerm,
+            customerCredit,
+            mvrMonths,
+            truckInspectionMonths,
+            trailerInspectionMonths,
             ...form
         } = this.companyForm.value;
 
-        let newData: UpdateDivisionCompanyCommand = {
-            id: id,
+        const newData : UpdateDivisionCompanyCommand = {
+            id,
             ...form,
+            additionalInfo: {
+                prefix,
+                starting,
+                sufix: suffix,
+                factorByDefault,
+                autoInvoicing,
+                preferredLoadType,
+                fleetType,
+                customerPayTerm,
+                customerCredit,
+                mvrMonths,
+                truckInspectionMonths,
+                trailerInspectionMonths
+            },
+            departmentContacts,
+            bankAccounts,
+            bankCards,
             address: {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
@@ -1370,15 +1447,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 );
         }
 
-        newData = {
-            ...newData,
-            departmentContacts,
-            bankAccounts,
-            bankCards,
-        };
-
         this.settingsCompanyService
-            .updateCompanyDivision(newData)
+            .updateCompanyDivision({...newData})
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1757,7 +1827,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: 100,
+            starting: data.additionalInfo.starting,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,

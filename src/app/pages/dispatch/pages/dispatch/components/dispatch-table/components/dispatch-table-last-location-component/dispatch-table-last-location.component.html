@@ -2,26 +2,34 @@
     class="main_inside"
     [class.filled]="address?.address || showAddAddressField === rowIndex"
 >
-    <div class="padding-inside" [ngClass]="{ hovering: isHoveringRow }">
+    <div
+        [ngClass]="{
+            hovering: isHoveringRow,
+            'padding-inside': address?.address
+        }"
+    >
         <ng-container
             *ngIf="address?.address || showAddAddressField === rowIndex"
         >
             <ng-container
-                *ngIf="showAddAddressField === rowIndex; else addressInfo"
+                *ngIf="
+                    showAddAddressField === rowIndex &&
+                        isDisplayingAddressInput;
+                    else addressInfo
+                "
             >
                 <app-ta-input-address-dropdown
                     [formControl]="truckAddressControl"
-                    [activeAddress]="selectedAddress"
-                    [inputConfig]="LastLocationAddressConfig"
+                    [inputConfig]="lastLocationAddressConfig"
                     [placeholderType]="'shortAddress'"
-                    (incorrectEvent)="incorrectInput($event, 0, 18)"
+                    [isDispatchBoardAddress]="true"
                     (selectedAddress)="handleInputSelect($event)"
                     (closeDropdown)="onHideDropdown($event)"
                 ></app-ta-input-address-dropdown>
             </ng-container>
 
             <ng-template #addressInfo>
-                <ng-container *ngIf="address.address">
+                <ng-container *ngIf="address?.address">
                     <div class="info-item">
                         <div
                             class="location-field d-flex justify-content-between align-items-center"
@@ -34,6 +42,7 @@
                                     , {{ address.stateShortName }}
                                 </div>
                             </div>
+
                             <ng-container *ngIf="isDisplayParkingIcon">
                                 <div
                                     class="parking-container d-flex justify-content-center align-items-center"

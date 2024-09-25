@@ -5,15 +5,12 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 
 // resolvers
-import { LoadTemplateResolver } from '@pages/load/resolvers/load-template.resolver';
 import { TrailerActiveResolver } from '@pages/trailer/resolvers/trailer-active.resolver';
 import { TruckActiveResolver } from '@pages/truck/resolvers/truck-active.resolver';
 import { BrokerResolver } from '@pages/customer/resolvers/broker.resolver';
 import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
 import { DriverResolver } from '@pages/driver/resolvers/driver.resolver';
 import { LoadActiveResolver } from '@pages/load/resolvers/load-active.resolver';
-import { LoadClosedResolver } from '@pages/load/resolvers/load-closed.resolver';
-import { LoadPendingResolver } from '@pages/load/resolvers/load-pending.resolver';
 import { RepairTruckResolver } from '@pages/repair/resolvers/repair-truck.resolver';
 import { RepairShopResolver } from '@pages/repair/resolvers/repair-shop.resolver';
 import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
@@ -31,11 +28,8 @@ export class ListRoutes {
             loadChildren: () =>
                 import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
-            resolve: {
-                loadTemplate: LoadTemplateResolver,
-                loadPanding: LoadPendingResolver,
-                loadActive: LoadActiveResolver,
-                loadClosed: LoadClosedResolver,
+            resolve: { 
+                loadActive: LoadActiveResolver
             },
         },
         {

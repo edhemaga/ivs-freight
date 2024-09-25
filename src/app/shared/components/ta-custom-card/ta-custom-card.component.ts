@@ -58,6 +58,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 })
 export class TaCustomCardComponent implements OnInit {
     @ViewChild('noteContainer') noteContainer: any;
+    @Input() cardHeight!: number;
 
     @Input() animationsDisabled = true;
     @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
@@ -114,6 +115,9 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isReorderingButtonVisible: boolean = false;
     @Input() hasXAxisBottomPadding: boolean = false;
     @Input() isInheritingParentSize: boolean = false;
+    @Input() isGreyTextWhenDisabled: boolean = false;
+    @Input() headerLightColor = false;
+    @Input() isActionDisabled = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);

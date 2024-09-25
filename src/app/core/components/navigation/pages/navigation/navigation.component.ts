@@ -1,4 +1,3 @@
-import { Navigation } from '@core/components/navigation/models/navigation.model';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -25,7 +24,6 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 // components
 import { NavigationHeaderComponent } from '@core/components/navigation/components/navigation-header/navigation-header.component';
 import { NavigationModalsComponent } from '@core/components/navigation/components/navigation-modals/navigation-modals.component';
-import { NavigationFooterComponent } from '@core/components/navigation/components/navigation-footer/navigation-footer.component';
 import { NavigationUserProfileComponent } from '@core/components/navigation/components/navigation-user-profile/navigation-user-profile.component';
 import { NavigationUserCompanyComponent } from '@core/components/navigation/components/navigation-user-company/navigation-user-company.component';
 import { NavigationSubrouteCardComponent } from '@core/components/navigation/components/navigation-subroute-card/navigation-subroute-card.component';
@@ -33,7 +31,7 @@ import { NavigationRouteComponent } from '@core/components/navigation/components
 import { NavigationSubrouteComponent } from '@core/components/navigation/components/navigation-subroute/navigation-subroute.component';
 
 // models
-import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
+import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
 
 @Component({
     selector: 'app-navigation',
@@ -48,7 +46,6 @@ import { NavigationSubRoutes } from '@core/components/navigation/models/navigati
         ReactiveFormsModule,
         NavigationHeaderComponent,
         NavigationModalsComponent,
-        NavigationFooterComponent,
         NavigationUserProfileComponent,
         NavigationUserCompanyComponent,
         NavigationSubrouteCardComponent,
@@ -280,7 +277,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
             event.target.classList.contains('tooltip') ||
             event.target.classList.contains('panel-name') ||
             event.target.classList?.contains('user-profile') ||
-            event.target.classList.contains('magic-line-footer') ||
             event.target.parentElement?.parentElement?.classList.contains(
                 'modal-nav-close-svg'
             ) ||
@@ -298,7 +294,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target.classList.contains('item-settings') ||
                 event.target.classList.contains('navigation-middle') ||
                 event.target.classList.contains('navigation-top') ||
-                event.target.classList.contains('magic-line-footer') ||
                 event.target.classList.contains('navigation-bottom') ||
                 event.target.classList.contains('subroutes-item') ||
                 event.target.parentElement?.classList.contains(

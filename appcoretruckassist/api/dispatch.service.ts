@@ -39,6 +39,8 @@ import { DispatchHistoryListResponse } from '../model/dispatchHistoryListRespons
 // @ts-ignore
 import { DispatchHistoryModalResponse } from '../model/dispatchHistoryModalResponse';
 // @ts-ignore
+import { DispatchHistoryTruckLastLocationResponse } from '../model/dispatchHistoryTruckLastLocationResponse';
+// @ts-ignore
 import { DispatchModalResponse } from '../model/dispatchModalResponse';
 // @ts-ignore
 import { DispatchPossibleStatusResponse } from '../model/dispatchPossibleStatusResponse';
@@ -58,6 +60,8 @@ import { RevertDispatchStatusCommand } from '../model/revertDispatchStatusComman
 import { SetLockedUnlockedByCommand } from '../model/setLockedUnlockedByCommand';
 // @ts-ignore
 import { SetPreTripInspectionCommand } from '../model/setPreTripInspectionCommand';
+// @ts-ignore
+import { SortOrder } from '../model/sortOrder';
 // @ts-ignore
 import { SwitchDispatchesCommand } from '../model/switchDispatchesCommand';
 // @ts-ignore
@@ -423,16 +427,18 @@ export class DispatchService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryDriverListResponse>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryDriverListResponse>>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryDriverListResponse>>;
-    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryDriverListResponse>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryDriverListResponse>>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryDriverListResponse>>;
+    public apiDispatchBoardHistoryDriverGet(truckId?: number, trailerId?: number, dispatchBoardId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (truckId !== undefined && truckId !== null) {
@@ -462,6 +468,14 @@ export class DispatchService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -549,16 +563,18 @@ export class DispatchService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryListResponse>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryListResponse>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
@@ -608,6 +624,14 @@ export class DispatchService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -695,16 +719,18 @@ export class DispatchService {
      * @param pageSize 
      * @param companyId 
      * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
      * @param search 
      * @param search1 
      * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryGroupListResponse>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryGroupListResponse>>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryGroupListResponse>>;
-    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryGroupListResponse>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryGroupListResponse>>;
+    public apiDispatchBoardHistoryGroupsGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
@@ -754,6 +780,14 @@ export class DispatchService {
         if (sort !== undefined && sort !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
         }
         if (search !== undefined && search !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -2161,6 +2195,81 @@ export class DispatchService {
             {
                 context: localVarHttpContext,
                 body: switchDispatchesCommand,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiDispatchTruckLastLocationIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DispatchHistoryTruckLastLocationResponse>;
+    public apiDispatchTruckLastLocationIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DispatchHistoryTruckLastLocationResponse>>;
+    public apiDispatchTruckLastLocationIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DispatchHistoryTruckLastLocationResponse>>;
+    public apiDispatchTruckLastLocationIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiDispatchTruckLastLocationIdGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/dispatch/truck-last-location/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<DispatchHistoryTruckLastLocationResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

@@ -20,7 +20,6 @@ import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-
 import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
 import {
-    LoadActiveState,
     LoadActiveStore,
 } from '@pages/load/state/load-active-state/load-active.store';
 import {
@@ -55,6 +54,9 @@ import {
     LoadListLoadStopResponse,
     LoadPossibleStatusesResponse,
     AssignLoadModalResponse,
+    AssignedLoadListResponse,
+    SortOrder,
+    LoadSortBy,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -128,6 +130,21 @@ export class LoadService {
         this.statusAction.next(data);
     }
 
+    private getOrderAndSort(sortString: string): { sortBy: LoadSortBy, order: SortOrder } {
+        let order = null;
+        let sortBy = null;
+    
+        if (sortString?.endsWith('Asc')) {
+            order = SortOrder.Ascending;
+            sortBy = sortString.replace(/Asc$/, ''); 
+        } else {
+            order = SortOrder.Descending;
+            sortBy = sortString?.replace(/Desc$/, ''); 
+        }
+    
+        return { sortBy: sortBy as LoadSortBy, order };
+    }
+
     // table operations
     public getLoadList(
         loadType?: number,
@@ -163,6 +180,7 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
+        const {order, sortBy} = this.getOrderAndSort(sort);
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
@@ -192,7 +210,9 @@ export class LoadService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
+            null,
+            order,
+            sortBy,
             search,
             search1,
             search2
@@ -227,6 +247,8 @@ export class LoadService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -566,12 +588,50 @@ export class LoadService {
         });
     }
 
-    public getDispatchModalData(): Observable<AssignLoadModalResponse> {
-        return this.loadService.apiLoadModalAssignGet();
-    }
-
-    public apiLoadListAssignedIdGet(dispatchId: number) {
-        return this.loadService.apiLoadListAssignedIdGet(dispatchId);
+    public getDispatchModalData(
+        isDispatchId: boolean,
+        dispatchId?: number,
+        truckType?: number[],
+        trailerType?: number[],
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        dispatchersId?: number[],
+        dateFrom?: string,
+        dateTo?: string,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<AssignLoadModalResponse | AssignedLoadListResponse> {
+        if (isDispatchId) {
+            return this.loadService.apiLoadListAssignedIdGet(
+                dispatchId,
+            );
+        }
+        return this.loadService.apiLoadModalAssignGet(
+            dispatchId,
+            truckType,
+            trailerType,
+            _long,
+            lat,
+            distance,
+            dispatchersId,
+            dateFrom,
+            dateTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
     }
 
     public getPendingData(
@@ -872,7 +932,7 @@ export class LoadService {
             );
     }
 
-    public getAllLoads(query: FilterOptionsLoad): Observable<any[]> {
+    public getAllLoads(query: FilterOptionsLoad, dataType: string): Observable<any> {
             const {
                 loadType,
                 statusType,
@@ -899,8 +959,8 @@ export class LoadService {
                 searchTwo,
                 searchThree,
             } = query;
-    
-            const pendingData$ = this.getPendingData(
+            if (dataType === TableStringEnum.PENDING) {
+            return this.getPendingData(
                 loadType,
                 statusType,
                 status,
@@ -934,78 +994,83 @@ export class LoadService {
                 searchTwo,
                 searchThree
             );
+        }
+
+            if(dataType === TableStringEnum.ACTIVE) {
+                return this.getActiveData(
+                    loadType,
+                    statusType,
+                    status,
+                    dispatcherIds,
+                    dispatcherId,
+                    dispatchId,
+                    brokerId,
+                    shipperId,
+                    null,
+                    dateFrom,
+                    dateTo,
+                    revenueFrom,
+                    revenueTo,
+                    truckId,
+                    rateFrom,
+                    rateTo,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pickup,
+                    delivery,
+                    null,
+                    null,
+                    null,
+                    pageIndex,
+                    pageSize,
+                    companyId,
+                    sort,
+                    searchOne,
+                    searchTwo,
+                    searchThree
+                );
+            }
+            
+            if(dataType === TableStringEnum.CLOSED){
+return this.getClosedData(
+                    loadType,
+                    statusType,
+                    status,
+                    dispatcherIds,
+                    dispatcherId,
+                    dispatchId,
+                    brokerId,
+                    shipperId,
+                    null,
+                    dateFrom,
+                    dateTo,
+                    revenueFrom,
+                    revenueTo,
+                    truckId,
+                    rateFrom,
+                    rateTo,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pickup,
+                    delivery,
+                    null,
+                    null,
+                    null,
+                    pageIndex,
+                    pageSize,
+                    companyId,
+                    sort,
+                    searchOne,
+                    searchTwo,
+                    searchThree
+                );
+            }
     
-            const activeData$ = this.getActiveData(
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                null,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                rateFrom,
-                rateTo,
-                null,
-                null,
-                null,
-                null,
-                pickup,
-                delivery,
-                null,
-                null,
-                null,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree
-            );
-    
-            const closedData$ = this.getClosedData(
-                loadType,
-                statusType,
-                status,
-                dispatcherIds,
-                dispatcherId,
-                dispatchId,
-                brokerId,
-                shipperId,
-                null,
-                dateFrom,
-                dateTo,
-                revenueFrom,
-                revenueTo,
-                truckId,
-                rateFrom,
-                rateTo,
-                null,
-                null,
-                null,
-                null,
-                pickup,
-                delivery,
-                null,
-                null,
-                null,
-                pageIndex,
-                pageSize,
-                companyId,
-                sort,
-                searchOne,
-                searchTwo,
-                searchThree
-            );
-    
-            const templateData$ = this.getTemplateData(
+            return this.getTemplateData(
                 loadType,
                 revenueFrom,
                 revenueTo,
@@ -1016,7 +1081,5 @@ export class LoadService {
                 searchOne,
                 searchTwo,
                 searchThree);
-
-            return forkJoin([pendingData$, activeData$, closedData$, templateData$]);
     }
 }

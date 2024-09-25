@@ -137,6 +137,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+    
+    private isUploadInProgress: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -177,6 +179,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        if(this.isUploadInProgress) return;
+
         switch (data.action) {
             case ContactsModalStringEnum.CLOSE:
                 break;
@@ -186,7 +190,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
                     return;
                 }
-
+                this.isUploadInProgress = true;
                 this.addCompanyContact();
 
                 this.modalService.openModal(ContactsModalComponent, {
@@ -201,6 +205,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
+                this.isUploadInProgress = true;
                 if (this.editData) {
                     this.updateCompanyContact(this.editData.id);
                 } else {
@@ -458,6 +463,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: true,
                     });
+                    this.enableSaving();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -465,8 +471,16 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: false,
                     });
+                    this.enableSaving();
                 },
             });
+    }
+
+    private enableSaving(): void {
+        // wait for modal to close
+        setTimeout(() => {
+            this.isUploadInProgress = false;
+        }, 200);
     }
 
     private updateCompanyContact(id: number): void {
@@ -526,6 +540,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
+                    this.enableSaving();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -533,6 +548,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: false,
                     });
+                    this.enableSaving();
                 },
             });
     }

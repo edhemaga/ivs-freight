@@ -37,4 +37,21 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            slackSend (
+                channel: '#deploy',
+                message: "Deploy completed for ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                color: 'good'
+            )
+        }
+        failure {
+            slackSend (
+                channel: '#deploy',
+                message: "Deploy failed for ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                color: 'danger'
+            )
+        }
+    }
 }

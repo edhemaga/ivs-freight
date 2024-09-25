@@ -20,6 +20,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "preserveSymlinks": true,
                         "outputPath": "dist/carrierassist-fe",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -62,6 +63,7 @@
                     },
                     "configurations": {
                         "production": {
+                            "optimization": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -80,6 +82,7 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
+                            "sourceMap": false,
                             "outputHashing": "all"
                         },
                         "staging": {

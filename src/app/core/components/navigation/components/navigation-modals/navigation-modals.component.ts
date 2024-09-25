@@ -8,10 +8,10 @@ import { FormsModule } from '@angular/forms';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
-
+import {  NavigationModal } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
@@ -43,6 +43,7 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-navigation-modals',
@@ -50,7 +51,13 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
     styleUrls: ['./navigation-modals.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, AngularSvgIconModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AngularSvgIconModule,
+        NgbModule,
+        TaAppTooltipV2Component,
+    ],
     animations: [
         smoothHeight('showHideDetails'),
         moveElementsTopDownModal('moveTopDown'),
@@ -74,9 +81,16 @@ export class NavigationModalsComponent {
         NavigationDataConstants.requestNavigationData;
     public accountingNavigationData: NavigationModal[] =
         NavigationDataConstants.accountingNavigationData;
-    public showToolTip: boolean = false;
+
     public changeTextHoverOnCloseModal: boolean = false;
-    public Title: string = 'Add Anything';
+
+    public addNew = NavigationDataConstants.title;
+
+    public title: string = this.addNew;
+
+    public isAddNewHovered: boolean = false;
+    public icons = NavigationDataConstants.icons;
+
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService
@@ -89,8 +103,8 @@ export class NavigationModalsComponent {
     }
     public changeText(text: boolean) {
         text == true && text
-            ? (this.Title = 'Close')
-            : (this.Title = 'Add Anything');
+            ? (this.title = NavigationDataConstants.close)
+            : (this.title = this.addNew);
     }
     public onAction(item: NavigationModal) {
         this.openModal(item);
@@ -251,5 +265,9 @@ export class NavigationModalsComponent {
 
     public identity(index: number, item: NavigationModal): number {
         return item.id;
+    }
+
+    public hoveredArrow(isHovered: boolean): void {
+        this.isAddNewHovered = isHovered;
     }
 }
