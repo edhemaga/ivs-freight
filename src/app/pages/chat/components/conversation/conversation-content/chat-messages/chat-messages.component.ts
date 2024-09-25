@@ -63,7 +63,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
@@ -157,15 +158,12 @@ export class ChatMessagesComponent
     }
 
     private getResolvedData(): void {
-        this.activatedRoute
-            .data
+        this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (res) => {
-                    this.messages = [...res?.messages?.pagination?.data];
-                    this.conversation = res?.information;
-                }
-            );
+            .subscribe((res) => {
+                this.messages = [...res?.messages?.pagination?.data];
+                this.conversation = res?.information;
+            });
     }
 
     private connectToHub(): void {

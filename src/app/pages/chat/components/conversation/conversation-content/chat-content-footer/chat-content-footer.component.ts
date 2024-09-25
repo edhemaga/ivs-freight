@@ -13,8 +13,8 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit {
-
+    implements OnInit
+{
     @Input() currentUserTyping!: string;
     @Input() messageReplyInfo: {
         messageId: number;
@@ -29,5 +29,5 @@ export class ChatContentFooterComponent
         super();
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {}
 }
