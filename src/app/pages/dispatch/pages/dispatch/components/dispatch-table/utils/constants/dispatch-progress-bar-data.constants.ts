@@ -1,7 +1,7 @@
 import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-progress-bar-data.model';
 
-export class DispatchProgressBarDummyData {
-    static dispatchProgressData: DispatchProgressBarData = {
+export class DispatchProgressBarDataConstants {
+    static dispatchProgressDummyData: DispatchProgressBarData = {
         currentPosition: 50,
         mileageInfo: '226.3 mi',
         currentStop: {
@@ -67,5 +67,9 @@ export class DispatchProgressBarDummyData {
                 time: '05/09/21 11:00 PM',
             },
         ],
+    };
+
+    static dispatchProgressBarColors = {
+        noGpsColor: '#AAAAAA',
     };
 }

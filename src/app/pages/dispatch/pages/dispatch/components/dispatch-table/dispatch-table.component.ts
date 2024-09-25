@@ -30,6 +30,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
+import { DispatchProgressBarDataConstants } from './utils/constants/dispatch-progress-bar-data.constants';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -1184,11 +1185,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     totalMiles: dispatchLoadProgress.totalMiles,
                     gpsProgress: dispatchStopData,
                     gpsInfo: {
-                        gpsheading: 'NO GPS DEVICE',
-                        //gpsTime: '3:47',
-                        gpsheadingColor: '#AAAAAA',
+                        gpsheading: DispatchTableStringEnum.NO_GPS_DEVICE,
+                        gpsheadingColor:
+                            DispatchProgressBarDataConstants
+                                .dispatchProgressBarColors.noGpsColor,
                     },
-                    gpsIcon: 'assets/ca-components/svg/map/no_gps_status.svg',
+                    gpsIcon: DispatchTableSvgRoutes.progressNoGpsStatusIcon,
                 };
 
                 this.progressBarData[index] = formattedProgressData;
