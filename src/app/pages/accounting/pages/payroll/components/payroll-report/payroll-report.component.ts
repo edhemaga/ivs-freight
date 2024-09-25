@@ -25,8 +25,13 @@ import {
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 import { Observable } from 'rxjs';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
-import { MilesStopShortResponse } from 'appcoretruckassist';
+import {
+    LoadWithMilesStopResponse,
+    MilesStopShortResponse,
+} from 'appcoretruckassist';
 import { ICaMapProps, ColumnConfig } from 'ca-components';
+import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
+import { CdkDragDrop, CdkDragSortEvent } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-payroll-report',
@@ -38,13 +43,18 @@ export class PayrollReportComponent implements OnInit {
     columns: ColumnConfig[];
     @Input() reportId: number;
     payrollReport$: Observable<PayrollDriverMileageResponse>;
-    payrollMileageDriverLoads$: Observable<MilesStopShortResponse[]>;
+    payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
+    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
     public loading$: Observable<boolean>;
+    payrollReportList: MilesStopShortReponseWithRowType[] = [];
+    allowedLoadIds: number[];
 
     @ViewChild('customCountTemplate', { static: false })
     public readonly customCountTemplate!: ElementRef;
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
+    @ViewChild('reorderTemplate', { static: false })
+    public readonly reorderTemplate!: ElementRef;
 
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
@@ -53,7 +63,6 @@ export class PayrollReportComponent implements OnInit {
     tableSettings: any[] = [];
     tableSettingsResizable: any[] = [];
     title: string = '';
-
 
     data: ICaMapProps = {
         center: {
@@ -463,6 +472,10 @@ export class PayrollReportComponent implements OnInit {
         this.subscribeToStoreData();
     }
 
+    customSortPredicate = (index: number, item: CdkDragDrop<any>): boolean => {
+        return this.allowedLoadIds.includes(index);
+    };
+
     subscribeToStoreData() {
         this.payrollFacadeService.getPayrollDriverMileageReport(
             `${this.reportId}`
@@ -480,14 +493,38 @@ export class PayrollReportComponent implements OnInit {
         this.payrollMileageDriverLoads$ =
             this.payrollFacadeService.selectPayrollReportDriverMileageLoads$;
 
+        this.includedLoads$ =
+            this.payrollFacadeService.selectPayrollReportIncludedLoads$;
+
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
             (aa) => {
                 console.log('LOAD INFO', aa);
             }
         );
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
-            (payroll) => {
-                console.log('PAYROLLL', payroll);
+            (payrollLoadList) => {
+                console.log('PAYROLLL LIST DATAAAAAAAAAA');
+
+                this.allowedLoadIds = payrollLoadList
+                    .map((loads, index) => {
+                        const load = loads as MilesStopShortResponse;
+                        const nextLoad = payrollLoadList[
+                            index + 1
+                        ] as MilesStopShortResponse;
+
+                        const currentLoadId = load.loadId;
+                        const nextLoadId = nextLoad?.loadId;
+
+                        if (nextLoadId != currentLoadId || !nextLoad) {
+                            return index;
+                        }
+
+                        return null;
+                    })
+                    .filter((loadId) => loadId != null);
+
+                console.log(this.allowedLoadIds);
+                this.payrollReportList = payrollLoadList;
             }
         );
     }
@@ -505,14 +542,14 @@ export class PayrollReportComponent implements OnInit {
                 // });
                 break;
             case 'Driver (Commission)':
-                this.tableSettings = PayrollCommisionDriverOpenLoads;
-                this.payrollService
-                    .getPayrollCommisionDriverOpenReport(data.id)
-                    .subscribe((res) => {
-                        this.reportMainData = res;
-                        this.dch.detectChanges();
-                    });
-                break;
+                // this.tableSettings = PayrollCommisionDriverOpenLoads;
+                // this.payrollService
+                //     .getPayrollCommisionDriverOpenReport(data.id)
+                //     .subscribe((res) => {
+                //         this.reportMainData = res;
+                //         this.dch.detectChanges();
+                //     });
+                // break;
             case 'Driver (Miles)':
                 this.tableSettings = PayrollMilesDriverOpenLoads;
                 this.tableSettingsResizable =

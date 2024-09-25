@@ -1,4 +1,5 @@
 import {
+    MilesStopShortResponse,
     PayrollCountsResponse,
     PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse
@@ -17,3 +18,5 @@ export interface IPayrollCountsSelector {
     payrollCounts: PayrollCountsResponse;
     payrolls: string[];
 }
+
+export type MilesStopShortReponseWithRowType = MilesStopShortResponse | { rowType: string }

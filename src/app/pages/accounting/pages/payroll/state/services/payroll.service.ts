@@ -8,17 +8,23 @@ import {
     selectPayrollLoad,
     selectPayrollOpenedReport,
     selectPayrollReportLoading,
+    selectPayrollReportsIncludedStops,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
 } from '../selectors/payroll.selector';
 import { Observable } from 'rxjs';
 import {
+    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
-import { IPayrollCountsSelector } from '../models/payroll.model';
+import {
+    IPayrollCountsSelector,
+    MilesStopShortReponseWithRowType,
+} from '../models/payroll.model';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -43,8 +49,12 @@ export class PayrollFacadeService {
         this.store.pipe(select(selectPayrollOpenedReport));
 
     public selectPayrollReportDriverMileageLoads$: Observable<
-        MilesStopShortResponse[]
+        MilesStopShortReponseWithRowType[]
     > = this.store.pipe(select(selectPayrollDriverMileageStops));
+
+    public selectPayrollReportIncludedLoads$: Observable<
+        LoadWithMilesStopResponse[]
+    > = this.store.pipe(select(selectPayrollReportsIncludedStops));
 
     public selectPayrollTabCounts$: Observable<{
         open: number;

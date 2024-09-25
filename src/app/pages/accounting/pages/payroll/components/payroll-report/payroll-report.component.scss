@@ -486,6 +486,14 @@
             display: flex;
             width: 18px;
             height: 18px;
+
+            rect{
+                fill: #259F9433;
+            }
+
+            text{
+                fill: #259F94;
+            }
         }
     }
     .load-description-name {
@@ -499,6 +507,18 @@
 
         .load-description-stop-type {
             color: #919191;
+        }
+    }
+
+    &.delivery{
+        svg-icon{
+            rect{
+                fill: #DF3C3C33;
+            }
+
+            text{
+                fill: #DF3C3C;
+            }
         }
     }
 }

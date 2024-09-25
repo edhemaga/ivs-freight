@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     PayrollCountsResponse,
@@ -31,8 +31,10 @@ export class PayrollService {
     public getPayrollSoloMileageDriverReport(
         reportId: string
     ): Observable<PayrollDriverMileageResponse> {
+        const params = new HttpParams().set('id', reportId);
         return this.http.get<PayrollDriverMileageResponse>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/mileage?Id=${reportId}`
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage`,
+            { params }
         );
     }
 }

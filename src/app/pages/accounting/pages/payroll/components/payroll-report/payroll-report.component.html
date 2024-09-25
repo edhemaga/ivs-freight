@@ -32,9 +32,12 @@
             </div>
             <div class="small-table-holder-main">
                 <app-ca-main-table
+                    [sortPredicate]="customSortPredicate"
                     *ngIf="!(loading$ | async)"
                     [columns]="columns"
                     [data$]="payrollMileageDriverLoads$"
+                    [reorderTemplate]="reorderTemplate"
+                    [transparentTable]="true"
                 ></app-ca-main-table>
             </div>
             <div class="map-holder">
@@ -90,9 +93,14 @@
 </ng-template>
 
 <ng-template #customLocationTypeLoad let-data let-index="index">
-    <div class="load-description d-flex align-items-center">
+    <div
+        class="load-description d-flex align-items-center"
+        [class.delivery]="data.stopType.id == 2"
+    >
         <svg-icon
-            src="assets/svg/svg_numbers/olddash/svg_num_box_1.svg"
+            src="assets/svg/svg_numbers/olddash/svg_num_box_{{
+                data.orderNumber
+            }}.svg"
         ></svg-icon>
         <div class="load-description-name">
             <div class="load-description-address">{{ data.address }}</div>
@@ -101,4 +109,49 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #reorderTemplate let-row="row" let-index="index">
+    <td class="text-center">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index">{{ index }}</div>
+            </div>
+        </div>
+    </td>
+    <td colspan="4">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">Total</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">$304.30</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">$1,627.30</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">$1,931.73</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">$2.131.73</div>
+            </div>
+        </div>
+    </td>
 </ng-template>

@@ -45,7 +45,7 @@ export class PayrollService {
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
-        return this.payrollService.apiPayrollDriverCommissionGet(id);
+        //return this.payrollService.apiPayrollDriverCommissionGet(id);
     }
     // This gives error as with getPayrollOwnerOpenReport
     getPayrollMileageDriverOpenReport() {

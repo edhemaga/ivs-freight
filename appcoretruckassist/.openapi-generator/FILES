@@ -773,9 +773,7 @@ model/payrollDriverCommissionByIdResponse.ts
 model/payrollDriverCommissionClosedByIdResponse.ts
 model/payrollDriverFlatRateByIdResponse.ts
 model/payrollDriverFlatRateClosedByIdResponse.ts
-model/payrollDriverFlatRateListResponse.ts
 model/payrollDriverFlatRateMinimalResponse.ts
-model/payrollDriverFlatRateMinimalResponsePagination.ts
 model/payrollDriverMileageByIdResponse.ts
 model/payrollDriverMileageClosedByIdResponse.ts
 model/payrollDriverMileageListResponse.ts

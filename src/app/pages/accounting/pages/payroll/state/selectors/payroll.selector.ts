@@ -1,5 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PayrollState } from '../models/payroll.model';
+import {
+    MilesStopShortReponseWithRowType,
+    PayrollState,
+} from '../models/payroll.model';
 import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
 import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
 import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
@@ -57,25 +60,36 @@ export const selectPayrollOpenedReport = createSelector(
     }
 );
 
+export const selectPayrollReportsIncludedStops = createSelector(
+    selectPayrollState,
+    (state) => {
+        return state.payrollOpenedReport?.includedLoads || [];
+    }
+);
+
 export const selectPayrollDriverMileageStops = createSelector(
     selectPayrollState,
     (state) => {
         if (!state.payrollOpenedReport) return [];
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
-                return old.milesStops.concat(load);
+                return old.milesStops.concat(load as MilesStopShortResponse);
             },
-            [] as MilesStopShortResponse[]
+            [] as MilesStopShortReponseWithRowType[]
         );
 
         const excludedLoads = state.payrollOpenedReport?.excludedLoads.reduce(
             (load, old) => {
-                return old.milesStops.concat(load);
+                return old.milesStops.concat(load as MilesStopShortResponse);
             },
-            [] as MilesStopShortResponse[]
+            [] as MilesStopShortReponseWithRowType[]
         );
 
-        return includedLoads.concat(excludedLoads);
+        const reorderRow = {
+            rowType: 'reorder',
+        };
+
+        return [...includedLoads, reorderRow, ...excludedLoads];
     }
 );
 

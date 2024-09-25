@@ -29,7 +29,6 @@ import { PayrollFacadeService } from './state/services/payroll.service';
 import { IPayrollCountsSelector } from './state/models/payroll.model';
 import { DriverMileageSoloTableComponent } from './components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { PayrollListSummaryOverview } from 'ca-components';
-
 @Component({
     selector: 'app-payroll',
     templateUrl: './payroll.component.html',
