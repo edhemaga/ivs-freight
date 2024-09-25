@@ -32,9 +32,9 @@ export class ChatContentFooterComponent
         super();
     }
 
+    ngOnInit(): void {}
+
     public closeReply(): void {
         this.closeReplyEvent.emit(true);
     }
-
-    ngOnInit(): void {}
 }
