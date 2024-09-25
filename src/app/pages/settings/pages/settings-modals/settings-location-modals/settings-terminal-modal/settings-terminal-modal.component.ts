@@ -408,10 +408,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string) { 
         switch (action) {
             case 'pay-period': {
                 this.selectedPayPeriod = event;
+                this.terminalForm.get('monthlyDay').patchValue('');
+                this.selectedDay = null;
                 break;
             }
             case 'day': {

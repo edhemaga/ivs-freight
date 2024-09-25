@@ -142,10 +142,76 @@
                             marginTop: '0',
                             marginBottom: '0'
                         }"
+                        [isCardOpen]="!terminalForm.get('isOwner').value"
                     >
-                        <ng-container bodyWithoutToggle> </ng-container>
+                        <ng-container body>
+                            <div class="mt-3 mb-3">
+                                <div class="row row-no-m">
+                                    <div class="col-4">
+                                        <app-ta-input-dropdown
+                                            formControlName="payPeriod"
+                                            [inputConfig]="{
+                                                name: 'Input Dropdown',
+                                                type: 'text',
+                                                label: 'Pay Period',
+                                                isDropdown: true,
+                                                dropdownWidthClass: 'w-col-148'
+                                            }"
+                                            [options]="payPeriods"
+                                            [activeItem]="selectedPayPeriod"
+                                            (selectedItem)="
+                                                onSelectDropdown(
+                                                    $event,
+                                                    'pay-period'
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </div>
+                                    <div class="col-4 no-p-left">
+                                        <app-ta-input-dropdown
+                                            formControlName="monthlyDay"
+                                            [inputConfig]="{
+                                                name: 'Input Dropdown',
+                                                type: 'text',
+                                                label: 'Day',
+                                                isDropdown: true,
+                                                isDisabled:
+                                                    !terminalForm.get(
+                                                        'payPeriod'
+                                                    ).value,
+                                                dropdownWidthClass: 'w-col-148'
+                                            }"
+                                            [options]="
+                                                selectedPayPeriod?.name ===
+                                                'Weekly'
+                                                    ? weeklyDays
+                                                    : monthlyDays
+                                            "
+                                            [activeItem]="selectedDay"
+                                            (selectedItem)="
+                                                onSelectDropdown($event, 'day')
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </div>
+                                    <div class="col-4">
+                                        <app-ta-input
+                                            formControlName="rent"
+                                            [inputConfig]="{
+                                                name: 'Rent',
+                                                type: 'text',
+                                                label: 'Rent',
+                                                placeholderIcon: 'dollar',
+                                                thousandSeparator: true,
+                                                minLength: 4,
+                                                maxLength: 8
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
                     </app-ta-checkbox-card>
-                    
+
                     <!-- Office -->
                     <app-ta-checkbox-card
                         formControlName="officeChecked"
@@ -456,7 +522,6 @@
                         }"
                     >
                     </app-ta-checkbox-card>
-
                 </div>
             </div>
         </form>
