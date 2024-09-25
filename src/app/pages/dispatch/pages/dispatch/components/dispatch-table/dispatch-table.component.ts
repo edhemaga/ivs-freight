@@ -352,38 +352,32 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 .getDispatchTruckLastLocation(event.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((truckLastLocation) => {
-                    if (truckLastLocation?.address?.address) {
-                        this.isDispatchBoardChangeInProgress = true;
+                    if (index >= 0) {
+                        this.dispatchData = {
+                            ...this.dispatchData,
+                            dispatches: this.dispatchData.dispatches.map(
+                                (dispatch, i) =>
+                                    i === index
+                                        ? { ...dispatch, truck: event }
+                                        : dispatch
+                            ),
+                        };
 
+                        this.parkingCount =
+                            this.dispatchData?.dispatches?.filter(
+                                (item) => item.parkingSlot
+                            )?.length;
+
+                        this.showAddAddressFieldIndex = index;
+                    } else {
                         this.addNewTruckData = event;
+                        this.showAddAddressFieldIndex = -2;
+                    }
 
+                    if (truckLastLocation?.address?.address)
                         this.handleUpdateLastLocationEmit(
                             truckLastLocation.address
                         );
-                    } else {
-                        if (index >= 0) {
-                            this.dispatchData = {
-                                ...this.dispatchData,
-                                dispatches: this.dispatchData.dispatches.map(
-                                    (dispatch, i) =>
-                                        i === index
-                                            ? { ...dispatch, truck: event }
-                                            : dispatch
-                                ),
-                            };
-
-                            this.parkingCount =
-                                this.dispatchData?.dispatches?.filter(
-                                    (item) => item.parkingSlot
-                                )?.length;
-
-                            this.showAddAddressFieldIndex = index;
-                        } else {
-                            this.addNewTruckData = event;
-
-                            this.showAddAddressFieldIndex = -2;
-                        }
-                    }
 
                     this.cdRef.detectChanges();
                 });
