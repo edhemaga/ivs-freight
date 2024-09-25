@@ -25,7 +25,7 @@ export class ChatMessageComponent implements OnInit {
     @Input() currentUserId!: string;
     @Input() chatParticipants: CompanyUserShortResponse[];
     @Input() message!: ChatMessageResponse;
-    @Input() isDateDisplayed: boolean = true;
+    @Input() isDateDisplayed: boolean = false;
 
     @Output() messageReply: EventEmitter<ChatMessageResponse> =
         new EventEmitter();
@@ -42,9 +42,9 @@ export class ChatMessageComponent implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-    public areActionsDisplayed: boolean = false;
+    public areActionsDisplayed: boolean = true;
 
-    constructor() {}
+    constructor() { }
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);

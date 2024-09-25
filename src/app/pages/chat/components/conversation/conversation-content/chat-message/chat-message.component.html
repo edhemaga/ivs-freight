@@ -1,8 +1,4 @@
-<div
-    class="message-container"
-    (mouseover)="toggleActions(true)"
-    (mouseout)="toggleActions(false)"
->
+<div class="message-container">
     <ng-container *ngIf="message.content">
         <div
             class="content-wrapper d-flex justify-content-end"
@@ -11,6 +7,8 @@
                     ? 'flex-row'
                     : 'flex-row-reverse'
             "
+            (mouseover)="toggleActions(true)"
+            (mouseout)="toggleActions(false)"
         >
             <ng-container *ngIf="areActionsDisplayed">
                 <div
@@ -27,6 +25,8 @@
                             }
                         "
                     ></ng-container>
+                    <app-chat-vertical-divider></app-chat-vertical-divider>
+
                     <!-- TODO Add two additional icon actions -->
                 </div>
             </ng-container>
@@ -145,11 +145,9 @@
 <ng-template #iconAction let-item="item">
     <div
         class="action-wrapper d-flex justify-content-center align-content-center"
+        (click)="messageAction(item.actionType)"
     >
-        <div
-            class="action d-flex justify-content-center align-content-center"
-            (click)="messageAction(item.actionType)"
-        >
+        <div class="action d-flex justify-content-center align-content-center">
             <ng-container *ngIf="item.text">
                 <div
                     class="item-text d-flex justify-content-center align-content-center ta-font-bold"
@@ -162,8 +160,8 @@
                 class="pointer d-flex justify-content-center align-items-center"
                 [ngClass]="item.customClass"
                 [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
+                    'width.px': 12,
+                    'height.px': 12
                 }"
                 [src]="item.icon"
             ></svg-icon>
