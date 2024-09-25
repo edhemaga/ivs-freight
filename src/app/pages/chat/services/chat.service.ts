@@ -41,7 +41,7 @@ export class UserChatService {
         // Services
         private chatService: ChatService,
         private formDataService: FormDataService
-    ) {}
+    ) { }
 
     public getCompanyUserList(
         userType: UserType,
@@ -114,6 +114,7 @@ export class UserChatService {
 
     public sendMessage(
         conversationId: number,
+        messageType: number,
         content: string,
         attachmentsList?: UploadFile[],
         linksList?: string[]
@@ -130,7 +131,7 @@ export class UserChatService {
             };
         });
 
-        const data = { conversationId, content, attachments, links };
+        const data = { conversationId, messageType, content, attachments, links };
 
         this.formDataService.extractFormDataFromFunction(data);
 

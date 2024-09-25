@@ -33,7 +33,6 @@ import {
 // Models
 import {
     CompanyUserShortResponse,
-    ConversationInfoResponse,
     ConversationResponse,
 } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
@@ -54,6 +53,7 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,8 +63,7 @@ import {
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
@@ -97,7 +96,7 @@ export class ChatMessagesComponent
 
     // Messages
     public messages: ChatMessageResponse[] = [];
-    private isMessageSendable: boolean = false;
+    private isMessageSendable: boolean = true;
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;
@@ -129,10 +128,12 @@ export class ChatMessagesComponent
         // Ref
         private cdref: ChangeDetectorRef,
 
-        //Renderer
+        // Renderer
         private renderer: Renderer2,
         private el: ElementRef,
 
+        // Router
+        private activatedRoute: ActivatedRoute,
         // Form
         private formBuilder: UntypedFormBuilder,
 
@@ -145,6 +146,7 @@ export class ChatMessagesComponent
     }
 
     ngOnInit(): void {
+        this.getResolvedData();
         this.creteForm();
         this.connectToHub();
         this.listenForTyping();
@@ -152,6 +154,18 @@ export class ChatMessagesComponent
 
     ngAfterContentChecked(): void {
         this.cdref.detectChanges();
+    }
+
+    private getResolvedData(): void {
+        this.activatedRoute
+            .data
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (res) => {
+                    this.messages = [...res?.messages?.pagination?.data];
+                    this.conversation = res?.information;
+                }
+            );
     }
 
     private connectToHub(): void {
@@ -192,7 +206,7 @@ export class ChatMessagesComponent
     }
 
     public sendMessage(): void {
-        const message = this.messageForm.value?.message;
+        const message = this.messageForm?.value?.message;
 
         if (!this.conversation?.id || !this.isMessageSendable) return;
         if (!message && !this.attachments$?.value?.length) return;
@@ -202,6 +216,7 @@ export class ChatMessagesComponent
         this.chatService
             .sendMessage(
                 this.conversation.id,
+                1,
                 message,
                 this.attachments$.value,
                 this.links
@@ -323,11 +338,10 @@ export class ChatMessagesComponent
             .pipe(debounceTime(150), takeUntil(this.destroy$))
             .subscribe((arg) => {
                 const message: string = arg?.message;
-
-                if (message)
+                if (message) {
                     this.chatHubService.notifyTyping(this.conversation.id);
-
-                this.checkIfContainsLink(message);
+                    this.checkIfContainsLink(message);
+                }
             });
     }
 
