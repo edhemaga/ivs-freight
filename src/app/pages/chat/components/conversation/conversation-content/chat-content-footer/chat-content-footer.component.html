@@ -1,20 +1,32 @@
 <div class="chat-footer-wrapper">
-    <ng-container
-        *ngTemplateOutlet="
-            messageReply;
-            context: {
-                item: {
-                    fullName: 'Name Surname',
-                    message:
-                        'Ac phasellus viverra mauris fames facilisi condimentum egestas ac elit.'
+    <ng-container *ngIf="currentUserTyping">
+        <ng-container
+            *ngTemplateOutlet="
+                isTyping;
+                context: {
+                    user: currentUserTyping
                 }
-            }
-        "
-    ></ng-container>
+            "
+        ></ng-container>
+    </ng-container>
+    <ng-container *ngIf="messageReplyInfo">
+        <ng-container
+            *ngTemplateOutlet="
+                messageReply;
+                context: {
+                    item: {
+                        fullName: messageReplyInfo.fullName,
+                        message: messageReplyInfo.message
+                    }
+                }
+            "
+        ></ng-container>
+    </ng-container>
 </div>
 
 <!-- Templates -->
 <ng-template #isTyping let-user="user">
+    <div></div>
     <div class="typing-placeholder ta-font-bold">{{ user }} is typing...</div>
 </ng-template>
 
