@@ -12,6 +12,7 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 
@@ -199,6 +200,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Pipes
         private dispatchColorFinderPipe: DispatchColorFinderPipe,
+        public datePipe: DatePipe,
 
         // Services
         private dispatcherService: DispatcherService,
@@ -241,7 +243,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
 
         this.getProgressBarData();
-        console.log('dispatchData', this.dispatchData);
     }
 
     private getConstantData(): void {
@@ -1117,21 +1118,25 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public getProgressBarData(): void {
         this.dispatchData.dispatches.forEach((dispatch, index) => {
             this.progressBarData.push(null);
-            console.log('dispatch.loadProgress', dispatch.loadProgress);
 
             if (dispatch.loadProgress?.activeLoadProgressBar) {
-                const dispatchLoadProgress =
+                const dispatchLoadProgress: any =
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
-                console.log('dispatch', dispatch);
 
                 const dispatchStopData = dispatchLoadProgress.loadStops.map(
                     (stop) => {
                         return {
-                            type: stop.stopType?.name,
+                            type: stop.stopType?.name.toLowerCase(),
                             heading: stop.title,
-                            position: stop.progressBarPercentage > 100 ? 100 : stop.progressBarPercentage,
-                            location: stop.address?.address,
+                            position:
+                                stop.progressBarPercentage > 100
+                                    ? 100
+                                    : stop.progressBarPercentage,
+                            location: [
+                                stop.address?.city,
+                                stop.address?.stateShortName,
+                            ].join(', '),
                             mileage: stop.isVisited
                                 ? (
                                       dispatchLoadProgress.truckPositionMileage -
@@ -1143,7 +1148,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                       dispatchLoadProgress.truckPositionMileage
                                   ).toFixed(1) +
                                   ' mi',
-                            time: stop.departedFrom ?? stop.expectedAt,
+                            time: this.datePipe.transform(
+                                stop.departedFrom ?? stop.expectedAt,
+                                'MM/dd/yy hh:mm a'
+                            ),
+                            latitude: stop.latitude,
+                            longitude: stop.longitude,
+                            legMiles: stop.totalLegMiles,
+                            stopNumber: stop.stopLoadOrder,
                         };
                     }
                 );
@@ -1151,10 +1163,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 const formattedProgressData: DispatchProgressBarData = {
                     currentPosition:
                         dispatchLoadProgress.truckPositionPercentage ?? 0,
-                    mileageInfo: dispatchLoadProgress.milesLeftToDeliveryLoad + ' mi',
+                    mileageInfo:
+                        dispatchLoadProgress.milesLeftToDeliveryLoad + ' mi',
                     gpsTitle: dispatchLoadProgress.truckPositionMileage + ' mi',
                     mileagesPercent:
                         dispatchLoadProgress.truckPositionPercentage + '%',
+                    totalMiles: dispatchLoadProgress.totalMiles,
                     gpsProgress: dispatchStopData,
                     gpsInfo: {
                         gpsheading: 'NO GPS DEVICE',
@@ -1165,11 +1179,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 };
 
                 this.progressBarData[index] = formattedProgressData;
-
-                console.log(
-                    'progressBarData[index]',
-                    this.progressBarData[index]
-                );
             }
         });
     }

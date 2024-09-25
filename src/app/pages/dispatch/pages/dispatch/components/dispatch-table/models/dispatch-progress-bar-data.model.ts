@@ -10,6 +10,7 @@ export interface DispatchProgressBarData {
         gpsheadingColor?: string;
     };
     mileagesPercent?: string;
+    totalMiles?: number;
     gpsLocationIcon?: string;
     gpsProgress?: DispatchProgressStopData[];
 }

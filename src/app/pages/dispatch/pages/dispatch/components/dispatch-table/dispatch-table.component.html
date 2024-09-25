@@ -620,6 +620,11 @@
                                     [dispatchLoads]="
                                         currentDispatchGroupedLoadsResponse
                                     "
+                                    [columnWidth]="
+                                        resizedColumnsWidth[
+                                            'pickup_delivery'
+                                        ] ?? 340
+                                    "
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
@@ -674,6 +679,11 @@
                                                             progressBarData[
                                                                 rowIndex
                                                             ].mileagesPercent
+                                                        "
+                                                        [totalMiles]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].totalMiles
                                                         "
                                                         [gpsLocationIcon]="
                                                             progressBarData[
@@ -734,7 +744,7 @@
                                             }"
                                         >
                                             <div
-                                                class="info-item justify-content-center"
+                                                class="info-item d-flex justify-content-center"
                                             >
                                                 <ng-container
                                                     *ngIf="
