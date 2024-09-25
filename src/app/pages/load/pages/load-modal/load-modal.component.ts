@@ -1337,7 +1337,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TAB:
-                const orderNumber = event.id === 1 ? 3000 + indx : 4000 + indx;
+                const orderNumber = event.id === 1 || this.editData && event.id > 3000 && event.id < 4000 ? 3000 + indx : 4000 + indx;
 
                 this.selectExtraStopType[indx] = orderNumber;
 
