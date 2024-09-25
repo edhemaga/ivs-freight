@@ -19,8 +19,14 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // store
-import { UserQuery } from '@pages/user/state/user.query';
-import { UserState } from '@pages/user/state/user.store';
+import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
+import { UserActiveState } from '@pages/user/state/user-active-state/user-active.store';
+
+import { UserInactiveQuery } from '@pages/user/state/user-inactive-state/user-inactive.query';
+import {
+    UserInactiveState,
+    UserInactiveStore,
+} from '@pages/user/state/user-inactive-state/user-inactive.store';
 
 // pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
@@ -56,7 +62,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     activeViewMode: string = TableStringEnum.LIST;
     resizeObserver: ResizeObserver;
     mapingIndex: number = 0;
-    users: UserState[] = [];
+    public usersActive: UserActiveState[];
+    public usersInactive: UserInactiveState[];
+
+    public inactiveTabClicked: boolean = false;
 
     //Data to display from model
     public displayRowsFront: CardRows[] =
@@ -83,16 +92,23 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     constructor(
+        // service
         private modalService: ModalService,
         private tableService: TruckassistTableService,
-        private userQuery: UserQuery,
+        private userService: UserService,
+        private confirmationService: ConfirmationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+
+        // store
+        private usersActiveQuery: UserActiveQuery,
+        private usersInactiveQuery: UserInactiveQuery,
+        private usersInactiveStore: UserInactiveStore,
+
+        // pipe
         private phoneFormater: FormatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        private userService: UserService,
         public datePipe: DatePipe,
-        private thousandSeparator: ThousandSeparatorPipe,
-        private confirmationService: ConfirmationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
     // ---------------------------  NgOnInit ----------------------------------
@@ -420,25 +436,49 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
-        const userCount = JSON.parse(localStorage.getItem('userTableCount'));
+        const userCount = JSON.parse(localStorage.getItem(TableStringEnum.USER_TABLE_COUNT));
 
-        const userData = this.getTabData();
+        const userActiveData =
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? this.getTabData(TableStringEnum.ACTIVE)
+                : [];
+
+        const userInactiveData =
+            this.selectedTab === TableStringEnum.INACTIVE
+                ? this.getTabData(TableStringEnum.INACTIVE)
+                : [];
 
         this.tableData = [
             {
-                title: TableStringEnum.USER,
+                title: TableStringEnum.ACTIVE,
                 field: TableStringEnum.ACTIVE,
-                length: userCount.users,
+                length: userCount.active,
                 arhiveCount: 0,
-                data: userData,
+                data: userActiveData,
                 deactivatedUserArray: DataFilterHelper.checkSpecialFilterArray(
-                    userData,
+                    userActiveData,
                     TableStringEnum.STATUS
                 ),
                 gridNameTitle: TableStringEnum.USER,
                 stateName: TableStringEnum.USERS,
                 tableConfiguration: TableStringEnum.USER_2,
-                isActive: true,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getGridColumns(TableStringEnum.USER_2),
+            },
+            {
+                title: TableStringEnum.INACTIVE,
+                field: TableStringEnum.INACTIVE,
+                length: userCount.inactive,
+                arhiveCount: 0,
+                data: userInactiveData,
+                deactivatedUserArray: DataFilterHelper.checkSpecialFilterArray(
+                    userInactiveData,
+                    TableStringEnum.STATUS
+                ),
+                gridNameTitle: TableStringEnum.USER,
+                stateName: TableStringEnum.USERS,
+                tableConfiguration: TableStringEnum.USER_2,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(TableStringEnum.USER_2),
             },
         ];
@@ -449,10 +489,20 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Get Tab Data
-    getTabData() {
-        this.users = this.userQuery.getAll();
+    private getTabData(
+        dataType: string
+    ): UserActiveState[] | UserInactiveState[] {
+        if (dataType === TableStringEnum.ACTIVE) {
+            this.usersActive = this.usersActiveQuery.getAll();
 
-        return this.users?.length ? this.users : [];
+            return this.usersActive?.length ? this.usersActive : [];
+        } else if (dataType === TableStringEnum.INACTIVE) {
+            this.inactiveTabClicked = true;
+
+            this.usersInactive = this.usersInactiveQuery.getAll();
+
+            return this.usersInactive?.length ? this.usersInactive : [];
+        }
     }
 
     // Set User Data
@@ -477,10 +527,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Map User Data
-    mapUserData(data: any, dontMapIndex?: boolean) {
-        if (!data.avatarFile?.url && !dontMapIndex) {
-            this.mapingIndex++;
-        }
+    public mapUserData(data: CompanyUserResponse, dontMapIndex?: boolean): any {
+        //leave this any for now
+        if (!data.avatarFile?.url && !dontMapIndex) this.mapingIndex++;
 
         return {
             ...data,
@@ -498,9 +547,15 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : ''
                 ),
             },
-            tableTableDept: data?.department?.name ? data.department.name : '',
+            tableTableDept: data?.department?.name
+                ? data.department.name
+                : data?.department
+                ? data?.department
+                : '',
             tableTableOffice: data?.companyOffice?.name
                 ? data.companyOffice.name
+                : data?.companyOffice
+                ? data?.companyOffice
                 : '',
             tableTablePhone: data?.phone
                 ? this.phoneFormater.transform(data.phone)
@@ -536,7 +591,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
-            userStatus: data.status,
+            userStatus: data.status as any, //leave this any for now
             tableCantSelect: data.userType.name === 'Owner',
             // User Dropdown Action Set Up
             tableDropdownContent: {
@@ -618,7 +673,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     deleteUserById(id: number) {
         this.userService
-            .deleteUserById(id)
+            .deleteUserById(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -647,13 +702,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     updateDataCount() {
-        const userCount = JSON.parse(localStorage.getItem('userTableCount'));
+        const userCount = JSON.parse(localStorage.getItem(TableStringEnum.USER_TABLE_COUNT));
 
-        this.tableData[0].length = userCount.users;
+        this.tableData[0].length = userCount.active;
 
         const updatedTableData = [...this.tableData];
 
-        updatedTableData[0].length = userCount.users;
+        updatedTableData[0].length = userCount.active;
 
         this.tableData = [...updatedTableData];
     }
@@ -706,6 +761,32 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         } else if (event.action === TableStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
+        } else if (event.action === TableStringEnum.TAB_SELECTED) {
+            this.selectedTab = event.tabData.field;
+            this.mapingIndex = 0;
+
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.backFilterQuery.pageIndex = 1;
+
+            // Driver Inactive Api Call
+            if (
+                this.selectedTab === TableStringEnum.INACTIVE &&
+                !this.inactiveTabClicked
+            ) {
+                this.userService
+                    .getUsers(0, 1, 25)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((userPagination) => {
+                        this.usersInactiveStore.set(
+                            userPagination.pagination.data as any
+                        );
+
+                        this.sendUserData();
+                    });
+            } else {
+                this.sendUserData();
+            }
         }
     }
 
@@ -809,7 +890,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Delete Multiple Users
     multipleDeleteUsers(users: any) {
         this.userService
-            .deleteUserList(users)
+            .deleteUserList(users, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((tableData: any) => {
