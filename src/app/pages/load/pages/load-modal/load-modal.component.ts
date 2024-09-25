@@ -1337,11 +1337,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TAB:
-                this.selectExtraStopType[indx] = this.editData
-                    ? event.id === 1
-                        ? 3000 + indx
-                        : 4000 + indx
-                    : event.id;
+                const orderNumber = event.id === 1 || this.editData && event.id > 3000 && event.id < 4000 ? 3000 + indx : 4000 + indx;
+
+                this.selectExtraStopType[indx] = orderNumber;
 
                 this.typeOfExtraStops[indx] = this.typeOfExtraStops[indx].map(
                     (typeOfExtraStop) => {
@@ -1351,12 +1349,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     }
                 );
-
                 this.loadExtraStops()
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
                     .patchValue(
-                        (event.id ? event.id : event)
+                        orderNumber
                             .toString()
                             .startsWith(LoadModalStringEnum.NUMBER_4)
                             ? LoadModalStringEnum.DELIVERY_2
@@ -5081,7 +5078,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.isEditingMode = true;
         // Check if stops exists and is an array before using it
         const stops = this.formatStop(loadModalData.stops);
-            
         if (stops.length) {
             stops.forEach((stop, index) => {
                 if (index === 0) {
@@ -5440,10 +5436,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private formatStop(stops: LoadStopResponse[]): LoadStopResponse[] {
         const _stops = stops?.filter((stop) => stop.id !== 0) || [];
 
-        if(!this.isConvertedToTemplate) return _stops;
+        if (!this.isConvertedToTemplate) return _stops;
 
         // Clear stop values
-        _stops.forEach(stop => {
+        _stops.forEach((stop) => {
             stop.arrive = null;
             stop.depart = null;
             stop.statusHistory = [];
