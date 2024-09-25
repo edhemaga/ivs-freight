@@ -97,6 +97,9 @@ import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 
+// svg routes
+import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
+
 @Component({
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
@@ -135,6 +138,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public isSetupCompany: boolean = false;
 
     public disableCardAnimation: boolean = false;
+    public svgRoutes = SettingsModalSvgRoutes;
 
     // tabs
     public selectedTab: number = 1;
