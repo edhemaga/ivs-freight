@@ -43,17 +43,18 @@
                     display: none;
                     content: '';
                     position: absolute;
-                    right: -3px;
+                    right: -5px;
                     top: 0;
                     height: 100%;
                     width: 8px;
+                    z-index: 2;
                 }
 
                 .resize::before {
                     display: none;
                     content: '';
                     position: absolute;
-                    right: 0;
+                    right: -2px;
                     top: 50%;
                     transform: translateY(-50%);
                     height: 14px;

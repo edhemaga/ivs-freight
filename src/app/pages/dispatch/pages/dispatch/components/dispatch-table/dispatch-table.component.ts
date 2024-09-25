@@ -53,6 +53,7 @@ import {
     DispatchGroupedLoadsResponse,
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
+    AddressEntity,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -347,27 +348,45 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            if (index >= 0) {
-                this.dispatchData = {
-                    ...this.dispatchData,
-                    dispatches: this.dispatchData.dispatches.map(
-                        (dispatch, i) =>
-                            i === index
-                                ? { ...dispatch, truck: event }
-                                : dispatch
-                    ),
-                };
+            this.dispatcherService
+                .getDispatchTruckLastLocation(event.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((truckLastLocation) => {
+                    if (truckLastLocation?.address?.address) {
+                        this.isDispatchBoardChangeInProgress = true;
 
-                this.parkingCount = this.dispatchData?.dispatches?.filter(
-                    (item) => item.parkingSlot
-                )?.length;
+                        this.addNewTruckData = event;
 
-                this.showAddAddressFieldIndex = index;
-            } else {
-                this.addNewTruckData = event;
+                        this.handleUpdateLastLocationEmit(
+                            truckLastLocation.address
+                        );
+                    } else {
+                        if (index >= 0) {
+                            this.dispatchData = {
+                                ...this.dispatchData,
+                                dispatches: this.dispatchData.dispatches.map(
+                                    (dispatch, i) =>
+                                        i === index
+                                            ? { ...dispatch, truck: event }
+                                            : dispatch
+                                ),
+                            };
 
-                this.showAddAddressFieldIndex = -2;
-            }
+                            this.parkingCount =
+                                this.dispatchData?.dispatches?.filter(
+                                    (item) => item.parkingSlot
+                                )?.length;
+
+                            this.showAddAddressFieldIndex = index;
+                        } else {
+                            this.addNewTruckData = event;
+
+                            this.showAddAddressFieldIndex = -2;
+                        }
+                    }
+
+                    this.cdRef.detectChanges();
+                });
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.TRAILER_ID,
@@ -434,7 +453,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
     }
 
-    public handleUpdateLastLocationEmit(address: string): void {
+    public handleUpdateLastLocationEmit(address: AddressEntity): void {
         this.isDisplayingAddressInput = false;
 
         this.updateOrAddDispatchBoardAndSend(

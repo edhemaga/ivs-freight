@@ -25,6 +25,10 @@ export class DispatchTableLastLocationComponentComponent {
     @Input() isHoveringRow: boolean;
     @Input() isDisplayingAddressInput: boolean;
 
+    @Input() set locationDropdownWidth(value: number) {
+        this._locationDropdownWidth = Math.round(value - 2);
+    }
+
     @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
         new EventEmitter<AddressEntity>();
     @Output() isDropdownHidden: EventEmitter<boolean> =
@@ -36,10 +40,14 @@ export class DispatchTableLastLocationComponentComponent {
 
     public isDisplayParkingIcon: boolean = false;
 
+    public _locationDropdownWidth: number;
+
     constructor() {}
 
     get lastLocationAddressConfig(): ITaInput {
-        return DispatchConfig.getDispatchAddressConfig();
+        return DispatchConfig.getDispatchAddressConfig(
+            this._locationDropdownWidth
+        );
     }
 
     public handleInputSelect(event: {

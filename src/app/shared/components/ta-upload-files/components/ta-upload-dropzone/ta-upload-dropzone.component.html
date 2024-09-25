@@ -37,7 +37,10 @@
     >
         <svg-icon
             class="ta-upload-dropzone-area"
-            [class.expand]="_dropZoneConfig.globalDropZone"
+            [class.expand]="
+                _dropZoneConfig.globalDropZone &&
+                customClassName !== 'company-documents'
+            "
             [src]="_dropZoneConfig.dropZoneSvg"
             [svgStyle]="
                 dropzoneColumn ? { 'width.px': 80, 'height.px': 80 } : {}
@@ -45,7 +48,10 @@
         ></svg-icon>
         <div
             class="ta-upload-dropzone-text"
-            [class.expand]="_dropZoneConfig.globalDropZone"
+            [class.expand]="
+                _dropZoneConfig.globalDropZone &&
+                customClassName !== 'company-documents'
+            "
         >
             <!-- Files -->
             <span

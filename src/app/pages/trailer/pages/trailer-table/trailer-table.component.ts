@@ -536,34 +536,29 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTrailerTooltipColor(trailerName: string): string {
-        if (trailerName === TrailerNameStringEnum.REEFER) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
-            return TooltipColorsStringEnum.DARK_BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (trailerName === TrailerNameStringEnum.TANKER) {
-            return TooltipColorsStringEnum.GREEN;
-        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
-            return TooltipColorsStringEnum.BROWN;
-        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
-            return TooltipColorsStringEnum.ORANGE;
-        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
-            return TooltipColorsStringEnum.GOLD;
-        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
-            return TooltipColorsStringEnum.YELLOW;
+        switch (trailerName) {
+            case TrailerNameStringEnum.FLAT_BED:
+            case TrailerNameStringEnum.STEP_DECK:
+            case TrailerNameStringEnum.LOW_BOY_RGN:
+            case TrailerNameStringEnum.CHASSIS:
+            case TrailerNameStringEnum.CONESTOGA:
+            case TrailerNameStringEnum.SIDE_KIT:
+            case TrailerNameStringEnum.CONTAINER:
+                return TooltipColorsStringEnum.BLUE;
+            case TrailerNameStringEnum.DRY_VAN:
+            case TrailerNameStringEnum.REEFER:
+                return TooltipColorsStringEnum.YELLOW;
+            case TrailerNameStringEnum.END_DUMP:
+            case TrailerNameStringEnum.BOTTOM_DUMP:
+            case TrailerNameStringEnum.HOPPER:
+            case TrailerNameStringEnum.TANKER:
+            case TrailerNameStringEnum.PNEUMATIC_TANKER:
+                return TooltipColorsStringEnum.RED;
+            case TrailerNameStringEnum.CAR_HAULER:
+            case TrailerNameStringEnum.CAR_HAULER_STINGER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
 
@@ -627,10 +622,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? vin.substr(vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
-            tableTrailerTypeClass: trailerType.logoName.replace(
-                TableStringEnum.SVG,
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            ),
+            tableTrailerTypeClass: trailerType.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
             tableMake: trailerMake?.name,
             tableModel: model,
             tableColor: color?.code,

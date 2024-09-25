@@ -31,8 +31,8 @@ import { CompanyOfficeService } from '@shared/services/company-office.service';
 //Components
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 //Stores
 import { ParkingStore } from '@pages/settings/state/parking-state/company-parking.store';
@@ -88,7 +88,7 @@ export class SettingsLocationService implements OnDestroy {
             }
             case 'repairshop': {
                 this.modalService.openModal(
-                    SettingsRepairshopModalComponent,
+                    RepairShopModalComponent,
                     {
                         size: 'small',
                     },

@@ -1,124 +1,108 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-import {
-  takeUntil
-} from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs';
 
 // Models
 import { ChatMessageResponse } from '@pages/chat/models';
 import {
-  CompanyUserShortResponse,
-  ConversationResponse
+    CompanyUserShortResponse,
+    ConversationResponse,
 } from 'appcoretruckassist';
 
 // Enums
-import {
-  ChatConversationType,
-  ChatGroupEnum
-} from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
 import {
-  GetCurrentUserHelper,
-  UnsubscribeHelper
+    GetCurrentUserHelper,
+    UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Component({
-  selector: 'app-conversation-content',
-  templateUrl: './conversation-content.component.html',
-  styleUrls: ['./conversation-content.component.scss']
+    selector: 'app-conversation-content',
+    templateUrl: './conversation-content.component.html',
+    styleUrls: ['./conversation-content.component.scss'],
 })
-export class ConversationContentComponent extends UnsubscribeHelper implements OnInit {
+export class ConversationContentComponent
+    extends UnsubscribeHelper
+    implements OnInit
+{
+    @Input() group: ChatGroupEnum;
+    @Input() public attachmentUploadActive: boolean = false;
 
-  @Input() group: ChatGroupEnum;
-  @Input() public attachmentUploadActive: boolean = false;
+    @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
+        new EventEmitter();
+    @Output() isConversationParticipantsDisplayed: EventEmitter<{
+        isDisplayed: boolean;
+        conversationParticipants: CompanyUserShortResponse[];
+    }> = new EventEmitter();
 
-  @Output() isProfileDetailsDisplayed: EventEmitter<boolean> = new EventEmitter();
-  @Output() isConversationParticipantsDisplayed: EventEmitter<{
-    isDisplayed: boolean,
-    conversationParticipants: CompanyUserShortResponse[]
-  }> = new EventEmitter();
+    public messages: ChatMessageResponse[] = [];
 
-  public messages: ChatMessageResponse[] = [];
+    // Group info
+    public chatConversationType = ChatConversationType;
+    public chatGroupEnum = ChatGroupEnum;
 
-  // Group info
-  public chatConversationType = ChatConversationType;
-  public chatGroupEnum = ChatGroupEnum;
+    //User data
+    private getCurrentUserHelper = GetCurrentUserHelper;
 
-  //User data
-  private getCurrentUserHelper = GetCurrentUserHelper;
+    private conversation!: ConversationResponse;
+    public conversationParticipants!: CompanyUserShortResponse[];
 
-  private conversation!: ConversationResponse;
-  public conversationParticipants!: CompanyUserShortResponse[];
+    // Assets
+    public chatSvgRoutes = ChatSvgRoutes;
 
-  // Assets
-  public chatSvgRoutes = ChatSvgRoutes;
+    constructor(
+        //Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute
+    ) {
+        super();
+    }
 
-  constructor(
-    //Router
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-  ) {
-    super();
-  }
+    ngOnInit(): void {
+        this.getResolvedData();
+        this.getDataOnRouteChange();
+    }
 
-  ngOnInit(): void {
-    this.getResolvedData();
-    this.getDataOnRouteChange();
-  }
+    private getResolvedData(): void {
+        this.activatedRoute.data
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.messages = [...res.messages?.pagination?.data];
 
-  private getResolvedData(): void {
-    this.activatedRoute
-      .data
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          this.messages = [...res.messages?.pagination?.data];
+                // Conversation participants
+                this.conversation = res.information;
 
-          // Conversation participants
-          this.conversation = res.information;
+                this.conversationParticipants =
+                    this.conversation?.participants.filter(
+                        (participant) =>
+                            participant.id !==
+                            this.getCurrentUserHelper.currentUserId
+                    );
+            });
+    }
 
-          this.conversationParticipants =
-            this.conversation
-              ?.participants
-              .filter(
-                participant =>
-                  participant.id !== this.getCurrentUserHelper.currentUserId
-              );
+    public displayGroupParticipants(): void {
+        this.isConversationParticipantsDisplayed.emit({
+            isDisplayed: true,
+            conversationParticipants: this.conversationParticipants,
+        });
+    }
 
-        }
-      );
-  }
+    private getDataOnRouteChange(): void {
+        this.router.events.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.isProfileDetailsDisplayed.emit(false);
+        });
 
-  public displayGroupParticipants(): void {
-    this.isConversationParticipantsDisplayed.emit({ isDisplayed: true, conversationParticipants: this.conversationParticipants });
-  }
-
-  private getDataOnRouteChange(): void {
-    this.router
-      .events
-      .pipe(
-        takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.isProfileDetailsDisplayed.emit(false);
-      });
-
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.group = params[this.chatConversationType.CHANNEL] != this.group ?
-        params[this.chatConversationType.CHANNEL] :
-        this.group;
-    });
-  }
+        this.activatedRoute.queryParams.subscribe((params) => {
+            this.group =
+                params[this.chatConversationType.CHANNEL] != this.group
+                    ? params[this.chatConversationType.CHANNEL]
+                    : this.group;
+        });
+    }
 }

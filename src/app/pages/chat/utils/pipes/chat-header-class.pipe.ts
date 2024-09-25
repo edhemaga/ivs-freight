@@ -4,16 +4,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ChatGroupStateEnum } from '@pages/chat/enums';
 
 @Pipe({
-    name: 'chatHeaderClass'
+    name: 'chatHeaderClass',
 })
 export class ChatHeaderClassPipe implements PipeTransform {
-
     transform(
         count: number,
         state: ChatGroupStateEnum,
         unread: boolean
     ): string {
-
         switch (true) {
             case !count:
                 return 'empty';

@@ -768,8 +768,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return TooltipColorsStringEnum.BLUE;
         } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
             return TooltipColorsStringEnum.DARK_BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
-            return TooltipColorsStringEnum.PURPLE;
         } else if (trailerName === TrailerNameStringEnum.TANKER) {
             return TooltipColorsStringEnum.GREEN;
         } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {

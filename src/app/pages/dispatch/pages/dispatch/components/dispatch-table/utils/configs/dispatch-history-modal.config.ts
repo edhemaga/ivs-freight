@@ -2,53 +2,67 @@ import { DispatchInputConfigParams } from '@pages/dispatch/pages/dispatch/compon
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class DispatchHistoryModalConfig {
-    static getDispatchHistoryTimeConfig(): ITaInput {
+    static getDispatchHistoryTimeConfig(isItemSelected: boolean, isDisplayingCustomPeriodRange: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Time',
             isDropdown: true,
             dropdownWidthClass: 'w-col-132',
+            isBlueDropdown: true,
+            isUsingCustomPeriodRange: true,
+            isItemSelected,
+            isDisplayingCustomPeriodRange
         };
     }
 
-    static getDispatchHistoryDispatchBoardConfig(): ITaInput {
+    static getDispatchHistoryDispatchBoardConfig(
+        isItemSelected: boolean
+    ): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Dispatch Board',
             isDropdown: true,
             dropdownWidthClass: 'w-col-192',
+            isBlueDropdown: true,
+            isItemSelected,
         };
     }
 
-    static getDispatchHistoryTruckConfig(): ITaInput {
+    static getDispatchHistoryTruckConfig(isItemSelected: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Truck',
             isDropdown: true,
             dropdownWidthClass: 'w-col-112',
+            isBlueDropdown: true,
+            isItemSelected,
         };
     }
 
-    static getDispatchHistoryTrailerConfig(): ITaInput {
+    static getDispatchHistoryTrailerConfig(isItemSelected: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Trailer',
             isDropdown: true,
             dropdownWidthClass: 'w-col-132',
+            isBlueDropdown: true,
+            isItemSelected,
         };
     }
 
-    static getDispatchHistoryDriverConfig(): ITaInput {
+    static getDispatchHistoryDriverConfig(isItemSelected: boolean): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Driver',
             isDropdown: true,
             dropdownWidthClass: 'w-col-192',
+            isBlueDropdown: true,
+            isItemSelected,
         };
     }
 
@@ -80,8 +94,13 @@ export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeStartConfig(
         configData: DispatchInputConfigParams
     ): ITaInput {
-        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
-            configData;
+        const {
+            isInputHoverRows,
+            groupIndex,
+            itemIndex,
+            groupItem,
+            isHoveringRow,
+        } = configData;
 
         return {
             name: 'timepicker',
@@ -91,14 +110,14 @@ export class DispatchHistoryModalConfig {
             hideClear: true,
             hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][1],
-            isInputBackgroundRemoved:
-                !isInputHoverRows[groupIndex][itemIndex][1],
             blackInput:
                 groupItem.get('timeStart').value &&
                 !isInputHoverRows[groupIndex][itemIndex][1],
             customClass: !isInputHoverRows[groupIndex][itemIndex][1]
-                ? ''
+                ? 'time-picker-opacity'
                 : 'datetimeclass',
+            isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 
@@ -130,8 +149,13 @@ export class DispatchHistoryModalConfig {
     static getDispatchHistoryTimeEndConfig(
         configData: DispatchInputConfigParams
     ): ITaInput {
-        const { isInputHoverRows, groupIndex, itemIndex, groupItem } =
-            configData;
+        const {
+            isInputHoverRows,
+            groupIndex,
+            itemIndex,
+            groupItem,
+            isHoveringRow,
+        } = configData;
 
         return {
             name: 'timepicker',
@@ -141,14 +165,14 @@ export class DispatchHistoryModalConfig {
             hideClear: true,
             hideErrorMessage: true,
             hideDropdownArrow: !isInputHoverRows[groupIndex][itemIndex][3],
-            isInputBackgroundRemoved:
-                !isInputHoverRows[groupIndex][itemIndex][3],
             blackInput:
                 groupItem.get('timeEnd').value &&
                 !isInputHoverRows[groupIndex][itemIndex][3],
             customClass: !isInputHoverRows[groupIndex][itemIndex][3]
-                ? ''
+                ? 'time-picker-opacity'
                 : 'datetimeclass',
+            isHoverRow: isHoveringRow,
+            minutesGapFive: true,
         };
     }
 }

@@ -159,7 +159,7 @@
                 [hasCounter]="documents?.length"
                 [cardName]="'Document'"
                 [disableAnimation]="isCardAnimationDisabled"
-                [isCardOpen]="documents.length"
+                [isCardOpen]="!!documents.length"
             >
                 <app-ta-upload-files
                     [files]="documents"
