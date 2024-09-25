@@ -44,8 +44,7 @@ export class ChatMessageComponent implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-
-    constructor() { }
+    constructor() {}
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
