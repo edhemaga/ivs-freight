@@ -1,4 +1,8 @@
-<div class="message-container">
+<div
+    class="message-container"
+    (mouseover)="toggleActions(true)"
+    (mouseout)="toggleActions(false)"
+>
     <ng-container *ngIf="message.content">
         <div
             class="content-wrapper d-flex justify-content-end"
@@ -8,22 +12,25 @@
                     : 'flex-row-reverse'
             "
         >
-            <div
-                class="message-actions d-flex justify-content-center align-items-center"
-            >
-                <ng-container
-                    *ngTemplateOutlet="
-                        iconAction;
-                        context: {
-                            item: {
-                                icon: chatSvgRoutes.replyIcon,
-                                actionType: chatMessageActionEnum.REPLY
+            <ng-container *ngIf="areActionsDisplayed">
+                <div
+                    class="message-actions d-flex justify-content-center align-items-center"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconAction;
+                            context: {
+                                item: {
+                                    icon: chatSvgRoutes.replyIcon,
+                                    actionType: chatMessageActionEnum.REPLY
+                                }
                             }
-                        }
-                    "
-                ></ng-container>
-                <!-- TODO Add two additional icon actions -->
-            </div>
+                        "
+                    ></ng-container>
+                    <!-- TODO Add two additional icon actions -->
+                </div>
+            </ng-container>
+
             <ng-container *ngIf="isDateDisplayed">
                 <div
                     class="message-time d-flex justify-content-center align-items-center"

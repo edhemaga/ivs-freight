@@ -42,7 +42,9 @@ export class ChatMessageComponent implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-    constructor() {}
+    public areActionsDisplayed: boolean = false;
+
+    constructor() { }
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
@@ -71,6 +73,10 @@ export class ChatMessageComponent implements OnInit {
 
         this.messageDateAndTime =
             MethodsCalculationsHelper.convertDateToTimeFromBackend(date, true);
+    }
+
+    public toggleActions(displayed: boolean): void {
+        this.areActionsDisplayed = displayed;
     }
 
     public messageAction(actionType: ChatMessageActionEnum): void {
