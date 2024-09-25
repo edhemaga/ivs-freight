@@ -35,12 +35,18 @@
         width: 100%;
         margin-top: 4px;
         margin-bottom: 4px;
+        z-index: 0;
 
-        .message-time {
-            line-height: 14px;
-            color: $bw5;
-            font-size: 11px;
-            padding: 0 8px;
+        .message {
+            &-actions {
+                z-index: 1;
+            }
+            &-time {
+                line-height: 14px;
+                color: $bw5;
+                font-size: 11px;
+                padding: 0 8px;
+            }
         }
 
         .content {
@@ -113,16 +119,18 @@
                 }
             }
 
-            .link-wrapper {
-                max-width: 300px;
-                padding-top: 8px;
-                margin-left: -10px;
-            }
+            .link {
+                &-wrapper {
+                    max-width: 300px;
+                    padding-top: 8px;
+                    margin-left: -10px;
+                }
 
-            .link-title {
-                font-size: 14px;
-                line-height: 18px;
-                padding: 8px 2px;
+                &-title {
+                    font-size: 14px;
+                    line-height: 18px;
+                    padding: 8px 2px;
+                }
             }
         }
 
@@ -154,8 +162,12 @@
         width: 100%;
     }
 
-    svg-icon:hover {
-        cursor: pointer;
+    svg-icon {
+        z-index: 1;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .blue {

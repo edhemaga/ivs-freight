@@ -1,4 +1,9 @@
-<div class="message-container">
+<!-- Do not use (mouseover) nad (mouseout)!! -->
+<div
+    class="message-container"
+    (mouseenter)="toggleActions(true)"
+    (mouseleave)="toggleActions(false)"
+>
     <ng-container *ngIf="message.content">
         <div
             class="content-wrapper d-flex justify-content-end"
@@ -7,13 +12,11 @@
                     ? 'flex-row'
                     : 'flex-row-reverse'
             "
-            (mouseover)="toggleActions(true)"
-            (mouseout)="toggleActions(false)"
         >
-            <ng-container *ngIf="areActionsDisplayed">
-                <div
-                    class="message-actions d-flex justify-content-center align-items-center"
-                >
+            <div
+                class="message-actions d-flex justify-content-center align-items-center"
+            >
+                <ng-container *ngIf="areActionsDisplayed">
                     <ng-container
                         *ngTemplateOutlet="
                             iconAction;
@@ -56,10 +59,8 @@
                     ></ng-container>
 
                     <app-chat-vertical-divider></app-chat-vertical-divider>
-
-                    <!-- TODO Add two additional icon actions -->
-                </div>
-            </ng-container>
+                </ng-container>
+            </div>
 
             <ng-container *ngIf="isDateDisplayed">
                 <div
@@ -178,14 +179,6 @@
         (click)="messageAction(item.actionType)"
     >
         <div class="action d-flex justify-content-center align-content-center">
-            <ng-container *ngIf="item.text">
-                <div
-                    class="item-text d-flex justify-content-center align-content-center ta-font-bold"
-                >
-                    <div class="text">{{ item.text }}</div>
-                </div>
-            </ng-container>
-
             <svg-icon
                 class="pointer d-flex justify-content-center align-items-center"
                 [ngClass]="item.customClass"
