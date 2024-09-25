@@ -9,14 +9,14 @@
             "
         ></ng-container>
     </ng-container>
-    <ng-container *ngIf="messageReplyInfo">
+    <ng-container *ngIf="replyMessage">
         <ng-container
             *ngTemplateOutlet="
                 messageReply;
                 context: {
                     item: {
-                        fullName: messageReplyInfo.fullName,
-                        message: messageReplyInfo.message
+                        fullName: replyMessage?.sender?.fullName,
+                        message: replyMessage.content
                     }
                 }
             "
@@ -36,7 +36,7 @@
             <div class="reply-placeholder ta-font-semi-bold">
                 Replying to {{ item.fullName }}
             </div>
-            <div class="reply-x-icon">
+            <div class="reply-x-icon" (click)="closeReply()">
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"

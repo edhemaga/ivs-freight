@@ -33,6 +33,7 @@
                                     message.sender?.id !==
                                         message[ind - 1]?.sender?.id
                                 "
+                                (messageReply)="handleMessageReply($event)"
                             ></app-chat-message>
                         </ng-container>
                     </ng-container>
@@ -65,7 +66,9 @@
                 </ng-container>
             </div>
 
-            <app-chat-content-footer></app-chat-content-footer>
+            <app-chat-content-footer
+                [replyMessage]="messageToReply"
+            ></app-chat-content-footer>
 
             <div
                 class="chat-footer d-flex"

@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+// Models
+import { ChatMessageResponse } from '@pages/chat/models';
+
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
@@ -16,11 +19,7 @@ export class ChatContentFooterComponent
     implements OnInit
 {
     @Input() currentUserTyping!: string;
-    @Input() messageReplyInfo: {
-        messageId: number;
-        fullName: string;
-        message: string;
-    } | null = null;
+    @Input() replyMessage: ChatMessageResponse | null = null;
 
     // Assets route
     public chatSvgRoutes = ChatSvgRoutes;
@@ -29,5 +28,11 @@ export class ChatContentFooterComponent
         super();
     }
 
-    ngOnInit(): void {}
+    public closeReply(): void {
+        this.replyMessage = null;
+    }
+
+    ngOnInit(): void {
+        console.log(this.replyMessage);
+    }
 }

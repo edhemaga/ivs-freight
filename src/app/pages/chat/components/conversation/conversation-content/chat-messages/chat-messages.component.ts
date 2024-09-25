@@ -101,6 +101,7 @@ export class ChatMessagesComponent
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;
+    public messageToReply!: ChatMessageResponse;
 
     // Attachment upload
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
@@ -379,6 +380,10 @@ export class ChatMessagesComponent
             }
         }
         this.currentMessage = message;
+    }
+
+    public handleMessageReply(messageToReply: ChatMessageResponse): void {
+        this.messageToReply = messageToReply;
     }
 
     ngOnDestroy(): void {
