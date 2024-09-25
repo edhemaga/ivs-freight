@@ -600,7 +600,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -1226,14 +1226,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         ) {
             this.addressService
                 .getAddressByLongLat(
-                    [ShipperModalString.LOCALITY],
+                    [ShipperModalString.ADDRESS],
                     this.shipperForm.get(ShipperModalString.LONGITUDE).value,
                     this.shipperForm.get(ShipperModalString.LATITUDE).value
                 )
                 .pipe()
                 .subscribe((res) => {
                     this.shipperForm.patchValue({
-                        countryStateAddress: res.address,
+                        countryStateAddress:
+                            res?.county + ', ' + res.stateShortName,
                         address: res.address,
                     });
 
