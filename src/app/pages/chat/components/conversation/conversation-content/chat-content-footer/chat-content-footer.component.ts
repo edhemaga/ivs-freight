@@ -22,6 +22,8 @@ export class ChatContentFooterComponent
     @Input() currentUserTyping!: string;
     @Input() replyMessage: BehaviorSubject<ChatMessageResponse | null> =
         new BehaviorSubject(null);
+    @Input() editMessage: BehaviorSubject<ChatMessageResponse | null> =
+        new BehaviorSubject(null);
 
     @Output() closeReplyEvent: EventEmitter<boolean> = new EventEmitter();
 

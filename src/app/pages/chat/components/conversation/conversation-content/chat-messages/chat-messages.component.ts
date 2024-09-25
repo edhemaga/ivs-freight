@@ -103,6 +103,8 @@ export class ChatMessagesComponent
     public currentMessage!: string;
     public messageToReply$: BehaviorSubject<ChatMessageResponse | null> =
         new BehaviorSubject(null);
+    public messageToEdit$: BehaviorSubject<ChatMessageResponse | null> =
+        new BehaviorSubject(null);
 
     // Attachment upload
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
