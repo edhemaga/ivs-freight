@@ -34,7 +34,9 @@ export class ChatMessageComponent implements OnInit {
 
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
 
+    // Message details and actions
     public messageDateAndTime!: string;
+    public areActionsDisplayed: boolean = false;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
@@ -42,7 +44,6 @@ export class ChatMessageComponent implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-    public areActionsDisplayed: boolean = true;
 
     constructor() { }
 
