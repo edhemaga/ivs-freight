@@ -12,7 +12,16 @@
                 [marginLeft]="'4px'"
             ></app-ta-counter>
         </div>
-        <div class="settings-header-button c-pointer">
+        <div
+            class="settings-header-button c-pointer"
+            ngbTooltip
+            mainContent
+            position="bottom"
+            tooltipBackground="#424242"
+            [mainTooltip]="'Add New'"
+            tooltipColor="#ffff"
+            [tooltipMarginTop]="'5px'"
+        >
             <svg-icon
                 src="assets/svg/common/ic_plus.svg"
                 class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
