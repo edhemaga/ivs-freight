@@ -6,28 +6,131 @@
     (action)="onModalAction($event)"
 >
     <div origin>
-        <app-ta-tab-switch
-            [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
-            [type]="'type1-modal-popup'"
-        >
-        </app-ta-tab-switch>
-
         <form
             [formGroup]="terminalForm"
-            class="form-container"
-            [ngClass]="{
-                'form-container-mt-12': selectedTab === 1,
-                'row-settings-location-additional': selectedTab === 2,
-                'form-container-with-inputs': selectedTab === 2
-            }"
+            class="form-container form-container-mt-12"
         >
-            <div
-                class="animation-two-tabs"
-                [@animationTabsModal]="animationObject"
-            >
-                <!-------------------------------- Basic Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 1">
+            <div class="animation-two-tabs">
+                <div class="m-tab">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <app-ta-input
+                                formControlName="name"
+                                [inputConfig]="{
+                                    name: 'Terminal Name',
+                                    type: 'text',
+                                    label: 'Terminal Name',
+                                    isRequired: true,
+                                    textTransform: 'uppercase',
+                                    autoFocus: editData?.type !== 'edit',
+                                    minLength: 1,
+                                    maxLength: 64
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <app-ta-input-address-dropdown
+                                formControlName="address"
+                                [inputConfig]="{
+                                    name: 'Address',
+                                    type: 'text',
+                                    label: 'Address, City, State Zip',
+                                    isRequired: true,
+                                    placeholderIcon: 'address',
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-376',
+                                    minLength: 6,
+                                    maxLength: 256
+                                }"
+                                [placeholderType]="'longAddress'"
+                                [activeAddress]="selectedAddress"
+                                (selectedAddress)="onHandleAddress($event)"
+                            ></app-ta-input-address-dropdown>
+                        </div>
+                        <div class="col-2">
+                            <app-ta-input
+                                formControlName="addressUnit"
+                                [inputConfig]="{
+                                    name: 'address-unit',
+                                    type: 'text',
+                                    label: 'Unit #',
+                                    textTransform: 'uppercase',
+                                    minLength: 1,
+                                    maxLength: 10
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                    <div
+                        class="phone-ext-email-small-modal"
+                        [ngClass]="{
+                            'active-phone-ext': isTerminalPhoneExtExist
+                        }"
+                    >
+                        <div
+                            class="phone-extension phone-ext-email-small-modal-my-20"
+                        >
+                            <div class="phone-field">
+                                <app-ta-input
+                                    formControlName="phone"
+                                    [inputConfig]="{
+                                        name: 'Phone',
+                                        type: 'text',
+                                        label: 'Phone',
+                                        placeholderIcon: 'phone',
+                                        isRequired: true,
+                                        mask: '(000) 000-0000',
+                                        maxLength: 14
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                class="extension-field"
+                                *ngIf="!isTerminalPhoneExtExist"
+                                (click)="
+                                    isTerminalPhoneExtExist =
+                                        !isTerminalPhoneExtExist
+                                "
+                                ngbTooltip
+                                mainTooltip="Add Extension"
+                                position="top"
+                                tooltipBackground="#6c6c6c"
+                            >
+                                <svg-icon
+                                    src="assets/svg/common/ic_plus.svg"
+                                ></svg-icon>
+                            </div>
+                            <app-ta-input
+                                *ngIf="isTerminalPhoneExtExist"
+                                formControlName="extensionPhone"
+                                [inputConfig]="{
+                                    name: 'phone-extension',
+                                    type: 'text',
+                                    label: 'Ext.',
+                                    minLength: 1,
+                                    maxLength: 8,
+                                    placeholderIcon: 'phone-extension'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                        <div class="email-field">
+                            <app-ta-input
+                                formControlName="email"
+                                [inputConfig]="{
+                                    name: 'Email',
+                                    type: 'text',
+                                    label: 'Email',
+                                    placeholderIcon: 'email',
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+
                     <!-- Company owned -->
                     <app-ta-checkbox-card
                         formControlName="isOwner"
@@ -36,135 +139,13 @@
                         [hasArrow]="false"
                         [withoutToggle]="true"
                         [animationMarginParams]="{
-                            marginTop: '12px',
-                            marginBottom: '22px'
+                            marginTop: '0',
+                            marginBottom: '0'
                         }"
                     >
-                        <ng-container bodyWithoutToggle>
-                            <div class="row">
-                                <div class="col-12">
-                                    <app-ta-input
-                                        formControlName="name"
-                                        [inputConfig]="{
-                                            name: 'Terminal Name',
-                                            type: 'text',
-                                            label: 'Terminal Name',
-                                            isRequired: true,
-                                            textTransform: 'uppercase',
-                                            autoFocus:
-                                                editData?.type !== 'edit',
-                                            minLength: 1,
-                                            maxLength: 64
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-10">
-                                    <app-ta-input-address-dropdown
-                                        formControlName="address"
-                                        [inputConfig]="{
-                                            name: 'Address',
-                                            type: 'text',
-                                            label: 'Address, City, State Zip',
-                                            isRequired: true,
-                                            placeholderIcon: 'address',
-                                            textTransform: 'capitalize',
-                                            dropdownWidthClass: 'w-col-376',
-                                            minLength: 6,
-                                            maxLength: 256
-                                        }"
-                                        [placeholderType]="'longAddress'"
-                                        [activeAddress]="selectedAddress"
-                                        (selectedAddress)="
-                                            onHandleAddress($event)
-                                        "
-                                    ></app-ta-input-address-dropdown>
-                                </div>
-                                <div class="col-2">
-                                    <app-ta-input
-                                        formControlName="addressUnit"
-                                        [inputConfig]="{
-                                            name: 'address-unit',
-                                            type: 'text',
-                                            label: 'Unit #',
-                                            textTransform: 'uppercase',
-                                            minLength: 1,
-                                            maxLength: 10
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                            </div>
-                            <div
-                                class="phone-ext-email-small-modal row-no-m"
-                                [ngClass]="{
-                                    'active-phone-ext': isTerminalPhoneExtExist
-                                }"
-                            >
-                                <div
-                                    class="phone-extension phone-ext-email-small-modal-my-20"
-                                >
-                                    <div class="phone-field">
-                                        <app-ta-input
-                                            formControlName="phone"
-                                            [inputConfig]="{
-                                                name: 'Phone',
-                                                type: 'text',
-                                                label: 'Phone',
-                                                placeholderIcon: 'phone',
-                                                isRequired: true,
-                                                mask: '(000) 000-0000',
-                                                maxLength: 14
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
-                                    <div
-                                        class="extension-field"
-                                        *ngIf="!isTerminalPhoneExtExist"
-                                        (click)="
-                                            isTerminalPhoneExtExist =
-                                                !isTerminalPhoneExtExist
-                                        "
-                                        ngbTooltip
-                                        mainTooltip="Add Extension"
-                                        position="top"
-                                        tooltipBackground="#6c6c6c"
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/common/ic_plus.svg"
-                                        ></svg-icon>
-                                    </div>
-                                    <app-ta-input
-                                        *ngIf="isTerminalPhoneExtExist"
-                                        formControlName="extensionPhone"
-                                        [inputConfig]="{
-                                            name: 'phone-extension',
-                                            type: 'text',
-                                            label: 'Ext.',
-                                            minLength: 1,
-                                            maxLength: 8,
-                                            placeholderIcon: 'phone-extension'
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div class="email-field">
-                                    <app-ta-input
-                                        formControlName="email"
-                                        [inputConfig]="{
-                                            name: 'Email',
-                                            type: 'text',
-                                            label: 'Email',
-                                            placeholderIcon: 'email',
-                                            minLength: 5,
-                                            maxLength: 64,
-                                            textTransform: 'lowercase'
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                            </div>
-                        </ng-container>
+                        <ng-container bodyWithoutToggle> </ng-container>
                     </app-ta-checkbox-card>
-
+                    
                     <!-- Office -->
                     <app-ta-checkbox-card
                         formControlName="officeChecked"
@@ -172,8 +153,8 @@
                         [name]="'office'"
                         [isCardOpen]="terminalForm.get('officeChecked').value"
                         [animationMarginParams]="{
-                            marginTop: '12px',
-                            marginBottom: '22px'
+                            marginTop: '0',
+                            marginBottom: '0'
                         }"
                     >
                         <div
@@ -251,8 +232,8 @@
                         [name]="'parking'"
                         [isCardOpen]="terminalForm.get('parkingChecked').value"
                         [animationMarginParams]="{
-                            marginTop: '12px',
-                            marginBottom: '22px'
+                            marginTop: '0',
+                            marginBottom: '0'
                         }"
                     >
                         <ng-container body>
@@ -350,7 +331,7 @@
                                 </div>
                             </div>
                             <div
-                                class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal row-no-m"
+                                class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal"
                             >
                                 <div class="gate-field">
                                     <p>Gate</p>
@@ -391,8 +372,8 @@
                             terminalForm.get('warehouseChecked').value
                         "
                         [animationMarginParams]="{
-                            marginTop: '12px',
-                            marginBottom: '22px'
+                            marginTop: '0',
+                            marginBottom: '0'
                         }"
                     >
                         <div
@@ -470,68 +451,12 @@
                         [name]="'fuel-station'"
                         [hasArrow]="false"
                         [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '0px'
+                            marginTop: '0',
+                            marginBottom: '0'
                         }"
                     >
                     </app-ta-checkbox-card>
-                </div>
-                <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
-                    <div class="row row-no-m">
-                        <div class="col-4">
-                            <app-ta-input
-                                formControlName="rent"
-                                [inputConfig]="{
-                                    name: 'Rent',
-                                    type: 'text',
-                                    label: 'Rent',
-                                    placeholderIcon: 'dollar',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 8
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-4">
-                            <app-ta-input-dropdown
-                                formControlName="payPeriod"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Pay Period',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-148'
-                                }"
-                                [options]="payPeriods"
-                                [activeItem]="selectedPayPeriod"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'pay-period')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
-                        <div class="col-4 no-p-left">
-                            <app-ta-input-dropdown
-                                formControlName="monthlyDay"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Day',
-                                    isDropdown: true,
-                                    isDisabled:
-                                        !terminalForm.get('payPeriod').value,
-                                    dropdownWidthClass: 'w-col-148'
-                                }"
-                                [options]="
-                                    selectedDay?.name === 'Weekly'
-                                        ? weeklyDays
-                                        : monthlyDays
-                                "
-                                [activeItem]="selectedDay"
-                                (selectedItem)="onSelectDropdown($event, 'day')"
-                            ></app-ta-input-dropdown>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </form>

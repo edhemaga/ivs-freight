@@ -83,19 +83,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     public terminalForm: UntypedFormGroup;
 
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
     public gateBtns = [
         {
             id: 511,
@@ -133,10 +120,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
 
     public selectedAddress: AddressEntity = null;
 
@@ -177,35 +160,39 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.terminalForm = this.formBuilder.group({
             // Terminal
-            isOwner: [false],
+            isOwner: [true],
             name: [null, [Validators.required, ...terminalNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
             phone: [null, [Validators.required, phoneFaxRegex]],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
+
             // Office
-            officeChecked: [true],
+            officeChecked: [false],
             officePhone: [null, [Validators.required, phoneFaxRegex]],
             officeExtPhone: [null, [...phoneExtension]],
             officeEmail: [null],
+
             // Parking
-            parkingChecked: [true],
+            parkingChecked: [false],
             parkingPhone: [null, [Validators.required, phoneFaxRegex]],
             parkingExtPhone: [null, [...phoneExtension]],
             parkingEmail: [null],
-
             terminalParkingSlot: [null, parkingSlotValidation],
             terminalFullParkingSlot: [null, fullParkingSlotValidation],
             gate: [true],
             securityCamera: [true],
+
             // Warehouse
-            warehouseChecked: [true],
+            warehouseChecked: [false],
             warehousePhone: [null, [Validators.required, phoneFaxRegex]],
             warehouseExtPhone: [null, [...phoneExtension]],
             warehouseEmail: [null],
+
             // Fuel stattion
             fuelStationChecked: [false],
+            
             // Additional tab
             rent: [null, rentValidation],
             payPeriod: [null],
@@ -236,15 +223,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-    }
-
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
