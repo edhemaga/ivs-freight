@@ -1,4 +1,5 @@
 @import './ta-input.colors.scss';
+@import 'src/theme/variables.scss';
 // -------------------- Input Control --------------------
 
 .input-control {
@@ -75,6 +76,10 @@
         &::selection {
             background-color: $default-focus-content-selection;
             color: $default-focus-content;
+        }
+
+        &.blue-dropdown {
+            background-color: $default-focus-input-blue-commands
         }
     }
 
@@ -742,4 +747,19 @@ input[type='number']:focus {
         width: 10px !important;
         height: 10px !important;
     }
+}
+
+
+.time-picker-opacity {
+    opacity: 1 !important;
+}
+
+.dispatch-history-default-color {
+    background: $ta-light-grey-5 !important;
+    transition: background 0.3s ease-in-out;
+}
+
+.dispatch-history-row-hover {
+    background: $bw2 !important;
+    transition: background 0.3s ease-in-out;
 }

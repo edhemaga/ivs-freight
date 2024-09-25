@@ -78,6 +78,8 @@ export class RoutingStateService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -130,6 +132,8 @@ export class RoutingStateService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

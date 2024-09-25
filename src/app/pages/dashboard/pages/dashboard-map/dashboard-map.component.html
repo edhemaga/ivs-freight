@@ -22,7 +22,10 @@
         </div>
     </div>
     <div class="dashboard-map-body-holder">
-        <agm-map
+        <app-ca-map [data]="data">
+
+        </app-ca-map>
+        <!-- <agm-map
             [latitude]="mapLatitude"
             [longitude]="mapLongitude"
             [restriction]="mapRestrictions"
@@ -31,6 +34,6 @@
             [zoom]="mapZoom"
             [usePanning]="true"
             [keyboardShortcuts]="false"
-        ></agm-map>
+        ></agm-map> -->
     </div>
 </div>

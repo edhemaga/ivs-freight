@@ -53,7 +53,7 @@ export class PayrollService {
     }
 
     getPayrollList() {
-        return this.payrollService.apiPayrollListGet();
+        // return this.payrollService.apiPayrollListGet();
     }
 
     set payrollList(data) {

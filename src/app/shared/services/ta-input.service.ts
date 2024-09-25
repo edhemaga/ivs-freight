@@ -157,6 +157,8 @@ export class TaInputService {
             ['producer name', 'insurer name', 'office name'].includes(inputName)
         ) {
             return /^[A-Za-z0-9!#'$&%()*+,./;:=<>?[^-]*$/;
+        } else if (['full contact name'].includes(inputName)) {
+            return /^[A-Za-z\s]+$/;
         }
     }
 

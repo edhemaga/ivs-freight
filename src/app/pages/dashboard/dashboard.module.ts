@@ -6,7 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardRoutingModule } from '@pages/dashboard//dashboard-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-//import { AgmCoreModule } from '@agm/core';
 
 // directives
 import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/click-outside-custom-range.directive';
@@ -35,6 +34,7 @@ import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-perio
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+import { CaMapComponent } from 'ca-components';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -73,6 +73,7 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
         TaChartComponent,
         TaSearchV2Component,
         TaSpinnerComponent,
+        CaMapComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

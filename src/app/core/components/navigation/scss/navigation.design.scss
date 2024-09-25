@@ -4,12 +4,12 @@ $nav-dark: #2f2f2f;
 
 $nav-svg: #b7b7b7;
 $nav-svg-hover: #919191;
-$nav-svg-active: #3074d3;
+$nav-svg-active: #3B73ED;
 $nav-svg-darker: #aaaaaa;
 
 $nav-text-color-dadada: #dadada;
 $nav-text-color-lighter: #b7b7b7;
-$nav-text-color: #6c6c6c;
+$nav-text-color-grey: #6c6c6c;
 $nav-text-color-darker: #919191;
 $nav-text-color-hover: #3c3c3c;
 
@@ -49,12 +49,23 @@ $nav-font-extrabold: 800;
 
 $nav-transparent: rgba(48, 116, 211, 0.2);
 $wrapper-line: #b7b7b7;
-$magic-line-transition: all 0.2s ease-in;
 
 $user-busy-status: #ffb74d;
 $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
+
+$nav-dark-bg: #424242;
+$nav-blue-bg: #3B73ED66;
+$nav-light-icon: #92B1F5;
+$nav-close-icon: #e9effd;
+$nav-close-icon-active: #6692f1;
+$nav-text-color: #FFFFFFB2;
+$nav-icon-orange: #FAB15C;
+$nav-icon-red: #E66767;
+$nav-icon-hover-fill: #0B49D1;
+$nav-icon-hover-bg: #BED0F9;
+$nav-icon-grey: #ccc;
 
 $files: #ffcc80;
 
@@ -126,3 +137,15 @@ $notification: #e57373;
     }
 }
 // ------------ end
+.navigation-divider {
+    background: none;
+    height: 4px;
+    width: calc(100% - 12px);
+    margin: 0 auto 4px auto;
+}
+
+// TODO: 
+// .dark-nav .navigation-divider{
+//     background: linear-gradient(360deg, #1D1D1D 0%, rgba(29, 29, 29, 0) 99.99%, #838383 100%)
+// }
+

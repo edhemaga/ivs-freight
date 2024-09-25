@@ -150,12 +150,14 @@
                 cursor: pointer !important;
 
                 &:hover {
-                    background: $ta-blue-16;
+                    &:not(.disabled) {
+                        background: $ta-blue-16;
 
-                    .action-plus-icon {
-                        svg {
-                            path {
-                                fill: $ta-blue-15;
+                        .action-plus-icon {
+                            svg {
+                                path {
+                                    fill: $ta-blue-15;
+                                }
                             }
                         }
                     }
@@ -166,6 +168,18 @@
                         path {
                             fill: $ta-blue-13;
                             transition: fill 0.3s ease-in-out;
+                        }
+                    }
+                }
+
+                &.disabled {
+                    pointer-events: none;
+                    .action-plus-icon {
+                        svg {
+                            path {
+                                fill: $muted;
+                                pointer-events: none;
+                            }
                         }
                     }
                 }
@@ -459,6 +473,12 @@
 
     // Card body
     .ta-card-body {
+        &.set-max-height{
+            transition: max-height 0.3s ease-in-out;
+            will-change: max-height;
+            max-height: 50px;
+        }
+        
         &.scroll {
             overflow-y: scroll !important;
             scrollbar-width: none !important; /* Firefox */
@@ -510,17 +530,24 @@
         }
 
         .content-holder {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            will-change: height, opacity;
+
             &.innactive {
-                height: 0px !important;
-                overflow: hidden !important;
-                opacity: 0 !important;
-                margin-top: 0px !important;
-                margin-bottom: 0px !important;
+                height: 0;
+                opacity: 0;
+                overflow: hidden;
+                margin-bottom: 0 !important;
             }
 
             &.active {
-                overflow: visible !important;
-                opacity: 1 !important;
+                opacity: 1;
+                overflow: hidden;
+                transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                height: 100%;
             }
 
             &.openedCardClass {
@@ -559,5 +586,14 @@
             color: $white;
             background-color: $ta-red-11;
         }
+    }
+}
+
+.grey-text {
+    .header-text {
+        color: $ta-light-grey-2 !important;
+    }
+    .ta-counter {
+        background-color: $ta-light-grey-6 !important;
     }
 }

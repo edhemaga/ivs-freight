@@ -5,14 +5,14 @@ import {
 
 export class DispatchTableConstants {
     static HEADER_ITEMS: DispatchTableHeaderItems[] = [
-        { title: 'TRUCK' },
-        { title: 'TRAILER' },
-        { title: 'DRIVER' },
+        { title: 'TRUCK', sortBy: 'truckNumber' },
+        { title: 'TRAILER', sortBy: 'trailerNumber' },
+        { title: 'DRIVER', sortBy: 'firstName' },
         {
             title: 'INSPECTION',
             icon: 'assets/svg/common/ic_pm-filled.svg',
         },
-        { title: 'LAST LOCATION' },
+        { title: 'LAST LOCATION', sortBy: 'city' },
         { title: 'STATUS' },
         {
             title: 'PICKUP',
@@ -21,7 +21,7 @@ export class DispatchTableConstants {
             secondIcon: 'assets/svg/common/ic_delivery.svg',
         },
         { title: 'PROGRESS' },
-        { title: 'PARKING' },
+        { title: 'PARKING', sortBy: 'slotNumber' },
         { title: 'DISPATCHER', icon: 'assets/svg/common/ic_user.svg' },
         {
             title: 'NOTE',
@@ -33,5 +33,6 @@ export class DispatchTableConstants {
         { className: 'truck-field', key: 'truckWidth' },
         { className: 'trailer-field', key: 'trailerWidth' },
         { className: 'driver-field', key: 'driverWidth' },
+        { className: 'location-field', key: 'locationWidth' },
     ];
 }

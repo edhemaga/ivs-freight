@@ -33,6 +33,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { SettingsCompanyProperties } from '@pages/settings/models/settings-company-properties.model';
 import { Subject, takeUntil } from 'rxjs';
 
+// routes
+import { SettingsGeneralSvgRoutes } from '@pages/settings/pages/settings-company/components/settings-general/utils/svg-routes';
+
 @Component({
     selector: 'app-settings-general',
     templateUrl: './settings-general.component.html',
@@ -67,6 +70,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public currentCompanyIndex: number;
 
     public fontSizeLogo: string;
+
+    public svgRoutes = SettingsGeneralSvgRoutes;
 
     private destroy$ = new Subject<void>();
 

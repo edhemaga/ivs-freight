@@ -6,6 +6,7 @@
     cursor: pointer;
     padding: 0 4px 0 6px;
     transition: background 0.2s ease-in;
+    border-radius: 2px;
 
     .status,
     .status-time {
@@ -23,7 +24,7 @@
     }
 
     &:hover {
-        background: $dark-2 !important;
+        background: $bw2 !important;
 
         .status-time {
             display: flex;
@@ -31,18 +32,17 @@
     }
 
     &.hovering {
-        background: $dark-2 !important;
+        background: $bw2 !important;
     }
 
     .status-time {
-        font-size: 10px;
         display: none;
-        color: $muted;
-        height: 12px;
-        line-height: 12px;
+        font-size: 11px;
+        color: $ta-black;
+        line-height: 11px;
 
         &::selection {
-            color: $muted;
+            color: $ta-black;
             background: $dark-4;
         }
     }

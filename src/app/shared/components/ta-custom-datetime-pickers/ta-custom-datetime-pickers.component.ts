@@ -8,6 +8,7 @@ import {
     ViewChild,
     ViewContainerRef,
     OnDestroy,
+    AfterContentInit,
     AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,6 +26,9 @@ import { TaCustomDateTimePickersDateCalendarsComponent } from '@shared/component
 // models
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// constants
+import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-datetime-pickers/constants/custom-datetime-pickers.constants';
+
 @Component({
     selector: 'app-ta-custom-datetime-pickers',
     templateUrl: './ta-custom-datetime-pickers.component.html',
@@ -37,7 +41,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
     ],
 })
 export class TaCustomDatetimePickersComponent
-    implements OnInit, OnDestroy, AfterViewInit
+    implements OnInit, OnDestroy, AfterContentInit, AfterViewInit
 {
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
@@ -46,6 +50,11 @@ export class TaCustomDatetimePickersComponent
         this._inputConfig = config;
         if (this._inputConfig.name === 'datepickerBankCard')
             this.listPreview = 'month_list';
+
+        if (this._inputConfig.minutesGapFive)
+            this.timeMinutes =
+                CustomDatetimePickersConstants.timeMinutesGapFive;
+        else this.timeMinutes = CustomDatetimePickersConstants.timeMinutes;
     }
 
     @Output() closePopover: EventEmitter<any> = new EventEmitter();
@@ -62,7 +71,7 @@ export class TaCustomDatetimePickersComponent
     currentMonth: any = new Date().getMonth();
     currentDay: any = new Date().getDate();
     listPreview: any = 'full_list';
-    timeMinutes: any = ['00', '15', '30', '45'];
+    timeMinutes: any;
     monthArray: any = new Array(12).fill(0).map((_, indx) => indx + 1);
     monthDayList: any = new Array(31).fill(0).map((_, indx) => indx + 1);
     yearsList: any = new Array(100)
@@ -132,7 +141,9 @@ export class TaCustomDatetimePickersComponent
         });
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit() {}
+
+    ngAfterViewInit(): void {
         this.setTimeValue();
         this.changeOpened();
     }
@@ -141,13 +152,16 @@ export class TaCustomDatetimePickersComponent
         const dateInputArray = moment(this.dateTime)
             .format('H/mm/A')
             .split('/');
-        this.scrollTypes.hourScroll = this.hourTimes.indexOf(
-            parseInt(dateInputArray[0])
-        );
-        this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
-            dateInputArray[1]
-        );
-        this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;
+        setTimeout(() => {
+            this.scrollTypes.hourScroll = this.hourTimes.indexOf(
+                parseInt(dateInputArray[0])
+            );
+            this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
+                dateInputArray[1]
+            );
+
+            this.scrollTypes.pmAmScroll = dateInputArray[2] === 'AM' ? 0 : 1;
+        });
     }
 
     public setListPreview(value: string): void {

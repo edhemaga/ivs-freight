@@ -47,16 +47,19 @@ export class UserService {
         search1?: string,
         search2?: string
     ): Observable<CompanyUserListResponse> {
-        return of(null); /* this.userService.apiCompanyuserListGet(
+        return this.userService.apiCompanyuserListGet(
             active,
+            null,
             pageIndex,
             pageSize,
             companyId,
             sort,
+            'Descending',
+            null,
             search,
             search1,
             search2
-        );*/
+        );
     }
 
     public addUser(data: CreateCompanyUserCommand): Observable<CreateResponse> {

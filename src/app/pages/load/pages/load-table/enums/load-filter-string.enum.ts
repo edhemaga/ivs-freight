@@ -5,6 +5,7 @@ export enum LoadFilterStringEnum {
 
     // Filter Types
     TIME_FILTER = 'timeFilter',
+    TIME_FILTER_FUTURE = 'hasFutureTimeFilter',
     STATUS_FILTER = 'statusFilter',
     USER_FILTER = 'userFilter',
     MONEY_FILTER = 'moneyFilter',

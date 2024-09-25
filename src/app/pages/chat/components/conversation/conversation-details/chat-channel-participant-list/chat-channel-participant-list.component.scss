@@ -1,0 +1,97 @@
+@import 'src/theme/variables';
+
+.channel-participants-container {
+    // height: 100%;
+    min-width: 280px;
+    max-width: 320px;
+    width: 100%;
+
+    border-radius: 2px;
+    background-color: $white;
+
+    .channel-participants-header {
+        width: fit-content;
+        padding: 6px;
+
+        .left-arrow {
+            width: 26px;
+            height: 26px;
+            border-radius: 2px;
+            background-color: $bw2;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .participants {
+            line-height: 26px;
+            font-size: 16px;
+            margin-left: 4px;
+            color: $ta-black;
+        }
+
+        .count {
+            font-size: 11px;
+            line-height: 18px;
+            height: 18px;
+            min-width: 18px;
+            border-radius: 50px;
+            background: $bw5;
+            color: $white;
+            padding: 0px 6px;
+            margin: auto 5px;
+        }
+    }
+
+    .search {
+        padding: 0 6px 4px 6px;
+    }
+
+    .users {
+        &-wrapper {
+            padding: 0 6px;
+
+            .conversation-list-item {
+                border-radius: 2px;
+                padding: 4px;
+
+                &-advanced {
+                    height: 46px;
+
+                    &-details {
+                        width: 100%;
+
+                        padding: 4px 6px;
+
+                        &-top {
+                            height: 18px;
+
+                            margin: 2px auto 1px auto;
+                        }
+
+                        &-bottom {
+                            height: 14px;
+
+                            font-size: 11px;
+                            line-height: 14px;
+
+                            margin: 1px auto 2px auto;
+                        }
+                    }
+                }
+            }
+
+            .users-holder {
+                height: fit-content;
+                overflow-y: scroll;
+            }
+        }
+    }
+}
+
+.title {
+    line-height: 18px;
+    font-size: 14px;
+    float: left;
+}

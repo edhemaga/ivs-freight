@@ -32,6 +32,7 @@ import {
     RevertDispatchStatusCommand,
     UpdateDispatchHistoryCommand,
     DispatchGroupedLoadsResponse,
+    DispatchHistoryTruckLastLocationResponse,
 } from 'appcoretruckassist';
 import { GetDispatchHistoryData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
@@ -463,6 +464,12 @@ export class DispatcherService {
             trailerId,
             dispatchBoardId
         );
+    }
+
+    public getDispatchTruckLastLocation(
+        id: number
+    ): Observable<DispatchHistoryTruckLastLocationResponse> {
+        return this.dispatchService.apiDispatchTruckLastLocationIdGet(id);
     }
 
     public updateDispatchHistoryGroup(

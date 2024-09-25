@@ -104,6 +104,7 @@ export class TaDetailsDropdownComponent
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
+    public isActionInProgress: boolean = false;
 
     constructor(
         private DetailsDataService: DetailsDataService,
@@ -161,10 +162,15 @@ export class TaDetailsDropdownComponent
         return item.id;
     }
     onAction(action: any, event?: any) {
+        if (this.isActionInProgress) return;
+
+        this.isActionInProgress = true;
+
         event.stopPropagation();
         event.preventDefault();
 
         if (action.disabled) {
+            this.enableNewAction();
             return false;
         }
 
@@ -174,7 +180,14 @@ export class TaDetailsDropdownComponent
             type: action.name,
         });
 
+        this.enableNewAction();
         this.tooltip.close();
+    }
+
+    private enableNewAction(): void {
+        setTimeout(() => {
+            this.isActionInProgress = false;
+        }, 300);
     }
 
     subTypeAction(actionData: any, action: any, event?: any) {

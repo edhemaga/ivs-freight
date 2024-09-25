@@ -92,6 +92,10 @@
 
         &.load-items-table {
             grid-template-columns: 130px 90px 100px 80px 80px 80px 80px 100px 140px 140px 100px 100px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
         }
     }
 

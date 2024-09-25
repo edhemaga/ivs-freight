@@ -19,6 +19,7 @@ export interface GetTransactionModalFranchiseStopResponse {
     count?: number | null;
     fuelStopStores?: Array<FuelModalStopResponse> | null;
     isFranchise?: boolean;
+    favourite?: boolean;
     address?: AddressEntity;
 }
 

@@ -943,7 +943,7 @@
                                         >
                                             <div>
                                                 <span>
-                                                    {{ item.truckType?.name }}
+                                                    {{ item.truckType?.name || item.name }}
                                                 </span>
                                             </div>
                                             <ng-container *ngIf="item.logo">
@@ -956,7 +956,7 @@
                                         </div>
                                         <ng-container>
                                             <span
-                                                class="count-holder align-items-center justify-content-center d-flex"
+                                                class="count-holder align-items-center justify-content-center d-flex ml-1"
                                             >
                                                 {{ item.count }}
                                             </span>
@@ -1006,7 +1006,7 @@
                                         </div>
                                         <ng-container>
                                             <span
-                                                class="count-holder align-items-center justify-content-center d-flex"
+                                                class="count-holder align-items-center justify-content-center d-flex ml-1"
                                             >
                                                 {{ item.count }}
                                             </span>
@@ -1330,6 +1330,304 @@
                 </div>
             </ng-container>
         </div>
+
+        
+
+        <ng-container *ngIf="type === 'hasFutureTimeFilter'">
+            <div class="time-filter-holder">
+                <div class="time-header">TIME FILTER</div>
+                <div class="border-filter"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Today'"
+                        (click)="setTimeValue('Today')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Today
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Tomorrow'"
+                        (click)="setTimeValue('Tomorrow')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Tomorrow
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'This week'"
+                        (click)="setTimeValue('This week')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        This week
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Next week'"
+                        (click)="setTimeValue('Next week')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Next week
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'week_future'"
+                        (click)="setTimeValue('week_future')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        1 week
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'This month'"
+                        (click)="setTimeValue('This month')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        This month
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Next month'"
+                        (click)="setTimeValue('Next month')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Next month
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == '1 month'"
+                        (click)="setTimeValue('1 month')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        1 month
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == '3 months'"
+                        (click)="setTimeValue('3 months')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        3 months
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'This quarter'"
+                        (click)="setTimeValue('This quarter')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        This quarter
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Next quarter'"
+                        (click)="setTimeValue('Next quarter')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Next quarter
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'This year'"
+                        (click)="setTimeValue('This year')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        This year
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == '1 year'"
+                        (click)="setTimeValue('1 year')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        1 year
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div> 
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="time-items-holder">
+                    <div
+                        class="time-items"
+                        [class.active]="selectedTimeValue == 'Custom'"
+                        (click)="setTimeValue('Custom')"
+                        [@showAnimation]="!!activeFilter"
+                    >
+                        Custom
+                        <div class="selected-icon">
+                            <svg-icon
+                                src="assets/svg/common/ic_confirm.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="icon-delete">
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-filter time-data-border"></div>
+                <div class="buttons-holder">
+                    <div
+                        (click)="clearAll($event)"
+                        class="button-clear"
+                        [class.active]="
+                            selectedTimeValue != filterActiveTime ||
+                            selectedTimeValue != ''
+                        "
+                    >
+                        Clear
+                    </div>
+                    <div
+                        (click)="setFilterValue($event)"
+                        class="button-set"
+                        [class.active]="selectedTimeValue != filterActiveTime"
+                    >
+                        Set
+                    </div>
+                </div>
+            </div>
+        </ng-container>
         <ng-container *ngIf="type === 'timeFilter'">
             <div class="time-filter-holder">
                 <div class="time-header">TIME FILTER</div>
@@ -1775,7 +2073,7 @@
                                     [@showAnimation]="!!activeFilter"
                                     formControlName="multiFromFirstFrom"
                                     [inputConfig]="{
-                                        name: 'multiFromFirst From',
+                                        name: 'multiFromFirstFrom',
                                         type: 'string',
                                         label: 'From',
                                         placeholderIcon: 'dollar',

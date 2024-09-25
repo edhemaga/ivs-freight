@@ -10,8 +10,14 @@
         <app-ta-input-dropdown
             #inputDropdown
             [formControl]="getSuperControl"
+            [template]="
+                isDispatchBoardAddress ? 'svgtext-dispatch-template' : ''
+            "
             [inputConfig]="inputConfig"
-            [options]="addresList"
+            [options]="addressList?.length ? addressList : [{
+                id: 7654,
+                name: 'No Results',
+            }]"
             [activeItem]="activeAddress"
             [incorrectValue]="incorrectValue"
             (incorrectEvent)="onIncorrectInput($event)"
@@ -19,6 +25,7 @@
             (closeDropdown)="onCloseDropdown($event)"
             (clearInputEvent)="onClearInputEvent()"
         ></app-ta-input-dropdown>
+
         <div
             class="stop_hold"
             *ngIf="isRouting && addressExpanded && !hideEmptyLoaded"

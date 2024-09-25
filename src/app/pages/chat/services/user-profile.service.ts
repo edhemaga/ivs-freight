@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 // Models
-import { ConversationInfoResponse } from "appcoretruckassist";
+import { ConversationInfoResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +14,7 @@ export class UserProfileService {
     public getProfile(): Observable<ConversationInfoResponse> {
         return new Observable((observer) => {
             observer.next(this.userProfile.value);
-        })
+        });
     }
 
     public setProfile(profileDetails: ConversationInfoResponse): void {

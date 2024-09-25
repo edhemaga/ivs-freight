@@ -26,6 +26,8 @@
                         selectedDispatcher?.name === 'All Boards'
                     "
                     [isNoteExpanded]="isNoteExpanded"
+                    [sortBy]="sortBy"
+                    [sortDirection]="sortDirection"
                     (onTableUnlockEmitter)="onToolBarAction($event)"
                     (onToggleNoteEmitter)="toggleNote($event)"
                 ></app-dispatch-table>

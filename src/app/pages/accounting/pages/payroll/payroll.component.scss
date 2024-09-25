@@ -40,6 +40,18 @@
     width: 100%;
     position: absolute;
     top: 0;
+   
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+
+    app-ca-main-table{
+        width: 100%;
+
+        cdk-virtual-scroll-viewport{
+            height: 500px;
+        }
+    }
 
     .columns-container {
         height: 28px !important;

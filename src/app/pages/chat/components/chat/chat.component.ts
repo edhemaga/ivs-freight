@@ -1,167 +1,240 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, takeUntil } from 'rxjs';
 
 // Components
-import { ChatMessagesComponent } from '@pages/chat/components/conversation/chat-messages/chat-messages.component';
+import { ConversationContentComponent } from '@pages/chat/components/conversation/conversation-content/conversation-content.component';
 
 // Models
-import { ConversationType } from 'appcoretruckassist';
-import { ChatResolvedData } from '@pages/chat/models/chat-resolved-data.model';
-import { CompanyUserChatResponsePaginationReduced } from '@pages/chat/models/company-user-chat-response.model';
+import {
+    CompanyUserShortResponse,
+    ConversationInfoResponse,
+    ConversationType,
+} from 'appcoretruckassist';
+import {
+    ChatResolvedData,
+    CompanyUserChatResponsePaginationReduced,
+    ChatTab,
+    ChatCompanyChannelExtended,
+} from '@pages/chat/models';
 
 // Enums
-import { ChatRoutesEnum } from '@pages/chat/enums/routes/chat-routes.enum';
-import { ConversationTypeEnum } from '@pages/chat/enums/conversation/chat-conversation-type.enum';
+import {
+    ChatConversationProfileDetailsType,
+    ChatGridLayout,
+    ChatGroupEnum,
+    ChatRoutesEnum,
+    ConversationTypeEnum,
+} from '@pages/chat/enums';
 
 // Constants
-import { ChatToolbarDataConstants } from '@pages/chat/utils/constants/chat-toolbar-data.constants';
+import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
 
 // Routes
-import { ChatSvgRoutes } from '@pages/chat/utils/routes/chat-svg-routes';
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Service
-import { UserChatService } from "@pages/chat/services/chat.service";
-import { ChatTab } from '@pages/chat/models/chat-tab.model';
-import { ChatCompanyChannelExtended } from '@pages/chat/models/chat-company-channels-extended.model';
+import { UserChatService, UserProfileService } from '@pages/chat/services';
+
+// Helpers
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
+
+// Animations
+import { chatFadeHorizontallyAnimation } from '@shared/animations';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.scss'],
+    animations: [chatFadeHorizontallyAnimation],
 })
-export class ChatComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class ChatComponent
+    extends UnsubscribeHelper
+    implements OnInit, OnDestroy
+{
+    public title!: string;
 
-  public title!: string;
+    // Data
+    public departments!: ChatCompanyChannelExtended[];
+    public companyChannels: ChatCompanyChannelExtended[];
+    public companyUsers!: CompanyUserChatResponsePaginationReduced;
+    public drivers!: CompanyUserChatResponsePaginationReduced;
+    public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
+    public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
 
-  public companyUsers!: CompanyUserChatResponsePaginationReduced;
-  public drivers!: CompanyUserChatResponsePaginationReduced;
-  public archivedCompanyUsers!: CompanyUserChatResponsePaginationReduced;
-  public archivedDrivers!: CompanyUserChatResponsePaginationReduced;
-  public companyChannels!: ChatCompanyChannelExtended[];
+    public unreadCount!: number;
+    public selectedConversation: number;
 
-  public unreadCount!: number;
-  public selectedConversation: number;
-  public ConversationTypeEnum = ConversationTypeEnum;
+    public ConversationTypeEnum = ConversationTypeEnum;
 
-  // Tab and header ribbon configuration
-  public tabs: ChatTab[] = ChatToolbarDataConstants.tabs;
+    // Attachment upload
+    public attachmentUploadActive: boolean = false;
 
-  public ChatSvgRoutes = ChatSvgRoutes;
+    // User Profile Data
+    public isProfileDetailsDisplayed: boolean = false;
+    public userProfileData!: Observable<ConversationInfoResponse>;
+    public isGroupMembersDisplayed: boolean = false;
+    public conversationParticipants!: CompanyUserShortResponse[];
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
+    // Tab and header ribbon configuration
+    public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
 
-    // Services
-    private chatService: UserChatService
-  ) { }
+    // Assets and enums
+    public chatSvgRoutes = ChatSvgRoutes;
+    public chatGridLayout = ChatGridLayout;
+    public chatConversationProfileDetailsType =
+        ChatConversationProfileDetailsType;
 
-  ngOnInit(): void {
-    this.getResolvedData();
-  }
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
 
-  private getResolvedData(): void {
-    this.activatedRoute.data
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: ChatResolvedData) => {
-        this.title = res.title;
-        this.drivers = res.drivers;
-        this.companyUsers = res.users;
-        this.companyChannels = res.companyChannels;
-        this.tabs[0].count = this.drivers.count + this.companyUsers.count;
-        this.unreadCount = this.getUnreadCount(this.companyUsers, this.drivers);
-      });
-  }
-
-  public trackById(index: number, tab: ChatTab): number {
-    return tab.id;
-  }
-
-  public onSelectTab(item: ChatTab): void {
-    this.tabs.forEach(arg => {
-      arg.checked = arg.name === item.name
-    })
-    //TODO Create store and set value there
-  }
-
-  public createUserConversation(
-    selectedUser: number,
-    chatType: ConversationType
-  ): void {
-
-    if (!selectedUser) return;
-
-    this.chatService
-      .createConversation([selectedUser], chatType)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          if (res?.id !== 0) {
-            this.selectedConversation = res.id;
-            this.router.navigate([ChatRoutesEnum.CONVERSATION, res.id]);
-          }
-        }
-      });
-  }
-
-  public searchDepartment(searchTerm: string): void { }
-
-  private getUnreadCount(
-    users: CompanyUserChatResponsePaginationReduced,
-    drivers: CompanyUserChatResponsePaginationReduced,
-    archivedUsers?: CompanyUserChatResponsePaginationReduced,
-    archivedDrivers?: CompanyUserChatResponsePaginationReduced
-  ): number {
-
-    let totalUnreadCount = 0;
-    // Users
-    totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
-    }, 0);
-
-    if (archivedUsers)
-      totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
-        return accumulator + currentObject.unreadCount
-      }, 0);
-
-    // Drivers
-    totalUnreadCount = drivers.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
-    }, 0);
-
-    if (archivedDrivers) totalUnreadCount = archivedUsers.data.reduce((accumulator, currentObject) => {
-      return accumulator + currentObject.unreadCount
-    }, 0);
-
-    return totalUnreadCount;
-  }
-
-  public onActivate(component: ChatMessagesComponent): void {
-    if (component instanceof ChatMessagesComponent) {
-      component.userTypingEmitter
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((userId: number) => {
-          if (userId) {
-            const driver = this.drivers.data.find(driver => {
-              driver.companyUser?.userId === userId;
-            })
-          }
-        });
+        // Services
+        private chatService: UserChatService,
+        public userProfileService: UserProfileService
+    ) {
+        super();
     }
-  }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    ngOnInit(): void {
+        this.setUserProfileData();
+        this.getDataOnLoad();
+    }
+
+    private getResolvedData(): void {
+        this.activatedRoute.data
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ChatResolvedData) => {
+                this.title = res.title;
+                this.drivers = res.drivers;
+                this.companyUsers = res.users;
+                this.departments = res.departments;
+                this.tabs[0].count =
+                    this.drivers.count +
+                    this.companyUsers.count +
+                    this.departments.length;
+                this.unreadCount = this.getUnreadCount(
+                    this.companyUsers,
+                    this.drivers
+                );
+            });
+    }
+
+    private getDataOnLoad(): void {
+        this.getResolvedData();
+
+        const urlTree = this.router.parseUrl(this.router.url);
+        // Get route parameters
+        const segments = urlTree.root.children['primary'].segments;
+        if (segments.length > 1) {
+            this.selectedConversation = Number(segments[2].path) ?? 0;
+        }
+    }
+
+    public onSelectTab(item: ChatTab): void {
+        this.tabs.forEach((arg) => {
+            arg.checked = arg.name === item.name;
+        });
+        //TODO Create store and set value there
+    }
+
+    public createUserConversation(
+        selectedConversation: number[],
+        chatType: ConversationType,
+        channel: ChatGroupEnum
+    ): void {
+        if (!selectedConversation?.length) return;
+
+        this.chatService
+            .createConversation(selectedConversation, chatType)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    if (res?.id !== 0) {
+                        this.selectedConversation = res.id;
+                        this.router.navigate(
+                            [ChatRoutesEnum.CONVERSATION, res.id],
+                            {
+                                queryParams: { channel },
+                            }
+                        );
+                    }
+                },
+            });
+    }
+
+    public searchDepartment(searchTerm: string): void {}
+
+    private getUnreadCount(
+        users: CompanyUserChatResponsePaginationReduced,
+        drivers: CompanyUserChatResponsePaginationReduced,
+        archivedUsers?: CompanyUserChatResponsePaginationReduced,
+        archivedDrivers?: CompanyUserChatResponsePaginationReduced
+    ): number {
+        let totalUnreadCount = 0;
+        // Users
+        totalUnreadCount = users.data.reduce((accumulator, currentObject) => {
+            return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
+        }, 0);
+
+        if (archivedUsers)
+            totalUnreadCount = archivedUsers.data.reduce(
+                (accumulator, currentObject) => {
+                    return (
+                        accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
+                    );
+                },
+                0
+            );
+
+        // Drivers
+        totalUnreadCount = drivers.data.reduce((accumulator, currentObject) => {
+            return accumulator + (currentObject.hasUnreadMessage ? 1 : 0);
+        }, 0);
+
+        if (archivedDrivers)
+            totalUnreadCount = archivedUsers.data.reduce(
+                (accumulator, currentObject) => {
+                    return (
+                        accumulator + (currentObject.hasUnreadMessage ? 1 : 0)
+                    );
+                },
+                0
+            );
+
+        return totalUnreadCount;
+    }
+
+    public displayProfileDetails(value: boolean): void {
+        if (!this.selectedConversation) {
+            this.isProfileDetailsDisplayed = value;
+            return;
+        }
+
+        this.chatService
+            .getAllConversationFiles(this.selectedConversation)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: ConversationInfoResponse) => {
+                this.isProfileDetailsDisplayed = value;
+                this.userProfileService.setProfile(data);
+            });
+    }
+
+    private setUserProfileData(): void {
+        this.userProfileData = this.userProfileService.getProfile();
+    }
+
+    public closeGroupMembersOverview($event: boolean): void {
+        this.isGroupMembersDisplayed = $event;
+    }
+
+    public onActivate(event: ConversationContentComponent): void {
+        event?.isConversationParticipantsDisplayed
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((emittedData) => {
+                this.isGroupMembersDisplayed = emittedData.isDisplayed;
+                this.conversationParticipants =
+                    emittedData.conversationParticipants;
+            });
+    }
 }
