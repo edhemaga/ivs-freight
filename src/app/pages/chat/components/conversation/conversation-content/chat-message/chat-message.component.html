@@ -25,6 +25,36 @@
                             }
                         "
                     ></ng-container>
+                    <ng-container
+                        *ngIf="
+                            currentUserId ===
+                            (message.senderId || message.sender?.id)
+                        "
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.trashBinIcon,
+                                        actionType: chatMessageActionEnum.DELETE
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.editPenIcon,
+                                        actionType: chatMessageActionEnum.EDIT
+                                    }
+                                }
+                            "
+                        ></ng-container
+                    ></ng-container>
+
                     <app-chat-vertical-divider></app-chat-vertical-divider>
 
                     <!-- TODO Add two additional icon actions -->
