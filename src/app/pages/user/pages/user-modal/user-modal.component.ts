@@ -556,19 +556,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     private checkUserEmail(): void {
-        if (this.editData?.type === 'edit') return;
+        if (this.editData?.type === TableStringEnum.EDIT) return;
         this.userForm
-            .get('email')
+            .get(TableStringEnum.EMAIL_2)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 takeWhile(() => !this.emailCheckCompleted),
                 debounceTime(500),
                 switchMap((value) => {
-                    if (this.userForm.get('email').valid) {
+                    if (this.userForm.get(TableStringEnum.EMAIL_2).valid)
                         return this.userProfileUpdateService.checkUserByEmail(
                             value
                         );
-                    }
                     return of(null);
                 })
             )

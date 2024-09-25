@@ -35,6 +35,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // constants
 import { UserConstants } from '@pages/user/utils/constants/user.constants';
+import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -54,14 +55,14 @@ import { CompanyUserResponse } from 'appcoretruckassist';
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = TableStringEnum.ACTIVE;
-    activeViewMode: string = TableStringEnum.LIST;
-    resizeObserver: ResizeObserver;
-    mapingIndex: number = 0;
+    public tableOptions: any; //leave this any for now
+    public tableData: any[]; //leave this any for now
+    public viewData: any[]; //leave this any for now
+    public columns: any[]; //leave this any for now
+    public selectedTab = TableStringEnum.ACTIVE;
+    public activeViewMode: string = TableStringEnum.LIST;
+    public resizeObserver: ResizeObserver;
+    public mapingIndex: number = 0;
     public usersActive: UserActiveState[];
     public usersInactive: UserInactiveState[];
 
@@ -80,16 +81,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public cardTitle: string = DisplayUserConfiguration.cardTitle;
 
-    backFilterQuery = {
-        active: 1,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
+    public backFilterQuery = UserTableConfig.BACK_FILTER_QUERY;
 
     constructor(
         // service
@@ -436,7 +428,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
-        const userCount = JSON.parse(localStorage.getItem(TableStringEnum.USER_TABLE_COUNT));
+        const userCount = JSON.parse(
+            localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+        );
 
         const userActiveData =
             this.selectedTab === TableStringEnum.ACTIVE
@@ -702,7 +696,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     updateDataCount() {
-        const userCount = JSON.parse(localStorage.getItem(TableStringEnum.USER_TABLE_COUNT));
+        const userCount = JSON.parse(
+            localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+        );
 
         this.tableData[0].length = userCount.active;
 

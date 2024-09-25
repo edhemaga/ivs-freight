@@ -242,6 +242,7 @@ export enum TableStringEnum {
     EMAIL = 'Email • ',
     PUSH = 'Push • ',
     SMS = 'SMS',
+    EMAIL_2 = 'email',
 
     // Truck
     EDIT_TRUCK = 'edit-truck',
