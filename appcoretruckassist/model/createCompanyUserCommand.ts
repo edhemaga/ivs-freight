@@ -13,26 +13,25 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface CreateCompanyUserCommand { 
+    email?: string | null;
     firstName?: string | null;
     lastName?: string | null;
-    address?: AddressEntity;
-    personalPhone?: string | null;
-    personalEmail?: string | null;
+    isAdmin?: boolean;
     departmentId?: number;
     companyOfficeId?: number | null;
-    userType?: number | null;
-    isAdmin?: boolean;
     phone?: string | null;
     extensionPhone?: string | null;
-    email?: string | null;
+    personalPhone?: string | null;
+    personalEmail?: string | null;
+    address?: AddressEntity;
     includeInPayroll?: boolean;
-    paymentType?: number | null;
-    salary?: number | null;
     startDate?: string | null;
     is1099?: boolean | null;
     bankId?: number | null;
     routingNumber?: string | null;
     accountNumber?: string | null;
+    paymentType?: number | null;
+    salary?: number | null;
     base?: number | null;
     commission?: number | null;
     note?: string | null;

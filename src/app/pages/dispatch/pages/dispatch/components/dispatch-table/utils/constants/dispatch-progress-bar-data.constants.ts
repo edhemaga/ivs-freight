@@ -1,4 +1,4 @@
-import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-progress-bar-data.model';
+import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 export class DispatchProgressBarDataConstants {
     static dispatchProgressDummyData: DispatchProgressBarData = {

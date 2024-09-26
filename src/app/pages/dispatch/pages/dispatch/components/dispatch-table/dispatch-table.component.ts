@@ -30,7 +30,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
-import { DispatchProgressBarDataConstants } from './utils/constants/dispatch-progress-bar-data.constants';
+import { DispatchProgressBarDataConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -63,7 +63,7 @@ import {
     DispatchTableHeaderItems,
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
-import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatch-progress-bar-data.model';
+import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -1134,7 +1134,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             this.progressBarData.push(null);
 
             if (dispatch.loadProgress?.activeLoadProgressBar) {
-                const dispatchLoadProgress: any =
+                const dispatchLoadProgress =
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
 

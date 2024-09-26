@@ -1626,6 +1626,12 @@
     }
 }
 
+.gps_dropdown_popover {
+    max-width: 494px !important;
+    top: -38px !important;
+    right: -3px !important;
+}
+
 .tags_popover_vertical {
     background-color: transparent !important;
     .popover-body {
