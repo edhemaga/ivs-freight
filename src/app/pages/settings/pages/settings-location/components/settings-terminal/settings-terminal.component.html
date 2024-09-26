@@ -128,6 +128,102 @@
                         </app-ta-copy>
                     </div>
                 </div>
+            </app-ta-custom-card> 
+            
+            <app-ta-custom-card
+                [cardName]="'Parking'"
+                [isCardOpen]="item.parkingChecked"
+                [bodyTemplate]="'card'"
+                [textBottomPossiton]="'-2px'"
+                [customClass]="'detailsPadding'"
+                [hasArrow]="item.parkingChecked"
+                [disabledCard]="!item.parkingChecked"
+            >
+                <div class="parking-template-data">
+                    <div
+                        *ngIf="item.parkingPhone"
+                        class="parking-template-item"
+                    >
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item.parkingPhone"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
+                    </div>
+
+                    <div class="parking-template-item">
+                        <svg-icon
+                            *ngIf="item.parkingEmail"
+                            class="company-icons"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item.parkingEmail"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
+                    </div>
+                    <div
+                        *ngIf="item.terminalParkingSlot"
+                        class="parking-template-item"
+                    >
+                        <p
+                            class="ta-font-semi-bold text-size-14 text-color-black"
+                        >
+                            {{ item.terminalParkingSlot }}
+                        </p>
+                        <p
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                        >
+                            Parking Slot
+                        </p>
+                    </div>
+                    <div
+                        *ngIf="item.terminalFullParkingSlot"
+                        class="parking-template-item"
+                    >
+                        <p
+                            class="ta-font-semi-bold text-size-14 text-color-black"
+                        >
+                            {{ item.terminalFullParkingSlot }}
+                        </p>
+                        <p
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                        >
+                            Full Parking Slot
+                        </p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !item.securityCamera }"
+                            src="assets/svg/common/ic_security-camera.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                            [ngClass]="{ 'cross-out': !item.securityCamera }"
+                        >
+                            Security Camera
+                        </p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !item.gate }"
+                            src="assets/svg/common/ic_security-gate.svg"
+                        ></svg-icon>
+                        <p
+                            [ngClass]="{ 'cross-out': !item.gate }"
+                            class="parking-template-text text-color-black-2 text-color-black-2"
+                        >
+                            Gate
+                        </p>
+                    </div>
+                </div>
             </app-ta-custom-card>
 
             <app-ta-custom-card
@@ -184,94 +280,14 @@
                 </div>
             </app-ta-custom-card>
 
-            <app-ta-custom-card
-                [cardName]="'Parking'"
-                [isCardOpen]="item.parkingChecked"
-                [bodyTemplate]="'card'"
-                [textBottomPossiton]="'-2px'"
-                [customClass]="'detailsPadding'"
-                [hasArrow]="item.parkingChecked"
-                [disabledCard]="!item.parkingChecked"
-            >
-                <div class="parking-template-data">
-                    <div
-                        *ngIf="item.parkingPhone"
-                        class="parking-template-item"
-                    >
-                        <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.parkingPhone"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-
-                    <div class="parking-template-item">
-                        <svg-icon
-                            *ngIf="item.parkingEmail"
-                            class="company-icons"
-                            src="assets/svg/common/ic_email.svg"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.parkingEmail"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-                    <div
-                        *ngIf="item.terminalParkingSlot"
-                        class="parking-template-item"
-                    >
-                        <p
-                            class="ta-font-semi-bold text-size-14 text-color-black"
-                        >
-                            {{ item.terminalParkingSlot }}
-                        </p>
-                        <p class="parking-template-text text-color-black-2 text-color-black-2">Parking Slot</p>
-                    </div>
-                    <div
-                        *ngIf="item.terminalFullParkingSlot"
-                        class="parking-template-item"
-                    >
-                        <p
-                            class="ta-font-semi-bold text-size-14 text-color-black"
-                        >
-                            {{ item.terminalFullParkingSlot }}
-                        </p>
-                        <p class="parking-template-text text-color-black-2 text-color-black-2">Full Parking Slot</p>
-                    </div>
-                    <div class="parking-template-item">
-                        <svg-icon
-                            class="parking-template-svg"
-                            [ngClass]="{ disabled: !item.securityCamera }"
-                            src="assets/svg/common/ic_security-camera.svg"
-                        ></svg-icon>
-                        <p
-                            class="parking-template-text text-color-black-2 text-color-black-2"
-                            [ngClass]="{ 'cross-out': !item.securityCamera }"
-                        >
-                            Security Camera
-                        </p>
-                    </div>
-                    <div class="parking-template-item">
-                        <svg-icon
-                            class="parking-template-svg"
-                            [ngClass]="{ disabled: !item.gate }"
-                            src="assets/svg/common/ic_security-gate.svg"
-                        ></svg-icon>
-                        <p
-                            [ngClass]="{ 'cross-out': !item.gate }"
-                            class="parking-template-text text-color-black-2 text-color-black-2"
-                        >
-                            Gate
-                        </p>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-
+            <ng-container *ngIf="item.fuelStationChecked">
+                <app-ta-custom-card
+                    [cardName]="'Fuel'"
+                    [bodyTemplate]="'card'"
+                    [hasArrow]="false"
+                    [disabledCard]="true"
+                ></app-ta-custom-card>
+            </ng-container>
         </app-ta-common-card>
     </div>
 </div>
