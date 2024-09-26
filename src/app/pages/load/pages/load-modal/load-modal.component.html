@@ -278,6 +278,7 @@
                     <div class="pt-3">
                         <div class="load-requirements-load-first-row">
                             <app-ta-input-dropdown
+                                #truckInputDropdown
                                 formControlName="truckTypeId"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="getTruckTypeIdInputConfig"
@@ -1678,7 +1679,7 @@
 
             <div class="load-modal-row">
                 <app-ta-custom-card
-                    [cardName]="'Document'" 
+                    [cardName]="'Document'"
                     [isCardOpen]="!!documents.length"
                     [hasBodyData]="true"
                     [hasDivider]="true"

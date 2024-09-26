@@ -74,4 +74,7 @@ export enum DispatchTableStringEnum {
     PICKUP_DELIVERY = 'Pickup & Delivery',
     PICKUP_DELIVERY_2 = 'Pickup&Delivery',
     PICKUP_DELIVERY_3 = 'pickup_delivery',
+
+    // Progress bar
+    NO_GPS_DEVICE = 'NO GPS DEVICE',
 }

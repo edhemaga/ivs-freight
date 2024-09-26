@@ -8,7 +8,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { UserService } from '@pages/user/services/user.service';
 
 // store
-import { UserState, UserStore } from '@pages/user/state/user.store';
+import { UserActiveStore } from '@pages/user/state/user-active-state/user-active.store';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -16,19 +19,20 @@ import { UserState, UserStore } from '@pages/user/state/user.store';
 export class UserResolver  {
     constructor(
         private userService: UserService,
-        private userStore: UserStore,
+        private userStore: UserActiveStore,
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.userService.getUsers(undefined, 1, 25),
+            this.userService.getUsers(1, 1, 25),
             this.tableService.getTableConfig(22),
         ]).pipe(
             tap(([userPagination, tableConfig]) => {
                 localStorage.setItem(
-                    'userTableCount',
+                    TableStringEnum.USER_TABLE_COUNT,
                     JSON.stringify({
-                        users: userPagination.activeCount,
+                        active: userPagination.activeCount,
+                        inactive: userPagination.inactiveCount,
                     })
                 );
 
