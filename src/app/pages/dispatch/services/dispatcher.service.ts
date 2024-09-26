@@ -163,13 +163,15 @@ export class DispatcherService {
     }
 
     public reorderDispatchboard(
-        reorder: ReorderDispatchesCommand
+        reorderData: ReorderDispatchesCommand
     ): Observable<any> {
-        return this.dispatchService.apiDispatchReorderPut(reorder);
+        return this.dispatchService.apiDispatchReorderPut(reorderData);
     }
 
-    switchDispathboard(swithcData: SwitchDispatchesCommand) {
-        return this.dispatchService.apiDispatchSwitchPut(swithcData);
+    public switchDispathboard(
+        switchData: SwitchDispatchesCommand
+    ): Observable<any> {
+        return this.dispatchService.apiDispatchSwitchPut(switchData);
     }
 
     deleteDispatchboard(dispatchId: number) {

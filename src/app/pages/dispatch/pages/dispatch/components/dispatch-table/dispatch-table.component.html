@@ -6,7 +6,7 @@
             !isDispatchBoardLocked && showAddAddressFieldIndex !== -1
     }"
     cdkDropList
-    (cdkDropListDropped)="dropList($event)"
+    (cdkDropListDropped)="dragEndRow($event)"
 >
     <div
         class="table-container-dispatch scrollable"
@@ -149,6 +149,7 @@
                                                     {{ tableHeaderItem?.title }}
                                                 </ng-container>
                                             </div>
+
                                             <ng-container
                                                 *ngIf="
                                                     !isDispatchBoardLocked &&
@@ -265,9 +266,7 @@
                             [cdkDragDisabled]="
                                 isDispatchBoardLocked || !item.truck
                             "
-                            (cdkDragStarted)="
-                                cdkDragStartedRow($event, rowIndex)
-                            "
+                            (cdkDragStarted)="dragStartRow()"
                             (cdkDragEnded)="dragEnd()"
                             (mouseenter)="isHoveringRowIndex = rowIndex"
                             (mouseleave)="isHoveringRowIndex = -1"
@@ -345,7 +344,7 @@
                                         trailerPositionPrediction
                                     "
                                     (cdkDropListDropped)="
-                                        dropTrailer($event, rowIndex)
+                                        dragEndTrailer(rowIndex)
                                     "
                                 >
                                     <div
@@ -359,10 +358,7 @@
                                             !item.trailer
                                         "
                                         (cdkDragStarted)="
-                                            cdkDragStartedTrailer(
-                                                $event,
-                                                rowIndex
-                                            )
+                                            dragStartTrailer(rowIndex)
                                         "
                                         (cdkDragEnded)="dragEnd()"
                                     >
@@ -444,7 +440,7 @@
                                                 : 'driver'
                                     "
                                     (cdkDropListDropped)="
-                                        dropDriver($event, rowIndex)
+                                        dragEndDriver(rowIndex)
                                     "
                                 >
                                     <div
@@ -458,10 +454,7 @@
                                             !item.driver
                                         "
                                         (cdkDragStarted)="
-                                            cdkDragStartedDriver(
-                                                $event,
-                                                rowIndex
-                                            )
+                                            dragStartDriver(rowIndex)
                                         "
                                         (cdkDragEnded)="dragEnd()"
                                     >
