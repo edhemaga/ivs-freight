@@ -44,7 +44,7 @@ export class ChatMessageComponent implements OnInit {
 
     public hasActionsDisplayed: boolean = false;
 
-    constructor() { }
+    constructor() {}
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
