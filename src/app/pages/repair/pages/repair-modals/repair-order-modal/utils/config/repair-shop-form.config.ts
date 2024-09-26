@@ -156,4 +156,14 @@ export class RepairShopConfig {
             maxLength: 9,
         };
     }
+
+    static getOpenHoursFormField(): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            placeholderIcon: 'time',
+            customClass: 'datetimeclass',
+            hideClear: true,
+        };
+    }
 }

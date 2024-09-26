@@ -150,15 +150,14 @@
                                 marginBottom: '0px'
                             }"
                             [isCardOpen]="
-                                repairShopForm.get(
+                                !repairShopForm.get(
                                     RepairShopModalStringEnum.COMPANY_OWNED
-                                ).value === false
+                                ).value
                             "
                         >
                             <ng-container body>
                                 <div class="row">
                                     <div class="col-4">
-                                        <!--  -->
                                         <app-ta-input-dropdown
                                             [canAddNew]="true"
                                             [inputConfig]="payPeriodConfig"
@@ -268,9 +267,7 @@
                                 >
                                     <svg-icon
                                         src="{{ repair.svg }}"
-                                        [style.width.px]="14"
-                                        [style.height.px]="14"
-                                        class="d-flex"
+                                        class="d-flex svg-size-14"
                                     ></svg-icon>
                                 </ng-container>
 
@@ -384,14 +381,7 @@
 
                                         <div class="d-flex flex-column">
                                             <app-ta-input
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
+                                            [inputConfig]="openHoursFormField"
                                                 [formControlName]="
                                                     RepairShopModalStringEnum.START_TIME
                                                 "
@@ -404,14 +394,9 @@
                                                 "
                                             >
                                                 <app-ta-input
-                                                    [inputConfig]="{
-                                                        name: 'timepicker',
-                                                        type: 'text',
-                                                        placeholderIcon: 'time',
-                                                        customClass:
-                                                            'datetimeclass',
-                                                        hideClear: true
-                                                    }"
+                                                    [inputConfig]="
+                                                        openHoursFormField
+                                                    "
                                                     [formControlName]="
                                                         RepairShopModalStringEnum.SECOND_START_TIME
                                                     "
@@ -422,14 +407,9 @@
 
                                         <div class="d-flex flex-column">
                                             <app-ta-input
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
+                                                [inputConfig]="
+                                                    openHoursFormField
+                                                "
                                                 [formControlName]="
                                                     RepairShopModalStringEnum.END_TIME
                                                 "
@@ -443,14 +423,9 @@
                                                 "
                                             >
                                                 <app-ta-input
-                                                    [inputConfig]="{
-                                                        name: 'timepicker',
-                                                        type: 'text',
-                                                        placeholderIcon: 'time',
-                                                        customClass:
-                                                            'datetimeclass',
-                                                        hideClear: true
-                                                    }"
+                                                    [inputConfig]="
+                                                        openHoursFormField
+                                                    "
                                                     [formControlName]="
                                                         RepairShopModalStringEnum.SECOND_END_TIME
                                                     "
@@ -560,14 +535,9 @@
                                     >
                                         <div class="d-flex flex-column">
                                             <app-ta-input
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
+                                                [inputConfig]="
+                                                    openHoursFormField
+                                                "
                                                 [formControlName]="
                                                     RepairShopModalStringEnum.START_TIME
                                                 "
@@ -580,14 +550,9 @@
                                                 "
                                             >
                                                 <app-ta-input
-                                                    [inputConfig]="{
-                                                        name: 'timepicker',
-                                                        type: 'text',
-                                                        placeholderIcon: 'time',
-                                                        customClass:
-                                                            'datetimeclass',
-                                                        hideClear: true
-                                                    }"
+                                                    [inputConfig]="
+                                                        openHoursFormField
+                                                    "
                                                     [formControlName]="
                                                         RepairShopModalStringEnum.SECOND_START_TIME
                                                     "
@@ -619,14 +584,9 @@
                                                 "
                                             >
                                                 <app-ta-input
-                                                    [inputConfig]="{
-                                                        name: 'timepicker',
-                                                        type: 'text',
-                                                        placeholderIcon: 'time',
-                                                        customClass:
-                                                            'datetimeclass',
-                                                        hideClear: true
-                                                    }"
+                                                    [inputConfig]="
+                                                        openHoursFormField
+                                                    "
                                                     [formControlName]="
                                                         RepairShopModalStringEnum.SECOND_END_TIME
                                                     "

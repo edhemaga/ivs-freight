@@ -214,6 +214,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isMonthlyPeriodSeleced: boolean;
     public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
+    public openHoursFormField: ITaInput = RepairShopConfig.getOpenHoursFormField();
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
