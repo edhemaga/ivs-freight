@@ -78,6 +78,11 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === TableHeadTitleStringEnum.LOADED ||
                     tableHeadTitle === TableHeadTitleStringEnum.RATE ||
                     tableHeadTitle === TableHeadTitleStringEnum.TERM_3);
+
+            const userTableColumnsCondition =
+                gridNameTitle === TableHeadTitleStringEnum.USER &&
+                tableHeadTitle === TableHeadTitleStringEnum.PHONE;
+
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
@@ -86,7 +91,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 repairTableColumnsCondition ||
                 brokerTableColumnsCondition ||
                 trailerTableColumnsCondition ||
-                loadTableColumnsCondition
+                loadTableColumnsCondition ||
+                userTableColumnsCondition
             ) {
                 return true;
             }
@@ -164,6 +170,10 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== TableHeadTitleStringEnum.LOADED &&
                     tableHeadTitle !== TableHeadTitleStringEnum.RATE &&
                     tableHeadTitle !== TableHeadTitleStringEnum.TERM_3);
+                
+            const UserTableColumnsCondition =
+                gridNameTitle !== TableHeadTitleStringEnum.USER ||
+                tableHeadTitle !== TableHeadTitleStringEnum.PHONE;
 
             return (
                 contactsTableColumnsCondition &&
@@ -174,7 +184,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 truckTableColumnsCondition &&
                 repairTableColumnsCondition &&
                 TrailerTableColumnsCondition &&
-                LoadTableColumnsCondition
+                LoadTableColumnsCondition &&
+                UserTableColumnsCondition
             );
         }
     }
