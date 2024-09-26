@@ -16,6 +16,9 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 // utils
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
+// Models
+import { TerminalListResponse } from 'appcoretruckassist';
+
 @Component({
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',
@@ -81,8 +84,8 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             .subscribe((item) => (this.terminalData = item.pagination));
     }
 
-    public optionsEvent(eventData: any, action: string) {
-        this.getTerminalById(eventData.id);
+    public optionsEvent(eventData: any, action: string, item: TerminalListResponse) {
+        
         setTimeout(() => {
             const name = DropActionNameHelper.dropActionNameDriver(
                 eventData,
@@ -91,7 +94,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             this.dropDownService.dropActionCompanyLocation(
                 eventData,
                 name,
-                this.terminalDataById
+                item
             );
         }, 100);
     }

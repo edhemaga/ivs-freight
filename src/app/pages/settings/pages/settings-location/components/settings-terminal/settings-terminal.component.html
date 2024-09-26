@@ -43,7 +43,7 @@
             [hasFooter]="false"
             [optionsId]="item.id"
             [options]="terminalActions"
-            (dropActions)="optionsEvent($event, 'terminal')"
+            (dropActions)="optionsEvent($event, 'terminal', item)"
             [paddingDots]="'8px 0px 0px 0px'"
             [haveHeaderText]="true"
             [setPositionDrop]="true"
@@ -80,12 +80,13 @@
                 </div>
             </div>
             <app-ta-custom-card
-                *ngIf="item.officeChecked"
                 [cardName]="'Office'"
-                [isCardOpen]="true"
+                [isCardOpen]="item.officeChecked"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
                 [textBottomPossiton]="'-2px'"
+                [hasArrow]="item.officeChecked"
+                [disabledCard]="!item.officeChecked"
             >
                 <div class="parking-template-data">
                     <div *ngIf="item.officePhone" class="parking-template-item">
@@ -128,13 +129,15 @@
                     </div>
                 </div>
             </app-ta-custom-card>
+
             <app-ta-custom-card
-                *ngIf="item.warehouseChecked"
                 [cardName]="'Warehouse'"
-                [isCardOpen]="true"
+                [isCardOpen]="item.warehouseChecked"
                 [bodyTemplate]="'card'"
                 [textBottomPossiton]="'-2px'"
                 [customClass]="'detailsPadding'"
+                [hasArrow]="item.warehouseChecked"
+                [disabledCard]="!item.warehouseChecked"
             >
                 <div class="parking-template-data">
                     <div
@@ -180,13 +183,15 @@
                     </div>
                 </div>
             </app-ta-custom-card>
+
             <app-ta-custom-card
-                *ngIf="item.parkingChecked"
                 [cardName]="'Parking'"
-                [isCardOpen]="true"
+                [isCardOpen]="item.parkingChecked"
                 [bodyTemplate]="'card'"
                 [textBottomPossiton]="'-2px'"
                 [customClass]="'detailsPadding'"
+                [hasArrow]="item.parkingChecked"
+                [disabledCard]="!item.parkingChecked"
             >
                 <div class="parking-template-data">
                     <div
@@ -220,19 +225,23 @@
                         *ngIf="item.terminalParkingSlot"
                         class="parking-template-item"
                     >
-                        <p class="parking-template-number">
+                        <p
+                            class="ta-font-semi-bold text-size-14 text-color-black"
+                        >
                             {{ item.terminalParkingSlot }}
                         </p>
-                        <p class="parking-template-text">Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2 text-color-black-2">Parking Slot</p>
                     </div>
                     <div
                         *ngIf="item.terminalFullParkingSlot"
                         class="parking-template-item"
                     >
-                        <p class="parking-template-number">
+                        <p
+                            class="ta-font-semi-bold text-size-14 text-color-black"
+                        >
                             {{ item.terminalFullParkingSlot }}
                         </p>
-                        <p class="parking-template-text">Full Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2 text-color-black-2">Full Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
@@ -241,7 +250,7 @@
                             src="assets/svg/common/ic_security-camera.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2 text-color-black-2"
                             [ngClass]="{ 'cross-out': !item.securityCamera }"
                         >
                             Security Camera
@@ -255,13 +264,14 @@
                         ></svg-icon>
                         <p
                             [ngClass]="{ 'cross-out': !item.gate }"
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2 text-color-black-2"
                         >
                             Gate
                         </p>
                     </div>
                 </div>
             </app-ta-custom-card>
+
         </app-ta-common-card>
     </div>
 </div>

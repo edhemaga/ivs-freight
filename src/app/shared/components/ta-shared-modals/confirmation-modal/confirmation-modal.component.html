@@ -44,6 +44,8 @@
             ? 'Delete Driver'
             : editData?.template === 'comment'
             ? 'Delete Comment'
+            : editData?.template === 'Company Terminal'
+            ? 'Delete Terminal'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
@@ -333,10 +335,10 @@
                             "
                         >
                             <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                                <p class="m-0 confirmation-text-1 large-text-1">
                                     {{ editData?.data?.name }}
                                 </p>
-                                <p class="m-0 confirmation-text-2">
+                                <p class="m-0 confirmation-text-2 large-text-2">
                                     Address:
                                     {{ editData?.data?.address?.address }}
                                 </p>
@@ -1442,7 +1444,7 @@
             <div class="confirmation-header">
                 <p class="m-0 ta-font-medium">
                     Are you sure you want to {{ editData?.type }} selected
-                    {{ editData?.subType }}?
+                    {{ editData?.subType }}? business
                 </p>
             </div>
         </ng-container>
