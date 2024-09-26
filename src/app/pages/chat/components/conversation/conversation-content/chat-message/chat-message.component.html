@@ -13,10 +13,10 @@
                     : 'flex-row-reverse'
             "
         >
-            <div
-                class="message-actions d-flex justify-content-center align-items-center"
-            >
-                <ng-container *ngIf="areActionsDisplayed">
+            <ng-container *ngIf="hasActionsDisplayed">
+                <div
+                    class="message-actions d-flex justify-content-center align-items-center"
+                >
                     <ng-container
                         *ngTemplateOutlet="
                             iconAction;
