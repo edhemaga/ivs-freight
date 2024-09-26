@@ -6,8 +6,10 @@ import { Observable, of, tap } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // store
-import { UserStore } from '@pages/user/state/user.store';
-import { UserQuery } from '@pages/user/state/user.query';
+import { UserActiveStore } from '@pages/user/state/user-active-state/user-active.store';
+import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
+import { UserInactiveStore } from '@pages/user/state/user-inactive-state/user-inactive.store';
+import { UserInactiveQuery } from '@pages/user/state/user-inactive-state/user-inactive.query';
 
 // models
 import {
@@ -24,16 +26,24 @@ import {
     UpdateCompanyUserCommand,
 } from 'appcoretruckassist';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
     constructor(
+        // services
         private userService: CompanyUserService,
         private accountUserService: AccountService,
         private tableService: TruckassistTableService,
-        private userStore: UserStore,
-        private userQuery: UserQuery
+
+        // store
+        private userActiveStore: UserActiveStore,
+        private userActiveQuery: UserActiveQuery,
+        private userInactiveStore: UserInactiveStore,
+        private userInactiveQuery: UserInactiveQuery,
     ) {}
 
     // Get User List
@@ -75,15 +85,16 @@ export class UserService {
                         };
 
                         const userCount = JSON.parse(
-                            localStorage.getItem('userTableCount')
+                            localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
                         );
 
-                        userCount.users++;
+                        userCount.actvie++;
 
                         localStorage.setItem(
-                            'userTableCount',
+                            TableStringEnum.USER_TABLE_COUNT,
                             JSON.stringify({
-                                users: userCount.users,
+                                active: userCount.active,
+                                inactive: userCount.inactive
                             })
                         );
 
@@ -105,7 +116,7 @@ export class UserService {
             tap(() => {
                 const subUser = this.getUserByid(data.id).subscribe({
                     next: (user: any) => {
-                        this.userStore.remove(({ id }) => id === data.id);
+                        this.userActiveStore.remove(({ id }) => id === data.id);
 
                         user = {
                             ...user,
@@ -114,7 +125,7 @@ export class UserService {
                             },
                         };
 
-                        this.userStore.add(user);
+                        this.userActiveStore.add(user);
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
@@ -129,44 +140,52 @@ export class UserService {
         );
     }
 
-    public deleteUserById(userId: number): Observable<any> {
+    public deleteUserById(userId: number, tabSelected: string): Observable<any> {
+        // leave this any for now
         return this.userService.apiCompanyuserIdDelete(userId).pipe(
             tap(() => {
                 const userCount = JSON.parse(
-                    localStorage.getItem('userTableCount')
+                    localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
                 );
 
-                this.userStore.remove(({ id }) => id === userId);
-
-                userCount.users--;
+                if (tabSelected === TableStringEnum.ACTIVE) {
+                    this.userActiveStore.remove(({ id }) => id === userId);
+                    userCount.active--;
+                } else {
+                    this.userInactiveStore.remove(({ id }) => id === userId);
+                    userCount.inactive--;
+                }
 
                 localStorage.setItem(
-                    'userTableCount',
+                    TableStringEnum.USER_TABLE_COUNT,
                     JSON.stringify({
-                        users: userCount.users,
+                        active: userCount.active,
+                        inactive: userCount.inactive,
                     })
                 );
             })
         );
     }
 
-    public deleteUserList(usersToDelete: any[]): Observable<any> {
+    public deleteUserList(usersToDelete: number[], tabSelected: string): Observable<any> {
+        //leave this any for now
         return this.userService.apiCompanyuserListDelete(usersToDelete).pipe(
             tap(() => {
-                let storeUsers = this.userQuery.getAll();
+                let storeUsers = tabSelected === TableStringEnum.ACTIVE ? this.userActiveQuery.getAll() : this.userInactiveQuery.getAll();
 
                 storeUsers.map((user: any) => {
                     usersToDelete.map((d) => {
                         if (d === user.id) {
-                            this.userStore.remove(({ id }) => id === user.id);
+                            if (tabSelected === TableStringEnum.ACTIVE) this.userActiveStore.remove(({ id }) => id === user.id);
+                            else this.userInactiveStore.remove(({ id }) => id === user.id);
                         }
                     });
                 });
 
                 localStorage.setItem(
-                    'userTableCount',
+                    TableStringEnum.USER_TABLE_COUNT,
                     JSON.stringify({
-                        users: storeUsers.length,
+                        active: storeUsers.length,
                     })
                 );
             })
