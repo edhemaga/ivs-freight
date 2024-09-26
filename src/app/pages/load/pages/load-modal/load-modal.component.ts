@@ -207,6 +207,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('popover') popover: NgbPopover;
     @ViewChild('trailerInputDropdown')
     trailerInputDropdown: TaInputDropdownComponent;
+    @ViewChild('truckInputDropdown')
+    truckInputDropdown: TaInputDropdownComponent;
 
     @Input() editData: EditData;
 
@@ -1337,7 +1339,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 break;
             case LoadModalStringEnum.STOP_TAB:
-                const orderNumber = event.id === 1 || this.editData && event.id > 3000 && event.id < 4000 ? 3000 + indx : 4000 + indx;
+                const orderNumber =
+                    event.id === 1 ||
+                    (this.editData && event.id > 3000 && event.id < 4000)
+                        ? 3000 + indx
+                        : 4000 + indx;
 
                 this.selectExtraStopType[indx] = orderNumber;
 
@@ -1872,9 +1878,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             case LoadModalStringEnum.TRUCK_REQ:
                 this.selectedTruckReq = event;
 
+                this.labelsTrailerReq = this.labelsTrailerReq.map((trailer) => {
+                    const disableTrailerOption =
+                        trailer.id === 16 &&
+                        this.selectedTruckReq &&
+                        this.selectedTruckReq.id !== 10;
+
+                    if (trailer.id === 16 && this.selectedTruckReq?.id === 10)
+                        this.selectedTrailerReq = trailer;
+
+                    return {
+                        ...trailer,
+                        disabled: disableTrailerOption,
+                    };
+                });
+
                 if (
-                    this.selectedTruckReq?.id >= 3 &&
-                    this.selectedTruckReq?.id <= 8
+                    (this.selectedTruckReq?.id >= 3 &&
+                        this.selectedTruckReq?.id <= 8) ||
+                    (this.selectedTruckReq?.id !== 10 &&
+                        this.selectedTrailerReq?.id === 16)
                 ) {
                     this.selectedTrailerReq = null;
                     this.trailerInputDropdown?.superControl.reset();
@@ -1883,6 +1906,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.TRAILER_REQ:
                 this.selectedTrailerReq = event;
+
+                this.labelsTruckReq = this.labelsTruckReq.map((truck) => {
+                    const disableTruckOption =
+                        truck.id === 10 &&
+                        this.selectedTrailerReq &&
+                        this.selectedTrailerReq.id !== 16;
+
+                    if (truck.id === 10 && this.selectedTrailerReq?.id === 16)
+                        this.selectedTruckReq = truck;
+
+                    return {
+                        ...truck,
+                        disabled: disableTruckOption,
+                    };
+                });
+
+                if (
+                    this.selectedTruckReq?.id === 10 &&
+                    this.selectedTrailerReq?.id !== 16
+                ) {
+                    this.selectedTruckReq = null;
+                    this.truckInputDropdown?.superControl.reset();
+                }
 
                 break;
             case LoadModalStringEnum.DOOR_TYPE:
