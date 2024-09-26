@@ -1292,7 +1292,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 : */ null,
             // Additional Info Tab
             prefix: additionalInfo?.prefix,
-            starting: additionalInfo?.starting,
+            starting: additionalInfo?.starting + 1,
             suffix: additionalInfo?.sufix,
             autoInvoicing: additionalInfo?.autoInvoicing,
             factorByDefault: additionalInfo?.factorByDefault,
@@ -1827,7 +1827,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             bankAccounts: [],
             bankCards: [],
             prefix: data.additionalInfo.prefix,
-            starting: data.additionalInfo.starting,
+            starting: data.additionalInfo.starting + 1,
             suffix: data.additionalInfo.sufix,
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
