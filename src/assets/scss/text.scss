@@ -22,10 +22,28 @@
         &-black {
             color: $ta-black;
         }
+
+        &-black-2 {
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+
+            &::selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+        }
     }
 
     // Sizes
     &-size {
+        &-11 {
+            font-size: 11px;
+            line-height: 15px;
+        }
         &-14 {
             font-size: 14px;
             line-height: 18px;

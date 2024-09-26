@@ -92,7 +92,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         {
             id: 522,
             name: 'No',
-            checked: false,
+            checked: true,
         },
     ];
 
@@ -105,7 +105,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         {
             id: 544,
             name: 'No',
-            checked: false,
+            checked: true,
         },
     ];
 
@@ -170,13 +170,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
             // Office
             officeChecked: [false],
-            officePhone: [null, [Validators.required, phoneFaxRegex]],
+            officePhone: [null],
             officeExtPhone: [null, [...phoneExtension]],
             officeEmail: [null],
 
             // Parking
             parkingChecked: [false],
-            parkingPhone: [null, [Validators.required, phoneFaxRegex]],
+            parkingPhone: [null],
             parkingExtPhone: [null, [...phoneExtension]],
             parkingEmail: [null],
             terminalParkingSlot: [null, parkingSlotValidation],
@@ -186,7 +186,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
             // Warehouse
             warehouseChecked: [false],
-            warehousePhone: [null, [Validators.required, phoneFaxRegex]],
+            warehousePhone: [null],
             warehouseExtPhone: [null, [...phoneExtension]],
             warehouseEmail: [null],
 

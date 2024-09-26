@@ -587,33 +587,16 @@
 //---------------- Gate, Security Camera ----------------
 .parking-gate-securityCamera {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 180px 1fr;
     grid-template-rows: 26px;
     align-items: center;
-    padding-left: 6px;
+    gap: 12px;
 
     .gate-field,
     .camera-field {
         display: flex;
         align-items: center;
-        gap: 8px;
-
-        p {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: $bw5;
-
-            &::-moz-selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-
-            &::selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-        }
+        gap: 6px;
     }
 
     &-location-terminal {
