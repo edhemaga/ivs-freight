@@ -12,6 +12,7 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
 
@@ -29,6 +30,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
+import { DispatchProgressBarDataConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -53,6 +55,7 @@ import {
     DispatchGroupedLoadsResponse,
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
+    AddressEntity,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -60,6 +63,7 @@ import {
     DispatchTableHeaderItems,
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -186,6 +190,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         note: null,
     };
 
+    public progressBarData: DispatchProgressBarData[] = [];
+
     startIndexTrailer: number;
     startIndexDriver: number;
 
@@ -196,6 +202,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Pipes
         private dispatchColorFinderPipe: DispatchColorFinderPipe,
+        public datePipe: DatePipe,
 
         // Services
         private dispatcherService: DispatcherService,
@@ -236,6 +243,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
         )?.length;
+
+        this.getProgressBarData();
     }
 
     private getConstantData(): void {
@@ -347,27 +356,39 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
             this.isTrailerAddNewHidden = !allowedTrailerIds;
 
-            if (index >= 0) {
-                this.dispatchData = {
-                    ...this.dispatchData,
-                    dispatches: this.dispatchData.dispatches.map(
-                        (dispatch, i) =>
-                            i === index
-                                ? { ...dispatch, truck: event }
-                                : dispatch
-                    ),
-                };
+            this.dispatcherService
+                .getDispatchTruckLastLocation(event.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((truckLastLocation) => {
+                    if (index >= 0) {
+                        this.dispatchData = {
+                            ...this.dispatchData,
+                            dispatches: this.dispatchData.dispatches.map(
+                                (dispatch, i) =>
+                                    i === index
+                                        ? { ...dispatch, truck: event }
+                                        : dispatch
+                            ),
+                        };
 
-                this.parkingCount = this.dispatchData?.dispatches?.filter(
-                    (item) => item.parkingSlot
-                )?.length;
+                        this.parkingCount =
+                            this.dispatchData?.dispatches?.filter(
+                                (item) => item.parkingSlot
+                            )?.length;
 
-                this.showAddAddressFieldIndex = index;
-            } else {
-                this.addNewTruckData = event;
+                        this.showAddAddressFieldIndex = index;
+                    } else {
+                        this.addNewTruckData = event;
+                        this.showAddAddressFieldIndex = -2;
+                    }
 
-                this.showAddAddressFieldIndex = -2;
-            }
+                    if (truckLastLocation?.address?.address)
+                        this.handleUpdateLastLocationEmit(
+                            truckLastLocation.address
+                        );
+
+                    this.cdRef.detectChanges();
+                });
         } else {
             this.updateOrAddDispatchBoardAndSend(
                 DispatchTableStringEnum.TRAILER_ID,
@@ -434,7 +455,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         )?.length;
     }
 
-    public handleUpdateLastLocationEmit(address: string): void {
+    public handleUpdateLastLocationEmit(address: AddressEntity): void {
         this.isDisplayingAddressInput = false;
 
         this.updateOrAddDispatchBoardAndSend(
@@ -1106,6 +1127,75 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;
         else this.setColumnsWidth();
+    }
+
+    public getProgressBarData(): void {
+        this.dispatchData.dispatches.forEach((dispatch, index) => {
+            this.progressBarData.push(null);
+
+            if (dispatch.loadProgress?.activeLoadProgressBar) {
+                const dispatchLoadProgress =
+                    this.dispatchData.dispatches[index].loadProgress
+                        .activeLoadProgressBar;
+
+                const dispatchStopData = dispatchLoadProgress.loadStops.map(
+                    (stop) => {
+                        return {
+                            type: stop.stopType?.name.toLowerCase(),
+                            heading: stop.title,
+                            position:
+                                stop.progressBarPercentage > 100
+                                    ? 100
+                                    : stop.progressBarPercentage,
+                            location: [
+                                stop.address?.city,
+                                stop.address?.stateShortName,
+                            ].join(', '),
+                            mileage: stop.isVisited
+                                ? (
+                                      dispatchLoadProgress.truckPositionMileage -
+                                      stop.cumulativeTotalLegMiles
+                                  ).toFixed(1) + ' mi ago'
+                                : 'in ' +
+                                  (
+                                      stop.cumulativeTotalLegMiles -
+                                      dispatchLoadProgress.truckPositionMileage
+                                  ).toFixed(1) +
+                                  ' mi',
+                            time: this.datePipe.transform(
+                                stop.departedFrom ?? stop.expectedAt,
+                                'MM/dd/yy hh:mm a'
+                            ),
+                            latitude: stop.latitude,
+                            longitude: stop.longitude,
+                            legMiles: stop.totalLegMiles,
+                            stopNumber: stop.stopLoadOrder,
+                        };
+                    }
+                );
+
+                const formattedProgressData: DispatchProgressBarData = {
+                    currentPosition:
+                        dispatchLoadProgress.truckPositionPercentage ?? 0,
+                    mileageInfo:
+                        dispatchLoadProgress.milesLeftToDeliveryLoad + ' mi',
+                    gpsTitle: dispatchLoadProgress.truckPositionMileage + ' mi',
+                    mileagesPercent:
+                        dispatchLoadProgress.truckPositionPercentage + '%',
+                    totalMiles: dispatchLoadProgress.totalMiles,
+                    gpsProgress: dispatchStopData,
+                    gpsInfo: {
+                        gpsheading: DispatchTableStringEnum.NO_GPS_DEVICE,
+                        gpsheadingColor:
+                            DispatchProgressBarDataConstants
+                                .dispatchProgressBarColors.noGpsColor,
+                    },
+                    gpsIcon: DispatchTableSvgRoutes.progressNoGpsStatusIcon,
+                };
+
+                this.progressBarData[index] = formattedProgressData;
+            }
+        });
     }
 
     ngOnDestroy(): void {
