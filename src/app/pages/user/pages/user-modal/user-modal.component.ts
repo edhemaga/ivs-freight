@@ -86,6 +86,9 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { UserModalStringEnum } from '@pages/user/pages/user-modal/enums';
 
+// svg-routes
+import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-routes/user-modal-svg-routes';
+
 @Component({
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
@@ -195,8 +198,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public userStatus: boolean = true;
     public disableCardAnimation: boolean = false;
     private destroy$ = new Subject<void>();
-    public emailCheckCompleted: boolean;
+    public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
+    public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -561,7 +565,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .get(TableStringEnum.EMAIL_2)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
-                takeWhile(() => !this.emailCheckCompleted),
+                takeWhile(() => !this.isEmailCheckCompleted),
                 debounceTime(500),
                 switchMap((value) => {
                     if (this.userForm.get(TableStringEnum.EMAIL_2).valid)
@@ -573,7 +577,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (res: CheckUserByEmailResponse) => {
-                    this.emailCheckCompleted = true;
+                    this.isEmailCheckCompleted = true;
                     if (res) {
                         this.userForm.patchValue({
                             firstName: res.firstName,
@@ -587,14 +591,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.emailCheckCompleted = false;
+                    this.isEmailCheckCompleted = false;
                 },
             });
     }
 
     public resetDataByEmail(event: boolean) {
         if (event) {
-            this.emailCheckCompleted = false;
+            this.isEmailCheckCompleted = false;
             this.userForm.patchValue({
                 firstName: null,
                 lastName: null,
@@ -934,10 +938,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedPayment = res.paymentType;
                     this.currentUserStatus = res.userStatus;
 
-                    this.typeOfEmploye[res.isAdmin ? 1 : 0].checked = true;
-                    this.typeOfEmploye[res.isAdmin ? 0 : 1].checked = false;
-                    this.selectedUserAdmin =
-                        this.typeOfEmploye[res.isAdmin ? 1 : 0];
+                    this.typeOfEmploye = this.typeOfEmploye.map(
+                        (item, index) => ({
+                            ...item,
+                            checked: index === (res.isAdmin ? 1 : 0),
+                        })
+                    );
+
+                    this.selectedUserAdmin = {
+                        ...this.typeOfEmploye[res.isAdmin ? 1 : 0],
+                    };
 
                     this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
                         this.selectedPayment?.name

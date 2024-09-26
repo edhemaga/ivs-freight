@@ -91,7 +91,12 @@
                                     </app-ta-tab-switch>
                                 </div>
                             </ng-container>
-                            <div class="col-8" [class.col-12]="selectedUserType?.name === 'Owner'">
+                            <div
+                                class="col-8"
+                                [class.col-12]="
+                                    selectedUserType?.name === 'Owner'
+                                "
+                            >
                                 <app-ta-input-dropdown
                                     formControlName="departmentId"
                                     [inputConfig]="{
@@ -162,7 +167,12 @@
                                             }"
                                         ></app-ta-input>
                                     </div>
-                                    <ng-container *ngIf="!isPhoneExtExist">
+                                    <ng-container
+                                        *ngIf="
+                                            !isPhoneExtExist;
+                                            else phoneExtension
+                                        "
+                                    >
                                         <div
                                             class="extension-field"
                                             ngbTooltip
@@ -175,11 +185,13 @@
                                             "
                                         >
                                             <svg-icon
-                                                src="assets/svg/common/ic_plus.svg"
+                                                [src]="
+                                                    userModalSvgRoutes.addIcon
+                                                "
                                             ></svg-icon>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="isPhoneExtExist">
+                                    <ng-template #phoneExtension>
                                         <app-ta-input
                                             formControlName="extensionPhone"
                                             [inputConfig]="{
@@ -192,7 +204,7 @@
                                                     'phone-extension'
                                             }"
                                         ></app-ta-input>
-                                    </ng-container>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
@@ -394,7 +406,8 @@
                                         <ng-container
                                             *ngIf="
                                                 !allowOnlyCommission &&
-                                                !allowPairCommissionBase
+                                                    !allowPairCommissionBase;
+                                                else commissionSlider
                                             "
                                         >
                                             <app-ta-input
@@ -412,12 +425,7 @@
                                             ></app-ta-input>
                                         </ng-container>
 
-                                        <ng-container
-                                            *ngIf="
-                                                allowOnlyCommission ||
-                                                allowPairCommissionBase
-                                            "
-                                        >
+                                        <ng-template #commissionSlider>
                                             <app-ta-ngx-slider
                                                 [sliderName]="'Commission'"
                                                 [sliderOptions]="
@@ -436,7 +444,7 @@
                                                         .setValue($event)
                                                 "
                                             ></app-ta-ngx-slider>
-                                        </ng-container>
+                                        </ng-template>
                                     </div>
                                 </div>
                                 <div
