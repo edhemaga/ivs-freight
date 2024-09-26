@@ -26,6 +26,7 @@ export class ChatContentFooterComponent
         new BehaviorSubject(null);
 
     @Output() closeReplyEvent: EventEmitter<boolean> = new EventEmitter();
+    @Output() closeEditEvent: EventEmitter<boolean> = new EventEmitter();
 
     // Assets route
     public chatSvgRoutes = ChatSvgRoutes;
@@ -36,7 +37,8 @@ export class ChatContentFooterComponent
 
     ngOnInit(): void {}
 
-    public closeReply(): void {
+    public closeReplyOrEdit(): void {
         this.closeReplyEvent.emit(true);
+        this.closeEditEvent.next(true);
     }
 }

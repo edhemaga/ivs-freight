@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
 import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
@@ -53,7 +54,6 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,8 +63,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
@@ -207,6 +206,14 @@ export class ChatMessagesComponent
             });
     }
 
+    public handleSend(): void {
+        if (this.messageToEdit$.value) {
+            this.editMessage();
+            return;
+        }
+        this.sendMessage();
+    }
+
     public sendMessage(): void {
         const message = this.messageForm?.value?.message;
 
@@ -232,6 +239,20 @@ export class ChatMessagesComponent
                 this.attachments$.next([]);
                 this.messageForm.reset();
                 this.closeReply();
+            });
+    }
+
+    public editMessage(): void {
+        const message = this.messageForm?.value?.message;
+        let messageId: number = this.messageToEdit$?.value?.id;
+
+        if (!messageId || !message) return;
+
+        this.chatService
+            .editMessage(messageId, message)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.closeEdit();
             });
     }
 
@@ -393,12 +414,22 @@ export class ChatMessagesComponent
         this.messageToReply$.next(messageToReply);
     }
 
+    public handleMessageEdit(messageToEdit: ChatMessageResponse): void {
+        this.messageToEdit$.next(messageToEdit);
+    }
+
     public closeReply(): void {
         this.messageToReply$.next(null);
+    }
+
+    public closeEdit(): void {
+        this.messageToEdit$.next(null);
     }
 
     ngOnDestroy(): void {
         this.chatHubService.disconnect();
         this.completeSubject();
+        this.messageToReply$.complete();
+        this.messageToEdit$.complete();
     }
 }

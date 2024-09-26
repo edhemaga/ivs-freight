@@ -57,10 +57,9 @@
                             "
                         ></ng-container
                     ></ng-container>
-
                     <app-chat-vertical-divider></app-chat-vertical-divider>
-                </ng-container>
-            </div>
+                </div>
+            </ng-container>
 
             <ng-container *ngIf="isDateDisplayed">
                 <div
@@ -132,29 +131,28 @@
                     </div>
                 </ng-container>
             </div>
-        </div>
-    </ng-container>
 
-    <ng-container *ngIf="message.mediaCount">
-        <div
-            class="media-preview-wrapper d-flex"
-            [ngClass]="
-                currentUserId === (message.senderId || message.sender?.id)
-                    ? 'flex-row-reverse'
-                    : 'flex-row'
-            "
-        >
-            <ng-container
-                *ngFor="
-                    let attachment of message.media;
-                    let ind = index;
-                    trackBy: '' | trackByProperty
-                "
-            >
-                <div class="media-preview d-flex">
-                    <img
-                        class="media-preview-thumbnail"
-                        [ngStyle]="
+            <ng-container *ngIf="message.mediaCount">
+                <div
+                    class="media-preview-wrapper d-flex"
+                    [ngClass]="
+                        currentUserId ===
+                        (message.senderId || message.sender?.id)
+                            ? 'flex-row-reverse'
+                            : 'flex-row'
+                    "
+                >
+                    <ng-container
+                        *ngFor="
+                            let attachment of message.media;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <div class="media-preview d-flex">
+                            <img
+                                class="media-preview-thumbnail"
+                                [ngStyle]="
                             (message.mediaCount || message.media?.length) > 1 ? {
                                 height: '120px',
                                 width: '120px',  
@@ -164,9 +162,11 @@
                                 'aspect-ration':  singleImageAspectRation
                             }
                         "
-                        [src]="attachment.url"
-                        [alt]="attachment.fileName"
-                    />
+                                [src]="attachment.url"
+                                [alt]="attachment.fileName"
+                            />
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>

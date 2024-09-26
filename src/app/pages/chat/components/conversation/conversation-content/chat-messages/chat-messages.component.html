@@ -34,6 +34,7 @@
                                         message[ind - 1]?.sender?.id
                                 "
                                 (messageReply)="handleMessageReply($event)"
+                                (messageEdit)="handleMessageEdit($event)"
                             ></app-chat-message>
                         </ng-container>
                     </ng-container>
@@ -70,6 +71,7 @@
                     [replyMessage]="messageToReply$"
                     [editMessage]="messageToEdit$"
                     (closeReplyEvent)="closeReply()"
+                    (closeEditEvent)="closeEdit()"
                 ></app-chat-content-footer>
 
                 <div
@@ -179,7 +181,7 @@
                                     "
                                     (blurInput)="blurInput()"
                                     (focusInput)="focusInput()"
-                                    (keyup.enter)="sendMessage()"
+                                    (keyup.enter)="handleSend()"
                                 ></app-ta-input>
                             </div>
                         </ng-template>
@@ -231,20 +233,43 @@
                             <app-chat-vertical-divider></app-chat-vertical-divider>
 
                             <ng-container
-                                *ngTemplateOutlet="
-                                    iconAction;
-                                    context: {
-                                        item: {
-                                            text: 'Send Message',
-                                            icon: ChatSvgRoutes.sendMessageIcon,
-                                            action: sendMessage,
-                                            customClass:
-                                                isMessageSendable &&
-                                                ChatAttachmentCustomClassEnum.BLUE
+                                *ngIf="messageToEdit$ | async; else sendMessage"
+                            >
+                                <!-- TODO Change icon -->
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        iconAction;
+                                        context: {
+                                            item: {
+                                                text: 'Save Changes',
+                                                icon: ChatSvgRoutes.sendMessageIcon,
+                                                action: editMessage,
+                                                customClass:
+                                                    isMessageSendable &&
+                                                    ChatAttachmentCustomClassEnum.BLUE
+                                            }
                                         }
-                                    }
-                                "
+                                    "
+                                ></ng-container
                             ></ng-container>
+
+                            <ng-template #sendMessage>
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        iconAction;
+                                        context: {
+                                            item: {
+                                                text: 'Send Message',
+                                                icon: ChatSvgRoutes.sendMessageIcon,
+                                                action: sendMessage,
+                                                customClass:
+                                                    isMessageSendable &&
+                                                    ChatAttachmentCustomClassEnum.BLUE
+                                            }
+                                        }
+                                    "
+                                ></ng-container>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -275,7 +300,7 @@
     >
         <div
             class="action d-flex justify-content-center align-content-center"
-            (click)="item.action()"
+            (click)="handleSend()"
         >
             <ng-container *ngIf="item.text">
                 <div

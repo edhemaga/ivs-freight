@@ -30,6 +30,9 @@ export class ChatMessageComponent implements OnInit {
     @Output() messageReply: EventEmitter<ChatMessageResponse> =
         new EventEmitter();
 
+    @Output() messageEdit: EventEmitter<ChatMessageResponse> =
+        new EventEmitter();
+
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
@@ -84,11 +87,14 @@ export class ChatMessageComponent implements OnInit {
     public messageAction(actionType: ChatMessageActionEnum): void {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
+                this.messageEdit.emit(null);
                 this.messageReply.emit(this.message);
                 break;
             case ChatMessageActionEnum.DELETE:
                 break;
             case ChatMessageActionEnum.EDIT:
+                this.messageReply.next(null);
+                this.messageEdit.emit(this.message);
                 break;
             default:
                 return;
