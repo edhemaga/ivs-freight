@@ -242,6 +242,7 @@ export enum TableStringEnum {
     EMAIL = 'Email • ',
     PUSH = 'Push • ',
     SMS = 'SMS',
+    EMAIL_2 = 'email',
 
     // Truck
     EDIT_TRUCK = 'edit-truck',
@@ -415,6 +416,7 @@ export enum TableStringEnum {
     INACTIVE_2 = 'Inactive',
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
+    USER_TABLE_COUNT = 'userTableCount',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
