@@ -55,6 +55,10 @@ import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-add
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
+// Enums
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { SettingsFormEnum } from './enums';
+
 @Component({
     selector: 'app-settings-terminal-modal',
     templateUrl: './settings-terminal-modal.component.html',
@@ -119,7 +123,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             value: 0,
         },
     ];
-
 
     public selectedAddress: AddressEntity = null;
 
@@ -192,7 +195,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
             // Fuel stattion
             fuelStationChecked: [false],
-            
+
             // Additional tab
             rent: [null, rentValidation],
             payPeriod: [null],
@@ -201,36 +204,36 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         });
 
         this.inputService.customInputValidator(
-            this.terminalForm.get('email'),
-            'email',
+            this.terminalForm.get(SettingsFormEnum.EMAIL),
+            SettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get('officeEmail'),
-            'email',
+            this.terminalForm.get(SettingsFormEnum.OFFICE_EMAIL),
+            SettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get('parkingEmail'),
-            'email',
+            this.terminalForm.get(SettingsFormEnum.PARKING_EMAIL),
+            SettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get('warehouseEmail'),
-            'email',
+            this.terminalForm.get(SettingsFormEnum.WAREHOUSE_EMAIL),
+            SettingsFormEnum.EMAIL,
             this.destroy$
         );
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case TaModalActionEnums.CLOSE: {
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
@@ -252,7 +255,15 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+                if (this.terminalForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.terminalForm);
+                    return;
+                }
+
+                this.addTerminal(true);
+            }
+            case TaModalActionEnums.DELETE: {
                 this.deleteTerminalById(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'delete',
@@ -268,70 +279,21 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
 
     public openCloseCheckboxCard() {
-        this.isCheckedOffice();
-
-        this.isCheckedParking();
-
-        this.isCheckedWarehouse();
+        this.isChecked(SettingsFormEnum.OFFICE_CHECKED, SettingsFormEnum.OFFICE_PHONE);
+        this.isChecked(SettingsFormEnum.PARKING_CHECKED, SettingsFormEnum.OFFICE_PHONE);
+        this.isChecked(SettingsFormEnum.WAREHOUSE_CHECKED, SettingsFormEnum.WAREHOUSE_PHONE);
     }
 
-    public isCheckedOffice() {
+    public isChecked(formControlName: string, phoneControlName: string) {
         this.terminalForm
-            .get('officeChecked')
+            .get(formControlName)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('officePhone'),
-                        true,
-                        [phoneFaxRegex]
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('officePhone'),
-                        false
-                    );
-                }
-            });
-    }
-
-    public isCheckedParking() {
-        this.terminalForm
-            .get('parkingChecked')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('parkingPhone'),
-                        true,
-                        [phoneFaxRegex]
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('parkingPhone'),
-                        false
-                    );
-                }
-            });
-    }
-
-    public isCheckedWarehouse() {
-        this.terminalForm
-            .get('warehouseChecked')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('warehousePhone'),
-                        true,
-                        [phoneFaxRegex]
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.terminalForm.get('warehousePhone'),
-                        false
-                    );
-                }
+                this.inputService.changeValidators(
+                    this.terminalForm.get(phoneControlName),
+                    value,
+                    value ? [phoneFaxRegex] : []
+                );
             });
     }
 
@@ -344,11 +306,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     public onAction(event: any, action: string) {
         switch (action) {
-            case 'gate': {
+            case SettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
-                        ? this.terminalForm.get('gate').patchValue(false)
-                        : this.terminalForm.get('gate').patchValue(true);
+                        ? this.terminalForm.get(SettingsFormEnum.GATE).patchValue(false)
+                        : this.terminalForm.get(SettingsFormEnum.GATE).patchValue(true);
 
                     return {
                         ...item,
@@ -361,10 +323,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get('securityCamera')
+                              .get(SettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
                         : this.terminalForm
-                              .get('securityCamera')
+                              .get(SettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
 
                     return {
@@ -382,33 +344,33 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     private parkingSlot() {
         this.terminalForm
-            .get('terminalParkingSlot')
+            .get(SettingsFormEnum.TERMINAL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
                 this.parkingSlots[0].value =
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
-                        this.terminalForm.get('terminalParkingSlot')
+                        this.terminalForm.get(SettingsFormEnum.TERMINAL_PARKING_STOP)
                     );
             });
     }
 
     private fullParkingSlot() {
         this.terminalForm
-            .get('terminalFullParkingSlot')
+            .get(SettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
                 this.parkingSlots[1].value =
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
-                        this.terminalForm.get('terminalFullParkingSlot')
+                        this.terminalForm.get(SettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
                     );
             });
     }
 
-    public onSelectDropdown(event: any, action: string) { 
+    public onSelectDropdown(event: any, action: string) {
         switch (action) {
             case 'pay-period': {
                 this.selectedPayPeriod = event;
@@ -487,7 +449,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addTerminal() {
+    private addTerminal(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
@@ -531,11 +493,24 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    if (addNew) {
+                        this.terminalForm.reset();
+
+                        // Reset form values, if we don't set it, they will take null and endpoint will return error
+                        this.terminalForm.get(SettingsFormEnum.IS_OWNER).patchValue(true);
+                        this.terminalForm.get(SettingsFormEnum.OFFICE_CHECKED).patchValue(false);
+                        this.terminalForm.get(SettingsFormEnum.PARKING_CHECKED).patchValue(false);
+                        this.terminalForm.get(SettingsFormEnum.GATE).patchValue(false);
+                        this.terminalForm.get(SettingsFormEnum.SECURITY_CAMERA).patchValue(false);
+                        this.terminalForm.get(SettingsFormEnum.WAREHOUSE_CHECKED).patchValue(false);
+                        this.terminalForm.get(SettingsFormEnum.FUEL_STATION_CHECKED).patchValue(false);
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    }
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
