@@ -33,9 +33,15 @@
                                     message.sender?.id !==
                                         message[ind - 1]?.sender?.id
                                 "
-                                (messageReply)="handleMessageReply($event)"
-                                (messageEdit)="handleMessageEdit($event)"
-                                (messageDeleted)="handleMessageDelete($event)"
+                                [isReplyOrEditOpen]="
+                                    (messageToReply$ | async) ||
+                                    (messageToEdit$ | async)
+                                "
+                                (messageReplyEvent)="handleMessageReply($event)"
+                                (messageEditEvent)="handleMessageEdit($event)"
+                                (messageDeletedEvent)="
+                                    handleMessageDelete($event)
+                                "
                             ></app-chat-message>
                         </ng-container>
                     </ng-container>
@@ -71,8 +77,8 @@
                 <app-chat-content-footer
                     [replyMessage]="messageToReply$"
                     [editMessage]="messageToEdit$"
-                    (closeReplyEvent)="closeReply()"
-                    (closeEditEvent)="closeEdit()"
+                    (closeReplyEvent)="closeReplyAndEdit()"
+                    (closeEditEvent)="closeReplyAndEdit()"
                 ></app-chat-content-footer>
 
                 <div

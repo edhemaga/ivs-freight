@@ -57,6 +57,7 @@
             font-size: 14px;
             line-height: 18px;
             line-break: anywhere;
+            border-radius: 2px;
 
             .attachment-list {
                 width: 100%;
@@ -136,10 +137,20 @@
 
         .current-user {
             background-color: $ta-blue-16;
+
+            &-selected {
+                background-color: $ta-blue-13 !important;
+                color: $white !important;
+            }
         }
 
         .other {
             background-color: $ta-white-5;
+
+            &-selected {
+                background-color: $bw6-2 !important;
+                color: $white !important;
+            }
         }
     }
 }

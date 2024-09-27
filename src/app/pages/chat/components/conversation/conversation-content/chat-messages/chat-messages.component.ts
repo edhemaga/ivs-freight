@@ -246,7 +246,7 @@ export class ChatMessagesComponent
                 this.isMessageSendable = true;
                 this.attachments$.next([]);
                 this.messageForm.reset();
-                this.closeReply();
+                this.closeReplyAndEdit();
             });
     }
 
@@ -260,7 +260,7 @@ export class ChatMessagesComponent
             .editMessage(messageId, message)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.closeEdit();
+                this.closeReplyAndEdit();
             });
     }
 
@@ -430,11 +430,8 @@ export class ChatMessagesComponent
         this.getMessages();
     }
 
-    public closeReply(): void {
+    public closeReplyAndEdit(): void {
         this.messageToReply$.next(null);
-    }
-
-    public closeEdit(): void {
         this.messageToEdit$.next(null);
     }
 

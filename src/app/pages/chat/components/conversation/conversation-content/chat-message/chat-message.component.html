@@ -73,9 +73,12 @@
             <div
                 class="content ta-font-regular"
                 [ngClass]="
-                    currentUserId === (message.senderId || message.sender?.id)
-                        ? 'current-user'
-                        : 'other'
+                    currentUserId
+                        | chatMessageClass
+                            : message.sender?.id
+                            : messageReply !== null
+                            : messageEdit !== null
+                            : isReplyOrEditOpen
                 "
                 [ngStyle]="
                     message.linksCount && {
