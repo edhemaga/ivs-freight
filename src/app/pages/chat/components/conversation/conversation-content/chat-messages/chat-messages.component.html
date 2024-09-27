@@ -33,12 +33,13 @@
                                     message.sender?.id !==
                                         message[ind - 1]?.sender?.id
                                 "
+                                (messageReply)="handleMessageReply($event)"
                             ></app-chat-message>
                         </ng-container>
                     </ng-container>
                 </ng-container>
+                <!-- TODO Rework empty conversation screen -->
                 <ng-template #emptyConversation>
-                    <!-- TODO Rework empty conversation screen -->
                     <!-- <div class="d-flex justify-content-center">
                         <div class="empty-conversation">
                             <div
@@ -64,6 +65,11 @@
                     </div>
                 </ng-container>
             </div>
+
+            <app-chat-content-footer
+                [replyMessage]="messageToReply$"
+                (closeReplyEvent)="closeReply()"
+            ></app-chat-content-footer>
 
             <div
                 class="chat-footer d-flex"
@@ -257,10 +263,10 @@
 
 <ng-template #iconAction let-item="item">
     <div
-        class="icon-wrapper d-flex justify-content-center align-content-center"
+        class="action-wrapper d-flex justify-content-center align-content-center"
     >
         <div
-            class="icon d-flex justify-content-center align-content-center"
+            class="action d-flex justify-content-center align-content-center"
             (click)="item.action()"
         >
             <ng-container *ngIf="item.text">

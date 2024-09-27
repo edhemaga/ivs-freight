@@ -66,4 +66,5 @@ export class ChatSvgRoutes {
         'assets/svg/chat/circle-offline-icon.svg';
     static notSelectedIllustrationIcon: string =
         'assets/svg/chat/not-selected-illustration-icon.svg';
+    static replyXIcon: string = 'assets/svg/chat/reply-x-icon.svg';
 }

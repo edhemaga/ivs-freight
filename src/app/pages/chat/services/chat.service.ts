@@ -114,9 +114,11 @@ export class UserChatService {
 
     public sendMessage(
         conversationId: number,
+        messageType: number,
         content: string,
         attachmentsList?: UploadFile[],
-        linksList?: string[]
+        linksList?: string[],
+        parentMessageId?: number
     ): Observable<any> {
         if (!conversationId) return;
 
@@ -130,7 +132,14 @@ export class UserChatService {
             };
         });
 
-        const data = { conversationId, content, attachments, links };
+        const data = {
+            conversationId,
+            messageType,
+            content,
+            attachments,
+            links,
+            parentMessageId,
+        };
 
         this.formDataService.extractFormDataFromFunction(data);
 

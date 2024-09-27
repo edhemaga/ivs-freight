@@ -170,7 +170,7 @@
             }
 
             .right-side {
-                .icon-wrapper {
+                .action-wrapper {
                     height: 26px;
                     min-width: 26px;
                     width: max-content;
@@ -184,7 +184,7 @@
                         background-color: $bw2;
                     }
 
-                    .icon {
+                    .action {
                         width: 100%;
                     }
 
@@ -223,5 +223,11 @@
     .text {
         height: 23px;
         margin: auto;
+    }
+}
+//TODO Check design
+@media only screen and (max-width: 1280px) {
+    .item-text {
+        display: none !important;
     }
 }

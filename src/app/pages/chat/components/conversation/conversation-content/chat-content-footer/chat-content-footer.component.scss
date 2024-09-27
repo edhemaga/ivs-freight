@@ -1,0 +1,38 @@
+@import 'src/theme/variables';
+
+.reply-wrapper {
+    margin: 8px 18px;
+
+    .reply {
+        &-placeholder {
+            font-size: 14px;
+        }
+
+        &-x-icon {
+            height: 18px;
+            width: 18px;
+            border-radius: 2px;
+
+            svg-icon {
+                margin: auto !important;
+            }
+
+            &:hover {
+                background-color: $bw2;
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+                cursor: pointer;
+            }
+        }
+
+        &-message {
+            font-size: 11px;
+            color: $ta-black-2;
+
+            margin-top: 2px;
+        }
+    }
+}

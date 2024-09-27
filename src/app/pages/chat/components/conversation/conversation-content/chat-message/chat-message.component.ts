@@ -1,14 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
 import { ChatMessageResponse } from '@pages/chat/models';
 
 // Enums
-import { ChatImageAspectRatioEnum } from '@pages/chat/enums';
+import {
+    ChatImageAspectRatioEnum,
+    ChatMessageActionEnum,
+} from '@pages/chat/enums';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Assets
+import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 @Component({
     selector: 'app-chat-message',
@@ -21,17 +27,28 @@ export class ChatMessageComponent implements OnInit {
     @Input() message!: ChatMessageResponse;
     @Input() isDateDisplayed: boolean = true;
 
+    @Output() messageReply: EventEmitter<ChatMessageResponse> =
+        new EventEmitter();
+
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
 
     public messageDateAndTime!: string;
 
+    // Assets
+    public chatSvgRoutes = ChatSvgRoutes;
+
+    // Enums
+    public chatMessageActionEnum = ChatMessageActionEnum;
+
+    public hasActionsDisplayed: boolean = false;
+
     constructor() {}
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
-        this.convertDate(this.message.createdAt);
+        this.convertDate(this.message?.createdAt);
     }
 
     private checkImageDimensions(url: string): void {
@@ -56,5 +73,23 @@ export class ChatMessageComponent implements OnInit {
 
         this.messageDateAndTime =
             MethodsCalculationsHelper.convertDateToTimeFromBackend(date, true);
+    }
+
+    public toggleActions(displayed: boolean): void {
+        this.hasActionsDisplayed = displayed;
+    }
+
+    public messageAction(actionType: ChatMessageActionEnum): void {
+        switch (actionType) {
+            case ChatMessageActionEnum.REPLY:
+                this.messageReply.emit(this.message);
+                break;
+            case ChatMessageActionEnum.DELETE:
+                break;
+            case ChatMessageActionEnum.EDIT:
+                break;
+            default:
+                return;
+        }
     }
 }

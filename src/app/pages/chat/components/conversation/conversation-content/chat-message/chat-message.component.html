@@ -1,4 +1,8 @@
-<div class="message-container">
+<div
+    class="message-container"
+    (mouseover)="toggleActions(true)"
+    (mouseout)="toggleActions(false)"
+>
     <ng-container *ngIf="message.content">
         <div
             class="content-wrapper d-flex justify-content-end"
@@ -8,6 +12,25 @@
                     : 'flex-row-reverse'
             "
         >
+            <ng-container *ngIf="hasActionsDisplayed">
+                <div
+                    class="message-actions d-flex justify-content-center align-items-center"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconAction;
+                            context: {
+                                item: {
+                                    icon: chatSvgRoutes.replyIcon,
+                                    actionType: chatMessageActionEnum.REPLY
+                                }
+                            }
+                        "
+                    ></ng-container>
+                    <!-- TODO Add two additional icon actions -->
+                </div>
+            </ng-container>
+
             <ng-container *ngIf="isDateDisplayed">
                 <div
                     class="message-time d-flex justify-content-center align-items-center"
@@ -15,7 +38,6 @@
                     {{ messageDateAndTime }}
                 </div>
             </ng-container>
-
             <div
                 class="content ta-font-regular"
                 [ngClass]="
@@ -81,6 +103,7 @@
             </div>
         </div>
     </ng-container>
+
     <ng-container *ngIf="message.mediaCount">
         <div
             class="media-preview-wrapper d-flex"
@@ -118,3 +141,32 @@
         </div>
     </ng-container>
 </div>
+
+<ng-template #iconAction let-item="item">
+    <div
+        class="action-wrapper d-flex justify-content-center align-content-center"
+    >
+        <div
+            class="action d-flex justify-content-center align-content-center"
+            (click)="messageAction(item.actionType)"
+        >
+            <ng-container *ngIf="item.text">
+                <div
+                    class="item-text d-flex justify-content-center align-content-center ta-font-bold"
+                >
+                    <div class="text">{{ item.text }}</div>
+                </div>
+            </ng-container>
+
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [ngClass]="item.customClass"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+                [src]="item.icon"
+            ></svg-icon>
+        </div>
+    </div>
+</ng-template>

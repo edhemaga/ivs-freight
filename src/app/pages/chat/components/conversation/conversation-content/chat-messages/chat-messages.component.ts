@@ -33,7 +33,6 @@ import {
 // Models
 import {
     CompanyUserShortResponse,
-    ConversationInfoResponse,
     ConversationResponse,
 } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
@@ -54,6 +53,7 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,10 +97,12 @@ export class ChatMessagesComponent
 
     // Messages
     public messages: ChatMessageResponse[] = [];
-    private isMessageSendable: boolean = false;
+    private isMessageSendable: boolean = true;
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;
+    public messageToReply$: BehaviorSubject<ChatMessageResponse | null> =
+        new BehaviorSubject(null);
 
     // Attachment upload
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
@@ -129,10 +131,12 @@ export class ChatMessagesComponent
         // Ref
         private cdref: ChangeDetectorRef,
 
-        //Renderer
+        // Renderer
         private renderer: Renderer2,
         private el: ElementRef,
 
+        // Router
+        private activatedRoute: ActivatedRoute,
         // Form
         private formBuilder: UntypedFormBuilder,
 
@@ -145,6 +149,7 @@ export class ChatMessagesComponent
     }
 
     ngOnInit(): void {
+        this.getResolvedData();
         this.creteForm();
         this.connectToHub();
         this.listenForTyping();
@@ -152,6 +157,15 @@ export class ChatMessagesComponent
 
     ngAfterContentChecked(): void {
         this.cdref.detectChanges();
+    }
+
+    private getResolvedData(): void {
+        this.activatedRoute.data
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.messages = [...res?.messages?.pagination?.data];
+                this.conversation = res?.information;
+            });
     }
 
     private connectToHub(): void {
@@ -192,25 +206,30 @@ export class ChatMessagesComponent
     }
 
     public sendMessage(): void {
-        const message = this.messageForm.value?.message;
+        const message = this.messageForm?.value?.message;
 
         if (!this.conversation?.id || !this.isMessageSendable) return;
         if (!message && !this.attachments$?.value?.length) return;
 
         this.isMessageSendable = false;
 
+        let parentMessageId: number = this.messageToReply$.value?.id;
+
         this.chatService
             .sendMessage(
                 this.conversation.id,
+                1,
                 message,
                 this.attachments$.value,
-                this.links
+                this.links,
+                parentMessageId
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.isMessageSendable = true;
                 this.attachments$.next([]);
                 this.messageForm.reset();
+                this.closeReply();
             });
     }
 
@@ -323,11 +342,10 @@ export class ChatMessagesComponent
             .pipe(debounceTime(150), takeUntil(this.destroy$))
             .subscribe((arg) => {
                 const message: string = arg?.message;
-
-                if (message)
+                if (message) {
                     this.chatHubService.notifyTyping(this.conversation.id);
-
-                this.checkIfContainsLink(message);
+                    this.checkIfContainsLink(message);
+                }
             });
     }
 
@@ -367,6 +385,14 @@ export class ChatMessagesComponent
             }
         }
         this.currentMessage = message;
+    }
+
+    public handleMessageReply(messageToReply: ChatMessageResponse): void {
+        this.messageToReply$.next(messageToReply);
+    }
+
+    public closeReply(): void {
+        this.messageToReply$.next(null);
     }
 
     ngOnDestroy(): void {
