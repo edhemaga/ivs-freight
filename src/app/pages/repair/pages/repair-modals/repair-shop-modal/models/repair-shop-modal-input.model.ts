@@ -11,4 +11,5 @@ export interface RepeairShopModalInput {
     key: EditDataType;
     type: RepairShopModalEnum.EDIT_ACTION | null;
     canOpenModal: boolean;
+    companyOwned: boolean;
 }

@@ -22,9 +22,9 @@
 
         <!-- Sub Text -->
 
-        <ng-container *ngIf="subText">
+        <ng-container *ngIf="subText && _isCardOpen">
             <div class="d-flex align-items-center subtext-container">
-                <p class="m-0 ta-font-medium">
+                <p class="m-0 ta-font-medium text-size-11 text-color-muted">
                     {{ subText }}
                 </p>
             </div>
