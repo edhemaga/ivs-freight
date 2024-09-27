@@ -19,6 +19,9 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 // Models
 import { TerminalListResponse } from 'appcoretruckassist';
 
+// Utils
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+
 @Component({
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',
@@ -30,6 +33,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalActions: any;
     private destroy$ = new Subject<void>();
     public terminalDataById: any;
+    public svgRoutes = SettingsLocationSvgRoutes;
     constructor(
         private settingsLocationService: SettingsLocationService,
         private terminalService: CompanyTerminalService,

@@ -30,6 +30,9 @@
         &-muted {
             @include svg-fill($muted);
         }
+        &-light-grey-2 {
+            @include svg-fill($ta-light-grey-2);
+        }
         &-light-grey-6 {
             @include svg-fill($ta-light-grey-6);
         }

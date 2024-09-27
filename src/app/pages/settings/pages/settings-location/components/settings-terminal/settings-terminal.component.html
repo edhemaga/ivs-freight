@@ -51,8 +51,8 @@
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
                     <svg-icon
-                        class="company-icons"
-                        src="assets/svg/common/ic_phone.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                        [src]="svgRoutes.phone"
                     ></svg-icon>
                     <app-ta-copy
                         [copyValue]="item?.phone"
@@ -62,8 +62,8 @@
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
-                        class="company-icons"
-                        src="assets/svg/common/ic_email.svg"
+                    class="mr-3 svg-fill-light-grey-2"
+                        [src]="svgRoutes.email"
                     ></svg-icon>
                     <app-ta-copy
                         [copyValue]="item?.email"
@@ -73,8 +73,8 @@
                 </div>
                 <div *ngIf="item.address.address" class="single-item">
                     <svg-icon
-                        class="company-icons"
-                        src="assets/svg/truckassist-table/location-icon.svg"
+                    class="mr-3 svg-fill-light-grey-2"
+                       [src]="svgRoutes.location"
                     ></svg-icon>
                     <span>{{ item?.address?.address }}</span>
                 </div>
@@ -91,8 +91,8 @@
                 <div class="parking-template-data">
                     <div *ngIf="item.officePhone" class="parking-template-item">
                         <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.officePhone"
@@ -106,8 +106,8 @@
                         class="parking-template-item"
                     >
                         <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone-extension.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.phoneExt"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.officeExtPhone"
@@ -118,8 +118,8 @@
                     <div class="parking-template-item">
                         <svg-icon
                             *ngIf="item.officeEmail"
-                            class="company-icons"
-                            src="assets/svg/common/ic_email.svg"
+                            class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.email"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.officeEmail"
@@ -145,8 +145,8 @@
                         class="parking-template-item"
                     >
                         <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.parkingPhone"
@@ -158,8 +158,8 @@
                     <div class="parking-template-item">
                         <svg-icon
                             *ngIf="item.parkingEmail"
-                            class="company-icons"
-                            src="assets/svg/common/ic_email.svg"
+                            class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.email"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.parkingEmail"
@@ -201,7 +201,7 @@
                         <svg-icon
                             class="parking-template-svg"
                             [ngClass]="{ disabled: !item.securityCamera }"
-                            src="assets/svg/common/ic_security-camera.svg"
+                            [src]="svgRoutes.securityCamera"
                         ></svg-icon>
                         <p
                             class="parking-template-text text-color-black-2 text-color-black-2"
@@ -214,7 +214,7 @@
                         <svg-icon
                             class="parking-template-svg"
                             [ngClass]="{ disabled: !item.gate }"
-                            src="assets/svg/common/ic_security-gate.svg"
+                            [src]="svgRoutes.securityGate"
                         ></svg-icon>
                         <p
                             [ngClass]="{ 'cross-out': !item.gate }"
@@ -241,8 +241,8 @@
                         class="parking-template-item"
                     >
                         <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.warehousePhone"
@@ -256,8 +256,8 @@
                         class="parking-template-item"
                     >
                         <svg-icon
-                            class="company-icons"
-                            src="assets/svg/common/ic_phone-extension.svg"
+                        class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.phoneExt"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.warehouseExtPhone"
@@ -268,8 +268,8 @@
                     <div class="parking-template-item">
                         <svg-icon
                             *ngIf="item.warehouseEmail"
-                            class="company-icons"
-                            src="assets/svg/common/ic_email.svg"
+                            class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.email"
                         ></svg-icon>
                         <app-ta-copy
                             [copyValue]="item.warehouseEmail"
