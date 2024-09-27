@@ -40,7 +40,9 @@
                                 context: {
                                     item: {
                                         icon: chatSvgRoutes.trashBinIcon,
-                                        actionType: chatMessageActionEnum.DELETE
+                                        actionType:
+                                            chatMessageActionEnum.DELETE,
+                                        customClass: 'red'
                                     }
                                 }
                             "
@@ -175,13 +177,13 @@
 
 <ng-template #iconAction let-item="item">
     <div
-        class="action-wrapper d-flex justify-content-center align-content-center"
+        class="action-wrapper gray d-flex justify-content-center align-content-center"
         (click)="messageAction(item.actionType)"
+        [ngClass]="item.customClass"
     >
         <div class="action d-flex justify-content-center align-content-center">
             <svg-icon
                 class="pointer d-flex justify-content-center align-items-center"
-                [ngClass]="item.customClass"
                 [svgStyle]="{
                     'width.px': 12,
                     'height.px': 12

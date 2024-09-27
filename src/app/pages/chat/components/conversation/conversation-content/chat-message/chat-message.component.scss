@@ -154,10 +154,6 @@
 
     border-radius: 2px;
 
-    &:hover {
-        background-color: $bw2;
-    }
-
     .action {
         width: 100%;
     }
@@ -167,6 +163,24 @@
 
         &:hover {
             cursor: pointer;
+        }
+    }
+
+    &.gray {
+        &:hover {
+            background-color: $bw2;
+        }
+    }
+
+    &.red {
+        &:hover {
+            background-color: $white-6 !important;
+
+            svg {
+                path {
+                    fill: $ta-red-14;
+                }
+            }
         }
     }
 
