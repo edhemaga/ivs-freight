@@ -93,6 +93,10 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
+        this.hasActionsDisplayed = this.isReplyOrEditOpen;
+        if (this.isReplyOrEditOpen) {
+            return;
+        }
         this.hasActionsDisplayed = displayed;
     }
 
