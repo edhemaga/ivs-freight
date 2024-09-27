@@ -38,6 +38,8 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 import { ParkingStore } from '@pages/settings/state/parking-state/company-parking.store';
 import { OfficeStore } from '@pages/settings/state/setting-ofice-state/company-office.store';
 import { TerminalStore } from '@pages/settings/state/settings-terminal-state/company-terminal.store';
+
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({

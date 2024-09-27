@@ -236,7 +236,7 @@
                         <div class="col-12 service-types">
                             <ng-container
                                 *ngIf="
-                                    repairShopForm.get(
+                                    !!repairShopForm.get(
                                         RepairShopModalStringEnum.SHOP_SERVICE_TYPE
                                     ).value
                                 "
@@ -292,29 +292,32 @@
                         <div
                             class="repair-shop-services repair-shop-services-large"
                         >
-                            <div
+                            <ng-container
                                 *ngFor="
                                     let openHour of openHours.controls;
                                     let ind = index
                                 "
-                                (click)="toggleWorkingDay(ind)"
-                                [ngClass]="{
-                                    active: openHour.get(
-                                        RepairShopModalStringEnum.IS_WORKING_DAY
-                                    ).value
-                                }"
-                                class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                             >
-                                <p class="ta-font-bold text-uppercase">
-                                    {{
-                                        openHour
-                                            .get(
-                                                RepairShopModalStringEnum.DAY_LABEL
-                                            )
-                                            .value.slice(0, 3)
-                                    }}
-                                </p>
-                            </div>
+                                <div
+                                    (click)="toggleWorkingDay(ind)"
+                                    [ngClass]="{
+                                        active: openHour.get(
+                                            RepairShopModalStringEnum.IS_WORKING_DAY
+                                        ).value
+                                    }"
+                                    class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
+                                >
+                                    <p class="ta-font-bold text-uppercase">
+                                        {{
+                                            openHour
+                                                .get(
+                                                    RepairShopModalStringEnum.DAY_LABEL
+                                                )
+                                                .value.slice(0, 3)
+                                        }}
+                                    </p>
+                                </div>
+                            </ng-container>
                             <div class="timeline__card">
                                 <div
                                     class="timeline__card-range text-uppercase ta-font-bold"
@@ -361,7 +364,7 @@
                             >
                                 <ng-container
                                     *ngIf="
-                                        openHour.get(
+                                        !!openHour.get(
                                             RepairShopModalStringEnum.IS_WORKING_DAY
                                         ).value
                                     "
@@ -381,14 +384,16 @@
 
                                         <div class="d-flex flex-column">
                                             <app-ta-input
-                                            [inputConfig]="openHoursFormField"
+                                                [inputConfig]="
+                                                    openHoursFormField
+                                                "
                                                 [formControlName]="
                                                     RepairShopModalStringEnum.START_TIME
                                                 "
                                             ></app-ta-input>
                                             <ng-container
                                                 *ngIf="
-                                                    openHour.get(
+                                                    !!openHour.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
@@ -417,7 +422,7 @@
 
                                             <ng-container
                                                 *ngIf="
-                                                    openHour.get(
+                                                    !!openHour.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
@@ -439,7 +444,7 @@
                                         >
                                             <ng-container
                                                 *ngIf="
-                                                    openHour.get(
+                                                    !!openHour.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ) as doubleShift
                                                 "
@@ -528,7 +533,7 @@
 
                                     <ng-container
                                         *ngIf="
-                                            holiday.get(
+                                            !!holiday.get(
                                                 RepairShopModalStringEnum.IS_WORKING_DAY
                                             ).value
                                         "
@@ -544,7 +549,7 @@
                                             ></app-ta-input>
                                             <ng-container
                                                 *ngIf="
-                                                    holiday.get(
+                                                    !!holiday.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
@@ -578,7 +583,7 @@
 
                                             <ng-container
                                                 *ngIf="
-                                                    holiday.get(
+                                                    !!holiday.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ).value
                                                 "
@@ -600,7 +605,7 @@
                                         >
                                             <ng-container
                                                 *ngIf="
-                                                    holiday.get(
+                                                    !!holiday.get(
                                                         RepairShopModalStringEnum.DOUBLE_SHIFT
                                                     ) as doubleShift
                                                 "

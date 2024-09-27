@@ -599,8 +599,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private patchWorkingDayTime(
         item: any,
-        startTime: Date,
-        endTime: Date,
+        startTime: string | Date,
+        endTime: string | Date,
         isWorkingDay: boolean
     ): void {
         item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
@@ -653,8 +653,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         this.patchWorkingDayTime(
             newWorkingDay,
-            startTime as any,
-            endTime as any,
+            startTime,
+            endTime,
             dayActiveField.value
         );
     }
