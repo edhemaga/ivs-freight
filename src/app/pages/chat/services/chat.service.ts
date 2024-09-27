@@ -150,6 +150,17 @@ export class UserChatService {
         );
     }
 
+    public editMessage(messageId: number, content: string): Observable<Object> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/message`,
+            {
+                id: messageId,
+                content,
+            },
+            { headers: this.headers }
+        );
+    }
+
     public getAllConversationFiles(
         conversationId: number
     ): Observable<ConversationInfoResponse> {

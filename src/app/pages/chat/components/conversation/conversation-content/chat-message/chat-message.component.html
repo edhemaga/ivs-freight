@@ -1,7 +1,8 @@
+<!-- Do not use (mouseover) nad (mouseout)!! -->
 <div
     class="message-container"
-    (mouseover)="toggleActions(true)"
-    (mouseout)="toggleActions(false)"
+    (mouseenter)="toggleActions(true)"
+    (mouseleave)="toggleActions(false)"
 >
     <ng-container *ngIf="message.content">
         <div
@@ -27,7 +28,36 @@
                             }
                         "
                     ></ng-container>
-                    <!-- TODO Add two additional icon actions -->
+                    <ng-container
+                        *ngIf="
+                            currentUserId ===
+                            (message.senderId || message.sender?.id)
+                        "
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.trashBinIcon,
+                                        actionType: chatMessageActionEnum.DELETE
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.editPenIcon,
+                                        actionType: chatMessageActionEnum.EDIT
+                                    }
+                                }
+                            "
+                        ></ng-container
+                    ></ng-container>
+                    <app-chat-vertical-divider></app-chat-vertical-divider>
                 </div>
             </ng-container>
 
@@ -101,29 +131,28 @@
                     </div>
                 </ng-container>
             </div>
-        </div>
-    </ng-container>
 
-    <ng-container *ngIf="message.mediaCount">
-        <div
-            class="media-preview-wrapper d-flex"
-            [ngClass]="
-                currentUserId === (message.senderId || message.sender?.id)
-                    ? 'flex-row-reverse'
-                    : 'flex-row'
-            "
-        >
-            <ng-container
-                *ngFor="
-                    let attachment of message.media;
-                    let ind = index;
-                    trackBy: '' | trackByProperty
-                "
-            >
-                <div class="media-preview d-flex">
-                    <img
-                        class="media-preview-thumbnail"
-                        [ngStyle]="
+            <ng-container *ngIf="message.mediaCount">
+                <div
+                    class="media-preview-wrapper d-flex"
+                    [ngClass]="
+                        currentUserId ===
+                        (message.senderId || message.sender?.id)
+                            ? 'flex-row-reverse'
+                            : 'flex-row'
+                    "
+                >
+                    <ng-container
+                        *ngFor="
+                            let attachment of message.media;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <div class="media-preview d-flex">
+                            <img
+                                class="media-preview-thumbnail"
+                                [ngStyle]="
                             (message.mediaCount || message.media?.length) > 1 ? {
                                 height: '120px',
                                 width: '120px',  
@@ -133,9 +162,11 @@
                                 'aspect-ration':  singleImageAspectRation
                             }
                         "
-                        [src]="attachment.url"
-                        [alt]="attachment.fileName"
-                    />
+                                [src]="attachment.url"
+                                [alt]="attachment.fileName"
+                            />
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>
@@ -145,25 +176,15 @@
 <ng-template #iconAction let-item="item">
     <div
         class="action-wrapper d-flex justify-content-center align-content-center"
+        (click)="messageAction(item.actionType)"
     >
-        <div
-            class="action d-flex justify-content-center align-content-center"
-            (click)="messageAction(item.actionType)"
-        >
-            <ng-container *ngIf="item.text">
-                <div
-                    class="item-text d-flex justify-content-center align-content-center ta-font-bold"
-                >
-                    <div class="text">{{ item.text }}</div>
-                </div>
-            </ng-container>
-
+        <div class="action d-flex justify-content-center align-content-center">
             <svg-icon
                 class="pointer d-flex justify-content-center align-items-center"
                 [ngClass]="item.customClass"
                 [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
+                    'width.px': 12,
+                    'height.px': 12
                 }"
                 [src]="item.icon"
             ></svg-icon>

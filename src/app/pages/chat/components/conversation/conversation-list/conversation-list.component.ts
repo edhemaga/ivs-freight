@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -48,8 +48,7 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit
-{
+    implements OnInit {
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
     @Input() public truckChannel: ChatCompanyChannelExtended[];
@@ -105,9 +104,11 @@ export class ConversationListComponent
     }
 
     private listenForNewMessage(): void {
-        ChatHubService.receiveMessage().subscribe((arg) => {
-            console.log(arg);
-        });
+        ChatHubService.receiveMessage()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((msg) => {
+                // TODO implement new logic
+            });
     }
 
     private initializeChatGroupStates(): void {

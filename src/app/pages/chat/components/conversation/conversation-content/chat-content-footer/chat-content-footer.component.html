@@ -12,31 +12,46 @@
     <ng-container *ngIf="replyMessage | async">
         <ng-container
             *ngTemplateOutlet="
-                messageReply;
+                messageReplyEdit;
                 context: {
                     item: {
-                        fullName: (replyMessage | async)?.sender?.fullName,
+                        text:
+                            'Replying to ' +
+                            (replyMessage | async)?.sender?.fullName,
                         message: (replyMessage | async).content
                     }
                 }
             "
         ></ng-container>
     </ng-container>
-</div>
 
+    <ng-container *ngIf="editMessage | async">
+        <ng-container
+            *ngTemplateOutlet="
+                messageReplyEdit;
+                context: {
+                    item: {
+                        text: 'Edit message',
+                        message: (editMessage | async).content
+                    }
+                }
+            "
+        ></ng-container>
+    </ng-container>
+</div>
 <!-- Templates -->
 <ng-template #isTyping let-user="user">
     <div></div>
     <div class="typing-placeholder ta-font-bold">{{ user }} is typing...</div>
 </ng-template>
 
-<ng-template #messageReply let-item="item">
+<ng-template #messageReplyEdit let-item="item">
     <div class="reply-wrapper">
         <div class="d-flex justify-content-between align-content-center">
             <div class="reply-placeholder ta-font-semi-bold">
-                Replying to {{ item.fullName }}
+                {{ item.text }}
             </div>
-            <div class="reply-x-icon" (click)="closeReply()">
+            <div class="reply-x-icon" (click)="closeReplyOrEdit()">
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
@@ -45,7 +60,9 @@
                 </svg-icon>
             </div>
         </div>
-        <div class="reply-message ta-font-regular">{{ item.message }}</div>
+        <div class="reply-message ta-font-regular">
+            {{ item.message }}
+        </div>
     </div>
 </ng-template>
 

@@ -25,16 +25,21 @@ export class ChatMessageComponent implements OnInit {
     @Input() currentUserId!: string;
     @Input() chatParticipants: CompanyUserShortResponse[];
     @Input() message!: ChatMessageResponse;
-    @Input() isDateDisplayed: boolean = true;
+    @Input() isDateDisplayed: boolean = false;
 
     @Output() messageReply: EventEmitter<ChatMessageResponse> =
+        new EventEmitter();
+
+    @Output() messageEdit: EventEmitter<ChatMessageResponse> =
         new EventEmitter();
 
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
 
+    // Message details and actions
     public messageDateAndTime!: string;
+    public areActionsDisplayed: boolean = false;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
@@ -82,11 +87,14 @@ export class ChatMessageComponent implements OnInit {
     public messageAction(actionType: ChatMessageActionEnum): void {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
+                this.messageEdit.emit(null);
                 this.messageReply.emit(this.message);
                 break;
             case ChatMessageActionEnum.DELETE:
                 break;
             case ChatMessageActionEnum.EDIT:
+                this.messageReply.next(null);
+                this.messageEdit.emit(this.message);
                 break;
             default:
                 return;
