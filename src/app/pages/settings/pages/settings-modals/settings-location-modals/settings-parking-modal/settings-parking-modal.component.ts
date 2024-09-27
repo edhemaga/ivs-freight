@@ -57,6 +57,7 @@ import {
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -90,23 +91,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public parkingForm: UntypedFormGroup;
 
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
 
     public gateBtns = [
         {
@@ -117,7 +101,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         {
             id: 522,
             name: 'No',
-            checked: false,
+            checked: true,
         },
     ];
 
@@ -130,7 +114,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         {
             id: 367,
             name: 'No',
-            checked: false,
+            checked: true,
         },
     ];
 
@@ -242,18 +226,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 break;
             }
             default: {
-                this.selectedTab = event.id;
-                let dotAnimation = document.querySelector(
-                    '.animation-two-tabs'
-                );
-
-                this.animationObject = {
-                    value: this.selectedTab,
-                    params: {
-                        height: `${dotAnimation.getClientRects()[0].height}px`,
-                    },
-                };
-
                 break;
             }
         }
@@ -261,10 +233,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case TaModalActionEnums.CLOSE: {
                 break;
             }
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 if (this.parkingForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.parkingForm);
                     return;
@@ -286,7 +258,15 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+                if (this.parkingForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.parkingForm);
+                    return;
+                }
+
+                this.addParking(true);
+            }
+            case TaModalActionEnums.DELETE:  {
                 this.deleteParkingById(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'delete',
@@ -426,7 +406,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addParking() {
+    private addParking(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
         if (this.selectedAddress) {
@@ -479,11 +459,20 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    if(addNew) {
+                        this.parkingForm.reset();
+                        this.parkingForm.get('isOwner').patchValue(true);
+                        this.parkingForm.get('securityCamera').patchValue(false);
+                        this.parkingForm.get('gate').patchValue(false);
+                        this.selectedAddress = null;
+                        // this.createForm();
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    }
                     this.dispatcherService.updateModalList();
                 },
                 error: () => {
