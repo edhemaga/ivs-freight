@@ -57,6 +57,7 @@ import {
     AssignedLoadListResponse,
     SortOrder,
     LoadSortBy,
+    AddressResponse,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -412,7 +413,8 @@ export class LoadService {
     public updateLoadStatus(
         loadId: number,
         loadStatus: LoadStatus,
-        isRevert: boolean
+        isRevert: boolean,
+        newLocation?: AddressResponse
     ): Observable<CreateResponse> {
         if (isRevert) {
             return this.loadService.apiLoadStatusRevertPut({
@@ -423,6 +425,9 @@ export class LoadService {
             return this.loadService.apiLoadStatusPut({
                 id: loadId,
                 status: loadStatus,
+                repairLocation: newLocation?.address,
+                longitude: newLocation?.longLat?.longitude,
+                latitude: newLocation?.longLat?.latitude,
             });
         }
     }
