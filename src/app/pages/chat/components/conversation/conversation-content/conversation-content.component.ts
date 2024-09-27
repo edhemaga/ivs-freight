@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 import {
     CompanyUserShortResponse,
     ConversationResponse,
@@ -40,7 +40,7 @@ export class ConversationContentComponent
         conversationParticipants: CompanyUserShortResponse[];
     }> = new EventEmitter();
 
-    public messages: ChatMessageResponse[] = [];
+    public messages: ChatMessage[] = [];
 
     // Group info
     public chatConversationType = ChatConversationType;

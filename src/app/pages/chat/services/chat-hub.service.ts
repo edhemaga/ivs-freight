@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 
 // Env
 import { environment } from 'src/environments/environment';
@@ -40,9 +40,9 @@ export class ChatHubService {
         if (
             !ChatHubService.hubConnection &&
             ChatHubService.hubConnection?.state !==
-                signalR.HubConnectionState.Connecting &&
+            signalR.HubConnectionState.Connecting &&
             ChatHubService.hubConnection?.state !==
-                signalR.HubConnectionState.Connected
+            signalR.HubConnectionState.Connected
         )
             return;
 
@@ -57,11 +57,11 @@ export class ChatHubService {
         ChatHubService.hubConnection.stop().then();
     }
 
-    public static receiveMessage(): Observable<ChatMessageResponse> {
-        return new Observable<ChatMessageResponse>((observer) => {
+    public static receiveMessage(): Observable<ChatMessage> {
+        return new Observable<ChatMessage>((observer) => {
             ChatHubService.hubConnection.on(
                 'ReceiveMessage',
-                (newMessage: ChatMessageResponse) => {
+                (newMessage: ChatMessage) => {
                     return observer.next(newMessage);
                 }
             );

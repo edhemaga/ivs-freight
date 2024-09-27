@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatMessage, ChatMessageResponse } from '@pages/chat/models';
 
 // Enums
 import {
@@ -10,28 +10,33 @@ import {
     ChatMessageActionEnum,
 } from '@pages/chat/enums';
 
+// Services
+import { UserChatService } from '@pages/chat/services';
+
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-chat-message',
     templateUrl: './chat-message.component.html',
     styleUrls: ['./chat-message.component.scss'],
 })
-export class ChatMessageComponent implements OnInit {
+export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() currentUserId!: string;
     @Input() chatParticipants: CompanyUserShortResponse[];
-    @Input() message!: ChatMessageResponse;
+    @Input() message!: ChatMessage;
     @Input() isDateDisplayed: boolean = false;
 
-    @Output() messageReply: EventEmitter<ChatMessageResponse> =
-        new EventEmitter();
+    @Output() messageReply: EventEmitter<ChatMessage> = new EventEmitter();
 
-    @Output() messageEdit: EventEmitter<ChatMessageResponse> =
-        new EventEmitter();
+    @Output() messageEdit: EventEmitter<ChatMessage> = new EventEmitter();
+
+    @Output() messageDeleted: EventEmitter<boolean> = new EventEmitter();
 
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
@@ -49,7 +54,9 @@ export class ChatMessageComponent implements OnInit {
 
     public hasActionsDisplayed: boolean = false;
 
-    constructor() {}
+    constructor(private chatService: UserChatService) {
+        super();
+    }
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
@@ -91,6 +98,12 @@ export class ChatMessageComponent implements OnInit {
                 this.messageReply.emit(this.message);
                 break;
             case ChatMessageActionEnum.DELETE:
+                this.chatService
+                    .deleteMessage(this.message?.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.messageDeleted.emit(true);
+                    });
                 break;
             case ChatMessageActionEnum.EDIT:
                 this.messageReply.next(null);

@@ -15,7 +15,12 @@ import {
     Input,
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
+import {
+    BehaviorSubject,
+    debounceTime,
+    map,
+    takeUntil,
+} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
@@ -37,10 +42,7 @@ import {
     ConversationResponse,
 } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import {
-    ChatMessageResponse,
-    ChatAttachmentForThumbnail,
-} from '@pages/chat/models';
+import { ChatAttachmentForThumbnail, ChatMessage } from '@pages/chat/models';
 
 // Enums
 import {
@@ -95,14 +97,14 @@ export class ChatMessagesComponent
     public isEmojiSelectionActive: boolean = false;
 
     // Messages
-    public messages: ChatMessageResponse[] = [];
+    public messages: ChatMessage[] = [];
     private isMessageSendable: boolean = true;
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
     public currentMessage!: string;
-    public messageToReply$: BehaviorSubject<ChatMessageResponse | null> =
+    public messageToReply$: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
-    public messageToEdit$: BehaviorSubject<ChatMessageResponse | null> =
+    public messageToEdit$: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
 
     // Attachment upload
@@ -166,6 +168,16 @@ export class ChatMessagesComponent
             .subscribe((res) => {
                 this.messages = [...res?.messages?.pagination?.data];
                 this.conversation = res?.information;
+            });
+    }
+
+    public getMessages(): void {
+        this.chatService
+            .getMessages(this.conversation?.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                console.log(res);
+                this.messages = [...res?.pagination?.data];
             });
     }
 
@@ -410,12 +422,16 @@ export class ChatMessagesComponent
         this.currentMessage = message;
     }
 
-    public handleMessageReply(messageToReply: ChatMessageResponse): void {
+    public handleMessageReply(messageToReply: ChatMessage): void {
         this.messageToReply$.next(messageToReply);
     }
 
-    public handleMessageEdit(messageToEdit: ChatMessageResponse): void {
+    public handleMessageEdit(messageToEdit: ChatMessage): void {
         this.messageToEdit$.next(messageToEdit);
+    }
+
+    public handleMessageDelete(deleted: boolean): void {
+        this.getMessages();
     }
 
     public closeReply(): void {

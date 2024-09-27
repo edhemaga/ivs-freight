@@ -6,7 +6,7 @@ import {
 
 import { ChatLink } from '@pages/chat/models';
 
-export interface ChatMessageResponse {
+export interface ChatMessage {
     id: number;
     messageType?: EnumValue;
     sender?: CompanyUserShortResponse;

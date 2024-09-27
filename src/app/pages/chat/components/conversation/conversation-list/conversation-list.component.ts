@@ -48,7 +48,8 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit {
+    implements OnInit
+{
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
     @Input() public truckChannel: ChatCompanyChannelExtended[];

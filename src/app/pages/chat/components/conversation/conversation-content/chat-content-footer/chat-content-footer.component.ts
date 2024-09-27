@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -20,9 +20,9 @@ export class ChatContentFooterComponent
     implements OnInit
 {
     @Input() currentUserTyping!: string;
-    @Input() replyMessage: BehaviorSubject<ChatMessageResponse | null> =
+    @Input() replyMessage: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
-    @Input() editMessage: BehaviorSubject<ChatMessageResponse | null> =
+    @Input() editMessage: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
 
     @Output() closeReplyEvent: EventEmitter<boolean> = new EventEmitter();
