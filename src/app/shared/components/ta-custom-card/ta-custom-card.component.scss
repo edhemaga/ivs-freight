@@ -247,7 +247,7 @@
 
             // 24/7 status
             ._24-7-status {
-                width: 49px;
+                width: 60px;
                 height: 26px;
                 border-radius: 2px;
                 background-color: $bw2;
@@ -281,7 +281,7 @@
                 }
 
                 &.active {
-                    background-color: $ta-blue-13;
+                    background-color: $ta-blue-14;
 
                     p {
                         color: $white;
@@ -473,12 +473,12 @@
 
     // Card body
     .ta-card-body {
-        &.set-max-height{
+        &.set-max-height {
             transition: max-height 0.3s ease-in-out;
             will-change: max-height;
             max-height: 50px;
         }
-        
+
         &.scroll {
             overflow-y: scroll !important;
             scrollbar-width: none !important; /* Firefox */

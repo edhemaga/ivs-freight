@@ -1,14 +1,15 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
-export class RepairShopConfig {
-    static getNameInputConfig(): ITaInput {
+export class SettingsTerminalConfig {
+    static getNameInputConfig(type: string): ITaInput {
         return {
-            name: 'Shop Name',
+            name: 'Terminal Name',
             type: 'text',
-            label: 'Shop Name',
+            label: 'Terminal Name',
             isRequired: true,
             textTransform: 'uppercase',
-            minLength: 2,
+            autoFocus: type !== 'edit',
+            minLength: 1,
             maxLength: 64,
         };
     }
@@ -18,12 +19,13 @@ export class RepairShopConfig {
             name: 'Phone',
             type: 'text',
             label: 'Phone',
-            isRequired: true,
             placeholderIcon: 'phone',
+            isRequired: true,
             mask: '(000) 000-0000',
             maxLength: 14,
         };
     }
+
     static getPhoneExtInputConfig(): ITaInput {
         return {
             name: 'phone-extension',
@@ -34,6 +36,7 @@ export class RepairShopConfig {
             placeholderIcon: 'phone-extension',
         };
     }
+
     static getEmailInputConfig(): ITaInput {
         return {
             name: 'Email',
@@ -64,104 +67,63 @@ export class RepairShopConfig {
         return {
             name: 'address-unit',
             type: 'text',
-            label: 'Unit No.',
+            label: 'Unit #',
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 10,
         };
     }
 
-    static getBankInputConfig(): ITaInput {
+    static getPayPeriodInputConfig(): ITaInput {
         return {
-            name: 'Input Dropdown Bank Name',
-            type: 'text',
-            label: 'Bank Name',
-            minLength: 2,
-            maxLength: 64,
-            textTransform: 'uppercase',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
-        };
-    }
-
-    static getPayPeriodConfig(): ITaInput {
-        return {
-            name: 'Input Dropdown Pay Period',
+            name: 'Input Dropdown',
             type: 'text',
             label: 'Pay Period',
-            minLength: 2,
-            maxLength: 64,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
+            dropdownWidthClass: 'w-col-148',
         };
     }
 
-    static getDayConfig(): ITaInput {
+    static getMonthlyDayConfig(value: boolean): ITaInput {
         return {
-            name: 'Input Dropdown Pay',
+            name: 'Input Dropdown',
             type: 'text',
-            label: 'Day Period',
-            minLength: 2,
-            maxLength: 64,
+            label: 'Day',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
+            isDisabled: !value,
+            dropdownWidthClass: 'w-col-148',
         };
     }
 
-    static getMonthlyPeriodConfig(): ITaInput {
-        return {
-            name: 'Input Dropdown Pay',
-            type: 'text',
-            label: 'Monthly Period',
-            minLength: 2,
-            maxLength: 64,
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-163',
-        };
-    }
-
-    static getRentInputConfig(): ITaInput {
+    static getRentConfig(): ITaInput {
         return {
             name: 'Rent',
             type: 'text',
             label: 'Rent',
             placeholderIcon: 'dollar',
             thousandSeparator: true,
-            placeholderIconColor: 'blue',
+            minLength: 4,
+            maxLength: 8,
         };
     }
 
-    static getAccountNumberInputConfig(isBankSelected: boolean): ITaInput {
+    static getParkingSlotConfig(): ITaInput {
         return {
-            name: 'account-bank',
+            name: 'Parking Slot',
             type: 'text',
-            label: 'Account',
-            isDisabled: !isBankSelected,
-            isRequired: isBankSelected,
-            maxLength: 17,
-            minLength: 5,
+            label: 'Parking Slot # (Truck)',
+            minLength: 1,
+            maxLength: 64
         };
     }
 
-    static getRoutingNumberInputConfig(isBankSelected: boolean): ITaInput {
+    static getFullParkingSlotConfig(): ITaInput {
         return {
-            name: 'routing-bank',
+            name: 'Full Parking Slot',
             type: 'text',
-            label: 'Routing',
-            isDisabled: !isBankSelected,
-            isRequired: isBankSelected,
-            minLength: 9,
-            maxLength: 9,
-        };
-    }
-
-    static getOpenHoursFormField(): ITaInput {
-        return {
-            name: 'timepicker',
-            type: 'text',
-            placeholderIcon: 'time',
-            customClass: 'datetimeclass',
-            hideClear: true,
+            label: 'Full Parking Slot # (Semi Truck - Trailer)',
+            minLength: 1,
+            maxLength: 128,
         };
     }
 }

@@ -85,6 +85,10 @@
     z-index: 9;
 }
 
+.c-pointer {
+    cursor: pointer;
+}
+
 // GLOBAL SCROLLBAR
 body {
     overflow-y: scroll !important;
@@ -344,6 +348,10 @@ app-load-modal {
 .ml-3 {
     margin-left: 6px;
 }
+
+.mr-3 {
+    margin-right: 6px;
+}
 .dispatch-load {
     .ta-custom-card .ta-card-header {
         height: 33px;
@@ -461,12 +469,18 @@ app-load-modal {
 
         .nav-item-arrow_top {
             position: relative !important;
-            top: 0 !important
+            top: 0 !important;
         }
     }
 
     .nav-item-img-active {
         width: 18px;
         height: 24px;
+    }
+}
+
+.pl {
+    &-0 {
+        padding-left: 0 !important;
     }
 }

@@ -1,14 +1,16 @@
 <div class="settings-payroll">
-    <div class="settings-header">
-        <div class="settings-name">
-            <p>Payroll</p>
+    <div class="settings-header d-flex align-items-center justify-items-center">
+        <div class="settings-name d-flex flex-1 align-items-center">
+            <p class="ta-font-extra-bold text-size-16 text-color-black">
+                Payroll
+            </p>
         </div>
 
         <div class="settings-header-button" *ngIf="!companyDivision">
             <div class="border-left"></div>
             <svg-icon
                 src="ic_pen.svg"
-                class="settings-edit-button"
+                class="settings-edit-button d-flex align-items-center justify-content-center svg-hover-bw6-2 c-pointer"
                 (click)="
                     onAction({
                         modalName: 'basic',

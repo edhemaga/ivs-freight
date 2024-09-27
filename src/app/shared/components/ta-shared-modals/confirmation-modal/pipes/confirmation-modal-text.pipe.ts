@@ -87,7 +87,9 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             textEnd = loadText;
         } else if (type === TableStringEnum.MULTIPLE_DELETE) {
             textEnd = template + 's';
-        } else {
+        }  else if (template === DropActionsStringEnum.COMPANY_TERMINAL) {
+            textEnd = DropActionsStringEnum.TERMINAL;
+        }else {
             textEnd = template;
         }
 
