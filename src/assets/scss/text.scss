@@ -1,19 +1,62 @@
 @import 'src/theme/variables.scss';
 
-.text-color {
-    &-muted {
-        color: $muted;
+.text {
+    // Colors
+    &-color {
+        &-muted {
+            color: $muted;
+        }
+
+        &-green {
+            color: $ta-green;
+        }
+
+        &-blue-13 {
+            color: $ta-blue-13;
+        }
+
+        &-red-10 {
+            color: $ta-red-10;
+        }
+
+        &-black {
+            color: $ta-black;
+        }
+
+        &-black-2 {
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+
+            &::selection {
+                background-color: rgb(145, 145, 145, 0.2);
+                color: $bw5;
+            }
+        }
     }
 
-    &-green {
-        color: $ta-green;
-    }
+    // Sizes
+    &-size {
+        &-11 {
+            font-size: 11px;
+            line-height: 15px;
+        }
+        &-14 {
+            font-size: 14px;
+            line-height: 18px;
+        }
 
-    &-blue-13 {
-        color: $ta-blue-13;
-    }
+        &-16 {
+            font-size: 16px;
+            line-height: 19.5px;
+        }
 
-    &-red-10 {
-        color: $ta-red-10;
+        &-26 {
+            font-size: 26px;
+            line-height: 32px;
+        }
     }
 }

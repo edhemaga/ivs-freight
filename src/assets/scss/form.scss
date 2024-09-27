@@ -587,33 +587,16 @@
 //---------------- Gate, Security Camera ----------------
 .parking-gate-securityCamera {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 180px 1fr;
     grid-template-rows: 26px;
     align-items: center;
-    padding-left: 6px;
+    gap: 12px;
 
     .gate-field,
     .camera-field {
         display: flex;
         align-items: center;
-        gap: 8px;
-
-        p {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: $bw5;
-
-            &::-moz-selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-
-            &::selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-        }
+        gap: 6px;
     }
 
     &-location-terminal {
@@ -660,17 +643,16 @@
             line-height: 18px;
 
             svg {
-                width: 100%;
-                height: 100%;
                 path {
                     fill: $muted;
+                    transition: fill 0.3s ease-in-out;
                 }
             }
         }
 
         &:hover {
-            background-color: #e5e5e5;
-            color: #2f2f2f;
+            background-color: $bw-9;
+            color: $ta-black;
 
             svg-icon {
                 svg {
@@ -691,17 +673,17 @@
             svg-icon {
                 svg {
                     path {
-                        fill: $ta-blue-13;
+                        fill: $ta-blue-14;
                     }
                 }
             }
 
             p {
-                color: $ta-blue-13;
+                color: $ta-blue-14;
             }
 
             &:hover {
-                background: $ta-blue-22;
+                background: $ta-blue-17;
 
                 svg-icon {
                     svg {
@@ -771,6 +753,14 @@
 .repair-shop-services {
     grid-template-columns: repeat(4, 111px);
     grid-template-rows: repeat(4, 22px);
+    &-large {
+        grid-template-columns: repeat(7, 62px);
+        grid-template-rows: repeat(1, 26px);
+
+        .repair-shop-service p {
+            font-size: 14px;
+        }
+    }
 }
 
 .violation-special-checks {

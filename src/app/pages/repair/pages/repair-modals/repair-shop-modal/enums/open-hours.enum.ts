@@ -1,5 +1,4 @@
 export enum OpenHourDays {
-    MON_FRI = 'MON - FRI',
     Sunday = 'Sunday',
     Monday = 'Monday',
     Tuesday = 'Tuesday',

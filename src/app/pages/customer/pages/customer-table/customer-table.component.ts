@@ -338,12 +338,17 @@ export class CustomerTableComponent
         this.brokerService
             .deleteBrokerList(ids)
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
+            .subscribe((res) => {
                 this.viewData = this.viewData.map((broker) => {
-                    ids.map((id) => {
+                    res?.deletedIds?.map((id) => {
                         if (broker.id === id)
                             broker.actionAnimation =
                                 TableStringEnum.DELETE_MULTIPLE;
+                    });
+
+                    res?.notDeletedIds?.map((notDeletedId) => {
+                        if (broker.id === notDeletedId)
+                            broker.isSelected = false;
                     });
 
                     return broker;

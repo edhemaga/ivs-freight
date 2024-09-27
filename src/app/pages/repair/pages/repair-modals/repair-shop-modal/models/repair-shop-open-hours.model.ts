@@ -5,4 +5,7 @@ export interface OpenHours {
     dayOfWeek: number;
     startTime: Date | null;
     endTime: Date | null;
+    isDoubleShift: boolean,
+    secondStartTime: Date | null,
+    secondEndTime: Date | null,
 }

@@ -1,24 +1,41 @@
-<div class="settings-parking">
+<div class="settings-grid">
     <div class="toolbar-general-cmp">
         <div class="icon-text-wrapper">
-            <p class="disable-selection">Location</p>
+            <p
+                class="disable-selection text-color-black text-size-26 ta-font-black"
+            >
+                Location
+            </p>
         </div>
-        <div class="settings-header">
-            <div class="settings-name d-flex align-items-center">
+
+        <div
+            class="settings-header d-flex align-items-center justify-items-center"
+        >
+            <div class="settings-name d-flex flex-1 align-items-center">
+                <p class="ta-font-extra-bold text-size-16 text-color-black">
+                    Parking
+                </p>
                 <app-ta-counter
                     [count]="parkingData?.count"
-                    [countColor]="'#919191'"
-                    [countBackground]="'#F3F3F3'"
-                    [countHeight]="'24px'"
-                    [countWidth]="'24px'"
+                    [countBackground]="'#6C6C6C'"
+                    [countColor]="'#ffffff'"
+                    countBorderRadius="60px"
+                    [marginLeft]="'4px'"
                 ></app-ta-counter>
-                <p>Parking</p>
             </div>
-            <div class="settings-header-button">
-                <div class="border-left"></div>
+            <div
+                class="settings-header-button c-pointer"
+                ngbTooltip
+                mainContent
+                position="bottom"
+                tooltipBackground="#424242"
+                [mainTooltip]="'Add New'"
+                tooltipColor="#ffff"
+                [tooltipMarginTop]="'5px'"
+            >
                 <svg-icon
                     src="assets/svg/common/ic_plus.svg"
-                    class="settings-plus-button"
+                    class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                     (click)="onAction({ modalName: 'parking' })"
                 ></svg-icon>
             </div>
@@ -39,7 +56,7 @@
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
                     <app-ta-copy
@@ -50,7 +67,7 @@
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
                     <app-ta-copy
@@ -61,7 +78,7 @@
                 </div>
                 <div *ngIf="item.address" class="single-item">
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/truckassist-table/location-icon.svg"
                     ></svg-icon>
                     <span>{{ item.address.address }}</span>
@@ -86,7 +103,7 @@
                                     : 0
                             }}
                         </p>
-                        <p class="parking-template-text">Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <p class="parking-template-number">
@@ -96,7 +113,7 @@
                                     : 0
                             }}
                         </p>
-                        <p class="parking-template-text">Full Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Full Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
@@ -105,7 +122,7 @@
                             src="assets/svg/common/ic_security-camera.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !item.securityCamera }"
                         >
                             Security Camera
@@ -118,7 +135,7 @@
                             src="assets/svg/common/ic_security-gate.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !item.gate }"
                         >
                             Gate
