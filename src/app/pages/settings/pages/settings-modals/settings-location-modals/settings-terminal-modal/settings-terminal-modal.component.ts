@@ -34,6 +34,7 @@ import {
     TerminalResponse,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -58,6 +59,12 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 import { SettingsFormEnum } from './enums';
+
+// Config
+import { SettingsTerminalConfig } from './config';
+
+// Svg routes
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -144,6 +151,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public formConfig = SettingsTerminalConfig;
+    public phoneConfig: ITaInput = SettingsTerminalConfig.getPhoneInputConfig();
+    public phoneExtConfig: ITaInput = SettingsTerminalConfig.getPhoneExtInputConfig();
+    public emailConfig: ITaInput = SettingsTerminalConfig.getEmailInputConfig();
+    public addressConfig: ITaInput = SettingsTerminalConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput = SettingsTerminalConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput = SettingsTerminalConfig.getPayPeriodInputConfig();
+    public rentConfig: ITaInput = SettingsTerminalConfig.getRentConfig();
+    public parkingSlotConfig: ITaInput = SettingsTerminalConfig.getParkingSlotConfig();
+    public fullParkingSlotConfig: ITaInput = SettingsTerminalConfig.getFullParkingSlotConfig();
+    public svgRoutes = SettingsLocationSvgRoutes;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
