@@ -65,5 +65,8 @@
         &-16 {
             @include svg-size(16px, 16px);
         }
+        &-18 {
+            @include svg-size(18px, 18px);
+        }
     }
 }
