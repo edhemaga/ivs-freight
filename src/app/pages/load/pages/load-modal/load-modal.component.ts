@@ -5358,8 +5358,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             stopType: extraStop.stopType.name,
                             stopOrder: extraStop.stopLoadOrder,
                             stopLoadOrder: extraStop.stopLoadOrder,
-                            shipperId: extraStop.shipper?.id,
-                            shipperContactId: extraStop.shipperContact?.id,
+                            shipperId: extraStop.shipper?.id ?? null,
+                            shipperContactId:
+                                extraStop.shipperContact?.id ?? null,
                             dateFrom: extraStop
                                 ? this.convertDate(extraStop.dateFrom)
                                 : null,
@@ -5384,7 +5385,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
-                    if (editedShipper)
+                    if (editedShipper?.id)
                         this.onSelectDropdown(
                             editedShipper,
                             LoadModalStringEnum.SHIPPER_EXTRA_STOPS,
