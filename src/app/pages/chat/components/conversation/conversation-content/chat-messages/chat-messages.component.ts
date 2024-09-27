@@ -15,12 +15,7 @@ import {
     Input,
 } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import {
-    BehaviorSubject,
-    debounceTime,
-    map,
-    takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
@@ -65,7 +60,8 @@ import {
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
