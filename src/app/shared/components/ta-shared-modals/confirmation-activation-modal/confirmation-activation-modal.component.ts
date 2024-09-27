@@ -25,7 +25,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 // Models
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models/confirmation-activation.model';
 import { ConfirmationActivationModalSvgRoutes } from './utils/confirmation-activation-modal-svg-routes';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressResponse } from 'appcoretruckassist';
 
 // Pipes
 import { ConfirmationModalTitlePipe } from '@shared/components/ta-shared-modals/confirmation-activation-modal/pipes/confirmation-modal-title.pipe';
@@ -53,7 +53,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 })
 export class ConfirmationActivationModalComponent implements OnInit {
     @Input() editData: ConfirmationActivation;
-    public selectedAddress: AddressEntity;
+    public selectedAddress: AddressResponse;
     public locationForm!: UntypedFormGroup;
 
     public confirmationImageRoutes = ConfirmationActivationModalSvgRoutes;
@@ -83,10 +83,19 @@ export class ConfirmationActivationModalComponent implements OnInit {
 
     public handleLocationSelect(event): void {
         this.isFormDirty = event.valid;
+
+        if (event?.address) this.selectedAddress = event;
     }
 
     public onModalAction(data: ConfirmationActivation): void {
-        this.confirmationActivationService.setConfirmationActivationData(data);
+        let confirmationData = { ...data };
+
+        if (this.selectedAddress)
+            confirmationData = { ...data, newLocation: this.selectedAddress };
+
+        this.confirmationActivationService.setConfirmationActivationData(
+            confirmationData
+        );
 
         this.ngbActiveModal.close();
     }

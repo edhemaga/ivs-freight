@@ -97,6 +97,7 @@ import {
 } from '@pages/load/pages/load-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 // models
 import {
@@ -1525,10 +1526,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
-        const addNew = data.action === LoadModalStringEnum.SAVE_AND_ADD_NEW;
+        const addNew = data.action === TaModalActionEnums.SAVE_AND_ADD_NEW;
         switch (data.action) {
-            case LoadModalStringEnum.SAVE:
-            case LoadModalStringEnum.SAVE_AND_ADD_NEW:
+            case TaModalActionEnums.SAVE:
+            case TaModalActionEnums.SAVE_AND_ADD_NEW:
                 // Disable double click
                 if (this.isButtonDisabled) {
                     return;
@@ -1556,7 +1557,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : this.createNewLoad(addNew);
                 }
                 break;
-            case LoadModalStringEnum.CONVERT_TO_TEMPLATE:
+            case TaModalActionEnums.CONVERT_TO_TEMPLATE:
                 this.isConvertedToTemplate = true;
 
                 this.inputService.changeValidators(
@@ -1566,7 +1567,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.generateModalText();
 
                 break;
-            case LoadModalStringEnum.CONVERT_TO_LOAD:
+            case TaModalActionEnums.CONVERT_TO_LOAD:
                 this.isConvertedToTemplate = false;
                 this.generateModalText();
 
@@ -5358,8 +5359,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             stopType: extraStop.stopType.name,
                             stopOrder: extraStop.stopLoadOrder,
                             stopLoadOrder: extraStop.stopLoadOrder,
-                            shipperId: extraStop.shipper?.id,
-                            shipperContactId: extraStop.shipperContact?.id,
+                            shipperId: extraStop.shipper?.id ?? null,
+                            shipperContactId:
+                                extraStop.shipperContact?.id ?? null,
                             dateFrom: extraStop
                                 ? this.convertDate(extraStop.dateFrom)
                                 : null,
@@ -5384,7 +5386,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
-                    if (editedShipper)
+                    if (editedShipper?.id)
                         this.onSelectDropdown(
                             editedShipper,
                             LoadModalStringEnum.SHIPPER_EXTRA_STOPS,

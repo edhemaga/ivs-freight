@@ -60,7 +60,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation) {
+                if (res?.animation) {
                     this.getParkingList();
                     this.cdRef.detectChanges();
                 }
