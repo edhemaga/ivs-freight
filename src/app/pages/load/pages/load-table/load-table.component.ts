@@ -48,6 +48,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
+    AddressResponse,
     LoadListResponse,
     LoadStatus,
     LoadTemplateListResponse,
@@ -324,7 +325,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     confirmationResponse.id,
                     confirmationResponse.data.nameBack,
                     foundObject.status.statusString,
-                    confirmationResponse.data.isRevert
+                    confirmationResponse.data.isRevert,
+                    confirmationResponse.newLocation ?? null
                 );
             });
     }
@@ -1821,10 +1823,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         id: number,
         status: LoadStatus,
         previousStatus: LoadStatus,
-        isRevert: boolean
+        isRevert: boolean,
+        newLocation?: AddressResponse
     ): void {
         this.loadServices
-            .updateLoadStatus(id, status, isRevert)
+            .updateLoadStatus(id, status, isRevert, newLocation)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {
