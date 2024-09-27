@@ -425,9 +425,9 @@ export class LoadService {
             return this.loadService.apiLoadStatusPut({
                 id: loadId,
                 status: loadStatus,
-                repairLocation: newLocation?.address,
-                longitude: newLocation?.longLat?.longitude,
-                latitude: newLocation?.longLat?.latitude,
+                repairLocation: newLocation?.address ?? null,
+                longitude: newLocation?.longLat?.longitude ?? null,
+                latitude: newLocation?.longLat?.latitude ?? null,
             });
         }
     }

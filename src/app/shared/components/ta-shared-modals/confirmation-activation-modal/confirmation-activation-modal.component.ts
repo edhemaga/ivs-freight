@@ -91,7 +91,7 @@ export class ConfirmationActivationModalComponent implements OnInit {
         let confirmationData = { ...data };
 
         if (this.selectedAddress)
-            confirmationData.newLocation = this.selectedAddress;
+            confirmationData = { ...data, newLocation: this.selectedAddress };
 
         this.confirmationActivationService.setConfirmationActivationData(
             confirmationData
