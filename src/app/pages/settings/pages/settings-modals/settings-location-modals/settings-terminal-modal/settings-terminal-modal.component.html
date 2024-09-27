@@ -37,27 +37,26 @@
                                     [inputConfig]="phoneConfig"
                                 ></app-ta-input>
                             </div>
-                            <div
-                                class="extension-field"
-                                *ngIf="!isTerminalPhoneExtExist"
-                                (click)="
-                                    isTerminalPhoneExtExist =
-                                        !isTerminalPhoneExtExist
-                                "
-                                ngbTooltip
-                                mainTooltip="Add Extension"
-                                position="top"
-                                tooltipBackground="#6c6c6c"
-                            >
-                                <svg-icon
-                                    [src]="svgRoutes.plus"
-                                ></svg-icon>
-                            </div>
-                            <app-ta-input
-                                *ngIf="isTerminalPhoneExtExist"
-                                formControlName="extensionPhone"
-                                [inputConfig]="phoneExtConfig"
-                            ></app-ta-input>
+                            <ng-container *ngIf="isTerminalPhoneExtExist; else showAddExtension">
+                                <app-ta-input
+                                    formControlName="extensionPhone"
+                                    [inputConfig]="phoneExtConfig"
+                                ></app-ta-input>
+                            </ng-container>
+                            
+                            <ng-template #showAddExtension>
+                                <div
+                                    class="extension-field"
+                                    (click)="isTerminalPhoneExtExist = true"
+                                    ngbTooltip
+                                    mainTooltip="Add Extension"
+                                    position="top"
+                                    tooltipBackground="#6c6c6c"
+                                >
+                                    <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                </div>
+                            </ng-template>
+                            
                         </div>
                         <div class="email-field">
                             <app-ta-input
@@ -167,27 +166,26 @@
                                         [inputConfig]="phoneConfig"
                                     ></app-ta-input>
                                 </div>
-                                <div
-                                    class="extension-field"
-                                    *ngIf="!isOfficePhoneExtExist"
-                                    ngbTooltip
-                                    mainTooltip="Add Extension"
-                                    position="top"
-                                    tooltipBackground="#6c6c6c"
-                                    (click)="
-                                        isOfficePhoneExtExist =
-                                            !isOfficePhoneExtExist
-                                    "
-                                >
-                                    <svg-icon
-                                        [src]="svgRoutes.plus"
-                                    ></svg-icon>
-                                </div>
-                                <app-ta-input
-                                    *ngIf="isOfficePhoneExtExist"
-                                    formControlName="officeExtPhone"
-                                    [inputConfig]="phoneExtConfig"
-                                ></app-ta-input>
+                                <ng-container *ngIf="isOfficePhoneExtExist; else showOfficeAddExtension">
+                                    <app-ta-input
+                                        formControlName="officeExtPhone"
+                                        [inputConfig]="phoneExtConfig"
+                                    ></app-ta-input>
+                                </ng-container>
+                                
+                                <ng-template #showOfficeAddExtension>
+                                    <div
+                                        class="extension-field"
+                                        ngbTooltip
+                                        mainTooltip="Add Extension"
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
+                                        (click)="isOfficePhoneExtExist = true"
+                                    >
+                                        <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                    </div>
+                                </ng-template>
+                                
                             </div>
                             <div class="email-field">
                                 <app-ta-input
@@ -225,27 +223,26 @@
                                             [inputConfig]="phoneConfig"
                                         ></app-ta-input>
                                     </div>
-                                    <div
-                                        class="extension-field"
-                                        *ngIf="!isParkingPhoneExtExist"
-                                        (click)="
-                                            isParkingPhoneExtExist =
-                                                !isParkingPhoneExtExist
-                                        "
-                                        ngbTooltip
-                                        mainTooltip="Add Extension"
-                                        position="top"
-                                        tooltipBackground="#6c6c6c"
-                                    >
-                                        <svg-icon
-                                            [src]="svgRoutes.plus"
-                                        ></svg-icon>
-                                    </div>
-                                    <app-ta-input
-                                        *ngIf="isParkingPhoneExtExist"
-                                        formControlName="parkingExtPhone"
-                                        [inputConfig]="phoneExtConfig"
-                                    ></app-ta-input>
+                                    <ng-container *ngIf="isParkingPhoneExtExist; else showParkingAddExtension">
+                                        <app-ta-input
+                                            formControlName="parkingExtPhone"
+                                            [inputConfig]="phoneExtConfig"
+                                        ></app-ta-input>
+                                    </ng-container>
+                                    
+                                    <ng-template #showParkingAddExtension>
+                                        <div
+                                            class="extension-field"
+                                            (click)="isParkingPhoneExtExist = true"
+                                            ngbTooltip
+                                            mainTooltip="Add Extension"
+                                            position="top"
+                                            tooltipBackground="#6c6c6c"
+                                        >
+                                            <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                        </div>
+                                    </ng-template>
+                                    
                                 </div>
                                 <div class="email-field">
                                     <app-ta-input
@@ -330,27 +327,25 @@
                                         [inputConfig]="phoneConfig"
                                     ></app-ta-input>
                                 </div>
-                                <div
-                                    class="extension-field"
-                                    *ngIf="!isWarehousePhoneExtExist"
-                                    (click)="
-                                        isWarehousePhoneExtExist =
-                                            !isWarehousePhoneExtExist
-                                    "
-                                    ngbTooltip
-                                    mainTooltip="Add Extension"
-                                    position="top"
-                                    tooltipBackground="#6c6c6c"
-                                >
-                                    <svg-icon
-                                        [src]="svgRoutes.plus"
-                                    ></svg-icon>
-                                </div>
-                                <app-ta-input
-                                    *ngIf="isWarehousePhoneExtExist"
-                                    formControlName="warehouseExtPhone"
-                                    [inputConfig]="phoneExtConfig"
-                                ></app-ta-input>
+                                <ng-container *ngIf="isWarehousePhoneExtExist; else showWarehouseAddExtension">
+                                    <app-ta-input
+                                        formControlName="warehouseExtPhone"
+                                        [inputConfig]="phoneExtConfig"
+                                    ></app-ta-input>
+                                </ng-container>
+                                
+                                <ng-template #showWarehouseAddExtension>
+                                    <div
+                                        class="extension-field"
+                                        (click)="isWarehousePhoneExtExist = true"
+                                        ngbTooltip
+                                        mainTooltip="Add Extension"
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
+                                    >
+                                        <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                    </div>
+                                </ng-template>
                             </div>
                             <div class="email-field">
                                 <app-ta-input

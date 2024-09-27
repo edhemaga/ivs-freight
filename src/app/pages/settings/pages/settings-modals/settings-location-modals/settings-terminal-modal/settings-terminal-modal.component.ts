@@ -161,7 +161,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     public rentConfig: ITaInput = SettingsTerminalConfig.getRentConfig();
     public parkingSlotConfig: ITaInput = SettingsTerminalConfig.getParkingSlotConfig();
     public fullParkingSlotConfig: ITaInput = SettingsTerminalConfig.getFullParkingSlotConfig();
+
     public svgRoutes = SettingsLocationSvgRoutes;
+    
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
