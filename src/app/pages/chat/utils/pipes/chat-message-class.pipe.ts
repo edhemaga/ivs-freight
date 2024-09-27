@@ -13,7 +13,7 @@ export class ChatMessageClassPipe implements PipeTransform {
         isOpen: boolean
     ): string {
         const isCurrentUser: boolean = currentUserId === senderId;
-        const isSelected: boolean = isMessageReply || isMessageEdit;
+        const isSelected: boolean = (isMessageReply || isMessageEdit) && isOpen;
 
         let classString = '';
 

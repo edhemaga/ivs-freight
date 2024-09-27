@@ -172,7 +172,6 @@ export class ChatMessagesComponent
             .getMessages(this.conversation?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log(res);
                 this.messages = [...res?.pagination?.data];
             });
     }

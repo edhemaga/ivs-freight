@@ -68,6 +68,10 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
         this.convertDate(this.message?.createdAt);
     }
 
+    ngOnChanges(): void {
+        this.hasActionsDisplayed = this.isReplyOrEditOpen;
+    }
+
     private checkImageDimensions(url: string): void {
         if (!url) return;
 
@@ -93,8 +97,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
-        this.hasActionsDisplayed = this.isReplyOrEditOpen;
-        if (this.isReplyOrEditOpen) {
+        if (this.isReplyOrEditOpen && this.hasActionsDisplayed) {
             return;
         }
         this.hasActionsDisplayed = displayed;

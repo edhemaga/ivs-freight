@@ -75,10 +75,11 @@
                 [ngClass]="
                     currentUserId
                         | chatMessageClass
-                            : message.sender?.id
-                            : messageReply !== null
-                            : messageEdit !== null
+                            : message.senderId || message.sender?.id
+                            : messageReply?.id === message.id
+                            : messageEdit?.id === message.id
                             : isReplyOrEditOpen
+                            : message
                 "
                 [ngStyle]="
                     message.linksCount && {
