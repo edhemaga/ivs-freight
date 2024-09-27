@@ -4,6 +4,7 @@
     [editName]="parkingName"
     [isModalValid]="parkingForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
+    [isDisableButtonHidden]="true"
     (action)="onModalAction($event)"
 >
     <div origin>

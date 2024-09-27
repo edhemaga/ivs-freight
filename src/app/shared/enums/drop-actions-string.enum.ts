@@ -92,6 +92,7 @@ export enum DropActionsStringEnum {
     RENEW_2 = 'Renew',
     EMPTY_SPACE_STRING = ' ',
     TERMINAL = 'terminal',
+    PARKING = 'parking',
 
     // Size
     SMALL = 'small',
