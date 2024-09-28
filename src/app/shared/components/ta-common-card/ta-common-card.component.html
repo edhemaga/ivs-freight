@@ -13,8 +13,8 @@
                 (click)="toggleCard($event)"
                 [ngClass]="{ copied: copiedCommon }"
                 ngbTooltip
-                [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
-                [customClass]="'mb-2'"
+                [mainTooltip]="isDropdownVisible ? '' : isCardOpen ? 'Close Card' : 'Open Card'"
+                [tooltipMarginTop]="'5px'"
                 position="bottom"
                 [tooltipBackground]="'#424242'"
             >
@@ -266,6 +266,7 @@
                         (dropDownActions)="dropAct($event)"
                         [customClassDropDown]="'drop-down-details-single'"
                         (click)="toggleDropdown()"
+                        (onPopoverVisiblityChange)="onPopoverVisiblityChange($event)"
                     >
                     </app-ta-details-dropdown>
                 </div>

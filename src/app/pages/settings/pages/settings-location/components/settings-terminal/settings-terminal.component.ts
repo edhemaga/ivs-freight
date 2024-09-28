@@ -19,7 +19,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // Models
-import { TerminalListResponse } from 'appcoretruckassist';
+import { TerminalListResponse, TerminalResponse } from 'appcoretruckassist';
 
 // Utils
 import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
@@ -37,6 +37,10 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalDataById: any;
     public svgRoutes = SettingsLocationSvgRoutes;
     public currentDate: string;
+    public isOfficeCardOpened: boolean[] = [];
+    public isParkingCardOpened: boolean[] = [];
+    public isOWareHouseCardOpened: boolean[] = [];
+    
     constructor(
         private settingsLocationService: SettingsLocationService,
         private terminalService: CompanyTerminalService,
@@ -45,7 +49,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private activatedRoute: ActivatedRoute,
-        private FormatCurrencyPipe: FormatCurrencyPipe,
+        private FormatCurrencyPipe: FormatCurrencyPipe
     ) {}
 
     ngOnInit() {
@@ -77,9 +81,22 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             });
         this.terminalData =
             this.activatedRoute.snapshot.data.terminal.pagination;
+            this.terminalData.data.forEach((terminal: TerminalResponse) => {
+                this.isOfficeCardOpened.push(terminal.officeChecked);
+                this.isOWareHouseCardOpened.push(terminal.warehouseChecked);
+                this.isParkingCardOpened.push(terminal.parkingChecked);
+            });
         this.initOptions();
         this.currentDate = moment(new Date()).format('MM/DD/YY');
     }
+
+    public onCardToggle(i: number): void {
+        this.isOfficeCardOpened[i] = false; 
+        this.isOWareHouseCardOpened[i] = false; 
+        this.isParkingCardOpened[i] = false; 
+        this.cdRef.detectChanges();
+    }
+
     public getTerminalById(id: number) {
         this.settingsLocationService
             .getCompanyTerminalById(id)
@@ -90,11 +107,16 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         this.terminalService
             .getTerminalList()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.terminalData = item.pagination));
+            .subscribe((item) => {
+                this.terminalData = item.pagination;
+            });
     }
 
-    public optionsEvent(eventData: any, action: string, item: TerminalListResponse) {
-        
+    public optionsEvent(
+        eventData: any,
+        action: string,
+        item: TerminalListResponse
+    ) {
         setTimeout(() => {
             const name = DropActionNameHelper.dropActionNameDriver(
                 eventData,
@@ -241,7 +263,6 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
-    
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

@@ -47,7 +47,7 @@
             [haveHeaderText]="true"
             [setPositionDrop]="true"
             (dropActions)="optionsEvent($event, 'terminal', item)"
-            (isCardOpenEmitter)="onCardToggle($event, item)"
+            (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
@@ -83,7 +83,6 @@
 
             <app-ta-custom-card
                 [cardName]="'Office'"
-                [isCardOpen]="item.officeChecked"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
                 [textBottomPossiton]="'-2px'"
@@ -93,6 +92,8 @@
                     marginTop: 0,
                     marginBottom: '12px',
                 }"
+                [isCardOpen]="!!isOfficeCardOpened[i]"
+                (onOpenCard)="isOfficeCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column">
                     <div *ngIf="item.officePhone" class="parking-template-item">
@@ -131,7 +132,6 @@
 
             <app-ta-custom-card
                 [cardName]="'Parking'"
-                [isCardOpen]="item.parkingChecked"
                 [bodyTemplate]="'card'"
                 [textBottomPossiton]="'-2px'"
                 [customClass]="'detailsPadding'"
@@ -141,6 +141,8 @@
                     marginTop: 0,
                     marginBottom: '12px',
                 }"
+                [isCardOpen]="!!isParkingCardOpened[i]"
+                (onOpenCard)="isParkingCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column mb-2">
                     <div
@@ -251,6 +253,8 @@
                     marginTop: 0,
                     marginBottom: '12px',
                 }"
+                [isCardOpen]="!!isOWareHouseCardOpened[i]"
+                (onOpenCard)="isOWareHouseCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column">
                     <div
@@ -296,6 +300,7 @@
                     [bodyTemplate]="'card'"
                     [hasArrow]="false"
                     [disabledCard]="true"
+                    [isCardOpen]="false"
                     [animationMarginParams]="{
                         marginTop: 0,
                         marginBottom: 0,
