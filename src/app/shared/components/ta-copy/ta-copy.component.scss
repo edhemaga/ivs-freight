@@ -50,15 +50,6 @@
     .card-icon-copy {
         display: none;
         cursor: pointer;
-        svg {
-            width: 18px;
-            height: 18px;
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
-        }
     }
     &:hover {
         .card-icon-copy {

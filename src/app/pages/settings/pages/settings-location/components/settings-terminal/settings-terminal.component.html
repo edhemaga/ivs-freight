@@ -43,10 +43,11 @@
             [hasFooter]="false"
             [optionsId]="item.id"
             [options]="terminalActions"
-            (dropActions)="optionsEvent($event, 'terminal', item)"
             [paddingDots]="'8px 0px 0px 0px'"
             [haveHeaderText]="true"
             [setPositionDrop]="true"
+            (dropActions)="optionsEvent($event, 'terminal', item)"
+            (isCardOpenEmitter)="onCardToggle($event, item)"
         >
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
@@ -62,7 +63,7 @@
                 </div>
                 <div *ngIf="item.email" class="single-item">
                     <svg-icon
-                    class="mr-3 svg-fill-light-grey-2"
+                        class="mr-3 svg-fill-light-grey-2"
                         [src]="svgRoutes.email"
                     ></svg-icon>
                     <app-ta-copy
@@ -73,12 +74,13 @@
                 </div>
                 <div *ngIf="item.address.address" class="single-item">
                     <svg-icon
-                    class="mr-3 svg-fill-light-grey-2"
-                       [src]="svgRoutes.location"
+                        class="mr-3 svg-fill-light-grey-2"
+                        [src]="svgRoutes.location"
                     ></svg-icon>
                     <span>{{ item?.address?.address }}</span>
                 </div>
             </div>
+
             <app-ta-custom-card
                 [cardName]="'Office'"
                 [isCardOpen]="item.officeChecked"
@@ -87,34 +89,31 @@
                 [textBottomPossiton]="'-2px'"
                 [hasArrow]="item.officeChecked"
                 [disabledCard]="!item.officeChecked"
+                [animationMarginParams]="{
+                    marginTop: 0,
+                    marginBottom: '12px',
+                }"
             >
-                <div class="parking-template-data">
+                <div class="parking-template-data d-flex flex-column">
                     <div *ngIf="item.officePhone" class="parking-template-item">
                         <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
+                            class="mr-3 svg-fill-light-grey-2"
                             [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
-                            [copyValue]="item.officePhone"
+                            [arrayText]="true"
+                            [copyValue]="[
+                                item.officePhone,
+                                item.officeExtPhone
+                                    ? ' x' + item.officeExtPhone
+                                    : ''
+                            ]"
                             [textColor]="'#2f2f2f'"
+                            type="Contacts"
                         >
                         </app-ta-copy>
                     </div>
 
-                    <div
-                        *ngIf="item.officeExtPhone"
-                        class="parking-template-item"
-                    >
-                        <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                            [src]="svgRoutes.phoneExt"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.officeExtPhone"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
                     <div class="parking-template-item">
                         <svg-icon
                             *ngIf="item.officeEmail"
@@ -128,8 +127,8 @@
                         </app-ta-copy>
                     </div>
                 </div>
-            </app-ta-custom-card> 
-            
+            </app-ta-custom-card>
+
             <app-ta-custom-card
                 [cardName]="'Parking'"
                 [isCardOpen]="item.parkingChecked"
@@ -138,19 +137,30 @@
                 [customClass]="'detailsPadding'"
                 [hasArrow]="item.parkingChecked"
                 [disabledCard]="!item.parkingChecked"
+                [animationMarginParams]="{
+                    marginTop: 0,
+                    marginBottom: '12px',
+                }"
             >
-                <div class="parking-template-data">
+                <div class="parking-template-data d-flex flex-column mb-2">
                     <div
                         *ngIf="item.parkingPhone"
                         class="parking-template-item"
                     >
                         <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
+                            class="mr-3 svg-fill-light-grey-2"
                             [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
-                            [copyValue]="item.parkingPhone"
+                            [arrayText]="true"
                             [textColor]="'#2f2f2f'"
+                            [copyValue]="[
+                                item.parkingPhone,
+                                item.parkingExtPhone
+                                    ? ' x' + item.parkingExtPhone
+                                    : ''
+                            ]"
+                            type="Contacts"
                         >
                         </app-ta-copy>
                     </div>
@@ -167,6 +177,8 @@
                         >
                         </app-ta-copy>
                     </div>
+                </div>
+                <div class="parking-template-data">
                     <div
                         *ngIf="item.terminalParkingSlot"
                         class="parking-template-item"
@@ -176,10 +188,8 @@
                         >
                             {{ item.terminalParkingSlot }}
                         </p>
-                        <p
-                            class="parking-template-text text-color-black-2 text-color-black-2"
-                        >
-                            Parking Slot
+                        <p class="parking-template-text text-color-black-2">
+                            Single Slot
                         </p>
                     </div>
                     <div
@@ -191,10 +201,8 @@
                         >
                             {{ item.terminalFullParkingSlot }}
                         </p>
-                        <p
-                            class="parking-template-text text-color-black-2 text-color-black-2"
-                        >
-                            Full Parking Slot
+                        <p class="parking-template-text text-color-black-2">
+                            Full Slot
                         </p>
                     </div>
                     <div class="parking-template-item">
@@ -204,8 +212,11 @@
                             [src]="svgRoutes.securityCamera"
                         ></svg-icon>
                         <p
-                            class="parking-template-text text-color-black-2 text-color-black-2"
-                            [ngClass]="{ 'cross-out': !item.securityCamera }"
+                            class="parking-template-text text-color-black-2"
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6':
+                                    !item.securityCamera
+                            }"
                         >
                             Security Camera
                         </p>
@@ -217,8 +228,10 @@
                             [src]="svgRoutes.securityGate"
                         ></svg-icon>
                         <p
-                            [ngClass]="{ 'cross-out': !item.gate }"
-                            class="parking-template-text text-color-black-2 text-color-black-2"
+                            [ngClass]="{
+                                'cross-out text-color-light-grey-6': !item.gate
+                            }"
+                            class="parking-template-text text-color-black-2"
                         >
                             Gate
                         </p>
@@ -234,37 +247,34 @@
                 [customClass]="'detailsPadding'"
                 [hasArrow]="item.warehouseChecked"
                 [disabledCard]="!item.warehouseChecked"
+                [animationMarginParams]="{
+                    marginTop: 0,
+                    marginBottom: '12px',
+                }"
             >
-                <div class="parking-template-data">
+                <div class="parking-template-data d-flex flex-column">
                     <div
                         *ngIf="item.warehousePhone"
                         class="parking-template-item"
                     >
                         <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
+                            class="mr-3 svg-fill-light-grey-2"
                             [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
-                            [copyValue]="item.warehousePhone"
+                            [arrayText]="true"
                             [textColor]="'#2f2f2f'"
+                            [copyValue]="[
+                                item.warehousePhone,
+                                item.warehouseExtPhone
+                                    ? ' x' + item.warehouseExtPhone
+                                    : ''
+                            ]"
+                            type="Contacts"
                         >
                         </app-ta-copy>
                     </div>
 
-                    <div
-                        *ngIf="item.warehouseExtPhone"
-                        class="parking-template-item"
-                    >
-                        <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                            [src]="svgRoutes.phoneExt"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.warehouseExtPhone"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
                     <div class="parking-template-item">
                         <svg-icon
                             *ngIf="item.warehouseEmail"
@@ -282,11 +292,28 @@
 
             <ng-container *ngIf="item.fuelStationChecked">
                 <app-ta-custom-card
-                    [cardName]="'Fuel'"
+                    [cardName]="'Fuel Station'"
                     [bodyTemplate]="'card'"
                     [hasArrow]="false"
                     [disabledCard]="true"
+                    [animationMarginParams]="{
+                        marginTop: 0,
+                        marginBottom: 0,
+                    }"
                 ></app-ta-custom-card>
+            </ng-container>
+
+            <ng-container *ngIf="!item.isOwner">
+                <div class="divider"></div>
+                <div class="settings-progress-container">
+                    <app-ta-progress-expiration
+                        [expireDate]="getRentDate(item.monthlyDay?.id)"
+                        [startDate]="currentDate"
+                        [expiresSettings]="'settings-parking'"
+                        [customText]="generateTextForProgressBar(item)"
+                        [darkText]="true"
+                    ></app-ta-progress-expiration>
+                </div>
             </ng-container>
         </app-ta-common-card>
     </div>

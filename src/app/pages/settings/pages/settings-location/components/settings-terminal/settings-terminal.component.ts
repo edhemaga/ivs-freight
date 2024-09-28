@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import moment from 'moment';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // services
@@ -34,6 +36,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public terminalDataById: any;
     public svgRoutes = SettingsLocationSvgRoutes;
+    public currentDate: string;
     constructor(
         private settingsLocationService: SettingsLocationService,
         private terminalService: CompanyTerminalService,
@@ -41,7 +44,8 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private FormatCurrencyPipe: FormatCurrencyPipe,
     ) {}
 
     ngOnInit() {
@@ -74,6 +78,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         this.terminalData =
             this.activatedRoute.snapshot.data.terminal.pagination;
         this.initOptions();
+        this.currentDate = moment(new Date()).format('MM/DD/YY');
     }
     public getTerminalById(id: number) {
         this.settingsLocationService
@@ -186,6 +191,57 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             export: true,
         };
     }
+
+    public getRentDate(mod) {
+        let day;
+        let currentDate = new Date();
+
+        if (mod == 1) {
+            day = 1;
+        } else if (mod == 2) {
+            day = 5;
+        } else if (mod == 3) {
+            day = 10;
+        } else if (mod == 4) {
+            day = 15;
+        } else if (mod == 5) {
+            day = 20;
+        } else if (mod == 6) {
+            day = 25;
+        } else {
+            day = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth()
+            ).getUTCDate();
+        }
+
+        let currentDay = currentDate.getUTCDate();
+        let expDate;
+
+        if (day > currentDay) {
+            expDate = new Date();
+            expDate.setUTCDate(day);
+        } else {
+            expDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                currentDate.getDate()
+            );
+            expDate.setUTCDate(day);
+        }
+
+        expDate = moment(expDate).format('MM/DD/YY');
+        return expDate;
+    }
+
+    public generateTextForProgressBar(data: any): string {
+        return (
+            data.payPeriod.name +
+            ' Rent ' +
+            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
+        );
+    }
+    
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
