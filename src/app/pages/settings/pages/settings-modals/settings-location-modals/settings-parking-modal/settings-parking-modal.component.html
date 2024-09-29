@@ -22,16 +22,7 @@
                         <div class="col-12">
                             <app-ta-input
                                 formControlName="name"
-                                [inputConfig]="{
-                                    name: 'Parking Name',
-                                    type: 'text',
-                                    label: 'Parking Name',
-                                    isRequired: true,
-                                    autoFocus: editData?.type !== 'edit',
-                                    textTransform: 'uppercase',
-                                    minLength: 1,
-                                    maxLength: 64
-                                }"
+                                [inputConfig]="formConfig.getNameInputConfig(editData?.type)"
                             ></app-ta-input>
                         </div>
                     </div>
@@ -46,54 +37,35 @@
                             <div class="phone-field">
                                 <app-ta-input
                                     formControlName="phone"
-                                    [inputConfig]="{
-                                        name: 'Phone',
-                                        type: 'text',
-                                        label: 'Phone',
-                                        placeholderIcon: 'phone',
-                                        mask: '(000) 000-0000',
-                                        maxLength: 14
-                                    }"
+                                    [inputConfig]="phoneConfig"
                                 ></app-ta-input>
                             </div>
-                            <div
-                                class="extension-field"
-                                *ngIf="!isPhoneExtExist"
-                                (click)="isPhoneExtExist = !isPhoneExtExist"
-                                ngbTooltip
-                                mainTooltip="Add Extension"
-                                position="top"
-                                tooltipBackground="#6c6c6c"
+                            <ng-container
+                                *ngIf="!isPhoneExtExist; else phoneExtension"
                             >
-                                <svg-icon
-                                    src="assets/svg/common/ic_plus.svg"
-                                ></svg-icon>
-                            </div>
-                            <app-ta-input
-                                *ngIf="isPhoneExtExist"
-                                formControlName="extensionPhone"
-                                [inputConfig]="{
-                                    name: 'phone-extension',
-                                    type: 'text',
-                                    label: 'Ext.',
-                                    minLength: 1,
-                                    maxLength: 8,
-                                    placeholderIcon: 'phone-extension'
-                                }"
-                            ></app-ta-input>
+                                <div
+                                    class="extension-field"
+                                    (click)="isPhoneExtExist = !isPhoneExtExist"
+                                    ngbTooltip
+                                    mainTooltip="Add Extension"
+                                    position="top"
+                                    tooltipBackground="#6c6c6c"
+                                >
+                                    <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                </div>
+                            </ng-container>
+                            <ng-template #phoneExtension>
+                                <app-ta-input
+                                    *ngIf="isPhoneExtExist"
+                                    formControlName="extensionPhone"
+                                    [inputConfig]="phoneExtConfig"
+                                ></app-ta-input>
+                            </ng-template>
                         </div>
                         <div class="email-field">
                             <app-ta-input
                                 formControlName="email"
-                                [inputConfig]="{
-                                    name: 'Email',
-                                    type: 'text',
-                                    label: 'Email',
-                                    placeholderIcon: 'email',
-                                    minLength: 5,
-                                    maxLength: 64,
-                                    textTransform: 'lowercase'
-                                }"
+                                [inputConfig]="emailConfig"
                             ></app-ta-input>
                         </div>
                     </div>
@@ -102,17 +74,7 @@
                         <div class="col-10">
                             <app-ta-input-address-dropdown
                                 formControlName="address"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Address, City, State Zip',
-                                    isRequired: true,
-                                    placeholderIcon: 'address',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-376',
-                                    minLength: 6,
-                                    maxLength: 256
-                                }"
+                                [inputConfig]="addressConfig"
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
@@ -121,14 +83,7 @@
                         <div class="col-2">
                             <app-ta-input
                                 formControlName="addressUnit"
-                                [inputConfig]="{
-                                    name: 'address-unit',
-                                    type: 'text',
-                                    label: 'Unit #',
-                                    textTransform: 'uppercase',
-                                    minLength: 1,
-                                    maxLength: 10
-                                }"
+                                [inputConfig]="addressUnitConfig"
                             ></app-ta-input>
                         </div>
                     </div>
@@ -189,13 +144,7 @@
                                 <div class="location-parking-financial-card">
                                     <app-ta-input-dropdown
                                         formControlName="payPeriod"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown',
-                                            type: 'text',
-                                            label: 'Pay Period',
-                                            isDropdown: true,
-                                            dropdownWidthClass: 'w-col-144'
-                                        }"
+                                        [inputConfig]="payPeriodConfig"
                                         [options]="payPeriods"
                                         [activeItem]="selectedPayPeriod"
                                         (selectedItem)="
@@ -207,18 +156,14 @@
                                     ></app-ta-input-dropdown>
                                     <app-ta-input-dropdown
                                         formControlName="monthlyDay"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown',
-                                            type: 'text',
-                                            label: 'Day',
-                                            isDropdown: true,
-                                            isDisabled:
-                                                !parkingForm.get('payPeriod')
-                                                    .value,
-                                            dropdownWidthClass: 'w-col-144'
-                                        }"
+                                        [inputConfig]="
+                                            formConfig.getMonthlyDayConfig(
+                                                parkingForm.get('payPeriod')
+                                                    .value
+                                            )
+                                        "
                                         [options]="
-                                            selectedDay?.name === 'Weekly'
+                                            selectedPayPeriod?.name === 'Weekly'
                                                 ? weeklyDays
                                                 : monthlyDays
                                         "
@@ -227,18 +172,10 @@
                                             onSelectDropdown($event, 'day')
                                         "
                                     ></app-ta-input-dropdown>
-                                    
+
                                     <app-ta-input
                                         formControlName="rent"
-                                        [inputConfig]="{
-                                            name: 'Rent',
-                                            type: 'text',
-                                            label: 'Rent',
-                                            placeholderIcon: 'dollar',
-                                            thousandSeparator: true,
-                                            minLength: 4,
-                                            maxLength: 8
-                                        }"
+                                        [inputConfig]="rentConfig"
                                     ></app-ta-input>
                                 </div>
                             </div>
@@ -268,13 +205,7 @@
                                 <div class="col-12">
                                     <app-ta-input
                                         formControlName="parkingSlot"
-                                        [inputConfig]="{
-                                            name: 'Parking Slot',
-                                            type: 'text',
-                                            label: 'Parking Slot No. (Truck)',
-                                            minLength: 1,
-                                            maxLength: 64
-                                        }"
+                                        [inputConfig]="parkingSlotConfig"
                                     ></app-ta-input>
                                 </div>
                             </div>
@@ -282,13 +213,7 @@
                                 <div class="col-12">
                                     <app-ta-input
                                         formControlName="fullParkingSlot"
-                                        [inputConfig]="{
-                                            name: 'Full Parking Slot',
-                                            type: 'text',
-                                            label: 'Full Parking Slot No. (Semi Truck - Trailer)',
-                                            minLength: 1,
-                                            maxLength: 128
-                                        }"
+                                        [inputConfig]="fullParkingSlotConfig"
                                     ></app-ta-input>
                                 </div>
                             </div>

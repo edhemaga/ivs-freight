@@ -3,14 +3,14 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 export class SettingsParkingConfig {
     static getNameInputConfig(type: string): ITaInput {
         return {
-            name: 'Terminal Name',
-            type: 'text',
-            label: 'Terminal Name',
-            isRequired: true,
-            textTransform: 'uppercase',
-            autoFocus: type !== 'edit',
-            minLength: 1,
-            maxLength: 64,
+                name: 'Parking Name',
+                type: 'text',
+                label: 'Parking Name',
+                isRequired: true,
+                autoFocus: type !== 'edit',
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 64
         };
     }
 

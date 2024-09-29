@@ -20,6 +20,7 @@ import {
     ParkingResponse,
     UpdateParkingCommand,
 } from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -60,6 +61,12 @@ import {
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Svg routes
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
+
+// Config
+import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/config';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -152,6 +159,19 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     private destroy$ = new Subject<void>();
+
+    public svgRoutes = SettingsLocationSvgRoutes;
+    public formConfig = SettingsParkingConfig;
+    
+    public phoneConfig: ITaInput = SettingsParkingConfig.getPhoneInputConfig();
+    public phoneExtConfig: ITaInput = SettingsParkingConfig.getPhoneExtInputConfig();
+    public emailConfig: ITaInput = SettingsParkingConfig.getEmailInputConfig();
+    public addressConfig: ITaInput = SettingsParkingConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput = SettingsParkingConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput = SettingsParkingConfig.getPayPeriodInputConfig();
+    public rentConfig: ITaInput = SettingsParkingConfig.getRentConfig();
+    public parkingSlotConfig: ITaInput = SettingsParkingConfig.getParkingSlotConfig();
+    public fullParkingSlotConfig: ITaInput = SettingsParkingConfig.getFullParkingSlotConfig();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -590,8 +610,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyOfficeModalResponse) => {
-                    this.payPeriods = res.payPeriod;
                     this.monthlyDays = res.payPeriodMonthly;
+                    this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
                     if (this.editData?.type === 'edit') {
