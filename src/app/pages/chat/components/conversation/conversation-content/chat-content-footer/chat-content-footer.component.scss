@@ -1,9 +1,9 @@
 @import 'src/theme/variables';
 
 .chat-footer-wrapper {
-    flex-shrink: 0;
     height: auto;
 
+    margin: auto 8px;
     border-top: 1px solid $bw-9;
 
     .typing-placeholder-wrapper {
@@ -18,11 +18,7 @@
     }
     .chat-footer {
         min-height: 46px;
-
-        // flex-shrink: 0;
-        // height: auto;
-
-        margin: 2px 6px;
+        margin: 2px auto;
 
         .left-side {
             width: 100%;
