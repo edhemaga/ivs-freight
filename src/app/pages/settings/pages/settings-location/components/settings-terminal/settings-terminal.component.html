@@ -50,35 +50,41 @@
             (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
-                <div *ngIf="item.phone" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-muted"
-                        [src]="svgRoutes.phone"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.phone"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.email" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-muted"
-                        [src]="svgRoutes.email"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.email"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.address.address" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-muted"
-                        [src]="svgRoutes.location"
-                    ></svg-icon>
-                    <span>{{ item?.address?.address }}</span>
-                </div>
+                <ng-container *ngIf="item.phone">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted"
+                            [src]="svgRoutes.phone"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item?.phone"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.email">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted"
+                            [src]="svgRoutes.email"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item?.email"
+                            [textColor]="'#2f2f2f'"
+                        >
+                        </app-ta-copy>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.address.address">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-muted"
+                            [src]="svgRoutes.location"
+                        ></svg-icon>
+                        <span>{{ item?.address?.address }}</span>
+                    </div>
+                </ng-container>
             </div>
 
             <app-ta-custom-card
@@ -90,43 +96,46 @@
                 [disabledCard]="!item.officeChecked"
                 [animationMarginParams]="{
                     marginTop: 0,
-                    marginBottom: '12px',
+                    marginBottom: '12px'
                 }"
                 [isCardOpen]="!!isOfficeCardOpened[i]"
                 (onOpenCard)="isOfficeCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column">
-                    <div *ngIf="item.officePhone" class="parking-template-item">
-                        <svg-icon
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.phone"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [arrayText]="true"
-                            [copyValue]="[
-                                item.officePhone,
-                                item.officeExtPhone
-                                    ? ' x' + item.officeExtPhone
-                                    : ''
-                            ]"
-                            [textColor]="'#2f2f2f'"
-                            type="Contacts"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.officePhone">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.phone"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [arrayText]="true"
+                                [copyValue]="[
+                                    item.officePhone,
+                                    item.officeExtPhone
+                                        ? ' x' + item.officeExtPhone
+                                        : ''
+                                ]"
+                                [textColor]="'#2f2f2f'"
+                                type="Contacts"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
 
-                    <div class="parking-template-item">
-                        <svg-icon
-                            *ngIf="item.officeEmail"
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.email"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.officeEmail"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.officeEmail">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.email"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="item.officeEmail"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
 
@@ -139,74 +148,72 @@
                 [disabledCard]="!item.parkingChecked"
                 [animationMarginParams]="{
                     marginTop: 0,
-                    marginBottom: '12px',
+                    marginBottom: '12px'
                 }"
                 [isCardOpen]="!!isParkingCardOpened[i]"
                 (onOpenCard)="isParkingCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column mb-2">
-                    <div
-                        *ngIf="item.parkingPhone"
-                        class="parking-template-item"
-                    >
-                        <svg-icon
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.phone"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [arrayText]="true"
-                            [textColor]="'#2f2f2f'"
-                            [copyValue]="[
-                                item.parkingPhone,
-                                item.parkingExtPhone
-                                    ? ' x' + item.parkingExtPhone
-                                    : ''
-                            ]"
-                            type="Contacts"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.parkingPhone">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.phone"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [arrayText]="true"
+                                [textColor]="'#2f2f2f'"
+                                [copyValue]="[
+                                    item.parkingPhone,
+                                    item.parkingExtPhone
+                                        ? ' x' + item.parkingExtPhone
+                                        : ''
+                                ]"
+                                type="Contacts"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
 
-                    <div class="parking-template-item">
-                        <svg-icon
-                            *ngIf="item.parkingEmail"
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.email"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.parkingEmail"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.parkingEmail">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.email"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="item.parkingEmail"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
                 </div>
                 <div class="parking-template-data">
-                    <div
-                        *ngIf="item.terminalParkingSlot"
-                        class="parking-template-item"
-                    >
-                        <p
-                            class="ta-font-semi-bold text-size-14 text-color-black"
-                        >
-                            {{ item.terminalParkingSlot }}
-                        </p>
-                        <p class="parking-template-text text-color-black-2">
-                            Single Slot
-                        </p>
-                    </div>
-                    <div
-                        *ngIf="item.terminalFullParkingSlot"
-                        class="parking-template-item"
-                    >
-                        <p
-                            class="ta-font-semi-bold text-size-14 text-color-black"
-                        >
-                            {{ item.terminalFullParkingSlot }}
-                        </p>
-                        <p class="parking-template-text text-color-black-2">
-                            Full Slot
-                        </p>
-                    </div>
+                    <ng-container *ngIf="item.terminalParkingSlot">
+                        <div class="parking-template-item">
+                            <p
+                                class="ta-font-semi-bold text-size-14 text-color-black"
+                            >
+                                {{ item.terminalParkingSlot }}
+                            </p>
+                            <p class="parking-template-text text-color-black-2">
+                                Single Slot
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="item.terminalFullParkingSlot">
+                        <div class="parking-template-item">
+                            <p
+                                class="ta-font-semi-bold text-size-14 text-color-black"
+                            >
+                                {{ item.terminalFullParkingSlot }}
+                            </p>
+                            <p class="parking-template-text text-color-black-2">
+                                Full Slot
+                            </p>
+                        </div>
+                    </ng-container>
                     <div class="parking-template-item">
                         <svg-icon
                             class="parking-template-svg"
@@ -251,49 +258,48 @@
                 [disabledCard]="!item.warehouseChecked"
                 [animationMarginParams]="{
                     marginTop: 0,
-                    marginBottom: '12px',
+                    marginBottom: '12px'
                 }"
                 [isCardOpen]="!!isOWareHouseCardOpened[i]"
                 (onOpenCard)="isOWareHouseCardOpened[i] = $event"
             >
                 <div class="parking-template-data d-flex flex-column">
-                    <div
-                        *ngIf="item.warehousePhone"
-                        class="parking-template-item"
-                    >
-                        <svg-icon
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.phone"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [arrayText]="true"
-                            [textColor]="'#2f2f2f'"
-                            [copyValue]="[
-                                item.warehousePhone,
-                                item.warehouseExtPhone
-                                    ? ' x' + item.warehouseExtPhone
-                                    : ''
-                            ]"
-                            type="Contacts"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.warehousePhone">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.phone"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [arrayText]="true"
+                                [textColor]="'#2f2f2f'"
+                                [copyValue]="[
+                                    item.warehousePhone,
+                                    item.warehouseExtPhone
+                                        ? ' x' + item.warehouseExtPhone
+                                        : ''
+                                ]"
+                                type="Contacts"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
 
-                    <div class="parking-template-item">
-                        <svg-icon
-                            *ngIf="item.warehouseEmail"
-                            class="mr-3 svg-fill-muted"
-                            [src]="svgRoutes.email"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="item.warehouseEmail"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
+                    <ng-container *ngIf="item.warehouseEmail">
+                        <div class="parking-template-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-muted"
+                                [src]="svgRoutes.email"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="item.warehouseEmail"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
-
             <ng-container *ngIf="item.fuelStationChecked">
                 <app-ta-custom-card
                     [cardName]="'Fuel Station'"

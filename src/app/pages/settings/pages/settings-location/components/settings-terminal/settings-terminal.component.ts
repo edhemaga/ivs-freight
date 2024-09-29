@@ -76,14 +76,14 @@ export class SettingsTerminalComponent
         this.isParkingCardOpened[i] = false; 
     }
 
-    getList(): void {
+    public getList(): void {
         this.terminalService
             .getTerminalList()
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.terminalData = item.pagination));
     }
 
-    handleConfirmation(res: any): void {
+    public handleConfirmation(res: any): void {
         if (res.type === DropActionsStringEnum.DELETE && res.template === DropActionsStringEnum.COMPANY_TERMINAL) {
             this.settingsLocationService
                 .deleteCompanyTerminalById(res.id)

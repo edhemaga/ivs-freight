@@ -80,15 +80,6 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         }, 100);
     }
 
-    public generateTextForProgressBar(data: any): string {
-        return `${
-            data.payPeriod?.name
-        } Rent - ${this.FormatCurrencyPipe.transform(data.rent)}`;
-    }
-
-    abstract getList(): void; 
-
-    abstract handleConfirmation(res: any): void; 
  
     public identity(index: number, item: any): number {
         return item.id;
@@ -96,6 +87,13 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
 
     // This will come from components later, delete when it happens
     
+    public generateTextForProgressBar(data: any): string {
+        return `${
+            data.payPeriod?.name
+        } Rent - ${this.FormatCurrencyPipe.transform(data.rent)}`;
+    }
+    
+    // This will come from components later, delete when it happens
     public getRentDate(mod: number): string {
         let day: number;
         const currentDate = new Date();
@@ -129,6 +127,12 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
 
         return moment(expDate).format('MM/DD/YY');
     }
+
+    
+    // Implement in parent
+    abstract getList(): void; 
+
+    abstract handleConfirmation(res: any): void; 
 
     ngOnDestroy(): void {
         this.destroy$.next();

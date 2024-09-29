@@ -70,14 +70,14 @@ export class SettingsParkingComponent
         this.isParkingCardOpened[i] = false;
     }
 
-    getList(): void {
+    public getList(): void {
         this.companyParkingService
             .getParkingList()
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.parkingData = item.pagination));
     }
 
-    handleConfirmation(res: any): void {
+    public handleConfirmation(res: any): void {
         if (res.type === DropActionsStringEnum.DELETE && res.template === DropActionsStringEnum.COMPANY_PARKING) {
             this.settingsLocationService
                 .deleteCompanyParkingById(res.id)
