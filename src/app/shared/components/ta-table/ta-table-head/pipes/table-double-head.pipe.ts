@@ -81,7 +81,10 @@ export class TableDoubleHeadPipe implements PipeTransform {
 
             const userTableColumnsCondition =
                 gridNameTitle === TableHeadTitleStringEnum.USER &&
-                tableHeadTitle === TableHeadTitleStringEnum.PHONE;
+                (tableHeadTitle === TableHeadTitleStringEnum.PHONE ||
+                    tableHeadTitle === TableHeadTitleStringEnum.EMAIL ||
+                    tableHeadTitle === TableHeadTitleStringEnum.OFFICE ||
+                    tableHeadTitle == TableHeadTitleStringEnum.PAY_TYPE);
 
             if (
                 contactsTableColumnsCondition ||
@@ -170,10 +173,13 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== TableHeadTitleStringEnum.LOADED &&
                     tableHeadTitle !== TableHeadTitleStringEnum.RATE &&
                     tableHeadTitle !== TableHeadTitleStringEnum.TERM_3);
-                
+
             const UserTableColumnsCondition =
                 gridNameTitle !== TableHeadTitleStringEnum.USER ||
-                tableHeadTitle !== TableHeadTitleStringEnum.PHONE;
+                (tableHeadTitle !== TableHeadTitleStringEnum.PHONE &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.EMAIL &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.OFFICE &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.PAY_TYPE);
 
             return (
                 contactsTableColumnsCondition &&

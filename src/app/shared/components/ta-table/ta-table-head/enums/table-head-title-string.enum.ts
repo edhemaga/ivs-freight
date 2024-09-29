@@ -79,4 +79,8 @@ export enum TableHeadTitleStringEnum {
     REQUIREM = 'REQUIREM',
     MILES = 'MILES',
     PERSONAL = "PERSONAL",
+    OFFICE = "OFFICE",
+    EMPLOYEE = "EMPLOYEE",
+    PAY_TYPE = "PAY TYPE",
+    PAYROLL = "PAYROLL",
 }
