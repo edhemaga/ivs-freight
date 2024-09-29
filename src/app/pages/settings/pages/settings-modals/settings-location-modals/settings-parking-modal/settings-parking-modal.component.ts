@@ -161,6 +161,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public svgRoutes = SettingsLocationSvgRoutes;
+    
     public formConfig = SettingsParkingConfig;
     
     public phoneConfig: ITaInput = SettingsParkingConfig.getPhoneInputConfig();

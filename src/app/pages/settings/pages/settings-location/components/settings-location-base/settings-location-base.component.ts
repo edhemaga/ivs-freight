@@ -17,7 +17,10 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // SVG routes
-import { SettingsLocationSvgRoutes, SettingsLocationConfig } from '@pages/settings/pages/settings-location/utils';
+import {
+    SettingsLocationSvgRoutes,
+    SettingsLocationConfig,
+} from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-location-base',
@@ -26,7 +29,6 @@ import { SettingsLocationSvgRoutes, SettingsLocationConfig } from '@pages/settin
     providers: [FormatCurrencyPipe],
 })
 export abstract class SettingsLocationBaseComponent implements OnDestroy {
-
     protected destroy$ = new Subject<void>();
 
     public svgRoutes = SettingsLocationSvgRoutes;
@@ -34,22 +36,21 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
     public options = SettingsLocationConfig.options;
 
     constructor(
-      protected tableService: TruckassistTableService,
-      protected confirmationService: ConfirmationService,
-      protected cdRef: ChangeDetectorRef,
-      protected activatedRoute: ActivatedRoute,
-      protected settingsLocationService: SettingsLocationService,
-      private dropDownService: DropDownService,
-      private FormatCurrencyPipe: FormatCurrencyPipe
+        protected tableService: TruckassistTableService,
+        protected confirmationService: ConfirmationService,
+        protected cdRef: ChangeDetectorRef,
+        protected activatedRoute: ActivatedRoute,
+        protected settingsLocationService: SettingsLocationService,
+        private dropDownService: DropDownService,
+        private FormatCurrencyPipe: FormatCurrencyPipe
     ) {}
-
 
     ngOnInit(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res?.animation) {
-                    this.getList(); 
+                    this.getList();
                     this.cdRef.detectChanges();
                 }
             });
@@ -57,10 +58,9 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {this.handleConfirmation(res); console.log(res)}, 
+                next: (res) => this.handleConfirmation(res),
             });
     }
-
 
     public onAction(modal: { modalName: string; type: string }): void {
         this.settingsLocationService.onModalAction(modal);
@@ -80,19 +80,18 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         }, 100);
     }
 
- 
     public identity(index: number, item: any): number {
         return item.id;
     }
 
     // This will come from components later, delete when it happens
-    
+
     public generateTextForProgressBar(data: any): string {
         return `${
             data.payPeriod?.name
         } Rent - ${this.FormatCurrencyPipe.transform(data.rent)}`;
     }
-    
+
     // This will come from components later, delete when it happens
     public getRentDate(mod: number): string {
         let day: number;
@@ -128,11 +127,10 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         return moment(expDate).format('MM/DD/YY');
     }
 
-    
     // Implement in parent
-    abstract getList(): void; 
+    abstract getList(): void;
 
-    abstract handleConfirmation(res: any): void; 
+    abstract handleConfirmation(res: any): void;
 
     ngOnDestroy(): void {
         this.destroy$.next();

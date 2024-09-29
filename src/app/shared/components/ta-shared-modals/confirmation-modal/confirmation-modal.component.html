@@ -48,6 +48,8 @@
             ? 'Delete Terminal' 
             : editData?.template === 'Company Parking'
             ? 'Delete Parking'
+            : editData?.template === 'Company Office'
+            ? 'Delete Office'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"

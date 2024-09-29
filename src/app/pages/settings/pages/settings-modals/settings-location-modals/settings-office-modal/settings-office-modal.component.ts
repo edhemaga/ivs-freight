@@ -46,6 +46,7 @@ import {
     EnumValue,
     UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -55,6 +56,12 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
+
+// Form configuration
+import { SettingsOfficeConfig } from './config';
+
+// Svg routes
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -111,12 +118,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public tabs: any[] = [
         {
             id: 1,
-            name: 'Basic',
+            name: 'Detail',
             checked: true,
         },
         {
             id: 2,
-            name: 'Additional',
+            name: 'Contact',
         },
     ];
 
@@ -128,6 +135,18 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public dayOptions: EnumValue[];
 
     private destroy$ = new Subject<void>();
+
+    public svgRoutes = SettingsLocationSvgRoutes;
+    
+    public formConfig = SettingsOfficeConfig;
+    
+    public phoneConfig: ITaInput = SettingsOfficeConfig.getPhoneInputConfig();
+    public phoneExtConfig: ITaInput = SettingsOfficeConfig.getPhoneExtInputConfig();
+    public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
+    public addressConfig: ITaInput = SettingsOfficeConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput = SettingsOfficeConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput = SettingsOfficeConfig.getPayPeriodInputConfig();
+    public rentConfig: ITaInput = SettingsOfficeConfig.getRentConfig();
 
     constructor(
         private formBuilder: UntypedFormBuilder,

@@ -93,6 +93,7 @@ export enum DropActionsStringEnum {
     EMPTY_SPACE_STRING = ' ',
     TERMINAL = 'terminal',
     PARKING = 'parking',
+    OFFICE = 'office',
 
     // Size
     SMALL = 'small',
