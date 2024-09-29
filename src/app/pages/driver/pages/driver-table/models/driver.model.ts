@@ -1,7 +1,6 @@
 import { AddressEntity } from 'appcoretruckassist';
 
 export interface DriverModel {
-    userType?: any;
     id: number;
     owner: Owner;
     firstName: string;
@@ -72,6 +71,7 @@ export interface DriverModel {
     ssnStatus: string;
     medicalDaysLeft: string;
     cdlDaysLeft: string;
+    userType?: any; // leave this any for now
 }
 
 interface Owner {
