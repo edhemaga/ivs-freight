@@ -16,6 +16,9 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
+// SVG routes
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+
 @Component({
     selector: 'app-settings-location-base',
     templateUrl: './settings-location-base.component.html',
@@ -24,7 +27,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 })
 export abstract class SettingsLocationBaseComponent implements OnDestroy {
     protected destroy$ = new Subject<void>();
-    private currentDate: string;
+    public svgRoutes = SettingsLocationSvgRoutes;
     public options: any;
     constructor(
       protected tableService: TruckassistTableService,
@@ -53,8 +56,7 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
             .subscribe({
                 next: (res) => {this.handleConfirmation(res); console.log(res)}, 
             });
-
-        this.currentDate = moment(new Date()).format('MM/DD/YY');
+ 
         this.initOptions(); 
     }
 

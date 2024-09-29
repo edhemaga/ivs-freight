@@ -36,13 +36,13 @@
             *ngFor="
                 let item of terminalData?.data;
                 let i = index;
-                trackBy: identityTerminalData
+                trackBy: identity
             "
             [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
             [cardNameCommon]="item.name"
             [hasFooter]="false"
             [optionsId]="item.id"
-            [options]="terminalActions"
+            [options]="options"
             [paddingDots]="'8px 0px 0px 0px'"
             [haveHeaderText]="true"
             [setPositionDrop]="true"
