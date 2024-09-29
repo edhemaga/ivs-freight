@@ -44,6 +44,9 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
+// Enums
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+
 // validators
 import {
     addressValidation,
@@ -57,7 +60,6 @@ import {
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
 
 @Component({
     selector: 'app-settings-parking-modal',

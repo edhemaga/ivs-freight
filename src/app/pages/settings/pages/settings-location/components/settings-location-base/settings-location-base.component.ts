@@ -17,7 +17,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // SVG routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+import { SettingsLocationSvgRoutes, SettingsLocationConfig } from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-location-base',
@@ -26,9 +26,13 @@ import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-locati
     providers: [FormatCurrencyPipe],
 })
 export abstract class SettingsLocationBaseComponent implements OnDestroy {
+
     protected destroy$ = new Subject<void>();
+
     public svgRoutes = SettingsLocationSvgRoutes;
-    public options: any;
+
+    public options = SettingsLocationConfig.options;
+
     constructor(
       protected tableService: TruckassistTableService,
       protected confirmationService: ConfirmationService,
@@ -39,8 +43,8 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
       private FormatCurrencyPipe: FormatCurrencyPipe
     ) {}
 
-    ngOnInit(): void {
 
+    ngOnInit(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -50,14 +54,11 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
                 }
             });
 
-        // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {this.handleConfirmation(res); console.log(res)}, 
             });
- 
-        this.initOptions(); 
     }
 
 
@@ -88,73 +89,7 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
     abstract getList(): void; 
 
     abstract handleConfirmation(res: any): void; 
-
-    protected initOptions(): void {
-        this.options = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    show: true,
-                    iconName: 'edit',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    danger: true,
-                    show: true,
-                    redIcon: true,
-                    iconName: 'delete',
-                },
-            ],
-            export: true,
-        };
-    }
-
+ 
     public identity(index: number, item: any): number {
         return item.id;
     }

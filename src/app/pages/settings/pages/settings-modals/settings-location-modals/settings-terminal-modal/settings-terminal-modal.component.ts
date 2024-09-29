@@ -64,7 +64,7 @@ import { SettingsFormEnum } from './enums';
 import { SettingsTerminalConfig } from './config';
 
 // Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-terminal-modal',
