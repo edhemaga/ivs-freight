@@ -39,6 +39,9 @@ import { ParkingStore } from '@pages/settings/state/parking-state/company-parkin
 import { OfficeStore } from '@pages/settings/state/setting-ofice-state/company-office.store';
 import { TerminalStore } from '@pages/settings/state/settings-terminal-state/company-terminal.store';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -64,7 +67,7 @@ export class SettingsLocationService implements OnDestroy {
      * @param type - payload
      * @param modalName - modal name
      */
-    public onModalAction(data: { modalName: string; type?: any }) {
+    public onModalAction(data: { modalName: string; type?: any, id?: any }, id?: any, companyOwned?: boolean) {
         switch (data.modalName) {
             case 'parking': {
                 this.modalService.openModal(
@@ -82,17 +85,15 @@ export class SettingsLocationService implements OnDestroy {
                     {
                         size: 'small',
                     },
-                    { ...data.type }
+                    { ...data.type },
                 );
                 break;
             }
             case 'repairshop': {
                 this.modalService.openModal(
                     RepairShopModalComponent,
-                    {
-                        size: 'small',
-                    },
-                    { ...data.type }
+                    { size: TableStringEnum.SMALL },
+                    {id, companyOwned},
                 );
                 break;
             }

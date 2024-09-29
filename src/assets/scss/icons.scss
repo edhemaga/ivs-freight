@@ -1,0 +1,69 @@
+@import 'src/theme/variables';
+@mixin svg-fill($color) {
+    svg path {
+        fill: $color;
+    }
+}
+
+@mixin svg-hover($color) {
+    svg path {
+        transition: $transition;
+    }
+
+    &:hover {
+        svg path {
+            fill: $color;
+        }
+    }
+}
+
+@mixin svg-size($width, $height) {
+    svg {
+        width: $width;
+        height: $height;
+    }
+}
+
+.svg {
+    // Colors
+    &-fill {
+        &-muted {
+            @include svg-fill($muted);
+        }
+        &-light-grey-2 {
+            @include svg-fill($ta-light-grey-2);
+        }
+        &-light-grey-6 {
+            @include svg-fill($ta-light-grey-6);
+        }
+        &-blue-13 {
+            @include svg-fill($ta-blue-13);
+        }
+    }
+
+    // Hovers
+    &-hover {
+        &-black {
+            @include svg-hover($ta-black);
+        }
+        &-blue-15 {
+            @include svg-hover($ta-blue-15);
+        }
+        &-bw6-2 {
+            @include svg-hover($bw6-2);
+        }
+        &-trash-red {
+            @include svg-hover($settings-trash-red);
+        }
+    }
+
+    // Sizes
+    &-size {
+        &-14 {
+            @include svg-size(14px, 14px);
+        }
+        &-16 {
+            @include svg-size(16px, 16px);
+        }
+    }
+}

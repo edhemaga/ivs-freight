@@ -101,6 +101,8 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
     storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
 
     manuallyStarted: any = false;
+    
+    responseMessage: string = '';
 
     apiConfObj: any[] = [
         {
@@ -299,6 +301,9 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             ? this.toastPackage.config.payload.error
             : '';
         this.toastrType = this.toastPackage.toastType;
+        this.responseMessage = this.toastPackage.config.payload?.responseMessage
+            ? this.toastPackage.config.payload.responseMessage
+            : '';
     }
 
     ngOnInit(): void {
@@ -353,6 +358,11 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
 
         if (this.errorData?.error?.error) {
             this.message = this.errorData.error.error;
+            return false;
+        }
+
+        if ( this.responseMessage ) {
+            this.message = this.responseMessage;
             return false;
         }
 
