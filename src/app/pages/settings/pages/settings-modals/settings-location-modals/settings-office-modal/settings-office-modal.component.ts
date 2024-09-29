@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -25,12 +24,13 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // validations
 import {
     addressUnitValidation,
-    addressValidation,
-    departmentValidation,
+    addressValidation, 
     officeNameValidation,
     phoneExtension,
     phoneFaxRegex,
@@ -62,6 +62,10 @@ import { SettingsOfficeConfig } from './config';
 
 // Svg routes
 import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
+import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes/repair-shop-modal-svg-routes';
+
+// Enums
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -84,6 +88,8 @@ import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-locati
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaInputAddressDropdownComponent,
+        TaCustomCardComponent,
+        TaModalTableComponent
     ],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
@@ -133,6 +139,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     };
 
     public dayOptions: EnumValue[];
+    public contacts = [];
 
     private destroy$ = new Subject<void>();
 
@@ -148,6 +155,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public payPeriodConfig: ITaInput = SettingsOfficeConfig.getPayPeriodInputConfig();
     public rentConfig: ITaInput = SettingsOfficeConfig.getRentConfig();
 
+    public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
+    public modalTableTypeEnum = ModalTableTypeEnum;
+    public contactAddedCounter: number = 0;
+    isContactFormValid: boolean;
+    isNewContactAdded: boolean;
+    
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -255,54 +268,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-    }
-
-    public get departmentContacts(): UntypedFormArray {
-        return this.officeForm.get('departmentContacts') as UntypedFormArray;
-    }
-
-    private createDepartmentContacts(data?: {
-        id: any;
-        departmentId: any;
-        phone: any;
-        extensionPhone: any;
-        email: any;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
-            email: [data?.email ? data.email : null, [Validators.required]],
-        });
-    }
-
-    public addDepartmentContacts(event: { check: boolean; action: string }) {
-        const form = this.createDepartmentContacts();
-        if (event.check) {
-            this.departmentContacts.push(this.createDepartmentContacts());
-        }
-
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
-
-    public removeDepartmentContacts(id: number) {
-        this.departmentContacts.removeAt(id);
-        this.selectedDepartmentFormArray.splice(id, 1);
-    }
-
-    public onSelectContactDepartment(event: any, index: number) {
-        this.selectedDepartmentFormArray[index] = event;
     }
 
     public onHandleAddress(event: {
@@ -542,19 +507,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         index < res.departmentContacts.length;
                         index++
                     ) {
-                        this.departmentContacts.push(
-                            this.createDepartmentContacts({
-                                id: res.departmentContacts[index].id,
-                                departmentId:
-                                    res.departmentContacts[index].department
-                                        .name,
-                                phone: res.departmentContacts[index].phone,
-                                extensionPhone:
-                                    res.departmentContacts[index]
-                                        .extensionPhone,
-                                email: res.departmentContacts[index].email,
-                            })
-                        );
 
                         this.selectedDepartmentFormArray[index] = {
                             ...res.departmentContacts[index],
@@ -594,10 +546,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onScrollingBrokerContacts(event: any) {
-        this.isDepartmentCardsScrolling = event.target.scrollLeft > 1;
-    }
-
     private startFormChanges() {
         this.formService.checkFormChange(this.officeForm);
         this.formService.formValueChange$
@@ -606,6 +554,23 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 this.isFormDirty = isFormChange;
             });
     }
+
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        this.contactAddedCounter = modalTableDataValue.length;
+    }
+
+    public handleModalTableValidStatusEmit(validStatus: boolean): void {
+        this.isContactFormValid = validStatus;
+    }
+
+    public addContact(): void {
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
 
     ngOnDestroy(): void {
         this.destroy$.next();

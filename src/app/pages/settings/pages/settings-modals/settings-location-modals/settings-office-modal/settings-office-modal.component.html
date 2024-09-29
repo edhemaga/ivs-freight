@@ -163,7 +163,46 @@
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
-                    <!-- TODO -->
+                    <!-- TODO: -->
+                    <app-ta-custom-card
+                    (onActionEvent)="addContact()"
+                    [animationMarginParams]="{
+                        marginTop: '10px',
+                        marginBottom: '5px'
+                    }"
+                    [cardName]="'Department Contact'"
+                    [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
+                    [hasArrow]="false"
+                    [hasCounter]="contactAddedCounter"
+                    [hasScrollBody]="contactAddedCounter > 10"
+                    [isCardOpen]="contactAddedCounter"
+                    [isCommentData]="true"
+                    [hasScrollBodyXAxis]="true"
+                >
+                    <div
+                        (scroll)="onScrollingContacts($event)"
+                        class="repair-shop__contact-table"
+                    >
+                        <app-ta-modal-table
+                            [tableType]="modalTableTypeEnum.CONTACT"
+                            [modalTableData]="contacts"
+                            [isNewRowCreated]="isNewContactAdded"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
+                        >
+                        </app-ta-modal-table>
+                    </div>
+                </app-ta-custom-card>
+                <ng-container *ngIf="!contactAddedCounter">
+                    <svg-icon
+                        class="no-review-svg"
+                        [src]="repairShopModalSvgRoutes.noContactIcon"
+                    ></svg-icon>
+                </ng-container>
                 </div>
             </div>
         </form>
