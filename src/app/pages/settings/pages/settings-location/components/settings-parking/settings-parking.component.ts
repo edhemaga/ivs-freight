@@ -7,7 +7,6 @@ import moment from 'moment';
 
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
-import { NotificationService } from '@shared/services/notification.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
@@ -43,6 +42,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         },
     ];
     public currentDate: any;
+    public isParkingCardOpened: boolean[] = [];
 
     constructor(
         private settingsLocationService: SettingsLocationService,
@@ -51,7 +51,6 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        private notificationService: NotificationService,
         private FormatCurrencyPipe: FormatCurrencyPipe,
         private activatedRoute: ActivatedRoute
     ) {}
@@ -85,6 +84,12 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
                 },
             });
         this.parkingData = this.activatedRoute.snapshot.data.parking.pagination;
+        
+        this.activatedRoute.snapshot.data.terminal.pagination;
+        this.parkingData.data.forEach(() => {
+            this.isParkingCardOpened.push(true);
+        });
+        
         this.initOptions();
         this.currentDate = moment(new Date()).format('MM/DD/YY');
     }
@@ -242,12 +247,18 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
     }
 
     public generateTextForProgressBar(data: any): string {
+        console.log(data);
         return (
-            data.payPeriod.name +
+            data.payPeriod?.name +
             ' Rent ' +
             `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
+
+    public onCardToggle(i: number): void {
+        this.isParkingCardOpened[i] = false; 
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
