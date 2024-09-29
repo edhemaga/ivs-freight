@@ -2,7 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import { ChatMessage, ChatMessageResponse } from '@pages/chat/models';
+import {
+    ChatConversationMessageAction,
+    ChatMessage,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 
 // Enums
 import {
@@ -36,6 +40,10 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Output() messageReplyEvent: EventEmitter<ChatMessage> = new EventEmitter();
     @Output() messageEditEvent: EventEmitter<ChatMessage> = new EventEmitter();
     @Output() messageDeletedEvent: EventEmitter<boolean> = new EventEmitter();
+
+    @Output()
+    messageActionReplyOrEdit: EventEmitter<ChatConversationMessageAction> =
+        new EventEmitter();
 
     public messageReply: ChatMessage | null = null;
     public messageEdit: ChatMessage | null = null;
@@ -104,26 +112,23 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public messageAction(actionType: ChatMessageActionEnum): void {
-        switch (actionType) {
-            case ChatMessageActionEnum.REPLY:
+        switch (true) {
+            case actionType === ChatMessageActionEnum.REPLY ||
+                actionType === ChatMessageActionEnum.EDIT:
                 this.messageEdit = null;
                 this.messageReply = this.message;
-                this.messageEditEvent.emit(this.messageEdit);
-                this.messageReplyEvent.emit(this.messageReply);
+                this.messageActionReplyOrEdit.emit({
+                    message: this.message,
+                    type: actionType,
+                });
                 break;
-            case ChatMessageActionEnum.DELETE:
+            case actionType === ChatMessageActionEnum.DELETE:
                 this.chatService
                     .deleteMessage(this.message?.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
                         this.messageDeletedEvent.emit(true);
                     });
-                break;
-            case ChatMessageActionEnum.EDIT:
-                this.messageEdit = this.message;
-                this.messageReply = null;
-                this.messageEditEvent.emit(this.messageEdit);
-                this.messageReplyEvent.emit(this.messageReply);
                 break;
             default:
                 return;

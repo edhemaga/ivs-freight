@@ -198,9 +198,7 @@ export class ConversationListComponent
     ): ChatGroupState<
         ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination
     > {
-        return this.groupsState.find((group) => {
-            console.log(group);
-        });
+        return this.groupsState.find((group) => {});
     }
 
     public toggleChatGroupState(id: ChatGroupEnum, expandAll?: boolean): void {

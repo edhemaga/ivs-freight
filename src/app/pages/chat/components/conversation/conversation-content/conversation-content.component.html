@@ -78,12 +78,23 @@
         </ng-container>
     </app-chat-header>
 
-    <!-- Messages  -->
-    <app-chat-messages
-        [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
-        [attachmentUploadActive]="attachmentUploadActive"
-        [conversationParticipants]="conversationParticipants"
-    ></app-chat-messages>
+    <div class="content d-flex flex-column">
+        <!-- Messages  -->
+        <app-chat-messages
+            [conversation]="conversation"
+            [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
+            [attachmentUploadActive]="attachmentUploadActive"
+            [conversationParticipants]="conversationParticipants"
+            (messageReplyOrEditEvent)="handleMessageEvent($event)"
+        ></app-chat-messages>
+
+        <!-- Footer -->
+        <app-chat-content-footer
+            [conversation]="conversation"
+            [editMessage$]="messageToEdit$"
+            [replyMessage$]="messageToReply$"
+        ></app-chat-content-footer>
+    </div>
 </div>
 
 <ng-template #headerLeftSide let-name="name">

@@ -1,10 +1,14 @@
 @import 'src/theme/variables';
 
 .messages-container {
-    height: calc(100% - 37px);
+    // height: calc(100% - 37px);
     width: 100%;
-    background: $white;
-    border-radius: 3px;
+
+    flex-grow: 1;
+    overflow-y: auto;
+
+    background-color: $white;
+    border-radius: 2px;
 
     .messages-wrapper {
         height: 100%;

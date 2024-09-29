@@ -35,8 +35,9 @@
         }
     }
 
-    .conversation-content {
-        display: block;
+    .content {
+        height: calc(100% - 37px);
+        justify-content: end;
     }
 }
 
@@ -59,3 +60,10 @@
     font-size: 9px;
     text-align: center;
 }
+
+// .content {
+//     display: flex;
+//     flex-direction: column;
+//     flex-grow: 1; // Allow this wrapper to fill the available space
+//     overflow: hidden; // Prevent overflowing
+// }

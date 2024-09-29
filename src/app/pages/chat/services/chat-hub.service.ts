@@ -68,7 +68,7 @@ export class ChatHubService {
         });
     }
 
-    public notifyTyping(conversationId: number): void {
+    public static notifyTyping(conversationId: number): void {
         // If function within a hub is called 'invoke' is a must
         // invoke(name of the function, arguments)
         // Send not working

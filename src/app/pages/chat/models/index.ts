@@ -12,3 +12,4 @@ export * from './chat-tab.model';
 export * from './company-user-chat-response.model';
 export * from './company-user-chat.model';
 export * from './company-user.model';
+export * from './conversation-content/chat-conversation-message-action.model';

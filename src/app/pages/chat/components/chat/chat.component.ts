@@ -67,7 +67,6 @@ export class ChatComponent
 
     public ConversationTypeEnum = ConversationTypeEnum;
 
-    // Attachment upload
     public attachmentUploadActive: boolean = false;
 
     // User Profile Data
