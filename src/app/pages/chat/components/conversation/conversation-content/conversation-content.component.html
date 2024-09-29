@@ -85,6 +85,10 @@
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
             [attachmentUploadActive]="attachmentUploadActive"
             [conversationParticipants]="conversationParticipants"
+            [isReplyOrEditOpen]="
+                (messageToEdit$ | async) !== null ||
+                (messageToReply$ | async) !== null
+            "
             (messageReplyOrEditEvent)="handleMessageEvent($event)"
         ></app-chat-messages>
 
@@ -93,6 +97,7 @@
             [conversation]="conversation"
             [editMessage$]="messageToEdit$"
             [replyMessage$]="messageToReply$"
+            (closeReplyOrEditEvent)="closeReplyOrEditHandle($event)"
         ></app-chat-content-footer>
     </div>
 </div>

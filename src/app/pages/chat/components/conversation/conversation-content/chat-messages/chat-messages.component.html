@@ -34,9 +34,8 @@
                                         message[ind - 1]?.sender?.id
                                 "
                                 [isReplyOrEditOpen]="
-                                    (messageToReply$ | async)?.id ==
-                                        message.id ||
-                                    (messageToEdit$ | async)?.id == message.id
+                                    messageIdActionsDisplayed === message.id &&
+                                    isReplyOrEditOpen
                                 "
                                 (messageActionReplyOrEdit)="
                                     handleMessageReplyOrEdit($event)

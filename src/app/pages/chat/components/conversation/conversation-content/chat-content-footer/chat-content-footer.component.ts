@@ -53,8 +53,7 @@ export class ChatContentFooterComponent
     @Input() editMessage$: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
 
-    @Output() closeReplyEvent: EventEmitter<boolean> = new EventEmitter();
-    @Output() closeEditEvent: EventEmitter<boolean> = new EventEmitter();
+    @Output() closeReplyOrEditEvent: EventEmitter<boolean> = new EventEmitter();
 
     // Form
     public messageForm!: UntypedFormGroup;
@@ -328,10 +327,9 @@ export class ChatContentFooterComponent
     }
 
     public closeReplyAndEdit(): void {
+        this.closeReplyOrEditEvent.emit(true);
         this.replyMessage$.next(null);
         this.editMessage$.next(null);
-        this.closeReplyEvent.emit(true);
-        this.closeEditEvent.next(true);
     }
 
     ngOnDestroy(): void {

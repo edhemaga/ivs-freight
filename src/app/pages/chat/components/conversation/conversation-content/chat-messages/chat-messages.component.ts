@@ -72,6 +72,7 @@ export class ChatMessagesComponent
     @Input() public isProfileDetailsDisplayed: boolean = false;
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
+    @Input() public isReplyOrEditOpen: boolean = false;
 
     @Output() public userTypingEmitter: EventEmitter<number> =
         new EventEmitter();
@@ -93,6 +94,7 @@ export class ChatMessagesComponent
     public messages: ChatMessage[] = [];
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
+    public messageIdActionsDisplayed!: number;
 
     // Form
     public messageForm!: UntypedFormGroup;
@@ -180,6 +182,7 @@ export class ChatMessagesComponent
     }
 
     public handleMessageReplyOrEdit(data: ChatConversationMessageAction): void {
+        this.messageIdActionsDisplayed = data.message?.id;
         this.messageReplyOrEditEvent.emit(data);
     }
 

@@ -37,8 +37,6 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() isDateDisplayed: boolean = false;
     @Input() isReplyOrEditOpen: boolean = false;
 
-    @Output() messageReplyEvent: EventEmitter<ChatMessage> = new EventEmitter();
-    @Output() messageEditEvent: EventEmitter<ChatMessage> = new EventEmitter();
     @Output() messageDeletedEvent: EventEmitter<boolean> = new EventEmitter();
 
     @Output()
@@ -112,26 +110,29 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public messageAction(actionType: ChatMessageActionEnum): void {
-        switch (true) {
-            case actionType === ChatMessageActionEnum.REPLY ||
-                actionType === ChatMessageActionEnum.EDIT:
+        switch (actionType) {
+            case ChatMessageActionEnum.REPLY:
                 this.messageEdit = null;
                 this.messageReply = this.message;
-                this.messageActionReplyOrEdit.emit({
-                    message: this.message,
-                    type: actionType,
-                });
                 break;
-            case actionType === ChatMessageActionEnum.DELETE:
+            case ChatMessageActionEnum.EDIT:
+                this.messageEdit = this.message;
+                this.messageReply = null;
+                break;
+            case ChatMessageActionEnum.DELETE:
                 this.chatService
                     .deleteMessage(this.message?.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
                         this.messageDeletedEvent.emit(true);
                     });
-                break;
+                return;
             default:
                 return;
         }
+        this.messageActionReplyOrEdit.emit({
+            message: this.message,
+            type: actionType,
+        });
     }
 }

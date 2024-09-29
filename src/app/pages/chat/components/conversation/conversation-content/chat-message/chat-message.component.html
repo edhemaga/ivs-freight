@@ -23,7 +23,11 @@
                             context: {
                                 item: {
                                     icon: chatSvgRoutes.replyIcon,
-                                    actionType: chatMessageActionEnum.REPLY
+                                    actionType: chatMessageActionEnum.REPLY,
+                                    customClass:
+                                        messageReply &&
+                                        isReplyOrEditOpen &&
+                                        'focused'
                                 }
                             }
                         "
@@ -53,7 +57,11 @@
                                 context: {
                                     item: {
                                         icon: chatSvgRoutes.editPenIcon,
-                                        actionType: chatMessageActionEnum.EDIT
+                                        actionType: chatMessageActionEnum.EDIT,
+                                        customClass:
+                                            messageEdit &&
+                                            isReplyOrEditOpen &&
+                                            'focused'
                                     }
                                 }
                             "

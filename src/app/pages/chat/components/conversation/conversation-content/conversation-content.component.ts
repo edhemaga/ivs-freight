@@ -115,6 +115,11 @@ export class ConversationContentComponent
         });
     }
 
+    public closeReplyOrEditHandle($event: boolean): void {
+        this.messageToEdit$.next(null);
+        this.messageToReply$.next(null);
+    }
+
     public handleMessageEvent(data: ChatConversationMessageAction): void {
         switch (data.type) {
             case ChatMessageActionEnum.EDIT:

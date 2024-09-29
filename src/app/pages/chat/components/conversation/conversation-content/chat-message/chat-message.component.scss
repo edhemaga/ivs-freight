@@ -195,7 +195,7 @@
         }
     }
 
-    .blue {
+    &.blue {
         svg {
             path {
                 fill: $ta-blue-13;
@@ -210,6 +210,10 @@
                 }
             }
         }
+    }
+
+    &.focused {
+        background-color: $ta-black !important;
     }
 }
 
