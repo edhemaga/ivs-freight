@@ -33,8 +33,7 @@ import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-locati
 export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalData: any;
     public terminalActions: any;
-    private destroy$ = new Subject<void>();
-    public terminalDataById: any;
+    private destroy$ = new Subject<void>(); 
     public svgRoutes = SettingsLocationSvgRoutes;
     public currentDate: string;
     public isOfficeCardOpened: boolean[] = [];
@@ -97,12 +96,6 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    public getTerminalById(id: number) {
-        this.settingsLocationService
-            .getCompanyTerminalById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.terminalDataById = item));
-    }
     public getTerminalList() {
         this.terminalService
             .getTerminalList()

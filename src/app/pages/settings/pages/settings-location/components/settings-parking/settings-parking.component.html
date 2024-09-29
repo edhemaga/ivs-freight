@@ -49,9 +49,9 @@
             [hasFooter]="false"
             [haveHeaderText]="true"
             [optionsId]="item.id"
-            [options]="parkingActions"
+            [options]="options"
             [paddingDots]="'8px 0px 0px 0px'"
-            (dropActions)="optionsEvent($event, 'parking')"
+            (dropActions)="optionsEvent($event, 'parking', item)"
             (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">

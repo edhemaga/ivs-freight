@@ -29,6 +29,7 @@ import { SettingsOfficeComponent } from '@pages/settings/pages/settings-location
 import { SettingsTerminalComponent } from '@pages/settings/pages/settings-location/components/settings-terminal/settings-terminal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { SettingsLocationBaseComponent } from './components/settings-location-base/settings-location-base.component';
 
 @NgModule({
     imports: [
