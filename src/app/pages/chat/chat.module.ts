@@ -45,6 +45,7 @@ import {
     TrackByPropertyPipe,
 } from '@shared/pipes';
 import {
+    ChatDatePipe,
     ChatHeaderClassPipe,
     ChatHeaderGroupIconPipe,
     ChatMessageClassPipe,
@@ -93,6 +94,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatHeaderClassPipe,
         ChatHeaderGroupIconPipe,
         ChatMessageClassPipe,
+        ChatDatePipe,
     ],
     providers: [
         // Pipes
@@ -127,4 +129,4 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         HoverSvgDirective,
     ],
 })
-export class ChatModule {}
+export class ChatModule { }
