@@ -70,8 +70,7 @@ export class ChatHubService {
 
     public static notifyTyping(conversationId: number): void {
         // If function within a hub is called 'invoke' is a must
-        // invoke(name of the function, arguments)
-        // Send not working
+        // invoke(name of the function, arguments), send not working
         ChatHubService.hubConnection.invoke(`NotifyTyping`, conversationId);
     }
 
