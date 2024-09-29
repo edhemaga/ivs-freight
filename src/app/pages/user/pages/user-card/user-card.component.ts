@@ -26,7 +26,6 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
 })
 export class UserCardComponent implements OnInit, OnDestroy {
     @Input() set viewData(value: CardDetails[]) {
-        console.log(value, 'viewData')
         this._viewData = value;
     }
 
