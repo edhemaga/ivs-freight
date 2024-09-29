@@ -256,11 +256,16 @@
         [ngClass]="item.customClass"
     >
         <div class="action d-flex justify-content-center align-content-center">
+            <ng-container *ngIf="item.text">
+                <div class="action-text ta-font-bold">
+                    {{ item.text }}
+                </div>
+            </ng-container>
             <svg-icon
                 class="pointer d-flex justify-content-center align-items-center"
                 [svgStyle]="{
-                    'width.px': 12,
-                    'height.px': 12
+                    'width.px': 18,
+                    'height.px': 18
                 }"
                 [src]="item.icon"
             ></svg-icon>
