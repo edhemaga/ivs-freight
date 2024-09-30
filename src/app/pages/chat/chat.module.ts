@@ -45,8 +45,10 @@ import {
     TrackByPropertyPipe,
 } from '@shared/pipes';
 import {
+    ChatDatePipe,
     ChatHeaderClassPipe,
     ChatHeaderGroupIconPipe,
+    ChatMessageClassPipe,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -91,6 +93,8 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         // Pipes
         ChatHeaderClassPipe,
         ChatHeaderGroupIconPipe,
+        ChatMessageClassPipe,
+        ChatDatePipe,
     ],
     providers: [
         // Pipes

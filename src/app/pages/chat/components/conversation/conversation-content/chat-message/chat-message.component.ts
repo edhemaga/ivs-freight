@@ -2,7 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models';
+import {
+    ChatConversationMessageAction,
+    ChatMessage,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 
 // Enums
 import {
@@ -10,32 +14,46 @@ import {
     ChatMessageActionEnum,
 } from '@pages/chat/enums';
 
+// Services
+import { UserChatService } from '@pages/chat/services';
+
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-chat-message',
     templateUrl: './chat-message.component.html',
     styleUrls: ['./chat-message.component.scss'],
 })
-export class ChatMessageComponent implements OnInit {
+export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() currentUserId!: string;
     @Input() chatParticipants: CompanyUserShortResponse[];
-    @Input() message!: ChatMessageResponse;
+    @Input() message!: ChatMessage;
     @Input() isDateDisplayed: boolean = false;
+    @Input() isReplyOrEditOpen: boolean = false;
 
-    @Output() messageReply: EventEmitter<ChatMessageResponse> =
+    @Output() messageDeletedEvent: EventEmitter<boolean> = new EventEmitter();
+
+    @Output()
+    messageActionReplyOrEdit: EventEmitter<ChatConversationMessageAction> =
         new EventEmitter();
 
-    @Output() messageEdit: EventEmitter<ChatMessageResponse> =
-        new EventEmitter();
+    public messageReply: ChatMessage | null = null;
+    public messageEdit: ChatMessage | null = null;
+    public messageDeleted: boolean = false;
 
+    // Helpers
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
 
+    // States
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
+    public isFocused: boolean = false;
+    public hasActionsDisplayed: boolean = false;
 
     // Message details and actions
     public messageDateAndTime!: string;
@@ -47,13 +65,17 @@ export class ChatMessageComponent implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-    public hasActionsDisplayed: boolean = false;
-
-    constructor() {}
+    constructor(private chatService: UserChatService) {
+        super();
+    }
 
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
         this.convertDate(this.message?.createdAt);
+    }
+
+    ngOnChanges(): void {
+        this.hasActionsDisplayed = this.isReplyOrEditOpen;
     }
 
     private checkImageDimensions(url: string): void {
@@ -81,23 +103,36 @@ export class ChatMessageComponent implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
+        if (this.isReplyOrEditOpen && this.hasActionsDisplayed) {
+            return;
+        }
         this.hasActionsDisplayed = displayed;
     }
 
     public messageAction(actionType: ChatMessageActionEnum): void {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
-                this.messageEdit.emit(null);
-                this.messageReply.emit(this.message);
-                break;
-            case ChatMessageActionEnum.DELETE:
+                this.messageEdit = null;
+                this.messageReply = this.message;
                 break;
             case ChatMessageActionEnum.EDIT:
-                this.messageReply.next(null);
-                this.messageEdit.emit(this.message);
+                this.messageEdit = this.message;
+                this.messageReply = null;
                 break;
+            case ChatMessageActionEnum.DELETE:
+                this.chatService
+                    .deleteMessage(this.message?.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.messageDeletedEvent.emit(true);
+                    });
+                return;
             default:
                 return;
         }
+        this.messageActionReplyOrEdit.emit({
+            message: this.message,
+            type: actionType,
+        });
     }
 }

@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { ChatMessageResponse } from '@pages/chat/models/chat-message-response.model';
 
 // Service
 import { UserChatService } from '@pages/chat/services';
@@ -14,7 +14,7 @@ import { UserChatService } from '@pages/chat/services';
 export class ChatConversationResolver {
     constructor(private userChatService: UserChatService) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<ChatMessageResponse[]> {
+    resolve(route: ActivatedRouteSnapshot): Observable<ChatMessageResponse> {
         const conversationId: number = route.params['conversationId'] ?? 0;
         if (conversationId === 0) return;
 

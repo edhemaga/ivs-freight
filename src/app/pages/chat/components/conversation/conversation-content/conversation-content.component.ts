@@ -1,16 +1,20 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntil } from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models';
+import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
 import {
     CompanyUserShortResponse,
     ConversationResponse,
 } from 'appcoretruckassist';
 
 // Enums
-import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
+import {
+    ChatConversationType,
+    ChatGroupEnum,
+    ChatMessageActionEnum,
+} from '@pages/chat/enums';
 
 // Helpers
 import {
@@ -31,7 +35,7 @@ export class ConversationContentComponent
     implements OnInit
 {
     @Input() group: ChatGroupEnum;
-    @Input() public attachmentUploadActive: boolean = false;
+    @Input() public isAttachmentUploadActive: boolean = false;
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
         new EventEmitter();
@@ -40,7 +44,12 @@ export class ConversationContentComponent
         conversationParticipants: CompanyUserShortResponse[];
     }> = new EventEmitter();
 
-    public messages: ChatMessageResponse[] = [];
+    // Messages
+    public messages: ChatMessage[] = [];
+    public messageToReply$: BehaviorSubject<ChatMessage | null> =
+        new BehaviorSubject(null);
+    public messageToEdit$: BehaviorSubject<ChatMessage | null> =
+        new BehaviorSubject(null);
 
     // Group info
     public chatConversationType = ChatConversationType;
@@ -49,7 +58,7 @@ export class ConversationContentComponent
     //User data
     private getCurrentUserHelper = GetCurrentUserHelper;
 
-    private conversation!: ConversationResponse;
+    public conversation!: ConversationResponse;
     public conversationParticipants!: CompanyUserShortResponse[];
 
     // Assets
@@ -104,5 +113,30 @@ export class ConversationContentComponent
                     ? params[this.chatConversationType.CHANNEL]
                     : this.group;
         });
+    }
+
+    public closeReplyOrEditHandle($event: boolean): void {
+        this.messageToEdit$.next(null);
+        this.messageToReply$.next(null);
+    }
+
+    public handleMessageEvent(data: ChatConversationMessageAction): void {
+        switch (data.type) {
+            case ChatMessageActionEnum.EDIT:
+                this.messageToEdit$.next(data.message);
+                this.messageToReply$.next(null);
+                break;
+            case ChatMessageActionEnum.REPLY:
+                this.messageToReply$.next(data.message);
+                this.messageToEdit$.next(null);
+                break;
+            default:
+                return;
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.messageToEdit$.complete();
+        this.messageToReply$.complete();
     }
 }

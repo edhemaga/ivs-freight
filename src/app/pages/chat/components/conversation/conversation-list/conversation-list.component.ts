@@ -6,7 +6,7 @@ import { BehaviorSubject, takeUntil } from 'rxjs';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Models
 import {
@@ -48,7 +48,8 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit {
+    implements OnInit
+{
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
     @Input() public truckChannel: ChatCompanyChannelExtended[];
@@ -198,7 +199,7 @@ export class ConversationListComponent
         ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination
     > {
         return this.groupsState.find((group) => {
-            console.log(group);
+            return group;
         });
     }
 

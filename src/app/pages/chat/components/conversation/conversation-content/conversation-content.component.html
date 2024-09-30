@@ -1,6 +1,6 @@
 <div class="conversation-content-container">
     <!-- Header with basic information -->
-    <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
+    <app-chat-header [isBottomBorderDisplayed]="!isAttachmentUploadActive">
         <ng-container [ngSwitch]="true">
             <div class="messages-header d-flex align-items-center">
                 <ng-container
@@ -78,12 +78,27 @@
         </ng-container>
     </app-chat-header>
 
-    <!-- Messages  -->
-    <app-chat-messages
-        [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
-        [attachmentUploadActive]="attachmentUploadActive"
-        [conversationParticipants]="conversationParticipants"
-    ></app-chat-messages>
+    <div class="content d-flex flex-column">
+        <!-- Messages  -->
+        <app-chat-messages
+            [conversation]="conversation"
+            [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
+            [isAttachmentUploadActive]="isAttachmentUploadActive"
+            [conversationParticipants]="conversationParticipants"
+            [isReplyOrEditOpen]="
+                (messageToEdit$ | async) || (messageToReply$ | async)
+            "
+            (messageReplyOrEditEvent)="handleMessageEvent($event)"
+        ></app-chat-messages>
+
+        <!-- Footer -->
+        <app-chat-content-footer
+            [conversation]="conversation"
+            [editMessage$]="messageToEdit$"
+            [replyMessage$]="messageToReply$"
+            (closeReplyOrEditEvent)="closeReplyOrEditHandle($event)"
+        ></app-chat-content-footer>
+    </div>
 </div>
 
 <ng-template #headerLeftSide let-name="name">
