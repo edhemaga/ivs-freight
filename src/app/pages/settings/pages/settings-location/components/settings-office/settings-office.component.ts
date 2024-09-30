@@ -10,7 +10,6 @@ import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-m
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
-
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -39,13 +38,13 @@ export class SettingsOfficeComponent
     public isParkingCardOpened: boolean[] = [];
 
     constructor(
-        tableService: TruckassistTableService,
-        confirmationService: ConfirmationService,
-        cdRef: ChangeDetectorRef,
-        activatedRoute: ActivatedRoute,
-        settingsLocationService: SettingsLocationService,
-        dropDownService: DropDownService,
-        FormatCurrencyPipe: FormatCurrencyPipe,
+        protected tableService: TruckassistTableService,
+        protected confirmationService: ConfirmationService,
+        protected cdRef: ChangeDetectorRef,
+        protected activatedRoute: ActivatedRoute,
+        protected settingsLocationService: SettingsLocationService,
+        public dropDownService: DropDownService,
+        public FormatCurrencyPipe: FormatCurrencyPipe,
         private companyOfficeService: CompanyOfficeService
     ) {
         super(
@@ -63,11 +62,13 @@ export class SettingsOfficeComponent
         // Required for subscriptions to work
         super.ngOnInit();
 
+        this.getInitalList();
+    }
+
+    private getInitalList() {
         this.officeData = this.activatedRoute.snapshot.data.office.pagination;
 
-        this.officeData.data.forEach(() =>
-            this.isParkingCardOpened.push(true)
-        );
+        this.officeData.data.forEach(() => this.isParkingCardOpened.push(true));
     }
 
     public onCardToggle(i: number): void {
@@ -82,7 +83,10 @@ export class SettingsOfficeComponent
     }
 
     public handleConfirmation(res: Confirmation): void {
-        if (res.type === DropActionsStringEnum.DELETE && res.template === DropActionsStringEnum.COMPANY_OFFICE) {
+        if (
+            res.type === DropActionsStringEnum.DELETE &&
+            res.template === DropActionsStringEnum.COMPANY_OFFICE
+        ) {
             this.settingsLocationService
                 .deleteCompanyOfficeById(res.id)
                 .pipe(takeUntil(this.destroy$))

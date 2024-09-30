@@ -37,13 +37,13 @@ export class SettingsParkingComponent
     public isParkingCardOpened: boolean[] = [];
 
     constructor(
-        tableService: TruckassistTableService,
-        confirmationService: ConfirmationService,
-        cdRef: ChangeDetectorRef,
-        activatedRoute: ActivatedRoute,
-        settingsLocationService: SettingsLocationService,
-        dropDownService: DropDownService,
-        FormatCurrencyPipe: FormatCurrencyPipe,
+        protected tableService: TruckassistTableService,
+        protected confirmationService: ConfirmationService,
+        protected cdRef: ChangeDetectorRef,
+        protected activatedRoute: ActivatedRoute,
+        protected settingsLocationService: SettingsLocationService,
+        public dropDownService: DropDownService,
+        public FormatCurrencyPipe: FormatCurrencyPipe,
         private companyParkingService: CompanyParkingService
     ) {
         super(

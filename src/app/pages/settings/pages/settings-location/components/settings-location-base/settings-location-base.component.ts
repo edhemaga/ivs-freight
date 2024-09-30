@@ -51,8 +51,8 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         protected cdRef: ChangeDetectorRef,
         protected activatedRoute: ActivatedRoute,
         protected settingsLocationService: SettingsLocationService,
-        private dropDownService: DropDownService,
-        private FormatCurrencyPipe: FormatCurrencyPipe
+        public dropDownService: DropDownService,
+        public FormatCurrencyPipe: FormatCurrencyPipe
     ) {}
 
     ngOnInit(): void {
