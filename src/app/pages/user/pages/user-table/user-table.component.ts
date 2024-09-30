@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -8,6 +8,7 @@ import { UserService } from '@pages/user/services/user.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { UserCardsModalService } from '@pages/user/pages/user-card-modal/services/user-cards-modal.service';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -21,12 +22,13 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 // store
 import { UserActiveQuery } from '@pages/user/state/user-active-state/user-active.query';
 import { UserActiveState } from '@pages/user/state/user-active-state/user-active.store';
-
 import { UserInactiveQuery } from '@pages/user/state/user-inactive-state/user-inactive.query';
 import {
     UserInactiveState,
     UserInactiveStore,
 } from '@pages/user/state/user-inactive-state/user-inactive.store';
+import { select, Store } from '@ngrx/store';
+import { selectActiveTabCards, selectInactiveTabCards } from '@pages/user/pages/user-card-modal/state';
 
 // pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
@@ -36,6 +38,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 // constants
 import { UserConstants } from '@pages/user/utils/constants/user.constants';
 import { UserTableConfig } from '@pages/user/pages/user-table/utils/constants/user-table-config.constants';
+import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -70,11 +73,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Data to display from model
     public displayRowsFront: CardRows[] =
-        DisplayUserConfiguration.displayRowsFront;
-
+        UserTableConfiguration.displayRowsActiveFront;
     public displayRowsBack: CardRows[] =
-        DisplayUserConfiguration.displayRowsBack;
-
+        UserTableConfiguration.displayRowsActiveBack;
     public page: string = DisplayUserConfiguration.page;
 
     public rows: number = DisplayUserConfiguration.rows;
@@ -82,6 +83,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public cardTitle: string = DisplayUserConfiguration.cardTitle;
 
     public backFilterQuery = UserTableConfig.BACK_FILTER_QUERY;
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         // service
@@ -90,11 +92,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private userService: UserService,
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private userCardsModalService: UserCardsModalService,
 
         // store
         private usersActiveQuery: UserActiveQuery,
         private usersInactiveQuery: UserInactiveQuery,
         private usersInactiveStore: UserInactiveStore,
+        private store: Store,
 
         // pipe
         private phoneFormater: FormatPhonePipe,
@@ -390,7 +394,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 hideDataCount: true,
-                showArhiveCount: true,
                 showCountSelectedInList: false,
                 viewModeOptions: [
                     {
@@ -480,6 +483,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setUserData(td);
+        this.updateCardView();
     }
 
     // Get Tab Data
@@ -561,7 +565,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePersonalDetailsPhone: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
-            tablePersonalDetailsEmail: 'NA',
+            tablePersonalDetailsEmail: data?.personalEmail,
+            tablePersonalDetailsAddress: data?.address?.address,
             tableTableStatus: {
                 status:
                     data?.userType?.name && data?.userType?.name !== '0'
@@ -569,10 +574,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : 'No',
                 isInvited: false,
             },
-            tableBillingDetailsBankName: 'NA',
-            tableBillingDetailsRouting: 'NA',
-            tableBillingDetailsAccount: 'NA',
-            tablePaymentDetailsType: 'NA',
+            tableBillingDetailsBankName: data?.bank?.name,
+            tableBillingDetailsRouting: data?.routingNumber,
+            tableBillingDetailsAccount: data?.accountNumber,
+            tablePaymentDetailsType: data?.paymentType?.name,
             tablePaymentDetailsComm: data?.commission
                 ? data.commission + '%'
                 : '',
@@ -914,6 +919,25 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
             });
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.userCardsModalService.updateTab(this.selectedTab);
     }
 
     // ---------------------------  NgOnDestroy ----------------------------------

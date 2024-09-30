@@ -7,6 +7,7 @@ export enum TableHeadTitleStringEnum {
     CUSTOMER = 'Customer',
     TRAILER = 'Trailer',
     LOAD = 'load',
+    USER = "User",
 
     PICKUP_DELIVERY = 'PICKUP DELIVERY',
 
@@ -77,4 +78,9 @@ export enum TableHeadTitleStringEnum {
     BROKER_2 = 'BROKER',
     REQUIREM = 'REQUIREM',
     MILES = 'MILES',
+    PERSONAL = "PERSONAL",
+    OFFICE = "OFFICE",
+    EMPLOYEE = "EMPLOYEE",
+    PAY_TYPE = "PAY TYPE",
+    PAYROLL = "PAYROLL",
 }

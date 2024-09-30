@@ -89,6 +89,9 @@ import { UserModalStringEnum } from '@pages/user/pages/user-modal/enums';
 // svg-routes
 import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-routes/user-modal-svg-routes';
 
+// config
+import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
+
 @Component({
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
@@ -121,48 +124,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-    public typeOfEmploye = [
-        {
-            id: 3,
-            name: 'User',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'Admin',
-            checked: false,
-        },
-    ];
-    public ownerType = [
-        {
-            id: 10,
-            name: 'Owner',
-            checked: true,
-        },
-    ];
-    public typeOfPayroll = [
-        {
-            id: 5,
-            name: '1099',
-            checked: true,
-        },
-        {
-            id: 6,
-            name: 'W-2',
-            checked: false,
-        },
-    ];
+    public tabs: Tabs[] = UserModalConfig.MODAL_MAIN_TABS;
+    public typeOfEmploye = UserModalConfig.TYPE_OF_EMPLOYEE;
+    public typeOfPayroll = UserModalConfig.TYPE_OF_PAYROLL;
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
