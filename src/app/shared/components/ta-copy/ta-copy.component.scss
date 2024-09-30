@@ -48,12 +48,15 @@
     }
 
     .card-icon-copy {
-        display: none;
+        opacity: 0;
+        visibility: hidden;
         cursor: pointer;
+        transition: opacity .3s;
     }
     &:hover {
         .card-icon-copy {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
     }
 }

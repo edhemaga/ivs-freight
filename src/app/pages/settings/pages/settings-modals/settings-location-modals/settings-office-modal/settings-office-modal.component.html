@@ -163,14 +163,15 @@
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
-                    <!-- TODO: -->
                     <app-ta-custom-card
                     (onActionEvent)="addContact()"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '5px'
                     }"
-                    [cardName]="'Department Contact'"
+                    [cardName]="'Contact'"
+                    [disableAnimation]="disableCardAnimation"
+                    [disabledCard]="!contactAddedCounter"
                     [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                     [hasArrow]="false"
                     [hasCounter]="contactAddedCounter"
