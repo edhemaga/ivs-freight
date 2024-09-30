@@ -183,7 +183,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             name: [null, [Validators.required, ...officeNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
             departmentContacts: this.formBuilder.array([]),

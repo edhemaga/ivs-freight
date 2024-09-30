@@ -187,7 +187,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             name: [null, [Validators.required, ...terminalNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
 
