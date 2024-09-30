@@ -78,7 +78,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         background-color: #eeeeee00;
         font-size: 14px;
         font-weight: 800;
-        color: #b7b7b7;
+        color: $ta-light-grey-2;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -155,7 +155,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
         .slide-active-holder {
             background-color: #fff;
-            box-shadow: 0 0 2px #ffffff1a;
+            box-shadow: 0px 0px 2px 0px #00000026;
             height: calc(100% - 8px);
         }
     }
@@ -196,7 +196,7 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
 
         .slide-active-holder {
             background-color: #fff;
-            box-shadow: 0 0 2px #ffffff1a;
+            box-shadow: 0px 0px 2px 0px #00000026;
             height: calc(100% - 8px);
         }
 

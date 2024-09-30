@@ -224,6 +224,10 @@
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
+
+                    .svgtext-template-text {
+                        color: #6c6c6c;
+                    }
                 }
 
                 &.no-result {

@@ -1,15 +1,1 @@
 @import '/src/assets/scss/settings.global.scss';
-
-.settings-parking {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
-
-    .settings-name {
-        padding: 7px 4px;
-    }
-}
-.copy-icon {
-    margin-left: 1px !important;
-}

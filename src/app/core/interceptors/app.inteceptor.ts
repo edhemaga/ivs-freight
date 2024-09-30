@@ -45,7 +45,9 @@ export class AppInterceptor implements HttpInterceptor {
                 return next.handle(httpRequest);
             }),
             tap({
-                complete: () => {
+                next: (event) => {
+                    if (event.type === 0) return;
+
                     if (
                         httpRequest.url.indexOf('api') > -1 &&
                         httpRequest.method != 'GET'
@@ -54,10 +56,28 @@ export class AppInterceptor implements HttpInterceptor {
                         if (httpRequest.url.indexOf('login') > -1) {
                             timeOutValue = 1;
                         }
+
                         setTimeout(() => {
+                            let responseMessage = '';
+
+                            if (event?.body?.notDeletedIds) {
+                                const errorData = {
+                                    error: { error: event.body.message },
+                                };
+
+                                responseMessage = `Deleted ${event.body.deletedIds.length} Broker`;
+
+                                this.notificationService.errorToastr(
+                                    httpRequest,
+                                    next,
+                                    errorData
+                                );
+                            }
+
                             this.notificationService.successToastr(
                                 httpRequest,
-                                next
+                                next,
+                                responseMessage
                             );
                         }, timeOutValue);
                     }

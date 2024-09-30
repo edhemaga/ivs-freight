@@ -178,16 +178,16 @@
             <div *ngSwitchCase="'parkingTemplate'">
                 <div class="parking-template-data">
                     <div class="parking-template-item">
-                        <p class="parking-template-number">
+                        <p class="ta-font-semi-bold text-size-14 text-color-black">
                             {{ data.parking_slot }}
                         </p>
-                        <p class="parking-template-text">Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
-                        <p class="parking-template-number">
+                        <p class="ta-font-semi-bold text-size-14 text-color-black">
                             {{ data.parking_slot_full }}
                         </p>
-                        <p class="parking-template-text">Full Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Full Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
@@ -196,7 +196,7 @@
                             src="assets/svg/common/ic_security-camera.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !data.security_camera }"
                         >
                             Security Camera
@@ -209,7 +209,7 @@
                             src="assets/svg/common/ic_security-gate.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !data.gate }"
                         >
                             Gate
@@ -308,13 +308,13 @@
                         <p class="parking-template-number">
                             {{ data.parking_slot }}
                         </p>
-                        <p class="parking-template-text">Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <p class="parking-template-number">
                             {{ data.parking_slot_full }}
                         </p>
-                        <p class="parking-template-text">Full Parking Slot</p>
+                        <p class="parking-template-text text-color-black-2">Full Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <svg-icon
@@ -323,7 +323,7 @@
                             src="assets/svg/common/ic_security-camera.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !data.security_camera }"
                         >
                             Security Camera
@@ -336,7 +336,7 @@
                             src="assets/svg/common/ic_security-gate.svg"
                         ></svg-icon>
                         <p
-                            class="parking-template-text"
+                            class="parking-template-text text-color-black-2"
                             [ngClass]="{ 'cross-out': !data.gate }"
                         >
                             Gate
