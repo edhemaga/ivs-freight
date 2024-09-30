@@ -86,7 +86,9 @@
             [isAttachmentUploadActive]="isAttachmentUploadActive"
             [conversationParticipants]="conversationParticipants"
             [isReplyOrEditOpen]="
-                (messageToEdit$ | async) || (messageToReply$ | async)
+                messageToEdit$
+                    | async
+                    | chatAnyExist : (messageToReply$ | async)
             "
             (messageReplyOrEditEvent)="handleMessageEvent($event)"
         ></app-chat-messages>

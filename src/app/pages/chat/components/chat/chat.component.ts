@@ -104,6 +104,7 @@ export class ChatComponent
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ChatResolvedData) => {
+                this.isProfileDetailsDisplayed = false;
                 this.title = res.title;
                 this.drivers = res.drivers;
                 this.companyUsers = res.users;
@@ -147,18 +148,17 @@ export class ChatComponent
         this.chatService
             .createConversation(selectedConversation, chatType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    if (res?.id !== 0) {
-                        this.selectedConversation = res.id;
-                        this.router.navigate(
-                            [ChatRoutesEnum.CONVERSATION, res.id],
-                            {
-                                queryParams: { channel },
-                            }
-                        );
-                    }
-                },
+            .subscribe((conversation) => {
+                this.isProfileDetailsDisplayed = false;
+                if (conversation?.id !== 0) {
+                    this.selectedConversation = conversation.id;
+                    this.router.navigate(
+                        [ChatRoutesEnum.CONVERSATION, conversation.id],
+                        {
+                            queryParams: { channel },
+                        }
+                    );
+                }
             });
     }
 
