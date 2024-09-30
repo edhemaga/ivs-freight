@@ -1,3 +1,5 @@
+import { AddressResponse } from 'appcoretruckassist';
+
 export interface ConfirmationActivation {
     template: string;
     type: string;
@@ -10,4 +12,5 @@ export interface ConfirmationActivation {
     array?: any[];
     id: number;
     svg?: boolean;
+    newLocation?: AddressResponse;
 }
