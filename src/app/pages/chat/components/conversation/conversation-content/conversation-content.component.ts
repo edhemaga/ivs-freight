@@ -35,7 +35,7 @@ export class ConversationContentComponent
     implements OnInit
 {
     @Input() group: ChatGroupEnum;
-    @Input() public attachmentUploadActive: boolean = false;
+    @Input() public isAttachmentUploadActive: boolean = false;
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
         new EventEmitter();

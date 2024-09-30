@@ -8,7 +8,7 @@ import { CompanyUserShortResponse } from 'appcoretruckassist';
 
 // Utils
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';

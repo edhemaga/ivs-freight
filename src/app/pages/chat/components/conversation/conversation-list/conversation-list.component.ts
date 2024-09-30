@@ -6,7 +6,7 @@ import { BehaviorSubject, takeUntil } from 'rxjs';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Models
 import {
@@ -198,7 +198,9 @@ export class ConversationListComponent
     ): ChatGroupState<
         ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination
     > {
-        return this.groupsState.find((group) => {});
+        return this.groupsState.find((group) => {
+            return group;
+        });
     }
 
     public toggleChatGroupState(id: ChatGroupEnum, expandAll?: boolean): void {

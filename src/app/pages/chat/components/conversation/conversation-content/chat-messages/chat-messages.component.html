@@ -1,6 +1,6 @@
 <div class="messages-container d-flex">
     <div class="messages-wrapper">
-        <ng-container *ngIf="!attachmentUploadActive; else upload">
+        <ng-container *ngIf="!isAttachmentUploadActive; else upload">
             <div
                 class="messages-content"
                 [scrollTop]="messagesContent?.scrollHeight"

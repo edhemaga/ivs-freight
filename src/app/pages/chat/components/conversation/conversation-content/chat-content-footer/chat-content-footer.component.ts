@@ -32,7 +32,7 @@ import {
     ChatAttachmentCustomClassEnum,
     ChatAttachmentHoveredClassStringEnum,
 } from '@pages/chat/enums';
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 @Component({
     selector: 'app-chat-content-footer',
@@ -63,7 +63,7 @@ export class ChatContentFooterComponent
     public currentMessage!: string;
 
     // Attachment upload
-    public attachmentUploadActive: boolean = false;
+    public isAttachmentUploadActive: boolean = false;
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
         []
     );
@@ -107,8 +107,6 @@ export class ChatContentFooterComponent
         this.listenForTyping();
     }
 
-    ngOnChanges(): void {}
-
     public handleSend(): void {
         if (this.editMessage$.value) {
             this.editMessage();
@@ -125,7 +123,7 @@ export class ChatContentFooterComponent
 
         this.isMessageSendable = false;
 
-        let parentMessageId: number = this.replyMessage$.value?.id;
+        const parentMessageId: number = this.replyMessage$.value?.id;
 
         this.chatService
             .sendMessage(
@@ -147,7 +145,7 @@ export class ChatContentFooterComponent
 
     public editMessage(): void {
         const message = this.messageForm?.value?.message;
-        let messageId: number = this.editMessage$?.value?.id;
+        const messageId: number = this.editMessage$?.value?.id;
 
         if (!messageId || !message) return;
 
@@ -175,12 +173,12 @@ export class ChatContentFooterComponent
     }
 
     public uploadAttachmentDragAndDrop(): void {
-        this.attachmentUploadActive = true;
+        this.isAttachmentUploadActive = true;
     }
 
     public addAttachments(files: UploadFile[]): void {
         this.attachments$.next([...this.attachments$.value, ...files]);
-        this.attachmentUploadActive = false;
+        this.isAttachmentUploadActive = false;
 
         this.enableChatInput();
     }
@@ -213,7 +211,7 @@ export class ChatContentFooterComponent
 
         const element = this.documentPreview.find(
             (div: ElementRef) =>
-                div.nativeElement.getAttribute('data-id') == String(index)
+                div.nativeElement.getAttribute('data-id') === String(index)
         );
         if (element && isSelectedAttachment) {
             const classToAdd: string = this.isChatTypingBlurred

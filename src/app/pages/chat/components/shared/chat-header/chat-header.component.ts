@@ -9,7 +9,7 @@ import { ChatSearchPlaceHolders } from '@pages/chat/enums';
 import { chatFadeVerticallyAnimation } from '@shared/animations/chat-fade-vertically.animation';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers';

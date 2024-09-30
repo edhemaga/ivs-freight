@@ -1,6 +1,6 @@
 <div class="conversation-content-container">
     <!-- Header with basic information -->
-    <app-chat-header [isBottomBorderDisplayed]="!attachmentUploadActive">
+    <app-chat-header [isBottomBorderDisplayed]="!isAttachmentUploadActive">
         <ng-container [ngSwitch]="true">
             <div class="messages-header d-flex align-items-center">
                 <ng-container
@@ -83,11 +83,10 @@
         <app-chat-messages
             [conversation]="conversation"
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
-            [attachmentUploadActive]="attachmentUploadActive"
+            [isAttachmentUploadActive]="isAttachmentUploadActive"
             [conversationParticipants]="conversationParticipants"
             [isReplyOrEditOpen]="
-                (messageToEdit$ | async) !== null ||
-                (messageToReply$ | async) !== null
+                (messageToEdit$ | async) || (messageToReply$ | async)
             "
             (messageReplyOrEditEvent)="handleMessageEvent($event)"
         ></app-chat-messages>

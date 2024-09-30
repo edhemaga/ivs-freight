@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput, ChatDropzone } from '@pages/chat/utils/config';
+import { ChatInput, ChatDropzone } from '@pages/chat/utils/configs';
 
 // Services
 import {
@@ -65,10 +65,10 @@ export class ChatMessagesComponent
 
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
-        if (event.key === 'Escape') this.attachmentUploadActive = false;
+        if (event.key === 'Escape') this.isAttachmentUploadActive = false;
     }
 
-    @Input() public attachmentUploadActive: boolean = false;
+    @Input() public isAttachmentUploadActive: boolean = false;
     @Input() public isProfileDetailsDisplayed: boolean = false;
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
