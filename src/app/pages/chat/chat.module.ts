@@ -49,6 +49,7 @@ import {
     ChatHeaderClassPipe,
     ChatHeaderGroupIconPipe,
     ChatMessageClassPipe,
+    ChatAnyExist,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -95,6 +96,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatHeaderGroupIconPipe,
         ChatMessageClassPipe,
         ChatDatePipe,
+        ChatAnyExist,
     ],
     providers: [
         // Pipes

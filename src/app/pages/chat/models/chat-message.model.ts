@@ -15,6 +15,7 @@ export interface ChatMessage {
     content: string;
     parentMessageId?: number;
     parentMessageContent?: string;
+    parentMessageSenderFullname?: string;
     createdAt?: string;
     updatedAt: string;
     isEdited?: boolean;

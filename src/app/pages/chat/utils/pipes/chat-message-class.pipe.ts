@@ -36,6 +36,8 @@ export class ChatMessageClassPipe implements PipeTransform {
             case !isCurrentUser && !isSelected:
                 classString = 'other';
                 break;
+            default:
+                classString = isCurrentUser ? 'current-user' : 'other';
         }
         return classString;
     }

@@ -87,7 +87,6 @@
                             : messageReply?.id === message.id
                             : messageEdit?.id === message.id
                             : isReplyOrEditOpen
-                            : message
                 "
                 [ngStyle]="
                     message.linksCount && {
@@ -95,7 +94,16 @@
                     }
                 "
             >
-                {{ message.content }}
+                <ng-container
+                    *ngTemplateOutlet="
+                        parentMessage;
+                        context: {
+                            message,
+                            selected: isReplyOrEditOpen
+                        }
+                    "
+                ></ng-container>
+                <div>{{ message.content }}</div>
 
                 <ng-container *ngIf="message.filesCount">
                     <div
@@ -204,4 +212,31 @@
             ></svg-icon>
         </div>
     </div>
+</ng-template>
+
+<ng-template #parentMessage let-message="message" let-selected="selected">
+    <ng-container
+        *ngIf="message.parentMessageId && message.parentMessageContent"
+    >
+        <div class="d-flex">
+            <div>
+                <svg-icon
+                    class="pointer d-flex justify-content-center align-items-center"
+                    [svgStyle]="{
+                        'width.px': 12,
+                        'height.px': 12
+                    }"
+                    [src]="chatSvgRoutes.replyIcon"
+                ></svg-icon>
+            </div>
+            <div class="parent-message-text" [ngClass]="selected && 'selected'">
+                <div class="ta-font-semi-bold">
+                    {{ message.parentMessageSenderFullname }} replied to
+                </div>
+                <div class="ta-font-regular">
+                    {{ message.parentMessageContent }}
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </ng-template>
