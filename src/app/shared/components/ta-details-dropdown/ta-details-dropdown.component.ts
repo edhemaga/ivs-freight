@@ -101,7 +101,7 @@ export class TaDetailsDropdownComponent
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();
-    @Output() onPopoverVisiblityChange: EventEmitter<any> = new EventEmitter();
+    @Output() onPopoverVisiblityChange: EventEmitter<boolean> = new EventEmitter();
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;

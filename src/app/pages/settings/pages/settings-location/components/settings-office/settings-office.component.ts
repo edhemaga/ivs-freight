@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs';
 
 // Models
 import { ParkingResponsePagination } from 'appcoretruckassist';
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -16,13 +17,14 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { CompanyOfficeService } from '@shared/services/company-office.service';
 
 // Components
-import { SettingsLocationBaseComponent } from '../settings-location-base/settings-location-base.component';
+import { SettingsLocationBaseComponent } from '@pages/settings/pages/settings-location/components/settings-location-base/settings-location-base.component';
 
 // Enums
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
 // pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
 @Component({
     selector: 'app-settings-office',
     templateUrl: './settings-office.component.html',
@@ -56,6 +58,7 @@ export class SettingsOfficeComponent
             FormatCurrencyPipe
         );
     }
+
     ngOnInit(): void {
         // Required for subscriptions to work
         super.ngOnInit();
@@ -78,7 +81,7 @@ export class SettingsOfficeComponent
             .subscribe((item) => (this.officeData = item.pagination));
     }
 
-    public handleConfirmation(res: any): void {
+    public handleConfirmation(res: Confirmation): void {
         if (res.type === DropActionsStringEnum.DELETE && res.template === DropActionsStringEnum.COMPANY_OFFICE) {
             this.settingsLocationService
                 .deleteCompanyOfficeById(res.id)

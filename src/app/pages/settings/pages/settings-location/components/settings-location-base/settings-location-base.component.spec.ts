@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsLocationBaseComponent } from './settings-location-base.component';
+import { SettingsLocationBaseComponent } from '@pages/settings/pages/settings-location/components/settings-location-base/settings-location-base.component';
 
 describe('SettingsLocationBaseComponent', () => {
   let component: SettingsLocationBaseComponent;

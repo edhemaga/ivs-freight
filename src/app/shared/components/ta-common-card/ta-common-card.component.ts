@@ -23,7 +23,7 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 import { DetailsDataService } from '@shared/services/details-data.service';
 
 //components 
-import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 // modules

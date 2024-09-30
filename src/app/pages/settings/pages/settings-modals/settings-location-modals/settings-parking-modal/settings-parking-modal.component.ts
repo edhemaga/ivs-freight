@@ -70,6 +70,7 @@ import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/set
 
 // Enums
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+
 @Component({
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',

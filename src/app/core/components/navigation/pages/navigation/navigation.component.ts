@@ -187,7 +187,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.selectedRoute = 'File Manager';
                     this.cdRef.detectChanges();
                 } else {
-                    let ruteName = url.url.split('/');
+                    const ruteName = url.url.split('/');
                     if (ruteName[2]) {
                         if (ruteName[2] == 'sms') {
                             this.selectedSubRoute = 'SMS';

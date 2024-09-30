@@ -158,8 +158,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public contactAddedCounter: number = 0;
-    isContactFormValid: boolean;
-    isNewContactAdded: boolean;
+    public isContactFormValid: boolean;
+    public isNewContactAdded: boolean;
+    public modalTableDataValue: any;
+    public isCreatedNewStopItemsRow: boolean;
+    public isDeliveryItemsVisible: boolean;
     
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -302,7 +305,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private updateCompanyOffice(id: number) {
-        const { addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, rent, ...form } =
             this.officeForm.value;
 
         let newData: UpdateCompanyOfficeCommand = {
@@ -329,15 +332,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
+       
+        const departmentContacts = this.modalTableDataValue;
         for (let index = 0; index < departmentContacts.length; index++) {
             departmentContacts[index].departmentId =
                 this.selectedDepartmentFormArray[index].id;
         }
-
-        newData = {
-            ...newData,
-            departmentContacts,
-        };
 
         this.settingsLocationService
             .updateCompanyOffice(newData)
@@ -361,7 +361,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private addCompanyOffice() {
-        const { addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, rent, ...form } =
             this.officeForm.value;
 
         let newData: CreateCompanyOfficeCommand = {
@@ -387,10 +387,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
+        const departmentContacts = this.modalTableDataValue;
         for (let index = 0; index < departmentContacts.length; index++) {
             departmentContacts[index].departmentId =
                 this.selectedDepartmentFormArray[index].id;
         }
+
+        console.log(departmentContacts);
 
         newData = {
             ...newData,
@@ -556,18 +559,22 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     public handleModalTableValueEmit(modalTableDataValue): void {
-        this.contactAddedCounter = modalTableDataValue.length;
+        this.modalTableDataValue = modalTableDataValue;
     }
 
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
         this.isContactFormValid = validStatus;
+        this.isFormDirty = true; 
     }
 
     public addContact(): void {
         this.isNewContactAdded = true;
+        this.isCreatedNewStopItemsRow = true;
+        this.isDeliveryItemsVisible = true;
 
         setTimeout(() => {
             this.isNewContactAdded = false;
+            this.isCreatedNewStopItemsRow = false;
         }, 400);
     }
 

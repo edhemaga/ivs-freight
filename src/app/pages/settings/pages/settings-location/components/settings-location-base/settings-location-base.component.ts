@@ -1,14 +1,13 @@
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { SettingsLocationService } from '../../services/settings-location.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 
 // Helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
@@ -20,7 +19,18 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import {
     SettingsLocationSvgRoutes,
     SettingsLocationConfig,
+    SettingsProgressHelper,
 } from '@pages/settings/pages/settings-location/utils';
+
+// Models
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
+import { AllTableAnimationModel } from '@shared/models/table-models/all-table-animation.model';
+import {
+    CompanyOfficeResponse,
+    ParkingResponse,
+    RepairShopResponse,
+    TerminalResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-settings-location-base',
@@ -46,15 +56,23 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.onPageLoad();
+
+        this.onDeleteModalConfirmation();
+    }
+
+    private onPageLoad() {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res: AllTableAnimationModel) => {
                 if (res?.animation) {
                     this.getList();
                     this.cdRef.detectChanges();
                 }
             });
+    }
 
+    private onDeleteModalConfirmation() {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -66,7 +84,11 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
         this.settingsLocationService.onModalAction(modal);
     }
 
-    public optionsEvent(eventData: any, action: string, item: any): void {
+    public optionsEvent(
+        eventData: { type: string },
+        action: string,
+        item: any
+    ): void {
         setTimeout(() => {
             const name = DropActionNameHelper.dropActionNameDriver(
                 eventData,
@@ -86,7 +108,13 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
 
     // This will come from components later, delete when it happens
 
-    public generateTextForProgressBar(data: any): string {
+    public generateTextForProgressBar(
+        data:
+            | TerminalResponse
+            | ParkingResponse
+            | CompanyOfficeResponse
+            | RepairShopResponse
+    ): string {
         return `${
             data.payPeriod?.name
         } Rent - ${this.FormatCurrencyPipe.transform(data.rent)}`;
@@ -94,43 +122,13 @@ export abstract class SettingsLocationBaseComponent implements OnDestroy {
 
     // This will come from components later, delete when it happens
     public getRentDate(mod: number): string {
-        let day: number;
-        const currentDate = new Date();
-
-        if (mod === 1) day = 1;
-        else if (mod === 2) day = 5;
-        else if (mod === 3) day = 10;
-        else if (mod === 4) day = 15;
-        else if (mod === 5) day = 20;
-        else if (mod === 6) day = 25;
-        else
-            day = new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth()
-            ).getUTCDate();
-
-        const currentDay = currentDate.getUTCDate();
-        let expDate;
-
-        if (day > currentDay) {
-            expDate = new Date();
-            expDate.setUTCDate(day);
-        } else {
-            expDate = new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() + 1,
-                currentDate.getDate()
-            );
-            expDate.setUTCDate(day);
-        }
-
-        return moment(expDate).format('MM/DD/YY');
+        return SettingsProgressHelper.getRentDate(mod);
     }
 
     // Implement in parent
     abstract getList(): void;
 
-    abstract handleConfirmation(res: any): void;
+    abstract handleConfirmation(res: Confirmation): void;
 
     ngOnDestroy(): void {
         this.destroy$.next();

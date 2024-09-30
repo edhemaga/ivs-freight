@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs';
 
 // Models
 import { ParkingResponsePagination } from 'appcoretruckassist';
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -17,7 +18,7 @@ import { SettingsLocationService } from '@pages/settings/pages/settings-location
 import { DropDownService } from '@shared/services/drop-down.service';
 
 // Components
-import { SettingsLocationBaseComponent } from '../settings-location-base/settings-location-base.component';
+import { SettingsLocationBaseComponent } from '@pages/settings/pages/settings-location/components/settings-location-base/settings-location-base.component';
 
 // Enums
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
@@ -59,6 +60,10 @@ export class SettingsParkingComponent
         // Required for subscriptions to work
         super.ngOnInit();
 
+        this.getInitalList();
+    }
+
+    private getInitalList() {
         this.parkingData = this.activatedRoute.snapshot.data.parking.pagination;
 
         this.parkingData.data.forEach(() =>
@@ -77,8 +82,11 @@ export class SettingsParkingComponent
             .subscribe((item) => (this.parkingData = item.pagination));
     }
 
-    public handleConfirmation(res: any): void {
-        if (res.type === DropActionsStringEnum.DELETE && res.template === DropActionsStringEnum.COMPANY_PARKING) {
+    public handleConfirmation(res: Confirmation): void {
+        if (
+            res.type === DropActionsStringEnum.DELETE &&
+            res.template === DropActionsStringEnum.COMPANY_PARKING
+        ) {
             this.settingsLocationService
                 .deleteCompanyParkingById(res.id)
                 .pipe(takeUntil(this.destroy$))
