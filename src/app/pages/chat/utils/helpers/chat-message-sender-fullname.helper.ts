@@ -14,7 +14,7 @@ export const chatMessageSenderFullname = (
             ...message,
             parentMessageId: message.parentMessageId ?? message.parentId,
             parentMessageSenderFullname: messageFound?.sender?.fullName,
-            parentMessageContent: messageFound.parentMessageContent,
+            parentMessageContent: messageFound?.parentMessageContent,
         };
     }
     return message;
