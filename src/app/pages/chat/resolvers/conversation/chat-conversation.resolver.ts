@@ -9,6 +9,9 @@ import { ChatMessage } from '@pages/chat/models';
 // Service
 import { UserChatService } from '@pages/chat/services';
 
+// Helpers
+import { chatMessageSenderFullname } from '@pages/chat/utils/helpers';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -23,15 +26,10 @@ export class ChatConversationResolver {
             map((res) => {
                 const messages = res?.pagination?.data.map(
                     (message: ChatMessage) => {
-                        if (!message.parentMessageId) return message;
-                        return {
-                            ...message,
-                            parentMessageSenderFullname:
-                                res?.pagination?.data.find(
-                                    (_message: ChatMessage) =>
-                                        _message.id === message.parentMessageId
-                                )?.sender?.fullName,
-                        };
+                        return chatMessageSenderFullname(
+                            res?.pagination?.data,
+                            message
+                        );
                     }
                 );
                 const modifiedResponse: ChatMessageResponse = {

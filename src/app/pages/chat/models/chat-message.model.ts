@@ -13,6 +13,7 @@ export interface ChatMessage {
     senderId: number;
     conversationId: number;
     content: string;
+    parentId?: number;
     parentMessageId?: number;
     parentMessageContent?: string;
     parentMessageSenderFullname?: string;

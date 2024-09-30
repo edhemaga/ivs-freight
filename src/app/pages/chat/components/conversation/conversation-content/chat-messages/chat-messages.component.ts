@@ -7,14 +7,11 @@ import {
     ElementRef,
     ViewChild,
     HostListener,
-    Renderer2,
-    QueryList,
-    ViewChildren,
     Output,
     EventEmitter,
     Input,
 } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -22,7 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput, ChatDropzone } from '@pages/chat/utils/configs';
+import { ChatDropzone } from '@pages/chat/utils/configs';
 
 // Services
 import {
@@ -39,13 +36,11 @@ import {
 import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
 
 // Enums
-import {
-    ChatAttachmentHoveredClassStringEnum,
-    ChatAttachmentCustomClassEnum,
-} from '@pages/chat/enums';
+import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Helpers
 import {
+    chatMessageSenderFullname,
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
@@ -130,7 +125,11 @@ export class ChatMessagesComponent
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.messages = [...res?.messages?.pagination?.data];
+                this.messages = [
+                    ...res?.messages?.pagination?.data?.filter(
+                        (message) => message.id !== 0
+                    ),
+                ];
                 this.conversation = res?.information;
             });
     }
@@ -140,24 +139,43 @@ export class ChatMessagesComponent
             .getMessages(this.conversation?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.messages = [...res?.pagination?.data];
+                this.messages = [
+                    ...res?.pagination?.data?.filter(
+                        (message) => message.id !== 0
+                    ),
+                ];
             });
+    }
+
+    public handleMessageDelete(): void {
+        this.getMessages();
     }
 
     private connectToHub(): void {
         ChatHubService.receiveMessage()
             .pipe(
                 takeUntil(this.destroy$),
-                map((arg) => {
+                map((message) => {
+                    const transformedMessage: ChatMessage =
+                        chatMessageSenderFullname(this.messages, message);
                     return {
-                        ...arg,
-                        fileCount: arg.filesCount ?? arg.files?.length,
-                        mediaCount: arg.mediaCount ?? arg.media?.length,
-                        linksCount: arg.linksCount ?? arg.links?.length,
+                        ...transformedMessage,
+                        messageType: { name: 'Text', id: 1 },
+                        createdAt:
+                            message?.createdAt ?? new Date().toISOString(),
+                        fileCount:
+                            transformedMessage.filesCount ??
+                            transformedMessage.files?.length,
+                        mediaCount:
+                            transformedMessage.mediaCount ??
+                            transformedMessage.media?.length,
+                        linksCount:
+                            transformedMessage.linksCount ??
+                            transformedMessage.links?.length,
                     };
                 })
             )
-            .subscribe((message) => {
+            .subscribe((message: ChatMessage) => {
                 if (message) {
                     this.messages = [...this.messages, message];
                 }

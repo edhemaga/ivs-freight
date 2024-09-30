@@ -215,9 +215,7 @@
 </ng-template>
 
 <ng-template #parentMessage let-message="message" let-selected="selected">
-    <ng-container
-        *ngIf="message.parentMessageId && message.parentMessageContent"
-    >
+    <ng-container *ngIf="message.parentMessageId">
         <div class="d-flex">
             <div>
                 <svg-icon
