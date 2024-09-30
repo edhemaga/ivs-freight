@@ -681,7 +681,7 @@
                                         "
                                         [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
-                                        [stopNumber]="indx + 2"
+                                        [stopNumber]="loadExtraStops().at(indx).get('stopOrder').value"
                                         [isDelivery]="
                                             selectExtraStopType[indx]
                                                 ?.toString()

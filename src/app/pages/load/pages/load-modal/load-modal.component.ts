@@ -704,6 +704,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTitle: string;
     public isActiveLoad: boolean;
     public editName: string;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -1341,8 +1342,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.STOP_TAB:
                 const orderNumber =
-                    event.id === 1 ||
-                    (this.editData && event.id > 3000 && event.id < 4000)
+                    event.id === 1 || (event.id >= 3000 && event.id < 4000)
                         ? 3000 + indx
                         : 4000 + indx;
 
@@ -1356,6 +1356,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     }
                 );
+                
                 this.loadExtraStops()
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
@@ -3598,6 +3599,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours,
             pickuplegMinutes,
             deliveryStop,
+            deliveryStopOrder,
             deliveryDateFrom,
             deliveryDateTo,
             deliveryTimeFrom,
@@ -3720,7 +3722,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: stops.length + 1,
+                stopLoadOrder: deliveryStopOrder,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
