@@ -6,4 +6,6 @@ export interface CardRowsItemValue {
     secondKey?: string;
     thirdKey?: string;
     type?: string;
+    prefix?: string;
+    sufix?: string;
 }
