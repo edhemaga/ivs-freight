@@ -549,7 +549,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             this.unassignedLoads.push(movedLoad);
             this.isUnAssignLoadCardOpen = true;
         } else {
-            const loadIndex = this.assignedLoads.findIndex(
+            const loadIndex = this.unassignedLoads.findIndex(
                 (load) => load.id === loadId
             );
 

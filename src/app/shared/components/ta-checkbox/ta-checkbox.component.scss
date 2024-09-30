@@ -41,7 +41,7 @@
         height: 14px;
         width: 14px;
         background-color: #cccccc;
-        border-radius: 2px;
+        border-radius: 3px;
         cursor: pointer;
 
         transition: all 0.3s ease-in-out;
@@ -51,10 +51,10 @@
             content: '';
             position: absolute;
             display: none;
-            left: 4px;
-            top: 1px;
-            width: 6px;
-            height: 9px;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
             border: solid #ffffff;
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
@@ -90,7 +90,7 @@
     }
 
     .ta-checkbox:checked ~ .ta-mark {
-        background-color: #3074d3;
+        background-color: $ta-blue-18;
         transition: all 0.3s ease-in-out;
     }
 

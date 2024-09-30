@@ -44,7 +44,11 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
-import { CaInputComponent, PickupDeliveryBlockComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    PickupDeliveryBlockComponent,
+    ProgressBarComponent,
+} from 'ca-components';
 import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pickup-delivery/dispatch-table-pickup-delivery.component';
 
 // pipes
@@ -137,6 +141,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         LoadStatusStringComponent,
         LoadRequirementComponent,
         PickupDeliveryBlockComponent,
+        ProgressBarComponent,
 
         //  TaMapsComponent,
     ],

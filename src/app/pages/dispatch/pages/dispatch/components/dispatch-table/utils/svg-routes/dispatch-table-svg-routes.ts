@@ -25,4 +25,6 @@ export class DispatchTableSvgRoutes {
         'assets/svg/truckassist-table/ascending-sort.svg';
     static sortDescendingArrow: string =
         'assets/svg/truckassist-table/descending-sort.svg';
+    static progressNoGpsStatusIcon: string =
+        'assets/ca-components/svg/map/no_gps_status.svg';
 }

@@ -30,5 +30,7 @@ export interface LoadStopProgressBarResponse {
     milesTo?: number | null;
     estimatedWaitTime?: { [key: string]: number; } | null;
     waitTimeInMin?: number | null;
+    latitude?: number | null;
+    longitude?: number | null;
 }
 

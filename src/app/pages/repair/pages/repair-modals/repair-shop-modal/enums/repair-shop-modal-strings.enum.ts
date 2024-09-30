@@ -3,6 +3,9 @@ export enum RepairShopModalStringEnum {
     OPEN_HOURS = 'openHours',
     START_TIME = 'startTime',
     END_TIME = 'endTime',
+    SECOND_START_TIME = 'secondStartTime',
+    SECOND_END_TIME = 'secondEndTime',
+    DOUBLE_SHIFT = 'isDoubleShift',
     IS_WORKING_DAY = 'isWorkingDay',
     OPEN_ALWAYS = 'openAlways',
     PINNED = 'pinned',
@@ -24,4 +27,11 @@ export enum RepairShopModalStringEnum {
     OPEN_HOURS_SAME_ALL_DAYS = 'openHoursSameAllDays',
     START_TIME_ALL_DAYS = 'startTimeAllDays',
     END_TIME_ALL_DAYS = 'endTimeAllDays',
+    COMPANY_OWNED = 'companyOwned',
+    WEEKLY_DAY = 'weeklyDay',
+    PAY_PERIOD = 'payPeriod',
+    MONTHLY_DAYS = 'monthlyDays',
+    RENT = 'rent',
+    HOLIDAY = 'holiday',
+    DAY_LABEL = 'dayLabel'
 }

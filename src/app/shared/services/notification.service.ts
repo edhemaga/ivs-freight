@@ -72,7 +72,7 @@ export class NotificationService {
         });
     }
 
-    public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler) {
+    public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler, responseMessage?: string) {
         if (
             httpRequest.url.indexOf('account/refresh') > -1 ||
             httpRequest.url.indexOf('pm/truck/') > -1 ||
@@ -99,7 +99,7 @@ export class NotificationService {
 
         this.toastr.success('', '', {
             ...notificationOptions,
-            payload: { httpRequest, next },
+            payload: { httpRequest, next, responseMessage },
         });
     }
 

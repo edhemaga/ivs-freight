@@ -16,6 +16,12 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 // utils
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
+// Models
+import { TerminalListResponse } from 'appcoretruckassist';
+
+// Utils
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+
 @Component({
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',
@@ -27,6 +33,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalActions: any;
     private destroy$ = new Subject<void>();
     public terminalDataById: any;
+    public svgRoutes = SettingsLocationSvgRoutes;
     constructor(
         private settingsLocationService: SettingsLocationService,
         private terminalService: CompanyTerminalService,
@@ -41,7 +48,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation) {
+                if (res?.animation) {
                     this.getTerminalList();
                     this.cdRef.detectChanges();
                 }
@@ -81,8 +88,8 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             .subscribe((item) => (this.terminalData = item.pagination));
     }
 
-    public optionsEvent(eventData: any, action: string) {
-        this.getTerminalById(eventData.id);
+    public optionsEvent(eventData: any, action: string, item: TerminalListResponse) {
+        
         setTimeout(() => {
             const name = DropActionNameHelper.dropActionNameDriver(
                 eventData,
@@ -91,7 +98,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             this.dropDownService.dropActionCompanyLocation(
                 eventData,
                 name,
-                this.terminalDataById
+                item
             );
         }, 100);
     }
