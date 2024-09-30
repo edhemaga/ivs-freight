@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'chatDatePipe'
+    name: 'chatDatePipe',
 })
 export class ChatDatePipe implements PipeTransform {
-
     transform(value: Date | string): string {
         const date = new Date(value);
 
@@ -12,7 +11,7 @@ export class ChatDatePipe implements PipeTransform {
             throw new Error('Invalid date');
         }
 
-        const day = ('0' + date.getDate()).slice(-2);       // Ensures two digits for the day
+        const day = ('0' + date.getDate()).slice(-2); // Ensures two digits for the day
         const month = ('0' + (date.getMonth() + 1)).slice(-2); // Ensures two digits for the month
         const year = date.getFullYear();
 
