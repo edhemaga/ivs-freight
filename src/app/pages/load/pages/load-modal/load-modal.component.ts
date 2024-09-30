@@ -624,6 +624,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadExtraStopsDateRange: EnumValue[] | boolean[] = [];
     public selectedExtraStopTime: any[] = [];
     public previousDeliveryStopOrder: number;
+    public extraStopNumbers: number[] = [];
 
     // stop items
     public pickupStopItems: LoadStopItemResponse[] = [];
@@ -704,6 +705,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public modalTitle: string;
     public isActiveLoad: boolean;
     public editName: string;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -1341,8 +1343,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
             case LoadModalStringEnum.STOP_TAB:
                 const orderNumber =
-                    event.id === 1 ||
-                    (this.editData && event.id > 3000 && event.id < 4000)
+                    event.id === 1 || (event.id >= 3000 && event.id < 4000)
                         ? 3000 + indx
                         : 4000 + indx;
 
@@ -1356,6 +1357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     }
                 );
+
                 this.loadExtraStops()
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
@@ -1401,6 +1403,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.calculateStopOrder();
                 }
+
+                this.getStopNumbers();
 
                 if (this.selectedExtraStopShipper[indx]) this.drawStopOnMap();
 
@@ -3294,6 +3298,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 },
             ]);
         }
+
+        this.getStopNumbers();
     }
 
     public newLoadExtraStop(): UntypedFormGroup {
@@ -3445,6 +3451,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 }
             );
         }
+
+        this.getStopNumbers();
 
         this.drawStopOnMap();
     }
@@ -3598,6 +3606,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours,
             pickuplegMinutes,
             deliveryStop,
+            deliveryStopOrder,
             deliveryDateFrom,
             deliveryDateTo,
             deliveryTimeFrom,
@@ -3669,8 +3678,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           )
                         : item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
-                    stopLoadOrder: item.get(LoadModalStringEnum.STOP_ORDER)
-                        .value,
+                    stopLoadOrder:
+                        this.extraStopNumbers?.[index] ??
+                        item.get(LoadModalStringEnum.STOP_ORDER).value,
                     shipperId: this.selectedExtraStopShipper[index]?.id,
                     shipper: this.originalShippers.find(
                         (shipper) =>
@@ -3720,7 +3730,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: stops.length + 1,
+                stopLoadOrder: deliveryStopOrder,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
@@ -5631,6 +5641,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             moveItemInArray(item, event.previousIndex, event.currentIndex);
         });
 
+        this.getStopNumbers();
+
         // Prevent opening or closing tab
         setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
@@ -5662,6 +5674,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         });
         this.isButtonDisabled = false;
         if (addNew) this.addNewLoadModal();
+    }
+
+    private getStopNumbers(): void {
+        let pickupStopNumber = 1;
+        let deliveryStopNumber = 0;
+        this.extraStopNumbers = [];
+
+        this.loadExtraStops().controls.forEach((extraStop, index) => {
+            if (extraStop.value.stopType === LoadModalStringEnum.PICKUP_2) {
+                pickupStopNumber++;
+                this.extraStopNumbers.push(pickupStopNumber);
+            } else {
+                deliveryStopNumber++;
+                this.extraStopNumbers.push(deliveryStopNumber);
+            }
+        });
+
+        this.loadForm
+            .get(LoadModalStringEnum.DELIVERY_STOP_ORDER)
+            .patchValue(deliveryStopNumber + 1);
     }
 
     ngOnDestroy(): void {

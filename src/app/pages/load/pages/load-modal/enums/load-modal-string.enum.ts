@@ -24,6 +24,7 @@ export enum LoadModalStringEnum {
     HAZARDOUS = 'hazardous',
     STOP_TYPE = 'stopType',
     STOP_ORDER = 'stopOrder',
+    STOP_LOAD_ORDER = 'stopLoadOrder',
     DRIVER_RATE = 'driverRate',
     ADJUSTED_RATE = 'adjustedRate',
     PICKUP_LEG_MILES = 'pickuplegMiles',
