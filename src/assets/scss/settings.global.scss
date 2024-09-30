@@ -3,6 +3,7 @@ $settings-background: #ffffff;
 
 $settings-white-dark: #b7b7b7;
 $settings-white-dark-2: #dadada;
+$settings-white-dark-3: #cccccc;
 
 $settings-white-light: #f7f7f7;
 $settings-white-light-2: #f3f3f3;
@@ -69,7 +70,7 @@ p {
 .settings-progress-container {
     padding: 0px 4px;
     padding-bottom: 16px;
-    padding-top: 7px;
+    padding-top: 16px;
 }
 
 // Settings Header global
@@ -270,29 +271,6 @@ p {
             align-items: center;
             height: auto;
             margin-bottom: 12px;
-            svg {
-                path {
-                    fill: #aaaaaa;
-                }
-                &:hover {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
-            span {
-                font-size: 14px;
-                font-weight: 400;
-                color: $settings-gray-dark;
-                &::-moz-selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
         }
 
         &.factoring-body-padding {
@@ -522,7 +500,7 @@ p {
     grid-row-gap: 6px;
     row-gap: 6px;
     column-gap: 50px;
-    
+
     .parking-template-item {
         display: flex;
         align-items: center;
@@ -538,18 +516,9 @@ p {
         .parking-template-text {
             margin-left: 7px;
             white-space: nowrap;
-            
+
             &.cross-out {
                 text-decoration: line-through;
-                color: $settings-white-dark;
-                &::-moz-selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
             }
         }
 

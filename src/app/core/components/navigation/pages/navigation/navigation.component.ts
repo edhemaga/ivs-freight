@@ -175,6 +175,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 startWith(this.router)
             )
             .subscribe((url: any) => {
+                let ruteName = url.url.split('/');
+                if (!ruteName[2]) {
+                    this.selectedSubRoute = null;
+                }
+
                 if (url.url === '/dispatcher') {
                     this.selectedRoute = 'Dispatch';
                     this.cdRef.detectChanges();
@@ -182,7 +187,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.selectedRoute = 'File Manager';
                     this.cdRef.detectChanges();
                 } else {
-                    let ruteName = url.url.split('/');
+                    const ruteName = url.url.split('/');
                     if (ruteName[2]) {
                         if (ruteName[2] == 'sms') {
                             this.selectedSubRoute = 'SMS';
@@ -212,7 +217,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.selectedSubRoute = t;
                             this.cdRef.detectChanges();
                         }
-                    }
+                    } 
                     let t =
                         ruteName[1].charAt(0).toUpperCase() +
                         ruteName[1].substr(1).toLowerCase();

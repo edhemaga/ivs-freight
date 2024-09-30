@@ -558,6 +558,12 @@
                 padding: 0px 4px !important;
             }
         }
+
+        &.scroll-x-axis {
+            .active {
+                overflow: visible;
+            }
+        }
     }
 }
 

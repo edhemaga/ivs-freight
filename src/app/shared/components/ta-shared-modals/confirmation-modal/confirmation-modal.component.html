@@ -45,7 +45,11 @@
             : editData?.template === 'comment'
             ? 'Delete Comment'
             : editData?.template === 'Company Terminal'
-            ? 'Delete Terminal'
+            ? 'Delete Terminal' 
+            : editData?.template === 'Company Parking'
+            ? 'Delete Parking'
+            : editData?.template === 'Company Office'
+            ? 'Delete Office'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
