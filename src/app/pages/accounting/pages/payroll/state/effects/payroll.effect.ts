@@ -55,7 +55,10 @@ export class PayrollEffect {
                 ),
                 switchMap((action) => {
                     return this.payrollService
-                        .getPayrollSoloMileageDriverReport(action.reportId)
+                        .getPayrollSoloMileageDriverReport(
+                            action.reportId,
+                            action.lastLoadDate
+                        )
                         .pipe(
                             map((data) => {
                                 return PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess(

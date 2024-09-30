@@ -28,10 +28,11 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 import {
     LoadWithMilesStopResponse,
     MilesStopShortResponse,
+    PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 import { ICaMapProps, ColumnConfig } from 'ca-components';
 import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
-import { CdkDragDrop, CdkDragSortEvent } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-payroll-report',
@@ -55,6 +56,9 @@ export class PayrollReportComponent implements OnInit {
     public readonly customLocationTypeLoad!: ElementRef;
     @ViewChild('reorderTemplate', { static: false })
     public readonly reorderTemplate!: ElementRef;
+
+    @ViewChild('reorderTemplatePreview', { static: false })
+    public readonly reorderTemplatePreview!: ElementRef;
 
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
@@ -476,6 +480,8 @@ export class PayrollReportComponent implements OnInit {
         return this.allowedLoadIds.includes(index);
     };
 
+    openedPayroll: PayrollDriverMileageByIdResponse;
+
     subscribeToStoreData() {
         this.payrollFacadeService.getPayrollDriverMileageReport(
             `${this.reportId}`
@@ -486,6 +492,7 @@ export class PayrollReportComponent implements OnInit {
 
         this.payrollFacadeService.selectPayrollOpenedReport$.subscribe(
             (payroll) => {
+                this.openedPayroll = payroll;
                 console.log('PAYROLL MAIN INFO', payroll);
             }
         );
@@ -542,14 +549,14 @@ export class PayrollReportComponent implements OnInit {
                 // });
                 break;
             case 'Driver (Commission)':
-                // this.tableSettings = PayrollCommisionDriverOpenLoads;
-                // this.payrollService
-                //     .getPayrollCommisionDriverOpenReport(data.id)
-                //     .subscribe((res) => {
-                //         this.reportMainData = res;
-                //         this.dch.detectChanges();
-                //     });
-                // break;
+            // this.tableSettings = PayrollCommisionDriverOpenLoads;
+            // this.payrollService
+            //     .getPayrollCommisionDriverOpenReport(data.id)
+            //     .subscribe((res) => {
+            //         this.reportMainData = res;
+            //         this.dch.detectChanges();
+            //     });
+            // break;
             case 'Driver (Miles)':
                 this.tableSettings = PayrollMilesDriverOpenLoads;
                 this.tableSettingsResizable =
@@ -561,6 +568,34 @@ export class PayrollReportComponent implements OnInit {
                 //     this.dch.detectChanges();
                 // });
                 break;
+        }
+    }
+
+    onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
+        console.log(drag.currentIndex);
+        console.log(drag.previousIndex);
+        console.log(
+            'ON DRAG FINISH',
+            drag.container.data
+        );
+
+        const loadId = drag.container.data[drag.currentIndex -1]?.loadId;
+        console.log("WHAT IS LOAD ID", loadId);
+        console.log([
+            ...this.openedPayroll.includedLoads,
+            ...this.openedPayroll.excludedLoads,
+        ]);
+        if (loadId) {
+            const load = [
+                ...this.openedPayroll.includedLoads,
+                ...this.openedPayroll.excludedLoads,
+            ].find((load) => load.loadId == loadId);
+            if (load) {
+                this.payrollFacadeService.getPayrollDriverMileageReport(
+                    `${this.reportId}`,
+                    load.date
+                );
+            }
         }
     }
 }

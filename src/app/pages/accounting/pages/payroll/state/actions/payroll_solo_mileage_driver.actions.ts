@@ -20,7 +20,7 @@ export const getPayrollSoloMileageDriverError = createAction(
 // GET DRIVER MILEAGE REPORT
 export const getPayrollSoloMileageReportDriver = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
-    props<{ reportId: string }>()
+    props<{ reportId: string, lastLoadDate: string }>()
 );
 
 export const getPayrollSoloMileageReportDriverSuccess = createAction(

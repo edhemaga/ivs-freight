@@ -12,6 +12,10 @@ export interface PayrollState {
     payrollOpenedReport?: PayrollDriverMileageByIdResponse;
     loading: boolean;
     reportLoading: boolean;
+    lastLoadDate?: string;
+    selectedDeducionIds?: string[],
+    selectedCreditIds?: string[],
+    selectedBonusIds?: string[]
 }
 
 export interface IPayrollCountsSelector {

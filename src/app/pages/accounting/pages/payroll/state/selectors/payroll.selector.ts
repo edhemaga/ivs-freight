@@ -73,14 +73,14 @@ export const selectPayrollDriverMileageStops = createSelector(
         if (!state.payrollOpenedReport) return [];
         const includedLoads = state.payrollOpenedReport?.includedLoads.reduce(
             (load, old) => {
-                return old.milesStops.concat(load as MilesStopShortResponse);
+                return [...load as MilesStopShortResponse[], ...old.milesStops];
             },
             [] as MilesStopShortReponseWithRowType[]
         );
 
         const excludedLoads = state.payrollOpenedReport?.excludedLoads.reduce(
             (load, old) => {
-                return old.milesStops.concat(load as MilesStopShortResponse);
+                return [...load as MilesStopShortResponse[], ...old.milesStops];
             },
             [] as MilesStopShortReponseWithRowType[]
         );

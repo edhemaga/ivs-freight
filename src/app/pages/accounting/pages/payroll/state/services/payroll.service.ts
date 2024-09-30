@@ -9,10 +9,11 @@ import {
     selectPayrollOpenedReport,
     selectPayrollReportLoading,
     selectPayrollReportsIncludedStops,
+    selectPayrollState,
     selectSoloDriverMileage,
     seletPayrollTabsCount,
 } from '../selectors/payroll.selector';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import {
     LoadWithMilesStopResponse,
     MilesStopShortResponse,
@@ -78,11 +79,19 @@ export class PayrollFacadeService {
         );
     }
 
-    public getPayrollDriverMileageReport(reportId: string) {
-        this.store.dispatch(
-            PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver({
-                reportId,
-            })
-        );
+    public getPayrollDriverMileageReport(
+        reportId: string,
+        lastLoadDate?: string
+    ) {
+        this.store
+            .pipe(select(selectPayrollState), take(1))
+            .subscribe((payrollState) => {
+                this.store.dispatch(
+                    PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver({
+                        reportId,
+                        lastLoadDate: lastLoadDate ?? payrollState.lastLoadDate,
+                    })
+                );
+            });
     }
 }

@@ -29,11 +29,16 @@ export class PayrollService {
     }
 
     public getPayrollSoloMileageDriverReport(
-        reportId: string
+        reportId: string,
+        lastLoadDate: string
     ): Observable<PayrollDriverMileageResponse> {
-        const params = new HttpParams().set('id', reportId);
+        let params = new HttpParams();
+        if (lastLoadDate) {
+            params = params.append('LastLoadDate', lastLoadDate);
+        }
+
         return this.http.get<PayrollDriverMileageResponse>(
-            `${environment.API_ENDPOINT}/api/payroll/driver/mileage`,
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
             { params }
         );
     }

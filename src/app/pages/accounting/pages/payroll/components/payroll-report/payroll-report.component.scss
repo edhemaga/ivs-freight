@@ -487,12 +487,12 @@
             width: 18px;
             height: 18px;
 
-            rect{
-                fill: #259F9433;
+            rect {
+                fill: #259f9433;
             }
 
-            text{
-                fill: #259F94;
+            text {
+                fill: #259f94;
             }
         }
     }
@@ -510,17 +510,23 @@
         }
     }
 
-    &.delivery{
-        svg-icon{
-            rect{
-                fill: #DF3C3C33;
+    &.delivery {
+        svg-icon {
+            rect {
+                fill: #df3c3c33;
             }
 
-            text{
-                fill: #DF3C3C;
+            text {
+                fill: #df3c3c;
             }
         }
     }
+}
+
+app-ca-main-table {
+    --cdk-preview-bgcolor: #424242;
+    --cdk-preview-textColor: #fff;
+    --cdk-drag-preview-box-shadow: none;
 }
 
 .custom-load-index {

@@ -37,7 +37,9 @@
                     [columns]="columns"
                     [data$]="payrollMileageDriverLoads$"
                     [reorderTemplate]="reorderTemplate"
+                    [reorderTemplatePreview]="reorderTemplatePreview"
                     [transparentTable]="true"
+                    (onReorder)="onReorderDone($event)"
                 ></app-ca-main-table>
             </div>
             <div class="map-holder">
@@ -111,11 +113,14 @@
     </div>
 </ng-template>
 
-<ng-template #reorderTemplate let-row="row" let-index="index">
+<ng-template #reorderTemplatePreview let-row="row" let-index="index">
     <td class="text-center">
         <div class="td-container">
             <div class="td-content-container">
-                <div class="custom-load-index">{{ index }}</div>
+                <svg-icon
+                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [svgStyle]="{ color: '#919191', display: 'flex' }"
+                ></svg-icon>
             </div>
         </div>
     </td>
@@ -126,21 +131,48 @@
             </div>
         </div>
     </td>
-    <td>
+    <td class="w-100 text-right">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="dragg-move-end-period">DRAG TO MOVE END PERIOD</div>
+            </div>
+        </div>
+    </td>
+</ng-template>
+
+<ng-template #reorderTemplate let-row="row" let-index="index">
+    <td class="text-center">
+        <div class="td-container">
+            <div class="td-content-container">
+                <svg-icon
+                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
+                    [svgStyle]="{ color: '#919191', display: 'flex' }"
+                ></svg-icon>
+            </div>
+        </div>
+    </td>
+    <td colspan="4">
+        <div class="td-container">
+            <div class="td-content-container">
+                <div class="custom-load-index text b-600">Total</div>
+            </div>
+        </div>
+    </td>
+    <td class="text-right">
         <div class="td-container">
             <div class="td-content-container">
                 <div class="custom-load-index text b-600">$304.30</div>
             </div>
         </div>
     </td>
-    <td>
+    <td class="text-right">
         <div class="td-container">
             <div class="td-content-container">
                 <div class="custom-load-index text b-600">$1,627.30</div>
             </div>
         </div>
     </td>
-    <td>
+    <td class="text-right">
         <div class="td-container">
             <div class="td-content-container">
                 <div class="custom-load-index text b-600">$1,931.73</div>
@@ -148,6 +180,11 @@
         </div>
     </td>
     <td>
+        <div class="td-container">
+            <div class="td-content-container"></div>
+        </div>
+    </td>
+    <td class="text-right">
         <div class="td-container">
             <div class="td-content-container">
                 <div class="custom-load-index text b-600">$2.131.73</div>
