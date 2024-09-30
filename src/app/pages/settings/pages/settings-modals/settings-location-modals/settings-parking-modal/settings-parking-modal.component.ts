@@ -68,6 +68,8 @@ import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-locati
 // Config
 import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/config';
 
+// Enums
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 @Component({
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',
@@ -218,11 +220,11 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any, action?: string): void {
         switch (action) {
-            case 'gate': {
+            case SettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
-                        ? this.parkingForm.get('gate').patchValue(false)
-                        : this.parkingForm.get('gate').patchValue(true);
+                        ? this.parkingForm.get(SettingsFormEnum.GATE).patchValue(false)
+                        : this.parkingForm.get(SettingsFormEnum.GATE).patchValue(true);
 
                     return {
                         ...item,
@@ -235,10 +237,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
-                              .get('securityCamera')
+                              .get(SettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
                         : this.parkingForm
-                              .get('securityCamera')
+                              .get(SettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
 
                     return {
@@ -484,11 +486,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if(addNew) {
                         this.parkingForm.reset();
-                        this.parkingForm.get('isOwner').patchValue(true);
-                        this.parkingForm.get('securityCamera').patchValue(false);
-                        this.parkingForm.get('gate').patchValue(false);
+                        this.parkingForm.get(SettingsFormEnum.IS_OWNER).patchValue(true);
+                        this.parkingForm.get(SettingsFormEnum.SECURITY_CAMERA).patchValue(true);
+                        this.parkingForm.get(SettingsFormEnum.GATE).patchValue(false);
                         this.selectedAddress = null;
-                        // this.createForm();
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,

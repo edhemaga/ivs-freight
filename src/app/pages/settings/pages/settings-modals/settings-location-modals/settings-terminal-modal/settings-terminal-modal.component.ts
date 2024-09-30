@@ -58,7 +58,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from './enums';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // Config
 import { SettingsTerminalConfig } from './config';
