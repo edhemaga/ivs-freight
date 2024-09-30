@@ -81,6 +81,16 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? TableHeadTitleStringEnum.BILLING
             : tableHeadTitle === TableHeadTitleStringEnum.TERM_3
             ? TableHeadTitleStringEnum.BILLING
+            : (tableHeadTitle === TableHeadTitleStringEnum.PHONE ||
+                  tableHeadTitle === TableHeadTitleStringEnum.EMAIL) &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.PERSONAL
+            : tableHeadTitle === TableHeadTitleStringEnum.OFFICE &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.EMPLOYEE
+            : tableHeadTitle === TableHeadTitleStringEnum.PAY_TYPE &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.PAYROLL
             : TableHeadTitleStringEnum.MVR;
     }
 }

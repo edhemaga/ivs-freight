@@ -71,6 +71,7 @@ export interface DriverModel {
     ssnStatus: string;
     medicalDaysLeft: string;
     cdlDaysLeft: string;
+    userType?: UserType;
 }
 
 interface Owner {
@@ -342,4 +343,9 @@ interface GeneralNotifications {
     mailNotification: string;
     pushNotification: string;
     smsNotification: string;
+}
+
+interface UserType {
+    id: number;
+    name: string;
 }

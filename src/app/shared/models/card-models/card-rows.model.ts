@@ -20,4 +20,6 @@ export interface CardRows {
     values?: CardRowsItemValue[];
     type?: string;
     secondTitle?: string;
+    prefix?: string;
+    sufix?: string;
 }

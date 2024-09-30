@@ -1,15 +1,26 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { UserService } from '@pages/user/services/user.service';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// components
+import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-user-card',
@@ -17,8 +28,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
     styleUrls: ['./user-card.component.scss'],
     providers: [CardHelper],
 })
-export class UserCardComponent implements OnChanges {
-    @Input() viewData: CardDetails[];
+export class UserCardComponent implements OnInit, OnDestroy {
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -28,57 +41,42 @@ export class UserCardComponent implements OnChanges {
     @Input() cardTitleLink: string;
 
     public isCardFlippedCheckInCards: number[] = [];
-
+    public _viewData: CardDetails[];
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
+    public isAllCardsFlipp: boolean;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
+        // services
         private tableService: TruckassistTableService,
-        private cardHelper: CardHelper
+        private modalService: ModalService,
+        private userService: UserService,
+
+        // helpers
+        private cardHelper: CardHelper,
     ) {}
 
-    ngOnChanges(cardChanges: SimpleChanges) {
-        if (
-            cardChanges.displayRowsBack.currentValue ||
-            cardChanges.displayRowsFront.currentValue
-        )
-            this.getTransformedCardsData();
+    ngOnInit() {
+        this.flipAllCards();
     }
 
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.isAllCardsFlipp = res;
 
-        const cardTitles = this.cardHelper.renderCards(
-            this.viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        const backOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsBack
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = [];
+            });
     }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
@@ -92,5 +90,83 @@ export class UserCardComponent implements OnChanges {
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    public onCardActions(event: TableBodyActions): void {
+        const confirmationModalData = {
+            ...event,
+            data: {
+                ...event.data,
+                name: event.data?.firstName,
+            },
+        };
+
+        // Edit
+        if (event.type === TableStringEnum.EDIT) {
+            this.modalService.openModal(
+                UserModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...event,
+                    type: TableStringEnum.EDIT,
+                    disableButton:
+                        event.data?.userType?.name !== TableStringEnum.OWNER,
+                }
+            );
+        }
+        // Activate Or Deactivate User
+        else if (
+            event.type === TableStringEnum.DEACTIVATE ||
+            event.type === TableStringEnum.ACTIVATE
+        ) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...confirmationModalData,
+                    template: TableStringEnum.USER_1,
+                    type:
+                        event.data.status === 1
+                            ? TableStringEnum.DEACTIVATE
+                            : TableStringEnum.ACTIVATE,
+                    image: true,
+                }
+            );
+        }
+        // User Reset Password
+        else if (event.type === TableStringEnum.RESET_PASSWORD) {
+            this.userService
+                .userResetPassword(event.data.email as any) // leave this any for now
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+        // User Resend Ivitation
+        else if (event.type === TableStringEnum.RESEND_INVITATION) {
+            this.userService
+                .userResendIvitation({
+                    email: event.data.email,
+                    isResendConfirmation: true,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+        // User Delete
+        else if (event.type === TableStringEnum.DELETE) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...confirmationModalData,
+                    template: TableStringEnum.USER_1,
+                    type: TableStringEnum.DELETE,
+                    image: true,
+                }
+            );
+        }
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
