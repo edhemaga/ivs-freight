@@ -154,6 +154,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isAdditionalAssignLoadModalVisible = false;    
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
+    @Input() isDisableButtonHidden: boolean = false;
+    
     
     // -----------------
 

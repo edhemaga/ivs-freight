@@ -36,6 +36,7 @@
                                         isDisabled: selectedUserType?.name ===
                                         'Owner',
                                         textTransform: 'lowercase',
+                                        autoFocus: editData?.type !== 'edit'
                                     }"
                                     (clear)="resetDataByEmail($event)"
                                 ></app-ta-input>
@@ -55,7 +56,6 @@
                                         isDisabled:
                                             selectedUserType?.name === 'Owner',
                                         textTransform: 'capitalize',
-                                        autoFocus: editData?.type !== 'edit'
                                     }"
                                 ></app-ta-input>
                             </div>

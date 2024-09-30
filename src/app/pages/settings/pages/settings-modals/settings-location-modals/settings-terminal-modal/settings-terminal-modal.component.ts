@@ -58,13 +58,13 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from './enums';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // Config
 import { SettingsTerminalConfig } from './config';
 
 // Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-terminal-modal',
