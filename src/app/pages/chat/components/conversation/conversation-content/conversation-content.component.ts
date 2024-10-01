@@ -1,9 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, takeUntil } from 'rxjs';
+import { BehaviorSubject, takeUntil, Observable } from 'rxjs';
+
+// Store
+import { Store } from '@ngrx/store';
+import {
+    ChatState,
+    selectMessageResponse,
+    setMessageResponse,
+} from '@pages/chat/state';
 
 // Models
-import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
+import {
+    ChatConversationMessageAction,
+    ChatMessage,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 import {
     CompanyUserShortResponse,
     ConversationResponse,
@@ -45,7 +57,6 @@ export class ConversationContentComponent
     }> = new EventEmitter();
 
     // Messages
-    public messages: ChatMessage[] = [];
     public messageToReply$: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
     public messageToEdit$: BehaviorSubject<ChatMessage | null> =
@@ -65,9 +76,12 @@ export class ConversationContentComponent
     public chatSvgRoutes = ChatSvgRoutes;
 
     constructor(
-        //Router
+        // Router
         private router: Router,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+
+        // Store
+        private store: Store
     ) {
         super();
     }
@@ -81,7 +95,11 @@ export class ConversationContentComponent
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.messages = [...res.messages?.pagination?.data];
+                this.store.dispatch(
+                    setMessageResponse({
+                        ...res?.messages,
+                    })
+                );
 
                 // Conversation participants
                 this.conversation = res.information;
@@ -113,30 +131,5 @@ export class ConversationContentComponent
                     ? params[this.chatConversationType.CHANNEL]
                     : this.group;
         });
-    }
-
-    public closeReplyOrEditHandle($event: boolean): void {
-        this.messageToEdit$.next(null);
-        this.messageToReply$.next(null);
-    }
-
-    public handleMessageEvent(data: ChatConversationMessageAction): void {
-        switch (data.type) {
-            case ChatMessageActionEnum.EDIT:
-                this.messageToEdit$.next(data.message);
-                this.messageToReply$.next(null);
-                break;
-            case ChatMessageActionEnum.REPLY:
-                this.messageToReply$.next(data.message);
-                this.messageToEdit$.next(null);
-                break;
-            default:
-                return;
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.messageToEdit$.complete();
-        this.messageToReply$.complete();
     }
 }

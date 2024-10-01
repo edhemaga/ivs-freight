@@ -12,8 +12,17 @@ import {
     Input,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
+import {
+    BehaviorSubject,
+    debounceTime,
+    map,
+    Observable,
+    takeUntil,
+} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+// Store
+
+import { Store } from '@ngrx/store';
 
 // Assets routes
 import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
@@ -33,7 +42,11 @@ import {
     CompanyUserShortResponse,
     ConversationResponse,
 } from 'appcoretruckassist';
-import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
+import {
+    ChatConversationMessageAction,
+    ChatMessage,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 
 // Enums
 import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
@@ -44,6 +57,7 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
+import { addMessage, selectMessageResponse } from '@pages/chat/state';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -86,6 +100,7 @@ export class ChatMessagesComponent
     public ChatDropzone = ChatDropzone;
 
     // Messages
+    public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public currentUserTypingName: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
@@ -107,7 +122,10 @@ export class ChatMessagesComponent
         // Services
         private chatService: UserChatService,
         private chatHubService: ChatHubService,
-        public userProfileService: UserProfileService
+        public userProfileService: UserProfileService,
+
+        // Store
+        private store: Store
     ) {
         super();
     }
@@ -122,40 +140,28 @@ export class ChatMessagesComponent
     }
 
     private getResolvedData(): void {
+        this.messages$ = this.store.select(selectMessageResponse).pipe(
+            takeUntil(this.destroy$),
+            map((res) => {
+                return {
+                    ...res,
+                    data: res.data?.filter((message) => message.id !== 0),
+                };
+            })
+        );
+
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.messages = [
-                    ...res?.messages?.pagination?.data?.filter(
-                        (message) => message.id !== 0
-                    ),
-                ];
                 this.conversation = res?.information;
             });
-    }
-
-    public getMessages(): void {
-        this.chatService
-            .getMessages(this.conversation?.id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.messages = [
-                    ...res?.pagination?.data?.filter(
-                        (message) => message.id !== 0
-                    ),
-                ];
-            });
-    }
-
-    public handleMessageDelete(): void {
-        this.getMessages();
     }
 
     private connectToHub(): void {
         ChatHubService.receiveMessage()
             .pipe(
                 takeUntil(this.destroy$),
-                map((message) => {
+                map((message: ChatMessage) => {
                     const transformedMessage: ChatMessage =
                         chatMessageSenderFullname(this.messages, message);
                     return {
@@ -176,9 +182,7 @@ export class ChatMessagesComponent
                 })
             )
             .subscribe((message: ChatMessage) => {
-                if (message) {
-                    this.messages = [...this.messages, message];
-                }
+                this.store.dispatch(addMessage(message));
             });
 
         this.chatHubService

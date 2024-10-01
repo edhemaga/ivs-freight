@@ -1,4 +1,4 @@
-export enum ChatAttachmentType {
+export enum ChatAttachmentTypeEnum {
     ZIP = 'zip',
     PDF = 'pdf',
     XLS = 'xls',

@@ -12,10 +12,12 @@
                 "
                 #messagesContent
             >
-                <ng-container *ngIf="messages?.length; else emptyConversation">
+                <ng-container
+                    *ngIf="(messages$ | async)?.count; else emptyConversation"
+                >
                     <ng-container
                         *ngFor="
-                            let message of messages;
+                            let message of (messages$ | async).data;
                             let ind = index;
                             trackBy: 'id' | trackByProperty
                         "
@@ -24,8 +26,8 @@
                             <ng-container
                                 *ngIf="
                                     (message.createdAt | chatDatePipe) !==
-                                    (messages[ind - 1]?.createdAt
-                                        | chatDatePipe)
+                                    ((messages$ | async).data[ind - 1]
+                                        ?.createdAt | chatDatePipe)
                                 "
                             >
                                 <div
@@ -44,20 +46,15 @@
                                 [message]="message"
                                 [isDateDisplayed]="
                                     (message.createdAt | formatTime) !==
-                                        (messages[ind - 1]?.createdAt
-                                            | formatTime) ||
+                                        ((messages$ | async).data[ind - 1]
+                                            ?.createdAt | formatTime) ||
                                     message.sender?.id !==
-                                        message[ind - 1]?.sender?.id
+                                        (messages$ | async).data[ind - 1]
+                                            ?.sender?.id
                                 "
                                 [isReplyOrEditOpen]="
                                     messageIdActionsDisplayed === message.id &&
                                     isReplyOrEditOpen
-                                "
-                                (messageActionReplyOrEdit)="
-                                    handleMessageReplyOrEdit($event)
-                                "
-                                (messageDeletedEvent)="
-                                    handleMessageDelete($event)
                                 "
                             ></app-chat-message>
                         </ng-container>

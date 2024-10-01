@@ -3,9 +3,9 @@
         <ng-container [ngSwitch]="true">
             <ng-container
                 *ngSwitchCase="
-                    item?.assetExtension === chatAttachmentType.JPG ||
-                    item?.assetExtension === chatAttachmentType.JPEG ||
-                    item?.assetExtension === chatAttachmentType.PNG ||
+                    item?.assetExtension === ChatAttachmentTypeEnum.JPG ||
+                    item?.assetExtension === ChatAttachmentTypeEnum.JPEG ||
+                    item?.assetExtension === ChatAttachmentTypeEnum.PNG ||
                     !item?.assetExtension
                 "
             >

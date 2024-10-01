@@ -7,7 +7,7 @@ import { ChatPngRoutes } from '@pages/chat/utils/routes';
 import { ChatExtendedUploadFile } from '@pages/chat/models';
 
 // Enums
-import { ChatAttachmentType } from '@pages/chat/enums';
+import { ChatAttachmentTypeEnum } from '@pages/chat/enums';
 
 @Component({
     selector: 'app-chat-message-attachment-preview',
@@ -30,7 +30,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
     public isDocument!: boolean;
     public isMedia!: boolean;
     public documentIllustrationPath!: string;
-    public chatAttachmentType = ChatAttachmentType;
+    public ChatAttachmentTypeEnum = ChatAttachmentTypeEnum;
 
     public previewWidth: string = 'fit-content';
     public displayMode: 'size' | 'date';
@@ -60,25 +60,25 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
         }
 
         switch (extension) {
-            case ChatAttachmentType.ZIP:
+            case ChatAttachmentTypeEnum.ZIP:
                 this.setIllustrationType(ChatPngRoutes.zipFileType);
                 break;
 
-            case ChatAttachmentType.XLS:
+            case ChatAttachmentTypeEnum.XLS:
                 this.setIllustrationType(ChatPngRoutes.xlsFileType);
                 break;
 
-            case ChatAttachmentType.PDF:
+            case ChatAttachmentTypeEnum.PDF:
                 this.setIllustrationType(ChatPngRoutes.pdfFileType);
                 break;
 
-            case ChatAttachmentType.DOCX:
+            case ChatAttachmentTypeEnum.DOCX:
                 this.setIllustrationType(ChatPngRoutes.docxFileType);
                 break;
 
-            case ChatAttachmentType.JPG:
-            case ChatAttachmentType.JPEG:
-            case ChatAttachmentType.PNG:
+            case ChatAttachmentTypeEnum.JPG:
+            case ChatAttachmentTypeEnum.JPEG:
+            case ChatAttachmentTypeEnum.PNG:
                 this.isDocument = false;
                 this.isMedia = true;
                 if (!this.isInMessage) this.previewWidth = '40px';

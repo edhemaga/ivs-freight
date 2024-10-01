@@ -3,7 +3,10 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { map, Observable } from 'rxjs';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-response.model';
+import {
+    ChatMessagePaginationResponse,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 import { ChatMessage } from '@pages/chat/models';
 
 // Service
@@ -23,7 +26,7 @@ export class ChatConversationResolver {
         if (conversationId === 0) return;
 
         return this.userChatService.getMessages(conversationId).pipe(
-            map((res) => {
+            map((res: ChatMessagePaginationResponse) => {
                 const messages = res?.pagination?.data.map(
                     (message: ChatMessage) => {
                         return chatMessageSenderFullname(
@@ -33,10 +36,8 @@ export class ChatConversationResolver {
                     }
                 );
                 const modifiedResponse: ChatMessageResponse = {
-                    pagination: {
-                        ...res.pagination,
-                        data: messages,
-                    },
+                    ...res.pagination,
+                    data: messages,
                 };
                 return modifiedResponse;
             })

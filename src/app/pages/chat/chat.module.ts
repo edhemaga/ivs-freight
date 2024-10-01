@@ -135,7 +135,7 @@ import { StoreModule } from '@ngrx/store';
         HoverSvgDirective,
 
         // Store
-        // StoreModule.forFeature('chatData', chatDataReducer),
+        StoreModule.forFeature('chat', chatDataReducer),
     ],
 })
 export class ChatModule {}

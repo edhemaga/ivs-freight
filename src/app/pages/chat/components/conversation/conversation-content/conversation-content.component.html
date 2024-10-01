@@ -90,15 +90,11 @@
                     | async
                     | chatAnyExist : (messageToReply$ | async)
             "
-            (messageReplyOrEditEvent)="handleMessageEvent($event)"
         ></app-chat-messages>
 
         <!-- Footer -->
         <app-chat-content-footer
             [conversation]="conversation"
-            [editMessage$]="messageToEdit$"
-            [replyMessage$]="messageToReply$"
-            (closeReplyOrEditEvent)="closeReplyOrEditHandle($event)"
         ></app-chat-content-footer>
     </div>
 </div>

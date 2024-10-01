@@ -1,12 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs';
+
+// Store
+import { Store } from '@ngrx/store';
+import {
+    deleteMessage,
+    editMessage,
+    replyMessage,
+    resetReplyAndEditMessage,
+} from '@pages/chat/state';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import {
-    ChatConversationMessageAction,
-    ChatMessage,
-    ChatMessageResponse,
-} from '@pages/chat/models';
+import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
 
 // Enums
 import {
@@ -23,7 +29,6 @@ import { UnsubscribeHelper } from '@pages/chat/utils/helpers';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
-import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-chat-message',
@@ -37,11 +42,9 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() isDateDisplayed: boolean = false;
     @Input() isReplyOrEditOpen: boolean = false;
 
-    @Output() messageDeletedEvent: EventEmitter<boolean> = new EventEmitter();
-
-    @Output()
-    messageActionReplyOrEdit: EventEmitter<ChatConversationMessageAction> =
-        new EventEmitter();
+    // @Output()
+    // messageActionReplyOrEdit: EventEmitter<ChatConversationMessageAction> =
+    //     new EventEmitter();
 
     public messageReply: ChatMessage | null = null;
     public messageEdit: ChatMessage | null = null;
@@ -65,7 +68,11 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
 
-    constructor(private chatService: UserChatService) {
+    constructor(
+        private chatService: UserChatService,
+        //Store
+        private store: Store
+    ) {
         super();
     }
 
@@ -112,27 +119,25 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     public messageAction(actionType: ChatMessageActionEnum): void {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
-                this.messageEdit = null;
-                this.messageReply = this.message;
+                this.store.dispatch(resetReplyAndEditMessage());
+
+                this.store.dispatch(replyMessage(this.message));
                 break;
             case ChatMessageActionEnum.EDIT:
-                this.messageEdit = this.message;
-                this.messageReply = null;
+                this.store.dispatch(resetReplyAndEditMessage());
+
+                this.store.dispatch(editMessage(this.message));
                 break;
             case ChatMessageActionEnum.DELETE:
                 this.chatService
                     .deleteMessage(this.message?.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
-                        this.messageDeletedEvent.emit(true);
+                        this.store.dispatch(deleteMessage(this.message));
                     });
                 return;
             default:
                 return;
         }
-        this.messageActionReplyOrEdit.emit({
-            message: this.message,
-            type: actionType,
-        });
     }
 }

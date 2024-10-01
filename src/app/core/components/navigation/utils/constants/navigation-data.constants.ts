@@ -1,5 +1,5 @@
 // models
-import {  NavigationModal, NavigationUserPanel, NavigationFooterData, Navigation, NavigationSettings } from '@core/components/navigation/models';
+import { NavigationModal, NavigationUserPanel, NavigationFooterData, Navigation, NavigationSettings } from '@core/components/navigation/models';
 export class NavigationDataConstants {
     static title = 'Add New';
     static close = 'Close';
@@ -261,9 +261,9 @@ export class NavigationDataConstants {
             name: 'Chat',
             image: 'ic_chat.svg',
             route: 'chat',
-            isRouteActive: false,
+            isRouteActive: true,
             messages: 5,
-            construction: true,
+            construction: false,
         },
         {
             id: 11,

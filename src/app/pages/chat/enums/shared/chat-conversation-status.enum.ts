@@ -1,4 +1,4 @@
-export enum ChatConversationStatus {
+export enum ChatConversationStatusEnum {
     TYPING = 'typing',
     READ = 'read',
     UNREAD = 'unread',

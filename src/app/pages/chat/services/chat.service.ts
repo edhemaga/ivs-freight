@@ -12,7 +12,10 @@ import {
     CreateResponse,
     UserType,
 } from 'appcoretruckassist';
-import { ChatMessageResponse } from '@pages/chat/models';
+import {
+    ChatMessagePaginationResponse,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -83,13 +86,13 @@ export class UserChatService {
 
     public getMessages(
         conversationId: number
-    ): Observable<ChatMessageResponse> {
+    ): Observable<ChatMessagePaginationResponse> {
         const params: HttpParams = new HttpParams({
             fromObject: {
                 'MessageSpecParams.ConversationId': conversationId,
             },
         });
-        return this.http.get<ChatMessageResponse>(
+        return this.http.get<ChatMessagePaginationResponse>(
             `${environment.API_ENDPOINT}/api/chat/message/list`,
             {
                 params,
