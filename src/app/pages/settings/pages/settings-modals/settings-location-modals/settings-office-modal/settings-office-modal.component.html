@@ -2,7 +2,7 @@
     [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
     [editData]="editData"
     [editName]="officeName"
-    [isModalValid]="officeForm.valid && isFormDirty"
+    [isModalValid]="officeForm.valid && isFormDirty && departmentFormValid"
     [saveAndAddNew]="editData?.type !== 'edit'"
     (action)="onModalAction($event)"
 >
@@ -31,7 +31,7 @@
                 [@animationTabsModal]="animationObject"
             >
                 <!-------------------------------- Basic Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 1">
+                <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
                             <app-ta-input
@@ -162,49 +162,47 @@
                     </app-ta-checkbox-card>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
+                <div class="m-tab" [hidden]="selectedTab !== 2">
                     <app-ta-custom-card
-                    (onActionEvent)="addContact()"
-                    [animationMarginParams]="{
-                        marginTop: '10px',
-                        marginBottom: '5px'
-                    }"
-                    [cardName]="'Contact'"
-                    [disableAnimation]="disableCardAnimation"
-                    [disabledCard]="!contactAddedCounter"
-                    [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
-                    [hasArrow]="false"
-                    [hasCounter]="contactAddedCounter"
-                    [hasScrollBody]="contactAddedCounter > 10"
-                    [isCardOpen]="!!isDeliveryItemsVisible"
-                    [isCommentData]="true"
-                    [hasScrollBodyXAxis]="true"
-                >
-                    <div
-                        (scroll)="onScrollingContacts($event)"
-                        class="repair-shop__contact-table"
+                        (onActionEvent)="addContact()"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '5px'
+                        }"
+                        [cardName]="'Department Contact'"
+                        [disableAnimation]="disableCardAnimation"
+                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
+                        [hasArrow]="false"
+                        [hasCounter]="departmentContacts.length"
+                        [hasScrollBody]="departmentContacts.length > 10"
+                        [isCardOpen]="!!departmentContactsVisible"
+                        [hasScrollBodyXAxis]="true"
                     >
-                        <app-ta-modal-table
-                            [tableType]="modalTableTypeEnum.CONTACT"
-                            [isNewRowCreated]="isCreatedNewStopItemsRow"
-                            [modalTableData]="contacts"
-                            [isNewRowCreated]="isNewContactAdded"
-                            (modalTableValueEmitter)="
-                                handleModalTableValueEmit($event)
-                            "
-                            (modalTableValidStatusEmitter)="
-                                handleModalTableValidStatusEmit($event)
-                            "
-                        >
-                        </app-ta-modal-table>
-                    </div>
-                </app-ta-custom-card>
-                <ng-container *ngIf="!isDeliveryItemsVisible">
-                    <svg-icon
-                        class="no-review-svg"
-                        [src]="repairShopModalSvgRoutes.noContactIcon"
-                    ></svg-icon>
-                </ng-container>
+                        <div class="repair-shop__contact-table">
+                            <app-ta-modal-table
+                                [tableType]="
+                                    modalTableTypeEnum.DEPARTMENT_CONTACT
+                                "
+                                [departments]="departments"
+                                [isNewRowCreated]="isCreatedNewStopItemsRow"
+                                [modalTableData]="departmentContacts"
+                                [isNewRowCreated]="isNewContactAdded"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+                        </div>
+                    </app-ta-custom-card>
+                    <ng-container *ngIf="!departmentContactsVisible">
+                        <svg-icon
+                            class="no-review-svg"
+                            [src]="repairShopModalSvgRoutes.noContactIcon"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </div>
         </form>

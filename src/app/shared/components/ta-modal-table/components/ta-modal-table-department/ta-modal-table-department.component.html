@@ -1,0 +1,64 @@
+<form [formGroup]="modalTableForm" class="table-body">
+    <div class="d-flex flex-column contact-table-container">
+        <ng-container
+            formArrayName="departmentTableItems"
+            *ngFor="let contactItemRow of formArray.controls; let i = index"
+        >
+            <div
+                class="align-items-center table-item contact-item"
+                [ngClass]="{ valid: contactItemRow.valid }"
+                [formGroupName]="i"
+            >
+                <div
+                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                    <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    ></svg-icon>
+                </div>
+
+                <div
+                    class="gradient-border-container contact-pinned contact-name"
+                >
+                    <app-ta-input-dropdown
+                        formControlName="department"
+                        [inputConfig]="departmentField"
+                        [options]="departments"
+                        (selectedItem)="emitOnSelectDropdown($event, i)"
+                        (mouseenter)="emitOnInputHover(true, i, 1)"
+                        (mouseleave)="emitOnInputHover(false, i, 1)"
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="phoneField"
+                    (mouseenter)="emitOnInputHover(true, i, 2)"
+                    (mouseleave)="emitOnInputHover(false, i, 2)"
+                ></app-ta-input>
+
+                <app-ta-input
+                    formControlName="extensionPhone"
+                    [inputConfig]="phoneExtField"
+                    (mouseenter)="emitOnInputHover(true, i, 3)"
+                    (mouseleave)="emitOnInputHover(false, i, 3)"
+                ></app-ta-input>
+
+                <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="emailField"
+                    (mouseenter)="emitOnInputHover(true, i, 4)"
+                    (mouseleave)="emitOnInputHover(false, i, 4)"
+                ></app-ta-input>
+            </div>
+        </ng-container>
+    </div>
+</form>
