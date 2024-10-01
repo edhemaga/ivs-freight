@@ -631,6 +631,11 @@
                                     [dispatchLoads]="
                                         currentDispatchGroupedLoadsResponse
                                     "
+                                    [columnWidth]="
+                                        resizedColumnsWidth[
+                                            'pickup_delivery'
+                                        ] ?? 340
+                                    "
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
@@ -645,8 +650,63 @@
                                 >
                                     <div class="main_inside filled">
                                         <div class="padding-inside">
-                                            <div class="info-item p-0 w-100">
-                                                <app-ta-gps-progressbar></app-ta-gps-progressbar>
+                                            <div class="info-item d-block p-0 w-100">
+                                                <ng-container
+                                                    *ngIf="progressBarData?.[rowIndex]"
+                                                >
+                                                    <app-ca-progress-bar
+                                                        [currentPosition]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].currentPosition
+                                                        "
+                                                        [mileageInfo]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].mileageInfo
+                                                        "
+                                                        [currentStop]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].currentStop
+                                                        "
+                                                        [gpsTitle]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsTitle
+                                                        "
+                                                        [gpsIcon]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsIcon
+                                                        "
+                                                        [gpsInfo]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsInfo
+                                                        "
+                                                        [mileagesPercent]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].mileagesPercent
+                                                        "
+                                                        [totalMiles]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].totalMiles
+                                                        "
+                                                        [gpsLocationIcon]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsLocationIcon
+                                                        "
+                                                        [gpsProgress]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsProgress
+                                                        "
+                                                    ></app-ca-progress-bar>
+                                                </ng-container>
                                             </div>
                                         </div>
                                     </div>

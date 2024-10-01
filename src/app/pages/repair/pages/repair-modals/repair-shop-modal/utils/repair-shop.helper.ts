@@ -56,6 +56,9 @@ export class RepairShopHelper {
             dayLabel: [day.dayLabel],
             startTime: [day.startTime],
             endTime: [day.endTime],
+            isDoubleShift: [day.isDoubleShift],
+            secondStartTime: [day.secondStartTime],
+            secondEndTime: [day.secondEndTime],
         });
     }
 }

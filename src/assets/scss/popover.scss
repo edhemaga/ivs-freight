@@ -1627,10 +1627,14 @@
 }
 
 .gps_dropdown_popover {
-    .popover-body {
-        position: relative;
-        top: -4px;
-        right: -10px;
+    max-width: 494px !important;
+    top: -38px !important;
+    right: -4px !important;
+}
+
+.pickup-delivery-popover {
+    .sidemenu.pickup-delivery {
+        right: -182px !important;
     }
 }
 
@@ -2215,14 +2219,6 @@
                 }
             }
         }
-    }
-}
-
-.pickup-delivery-popover {
-    .popover-body {
-        position: relative;
-        bottom: 38px;
-        left: -12px;
     }
 }
 

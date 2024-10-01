@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 // Models
-import { DispatchGroupedLoadsResponse, DispatchResponse } from 'appcoretruckassist';
+import {
+    DispatchGroupedLoadsResponse,
+    DispatchResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-dispatch-table-pickup-delivery',
@@ -14,6 +17,10 @@ export class DispatchTablePickupDeliveryComponent {
     @Input() public rowIndex: number;
     @Input() public isDispatchBoardLocked: boolean;
     @Input() public dispatchLoads: DispatchGroupedLoadsResponse;
+    @Input() set columnWidth(value: number) {
+        this._columnWidth = value - 10;
+    }
+    public _columnWidth = 340;
 
     constructor() {}
 }

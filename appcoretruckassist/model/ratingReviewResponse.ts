@@ -17,6 +17,7 @@ export interface RatingReviewResponse {
     thumb?: number | null;
     reviewId?: number | null;
     comment?: string | null;
+    isEdited?: boolean | null;
     companyUser?: CompanyUserShortResponse;
     companyUserId?: number;
     isItCurrentCompanyUser?: boolean;
