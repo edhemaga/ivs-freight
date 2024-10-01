@@ -3,7 +3,9 @@
     [ngClass]="{
         unlocked: !isDispatchBoardLocked && showAddAddressFieldIndex === -1,
         'unlocked-skip-location':
-            !isDispatchBoardLocked && showAddAddressFieldIndex !== -1
+            !isDispatchBoardLocked && showAddAddressFieldIndex !== -1,
+        'unlocked-drag-trailer': isDrag && draggingType === 'trailer',
+        'unlocked-drag-driver': isDrag && draggingType === 'driver'
     }"
     cdkDropList
     (cdkDropListDropped)="dragEndRow($event)"
@@ -271,6 +273,11 @@
                             (mouseenter)="isHoveringRowIndex = rowIndex"
                             (mouseleave)="isHoveringRowIndex = -1"
                         >
+                            <!--   <div
+                                *cdkDragPlaceholder
+                                class="custom-dispatch-placeholder"
+                            ></div>
+ -->
                             <td
                                 cdkDragHandle
                                 #columnField
@@ -332,7 +339,7 @@
                                     id="{{
                                         rowIndex | cdkid : gridIndex : 'trailer'
                                     }}"
-                                    [cdkDropListData]="dispatchData"
+                                    [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
                                             | cdkconnect
@@ -340,8 +347,8 @@
                                                 : gridIndex
                                                 : 'trailer'
                                     "
-                                    [cdkDropListSortPredicate]="
-                                        trailerPositionPrediction
+                                    [cdkDropListEnterPredicate]="
+                                        dragPositionPredictionTrailer
                                     "
                                     (cdkDropListDropped)="
                                         dragEndTrailer(rowIndex)
@@ -355,7 +362,9 @@
                                         cdkDragBoundary=".dispatch-table table tbody"
                                         [cdkDragDisabled]="
                                             isDispatchBoardLocked ||
-                                            !item.trailer
+                                            !item.trailer ||
+                                            item?.activeLoad?.statusType
+                                                ?.name === 'Active'
                                         "
                                         (cdkDragStarted)="
                                             dragStartTrailer(rowIndex)
@@ -372,6 +381,7 @@
                                             [trailerDropdownWidth]="
                                                 columnSpecifications?.trailerWidth
                                             "
+                                            [truck]="item?.truck"
                                             [trailer]="item?.trailer"
                                             [trailerList]="
                                                 trailerList
@@ -396,6 +406,9 @@
                                             "
                                             [isTrailerAddNewHidden]="
                                                 item?.truck | hiddenAddTrailer
+                                            "
+                                            [previousDragTrailerTypeId]="
+                                                previousDragTrailerTypeId
                                             "
                                             (addTruckTrailerEmitter)="
                                                 handleAddTruckTrailerClick(
@@ -431,13 +444,16 @@
                                     id="{{
                                         rowIndex | cdkid : gridIndex : 'driver'
                                     }}"
-                                    [cdkDropListData]="dispatchData"
+                                    [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
                                             | cdkconnect
                                                 : dispatchData.dispatches.length
                                                 : gridIndex
                                                 : 'driver'
+                                    "
+                                    [cdkDropListEnterPredicate]="
+                                        dragPositionPredictionDriver
                                     "
                                     (cdkDropListDropped)="
                                         dragEndDriver(rowIndex)
@@ -451,7 +467,9 @@
                                         cdkDragBoundary=".dispatch-table table tbody"
                                         [cdkDragDisabled]="
                                             isDispatchBoardLocked ||
-                                            !item.driver
+                                            !item.driver ||
+                                            item?.activeLoad?.statusType
+                                                ?.name === 'Active'
                                         "
                                         (cdkDragStarted)="
                                             dragStartDriver(rowIndex)
@@ -759,7 +777,7 @@
 
                 <!-- Unlocked Table - Extra Row - Add -->
 
-                <ng-container *ngIf="!isDispatchBoardLocked">
+                <ng-container *ngIf="!isDispatchBoardLocked && !isDrag">
                     <tr>
                         <td
                             #columnField

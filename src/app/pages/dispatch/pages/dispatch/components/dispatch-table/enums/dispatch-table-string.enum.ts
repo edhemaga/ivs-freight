@@ -33,6 +33,7 @@ export enum DispatchTableStringEnum {
     TEAM_BOARD = 'Team Board',
     ALL_BOARDS = 'All Boards',
     ACTIVE = 'active',
+    ACTIVE_2 = 'Active',
     DISPATCH = 'Dispatch',
     TOGGLE_LOCKED = 'toggle-locked',
     OPEN_DISPATCH_LOAD_MODAL = 'open-dispatch-load-modal',

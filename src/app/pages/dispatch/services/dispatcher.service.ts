@@ -319,6 +319,7 @@ export class DispatcherService {
                             item.dispatches.push({ ...boardData.item });
                         }
                     }
+
                     return item;
                 }),
             },

@@ -15,7 +15,6 @@ import {
 
 import {
     catchError,
-    concatMap,
     forkJoin,
     of,
     Subject,
@@ -28,10 +27,13 @@ import {
 import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-background.animation';
 
 // modules
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
 import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
+
+// helpers
+import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
@@ -117,6 +119,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
+    @Input() gridIndex: number;
     @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
 
@@ -196,7 +199,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         note: null,
     };
 
-    public previousDragIndex: number = -1;
+    private previousDragIndex: number;
+    private previousDragTrailerTypeId: number;
 
     openedHosData = [];
 
@@ -241,6 +245,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+
+        console.log('this.dispatchData', this.dispatchData);
 
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
@@ -731,6 +737,9 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     public dragStartTrailer(index: number): void {
+        this.previousDragTrailerTypeId =
+            this.dispatchData.dispatches[index].trailer?.trailerType?.id;
+
         this.previousDragIndex = index;
         this.isDrag = true;
         this.draggingType = DispatchTableStringEnum.TRAILER;
@@ -905,6 +914,42 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
+    public dragPositionPredictionTrailer = (
+        _: number,
+        item: CdkDrag<DispatchResponse>
+    ): boolean => {
+        // use arrow function notation to access component 'this'
+
+        const {
+            data: { truck, trailer, activeLoad },
+        } = item;
+
+        const allowedTruckIds =
+            DispatchTableDragNDropHelper.getTrailerAllowedTruckIds(
+                this.previousDragTrailerTypeId
+            );
+
+        const isDropAllowed =
+            (allowedTruckIds.includes(truck?.truckType?.id) || !truck) &&
+            activeLoad?.statusType?.name !== DispatchTableStringEnum.ACTIVE_2;
+
+        return isDropAllowed;
+    };
+
+    public dragPositionPredictionDriver(
+        _: number,
+        item: CdkDrag<DispatchResponse>
+    ): boolean {
+        const {
+            data: { activeLoad },
+        } = item;
+
+        const isDropAllowed =
+            activeLoad?.statusType?.name !== DispatchTableStringEnum.ACTIVE_2;
+
+        return isDropAllowed;
+    }
+
     private getDragDataForUpdate(
         dispatch: DispatchResponse
     ): SwitchDispatchCommand {
@@ -917,11 +962,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             location: dispatch.location?.address ? dispatch.location : null,
         };
     }
-
-    // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
-    trailerPositionPrediction = () => {
-        return true;
-    };
 
     public unlockTable(): void {
         this.onTableUnlockEmitter.emit({
