@@ -1,15 +1,17 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { takeUntil } from 'rxjs';
 
 // Models
-import { ParkingResponsePagination } from 'appcoretruckassist';
+import {
+    CompanyOfficeDepartmentContactResponse,
+    CompanyOfficeResponse,
+    CompanyOfficeResponsePagination,
+} from 'appcoretruckassist';
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
-// services
+// Services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -21,8 +23,19 @@ import { SettingsLocationBaseComponent } from '@pages/settings/pages/settings-lo
 // Enums
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
-// pipes
+// Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+interface DisplayOffice {
+    isCardOpen: boolean;
+    cardName: string;
+    values: CompanyOfficeDepartmentContactResponse[];
+}
+
+interface CompanyOfficeResponseWithGroupedContacts
+    extends CompanyOfficeResponse {
+    groupedContacts?: Record<string, DisplayOffice>; // Use ? if it's optional
+}
 
 @Component({
     selector: 'app-settings-office',
@@ -34,7 +47,7 @@ export class SettingsOfficeComponent
     extends SettingsLocationBaseComponent
     implements OnInit
 {
-    public officeData: ParkingResponsePagination;
+    public officeData: CompanyOfficeResponsePagination;
     public isParkingCardOpened: boolean[] = [];
 
     constructor(
@@ -68,11 +81,44 @@ export class SettingsOfficeComponent
     private getInitalList() {
         this.officeData = this.activatedRoute.snapshot.data.office.pagination;
 
-        this.officeData.data.forEach(() => this.isParkingCardOpened.push(true));
+        this.officeData.data = this.officeData.data.map((office) => {
+            const groupedContacts = office.departmentContacts.reduce(
+                (acc, contact) => {
+                    const departmentName = contact.department?.name;
+
+                    if (departmentName) {
+                        if (!acc[departmentName]) {
+                            acc[departmentName] = {
+                                isCardOpen: true,
+                                cardName: departmentName,
+                                values: [],
+                            };
+                        }
+                        acc[departmentName].values.push(contact);
+                    }
+
+                    return acc;
+                },
+                {} as Record<string, DisplayOffice>
+            );
+
+            return {
+                ...office,
+                groupedContacts,
+            };
+        });
     }
 
     public onCardToggle(i: number): void {
-        this.isParkingCardOpened[i] = false;
+        const office = this.officeData.data[
+            i
+        ] as CompanyOfficeResponseWithGroupedContacts;
+
+        if (office.groupedContacts) {
+            Object.keys(office.groupedContacts).forEach((key) => {
+                office.groupedContacts[key].isCardOpen = false;
+            });
+        }
     }
 
     public getList(): void {

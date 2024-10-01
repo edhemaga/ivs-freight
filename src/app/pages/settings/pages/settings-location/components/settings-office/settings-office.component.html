@@ -42,8 +42,9 @@
             [haveHeaderText]="true"
             [optionsId]="item.id"
             [options]="options"
-            (dropActions)="optionsEvent($event, 'office', item)"
             [paddingDots]="'8px 0px 0px 0px'"
+            (dropActions)="optionsEvent($event, 'office', item)"
+            (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
                 <ng-container *ngIf="item.phone">
@@ -93,50 +94,63 @@
                 </ng-container>
             </div>
 
-            <app-ta-custom-card
-                *ngFor="
-                    let dep of item.departmentContacts;
-                    let i = index;
-                    trackBy: identityOfficeData
-                "
-                [cardName]="dep.department.name"
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
-                [textBottomPossiton]="'-2px'"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="office-template-data">
-                    <div class="office-template-item">
-                        <svg-icon
-                            class="mr-3 svg-fill-light-grey-2"
-                            [src]="svgRoutes.phone"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [arrayText]="true"
-                            [textColor]="'#2f2f2f'"
-                            [copyValue]="[
-                                dep.phone,
-                                dep.extensionPhone
-                                    ? ' x' + dep.extensionPhone
-                                    : ''
-                            ]"
-                            type="Contacts"
-                        ></app-ta-copy>
-                    </div>
-                    <div class="office-template-item office-template-email">
-                        <svg-icon
-                            class="mr-3 svg-fill-light-grey-2"
-                            [src]="svgRoutes.email"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="dep?.email"
-                            [textColor]="'#2f2f2f'"
-                        ></app-ta-copy>
-                    </div>
-                </div>
-            </app-ta-custom-card>
+            <ng-container *ngIf="item.groupedContacts">
+                <app-ta-custom-card
+                    *ngFor="
+                        let department of item.groupedContacts | keyvalue;
+                        let i = index;
+                        trackBy: identityOfficeData
+                    "
+                    [cardName]="department.value.cardName"
+                    [isCardOpen]="department.value.isCardOpen"
+                    [bodyTemplate]="'card'"
+                    [textBottomPossiton]="'-2px'"
+                    [customClass]="'detailsPadding'"
+                    (onOpenCard)="department.value.isCardOpen = $event"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                >
+                    <ng-container
+                        *ngFor="let contact of department.value.values"
+                    >
+                        <div class="office-template-data">
+                            <div class="office-template-item">
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.phone"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [arrayText]="true"
+                                    [textColor]="'#2f2f2f'"
+                                    [copyValue]="[
+                                        contact.phone,
+                                        contact.extensionPhone
+                                            ? ' x' + contact.extensionPhone
+                                            : ''
+                                    ]"
+                                    type="Contacts"
+                                ></app-ta-copy>
+                            </div>
+                            <div
+                                class="office-template-item office-template-email mb-12"
+                            >
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.email"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [copyValue]="contact?.email"
+                                    [textColor]="'#2f2f2f'"
+                                ></app-ta-copy>
+                            </div>
+                        </div>
+                    </ng-container>
+                </app-ta-custom-card>
+            </ng-container>
 
-            <ng-container *ngIf="item.isOwner">
+            <ng-container *ngIf="!item.isOwner">
                 <div class="divider"></div>
                 <div class="settings-progress-container">
                     <app-ta-progress-expiration
