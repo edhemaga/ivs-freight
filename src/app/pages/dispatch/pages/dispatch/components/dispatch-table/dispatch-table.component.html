@@ -590,6 +590,7 @@
                                         isDispatchBoardLocked &&
                                         isHoveringRowIndex === rowIndex
                                     "
+                                    [canUnlock]="_canUnlock"
                                 >
                                 </app-dispatch-table-status>
                             </td>
@@ -639,7 +640,9 @@
                                 >
                                     <div class="main_inside filled">
                                         <div class="padding-inside">
-                                            <div class="info-item d-block p-0 w-100">
+                                            <div
+                                                class="info-item d-block p-0 w-100"
+                                            >
                                                 <ng-container
                                                     *ngIf="progressBarData?.[rowIndex]"
                                                 >
@@ -722,6 +725,7 @@
                                             isHoveringRowIndex === rowIndex &&
                                             parkingList.length
                                         "
+                                        [canUnlock]="_canUnlock"
                                         (updateParking)="
                                             updateParking($event, item.id)
                                         "
@@ -791,6 +795,7 @@
                                         "
                                         [rowIndex]="rowIndex"
                                         [dispatchId]="item.id"
+                                        [canUnlock]="_canUnlock"
                                         (saveNoteValue)="saveNoteValue($event)"
                                     >
                                     </app-dispatch-table-note>
@@ -800,7 +805,9 @@
                             <td class="box-item">
                                 <div
                                     class="main_inside"
-                                    [class.filled]="item.driver && item.truck"
+                                    [class.filled]="
+                                        item.driver && item.truck && _canUnlock
+                                    "
                                 >
                                     <div class="padding-inside p-0">
                                         <app-dispatch-table-assign-load
@@ -816,6 +823,7 @@
                                                 isDispatchBoardLocked &&
                                                 isHoveringRowIndex === rowIndex
                                             "
+                                            [canUnlock]="_canUnlock"
                                         ></app-dispatch-table-assign-load>
                                     </div>
                                 </div>
