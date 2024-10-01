@@ -532,4 +532,6 @@ export enum TableStringEnum {
     COLUMN_TOGGLE = 'columnToggle',
     CONVERT_TO_LOAD = 'create-new-load',
     CONVERT_TO_TEMPLATE = 'create-template-from-load',
+    INVITED = "Invited",
+    EXPIRED = "Expired",
 }

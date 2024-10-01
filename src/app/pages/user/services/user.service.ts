@@ -24,6 +24,7 @@ import {
     // GetCompanyUserListResponse,
     ResendSignUpCompanyOrUserCommand,
     UpdateCompanyUserCommand,
+    UserResponse,
 } from 'appcoretruckassist';
 
 // enums
@@ -43,7 +44,7 @@ export class UserService {
         private userActiveStore: UserActiveStore,
         private userActiveQuery: UserActiveQuery,
         private userInactiveStore: UserInactiveStore,
-        private userInactiveQuery: UserInactiveQuery,
+        private userInactiveQuery: UserInactiveQuery
     ) {}
 
     // Get User List
@@ -85,7 +86,9 @@ export class UserService {
                         };
 
                         const userCount = JSON.parse(
-                            localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+                            localStorage.getItem(
+                                TableStringEnum.USER_TABLE_COUNT
+                            )
                         );
 
                         userCount.actvie++;
@@ -94,7 +97,7 @@ export class UserService {
                             TableStringEnum.USER_TABLE_COUNT,
                             JSON.stringify({
                                 active: userCount.active,
-                                inactive: userCount.inactive
+                                inactive: userCount.inactive,
                             })
                         );
 
@@ -140,7 +143,10 @@ export class UserService {
         );
     }
 
-    public deleteUserById(userId: number, tabSelected: string): Observable<any> {
+    public deleteUserById(
+        userId: number,
+        tabSelected: string
+    ): Observable<any> {
         // leave this any for now
         return this.userService.apiCompanyuserIdDelete(userId).pipe(
             tap(() => {
@@ -167,17 +173,29 @@ export class UserService {
         );
     }
 
-    public deleteUserList(usersToDelete: number[], tabSelected: string): Observable<any> {
+    public deleteUserList(
+        usersToDelete: number[],
+        tabSelected: string
+    ): Observable<any> {
         //leave this any for now
         return this.userService.apiCompanyuserListDelete(usersToDelete).pipe(
             tap(() => {
-                let storeUsers = tabSelected === TableStringEnum.ACTIVE ? this.userActiveQuery.getAll() : this.userInactiveQuery.getAll();
+                let storeUsers =
+                    tabSelected === TableStringEnum.ACTIVE
+                        ? this.userActiveQuery.getAll()
+                        : this.userInactiveQuery.getAll();
 
                 storeUsers.map((user: any) => {
                     usersToDelete.map((d) => {
                         if (d === user.id) {
-                            if (tabSelected === TableStringEnum.ACTIVE) this.userActiveStore.remove(({ id }) => id === user.id);
-                            else this.userInactiveStore.remove(({ id }) => id === user.id);
+                            if (tabSelected === TableStringEnum.ACTIVE)
+                                this.userActiveStore.remove(
+                                    ({ id }) => id === user.id
+                                );
+                            else
+                                this.userInactiveStore.remove(
+                                    ({ id }) => id === user.id
+                                );
                         }
                     });
                 });
@@ -196,24 +214,77 @@ export class UserService {
         return this.userService.apiCompanyuserIdGet(id);
     }
 
-    public updateUserStatus(id: number): Observable<any> {
-        return of(
-            null
-        ); /*  this.userService.apiCompanyuserStatusIdPut(id).pipe(
-            tap(() => {
-                const subUser = this.getUserByid(id).subscribe({
-                    next: (user: any) => {
-                        this.tableService.sendActionAnimation({
-                            animation: 'update-status',
-                            data: user,
-                            id: user.id,
-                        });
+    public updateUserStatus(
+        userId: number,
+        activate: boolean,
+        tabSelected?: string
+    ): Observable<any> {
+        //leave this any for now
+        return this.userService
+            .apiCompanyuserStatusPut({ id: userId, activate: activate })
+            .pipe(
+                tap(() => {
+                    const userCount = JSON.parse(
+                        localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+                    );
 
-                        subUser.unsubscribe();
-                    },
-                });
-            })
-        ); */
+                    let userToUpdate =
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.userActiveQuery.getAll({
+                                  filterBy: ({ id }) => id === userId,
+                              })
+                            : this.userInactiveQuery.getAll({
+                                  filterBy: ({ id }) => id === userId,
+                              });
+
+                    tabSelected === TableStringEnum.ACTIVE
+                        ? this.userActiveStore.remove(({ id }) => id === userId)
+                        : this.userInactiveStore.remove(
+                              ({ id }) => id === userId
+                          );
+
+                    tabSelected === TableStringEnum.ACTIVE
+                        ? this.userInactiveStore.add({
+                              ...userToUpdate[0],
+                              status: 0,
+                          })
+                        : this.userActiveStore.add({
+                              ...userToUpdate[0],
+                              status: 1,
+                          });
+
+                    if (tabSelected === TableStringEnum.ACTIVE) {
+                        userCount.active--;
+                        userCount.inactive++;
+                    } else if (tabSelected === TableStringEnum.INACTIVE) {
+                        userCount.active++;
+                        userCount.inactive--;
+                    }
+
+                    localStorage.setItem(
+                        TableStringEnum.USER_TABLE_COUNT,
+                        JSON.stringify({
+                            applicant: userCount.applicant,
+                            active: userCount.active,
+                            inactive: userCount.inactive,
+                        })
+                    );
+
+                    this.getUserByid(userId).subscribe({
+                        next: (user: UserResponse) => {
+                            const userData = {
+                                ...user,
+                                fullName: user.firstName + ' ' + user.lastName,
+                            };
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_STATUS,
+                                data: userData,
+                                id: userData.id,
+                            });
+                        },
+                    });
+                })
+            );
     }
 
     public userResendIvitation(

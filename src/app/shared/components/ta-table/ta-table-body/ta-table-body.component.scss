@@ -766,13 +766,8 @@ table.truckassist-table-body-style {
 
                             &::selection {
                                 color: $bw6-2;
-                                background: $bw6-2;
+                                background: $bw6-3;
                             }
-                        }
-
-                        .user-invited {
-                            background: $ta-orange-6 !important;
-                            color: $special-filter-orange !important;
                         }
 
                         // NAME LINK

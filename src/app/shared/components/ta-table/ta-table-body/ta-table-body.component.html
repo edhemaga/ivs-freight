@@ -918,10 +918,20 @@
                                         }"
                                     >
                                         <div
-                                            class="user-status-container d-flex justify-content-center align-items-center ta-font-bold"
-                                            [ngClass]="{
-                                                'user-invited':
-                                                    row[column.field].isInvited
+                                            class="user-status-container ta-font-bold"
+                                            [ngStyle]="{
+                                                color:
+                                                    row[column.field].status ===
+                                                    'Owner'
+                                                        ? '#259F94'
+                                                        : row[column.field]
+                                                              .status ===
+                                                          'Admin'
+                                                        ? '#3B73ED'
+                                                        : row[column.field]
+                                                              .status === 'User'
+                                                        ? '#6C6C6C'
+                                                        : '#AAAAAA'
                                             }"
                                         >
                                             {{ row[column.field].status }}
@@ -3084,10 +3094,20 @@
                                         }"
                                     >
                                         <div
-                                            class="user-status-container d-flex justify-content-center align-items-center ta-font-bold"
-                                            [ngClass]="{
-                                                'user-invited':
-                                                    row[column.field].isInvited
+                                            class="user-status-container ta-font-bold"
+                                            [ngStyle]="{
+                                                color:
+                                                    row[column.field].status ===
+                                                    'Owner'
+                                                        ? '#259F94'
+                                                        : row[column.field]
+                                                              .status ===
+                                                          'Admin'
+                                                        ? '#3B73ED'
+                                                        : row[column.field]
+                                                              .status === 'User'
+                                                        ? '#6C6C6C'
+                                                        : '#AAAAAA'
                                             }"
                                         >
                                             {{ row[column.field].status }}
