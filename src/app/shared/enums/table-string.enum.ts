@@ -534,4 +534,5 @@ export enum TableStringEnum {
     CONVERT_TO_TEMPLATE = 'create-template-from-load',
     INVITED = "Invited",
     EXPIRED = "Expired",
+    ZERO = "0",
 }

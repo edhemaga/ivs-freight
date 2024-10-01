@@ -572,7 +572,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePersonalDetailsEmail: data?.personalEmail,
             tablePersonalDetailsAddress: data?.address?.address,
             tableTableStatus: {
-                status: data?.userStatus,
+                status:
+                    data?.userStatus === TableStringEnum.ZERO
+                        ? TableStringEnum.NA
+                        : data?.userStatus,
             },
             tableBillingDetailsBankName: data?.bank?.name,
             tableBillingDetailsRouting: data?.routingNumber,
