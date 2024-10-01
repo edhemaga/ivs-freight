@@ -85,11 +85,6 @@
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
             [isAttachmentUploadActive]="isAttachmentUploadActive"
             [conversationParticipants]="conversationParticipants"
-            [isReplyOrEditOpen]="
-                messageToEdit$
-                    | async
-                    | chatAnyExist : (messageToReply$ | async)
-            "
         ></app-chat-messages>
 
         <!-- Footer -->

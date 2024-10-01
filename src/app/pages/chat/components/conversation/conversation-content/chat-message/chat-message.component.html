@@ -25,8 +25,7 @@
                                     icon: chatSvgRoutes.replyIcon,
                                     actionType: chatMessageActionEnum.REPLY,
                                     customClass:
-                                        messageReply &&
-                                        isReplyOrEditOpen &&
+                                        messageReply?.id === message.id &&
                                         'focused'
                                 }
                             }
@@ -59,8 +58,7 @@
                                         icon: chatSvgRoutes.editPenIcon,
                                         actionType: chatMessageActionEnum.EDIT,
                                         customClass:
-                                            messageEdit &&
-                                            isReplyOrEditOpen &&
+                                            messageEdit?.id === message.id &&
                                             'focused'
                                     }
                                 }
@@ -84,9 +82,7 @@
                     currentUserId
                         | chatMessageClass
                             : message.senderId || message.sender?.id
-                            : messageReply?.id === message.id
-                            : messageEdit?.id === message.id
-                            : isReplyOrEditOpen
+                            : selectedMessageId === message.id
                 "
                 [ngStyle]="
                     message.linksCount && {
@@ -99,7 +95,7 @@
                         parentMessage;
                         context: {
                             message,
-                            selected: isReplyOrEditOpen
+                            selected: selectedMessageId === message.id
                         }
                     "
                 ></ng-container>

@@ -25,3 +25,8 @@ export const selectEditMessage = createSelector(
     selectChatState,
     (state: ChatState): ChatMessage => state.messageToEdit
 );
+
+export const activeReplyOrEdit = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.messageToReply?.id || state.messageToEdit?.id
+)

@@ -4,15 +4,18 @@ import { takeUntil } from 'rxjs';
 // Store
 import { Store } from '@ngrx/store';
 import {
+    activeReplyOrEdit,
     deleteMessage,
     editMessage,
     replyMessage,
     resetReplyAndEditMessage,
+    selectEditMessage,
+    selectReplyMessage,
 } from '@pages/chat/state';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
-import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
+import { ChatMessage } from '@pages/chat/models';
 
 // Enums
 import {
@@ -40,15 +43,9 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     @Input() chatParticipants: CompanyUserShortResponse[];
     @Input() message!: ChatMessage;
     @Input() isDateDisplayed: boolean = false;
-    @Input() isReplyOrEditOpen: boolean = false;
 
-    // @Output()
-    // messageActionReplyOrEdit: EventEmitter<ChatConversationMessageAction> =
-    //     new EventEmitter();
-
-    public messageReply: ChatMessage | null = null;
-    public messageEdit: ChatMessage | null = null;
-    public messageDeleted: boolean = false;
+    public messageReply!: ChatMessage | null;
+    public messageEdit!: ChatMessage | null;
 
     // Helpers
     public MethodsCalculationsHelper = MethodsCalculationsHelper;
@@ -57,6 +54,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     public singleImageAspectRatio!: ChatImageAspectRatioEnum;
     public isFocused: boolean = false;
     public hasActionsDisplayed: boolean = false;
+    public selectedMessageId: number;
 
     // Message details and actions
     public messageDateAndTime!: string;
@@ -79,10 +77,24 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     ngOnInit(): void {
         this.checkImageDimensions(this.message.media[0]?.url);
         this.convertDate(this.message?.createdAt);
+        this.getActiveReplyOrEdit();
     }
 
-    ngOnChanges(): void {
-        this.hasActionsDisplayed = this.isReplyOrEditOpen;
+    private getActiveReplyOrEdit(): void {
+        this.store.select(activeReplyOrEdit).pipe(takeUntil(this.destroy$)).subscribe(id => {
+            this.selectedMessageId = id;
+            if (!id) this.hasActionsDisplayed = false;
+            if (this.message.id === id) {
+                this.hasActionsDisplayed = true;
+                this.isFocused = true;
+            }
+        });
+        this.store.select(selectReplyMessage).pipe(takeUntil(this.destroy$)).subscribe(msg => {
+            this.messageReply = msg;
+        })
+        this.store.select(selectEditMessage).pipe(takeUntil(this.destroy$)).subscribe(msg => {
+            this.messageEdit = msg;
+        })
     }
 
     private checkImageDimensions(url: string): void {
@@ -110,7 +122,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
-        if (this.isReplyOrEditOpen && this.hasActionsDisplayed) {
+        if (this.selectedMessageId === this.message.id) {
             return;
         }
         this.hasActionsDisplayed = displayed;
@@ -120,12 +132,10 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
                 this.store.dispatch(resetReplyAndEditMessage());
-
                 this.store.dispatch(replyMessage(this.message));
                 break;
             case ChatMessageActionEnum.EDIT:
                 this.store.dispatch(resetReplyAndEditMessage());
-
                 this.store.dispatch(editMessage(this.message));
                 break;
             case ChatMessageActionEnum.DELETE:

@@ -59,8 +59,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
     @Input() public conversation!: ConversationResponse;
@@ -128,35 +127,10 @@ export class ChatContentFooterComponent
     }
 
     private getReplyAndEditMessages(): void {
-        this.editMessage$ = this.store.select(selectEditMessage);
-        this.replyMessage$ = this.store.select(selectReplyMessage);
-
-        this.editMessage$.pipe(takeUntil(this.destroy$)).subscribe(console.log);
-        this.replyMessage$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(console.log);
+        this.editMessage$ = this.store.select(selectEditMessage).pipe(takeUntil(this.destroy$));
+        this.replyMessage$ = this.store.select(selectReplyMessage).pipe(takeUntil(this.destroy$));
     }
 
-    // public handleSend(): void {
-    //     const isComplete: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-    //     this.editMessage$
-    //         .pipe(takeUntil(this.destroy$ || isComplete))
-    //         .subscribe((message: ChatMessage) => {
-    //             if (message) {
-    //                 this.editMessage(message?.id);
-    //                 isComplete.next(true);
-    //             }
-    //             this.replyMessage$
-    //                 .pipe(takeUntil(this.destroy$ || isComplete))
-    //                 .subscribe((message: ChatMessage) => {
-    //                     isComplete.next(true);
-    //                     this.sendMessage(message?.id);
-    //                 });
-    //         });
-
-    //     isComplete.complete();
-    // }
     public handleSend(): void {
         const isComplete: BehaviorSubject<boolean> = new BehaviorSubject(false);
 

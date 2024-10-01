@@ -67,8 +67,7 @@ import { addMessage, selectMessageResponse } from '@pages/chat/state';
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
@@ -81,7 +80,6 @@ export class ChatMessagesComponent
     @Input() public isProfileDetailsDisplayed: boolean = false;
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
-    @Input() public isReplyOrEditOpen: boolean = false;
 
     @Output() public userTypingEmitter: EventEmitter<number> =
         new EventEmitter();
@@ -120,7 +118,6 @@ export class ChatMessagesComponent
         private activatedRoute: ActivatedRoute,
 
         // Services
-        private chatService: UserChatService,
         private chatHubService: ChatHubService,
         public userProfileService: UserProfileService,
 
