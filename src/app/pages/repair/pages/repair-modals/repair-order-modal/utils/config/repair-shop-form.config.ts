@@ -1,5 +1,3 @@
-import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
-import { OwnerInfoConfigOptions } from '@pages/applicant/pages/applicant-owner-info/models/owner-info-config-options.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class RepairShopConfig {
@@ -86,6 +84,53 @@ export class RepairShopConfig {
         };
     }
 
+    static getPayPeriodConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay Period',
+            type: 'text',
+            label: 'Pay Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163',
+        };
+    }
+
+    static getDayConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay',
+            type: 'text',
+            label: 'Day Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163',
+        };
+    }
+
+    static getMonthlyPeriodConfig(): ITaInput {
+        return {
+            name: 'Input Dropdown Pay',
+            type: 'text',
+            label: 'Monthly Period',
+            minLength: 2,
+            maxLength: 64,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-163',
+        };
+    }
+
+    static getRentInputConfig(): ITaInput {
+        return {
+            name: 'Rent',
+            type: 'text',
+            label: 'Rent',
+            placeholderIcon: 'dollar',
+            thousandSeparator: true,
+            placeholderIconColor: 'blue',
+        };
+    }
+
     static getAccountNumberInputConfig(isBankSelected: boolean): ITaInput {
         return {
             name: 'account-bank',
@@ -107,6 +152,16 @@ export class RepairShopConfig {
             isRequired: isBankSelected,
             minLength: 9,
             maxLength: 9,
+        };
+    }
+
+    static getOpenHoursFormField(): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            placeholderIcon: 'time',
+            customClass: 'datetimeclass',
+            hideClear: true,
         };
     }
 }

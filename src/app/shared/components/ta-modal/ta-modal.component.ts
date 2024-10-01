@@ -57,6 +57,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 // Enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
+import { TaModalActionEnums } from './enums';
 
 @Component({
     selector: 'app-ta-modal',
@@ -153,6 +154,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isAdditionalAssignLoadModalVisible = false;    
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
+    @Input() isDisableButtonHidden: boolean = false;
+    
     
     // -----------------
 
@@ -335,11 +338,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.runFormValidation.emit(true);
 
         switch (action) {
-            case 'save': {
+            case TaModalActionEnums.SAVE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'save and add new': {
+            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
@@ -380,7 +383,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case 'delete': {
+            case TaModalActionEnums.DELETE: {
                 this.action.emit({ action: action, bool: false });
                 this.confirmationAction.emit(this.confirmationData);
                 break;
@@ -421,11 +424,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case 'convert-to-template': {
+            case TaModalActionEnums.CONVERT_TO_TEMPLATE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'convert-to-load': {
+            case TaModalActionEnums.CONVERT_TO_LOAD: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }

@@ -24,6 +24,7 @@ export enum LoadModalStringEnum {
     HAZARDOUS = 'hazardous',
     STOP_TYPE = 'stopType',
     STOP_ORDER = 'stopOrder',
+    STOP_LOAD_ORDER = 'stopLoadOrder',
     DRIVER_RATE = 'driverRate',
     ADJUSTED_RATE = 'adjustedRate',
     PICKUP_LEG_MILES = 'pickuplegMiles',
@@ -68,12 +69,6 @@ export enum LoadModalStringEnum {
     DELETE_2 = 'delete',
     TAG = 'tag',
     TAGS = 'tags',
-
-    SAVE = 'save',
-    SAVE_AND_ADD_NEW = 'save and add new',
-    CONVERT_TO_TEMPLATE = 'convert-to-template',
-    CONVERT_TO_LOAD = 'convert-to-load',
-
     TRUCK = 'Truck',
     TRAILER = 'Trailer',
     DRIVER = 'Driver',
@@ -81,7 +76,6 @@ export enum LoadModalStringEnum {
     FLAT_RATE = 'Flat Rate',
     ADJUSTED = 'Adjusted',
     ADJUSTED_2 = 'adjusted',
-
     USER = 'user',
     DISPATCHER = 'dispatcher',
     COMPANY = 'company',

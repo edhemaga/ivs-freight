@@ -82,6 +82,8 @@ export class ConfirmationModalComponent implements OnInit {
         this.cdlForm = this.formBuilder.group({
             cdlId: [null],
         });
+
+        console.log(this);
     }
 
     public onModalAction(data: any) {

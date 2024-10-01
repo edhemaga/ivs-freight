@@ -101,6 +101,7 @@ export class TaDetailsDropdownComponent
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();
+    @Output() onPopoverVisiblityChange: EventEmitter<boolean> = new EventEmitter();
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
@@ -155,6 +156,9 @@ export class TaDetailsDropdownComponent
             this.dropDownActive = tooltip.isOpen() ? this.id : -1;
             this.chnd.detectChanges();
         });
+
+        
+        this.onPopoverVisiblityChange.emit(true);
     }
 
     /**Function retrun id */
@@ -219,6 +223,8 @@ export class TaDetailsDropdownComponent
         this.options.map((item) => {
             item['openSubtype'] = false;
         });
+
+        this.onPopoverVisiblityChange.emit(false);
     }
 
     popperOptions = (options: Partial<Options>) => {

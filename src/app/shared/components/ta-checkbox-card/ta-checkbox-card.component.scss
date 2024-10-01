@@ -35,13 +35,6 @@
             margin-left: 4px;
 
             p {
-                font-size: 11px;
-                line-height: 15px;
-                color: $bw5;
-
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
                 user-select: none;
             }
         }
@@ -100,16 +93,18 @@
 
     .checkbox-card-body {
         &.innactive {
-            height: 0px !important;
-            overflow: hidden !important;
-            opacity: 0 !important;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            will-change: height, opacity;
         }
 
         &.active {
-            overflow: visible !important;
-            opacity: 1 !important;
+            opacity: 1;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            height: 100%;
         }
     }
 
