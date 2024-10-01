@@ -14,6 +14,7 @@ import { ConversationListComponent } from '@pages/chat/components/conversation/c
 import { ChatUserListComponent } from '@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component';
 import { ChatMessageComponent } from '@pages/chat/components/conversation/conversation-content/chat-message/chat-message.component';
 import { ChatMessagesComponent } from '@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component';
+import { ChatContentFooterComponent } from '@pages/chat/components/conversation/conversation-content/chat-content-footer/chat-content-footer.component';
 import { ChatMessageAttachmentPreviewComponent } from '@pages/chat/components/shared/chat-message-attachment-preview/chat-message-attachment-preview.component';
 import { ChatUserProfileComponent } from '@pages/chat/components/conversation/conversation-details/chat-user-profile/chat-user-profile.component';
 import { ChatHeaderComponent } from '@pages/chat/components/shared/chat-header/chat-header.component';
@@ -44,8 +45,11 @@ import {
     TrackByPropertyPipe,
 } from '@shared/pipes';
 import {
+    ChatDatePipe,
     ChatHeaderClassPipe,
     ChatHeaderGroupIconPipe,
+    ChatMessageClassPipe,
+    ChatAnyExist,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -64,9 +68,10 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ConversationListComponent,
         ChatUserListComponent,
 
-        // Conversations
+        // Conversation
         ConversationContentComponent,
         ChatMessagesComponent,
+        ChatContentFooterComponent,
         ChatMessageComponent,
         ChatMessageAttachmentPreviewComponent,
 
@@ -89,6 +94,9 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         // Pipes
         ChatHeaderClassPipe,
         ChatHeaderGroupIconPipe,
+        ChatMessageClassPipe,
+        ChatDatePipe,
+        ChatAnyExist,
     ],
     providers: [
         // Pipes

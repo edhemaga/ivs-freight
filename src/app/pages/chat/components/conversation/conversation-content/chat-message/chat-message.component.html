@@ -1,4 +1,9 @@
-<div class="message-container">
+<!-- Do not use (mouseover) nad (mouseout)!! -->
+<div
+    class="message-container"
+    (mouseenter)="toggleActions(true)"
+    (mouseleave)="toggleActions(false)"
+>
     <ng-container *ngIf="message.content">
         <div
             class="content-wrapper d-flex justify-content-end"
@@ -8,6 +13,64 @@
                     : 'flex-row-reverse'
             "
         >
+            <ng-container *ngIf="hasActionsDisplayed">
+                <div
+                    class="message-actions d-flex justify-content-center align-items-center"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconAction;
+                            context: {
+                                item: {
+                                    icon: chatSvgRoutes.replyIcon,
+                                    actionType: chatMessageActionEnum.REPLY,
+                                    customClass:
+                                        messageReply &&
+                                        isReplyOrEditOpen &&
+                                        'focused'
+                                }
+                            }
+                        "
+                    ></ng-container>
+                    <ng-container
+                        *ngIf="
+                            currentUserId ===
+                            (message.senderId || message.sender?.id)
+                        "
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.trashBinIcon,
+                                        actionType:
+                                            chatMessageActionEnum.DELETE,
+                                        customClass: 'red'
+                                    }
+                                }
+                            "
+                        ></ng-container>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                iconAction;
+                                context: {
+                                    item: {
+                                        icon: chatSvgRoutes.editPenIcon,
+                                        actionType: chatMessageActionEnum.EDIT,
+                                        customClass:
+                                            messageEdit &&
+                                            isReplyOrEditOpen &&
+                                            'focused'
+                                    }
+                                }
+                            "
+                        ></ng-container
+                    ></ng-container>
+                    <app-chat-vertical-divider></app-chat-vertical-divider>
+                </div>
+            </ng-container>
+
             <ng-container *ngIf="isDateDisplayed">
                 <div
                     class="message-time d-flex justify-content-center align-items-center"
@@ -15,13 +78,15 @@
                     {{ messageDateAndTime }}
                 </div>
             </ng-container>
-
             <div
                 class="content ta-font-regular"
                 [ngClass]="
-                    currentUserId === (message.senderId || message.sender?.id)
-                        ? 'current-user'
-                        : 'other'
+                    currentUserId
+                        | chatMessageClass
+                            : message.senderId || message.sender?.id
+                            : messageReply?.id === message.id
+                            : messageEdit?.id === message.id
+                            : isReplyOrEditOpen
                 "
                 [ngStyle]="
                     message.linksCount && {
@@ -29,7 +94,16 @@
                     }
                 "
             >
-                {{ message.content }}
+                <ng-container
+                    *ngTemplateOutlet="
+                        parentMessage;
+                        context: {
+                            message,
+                            selected: isReplyOrEditOpen
+                        }
+                    "
+                ></ng-container>
+                <div>{{ message.content }}</div>
 
                 <ng-container *ngIf="message.filesCount">
                     <div
@@ -79,28 +153,28 @@
                     </div>
                 </ng-container>
             </div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="message.mediaCount">
-        <div
-            class="media-preview-wrapper d-flex"
-            [ngClass]="
-                currentUserId === (message.senderId || message.sender?.id)
-                    ? 'flex-row-reverse'
-                    : 'flex-row'
-            "
-        >
-            <ng-container
-                *ngFor="
-                    let attachment of message.media;
-                    let ind = index;
-                    trackBy: '' | trackByProperty
-                "
-            >
-                <div class="media-preview d-flex">
-                    <img
-                        class="media-preview-thumbnail"
-                        [ngStyle]="
+
+            <ng-container *ngIf="message.mediaCount">
+                <div
+                    class="media-preview-wrapper d-flex"
+                    [ngClass]="
+                        currentUserId ===
+                        (message.senderId || message.sender?.id)
+                            ? 'flex-row-reverse'
+                            : 'flex-row'
+                    "
+                >
+                    <ng-container
+                        *ngFor="
+                            let attachment of message.media;
+                            let ind = index;
+                            trackBy: '' | trackByProperty
+                        "
+                    >
+                        <div class="media-preview d-flex">
+                            <img
+                                class="media-preview-thumbnail"
+                                [ngStyle]="
                             (message.mediaCount || message.media?.length) > 1 ? {
                                 height: '120px',
                                 width: '120px',  
@@ -110,11 +184,57 @@
                                 'aspect-ration':  singleImageAspectRation
                             }
                         "
-                        [src]="attachment.url"
-                        [alt]="attachment.fileName"
-                    />
+                                [src]="attachment.url"
+                                [alt]="attachment.fileName"
+                            />
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>
     </ng-container>
 </div>
+
+<ng-template #iconAction let-item="item">
+    <div
+        class="action-wrapper gray d-flex justify-content-center align-content-center"
+        (click)="messageAction(item.actionType)"
+        [ngClass]="item.customClass"
+    >
+        <div class="action d-flex justify-content-center align-content-center">
+            <svg-icon
+                class="pointer d-flex justify-content-center align-items-center"
+                [svgStyle]="{
+                    'width.px': 12,
+                    'height.px': 12
+                }"
+                [src]="item.icon"
+            ></svg-icon>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #parentMessage let-message="message" let-selected="selected">
+    <ng-container *ngIf="message.parentMessageId">
+        <div class="d-flex">
+            <div>
+                <svg-icon
+                    class="pointer d-flex justify-content-center align-items-center"
+                    [svgStyle]="{
+                        'width.px': 12,
+                        'height.px': 12
+                    }"
+                    [src]="chatSvgRoutes.replyIcon"
+                ></svg-icon>
+            </div>
+            <div class="parent-message-text" [ngClass]="selected && 'selected'">
+                <div class="ta-font-semi-bold">
+                    {{ message.parentMessageSenderFullname }} replied to
+                </div>
+                <div class="ta-font-regular">
+                    {{ message.parentMessageContent }}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

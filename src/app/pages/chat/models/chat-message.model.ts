@@ -6,15 +6,17 @@ import {
 
 import { ChatLink } from '@pages/chat/models';
 
-export interface ChatMessageResponse {
+export interface ChatMessage {
     id: number;
     messageType?: EnumValue;
     sender?: CompanyUserShortResponse;
     senderId: number;
     conversationId: number;
     content: string;
+    parentId?: number;
     parentMessageId?: number;
     parentMessageContent?: string;
+    parentMessageSenderFullname?: string;
     createdAt?: string;
     updatedAt: string;
     isEdited?: boolean;

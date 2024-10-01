@@ -81,13 +81,15 @@ export class UserChatService {
         );
     }
 
-    public getMessages(id: number): Observable<ChatMessageResponse[]> {
+    public getMessages(
+        conversationId: number
+    ): Observable<ChatMessageResponse> {
         const params: HttpParams = new HttpParams({
             fromObject: {
-                'MessageSpecParams.ConversationId': id,
+                'MessageSpecParams.ConversationId': conversationId,
             },
         });
-        return this.http.get<ChatMessageResponse[]>(
+        return this.http.get<ChatMessageResponse>(
             `${environment.API_ENDPOINT}/api/chat/message/list`,
             {
                 params,
@@ -114,9 +116,11 @@ export class UserChatService {
 
     public sendMessage(
         conversationId: number,
+        messageType: number,
         content: string,
         attachmentsList?: UploadFile[],
-        linksList?: string[]
+        linksList?: string[],
+        parentMessageId?: number
     ): Observable<any> {
         if (!conversationId) return;
 
@@ -130,7 +134,14 @@ export class UserChatService {
             };
         });
 
-        const data = { conversationId, content, attachments, links };
+        const data = {
+            conversationId,
+            messageType,
+            content,
+            attachments,
+            links,
+            parentMessageId,
+        };
 
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -138,6 +149,26 @@ export class UserChatService {
             `${environment.API_ENDPOINT}/api/chat/message`,
             this.formDataService.formDataValue,
             { headers: this.headers }
+        );
+    }
+
+    public editMessage(messageId: number, content: string): Observable<Object> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/message`,
+            {
+                id: messageId,
+                content,
+            },
+            { headers: this.headers }
+        );
+    }
+
+    public deleteMessage(messageId: number): Observable<any> {
+        return this.http.delete(
+            `${environment.API_ENDPOINT}/api/chat/message/${messageId}`,
+            {
+                headers: this.headers,
+            }
         );
     }
 

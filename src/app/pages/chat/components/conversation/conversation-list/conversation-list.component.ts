@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Config
-import { ChatInput } from '@pages/chat/utils/config';
+import { ChatInput } from '@pages/chat/utils/configs';
 
 // Models
 import {
@@ -105,9 +105,11 @@ export class ConversationListComponent
     }
 
     private listenForNewMessage(): void {
-        ChatHubService.receiveMessage().subscribe((arg) => {
-            console.log(arg);
-        });
+        ChatHubService.receiveMessage()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((msg) => {
+                // TODO implement new logic
+            });
     }
 
     private initializeChatGroupStates(): void {
@@ -197,7 +199,7 @@ export class ConversationListComponent
         ChatCompanyChannelExtended[] | CompanyUserChatResponsePagination
     > {
         return this.groupsState.find((group) => {
-            console.log(group);
+            return group;
         });
     }
 
