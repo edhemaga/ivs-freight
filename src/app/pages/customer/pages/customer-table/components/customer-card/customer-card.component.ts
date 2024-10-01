@@ -59,7 +59,11 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
-    @Input() selectedTab: string;
+    @Input() set selectedTab(value: string) {
+        this._selectedTab = value;
+
+        this.cardHelper.resetSelectedCards();
+    }
 
     private destroy$ = new Subject<void>();
 
@@ -73,6 +77,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
+    public _selectedTab: string = TableStringEnum.ACTIVE;
 
     constructor(
         // Services
@@ -106,7 +111,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
-        const checkedCard = this.onCheckboxSelect(index, card);
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
@@ -119,7 +124,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
     public goToDetailsPage(card: CardDetails): void {
         this.detailsDataService.setNewData(card);
 
-        if (this.selectedTab === TableStringEnum.ACTIVE)
+        if (this._selectedTab === TableStringEnum.ACTIVE)
             this.router.navigate([`/list/customer/${card.id}/broker-details`]);
         else
             this.router.navigate([`/list/customer/${card.id}/shipper-details`]);
@@ -136,7 +141,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
             event.type === TableStringEnum.WRITE_REVIEW
         ) {
             // Edit Broker Call Modal
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
+            if (this._selectedTab === TableStringEnum.ACTIVE) {
                 this.modalService.openModal(
                     BrokerModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -240,7 +245,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
                 }
             );
         } else if (event.type === TableStringEnum.VIEW_DETAILS) {
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
+            if (this._selectedTab === TableStringEnum.ACTIVE) {
                 this.router.navigate([
                     `/list/customer/${event.id}/broker-details`,
                 ]);
@@ -258,13 +263,13 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
                 {
                     ...event,
                     template:
-                        this.selectedTab === TableStringEnum.ACTIVE
+                        this._selectedTab === TableStringEnum.ACTIVE
                             ? TableStringEnum.BROKER
                             : TableStringEnum.SHIPPER,
                     type: TableStringEnum.DELETE,
                     svg: true,
                     modalHeaderTitle:
-                        this.selectedTab === TableStringEnum.ACTIVE
+                        this._selectedTab === TableStringEnum.ACTIVE
                             ? ConfirmationModalStringEnum.DELETE_BROKER
                             : ConfirmationModalStringEnum.DELETE_SHIPPER,
                 }
