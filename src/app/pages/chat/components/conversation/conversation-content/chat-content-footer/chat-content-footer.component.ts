@@ -145,10 +145,7 @@ export class ChatContentFooterComponent
                 takeUntil(this.destroy$ || isComplete)
             )
             .subscribe((replyMessage: ChatMessage) => {
-                if (replyMessage) {
-                    this.sendMessage(replyMessage.id);
-                }
-                this.store.dispatch(resetReplyAndEditMessage());
+                this.sendMessage(replyMessage?.id);
                 isComplete.next(true);
                 isComplete.complete();
             });
