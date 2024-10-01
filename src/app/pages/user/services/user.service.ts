@@ -180,12 +180,12 @@ export class UserService {
         //leave this any for now
         return this.userService.apiCompanyuserListDelete(usersToDelete).pipe(
             tap(() => {
-                let storeUsers =
+                const storeUsers =
                     tabSelected === TableStringEnum.ACTIVE
                         ? this.userActiveQuery.getAll()
                         : this.userInactiveQuery.getAll();
 
-                storeUsers.map((user: any) => {
+                storeUsers.forEach((user: UserResponse) => {
                     usersToDelete.map((d) => {
                         if (d === user.id) {
                             if (tabSelected === TableStringEnum.ACTIVE)
@@ -228,7 +228,7 @@ export class UserService {
                         localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
                     );
 
-                    let userToUpdate =
+                    const userToUpdate =
                         tabSelected === TableStringEnum.ACTIVE
                             ? this.userActiveQuery.getAll({
                                   filterBy: ({ id }) => id === userId,

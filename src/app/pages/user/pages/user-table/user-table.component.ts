@@ -223,14 +223,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 2300);
                 }
                 // On Update User
@@ -248,14 +248,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return user;
                     });
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
                 }
                 // On Update User Status
@@ -279,14 +279,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...sortedUserData];
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
                 }
             });
@@ -680,14 +680,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 true,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
                 },
                 error: () => {},
@@ -710,14 +710,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 true,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
                 },
                 error: () => {},
@@ -933,13 +933,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                const inetval = setInterval(() => {
+                const interval = setInterval(() => {
                     this.viewData = MethodsGlobalHelper.closeAnimationAction(
                         true,
                         this.viewData
                     );
 
-                    clearInterval(inetval);
+                    clearInterval(interval);
                 }, 900);
 
                 this.tableService.sendRowsSelected([]);
