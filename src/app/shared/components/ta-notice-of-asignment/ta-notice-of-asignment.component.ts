@@ -36,6 +36,15 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 // helpers
 import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 
+// interfaces
+import { IFontSizeOption, ITextEditorToolbarAlignOption, ITextEditorToolbarConfig } from '@shared/components/ta-notice-of-asignment/interfaces';
+
+// constants
+import { TaNoticeOfAssignmentConstants } from '@shared/components/ta-notice-of-asignment/utils/constants';
+
+// svg routes
+import { TaNoticeOfAsignmentSvgRoutes } from '@shared/components/ta-notice-of-asignment/utils/svg-routes';
+
 @Component({
     selector: 'app-ta-notice-of-asignment',
     templateUrl: './ta-notice-of-asignment.component.html',
@@ -53,44 +62,18 @@ import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
+    public constants = TaNoticeOfAssignmentConstants;
+    public svgRoutes = TaNoticeOfAsignmentSvgRoutes;
     @Output() noticeFocus = new EventEmitter<any>();
     @Input() sidebarWidth: any;
     range: any;
     @Input() settings: any;
-    @Input() noticeValue: any;
-    shownValue: string = '';
     selectedFontFamily = 3;
     selectedFontSize = 14;
-    activeFont: any = { id: 3, name: 'Default', showName: 'Default' };
-    activeFontSize: any;
+    activeFont: IFontSizeOption = { id: 2, name: 'Default', showName: 'Default', size: 13 };
+    activeFontSize: number = TaNoticeOfAssignmentConstants.FONT_SIZE_DEFAULT;
     isBlured: boolean = true;
-
-    fontSizeList: any[] = [
-        {
-            id: 1,
-            name: 'Large',
-            showName: 'Large',
-            additionalText: 24,
-        },
-        {
-            id: 2,
-            name: 'Medium',
-            showName: 'Medium',
-            additionalText: 18,
-        },
-        {
-            id: 3,
-            name: 'Default',
-            showName: 'Default',
-            additionalText: 13,
-        },
-        {
-            id: 4,
-            name: 'Small',
-            showName: 'Small',
-            additionalText: 10,
-        },
-    ];
+    fontSizeOptions: IFontSizeOption[] = [...TaNoticeOfAssignmentConstants.FONT_SIZE_OPTIONS];
 
     showDropdown: boolean;
     customSelectColor: any[] = [
@@ -101,36 +84,37 @@ export class TaNoticeOfAsignmentComponent
         'rgb(255, 167, 38)',
         'rgb(171, 71, 188)',
     ];
-    activeOptions: any = {
+
+    public toolbarActions: ITextEditorToolbarConfig = {
+        fontSize: true,
         bold: false,
         italic: false,
         foreColor: false,
         underline: false,
-        strikeThrough: false,
-        fontSize: true,
-    };
+        strikeThrough: false
+    }
 
-    alignOptions: any = [
+    public alignOptions: ITextEditorToolbarAlignOption[] = [
         {
-            name: 'justifyLeft',
+            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_LEFT,
             value: false,
-            image: 'assets/svg/common/align-left-icon.svg',
+            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_LEFT_SVG_ROUTE,
         },
         {
-            name: 'justifyCenter',
+            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_CENTER,
             value: false,
-            image: 'assets/svg/common/align-center-icon.svg',
+            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_CENTER_SVG_ROUTE,
         },
         {
-            name: 'justifyRight',
+            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_RIGHT,
             value: false,
-            image: 'assets/svg/common/align-right-icon.svg',
+            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_RIGHT_SVG_ROUTE,
         },
         {
-            name: 'justifyFull',
+            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_FULL,
             value: false,
-            image: 'assets/svg/common/align-full-icon.svg',
-        },
+            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_FULL_SVG_ROUTE,
+        }
     ];
 
     activeAlignment: string;
@@ -161,16 +145,18 @@ export class TaNoticeOfAsignmentComponent
         this.superControl.valueAccessor = this;
     }
     writeValue(obj: any): void {
-        this.noticeRef.nativeElement.value = obj;
+        // This is done to avoid reseting caret position by always setting innerHTML on text change
+        if (this.noticeRef.nativeElement.innerHTML == '') {
+            this.noticeRef.nativeElement.innerHTML = obj;
+        } else {
+            this.noticeRef.nativeElement.value = obj;
+        }
     }
     registerOnChange(_: any): void {}
     registerOnTouched(_: any): void {}
     setDisabledState?(_: boolean): void {}
 
     ngOnInit(): void {
-        this.activeFont = { id: 3, name: 'Default', showName: 'Default' };
-        this.activeFontSize = { id: 4, name: 14, showName: 14 };
-        this.shownValue = this.noticeValue;
         this.createForm();
     }
 
@@ -204,28 +190,28 @@ export class TaNoticeOfAsignmentComponent
     }
 
     changeFontSize(e): void {
-        this.activeFontSize = e.additionalText;
-        this.executeEditor('fontSize', e.additionalText);
+        this.activeFontSize = e.size;
+        this.executeEditor(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE, e.size);
     }
 
     toggleDropdown(): void {
         this.showDropdown = !this.showDropdown;
     }
 
-    executeEditor(action: string, color?: string) {
+    executeEditor(action: string, actionParam?: string) {
         document.execCommand('styleWithCSS', false, 'true');
         if (this.range) {
             this.selectionTaken.removeAllRanges();
             this.selectionTaken.addRange(this.range);
         }
-        if (action !== 'foreColor') {
-            if (action != 'fontSize') {
+        if (action !== TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR) {
+            if (action != TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) {
                 this.showCollorPattern = false;
                 if (
-                    action == 'justifyLeft' ||
-                    action == 'justifyRight' ||
-                    action == 'justifyCenter' ||
-                    action == 'justifyFull'
+                    action == TaNoticeOfAssignmentConstants.TEXT_ALIGN_LEFT ||
+                    action == TaNoticeOfAssignmentConstants.TEXT_ALIGN_RIGHT ||
+                    action == TaNoticeOfAssignmentConstants.TEXT_ALIGN_CENTER ||
+                    action == TaNoticeOfAssignmentConstants.TEXT_ALIGN_FULL
                 ) {
                     this.activeAlignment = action;
                     let checkAlign = true;
@@ -249,12 +235,12 @@ export class TaNoticeOfAsignmentComponent
                         document.execCommand(action, false, null);
                     }
                 } else {
-                    this.activeOptions[action] = !this.activeOptions[action];
+                    this.toolbarActions[action] = !this.toolbarActions[action];
 
-                    if (!this.activeOptions[action]) {
+                    if (!this.toolbarActions[action]) {
                         if (this.value.replace('<br>', '') == '') {
                             this.selectionTaken.removeAllRanges();
-                        }
+                        }   
                         document.execCommand('styleWithCSS', false, 'false');
                         document.execCommand(action, false, null);
                     } else {
@@ -265,24 +251,22 @@ export class TaNoticeOfAsignmentComponent
             } else {
                 this.focusElement();
                 const fontSize =
-                    color == '10'
+                    actionParam == '10'
                         ? '1'
-                        : color == '13'
+                        : actionParam == '13'
                         ? '2'
-                        : color == '18'
-                        ? '4'
-                        : '5';
+                        : '4';
                 document.execCommand(action, false, fontSize);
             }
         } else {
-            this.selectedColorName = color;
+            this.selectedColorName = actionParam;
             setTimeout(() => {
                 this.focusElement();
                 setTimeout(() => {
                     this.focusElement();
-                    this.selectedPaternColor = color;
+                    this.selectedPaternColor = actionParam;
                     this.defaultColorSet = true;
-                    document.execCommand('foreColor', false, color);
+                    document.execCommand(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR, false, actionParam);
                 });
             });
         }
@@ -305,25 +289,23 @@ export class TaNoticeOfAsignmentComponent
     }
 
     checkActiveItems() {
-        for (const act in this.activeOptions) {
-            this.activeOptions[act] = document.queryCommandState(act);
+        for (const action in this.toolbarActions) {
+            this.toolbarActions[action] = document.queryCommandState(action);
 
             clearTimeout(this.slowTimeout);
             this.slowTimeout = setTimeout(() => {
                 const findedColor = this.customSelectColor.find(
-                    (item) => item == document.queryCommandValue('ForeColor')
+                    (item) => item == document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR)
                 );
                 this.selectedColorName = findedColor;
             }, 200);
-            this.selectedPaternColor = document.queryCommandValue('ForeColor');
+            this.selectedPaternColor = document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR);
             this.activeFont =
-                document.queryCommandValue('FontSize') == '1'
-                    ? this.fontSizeList[3]
-                    : document.queryCommandValue('FontSize') == '4'
-                    ? this.fontSizeList[1]
-                    : document.queryCommandValue('FontSize') == '5'
-                    ? this.fontSizeList[0]
-                    : this.fontSizeList[2];
+                document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '1'
+                    ? this.fontSizeOptions[2]
+                    : document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '5'
+                    ? this.fontSizeOptions[0]
+                    : this.fontSizeOptions[1];
         }
 
         this.alignOptions.map((align) => {
