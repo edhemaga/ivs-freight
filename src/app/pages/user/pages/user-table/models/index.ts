@@ -1,0 +1,1 @@
+export * from './user-table-data.model';
