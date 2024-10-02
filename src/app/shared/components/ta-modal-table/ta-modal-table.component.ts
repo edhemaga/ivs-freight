@@ -34,6 +34,7 @@ import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-moda
 import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
 import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
 import { TaModalTableLoadItemsComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-load-items/ta-modal-table-load-items.component';
+import { TaModalTableDepartmentComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-department/ta-modal-table-department.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -44,7 +45,7 @@ import { DriverService } from '@pages/driver/services/driver.service';
 import { FormService } from '@shared/services/form.service';
 
 // constants
-import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';
+import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/';
 
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
@@ -82,6 +83,7 @@ import {
     RepairShopContactResponse,
     LoadStopItemCommand,
     TrailerTypeResponse,
+    CompanyOfficeDepartmentContactResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -113,6 +115,7 @@ import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
         TaModalTableFuelCardComponent,
         TaModalTablePreviousAddressesComponent,
         TaModalTableLoadItemsComponent,
+        TaModalTableDepartmentComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -137,6 +140,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
     @Input() isHazardous: boolean;
     @Input() selectedTrailer: TrailerTypeResponse;
+    @Input() departments: DepartmentResponse[];
+    
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
@@ -301,6 +306,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         return this.tableType === ModalTableTypeEnum.LOAD_ITEMS;
     }
 
+    get isDepartmentContactTable() {
+        return this.tableType === ModalTableTypeEnum.DEPARTMENT_CONTACT;
+    }
+
     public trackByIdentity = (_: number, item: string): string => item;
 
     private createForm(): void {
@@ -315,12 +324,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             fuelCardTableItems: this.formBuilder.array([]),
             previousAddressesTableItems: this.formBuilder.array([]),
             loadModalTableItems: this.formBuilder.array([]),
+            departmentTableItems: this.formBuilder.array([]),
         });
     }
 
     private resetSelected(): void {
         if (this.isRepairBillTable || this.isRepairOrderTable)
             this.selectedTruckTrailerRepairPm = [];
+        if (this.isDepartmentContactTable) this.modalTableForm.reset();
     }
 
     public onSelectAddress(event: {
@@ -596,6 +607,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.LOAD_ITEM_TABLE_HEADER_ITEMS;
 
                 break;
+            case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                this.modalTableHeaders =
+                    ModalTableConstants.DEPARTMENT_CONTACT_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -699,6 +715,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.LOAD_ITEMS:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.DEPARTMENT_CONTACT
                 ) as UntypedFormArray;
             default:
                 break;
@@ -831,7 +851,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         null,
                         this.formService.rangeValidator(-20, 99),
                     ],
-                    weight: [null, this.formService.rangeValidator(0, 9999999, 7)],
+                    weight: [
+                        null,
+                        this.formService.rangeValidator(0, 9999999, 7),
+                    ],
                     length: [null, this.formService.rangeValidator(0, 999)],
                     height: [null, this.formService.rangeValidator(0, 999)],
                     tarp: [null],
@@ -849,6 +872,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                newFormArrayRow = this.formBuilder.group({
+                    department: [null, [Validators.required]],
+                    phone: [null, [Validators.required, phoneFaxRegex]],
+                    extensionPhone: [null, phoneExtension],
+                    email: [null, [Validators.required]],
+                });
             default:
                 break;
         }
@@ -947,6 +977,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.LOAD_ITEMS:
                 isInputHoverRow =
                     ModalTableConstants.IS_INPUT_HOVER_ROW_LOAD_ITEMS;
+            case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_DEPARTMENT_CONTACTS;
                 break;
         }
 
@@ -1024,6 +1057,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.handleLoadModalItems(data, i);
 
                     break;
+                case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                    this.handleDepartmentContactData(data, i);
+
+                    break;
                 default:
                     break;
             }
@@ -1059,6 +1096,22 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             department: contact.department?.name,
             fullName: contact.fullName,
             email: contact.email,
+        });
+
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
+        this.modalTableValueEmitter.emit(this.getFormArray().value);
+    }
+
+    private handleDepartmentContactData(
+        contact: CompanyOfficeDepartmentContactResponse,
+        i: number
+    ) {
+        const formGroup = this.getFormArray().at(i);
+        formGroup.patchValue({
+            phone: contact.phone ?? null,
+            extensionPhone: contact.extensionPhone ?? null,
+            department: contact.department?.name,
+            email: contact.email ?? null,
         });
 
         // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL

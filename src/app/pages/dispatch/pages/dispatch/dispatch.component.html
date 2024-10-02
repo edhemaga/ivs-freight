@@ -25,6 +25,7 @@
                     [isAllBoardsList]="
                         selectedDispatcher?.name === 'All Boards'
                     "
+                    [isUnlockable]="selectedDispatcher?.canUnlock"
                     [isNoteExpanded]="isNoteExpanded"
                     [sortBy]="sortBy"
                     [sortDirection]="sortDirection"
