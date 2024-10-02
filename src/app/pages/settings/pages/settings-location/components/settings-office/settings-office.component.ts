@@ -67,38 +67,7 @@ export class SettingsOfficeComponent
         super.ngOnInit();
 
         this.getInitalList();
-    }
-
-    private getInitalList() {
-        this.officeData = this.activatedRoute.snapshot.data.office.pagination;
-
-        this.officeData.data = this.officeData.data.map((office) => {
-            const groupedContacts = office.departmentContacts.reduce(
-                (acc, contact) => {
-                    const departmentName = contact.department?.name;
-
-                    if (departmentName) {
-                        if (!acc[departmentName]) {
-                            acc[departmentName] = {
-                                isCardOpen: true,
-                                cardName: departmentName,
-                                values: [],
-                            };
-                        }
-                        acc[departmentName].values.push(contact);
-                    }
-
-                    return acc;
-                },
-                {} as Record<string, SettingsDepartmentCardModel>
-            );
-
-            return {
-                ...office,
-                groupedContacts,
-            };
-        });
-    }
+    } 
 
     public onCardToggle(i: number): void {
         const office = this.officeData.data[
@@ -116,8 +85,47 @@ export class SettingsOfficeComponent
         this.companyOfficeService
             .getOfficeList()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.officeData = item.pagination));
+            .subscribe((item) => {
+                this.officeData = item.pagination;
+                this.officeData.data = this.processOfficeData(this.officeData.data);
+            });
     }
+    
+    private getInitalList(): void {
+        this.officeData = this.activatedRoute.snapshot.data.office.pagination;
+        this.officeData.data = this.processOfficeData(this.officeData.data);
+    }
+    
+    private processOfficeData(data: CompanyOfficeResponse[]): CompanyOfficeResponse[] {
+        return data.map((office) => {
+            const groupedContacts = office.departmentContacts.reduce(
+                (acc, contact) => {
+                    const departmentName = contact.department?.name;
+    
+                    if (departmentName) {
+                        if (!acc[departmentName]) {
+                            acc[departmentName] = {
+                                isCardOpen: true,
+                                cardName: departmentName,
+                                values: [],
+                            };
+                        }
+                        acc[departmentName].values.push(contact);
+                    }
+    
+                    return acc;
+                },
+                {} as Record<string, SettingsDepartmentCardModel>
+            );
+    
+            return {
+                ...office,
+                groupedContacts,
+            };
+        });
+    }
+    
+ 
 
     public handleConfirmation(res: Confirmation): void {
         if (
