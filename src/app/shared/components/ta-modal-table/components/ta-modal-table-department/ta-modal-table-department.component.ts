@@ -23,6 +23,9 @@ import { DepartmentResponse } from 'appcoretruckassist';
 // Const
 import { ModalTableFieldsConstants } from '@shared/components/ta-modal-table/utils/constants/';
 
+// Svg routes
+import { TaModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg.routes';
+
 @Component({
     selector: 'app-ta-modal-table-department',
     templateUrl: './ta-modal-table-department.component.html',
@@ -40,16 +43,13 @@ import { ModalTableFieldsConstants } from '@shared/components/ta-modal-table/uti
     ],
 })
 export class TaModalTableDepartmentComponent {
+
+    public svgRoutes = TaModalTableSvgRoutes;
+
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() departments: DepartmentResponse[];
-
-    // Fields
-    public departmentField = ModalTableFieldsConstants.getDepartmentField();
-    public phoneField = ModalTableFieldsConstants.getPhoneField();
-    public phoneExtField = ModalTableFieldsConstants.getPhoneExtField();
-    public emailField = ModalTableFieldsConstants.getEmailField();
+    @Input() departments: DepartmentResponse[]; 
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -63,6 +63,12 @@ export class TaModalTableDepartmentComponent {
         isInputHoverRowIndex: number;
         inputIndex: number;
     }> = new EventEmitter();
+
+    // Fields
+    public departmentField = ModalTableFieldsConstants.getDepartmentField();
+    public phoneField = ModalTableFieldsConstants.getPhoneField();
+    public phoneExtField = ModalTableFieldsConstants.getPhoneExtField();
+    public emailField = ModalTableFieldsConstants.getEmailField();
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;

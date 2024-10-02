@@ -635,6 +635,7 @@ export * from './multipleChangeTruckStatusCommand';
 export * from './mvrAuthFeedbackResponse';
 export * from './mvrResponse';
 export * from './notificationEntity';
+export * from './openHoursDayOfWeek';
 export * from './ownerDetailsResponse';
 export * from './ownerHistoryResponse';
 export * from './ownerIntervalResponse';

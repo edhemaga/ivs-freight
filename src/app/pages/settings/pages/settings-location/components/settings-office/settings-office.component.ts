@@ -26,16 +26,7 @@ import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
-interface DisplayOffice {
-    isCardOpen: boolean;
-    cardName: string;
-    values: CompanyOfficeDepartmentContactResponse[];
-}
-
-interface CompanyOfficeResponseWithGroupedContacts
-    extends CompanyOfficeResponse {
-    groupedContacts?: Record<string, DisplayOffice>;
-}
+import { CompanyOfficeResponseWithGroupedContacts, SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
 
 @Component({
     selector: 'app-settings-office',
@@ -76,38 +67,7 @@ export class SettingsOfficeComponent
         super.ngOnInit();
 
         this.getInitalList();
-    }
-
-    private getInitalList() {
-        this.officeData = this.activatedRoute.snapshot.data.office.pagination;
-
-        this.officeData.data = this.officeData.data.map((office) => {
-            const groupedContacts = office.departmentContacts.reduce(
-                (acc, contact) => {
-                    const departmentName = contact.department?.name;
-
-                    if (departmentName) {
-                        if (!acc[departmentName]) {
-                            acc[departmentName] = {
-                                isCardOpen: true,
-                                cardName: departmentName,
-                                values: [],
-                            };
-                        }
-                        acc[departmentName].values.push(contact);
-                    }
-
-                    return acc;
-                },
-                {} as Record<string, DisplayOffice>
-            );
-
-            return {
-                ...office,
-                groupedContacts,
-            };
-        });
-    }
+    } 
 
     public onCardToggle(i: number): void {
         const office = this.officeData.data[
@@ -125,8 +85,47 @@ export class SettingsOfficeComponent
         this.companyOfficeService
             .getOfficeList()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.officeData = item.pagination));
+            .subscribe((item) => {
+                this.officeData = item.pagination;
+                this.officeData.data = this.processOfficeData(this.officeData.data);
+            });
     }
+    
+    private getInitalList(): void {
+        this.officeData = this.activatedRoute.snapshot.data.office.pagination;
+        this.officeData.data = this.processOfficeData(this.officeData.data);
+    }
+    
+    private processOfficeData(data: CompanyOfficeResponse[]): CompanyOfficeResponse[] {
+        return data.map((office) => {
+            const groupedContacts = office.departmentContacts.reduce(
+                (acc, contact) => {
+                    const departmentName = contact.department?.name;
+    
+                    if (departmentName) {
+                        if (!acc[departmentName]) {
+                            acc[departmentName] = {
+                                isCardOpen: true,
+                                cardName: departmentName,
+                                values: [],
+                            };
+                        }
+                        acc[departmentName].values.push(contact);
+                    }
+    
+                    return acc;
+                },
+                {} as Record<string, SettingsDepartmentCardModel>
+            );
+    
+            return {
+                ...office,
+                groupedContacts,
+            };
+        });
+    }
+    
+ 
 
     public handleConfirmation(res: Confirmation): void {
         if (

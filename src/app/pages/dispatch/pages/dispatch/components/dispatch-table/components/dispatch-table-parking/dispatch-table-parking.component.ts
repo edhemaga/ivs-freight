@@ -47,6 +47,7 @@ export class DispatchTableParkingComponent implements OnInit {
     @Input() truckId: number;
     @Input() trailerId: number;
     @Input() isHoveringRow: boolean;
+    @Input() canUnlock: boolean;
 
     // Ouputs
     @Output()
