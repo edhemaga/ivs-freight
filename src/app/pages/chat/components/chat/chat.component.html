@@ -155,44 +155,42 @@
         </div>
 
         <!-- Profile details -->
-        <div>
-            <ng-container *ngIf="!isAttachmentUploadActive">
-                <div class="profile-details-wrapper d-flex">
-                    <ng-container *ngIf="isProfileDetailsDisplayed">
-                        <div class="profile-details">
-                            <app-chat-user-profile
-                                [data]="userProfileData | async"
-                                [profileDetailsType]="
-                                    chatConversationProfileDetailsType.SAFETY
-                                "
-                                (isProfileDetailsClosed)="
-                                    displayProfileDetails($event)
-                                "
-                            ></app-chat-user-profile>
-                        </div>
-                    </ng-container>
+        <ng-container *ngIf="!isAttachmentUploadActive">
+            <div class="profile-details-wrapper d-flex">
+                <ng-container *ngIf="isProfileDetailsDisplayed">
+                    <div class="profile-details">
+                        <app-chat-user-profile
+                            [data]="userProfileData | async"
+                            [profileDetailsType]="
+                                chatConversationProfileDetailsType.SAFETY
+                            "
+                            (isProfileDetailsClosed)="
+                                displayProfileDetails($event)
+                            "
+                        ></app-chat-user-profile>
+                    </div>
+                </ng-container>
 
-                    <ng-container
-                        *ngIf="
-                            isGroupMembersDisplayed &&
-                            conversationParticipants.length
-                        "
-                    >
-                        <div class="profile-details">
-                            <app-chat-channel-participant-list
-                                [@fadeInOutHorizontal]
-                                [conversationParticipants]="
-                                    conversationParticipants
-                                "
-                                (closeGroupMembersOverviewEvent)="
-                                    closeGroupMembersOverview($event.value)
-                                "
-                            ></app-chat-channel-participant-list>
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
+                <ng-container
+                    *ngIf="
+                        isGroupMembersDisplayed &&
+                        conversationParticipants.length
+                    "
+                >
+                    <div class="profile-details">
+                        <app-chat-channel-participant-list
+                            [@fadeInOutHorizontal]
+                            [conversationParticipants]="
+                                conversationParticipants
+                            "
+                            (closeGroupMembersOverviewEvent)="
+                                closeGroupMembersOverview($event.value)
+                            "
+                        ></app-chat-channel-participant-list>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
     </div>
 </div>
 
