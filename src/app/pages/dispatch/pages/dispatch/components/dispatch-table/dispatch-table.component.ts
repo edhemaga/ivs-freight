@@ -111,6 +111,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
+    @Input() set canUnlock(value: boolean) {
+        this._canUnlock = value;
+    }
+
     @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
 
@@ -191,6 +195,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     };
 
     public progressBarData: DispatchProgressBarData[] = [];
+
+    public _canUnlock: boolean = false;
 
     startIndexTrailer: number;
     startIndexDriver: number;

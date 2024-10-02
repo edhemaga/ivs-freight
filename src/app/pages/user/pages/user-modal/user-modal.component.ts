@@ -189,13 +189,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save': {
+            case TableStringEnum.SAVE: {
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
-
                     return;
                 }
                 if (this.editData?.id) {
@@ -215,27 +211,23 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'deactivate': {
-                if (this.editData) {
-                    this.updateUserStatus(this.editData.id);
-                }
+            case TableStringEnum.DEACTIVATE:
+                if (this.editData)
+                    this.updateUserStatus(this.editData.id, false);
                 break;
-            }
 
-            case 'delete': {
+            case TableStringEnum.DELETE:
                 if (this.editData) {
                     this.deleteUserById(this.editData.id);
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: TableStringEnum.DELETE,
                         status: true,
                         close: false,
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -991,9 +983,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateUserStatus(id: number) {
+    private updateUserStatus(id: number, activate: boolean): void {
         this.companyUserService
-            .updateUserStatus(id)
+            .updateUserStatus(id, activate)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: HttpResponseBase) => {
@@ -1001,7 +993,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.userStatus = !this.userStatus;
 
                         this.modalService.changeModalStatus({
-                            name: 'deactivate',
+                            name: TableStringEnum.DEACTIVATE,
                             status: this.userStatus,
                         });
                     }

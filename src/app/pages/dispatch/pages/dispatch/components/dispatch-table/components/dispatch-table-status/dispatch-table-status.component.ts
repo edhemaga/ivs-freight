@@ -49,6 +49,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatchBoardId?: number;
 
     @Input() isHoveringRow: boolean;
+    
+    @Input() canUnlock: boolean;
 
     private destroy$ = new Subject<void>();
 
