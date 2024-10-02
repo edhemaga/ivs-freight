@@ -8,7 +8,7 @@
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
             'repair-order-table-header': isRepairOrderTable,
-            'contact-table-header ': isContactTable,
+            'contact-table-header ': isContactTable || isDepartmentContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
@@ -30,8 +30,12 @@
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
                     'justify-content-end subtotal':
-                        i === 5 && !isContactTable && !isLoadItemTable,
-                    'first-item': i === 0 && isContactTable,
+                        i === 5 &&
+                        !isContactTable &&
+                        !isLoadItemTable &&
+                        !isDepartmentContactTable,
+                    'first-item':
+                        i === 0 && isContactTable && isDepartmentContactTable,
                     'stop-items-number': isLoadItemTable && i === 0,
                     'stop-items-desc': isLoadItemTable && i === 1
                 }"
@@ -72,6 +76,7 @@
                                 : isEmailTable
                                 : isRepairBillTable || isRepairOrderTable
                                 : isContactTable
+                                : isDepartmentContactTable
                                 : isPMTruckTable
                                 : isPMTrailerTable
                                 : isOffDutyLocationTable
@@ -201,6 +206,17 @@
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-previous-addresses>
+
+        <app-ta-modal-table-department
+            *ngSwitchCase="modalTableTypeEnum.DEPARTMENT_CONTACT"
+            [modalTableForm]="modalTableForm"
+            [arrayName]="taModalTableStringEnum.DEPARTMENT_CONTACT"
+            [isInputHoverRows]="isInputHoverRows"
+            [departments]="departments"
+            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            (onInputHover)="handleInputHover($event)"
+        >
+        </app-ta-modal-table-department>
 
         <ng-container *ngIf="isHazardous !== undefined">
             <app-ta-modal-table-load-items

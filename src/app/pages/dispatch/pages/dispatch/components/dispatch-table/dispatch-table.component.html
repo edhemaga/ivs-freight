@@ -614,6 +614,7 @@
                                         isDispatchBoardLocked &&
                                         isHoveringRowIndex === rowIndex
                                     "
+                                    [canUnlock]="_canUnlock"
                                 >
                                 </app-dispatch-table-status>
                             </td>
@@ -748,6 +749,7 @@
                                             isHoveringRowIndex === rowIndex &&
                                             parkingList.length
                                         "
+                                        [canUnlock]="_canUnlock"
                                         (updateParking)="
                                             updateParking($event, item.id)
                                         "
@@ -817,6 +819,7 @@
                                         "
                                         [rowIndex]="rowIndex"
                                         [dispatchId]="item.id"
+                                        [canUnlock]="_canUnlock"
                                         (saveNoteValue)="saveNoteValue($event)"
                                     >
                                     </app-dispatch-table-note>
@@ -826,7 +829,9 @@
                             <td class="box-item">
                                 <div
                                     class="main_inside"
-                                    [class.filled]="item.driver && item.truck"
+                                    [class.filled]="
+                                        item.driver && item.truck && _canUnlock
+                                    "
                                 >
                                     <div class="padding-inside p-0">
                                         <app-dispatch-table-assign-load
@@ -842,6 +847,7 @@
                                                 isDispatchBoardLocked &&
                                                 isHoveringRowIndex === rowIndex
                                             "
+                                            [canUnlock]="_canUnlock"
                                         ></app-dispatch-table-assign-load>
                                     </div>
                                 </div>

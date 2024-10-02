@@ -28,7 +28,10 @@ import {
     UserInactiveStore,
 } from '@pages/user/state/user-inactive-state/user-inactive.store';
 import { select, Store } from '@ngrx/store';
-import { selectActiveTabCards, selectInactiveTabCards } from '@pages/user/pages/user-card-modal/state';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/user/pages/user-card-modal/state';
 
 // pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
@@ -48,6 +51,7 @@ import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyUserResponse } from 'appcoretruckassist';
+import { UserTableData } from '@pages/user/pages/user-table/models';
 
 @Component({
     selector: 'app-user-table',
@@ -147,11 +151,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             break;
                         }
                         case TableStringEnum.ACTIVATE: {
-                            this.changeUserStatus(res.id);
+                            this.changeUserStatus(res.id, true);
                             break;
                         }
                         case TableStringEnum.DEACTIVATE: {
-                            this.changeUserStatus(res.id);
+                            this.changeUserStatus(res.id, false);
                             break;
                         }
                         case TableStringEnum.MULTIPLE_DELETE: {
@@ -219,14 +223,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 2300);
                 }
                 // On Update User
@@ -244,14 +248,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return user;
                     });
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
                 }
                 // On Update User Status
@@ -275,14 +279,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...sortedUserData];
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
                 }
             });
@@ -569,10 +573,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tablePersonalDetailsAddress: data?.address?.address,
             tableTableStatus: {
                 status:
-                    data?.userType?.name && data?.userType?.name !== '0'
-                        ? data.userType.name
-                        : 'No',
-                isInvited: false,
+                    data?.userStatus === TableStringEnum.ZERO
+                        ? TableStringEnum.NA
+                        : data?.userStatus,
             },
             tableBillingDetailsBankName: data?.bank?.name,
             tableBillingDetailsRouting: data?.routingNumber,
@@ -590,13 +593,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
-            userStatus: data.status as any, //leave this any for now
-            tableCantSelect: data.userType.name === 'Owner',
+            tableCantSelect: data.userStatus === TableStringEnum.OWNER,
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
                 content:
-                    data.userType.name.toLowerCase() === 'owner'
+                    data.userStatus === TableStringEnum.OWNER
                         ? this.getOwnerDropdown(data)
                         : this.getDropdownContent(data),
             },
@@ -610,7 +612,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
         const dropdownContent = UserConstants.getUserTableDropdown(data);
-        data.verified ? dropdownContent.splice(2, 1) : dropdownContent;
+        data.userStatus !== TableStringEnum.INVITED &&
+        data.userStatus !== TableStringEnum.EXPIRED
+            ? dropdownContent.splice(2, 1)
+            : dropdownContent;
         return dropdownContent;
     }
 
@@ -660,12 +665,31 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Change User Status
-    changeUserStatus(id: number) {
+    public changeUserStatus(id: number, activate: boolean): void {
         this.userService
-            .updateUserStatus(id)
+            .updateUserStatus(id, activate, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
+                next: () => {
+                    this.viewData = this.viewData.map((user: UserTableData) => {
+                        if (user.id === id)
+                            user.actionAnimation = TableStringEnum.UPDATE;
+
+                        return user;
+                    });
+
+                    this.updateDataCount();
+
+                    const interval = setInterval(() => {
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
+
+                        clearInterval(interval);
+                    }, 900);
+                },
                 error: () => {},
             });
     }
@@ -686,14 +710,14 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.updateDataCount();
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 true,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
                 },
                 error: () => {},
@@ -706,10 +730,12 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.tableData[0].length = userCount.active;
+        this.tableData[1].length = userCount.inactive;
 
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = userCount.active;
+        updatedTableData[1].length = userCount.inactive;
 
         this.tableData = [...updatedTableData];
     }
@@ -827,7 +853,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ...event,
                     type: TableStringEnum.EDIT,
                     disableButton:
-                        event.data?.userType?.name !== TableStringEnum.OWNER,
+                        event.data?.userStatus !== TableStringEnum.OWNER,
                 }
             );
         }
@@ -907,13 +933,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                const inetval = setInterval(() => {
+                const interval = setInterval(() => {
                     this.viewData = MethodsGlobalHelper.closeAnimationAction(
                         true,
                         this.viewData
                     );
 
-                    clearInterval(inetval);
+                    clearInterval(interval);
                 }, 900);
 
                 this.tableService.sendRowsSelected([]);

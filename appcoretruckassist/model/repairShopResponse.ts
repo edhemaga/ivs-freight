@@ -34,10 +34,6 @@ export interface RepairShopResponse {
     pinned?: boolean;
     order?: number;
     cost?: number;
-    openHoursSameAllDays?: boolean | null;
-    openAlways?: boolean | null;
-    startTimeAllDays?: string | null;
-    endTimeAllDays?: string | null;
     openHoursToday?: string | null;
     note?: string | null;
     companyOwned?: boolean;

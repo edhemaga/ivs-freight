@@ -124,7 +124,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
+    @Input() set canUnlock(value: boolean) {
+        this._canUnlock = value;
+    }
+
     @Input() gridIndex: number;
+
     @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
 
@@ -210,6 +215,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     public tableBodyRowWidth: number;
 
     public progressBarData: DispatchProgressBarData[] = [];
+
+    public _canUnlock: boolean = false;
 
     openedHosData = [];
 
