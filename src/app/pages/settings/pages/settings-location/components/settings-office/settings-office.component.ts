@@ -34,7 +34,7 @@ interface DisplayOffice {
 
 interface CompanyOfficeResponseWithGroupedContacts
     extends CompanyOfficeResponse {
-    groupedContacts?: Record<string, DisplayOffice>; // Use ? if it's optional
+    groupedContacts?: Record<string, DisplayOffice>;
 }
 
 @Component({

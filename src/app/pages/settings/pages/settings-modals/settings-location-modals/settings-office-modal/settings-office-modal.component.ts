@@ -72,6 +72,8 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -167,7 +169,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public departmentFormValid: boolean = true;
     public isNewContactAdded: boolean;
-    public isCreatedNewStopItemsRow: boolean;
+    public isCreatedNewDepartmentRow: boolean;
     public departmentContactsVisible: boolean;
     public departments: DepartmentResponse[];
     public departmentContacts: CompanyOfficeDepartmentContactResponse[] = [];
@@ -218,14 +220,16 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction({ action }: { action: string }): void {
-        if (action === TableStringEnum.CLOSE) {
+        if (action === TaModalActionEnums.CLOSE) {
             this.handleModalClose();
-        } else if (action === TableStringEnum.SAVE) {
+        } else if (action === TaModalActionEnums.SAVE) {
             this.handleModalSave();
-        } else if (action === TableStringEnum.DELETE) {
+        }  else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+            this.handleModalSave(true);
+        } else if (action === TaModalActionEnums.DELETE) {
             this.deleteCompanyOfficeById(this.editData.id);
             this.setModalSpinner({
-                action: TableStringEnum.DELETE,
+                action: TaModalActionEnums.DELETE,
                 status: true,
                 close: false,
             });
@@ -251,7 +255,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private handleModalSave(): void {
+    private handleModalSave(addNew?: boolean): void {
         if (this.officeForm.invalid || !this.isFormDirty) {
             this.inputService.markInvalid(this.officeForm);
             return;
@@ -259,7 +263,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type === TableStringEnum.EDIT) {
             this.updateCompanyOffice(this.editData.id);
         } else {
-            this.addCompanyOffice();
+            this.addCompanyOffice(addNew);
         }
         this.setModalSpinner({ action: null, status: true, close: false });
     }
@@ -338,7 +342,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addCompanyOffice(): void {
+    private addCompanyOffice(addNew?: boolean): void {
         const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const newOffice: CreateCompanyOfficeCommand = {
@@ -361,7 +365,20 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .addCompanyOffice(newOffice)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => this.handleModalResponse(),
+                next: () => {
+                    if(addNew) {
+                        this.officeForm.reset();
+                        this.officeForm
+                        .get(SettingsFormEnum.IS_OWNER)
+                        .patchValue(true);
+                        this.departmentContacts = [];
+                        this.isCreatedNewDepartmentRow = false;
+                        this.isNewContactAdded = false;
+                        this.departmentContactsVisible = false;
+                    } else {
+                        this.handleModalResponse();
+                    }
+                },
                 error: () =>
                     this.setModalSpinner({
                         action: null,
@@ -565,12 +582,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public addContact(): void {
         if (this.departmentFormValid) {
             this.isNewContactAdded = true;
-            this.isCreatedNewStopItemsRow = true;
+            this.isCreatedNewDepartmentRow = true;
             this.departmentContactsVisible = true;
 
             setTimeout(() => {
                 this.isNewContactAdded = false;
-                this.isCreatedNewStopItemsRow = false;
+                this.isCreatedNewDepartmentRow = false;
             }, 400);
         }
     }

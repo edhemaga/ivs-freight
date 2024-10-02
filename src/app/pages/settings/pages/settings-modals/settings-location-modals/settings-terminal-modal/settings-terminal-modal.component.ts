@@ -287,6 +287,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.addTerminal(true);
+                break;
             }
             case TaModalActionEnums.DELETE: {
                 this.deleteTerminalById(this.editData.id);

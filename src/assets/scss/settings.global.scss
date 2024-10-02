@@ -53,9 +53,6 @@ p {
 
     &-grid {
         width: 100%;
-        display: grid;
-        grid-template-rows: 32px auto;
-        row-gap: 12px;
     }
 
     .settings-col-1 {
@@ -79,13 +76,14 @@ p {
     background-color: $settings-background;
     border-radius: $settings-borderRadius;
     height: 100%;
+    margin-bottom: 12px;
 
     .no-factoring-data {
         justify-content: flex-end !important;
     }
 
     .settings-name {
-        padding: 7px 8px;
+        padding: 5px 8px;
         user-select: none;
     }
 
@@ -156,7 +154,7 @@ p {
 .toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     //max-width: 440px;
     width: 100%;
 
