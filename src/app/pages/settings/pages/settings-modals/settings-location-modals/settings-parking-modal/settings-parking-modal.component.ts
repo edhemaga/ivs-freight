@@ -291,6 +291,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.addParking(true);
+                break;
             }
             case TaModalActionEnums.DELETE:  {
                 this.deleteParkingById(this.editData.id);
