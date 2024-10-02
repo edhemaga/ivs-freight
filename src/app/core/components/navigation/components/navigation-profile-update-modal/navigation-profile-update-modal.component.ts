@@ -303,14 +303,14 @@ export class NavigationProfileUpdateModalComponent
     }
 
     public onUploadImage(event: any) {
-        let base64String = event?.files[0]?.url;
+        const base64String = event?.files[0]?.url;
         if (!base64String) {
             this.profileUserForm.get('avatar').patchValue(null);
             return;
         }
 
-        let parts = base64String.split(',');
-        let base64Data = parts[1];
+        const parts = base64String.split(',');
+        const base64Data = parts[1];
 
         if (base64Data)
             this.profileUserForm.get('avatar').patchValue(base64Data);
