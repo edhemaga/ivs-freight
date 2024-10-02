@@ -330,6 +330,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     private resetSelected(): void {
         if (this.isRepairBillTable || this.isRepairOrderTable)
             this.selectedTruckTrailerRepairPm = [];
+        if (this.isDepartmentContactTable) this.modalTableForm.reset();
     }
 
     public onSelectAddress(event: {

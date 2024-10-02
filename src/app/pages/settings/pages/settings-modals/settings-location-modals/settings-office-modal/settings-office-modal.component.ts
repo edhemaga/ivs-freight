@@ -174,6 +174,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public departments: DepartmentResponse[];
     public departmentContacts: CompanyOfficeDepartmentContactResponse[] = [];
 
+    public isResetSelected: boolean = false;
+    
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -375,6 +377,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         this.isCreatedNewDepartmentRow = false;
                         this.isNewContactAdded = false;
                         this.departmentContactsVisible = false;
+                        this.isResetSelected = !this.isResetSelected;
+                        this.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
                     } else {
                         this.handleModalResponse();
                     }
