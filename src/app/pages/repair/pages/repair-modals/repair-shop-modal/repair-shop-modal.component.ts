@@ -441,14 +441,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.ADDRESS]:
                                 repairShop.address.address,
                             [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
-                                repairShop.openHoursSameAllDays,
-                            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
-                                repairShop.startTimeAllDays,
-                            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
-                                repairShop.endTimeAllDays,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
-                                repairShop.openAlways,
-                            [RepairShopModalStringEnum.ROUTING]:
                                 repairShop.routing,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
