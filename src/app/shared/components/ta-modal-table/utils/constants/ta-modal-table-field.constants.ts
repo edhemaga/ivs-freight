@@ -31,7 +31,7 @@ export class ModalTableFieldsConstants {
         return {
             name: 'ext',
             type: 'text',
-            label: 'ext',
+            label: 'Ext.',
             placeholderInsteadOfLabel: true,
             minLength: 5,
             maxLength: 64,
@@ -45,7 +45,7 @@ export class ModalTableFieldsConstants {
         return {
             name: 'email',
             type: 'text',
-            label: 'email',
+            label: 'Email',
             placeholderInsteadOfLabel: true,
             minLength: 5,
             maxLength: 64,
