@@ -28,6 +28,7 @@ import {
     DispatchStatusResponse,
     CreateDispatchCommand,
     UpdateDispatchCommand,
+    AddressResponse,
 } from 'appcoretruckassist';
 import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
 
@@ -48,6 +49,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
     @Input() dispatchBoardId?: number;
 
     @Input() isHoveringRow: boolean;
+    
+    @Input() isUnlockable: boolean;
 
     private destroy$ = new Subject<void>();
 
@@ -132,7 +135,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             .subscribe((confirmationResponse) => {
                 this.updateStatus(
                     confirmationResponse.data.id,
-                    confirmationResponse.data.nameBack
+                    confirmationResponse.data.nameBack,
+                    confirmationResponse.newLocation ?? null
                 );
             });
     }
@@ -150,7 +154,11 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             )
             .subscribe();
     }
-    public updateStatus(statusId: number, statusName: DispatchStatus): void {
+    public updateStatus(
+        statusId: number,
+        statusName: DispatchStatus,
+        newLocation?: AddressResponse
+    ): void {
         const previousData = this.dispatcher;
 
         const {
@@ -164,6 +172,8 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             location,
             note,
             parkingSlot,
+            latitude,
+            longitude,
         } = previousData;
 
         const updatedPreviousData:
@@ -178,7 +188,9 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
             trailerId: trailer?.id ?? null,
             driverId: driver?.id ?? null,
             coDriverId: coDriver?.id ?? null,
-            location,
+            location: newLocation?.address ?? location,
+            latitude: newLocation?.longLat?.latitude ?? latitude,
+            longitude: newLocation?.longLat?.longitude ?? longitude,
             note,
             loadIds: [],
             hoursOfService: null,

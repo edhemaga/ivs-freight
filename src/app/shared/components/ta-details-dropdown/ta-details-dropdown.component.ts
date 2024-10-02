@@ -101,9 +101,11 @@ export class TaDetailsDropdownComponent
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();
+    @Output() onPopoverVisiblityChange: EventEmitter<boolean> = new EventEmitter();
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
+    public isActionInProgress: boolean = false;
 
     constructor(
         private DetailsDataService: DetailsDataService,
@@ -154,6 +156,9 @@ export class TaDetailsDropdownComponent
             this.dropDownActive = tooltip.isOpen() ? this.id : -1;
             this.chnd.detectChanges();
         });
+
+        
+        this.onPopoverVisiblityChange.emit(true);
     }
 
     /**Function retrun id */
@@ -161,10 +166,15 @@ export class TaDetailsDropdownComponent
         return item.id;
     }
     onAction(action: any, event?: any) {
+        if (this.isActionInProgress) return;
+
+        this.isActionInProgress = true;
+
         event.stopPropagation();
         event.preventDefault();
 
         if (action.disabled) {
+            this.enableNewAction();
             return false;
         }
 
@@ -174,7 +184,14 @@ export class TaDetailsDropdownComponent
             type: action.name,
         });
 
+        this.enableNewAction();
         this.tooltip.close();
+    }
+
+    private enableNewAction(): void {
+        setTimeout(() => {
+            this.isActionInProgress = false;
+        }, 300);
     }
 
     subTypeAction(actionData: any, action: any, event?: any) {
@@ -206,6 +223,8 @@ export class TaDetailsDropdownComponent
         this.options.map((item) => {
             item['openSubtype'] = false;
         });
+
+        this.onPopoverVisiblityChange.emit(false);
     }
 
     popperOptions = (options: Partial<Options>) => {

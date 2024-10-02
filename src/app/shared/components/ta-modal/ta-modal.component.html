@@ -453,7 +453,7 @@
 
                             <!-- Deactivated -->
 
-                            <ng-container *ngIf="editData?.disableButton">
+                            <ng-container *ngIf="editData?.disableButton && !isDisableButtonHidden">
                                 <button
                                     (click)="onAction('deactivate')"
                                     class="modal-deactivate-btn"
@@ -862,12 +862,15 @@
                                     'mvr',
                                     'cdl',
                                     'load',
-                                    'comment'
+                                    'comment',
+                                    'Company Terminal',
+                                    'Company Parking',
+                                    'Company Office',
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
                         >
-                            No
+                            No 
                         </button>
                     </ng-container>
 

@@ -532,6 +532,7 @@
                                             isDispatchBoardLocked &&
                                             isHoveringRowIndex === rowIndex
                                         "
+                                        [isUnlockable]="_isUnlockable"
                                     ></app-dispatch-table-pre-trip-inspection>
                                 </td>
                             </ng-container>
@@ -590,6 +591,7 @@
                                         isDispatchBoardLocked &&
                                         isHoveringRowIndex === rowIndex
                                     "
+                                    [isUnlockable]="_isUnlockable"
                                 >
                                 </app-dispatch-table-status>
                             </td>
@@ -620,6 +622,11 @@
                                     [dispatchLoads]="
                                         currentDispatchGroupedLoadsResponse
                                     "
+                                    [columnWidth]="
+                                        resizedColumnsWidth[
+                                            'pickup_delivery'
+                                        ] ?? 340
+                                    "
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
@@ -634,8 +641,65 @@
                                 >
                                     <div class="main_inside filled">
                                         <div class="padding-inside">
-                                            <div class="info-item p-0 w-100">
-                                                <app-ta-gps-progressbar></app-ta-gps-progressbar>
+                                            <div
+                                                class="info-item d-block p-0 w-100"
+                                            >
+                                                <ng-container
+                                                    *ngIf="progressBarData?.[rowIndex]"
+                                                >
+                                                    <app-ca-progress-bar
+                                                        [currentPosition]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].currentPosition
+                                                        "
+                                                        [mileageInfo]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].mileageInfo
+                                                        "
+                                                        [currentStop]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].currentStop
+                                                        "
+                                                        [gpsTitle]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsTitle
+                                                        "
+                                                        [gpsIcon]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsIcon
+                                                        "
+                                                        [gpsInfo]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsInfo
+                                                        "
+                                                        [mileagesPercent]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].mileagesPercent
+                                                        "
+                                                        [totalMiles]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].totalMiles
+                                                        "
+                                                        [gpsLocationIcon]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsLocationIcon
+                                                        "
+                                                        [gpsProgress]="
+                                                            progressBarData[
+                                                                rowIndex
+                                                            ].gpsProgress
+                                                        "
+                                                    ></app-ca-progress-bar>
+                                                </ng-container>
                                             </div>
                                         </div>
                                     </div>
@@ -662,6 +726,7 @@
                                             isHoveringRowIndex === rowIndex &&
                                             parkingList.length
                                         "
+                                        [isUnlockable]="_isUnlockable"
                                         (updateParking)="
                                             updateParking($event, item.id)
                                         "
@@ -731,6 +796,7 @@
                                         "
                                         [rowIndex]="rowIndex"
                                         [dispatchId]="item.id"
+                                        [isUnlockable]="_isUnlockable"
                                         (saveNoteValue)="saveNoteValue($event)"
                                     >
                                     </app-dispatch-table-note>
@@ -740,7 +806,9 @@
                             <td class="box-item">
                                 <div
                                     class="main_inside"
-                                    [class.filled]="item.driver && item.truck"
+                                    [class.filled]="
+                                        item.driver && item.truck && _isUnlockable
+                                    "
                                 >
                                     <div class="padding-inside p-0">
                                         <app-dispatch-table-assign-load
@@ -756,6 +824,7 @@
                                                 isDispatchBoardLocked &&
                                                 isHoveringRowIndex === rowIndex
                                             "
+                                            [isUnlockable]="_isUnlockable"
                                         ></app-dispatch-table-assign-load>
                                     </div>
                                 </div>

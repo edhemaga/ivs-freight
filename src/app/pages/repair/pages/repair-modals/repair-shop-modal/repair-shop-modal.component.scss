@@ -4,71 +4,11 @@
     &__favorite {
         position: relative;
         bottom: 1px;
-        cursor: pointer;
+    } 
 
-        svg path {
-            transition: fill 0.3s ease-in-out;
-        }
-
-        &:hover svg path {
-            fill: $ta-black;
-        }
-
-        &-active svg path {
-            fill: $ta-blue-13;
-            &:hover {
-                fill: $ta-blue-15;
-            }
-        }
-    }
-
-    // Override tabs to match figma design
-    &__contact-table {
-        width: 600px;
-        overflow-x: scroll;
-        overflow-x: visible;
-        padding: 0;
-        scrollbar-width: thin !important;
-        .contact-table-header {
-            .table-header-box {
-                &:nth-child(1),
-                &:nth-child(2) {
-                    position: absolute;
-                    left: 0;
-                    top: auto;
-                    border-top-width: 1px;
-                    margin-top: -1px;
-                    background-color: $white;
-                }
-
-                &:nth-child(1) {
-                    width: 26px;
-                }
-                &:nth-child(2) {
-                    width: 170px;
-                    left: 26px;
-                }
-            }
-        }
-
-        .contact-table-container {
-            .contact-pinned {
-                position: absolute;
-                left: 0;
-                top: auto;
-                border-top-width: 1px;
-                margin-top: -1px;
-                background-color: $white;
-                z-index: 11;
-            }
-            .contact-number {
-                width: 26px;
-            }
-            .contact-name {
-                width: 170px;
-                left: 26px;
-            }
-        }
+    &-address {
+        display: grid;
+        grid-template-columns: 364px 1fr;
     }
 }
 
@@ -77,48 +17,53 @@
 }
 
 .timeline__card {
-    grid-template-columns: 1fr repeat(2, 140px);
-    padding: 0 10px;
-    border-radius: 2px;
     display: grid;
+    grid-template-columns: 122px 156px 156px 20px;
     grid-template-rows: 34px;
     align-items: center;
-    column-gap: 12px;
+    column-gap: 2px;
     row-gap: 2px;
     margin-bottom: 2px;
     position: relative;
+    border-radius: 2px;
+
+    &-double-shift {
+        margin-top: 2px;
+    }
+
+    &-inputs {
+        grid-template-columns: 93px 162px 162px 33px;
+        grid-template-rows: auto;
+    }
+
+    &-day-label {
+        height: 26px;
+    }
+
+    &-icon-plus {
+        opacity: 0;
+        transition: $transition;
+    }
+
+    &:hover {
+        .timeline__card-icon-plus {
+            opacity: 1;
+        }
+    }
 
     &-range {
         font-size: 11px;
         line-height: 14px;
         color: $muted;
-        text-transform: uppercase;
-        padding-left: 32px;
     }
 
     &-label {
-        cursor: pointer;
         color: $ta-black-2;
         font-weight: 500;
         font-size: 14px;
         line-height: 14px;
         -webkit-user-select: none;
         user-select: none;
-    }
-
-    &-icon {
-        svg {
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-        &-rotate {
-            svg {
-                transform: rotate(180deg);
-                path {
-                    fill: $ta-blue-13;
-                }
-            }
-        }
     }
 
     &-hover {
@@ -145,4 +90,28 @@
             background-color: $ta-blue-15;
         }
     }
+}
+
+.phone-ext-email-small-modal {
+    grid-template-columns: 196px 248px;
+
+    .phone-extension {
+        column-gap: 8px;
+        grid-template-columns: 164px 1fr;
+
+        .extension-field {
+            padding: 6px;
+            position: relative;
+            width: 26px;
+            height: 26px;
+        }
+    }
+}
+
+.custom-bank-row {
+    grid-template-columns: 160px 100px 172px;
+}
+
+.text-color-red {
+    color: $ta-red-11;
 }

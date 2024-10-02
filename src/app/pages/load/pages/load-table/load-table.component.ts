@@ -48,6 +48,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
+    AddressResponse,
     LoadListResponse,
     LoadStatus,
     LoadTemplateListResponse,
@@ -324,7 +325,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     confirmationResponse.id,
                     confirmationResponse.data.nameBack,
                     foundObject.status.statusString,
-                    confirmationResponse.data.isRevert
+                    confirmationResponse.data.isRevert,
+                    confirmationResponse.newLocation ?? null
                 );
             });
     }
@@ -852,52 +854,51 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private setTruckTooltipColor(truckName: string): string {
-        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
-            return TooltipColorsStringEnum.YELLOW;
-        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (truckName === TruckNameStringEnum.SPOTTER) {
-            return TooltipColorsStringEnum.BROWN;
+        switch (truckName) {
+            case TruckNameStringEnum.SEMI_TRUCK:
+            case TruckNameStringEnum.SEMI_SLEEPER:
+                return TooltipColorsStringEnum.BLUE;
+            case TruckNameStringEnum.BOX_TRUCK:
+            case TruckNameStringEnum.REEFER_TRUCK:
+            case TruckNameStringEnum.CARGO_VAN:
+                return TooltipColorsStringEnum.YELLOW;
+            case TruckNameStringEnum.DUMP_TRUCK:
+            case TruckNameStringEnum.CEMENT_TRUCK:
+            case TruckNameStringEnum.GARBAGE_TRUCK:
+                return TooltipColorsStringEnum.RED;
+            case TruckNameStringEnum.TOW_TRUCK:
+            case TruckNameStringEnum.CAR_HAULER:
+            case TruckNameStringEnum.SPOTTER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
 
     private setTrailerTooltipColor(trailerName: string): string {
-        if (trailerName === TrailerNameStringEnum.REEFER) {
-            return TooltipColorsStringEnum.BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
-            return TooltipColorsStringEnum.DARK_BLUE;
-        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
-            return TooltipColorsStringEnum.PURPLE;
-        } else if (trailerName === TrailerNameStringEnum.TANKER) {
-            return TooltipColorsStringEnum.GREEN;
-        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
-            return TooltipColorsStringEnum.LIGHT_GREEN;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
-            return TooltipColorsStringEnum.PINK;
-        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
-            return TooltipColorsStringEnum.BROWN;
-        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
-            return TooltipColorsStringEnum.RED;
-        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
-            return TooltipColorsStringEnum.ORANGE;
-        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
-            return TooltipColorsStringEnum.GOLD;
-        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
-            return TooltipColorsStringEnum.YELLOW;
+        switch (trailerName) {
+            case TrailerNameStringEnum.FLAT_BED:
+            case TrailerNameStringEnum.STEP_DECK:
+            case TrailerNameStringEnum.LOW_BOY_RGN:
+            case TrailerNameStringEnum.CHASSIS:
+            case TrailerNameStringEnum.CONESTOGA:
+            case TrailerNameStringEnum.SIDE_KIT:
+            case TrailerNameStringEnum.CONTAINER:
+                return TooltipColorsStringEnum.BLUE;
+            case TrailerNameStringEnum.DRY_VAN:
+            case TrailerNameStringEnum.REEFER:
+                return TooltipColorsStringEnum.YELLOW;
+            case TrailerNameStringEnum.END_DUMP:
+            case TrailerNameStringEnum.BOTTOM_DUMP:
+            case TrailerNameStringEnum.HOPPER:
+            case TrailerNameStringEnum.TANKER:
+            case TrailerNameStringEnum.PNEUMATIC_TANKER:
+                return TooltipColorsStringEnum.RED;
+            case TrailerNameStringEnum.CAR_HAULER:
+            case TrailerNameStringEnum.CAR_HAULER_STINGER:
+                return TooltipColorsStringEnum.LIGHT_GREEN;
+            default:
+                return;
         }
     }
     private mapTemplateData(data: LoadModel): LoadTemplate {
@@ -1183,18 +1184,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTruckColor: this.setTruckTooltipColor(
                 loadRequirements?.truckType?.name
             ),
-            truckTypeClass: loadRequirements?.truckType?.logoName
-                ? loadRequirements?.truckType?.logoName.replace(
-                      TableStringEnum.SVG,
-                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTrailerTypeClass: loadRequirements?.trailerType?.logoName
-                ? loadRequirements?.trailerType?.logoName.replace(
-                      TableStringEnum.SVG,
-                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            truckTypeClass: loadRequirements?.truckType?.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
+            tableTrailerTypeClass: loadRequirements?.trailerType?.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
             tableTruckName: loadRequirements?.truckType?.name,
             loadTrailerNumber: loadRequirements?.trailerType?.logoName,
             loadTruckNumber:
@@ -1826,10 +1823,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         id: number,
         status: LoadStatus,
         previousStatus: LoadStatus,
-        isRevert: boolean
+        isRevert: boolean,
+        newLocation?: AddressResponse
     ): void {
         this.loadServices
-            .updateLoadStatus(id, status, isRevert)
+            .updateLoadStatus(id, status, isRevert, newLocation)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.getLoadInsideListById(id).subscribe((res) => {

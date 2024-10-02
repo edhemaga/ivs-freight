@@ -3,6 +3,7 @@ $settings-background: #ffffff;
 
 $settings-white-dark: #b7b7b7;
 $settings-white-dark-2: #dadada;
+$settings-white-dark-3: #cccccc;
 
 $settings-white-light: #f7f7f7;
 $settings-white-light-2: #f3f3f3;
@@ -36,6 +37,7 @@ $settings-fontsize: 14px;
 $settings-transition: all 0.3s ease-in-out;
 
 $settings-box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+$settings-icon-background: #e9effd;
 
 // Default settings
 p {
@@ -49,6 +51,10 @@ p {
     grid-template-rows: 32px 1fr;
     row-gap: 12px;
 
+    &-grid {
+        width: 100%;
+    }
+
     .settings-col-1 {
         grid-template-rows: 1 / 2;
     }
@@ -61,29 +67,23 @@ p {
 .settings-progress-container {
     padding: 0px 4px;
     padding-bottom: 16px;
-    padding-top: 7px;
+    padding-top: 16px;
 }
 
 // Settings Header global
 .settings-header {
     width: 100%;
+    background-color: $settings-background;
+    border-radius: $settings-borderRadius;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
+    margin-bottom: 12px;
 
     .no-factoring-data {
         justify-content: flex-end !important;
     }
+
     .settings-name {
-        height: 100%;
-        flex: 1;
-        padding: 6px 12px;
-        color: $settings-gray;
-        background-color: $settings-background;
-        font-weight: $settings-font-extrabold;
-        border-radius: $settings-borderRadius;
+        padding: 5px 8px;
         user-select: none;
     }
 
@@ -109,67 +109,24 @@ p {
         position: relative;
         padding-right: 1px;
         .settings-edit-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 26px;
             height: 26px;
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
         }
 
         .settings-plus-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             margin-left: 2px;
-            svg {
-                path {
-                    fill: $settings-blue-dark;
-                }
-            }
+            border-radius: 2px;
+
             &:hover {
-                transform: $settings-transition;
-                background-color: #6d82c7;
-                width: 28px;
-                height: 28px;
-                justify-content: center;
-                display: flex;
-                align-items: center;
-                border-radius: 2px;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-background;
-                    }
-                }
+                background-color: $settings-icon-background;
             }
         }
 
         .settings-trash-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 26px;
             height: 26px;
-            &:hover {
-                transform: $settings-transition;
-                cursor: pointer;
-                svg {
-                    path {
-                        fill: $settings-red-dark;
-                    }
-                }
-            }
         }
     }
 
@@ -197,7 +154,7 @@ p {
 .toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     //max-width: 440px;
     width: 100%;
 
@@ -208,16 +165,6 @@ p {
         max-width: 200px;
         margin-right: 13px;
         p {
-            color: #424242;
-            font-size: 26px;
-            font-weight: 900;
-            line-height: 32px;
-            margin-left: 0px !important;
-            margin: 0;
-
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
     }
@@ -246,70 +193,24 @@ p {
             }
 
             .settings-edit-button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
-                &:hover {
-                    transform: $settings-transition;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-gray-dark;
-                        }
-                    }
-                }
             }
 
             .settings-plus-button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
                 margin-left: 2px;
+                border-radius: 2px;
 
-                svg {
-                    path {
-                        fill: $settings-blue-dark;
-                    }
-                }
                 &:hover {
-                    transform: $settings-transition;
-                    background-color: #6d82c7;
-
-                    border-radius: 2px;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-background;
-                        }
-                    }
+                    background-color: $settings-icon-background;
                 }
             }
 
             .settings-trash-button {
-                //position: absolute;
-                //top: 48%;
-                //left: 50%;
-                //transform: translate(-50%, -50%);
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 26px;
                 height: 26px;
-
-                &:hover {
-                    transform: $settings-transition;
-                    cursor: pointer;
-                    svg {
-                        path {
-                            fill: $settings-red-dark;
-                        }
-                    }
-                }
             }
         }
     }
@@ -361,35 +262,13 @@ p {
     .settings-body-items {
         display: flex;
         flex-direction: column;
+        margin-top: 6px;
 
         .single-item {
             display: flex;
             align-items: center;
             height: auto;
             margin-bottom: 12px;
-            svg {
-                path {
-                    fill: #aaaaaa;
-                }
-                &:hover {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
-            }
-            span {
-                font-size: 14px;
-                font-weight: 400;
-                color: $settings-gray-dark;
-                &::-moz-selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $settings-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
         }
 
         &.factoring-body-padding {
@@ -582,12 +461,12 @@ p {
     height: 24px;
     border-left: 2px solid $settings-white-light-2;
 }
+
 // Office Template
 .office-template-data {
     display: grid;
     grid-template-columns: 170px 152px;
     row-gap: 12px;
-    padding-left: 10px;
     column-gap: 50px;
     .office-template-item {
         display: flex;
@@ -617,9 +496,8 @@ p {
     grid-template-columns: 170px 152px;
     grid-row-gap: 6px;
     row-gap: 6px;
-    padding-left: 6px;
-    margin-top: -6px;
     column-gap: 50px;
+
     .parking-template-item {
         display: flex;
         align-items: center;
@@ -633,29 +511,11 @@ p {
         }
 
         .parking-template-text {
-            color: $settings-gray-dark;
             margin-left: 7px;
             white-space: nowrap;
-            &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
 
             &.cross-out {
                 text-decoration: line-through;
-                color: $settings-white-dark;
-                &::-moz-selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
             }
         }
 
@@ -674,6 +534,7 @@ p {
         grid-column: 1 / -1;
     }
 }
+
 .payroll-template-data {
     display: grid;
     column-gap: 20px;
@@ -711,6 +572,7 @@ p {
         }
     }
 }
+
 .no-divider {
     padding-bottom: 0px;
 }
@@ -755,7 +617,4 @@ p {
             }
         }
     }
-}
-.company-icons {
-    margin-right: 6px;
 }

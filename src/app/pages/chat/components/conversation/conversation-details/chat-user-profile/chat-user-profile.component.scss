@@ -3,7 +3,6 @@
 .user-profile-wrapper {
     width: 318px;
     height: 100%;
-    max-height: calc(100dvh - 86px);
 
     .header {
         padding-left: 6px;
@@ -100,4 +99,17 @@
             }
         }
     }
+}
+
+.white-background {
+    background-color: $white;
+}
+
+.gradient-background {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(238, 238, 238, 1) 50%,
+        rgba(238, 238, 238, 1) 100%
+    );
 }

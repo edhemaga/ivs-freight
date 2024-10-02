@@ -147,6 +147,13 @@ export class TaInputComponent
                 });
         }
 
+        // Custom Range
+        if (this._inputConfig.isUsingCustomPeriodRange) {
+            if (this._inputConfig.isDisplayingCustomPeriodRange)
+                this.focusInput = true;
+            else this.focusInput = false;
+        }
+
         // When add mode in dropdown
         if (
             this._inputConfig.commands?.active &&
