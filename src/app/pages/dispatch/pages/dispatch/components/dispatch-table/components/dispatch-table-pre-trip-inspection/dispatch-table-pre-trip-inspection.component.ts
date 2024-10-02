@@ -36,8 +36,8 @@ export class DispatchTablePreTripInspectionComponent
             );
     }
     @Input() isHoveringRow: boolean;
-    @Input() canUnlock: boolean;
-    
+    @Input() isUnlockable: boolean;
+
     private _time: string | null;
     private _status: EnumValue;
     private destroy$ = new Subject<void>();

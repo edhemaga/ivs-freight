@@ -8,10 +8,10 @@
                     status.name === 'Disabled'
                         ? 'In Off Status'
                         : status.name === 'NotDone'
-                        ? canUnlock
+                        ? isUnlockable
                             ? 'Mark as Done'
                             : ''
-                        : _time + (canUnlock ? '<br>Unmark' : '')
+                        : _time + (isUnlockable ? '<br>Unmark' : '')
                 "
                 tooltipBackground="#2F2F2F"
                 position="bottom"
@@ -20,10 +20,10 @@
                     'status-enabled': status.name === 'NotDone',
                     'status-done': status.name === 'Done',
                     hovering: isHoveringRow,
-                    disabled: !canUnlock
+                    disabled: !isUnlockable
                 }"
                 (click)="
-                    canUnlock && status.name !== 'Disabled'
+                    isUnlockable && status.name !== 'Disabled'
                         ? preTripInspectionDone()
                         : null
                 "
