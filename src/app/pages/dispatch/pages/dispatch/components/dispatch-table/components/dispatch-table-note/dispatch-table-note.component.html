@@ -9,9 +9,9 @@
                 truck &&
                 !_note &&
                 isNoteExpanded &&
-                canUnlock,
-            'note-default': !truck || !canUnlock,
-            'pe-none': !canUnlock
+                isUnlockable,
+            'note-default': !truck || !isUnlockable,
+            'pe-none': !isUnlockable
         }"
     >
         <div
