@@ -7,12 +7,11 @@ export class ChatMessageClassPipe implements PipeTransform {
     transform(
         currentUserId: number,
         senderId: number,
-        isSelected: boolean,
+        isSelected: boolean
     ): string {
         const isCurrentUser: boolean = currentUserId === senderId;
 
         let classString = '';
-
 
         switch (true) {
             case isCurrentUser && isSelected:

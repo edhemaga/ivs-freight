@@ -59,7 +59,8 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
     @Input() public conversation!: ConversationResponse;
@@ -127,8 +128,12 @@ export class ChatContentFooterComponent
     }
 
     private getReplyAndEditMessages(): void {
-        this.editMessage$ = this.store.select(selectEditMessage).pipe(takeUntil(this.destroy$));
-        this.replyMessage$ = this.store.select(selectReplyMessage).pipe(takeUntil(this.destroy$));
+        this.editMessage$ = this.store
+            .select(selectEditMessage)
+            .pipe(takeUntil(this.destroy$));
+        this.replyMessage$ = this.store
+            .select(selectReplyMessage)
+            .pipe(takeUntil(this.destroy$));
     }
 
     public handleSend(): void {

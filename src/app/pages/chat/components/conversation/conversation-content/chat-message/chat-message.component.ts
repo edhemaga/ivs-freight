@@ -81,20 +81,29 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     private getActiveReplyOrEdit(): void {
-        this.store.select(activeReplyOrEdit).pipe(takeUntil(this.destroy$)).subscribe(id => {
-            this.selectedMessageId = id;
-            if (!id) this.hasActionsDisplayed = false;
-            if (this.message.id === id) {
-                this.hasActionsDisplayed = true;
-                this.isFocused = true;
-            }
-        });
-        this.store.select(selectReplyMessage).pipe(takeUntil(this.destroy$)).subscribe(msg => {
-            this.messageReply = msg;
-        })
-        this.store.select(selectEditMessage).pipe(takeUntil(this.destroy$)).subscribe(msg => {
-            this.messageEdit = msg;
-        })
+        this.store
+            .select(activeReplyOrEdit)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id: number) => {
+                this.selectedMessageId = id;
+                if (!id) this.hasActionsDisplayed = false;
+                if (this.message.id === id) {
+                    this.hasActionsDisplayed = true;
+                    this.isFocused = true;
+                }
+            });
+        this.store
+            .select(selectReplyMessage)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((msg) => {
+                this.messageReply = msg;
+            });
+        this.store
+            .select(selectEditMessage)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((msg) => {
+                this.messageEdit = msg;
+            });
     }
 
     private checkImageDimensions(url: string): void {

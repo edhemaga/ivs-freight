@@ -67,7 +67,8 @@ import { addMessage, selectMessageResponse } from '@pages/chat/state';
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
