@@ -1,23 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'cdkconnect',
+    name: 'cdkConnect',
     standalone: true,
 })
 export class CdkConnectPipe implements PipeTransform {
-    constructor() {}
-
     transform(
-        rowIndex: any,
+        rowIndex: number,
         gridLength: number,
         gridIndex: number,
         type: string
     ) {
-        if (type == 'driver') {
-            if (rowIndex === gridLength) {
-                return '';
-            }
-        }
+        if (type === 'driver' && rowIndex === gridLength) return '';
 
         const data = [`${type}-1`];
 

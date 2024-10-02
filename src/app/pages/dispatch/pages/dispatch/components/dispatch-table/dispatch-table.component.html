@@ -259,6 +259,7 @@
                         "
                     >
                         <tr
+                            #tableBodyRow
                             class="reorder-row"
                             [ngClass]="{ drag: !isDispatchBoardLocked }"
                             cdkDrag
@@ -273,11 +274,12 @@
                             (mouseenter)="isHoveringRowIndex = rowIndex"
                             (mouseleave)="isHoveringRowIndex = -1"
                         >
-                            <!--   <div
+                            <div
                                 *cdkDragPlaceholder
-                                class="custom-dispatch-placeholder"
+                                class="custom-dispatch-placeholder rowasd"
+                                [ngStyle]="{ width: tableBodyRowWidth + 'px' }"
                             ></div>
- -->
+
                             <td
                                 cdkDragHandle
                                 #columnField
@@ -337,12 +339,12 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkid : gridIndex : 'trailer'
+                                        rowIndex | cdkId : gridIndex : 'trailer'
                                     }}"
                                     [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
-                                            | cdkconnect
+                                            | cdkConnect
                                                 : dispatchData.dispatches.length
                                                 : gridIndex
                                                 : 'trailer'
@@ -442,12 +444,12 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkid : gridIndex : 'driver'
+                                        rowIndex | cdkId : gridIndex : 'driver'
                                     }}"
                                     [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
                                         rowIndex
-                                            | cdkconnect
+                                            | cdkConnect
                                                 : dispatchData.dispatches.length
                                                 : gridIndex
                                                 : 'driver'
@@ -650,7 +652,9 @@
                                 >
                                     <div class="main_inside filled">
                                         <div class="padding-inside">
-                                            <div class="info-item d-block p-0 w-100">
+                                            <div
+                                                class="info-item d-block p-0 w-100"
+                                            >
                                                 <ng-container
                                                     *ngIf="progressBarData?.[rowIndex]"
                                                 >

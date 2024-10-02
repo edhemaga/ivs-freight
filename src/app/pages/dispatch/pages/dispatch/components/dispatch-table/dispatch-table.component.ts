@@ -9,6 +9,7 @@ import {
     OnInit,
     Output,
     QueryList,
+    ViewChild,
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
@@ -87,6 +88,7 @@ import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/componen
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
     @ViewChildren('columnField') columnFieldElements: QueryList<ElementRef>;
+    @ViewChild('tableBodyRow') tableBodyRow: ElementRef;
 
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
@@ -205,6 +207,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private previousDragIndex: number;
     private previousDragTrailerTypeId: number;
 
+    public tableBodyRowWidth: number;
+
     public progressBarData: DispatchProgressBarData[] = [];
 
     openedHosData = [];
@@ -233,6 +237,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
+
+        this.getTableBodyRowWidth();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -738,6 +744,34 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
     }
 
+    private reorderDispatchBoard(): void {
+        const dispatchBoardId = this.dispatchData.id;
+        const dispatches = this.dispatchData.dispatches.map(
+            (dispatch, index) => {
+                return {
+                    id: dispatch.id,
+                    order: index + 1,
+                };
+            }
+        );
+
+        const data = {
+            dispatchBoardId,
+            dispatches,
+        };
+
+        this.isDispatchBoardChangeInProgress = true;
+
+        this.dispatcherService
+            .reorderDispatchboard(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.isDispatchBoardChangeInProgress = false;
+
+                this.cdRef.detectChanges();
+            });
+    }
+
     // CDL DRAG AND DROP
 
     public dragStartRow(): void {
@@ -929,7 +963,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         // use arrow function notation to access component 'this'
 
         const {
-            data: { truck, trailer, activeLoad },
+            data: { truck, activeLoad },
         } = item;
 
         const allowedTruckIds =
@@ -969,6 +1003,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             coDriverId: dispatch.coDriver?.id ?? null,
             location: dispatch.location?.address ? dispatch.location : null,
         };
+    }
+
+    private getTableBodyRowWidth(): void {
+        setTimeout(() => {
+            const tableBodyRowElement = this.tableBodyRow?.nativeElement;
+
+            if (tableBodyRowElement) {
+                const tableBodyRowElementStyles =
+                    window.getComputedStyle(tableBodyRowElement);
+                const tableBodyRowWidth = parseInt(
+                    tableBodyRowElementStyles.width
+                );
+
+                this.tableBodyRowWidth = tableBodyRowWidth - 1;
+            }
+        }, 200);
     }
 
     public unlockTable(): void {
