@@ -26,16 +26,7 @@ import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
-interface DisplayOffice {
-    isCardOpen: boolean;
-    cardName: string;
-    values: CompanyOfficeDepartmentContactResponse[];
-}
-
-interface CompanyOfficeResponseWithGroupedContacts
-    extends CompanyOfficeResponse {
-    groupedContacts?: Record<string, DisplayOffice>;
-}
+import { CompanyOfficeResponseWithGroupedContacts, SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
 
 @Component({
     selector: 'app-settings-office',
@@ -99,7 +90,7 @@ export class SettingsOfficeComponent
 
                     return acc;
                 },
-                {} as Record<string, DisplayOffice>
+                {} as Record<string, SettingsDepartmentCardModel>
             );
 
             return {
