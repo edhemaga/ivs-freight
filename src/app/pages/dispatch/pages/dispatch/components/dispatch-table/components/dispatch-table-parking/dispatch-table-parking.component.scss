@@ -235,4 +235,12 @@
             }
         }
     }
+
+    &-disabled {
+        cursor: default !important;
+
+        .dispatch-parking-remove-wrapper {
+            visibility: hidden !important;
+        }
+    }
 }
