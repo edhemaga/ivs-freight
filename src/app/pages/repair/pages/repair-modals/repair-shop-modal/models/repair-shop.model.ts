@@ -18,7 +18,7 @@ export interface CreateShopModel {
     longitude: number;
     latitude: number;
     holiday: boolean;
-    openAlways: boolean;
+    // openAlways: boolean;
     openHours: Array<RepairShopOpenHoursCommand>;
     serviceTypes: Array<RepairShopServiceTypeCommand>;
     contacts: Array<RepairShopContactCommand>;

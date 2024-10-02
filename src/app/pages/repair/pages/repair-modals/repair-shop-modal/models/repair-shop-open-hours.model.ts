@@ -1,8 +1,8 @@
 export interface OpenHours {
-    dayLabel: string;
+    dayOfWeek: string;
     isWorkingDay: boolean;
     // This is not needed yet on creating shop
-    dayOfWeek: number;
+    index: number;
     startTime: Date | null;
     endTime: Date | null;
     isDoubleShift: boolean,

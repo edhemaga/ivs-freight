@@ -311,42 +311,42 @@
                                         {{
                                             openHour
                                                 .get(
-                                                    RepairShopModalStringEnum.DAY_LABEL
+                                                    RepairShopModalStringEnum.DAY_OF_WEEK
                                                 )
                                                 .value.slice(0, 3)
                                         }}
                                     </p>
                                 </div>
                             </ng-container>
-                            <div class="timeline__card">
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    Day
-                                </div>
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    From <span class="text-color-red"> *</span>
-                                </div>
-                                <div
-                                    class="timeline__card-range text-uppercase ta-font-bold"
-                                >
-                                    To <span class="text-color-red"> *</span>
-                                </div>
-                                <div
-                                    mainTooltip="Apply Monday to All"
-                                    tooltipMarginTop="5px"
-                                    ngbTooltip
-                                    position="bottom"
-                                    tooltipBackground="#424242"
-                                    (click)="applyMondayToAllDays()"
-                                >
-                                    <svg-icon
-                                        class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
-                                        [src]="repairShopModalSvgRoutes.copy"
-                                    ></svg-icon>
-                                </div>
+                        </div>
+                        <div class="timeline__card">
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                Day
+                            </div>
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                From <span class="text-color-red"> *</span>
+                            </div>
+                            <div
+                                class="timeline__card-range text-uppercase ta-font-bold"
+                            >
+                                To <span class="text-color-red"> *</span>
+                            </div>
+                            <div
+                                mainTooltip="Apply Monday to All"
+                                tooltipMarginTop="5px"
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                                (click)="applyMondayToAllDays()"
+                            >
+                                <svg-icon
+                                    class="repair-shop-copy-icon svg-hover-black c-pointer svg-size-14"
+                                    [src]="repairShopModalSvgRoutes.copy"
+                                ></svg-icon>
                             </div>
                         </div>
 
@@ -377,7 +377,7 @@
                                         >
                                             {{
                                                 openHour.get(
-                                                    RepairShopModalStringEnum.DAY_LABEL
+                                                    RepairShopModalStringEnum.DAY_OF_WEEK
                                                 ).value
                                             }}
                                         </div>

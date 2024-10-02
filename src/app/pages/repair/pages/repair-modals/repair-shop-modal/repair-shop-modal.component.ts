@@ -214,7 +214,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isMonthlyPeriodSeleced: boolean;
     public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
-    public openHoursFormField: ITaInput = RepairShopConfig.getOpenHoursFormField();
+    public openHoursFormField: ITaInput =
+        RepairShopConfig.getOpenHoursFormField();
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -350,9 +351,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initTabs();
-        this.initializeServices();
         this.generateForm();
-        this.initWorkingHours();
+        this.initializeServices();
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -416,6 +416,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: ({ dropdowns, repairShop }) => {
+                    this.initWorkingHours(repairShop);
+
                     this.services = RepairShopHelper.mapServices(
                         dropdowns,
                         true
@@ -446,8 +448,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.startTimeAllDays,
                             [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
                                 repairShop.endTimeAllDays,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
-                                repairShop.openAlways,
+                            // [RepairShopModalStringEnum.OPEN_ALWAYS]:
+                            //     repairShop.openAlways,
                             [RepairShopModalStringEnum.ROUTING]:
                                 repairShop.routing,
                             [RepairShopModalStringEnum.ACCOUNT]:
@@ -610,23 +612,35 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    private initWorkingHours(): void {
-        this.workingDaysLabel.forEach((day) =>
-            this.openHours.push(
-                RepairShopHelper.createOpenHour(day, this.formBuilder)
-            )
-        );
-
-        this.holidayHours.push(
-            RepairShopHelper.createOpenHour(
-                {
-                    ...RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS[0],
-                    [RepairShopModalStringEnum.DAY_LABEL]: 'Holiday',
-                    [RepairShopModalStringEnum.IS_WORKING_DAY]: false,
-                },
-                this.formBuilder
-            )
-        );
+    private initWorkingHours(repairShop: RepairShopResponse): void {
+        if(this.editData?.id) {
+            this.workingDaysLabel.forEach((day) => {
+                const isWorkingDay = repairShop.openHours.find(openDay => openDay.dayOfWeek === day.dayOfWeek);
+                
+                this.openHours.push(
+                    RepairShopHelper.createOpenHour(isWorkingDay ?? day, this.formBuilder, !!isWorkingDay)
+                )
+            }
+            );
+        } else {
+            this.workingDaysLabel.forEach((day) =>
+                this.openHours.push(
+                    RepairShopHelper.createOpenHour(day, this.formBuilder, day.isWorkingDay)
+                )
+            );
+        }
+    
+            this.holidayHours.push(
+                RepairShopHelper.createOpenHour(
+                    {
+                        ...RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS[0],
+                        [RepairShopModalStringEnum.DAY_OF_WEEK]: 'Holiday',
+                        [RepairShopModalStringEnum.IS_WORKING_DAY]: false,
+                    },
+                    this.formBuilder,
+                    false
+                )
+            );
     }
 
     // Working hours
@@ -708,8 +722,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ) {
                 item.patchValue({
                     ...monday.value,
-                    [RepairShopModalStringEnum.DAY_LABEL]: item.get(
-                        RepairShopModalStringEnum.DAY_LABEL
+                    [RepairShopModalStringEnum.DAY_OF_WEEK]: item.get(
+                        RepairShopModalStringEnum.DAY_OF_WEEK
                     ).value,
                 });
             }
@@ -903,14 +917,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             longitude: this.getFromFieldValue(
                 RepairShopModalStringEnum.LONGITUDE
             ),
-            openAlways: this.getFromFieldValue(
-                RepairShopModalStringEnum.OPEN_ALWAYS
-            ),
+            // openAlways: this.getFromFieldValue(
+            //     RepairShopModalStringEnum.OPEN_ALWAYS
+            // ),
             contacts: this.mapContacts(),
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            openHours: [],
+            openHours: this.openHours.value.filter(value => value.isWorkingDay),
             weeklyDay: this.selectedWeeklyDay
                 ? this.selectedWeeklyDay.id
                 : null,
@@ -920,7 +934,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             monthlyDay: this.selectedMonthlyDays
                 ? this.selectedMonthlyDays.id
                 : null,
-            companyOwned: this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED),
+            companyOwned: this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            ),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
             // TODO: Holiday should go inside open hours as well
             holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),

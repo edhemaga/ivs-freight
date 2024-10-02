@@ -1,4 +1,4 @@
-import { RepairShopResponse } from 'appcoretruckassist';
+import { RepairShopOpenHoursResponse, RepairShopResponse } from 'appcoretruckassist';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TableStringEnum,  } from '@shared/enums/table-string.enum';
 import { RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
@@ -46,19 +46,20 @@ export class RepairShopHelper {
             };
         });
     }
-
+    // 
     static createOpenHour(
-        day: OpenHours,
-        formBuilder: UntypedFormBuilder
+        day:OpenHours | RepairShopOpenHoursResponse,
+        formBuilder: UntypedFormBuilder,
+        isWorkingDay: boolean
     ): UntypedFormGroup {
         return formBuilder.group({
-            isWorkingDay: [day.isWorkingDay],
-            dayLabel: [day.dayLabel],
+            isWorkingDay: [isWorkingDay],
+            dayOfWeek: [day.dayOfWeek],
             startTime: [day.startTime],
             endTime: [day.endTime],
-            isDoubleShift: [day.isDoubleShift],
-            secondStartTime: [day.secondStartTime],
-            secondEndTime: [day.secondEndTime],
+            isDoubleShift: [null],
+            secondStartTime: [null],
+            secondEndTime: [null],
         });
     }
 }

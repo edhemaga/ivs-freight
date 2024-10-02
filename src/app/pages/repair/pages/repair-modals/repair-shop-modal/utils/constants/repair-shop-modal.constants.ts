@@ -29,8 +29,8 @@ export class RepairShopConstants {
 
     static DEFAULT_OPEN_HOUR_DAYS: OpenHours[] = [
         {
-            dayLabel: OpenHourDays.Monday,
-            dayOfWeek: 1,
+            dayOfWeek: OpenHourDays.Monday,
+            index: 1,
             isWorkingDay: true,
             startTime,
             endTime,
@@ -39,8 +39,8 @@ export class RepairShopConstants {
             secondStartTime: startTime
         },
         {
-            dayLabel: OpenHourDays.Tuesday,
-            dayOfWeek: 2,
+            dayOfWeek: OpenHourDays.Tuesday,
+            index: 2,
             isWorkingDay: true,
             startTime,
             endTime,
@@ -49,8 +49,8 @@ export class RepairShopConstants {
             secondStartTime: startTime
         },
         {
-            dayLabel: OpenHourDays.Wednesday,
-            dayOfWeek: 3,
+            dayOfWeek: OpenHourDays.Wednesday,
+            index: 3,
             isWorkingDay: true,
             startTime,
             endTime,
@@ -59,8 +59,8 @@ export class RepairShopConstants {
             secondStartTime: startTime
         },
         {
-            dayLabel: OpenHourDays.Thursday,
-            dayOfWeek: 4,
+            dayOfWeek: OpenHourDays.Thursday,
+            index: 4,
             isWorkingDay: true,
             startTime,
             endTime,
@@ -69,8 +69,8 @@ export class RepairShopConstants {
             secondStartTime: startTime
         },
         {
-            dayLabel: OpenHourDays.Friday,
-            dayOfWeek: 5,
+            dayOfWeek: OpenHourDays.Friday,
+            index: 5,
             isWorkingDay: true,
             startTime,
             endTime,
@@ -79,8 +79,8 @@ export class RepairShopConstants {
             secondStartTime: startTime
         },
         {
-            dayLabel: OpenHourDays.Saturday,
-            dayOfWeek: 6,
+            dayOfWeek: OpenHourDays.Saturday,
+            index: 6,
             isWorkingDay: false,
             startTime: null,
             endTime: null,
@@ -89,8 +89,8 @@ export class RepairShopConstants {
             secondStartTime: null
         },
         {
-            dayLabel: OpenHourDays.Sunday,
-            dayOfWeek: 0,
+            dayOfWeek: OpenHourDays.Sunday,
+            index: 0,
             isWorkingDay: false,
             startTime: null,
             endTime: null,
