@@ -709,6 +709,7 @@ model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
+model/openHoursDayOfWeek.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts

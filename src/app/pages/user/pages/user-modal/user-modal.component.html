@@ -316,8 +316,8 @@
                                 userForm.get('includeInPayroll').value
                             "
                             [animationMarginParams]="{
-                                marginTop: '18px',
-                                marginBottom: '22px'
+                                marginTop: userForm.get('includeInPayroll').value ? '18px' : '0px',
+                                marginBottom: userForm.get('includeInPayroll').value ? '22px' : '0px'
                             }"
                         >
                             <ng-container body>

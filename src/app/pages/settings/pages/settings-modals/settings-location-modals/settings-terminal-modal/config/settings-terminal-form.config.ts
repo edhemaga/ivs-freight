@@ -20,7 +20,7 @@ export class SettingsTerminalConfig {
             type: 'text',
             label: 'Phone',
             placeholderIcon: 'phone',
-            isRequired: true,
+            isRequired: false,
             mask: '(000) 000-0000',
             maxLength: 14,
         };
