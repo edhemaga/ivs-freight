@@ -27,7 +27,7 @@
                         textTransform: 'uppercase',
                         autoFocus: editData?.type !== 'edit'
                     }"
-                    (blurInput)="onCompanyNameInputBlur($event)"
+                    (blurInput)="onCompanyNameInputBlur()"
                 ></app-ta-input>
             </div>
         </div>
@@ -98,11 +98,11 @@
             [disableAnimation]="disableCardAnimation"
             [disabledCard]="
                 factoringForm.get('name')?.invalid || 
-                factoringForm.get('name').value == 'null'
+                factoringForm.get('name').value === 'null'
             "
             [isCardOpen]="
                 factoringForm.get('noticeOfAssigment').value &&
-                factoringForm.get('noticeOfAssigment').value != 'null'
+                factoringForm.get('noticeOfAssigment').value !== 'null'
                     ? true
                     : false
             "
@@ -121,13 +121,13 @@
             formControlName="note"
             [isVisibleNote]="
                 factoringForm.get('note').value &&
-                factoringForm.get('note').value != 'null'
+                factoringForm.get('note').value !== 'null'
                     ? factoringForm.get('note').value
                     : false
             "
             [note]="
                 factoringForm.get('note').value &&
-                factoringForm.get('note').value != 'null'
+                factoringForm.get('note').value !== 'null'
                     ? factoringForm.get('note').value
                     : ''
             "

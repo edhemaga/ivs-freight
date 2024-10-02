@@ -57,7 +57,7 @@
         class="wysiwyg-text-transform-buttons d-flex"
     >
         <div class="text-align-buttons d-flex">
-            <ng-container *ngFor="let align of alignOptions">
+            <ng-container *ngFor="let align of alignOptions; trackBy: identifyAlignOption">
                 <div
                     (click)="executeEditor(align.name)"
                     [class.active]="align.value"
@@ -107,7 +107,7 @@
         </ng-container>
     </div>
     <div class="color_picker_holder">
-        <ng-container *ngFor="let item of customSelectColor; let i = index">
+        <ng-container *ngFor="let item of customSelectColor; let i = index; trackBy: identifyColor">
             <div
                 class="color_main_hold"
             >
@@ -118,7 +118,7 @@
                         'background-color': item
                     }"
                 >
-                    <ng-container *ngIf="selectedColorName == item">
+                    <ng-container *ngIf="selectedColorName === item">
                         <svg-icon
                             [src]="svgRoutes.ICON_CHECK_SVG_ROUTE"
                         ></svg-icon>

@@ -269,13 +269,11 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         this.isBluredNotice = val;
     }
 
-    public onCompanyNameInputBlur(event: any) {
+    public onCompanyNameInputBlur(): void {
         if (
             this.isInitialCompanyNameSet && 
-            this.editData.type == 'new' && 
-            this.factoringForm.get('name').value != 'null' &&
-            this.factoringForm.get('name').value != '' &&
-            this.factoringForm.get('name').valid
+            this.editData.type === 'new' && 
+            this.factoringForm.get('name').value
         ) {
             const noticeOfAssignmentBaseText: string = this.constants.NOTICE_OF_ASSIGNMENT_TEXT_BASE
                 .replace('{{CompanyName}}', this.factoringForm.get('name').value);

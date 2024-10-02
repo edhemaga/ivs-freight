@@ -36,8 +36,8 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 // helpers
 import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 
-// interfaces
-import { IFontSizeOption, ITextEditorToolbarAlignOption, ITextEditorToolbarConfig } from '@shared/components/ta-notice-of-asignment/interfaces';
+// models
+import { IFontSizeOption, ITextEditorToolbarAlignOption, ITextEditorToolbarConfig } from '@shared/components/ta-notice-of-asignment/models';
 
 // constants
 import { TaNoticeOfAssignmentConstants } from '@shared/components/ta-notice-of-asignment/utils/constants';
@@ -62,80 +62,36 @@ import { TaNoticeOfAsignmentSvgRoutes } from '@shared/components/ta-notice-of-as
 export class TaNoticeOfAsignmentComponent
     implements OnInit, ControlValueAccessor, OnDestroy
 {
-    public constants = TaNoticeOfAssignmentConstants;
-    public svgRoutes = TaNoticeOfAsignmentSvgRoutes;
+    @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
+
     @Output() noticeFocus = new EventEmitter<any>();
     @Input() sidebarWidth: any;
-    range: any;
     @Input() settings: any;
-    selectedFontFamily = 3;
-    selectedFontSize = 14;
-    activeFont: IFontSizeOption = { id: 2, name: 'Default', showName: 'Default', size: 13 };
-    activeFontSize: number = TaNoticeOfAssignmentConstants.FONT_SIZE_DEFAULT;
-    isBlured: boolean = true;
-    fontSizeOptions: IFontSizeOption[] = [...TaNoticeOfAssignmentConstants.FONT_SIZE_OPTIONS];
+    
+    public constants = TaNoticeOfAssignmentConstants;
+    public svgRoutes = TaNoticeOfAsignmentSvgRoutes;
 
-    showDropdown: boolean;
-    customSelectColor: any[] = [
-        'rgb(60, 60, 60)',
-        'rgb(48, 116, 211)',
-        'rgb(38, 166, 144)',
-        'rgb(239, 83, 80)',
-        'rgb(255, 167, 38)',
-        'rgb(171, 71, 188)',
-    ];
-
-    public toolbarActions: ITextEditorToolbarConfig = {
-        fontSize: true,
-        bold: false,
-        italic: false,
-        foreColor: false,
-        underline: false,
-        strikeThrough: false
-    }
-
-    public alignOptions: ITextEditorToolbarAlignOption[] = [
-        {
-            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_LEFT,
-            value: false,
-            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_LEFT_SVG_ROUTE,
-        },
-        {
-            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_CENTER,
-            value: false,
-            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_CENTER_SVG_ROUTE,
-        },
-        {
-            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_RIGHT,
-            value: false,
-            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_RIGHT_SVG_ROUTE,
-        },
-        {
-            name: TaNoticeOfAssignmentConstants.TEXT_ALIGN_FULL,
-            value: false,
-            imageUrl: TaNoticeOfAsignmentSvgRoutes.ICON_TEXT_ALIGN_FULL_SVG_ROUTE,
-        }
-    ];
-
-    activeAlignment: string;
-
-    selectionTaken: any;
-
-    showCollorPattern: boolean;
-    buttonsExpanded = false;
-    isExpanded = false;
-    editorDoc: any;
-    value = '';
-
-    isFormDirty: boolean = false;
-    private destroy$ = new Subject<void>();
+    public activeFont: IFontSizeOption = TaNoticeOfAssignmentConstants.FONT_SIZE_OPTION_DEFAULT;
+    public activeFontSize: number = TaNoticeOfAssignmentConstants.FONT_SIZE_DEFAULT;
+    public fontSizeOptions: IFontSizeOption[] = [...TaNoticeOfAssignmentConstants.FONT_SIZE_OPTIONS];
+    public customSelectColor: string[] = TaNoticeOfAssignmentConstants.TOOLBAR_COLOR_OPTIONS;
+    public selectedPaternColor: string = TaNoticeOfAssignmentConstants.TOOLBAR_RGB_COLOR_DEFAULT;
+    public selectedColorName: string = TaNoticeOfAssignmentConstants.TOOLBAR_RGB_COLOR_DEFAULT;
+    public toolbarActions: ITextEditorToolbarConfig = TaNoticeOfAssignmentConstants.TOOLBAR_ACTIONS_DEFAULT;
+    public alignOptions: ITextEditorToolbarAlignOption[] = TaNoticeOfAssignmentConstants.TOOLBAR_ALIGN_OPTIONS_DEFAULT;
     public noticeForm: UntypedFormGroup;
 
-    selectedPaternColor = 'rgb(60, 60, 60)';
-    @ViewChild('noticeRef', { static: true }) noticeRef: ElementRef;
-    selectedColorName: string = 'rgb(60, 60, 60)';
-    defaultColorSet: any;
-    slowTimeout: any;
+    private isBlured: boolean = true;
+    private showDropdown: boolean;
+    private activeAlignment: string;
+    private showCollorPattern: boolean;
+    private value: string = TaNoticeOfAssignmentConstants.STRING_EMPTY;
+    private isFormDirty: boolean = false;
+    private destroy$ = new Subject<void>();
+    private isDefaultColorSet: boolean;
+    private slowTimeout: NodeJS.Timeout;
+    private range: Range;
+    private selectionTaken: Selection;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -146,7 +102,7 @@ export class TaNoticeOfAsignmentComponent
     }
     writeValue(obj: any): void {
         // This is done to avoid reseting caret position by always setting innerHTML on text change
-        if (this.noticeRef.nativeElement.innerHTML == '') {
+        if (this.noticeRef.nativeElement.innerHTML === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
             this.noticeRef.nativeElement.innerHTML = obj;
         } else {
             this.noticeRef.nativeElement.value = obj;
@@ -189,16 +145,16 @@ export class TaNoticeOfAsignmentComponent
         this.executeEditor('fontName', e.name);
     }
 
-    changeFontSize(e): void {
-        this.activeFontSize = e.size;
-        this.executeEditor(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE, e.size);
+    changeFontSize(event): void {
+        this.activeFontSize = event.size;
+        this.executeEditor(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE, event.size);
     }
 
     toggleDropdown(): void {
         this.showDropdown = !this.showDropdown;
     }
 
-    executeEditor(action: string, actionParam?: string) {
+    public executeEditor(action: string, actionParam?: string): void {
         document.execCommand('styleWithCSS', false, 'true');
         if (this.range) {
             this.selectionTaken.removeAllRanges();
@@ -225,7 +181,7 @@ export class TaNoticeOfAsignmentComponent
                     });
 
                     if (!checkAlign) {
-                        if (this.value.replace('<br>', '') == '') {
+                        if (this.value.replace('<br>', TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
                             this.selectionTaken.removeAllRanges();
                         }
                         document.execCommand('styleWithCSS', false, 'false');
@@ -238,7 +194,7 @@ export class TaNoticeOfAsignmentComponent
                     this.toolbarActions[action] = !this.toolbarActions[action];
 
                     if (!this.toolbarActions[action]) {
-                        if (this.value.replace('<br>', '') == '') {
+                        if (this.value.replace('<br>', TaNoticeOfAssignmentConstants.STRING_EMPTY) === TaNoticeOfAssignmentConstants.STRING_EMPTY) {
                             this.selectionTaken.removeAllRanges();
                         }   
                         document.execCommand('styleWithCSS', false, 'false');
@@ -265,7 +221,7 @@ export class TaNoticeOfAsignmentComponent
                 setTimeout(() => {
                     this.focusElement();
                     this.selectedPaternColor = actionParam;
-                    this.defaultColorSet = true;
+                    this.isDefaultColorSet = true;
                     document.execCommand(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR, false, actionParam);
                 });
             });
@@ -285,47 +241,6 @@ export class TaNoticeOfAsignmentComponent
 
         if (this.noticeRef) {
             this.noticeRef.nativeElement.focus();
-        }
-    }
-
-    checkActiveItems() {
-        for (const action in this.toolbarActions) {
-            this.toolbarActions[action] = document.queryCommandState(action);
-
-            clearTimeout(this.slowTimeout);
-            this.slowTimeout = setTimeout(() => {
-                const findedColor = this.customSelectColor.find(
-                    (item) => item == document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR)
-                );
-                this.selectedColorName = findedColor;
-            }, 200);
-            this.selectedPaternColor = document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR);
-            this.activeFont =
-                document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '1'
-                    ? this.fontSizeOptions[2]
-                    : document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '5'
-                    ? this.fontSizeOptions[0]
-                    : this.fontSizeOptions[1];
-        }
-
-        this.alignOptions.map((align) => {
-            align.value = document.queryCommandState(align.name);
-        });
-
-        if (this.defaultColorSet) {
-            this.customSelectColor.map((col, indx) => {
-                if (col.color == this.selectedPaternColor) {
-                    this.selectedColorName = this.customSelectColor[indx];
-                    document.execCommand('styleWithCSS', false, 'true');
-                    setTimeout(() => {
-                        this.focusElement();
-                        setTimeout(() => {
-                            this.focusElement();
-                            this.selectedPaternColor = col.color;
-                        });
-                    });
-                }
-            });
         }
     }
 
@@ -356,8 +271,57 @@ export class TaNoticeOfAsignmentComponent
             this.checkActiveItems();
         }, 100);
     }
+    
+    public identifyAlignOption(item: ITextEditorToolbarAlignOption) {
+        return item.name;
+    }
+
+    public identifyColor(index: number, item: string) {
+        return item;
+    }
 
     public onPaste(event: ClipboardEvent): void {
         CopyPasteHelper.onPaste(event);
+    }
+
+    private checkActiveItems(): void {
+        for (const action in this.toolbarActions) {
+            this.toolbarActions[action] = document.queryCommandState(action);
+
+            clearTimeout(this.slowTimeout);
+            this.slowTimeout = setTimeout(() => {
+                const findedColor = this.customSelectColor.find(
+                    (item) => item == document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR)
+                );
+                this.selectedColorName = findedColor;
+            }, 200);
+            this.selectedPaternColor = document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FORE_COLOR);
+            this.activeFont =
+                document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '1'
+                    ? this.fontSizeOptions[2]
+                    : document.queryCommandValue(TaNoticeOfAssignmentConstants.TOOLBAR_ACTION_FONT_SIZE) == '5'
+                    ? this.fontSizeOptions[0]
+                    : this.fontSizeOptions[1];
+        }
+
+        this.alignOptions.map((align) => {
+            align.value = document.queryCommandState(align.name);
+        });
+
+        if (this.isDefaultColorSet) {
+            this.customSelectColor.map((col, indx) => {
+                if (col == this.selectedPaternColor) {
+                    this.selectedColorName = this.customSelectColor[indx];
+                    document.execCommand('styleWithCSS', false, 'true');
+                    setTimeout(() => {
+                        this.focusElement();
+                        setTimeout(() => {
+                            this.focusElement();
+                            this.selectedPaternColor = col;
+                        });
+                    });
+                }
+            });
+        }
     }
 }
