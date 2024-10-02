@@ -30,7 +30,11 @@ import {
 } from '@pages/chat/state';
 
 // Models
-import { ChatAttachmentForThumbnail, ChatMessage } from '@pages/chat/models';
+import {
+    ChatAttachmentForThumbnail,
+    ChatMessage,
+    ChatSelectedConversation,
+} from '@pages/chat/models';
 import { ConversationResponse } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
@@ -63,7 +67,7 @@ export class ChatContentFooterComponent
 {
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
-    @Input() public conversation!: ConversationResponse;
+    @Input() public conversation!: ChatSelectedConversation;
     @Input() currentUserTyping: BehaviorSubject<string | null> =
         new BehaviorSubject(null);
 

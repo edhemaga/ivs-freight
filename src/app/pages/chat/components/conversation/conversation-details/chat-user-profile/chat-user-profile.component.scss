@@ -13,6 +13,9 @@
         }
         &-close-icon {
             margin: auto 2px auto auto;
+            &:hover {
+                cursor: pointer;
+            }
         }
     }
 

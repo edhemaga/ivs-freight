@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, takeUntil, Observable } from 'rxjs';
+import { BehaviorSubject, takeUntil, Observable, filter } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
 import {
-    ChatState,
-    selectMessageResponse,
+    displayConversationParticipants,
+    getSelectedConversation,
+    setConversation,
     setMessageResponse,
 } from '@pages/chat/state';
 
@@ -15,6 +16,7 @@ import {
     ChatConversationMessageAction,
     ChatMessage,
     ChatMessageResponse,
+    ChatSelectedConversation,
 } from '@pages/chat/models';
 import {
     CompanyUserShortResponse,
@@ -51,16 +53,6 @@ export class ConversationContentComponent
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
         new EventEmitter();
-    @Output() isConversationParticipantsDisplayed: EventEmitter<{
-        isDisplayed: boolean;
-        conversationParticipants: CompanyUserShortResponse[];
-    }> = new EventEmitter();
-
-    // Messages
-    public messageToReply$: BehaviorSubject<ChatMessage | null> =
-        new BehaviorSubject(null);
-    public messageToEdit$: BehaviorSubject<ChatMessage | null> =
-        new BehaviorSubject(null);
 
     // Group info
     public chatConversationType = ChatConversationType;
@@ -69,8 +61,7 @@ export class ConversationContentComponent
     //User data
     private getCurrentUserHelper = GetCurrentUserHelper;
 
-    public conversation!: ConversationResponse;
-    public conversationParticipants!: CompanyUserShortResponse[];
+    public conversation!: Observable<ChatSelectedConversation>;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
@@ -96,28 +87,35 @@ export class ConversationContentComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.store.dispatch(
+                    setConversation({
+                        participants: res.information?.participants.filter(
+                            (participant) =>
+                                participant.id !==
+                                this.getCurrentUserHelper.currentUserId
+                        ),
+                        name:
+                            res.information.name ??
+                            res.information?.participants[0]?.fullName,
+                        description: res.information?.description,
+                        createdAt: res.information?.createdAt,
+                        updatedAt: res.information?.updatedAt,
+                    })
+                );
+
+                this.store.dispatch(
                     setMessageResponse({
                         ...res?.messages,
                     })
                 );
 
-                // Conversation participants
-                this.conversation = res.information;
-
-                this.conversationParticipants =
-                    this.conversation?.participants.filter(
-                        (participant) =>
-                            participant.id !==
-                            this.getCurrentUserHelper.currentUserId
-                    );
+                this.conversation = this.store.select(getSelectedConversation);
             });
     }
 
     public displayGroupParticipants(): void {
-        this.isConversationParticipantsDisplayed.emit({
-            isDisplayed: true,
-            conversationParticipants: this.conversationParticipants,
-        });
+        this.store.dispatch(
+            displayConversationParticipants({ isDisplayed: true })
+        );
     }
 
     private getDataOnRouteChange(): void {

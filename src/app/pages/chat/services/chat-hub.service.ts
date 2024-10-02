@@ -29,6 +29,7 @@ export class ChatHubService {
                 accessTokenFactory: () => this.token,
             })
             .withAutomaticReconnect()
+            .configureLogging(6) // No logs at all; none
             .build();
     }
 

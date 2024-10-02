@@ -2,7 +2,11 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 // Models
 import { ChatState } from '..';
-import { ChatMessage, ChatMessageResponse } from '@pages/chat/models';
+import {
+    ChatMessage,
+    ChatMessageResponse,
+    ChatSelectedConversation,
+} from '@pages/chat/models';
 
 export const selectChatState = createFeatureSelector<ChatState>('chat');
 
@@ -30,4 +34,24 @@ export const activeReplyOrEdit = createSelector(
     selectChatState,
     (state: ChatState): number =>
         state.messageToReply?.id || state.messageToEdit?.id
+);
+
+export const getSelectedConversation = createSelector(
+    selectChatState,
+    (state: ChatState): ChatSelectedConversation => state.conversation
+);
+
+export const getIsProfileDetailsDisplayed = createSelector(
+    selectChatState,
+    (state: ChatState): boolean => state.isProfileDetailsDisplayed
+);
+
+export const getIsConversationParticipantsDisplayed = createSelector(
+    selectChatState,
+    (state: ChatState): boolean => state.isConversationParticipantsDisplayed
+);
+
+export const getUnreadCount = createSelector(
+    selectChatState,
+    (state: ChatState): number => state.unreadCount
 );

@@ -9,6 +9,11 @@ import {
     editMessage,
     replyMessage,
     resetReplyAndEditMessage,
+    setConversation,
+    displayProfileDetails,
+    displayConversationParticipants,
+    closeAllProfileInformation,
+    setUnreadCount,
 } from '@pages/chat/state/actions/chat.actions';
 
 // Models
@@ -17,10 +22,7 @@ import {
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import {
-    CompanyUserChatResponsePagination,
-    ConversationResponse,
-} from 'appcoretruckassist';
+import { CompanyUserChatResponsePagination } from 'appcoretruckassist';
 
 // Enums
 import { ChatViewTypeEnum } from '@pages/chat/enums';
@@ -34,14 +36,14 @@ export type ChatState = {
     drivers?: CompanyUserChatResponsePagination;
 
     // Conversation
-    conversation?: ConversationResponse;
-    selectedConversation?: ChatSelectedConversation;
+    conversation?: ChatSelectedConversation;
 
     // Messages
     messageResponsePageIndex: number;
     messageResponsePageSize: number;
     messageResponseCount: number;
     messageResponseData: ChatMessage[];
+    unreadCount?: number;
 
     // Conversation details
     isProfileDetailsDisplayed?: boolean;
@@ -67,12 +69,14 @@ const initialState: ChatState = {
     messageResponsePageSize: 0,
     messageResponseCount: 0,
     messageResponseData: [],
+    unreadCount: 0,
     isProfileDetailsDisplayed: false,
     isConversationParticipantsDisplayed: false,
     messageToReply: null,
     messageToEdit: null,
 };
 
+// TODO deconstruct each newState
 export const chatDataReducer = createReducer(
     initialState,
     on(setMessageResponse, (state, newState) => ({
@@ -106,5 +110,31 @@ export const chatDataReducer = createReducer(
         ...state,
         messageToReply: null,
         messageToEdit: null,
+    })),
+    on(setConversation, (state, newState) => ({
+        ...state,
+        conversation: {
+            ...state.conversation,
+            ...newState,
+        },
+    })),
+    on(displayProfileDetails, (state, newState) => ({
+        ...state,
+        isProfileDetailsDisplayed: newState.isDisplayed,
+        isConversationParticipantsDisplayed: false,
+    })),
+    on(displayConversationParticipants, (state, newState) => ({
+        ...state,
+        isConversationParticipantsDisplayed: newState.isDisplayed,
+        isProfileDetailsDisplayed: false,
+    })),
+    on(closeAllProfileInformation, (state) => ({
+        ...state,
+        isConversationParticipantsDisplayed: false,
+        isProfileDetailsDisplayed: false,
+    })),
+    on(setUnreadCount, (state, newState) => ({
+        ...state,
+        unreadCount: newState.count,
     }))
 );

@@ -57,10 +57,6 @@ export class ConversationListComponent
     @Input() public companyUsers: CompanyUserChatResponsePagination;
     @Input() public drivers: CompanyUserChatResponsePagination;
 
-    // New message emitted from hub
-    @Input() public newMessage: BehaviorSubject<ChatMessageResponse> =
-        new BehaviorSubject(null);
-
     @Output() selectedConversation = new EventEmitter<{
         id: number[];
         type: ConversationTypeEnum;
@@ -95,7 +91,6 @@ export class ConversationListComponent
     ngOnInit(): void {
         this.initializeChatGroupStates();
         this.creteForm();
-        this.listenForNewMessage();
     }
 
     private creteForm(): void {
