@@ -335,7 +335,7 @@
                                         <!-- IF USER IS OWNER -->
                                         <svg-icon
                                             *ngIf="
-                                                row.userType.name === 'Owner'
+                                                row.userStatus === 'Owner'
                                             "
                                             [src]="
                                                 'assets/svg/truckassist-table/user-owner-icon.svg'
@@ -349,7 +349,7 @@
                                         <!-- IF USER IS NOT OWNER -->
                                         <input
                                             *ngIf="
-                                                row.userType.name !== 'Owner'
+                                                row.userStatus !== 'Owner'
                                             "
                                             (change)="onSelectItem(row, i)"
                                             [checked]="row.isSelected"
@@ -378,7 +378,7 @@
                                             "
                                             position="bottom"
                                             *ngIf="
-                                                row.userType.name !== 'Owner'
+                                                row.userStatus !== 'Owner'
                                             "
                                             class="table-checkbox-label"
                                             for="checkbox-table-{{ i }}"
