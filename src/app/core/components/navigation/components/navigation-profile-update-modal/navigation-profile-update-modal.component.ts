@@ -40,6 +40,7 @@ import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-add
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // models
 import {
@@ -70,6 +71,8 @@ import {
         TaCheckboxCardComponent,
         TaLogoChangeComponent,
         TaCustomCardComponent,
+        // components
+        CaUploadFilesComponent,
     ],
 })
 export class NavigationProfileUpdateModalComponent
@@ -300,7 +303,17 @@ export class NavigationProfileUpdateModalComponent
     }
 
     public onUploadImage(event: any) {
-        this.profileUserForm.get('avatar').patchValue(event);
+        const base64String = event?.files[0]?.url;
+        if (!base64String) {
+            this.profileUserForm.get('avatar').patchValue(null);
+            return;
+        }
+
+        const parts = base64String.split(',');
+        const base64Data = parts[1];
+
+        if (base64Data)
+            this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
     }
 

@@ -43,10 +43,7 @@ export interface ApiRepairshopPostRequest1 {
     MonthlyDay?: number;
     Longitude?: number;
     Latitude?: number;
-    OpenHoursSameAllDays?: boolean;
     OpenAlways?: boolean;
-    StartTimeAllDays?: string;
-    EndTimeAllDays?: string;
     ServiceTypes?: Array<RepairShopServiceTypeCommand>;
     OpenHours?: Array<RepairShopOpenHoursCommand>;
     Contacts?: Array<RepairShopContactCommand>;

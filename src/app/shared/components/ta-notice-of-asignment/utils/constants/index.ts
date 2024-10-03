@@ -1,0 +1,1 @@
+export * from './ta-notice-of-asignment.constants';

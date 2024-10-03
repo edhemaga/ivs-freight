@@ -20,7 +20,7 @@ export class SettingsOfficeConfig {
             type: 'text',
             label: 'Phone',
             placeholderIcon: 'phone',
-            isRequired: true,
+            isRequired: false,
             mask: '(000) 000-0000',
             maxLength: 14,
         };
@@ -89,6 +89,7 @@ export class SettingsOfficeConfig {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Day',
+            isRequired: value,
             isDropdown: true,
             isDisabled: !value,
             dropdownWidthClass: 'w-col-148',

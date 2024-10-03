@@ -227,9 +227,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         break;
                     case TableStringEnum.ACTIVATE_MULTIPLE:
                     case TableStringEnum.DEACTIVATE_MULTIPLE:
-                        res.array.forEach((driver) => {
-                            this.changeDriverStatus(driver.id);
+                        const driverIds = res.array.map((driver) => {
+                            return driver.id;
                         });
+                        this.changeDriverStatusList(driverIds);
 
                         break;
                     default:
@@ -418,7 +419,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((res: any) => {
                 // On Add Driver Active
                 if (
                     res?.animation === TableStringEnum.ADD &&
@@ -528,6 +529,42 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.viewData.splice(driverIndex, 1);
                         clearInterval(interval);
                     }, 900);
+                } else if (res?.animation === TableStringEnum.UPDATE_MULTIPLE) {
+                    const driverIds = res?.data.map((driver) => {
+                        return driver.id;
+                    });
+
+                    this.viewData = this.viewData.map((driver, index) => {
+                        if (driverIds.includes(driver.id)) {
+                            driver.actionAnimation =
+                                this.selectedTab === TableStringEnum.ACTIVE
+                                    ? TableStringEnum.DEACTIVATE
+                                    : TableStringEnum.ACTIVATE;
+                        }
+
+                        return driver;
+                    });
+
+                    this.updateDataCount();
+
+                    const interval = setInterval(() => {
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
+
+                        for (let i = 0; i < this.viewData.length; i++) {
+                            if (driverIds.includes(this.viewData[i].id)) {
+                                this.viewData.splice(i, 1);
+                                i--;
+                            }
+                        }
+                        clearInterval(interval);
+                    }, 900);
+
+                    this.tableService.sendRowsSelected([]);
+                    this.tableService.sendResetSelectedColumns(true);
                 }
             });
     }
@@ -1647,6 +1684,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDriverStatus(id: number): void {
         this.driverService
             .changeDriverStatus(id, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private changeDriverStatusList(ids: number[]): void {
+        this.driverService
+            .changeDriverListStatus(ids, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
