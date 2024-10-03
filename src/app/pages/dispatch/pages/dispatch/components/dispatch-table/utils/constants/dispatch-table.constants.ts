@@ -65,10 +65,10 @@ export class DispatchTableConstants {
             secondTitle: "DELIVERY",
             icon: "assets/svg/common/ic_pickup.svg",
             secondIcon: "assets/svg/common/ic_delivery.svg",
-            headerProperty: "pickup",
+            headerProperty: "pickup_delivery",
             height: "auto",
             width: "342px",
-            maxWidth: "342px",
+            maxWidth: "422px",
             minWidth: "342px"
         },
         {

@@ -87,8 +87,11 @@ export class ResizableDirective implements OnInit {
     }
 
     @HostListener('mousedown', ['$event'])
-    onMouseDown(event: MouseEvent): void {
-        if (!this.isResizeEnabled) return;
+    onMouseDown(event): void {
+        const resizeIconClicked =
+            event?.target?.classList?.contains('show-after');
+
+        if (!this.isResizeEnabled || !resizeIconClicked) return;
         event.preventDefault();
 
         this.isResizing = true;
@@ -362,7 +365,7 @@ export class ResizableDirective implements OnInit {
 
         if (currentColumn)
             this.onResizeAction.emit({
-                width: this.el.nativeElement.offsetWidth,
+                width: newWidth,
                 column: currentColumn,
             });
     }

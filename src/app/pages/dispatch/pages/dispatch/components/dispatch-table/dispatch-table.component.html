@@ -59,18 +59,6 @@
                                             tableHeaderItem?.icon,
                                         'd-flex align-items-center pickup-delivery':
                                             tableHeaderItem?.secondTitle,
-                                        'c-pointer':
-                                            tableHeaderItem?.title === 'NOTE' ||
-                                            tableHeaderItem?.title ===
-                                                'TRUCK' ||
-                                            tableHeaderItem?.title ===
-                                                'TRAILER' ||
-                                            tableHeaderItem?.title ===
-                                                'DRIVER' ||
-                                            tableHeaderItem?.title ===
-                                                'PARKING' ||
-                                            tableHeaderItem?.title ===
-                                                'LAST LOCATION',
                                         'smaller-padding':
                                             !isDispatchBoardLocked &&
                                             (tableHeaderItem?.title ===
@@ -91,7 +79,7 @@
                                     }"
                                 >
                                     <div
-                                        class="resize d-flex justify-content-between align-items-center"
+                                        class="resize d-flex justify-content-between align-items-center pe-none"
                                         appResizable
                                         [title]="tableHeaderItem.title"
                                         [columns]="columnsToShow"
@@ -126,7 +114,26 @@
                                                         : false
                                             }"
                                         >
-                                            <div>
+                                            <div
+                                                class="pe-auto"
+                                                [ngStyle]="{
+                                                    cursor:
+                                                        tableHeaderItem?.title ===
+                                                            'NOTE' ||
+                                                        tableHeaderItem?.title ===
+                                                            'TRUCK' ||
+                                                        tableHeaderItem?.title ===
+                                                            'TRAILER' ||
+                                                        tableHeaderItem?.title ===
+                                                            'DRIVER' ||
+                                                        tableHeaderItem?.title ===
+                                                            'PARKING' ||
+                                                        tableHeaderItem?.title ===
+                                                            'LAST LOCATION'
+                                                            ? 'pointer'
+                                                            : 'default'
+                                                }"
+                                            >
                                                 <svg-icon
                                                     class="icon"
                                                     [class.expanded]="
@@ -170,6 +177,7 @@
                                                 "
                                             >
                                                 <div
+                                                    class="pe-auto"
                                                     [ngStyle]="{
                                                         'padding-right': '10px',
                                                         cursor: 'pointer'
@@ -1333,7 +1341,9 @@
                         >
                             <td
                                 [ngStyle]="
-                                    field | dispatchTableFooterWidths : resizedColumnsWidth
+                                    field
+                                        | dispatchTableFooterWidths
+                                            : resizedColumnsWidth
                                 "
                             ></td>
                         </ng-container>
