@@ -18,12 +18,17 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 
 // pipes
-import { CardValuePipe, FlipCardsPipe, FormatCurrencyPipe, FormatDatePipe } from '@shared/pipes';
+import {
+    CardValuePipe,
+    FlipCardsPipe,
+    FormatCurrencyPipe,
+    FormatDatePipe,
+    ActivityTimePipe,
+} from '@shared/pipes';
 
 // store
 import { StoreModule } from '@ngrx/store';
 import { userCardModalReducer } from '@pages/user/pages/user-card-modal/state';
-import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 
 @NgModule({
     imports: [

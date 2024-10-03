@@ -933,36 +933,42 @@
                                     </div>
 
                                     <!-- USER ACTIVITY COLUMN -->
-                                    <div
-                                        class="td-content set-center"
+                                    <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
                                             'user-activity'
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
                                         <div
-                                            class="user-activity-container d-flex gap-1 align-items-center table-text"
-                                            [class.ta-font-semi-bold]="
-                                                row[column.field] === 'Online'
-                                            "
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
                                         >
-                                            <ng-cotainer
-                                                *ngIf="
+                                            <div
+                                                class="user-activity-container d-flex gap-1 align-items-center table-text"
+                                                [class.ta-font-semi-bold]="
                                                     row[column.field] ===
                                                     'Online'
                                                 "
                                             >
-                                                <div class="online-icon"></div>
-                                            </ng-cotainer>
-                                            {{ row[column.field] }}
+                                                <ng-cotainer
+                                                    *ngIf="
+                                                        row[column.field] ===
+                                                        'Online'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="online-icon"
+                                                    ></div>
+                                                </ng-cotainer>
+                                                {{ row[column.field] }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- INVOICE COLUMN -->
                                     <div
@@ -3142,37 +3148,43 @@
                                     </div>
 
                                     <!-- USER ACTIVITY COLUMN -->
-
-                                    <div
-                                        class="td-content set-center"
+                                     
+                                    <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
                                             'user-activity'
                                         "
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
                                     >
                                         <div
-                                            class="user-activity-container d-flex gap-1 align-items-center table-text"
-                                            [class.ta-font-semi-bold]="
-                                                row[column.field] === 'Online'
-                                            "
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
                                         >
-                                            <ng-cotainer
-                                                *ngIf="
+                                            <div
+                                                class="user-activity-container d-flex gap-1 align-items-center table-text"
+                                                [class.ta-font-semi-bold]="
                                                     row[column.field] ===
                                                     'Online'
                                                 "
                                             >
-                                                <div class="online-icon"></div>
-                                            </ng-cotainer>
-                                            {{ row[column.field] }}
+                                                <ng-cotainer
+                                                    *ngIf="
+                                                        row[column.field] ===
+                                                        'Online'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="online-icon"
+                                                    ></div>
+                                                </ng-cotainer>
+                                                {{ row[column.field] }}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- NAME LINK COLUMN -->
                                     <div
