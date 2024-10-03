@@ -9,7 +9,7 @@ import {
     getSelectedConversation,
     setConversation,
     setMessageResponse,
-} from '@pages/chat/state';
+} from '@pages/chat/store';
 
 // Models
 import {

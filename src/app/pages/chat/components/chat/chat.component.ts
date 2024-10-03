@@ -11,7 +11,7 @@ import {
     getIsProfileDetailsDisplayed,
     getSelectedConversation,
     setConversation,
-} from '@pages/chat/state';
+} from '@pages/chat/store';
 
 // Models
 import {
@@ -49,7 +49,7 @@ import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper'
 
 // Animations
 import { chatFadeHorizontallyAnimation } from '@shared/animations';
-import { setUnreadCount } from '../../state/actions/chat.actions';
+import { setUnreadCount } from '../../store/actions/chat.actions';
 
 @Component({
     selector: 'app-chat',

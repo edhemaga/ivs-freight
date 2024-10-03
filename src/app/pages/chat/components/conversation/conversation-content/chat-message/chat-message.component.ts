@@ -11,7 +11,7 @@ import {
     resetReplyAndEditMessage,
     selectEditMessage,
     selectReplyMessage,
-} from '@pages/chat/state';
+} from '@pages/chat/store';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';

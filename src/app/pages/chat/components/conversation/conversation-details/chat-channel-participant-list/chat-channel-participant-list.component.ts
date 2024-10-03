@@ -5,7 +5,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 
 // Store
 import { Store } from '@ngrx/store';
-import { displayConversationParticipants } from '@pages/chat/state';
+import { displayConversationParticipants } from '@pages/chat/store';
 
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';

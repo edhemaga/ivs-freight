@@ -1,11 +1,11 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 // Models
-import { ChatState } from '..';
 import {
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
+    ChatState,
 } from '@pages/chat/models';
 
 export const selectChatState = createFeatureSelector<ChatState>('chat');

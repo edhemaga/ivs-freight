@@ -57,7 +57,7 @@ import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
 } from '@pages/chat/utils/helpers';
-import { addMessage, selectMessageResponse } from '@pages/chat/state';
+import { addMessage, selectMessageResponse } from '@pages/chat/store';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

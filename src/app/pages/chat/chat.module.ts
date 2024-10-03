@@ -35,7 +35,7 @@ import { TaSearchComponent } from '@shared/components/ta-search/ta-search.compon
 import { CaProfileImageComponent } from 'ca-components';
 
 // Store
-import { chatDataReducer } from '@pages/chat/state';
+import { chatDataReducer } from '@pages/chat/store';
 
 // Pipes
 import {
