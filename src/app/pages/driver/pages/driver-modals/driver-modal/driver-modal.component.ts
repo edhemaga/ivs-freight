@@ -109,6 +109,7 @@ import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-mo
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { CaUploadFilesComponent } from 'ca-components';
 
 @Component({
     selector: 'app-driver-modal',
@@ -148,6 +149,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
         TaInputDropdownComponent,
         TaLogoChangeComponent,
         TaModalTableComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
@@ -931,7 +933,19 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any): void {
-        this.driverForm.get(DriverModalStringEnum.AVATAR).patchValue(event);
+        const base64String = event?.files[0]?.url;
+        if (!base64String) {
+            this.driverForm.get('logo').patchValue(null);
+            return;
+        }
+
+        const parts = base64String.split(',');
+        const base64Data = parts[1];
+
+        if (base64Data)
+            this.driverForm
+                .get(DriverModalStringEnum.AVATAR)
+                .patchValue(base64Data);
         this.driverForm.get(DriverModalStringEnum.AVATAR).setErrors(null);
     }
 

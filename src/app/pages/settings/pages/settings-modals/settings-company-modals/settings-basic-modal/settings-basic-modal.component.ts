@@ -96,6 +96,7 @@ import { CroppieOptions } from 'croppie';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // svg routes
 import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
@@ -125,6 +126,7 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
         TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaLogoChangeComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
@@ -273,9 +275,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     clearTimeout(timeout);
                 });
             } else if (this.editData.type === SettingsModalEnum.NEW_DIVISION) {
-                this.companyForm
-                    .get('starting')
-                    .setValue('100');
+                this.companyForm.get('starting').setValue('100');
             }
         } else {
             this.onPrefferedLoadCheck({ name: SettingsModalEnum.FTL });
@@ -1026,7 +1026,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any) {
-        this.companyForm.get('logo').patchValue(event);
+        const base64String = event?.files[0]?.url;
+        if (!base64String) {
+            this.companyForm.get('logo').patchValue(null);
+            return;
+        }
+
+        const parts = base64String.split(',');
+        const base64Data = parts[1];
+
+        if (base64Data) this.companyForm.get('logo').patchValue(base64Data);
         this.companyForm.get('logo').setErrors(null);
     }
 
@@ -1206,7 +1215,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
-                trailerInspectionMonths
+                trailerInspectionMonths,
             },
             departmentContacts,
             bankAccounts,
@@ -1237,7 +1246,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         this.settingsCompanyService
-            .addCompanyDivision({...newData})
+            .addCompanyDivision({ ...newData })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1258,10 +1267,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     private editCompanyDivision() {
-        const {
-            additionalInfo,
-            ...company
-        } = this.editData?.company;
+        const { additionalInfo, ...company } = this.editData?.company;
 
         this.companyForm.patchValue({
             // -------------------- Basic Tab
@@ -1280,13 +1286,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             toll: company.toll,
             scac: company.scac,
             timeZone:
-                company.timeZone?.id !== 0
-                    ? company.timeZone?.name
-                    : null,
+                company.timeZone?.id !== 0 ? company.timeZone?.name : null,
             currency:
-                company.currency?.id !== 0
-                    ? company.currency?.name
-                    : null,
+                company.currency?.id !== 0 ? company.currency?.name : null,
             logo: /* this.editData.company.logo
                 ? this.editData.company.logo
                 : */ null,
@@ -1302,7 +1304,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
             truckInspectionMonths: additionalInfo?.truckInspectionMonths,
-            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths
+            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1402,7 +1404,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.companyForm.value;
 
-        const newData : UpdateDivisionCompanyCommand = {
+        const newData: UpdateDivisionCompanyCommand = {
             id,
             ...form,
             additionalInfo: {
@@ -1417,7 +1419,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 customerCredit,
                 mvrMonths,
                 truckInspectionMonths,
-                trailerInspectionMonths
+                trailerInspectionMonths,
             },
             departmentContacts,
             bankAccounts,
@@ -1448,7 +1450,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         this.settingsCompanyService
-            .updateCompanyDivision({...newData})
+            .updateCompanyDivision({ ...newData })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

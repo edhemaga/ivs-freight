@@ -70,6 +70,7 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
+import { CaUploadFilesComponent } from 'ca-components';
 
 @Component({
     selector: 'app-contact-modal',
@@ -98,6 +99,7 @@ import { EditData } from '@shared/models/edit-data.model';
         TaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class ContactsModalComponent implements OnInit, OnDestroy {
@@ -137,7 +139,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    
+
     private isUploadInProgress: boolean;
 
     constructor(
@@ -179,7 +181,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
-        if(this.isUploadInProgress) return;
+        if (this.isUploadInProgress) return;
 
         switch (data.action) {
             case ContactsModalStringEnum.CLOSE:
@@ -602,7 +604,21 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event) {
-        this.contactForm.get(ContactsModalStringEnum.AVATAR).patchValue(event);
+        const base64String = event?.files[0]?.url;
+        if (!base64String) {
+            this.contactForm
+                .get(ContactsModalStringEnum.AVATAR)
+                .patchValue(null);
+            return;
+        }
+
+        const parts = base64String.split(',');
+        const base64Data = parts[1];
+
+        if (base64Data)
+            this.contactForm
+                .get(ContactsModalStringEnum.AVATAR)
+                .patchValue(base64Data);
         this.contactForm.get(ContactsModalStringEnum.AVATAR).setErrors(null);
     }
 
