@@ -6,6 +6,7 @@ import {
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import { ConversationInfoResponse } from 'appcoretruckassist';
 
 export const setMessageResponse = createAction(
@@ -70,3 +71,17 @@ export const setAttachmentUploadActiveStatus = createAction(
     '[Chat] Attachment Upload Active',
     props<{ isDisplayed: boolean }>()
 );
+
+export const setAttachment = createAction(
+    '[Chat] Upload Attachment',
+    props<UploadFile>()
+);
+
+export const deleteAttachment = createAction(
+    '[Chat] Delete Attachment',
+    props<UploadFile>()
+);
+
+export const deleteAllAttachment = createAction(
+    '[Chat] Delete All Attachments',
+)

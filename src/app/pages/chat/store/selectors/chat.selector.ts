@@ -7,6 +7,7 @@ import {
     ChatSelectedConversation,
     ChatState,
 } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import { ConversationInfoResponse } from 'appcoretruckassist';
 
 export const selectChatState = createFeatureSelector<ChatState>('chat');
@@ -65,4 +66,9 @@ export const getUnreadCount = createSelector(
 export const isAttachmentUploadActive = createSelector(
     selectChatState,
     (state: ChatState): boolean => state.isAttachmentUploadActive
+);
+
+export const selectAttachments = createSelector(
+    selectChatState,
+    (state: ChatState): UploadFile[] => state.attachments
 );

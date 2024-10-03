@@ -28,6 +28,10 @@ import {
     selectEditMessage,
     selectReplyMessage,
     setAttachmentUploadActiveStatus,
+    selectAttachments,
+    deleteAllAttachment,
+    deleteAttachment,
+    setAttachment
 } from '@pages/chat/store';
 
 // Models
@@ -82,9 +86,8 @@ export class ChatContentFooterComponent
     public currentMessage!: string;
 
     // Attachment upload
-    public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
-        []
-    );
+    public attachments$: Observable<UploadFile[]>;
+
     public hoveredAttachment!: ChatAttachmentForThumbnail;
 
     // Links
@@ -136,6 +139,7 @@ export class ChatContentFooterComponent
         this.replyMessage$ = this.store
             .select(selectReplyMessage)
             .pipe(takeUntil(this.destroy$));
+        this.attachments$ = this.store.select(selectAttachments).pipe(takeUntil(this.destroy$));
 
     }
 
@@ -162,27 +166,34 @@ export class ChatContentFooterComponent
     public sendMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
 
-        if (!this.conversation?.id || !this.isMessageSendable) return;
-        if (!message && !this.attachments$?.value?.length) return;
+        if (!this.conversation?.id || !this.isMessageSendable || !message) return;
 
         this.isMessageSendable = false;
 
-        this.chatService
-            .sendMessage(
-                this.conversation.id,
-                1,
-                message,
-                this.attachments$.value,
-                this.links,
-                parentMessageId
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.isMessageSendable = true;
-                this.attachments$.next([]);
-                this.messageForm.reset();
-                this.closeReplyAndEdit();
-            });
+        const completeSubject: BehaviorSubject<void> = new BehaviorSubject(null);
+
+        this.attachments$
+            .pipe(takeUntil(completeSubject))
+            .subscribe(attachments => {
+                this.chatService
+                    .sendMessage(
+                        this.conversation.id,
+                        1,
+                        message,
+                        attachments,
+                        this.links,
+                        parentMessageId
+                    )
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(() => {
+                        this.isMessageSendable = true;
+                        this.store.dispatch(deleteAllAttachment());
+                        this.messageForm.reset();
+                        this.closeReplyAndEdit();
+                        completeSubject.next();
+                    });
+            })
+        completeSubject.complete();
     };
 
     public editMessage = (parentMessageId?: number): void => {
@@ -221,7 +232,9 @@ export class ChatContentFooterComponent
     };
 
     public addAttachments(files: UploadFile[]): void {
-        this.attachments$.next([...this.attachments$.value, ...files]);
+        files.forEach(file => {
+            this.store.dispatch(setAttachment(file));
+        })
         this.store.dispatch(
             setAttachmentUploadActiveStatus({ isDisplayed: false })
         );
@@ -291,10 +304,7 @@ export class ChatContentFooterComponent
     }
 
     public removeAttachment(attachment: UploadFile): void {
-        const currentAttachments = this.attachments$.value.filter(
-            (arg) => arg !== attachment
-        );
-        this.attachments$.next(currentAttachments);
+        this.store.dispatch(deleteAttachment(attachment));
     }
 
     public blurInput(): void {

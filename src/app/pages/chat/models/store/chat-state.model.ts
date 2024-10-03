@@ -1,7 +1,7 @@
 // Models
-import { ChatViewTypeEnum } from '@pages/chat/enums';
 import {
     ChatCompanyChannelExtended,
+    ChatExtendedUploadFile,
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
@@ -11,6 +11,7 @@ import {
 } from 'appcoretruckassist';
 
 // Enums
+import { ChatViewTypeEnum } from '@pages/chat/enums';
 
 export type ChatState = {
     // Conversation list
@@ -29,6 +30,7 @@ export type ChatState = {
     messageResponseCount: number;
     messageResponseData: ChatMessage[];
     unreadCount?: number;
+    attachments: ChatExtendedUploadFile[] | null;
 
     // Conversation details
     isProfileDetailsDisplayed?: boolean;

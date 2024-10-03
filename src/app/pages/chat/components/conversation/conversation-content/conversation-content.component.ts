@@ -10,25 +10,18 @@ import {
     getSelectedConversation,
     setConversation,
     setMessageResponse,
+    selectAttachments
 } from '@pages/chat/store';
 
 // Models
 import {
-    ChatConversationMessageAction,
-    ChatMessage,
-    ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import {
-    CompanyUserShortResponse,
-    ConversationResponse,
-} from 'appcoretruckassist';
 
 // Enums
 import {
     ChatConversationType,
     ChatGroupEnum,
-    ChatMessageActionEnum,
 } from '@pages/chat/enums';
 
 // Helpers
@@ -39,6 +32,7 @@ import {
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-conversation-content',
@@ -47,8 +41,7 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ConversationContentComponent
     extends UnsubscribeHelper
-    implements OnInit
-{
+    implements OnInit {
     @Input() group: ChatGroupEnum;
     @Input() public isAttachmentUploadActive: boolean = false;
 
@@ -62,14 +55,13 @@ export class ConversationContentComponent
     //User data
     private getCurrentUserHelper = GetCurrentUserHelper;
 
-    public conversation!: Observable<ChatSelectedConversation>;
+    public conversation$!: Observable<ChatSelectedConversation>;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
 
     constructor(
         // Router
-        private router: Router,
         private activatedRoute: ActivatedRoute,
 
         // Store
@@ -109,7 +101,7 @@ export class ConversationContentComponent
                         ...res?.messages,
                     })
                 );
-                this.conversation = this.store.select(getSelectedConversation);
+                this.conversation$ = this.store.select(getSelectedConversation);
                 this.store.dispatch(closeAllProfileInformation());
             });
     }

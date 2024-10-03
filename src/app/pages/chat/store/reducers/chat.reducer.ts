@@ -16,6 +16,9 @@ import {
     setUnreadCount,
     setProfileDetails,
     setAttachmentUploadActiveStatus,
+    setAttachment,
+    deleteAttachment,
+    deleteAllAttachment
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -28,6 +31,7 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
+    attachments: null,
     isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
     isConversationParticipantsDisplayed: false,
@@ -177,5 +181,42 @@ export const chatDataReducer = createReducer(
     on(setAttachmentUploadActiveStatus, (state, newState) => ({
         ...state,
         isAttachmentUploadActive: newState.isDisplayed,
+    })),
+    on(setAttachment, (state, newState) => ({
+        ...state,
+        attachments: [
+            ...state.attachments,
+            {
+                fileId: newState.fileId,
+                name: newState.name,
+                fileName: newState.fileName,
+                url: newState.url,
+                extension: newState.extension,
+                guid: newState.guid,
+                size: newState.size,
+                fileSize: newState.fileSize,
+                tags: newState.tags,
+                realFile: newState.realFile,
+                tagId: newState.tagId,
+                incorrect: newState.incorrect,
+                tagChanged: newState.tagChanged,
+                savedTag: newState.savedTag,
+                tagGeneratedByUser: newState.tagGeneratedByUser,
+                lastHovered: newState.lastHovered,
+            },
+        ],
+    })),
+    on(deleteAttachment, (state, newState) => ({
+        ...state,
+        attachments: [
+            ...state.attachments,
+            ...state.attachments.filter(
+                (attachment) => attachment.fileId !== newState.fileId
+            ),
+        ],
+    })),
+    on(deleteAllAttachment, (state) => ({
+        ...state,
+        attachments: null
     }))
 );

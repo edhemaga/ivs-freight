@@ -41,9 +41,9 @@ export class ChatHubService {
         if (
             !ChatHubService.hubConnection &&
             ChatHubService.hubConnection?.state !==
-            signalR.HubConnectionState.Connecting &&
+                signalR.HubConnectionState.Connecting &&
             ChatHubService.hubConnection?.state !==
-            signalR.HubConnectionState.Connected
+                signalR.HubConnectionState.Connected
         )
             return;
 

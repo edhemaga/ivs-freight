@@ -5,7 +5,7 @@
             <div class="messages-header d-flex align-items-center">
                 <ng-container
                     *ngSwitchCase="
-                        (conversation | async)?.participants?.length === 1
+                        (conversation$ | async)?.participants?.length === 1
                     "
                 >
                     <app-ca-profile-image
@@ -47,7 +47,7 @@
 
                 <ng-container
                     *ngSwitchCase="
-                        (conversation | async)?.participants?.length >= 2
+                        (conversation$ | async)?.participants?.length >= 2
                     "
                 >
                     <div class="messages-header d-flex align-items-center">
@@ -89,18 +89,35 @@
     <div class="content d-flex flex-column">
         <!-- Messages  -->
         <app-chat-messages
-            [conversation]="conversation"
+            [conversation]="conversation$"
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
             [isAttachmentUploadActive]="isAttachmentUploadActive"
-            [conversationParticipants]="(conversation | async)?.participants"
+            [conversationParticipants]="(conversation$ | async)?.participants"
         ></app-chat-messages>
 
         <!-- Footer -->
         <app-chat-content-footer
-            [conversation]="conversation | async"
+            [conversation]="conversation$ | async"
         ></app-chat-content-footer>
     </div>
 </div>
+
+<!-- Templates -->
+<ng-template #upload>
+    <div class="upload-wrapper">
+        <app-ta-upload-files
+            #filesUpload
+            [files]="[]"
+            [showDropzone]="true"
+            [dropzoneFocus]="false"
+            [dropZoneConfig]="ChatDropzone.inputDropzone"
+            [size]="'large'"
+            [customClassName]="'no-background-color full-height expand'"
+            [hasSlider]="false"
+            (onFileEvent)="addAttachments($event.files)"
+        ></app-ta-upload-files>
+    </div>
+</ng-template>
 
 <ng-template #headerLeftSide let-name="name">
     <div class="name ta-font-extra-bold">
