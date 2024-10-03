@@ -11,13 +11,12 @@ import {
     getIsProfileDetailsDisplayed,
     getSelectedConversation,
     setConversation,
+    setProfileDetails,
+    getConversationProfileDetails,
 } from '@pages/chat/store';
 
 // Models
-import {
-    CompanyUserShortResponse,
-    ConversationInfoResponse,
-} from 'appcoretruckassist';
+import { ConversationInfoResponse } from 'appcoretruckassist';
 import {
     ChatResolvedData,
     CompanyUserChatResponsePaginationReduced,
@@ -83,7 +82,7 @@ export class ChatComponent
     public isProfileDetailsDisplayed: Observable<boolean>;
     public isParticipantsDisplayed: Observable<boolean>;
 
-    public userProfileData!: Observable<ConversationInfoResponse>;
+    public conversationProfileDetails!: Observable<ConversationInfoResponse>;
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -109,8 +108,8 @@ export class ChatComponent
     }
 
     ngOnInit(): void {
-        this.setUserProfileData();
         this.getDataOnLoad();
+        this.selectStoreData();
     }
 
     private getResolvedData(): void {
@@ -134,15 +133,22 @@ export class ChatComponent
                         ),
                     })
                 );
+
+                this.store.dispatch(closeAllProfileInformation());
             });
-        this.store.dispatch(closeAllProfileInformation());
+    }
+
+    private selectStoreData(): void {
         this.conversation = this.store.select(getSelectedConversation);
-        this.isProfileDetailsDisplayed = this.store.select(
-            getIsProfileDetailsDisplayed
-        );
-        this.isParticipantsDisplayed = this.store.select(
-            getIsConversationParticipantsDisplayed
-        );
+        this.isProfileDetailsDisplayed = this.store
+            .select(getIsProfileDetailsDisplayed)
+            .pipe(takeUntil(this.destroy$));
+        this.conversationProfileDetails = this.store
+            .select(getConversationProfileDetails)
+            .pipe(takeUntil(this.destroy$));
+        this.isParticipantsDisplayed = this.store
+            .select(getIsConversationParticipantsDisplayed)
+            .pipe(takeUntil(this.destroy$));
     }
 
     private getDataOnLoad(): void {
@@ -160,7 +166,6 @@ export class ChatComponent
         this.tabs.forEach((arg) => {
             arg.checked = arg.name === item.name;
         });
-        //TODO Create store and set value there
     }
 
     public createUserConversation(
@@ -192,6 +197,8 @@ export class ChatComponent
                 ]);
             });
     }
+
+    private getConversationData(): void {}
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -235,7 +242,8 @@ export class ChatComponent
 
     public displayProfileDetails(value: boolean): void {
         this.store.dispatch(displayProfileDetails({ isDisplayed: value }));
-        console.log();
+
+        if (!this.selectedConversation) return;
 
         this.chatService
             .getAllConversationFiles(this.selectedConversation)
@@ -244,11 +252,7 @@ export class ChatComponent
                 this.store.dispatch(
                     displayProfileDetails({ isDisplayed: value })
                 );
-                this.userProfileService.setProfile(data);
+                this.store.dispatch(setProfileDetails(data));
             });
-    }
-
-    private setUserProfileData(): void {
-        this.userProfileData = this.userProfileService.getProfile();
     }
 }

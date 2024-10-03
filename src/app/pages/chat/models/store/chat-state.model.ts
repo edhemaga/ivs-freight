@@ -5,7 +5,10 @@ import {
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { CompanyUserChatResponsePagination } from 'appcoretruckassist';
+import {
+    CompanyUserChatResponsePagination,
+    ConversationInfoResponse,
+} from 'appcoretruckassist';
 
 // Enums
 
@@ -30,6 +33,7 @@ export type ChatState = {
     // Conversation details
     isProfileDetailsDisplayed?: boolean;
     isConversationParticipantsDisplayed?: boolean;
+    profileDetails: ConversationInfoResponse | null;
     userTyping?: unknown;
 
     // Actions

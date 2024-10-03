@@ -145,9 +145,7 @@
 
         <!-- Messages -->
         <div class="conversation-wrapper">
-            <ng-container
-                *ngIf="(conversation | async)?.id; else noConversation"
-            >
+            <ng-container *ngIf="selectedConversation; else noConversation">
                 <router-outlet></router-outlet>
             </ng-container>
 
@@ -164,7 +162,7 @@
                 <ng-container *ngIf="isProfileDetailsDisplayed | async">
                     <div class="profile-details">
                         <app-chat-user-profile
-                            [data]="userProfileData | async"
+                            [data]="conversationProfileDetails | async"
                             [profileDetailsType]="
                                 chatConversationProfileDetailsType.SAFETY
                             "

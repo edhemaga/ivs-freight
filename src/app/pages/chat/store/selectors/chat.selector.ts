@@ -7,6 +7,7 @@ import {
     ChatSelectedConversation,
     ChatState,
 } from '@pages/chat/models';
+import { ConversationInfoResponse } from 'appcoretruckassist';
 
 export const selectChatState = createFeatureSelector<ChatState>('chat');
 
@@ -49,6 +50,11 @@ export const getIsProfileDetailsDisplayed = createSelector(
 export const getIsConversationParticipantsDisplayed = createSelector(
     selectChatState,
     (state: ChatState): boolean => state.isConversationParticipantsDisplayed
+);
+
+export const getConversationProfileDetails = createSelector(
+    selectChatState,
+    (state: ChatState): ConversationInfoResponse => state.profileDetails
 );
 
 export const getUnreadCount = createSelector(

@@ -5,6 +5,7 @@ import { BehaviorSubject, takeUntil, Observable, filter } from 'rxjs';
 // Store
 import { Store } from '@ngrx/store';
 import {
+    closeAllProfileInformation,
     displayConversationParticipants,
     getSelectedConversation,
     setConversation,
@@ -79,10 +80,11 @@ export class ConversationContentComponent
 
     ngOnInit(): void {
         this.getResolvedData();
-        this.getDataOnRouteChange();
     }
 
     private getResolvedData(): void {
+        this.store.dispatch(closeAllProfileInformation());
+
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -107,8 +109,8 @@ export class ConversationContentComponent
                         ...res?.messages,
                     })
                 );
-
                 this.conversation = this.store.select(getSelectedConversation);
+                this.store.dispatch(closeAllProfileInformation());
             });
     }
 
@@ -116,18 +118,5 @@ export class ConversationContentComponent
         this.store.dispatch(
             displayConversationParticipants({ isDisplayed: true })
         );
-    }
-
-    private getDataOnRouteChange(): void {
-        this.router.events.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.isProfileDetailsDisplayed.emit(false);
-        });
-
-        this.activatedRoute.queryParams.subscribe((params) => {
-            this.group =
-                params[this.chatConversationType.CHANNEL] != this.group
-                    ? params[this.chatConversationType.CHANNEL]
-                    : this.group;
-        });
     }
 }

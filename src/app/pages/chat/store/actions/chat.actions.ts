@@ -6,6 +6,7 @@ import {
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
+import { ConversationInfoResponse } from 'appcoretruckassist';
 
 export const setMessageResponse = createAction(
     '[Chat] Set Message Response',
@@ -44,6 +45,11 @@ export const setConversation = createAction(
 export const displayProfileDetails = createAction(
     '[Chat] Display Profile',
     props<{ isDisplayed: boolean }>()
+);
+
+export const setProfileDetails = createAction(
+    '[Chat] Get Profile Details',
+    props<ConversationInfoResponse>()
 );
 
 export const displayConversationParticipants = createAction(
