@@ -1,22 +1,26 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { Subject, takeUntil } from 'rxjs';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalService } from '@shared/services/modal.service';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { UserService } from '@pages/user/services/user.service';
-import { UserModalComponent } from '../user-modal/user-modal.component';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// components
+import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-user-card',
@@ -46,12 +50,14 @@ export class UserCardComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
+        // services
         private tableService: TruckassistTableService,
-        private cardHelper: CardHelper,
         private modalService: ModalService,
         private userService: UserService,
-    ) {}
 
+        // helpers
+        private cardHelper: CardHelper,
+    ) {}
 
     ngOnInit() {
         this.flipAllCards();
@@ -97,7 +103,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
 
         // Edit
         if (event.type === TableStringEnum.EDIT) {
-            console.log(event.data)
             this.modalService.openModal(
                 UserModalComponent,
                 { size: TableStringEnum.SMALL },
@@ -133,7 +138,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
             this.userService
                 .userResetPassword(event.data.email as any) // leave this any for now
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
+                .subscribe();
         }
         // User Resend Ivitation
         else if (event.type === TableStringEnum.RESEND_INVITATION) {
@@ -143,7 +148,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
                     isResendConfirmation: true,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
+                .subscribe();
         }
         // User Delete
         else if (event.type === TableStringEnum.DELETE) {

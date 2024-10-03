@@ -58,13 +58,13 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from './enums';
+import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // Config
 import { SettingsTerminalConfig } from './config';
 
 // Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils/svg.routes';
+import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -153,17 +153,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     public formConfig = SettingsTerminalConfig;
     public phoneConfig: ITaInput = SettingsTerminalConfig.getPhoneInputConfig();
-    public phoneExtConfig: ITaInput = SettingsTerminalConfig.getPhoneExtInputConfig();
+    public phoneExtConfig: ITaInput =
+        SettingsTerminalConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsTerminalConfig.getEmailInputConfig();
-    public addressConfig: ITaInput = SettingsTerminalConfig.getAddressInputConfig();
-    public addressUnitConfig: ITaInput = SettingsTerminalConfig.getAddressUnitInputConfig();
-    public payPeriodConfig: ITaInput = SettingsTerminalConfig.getPayPeriodInputConfig();
+    public addressConfig: ITaInput =
+        SettingsTerminalConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput =
+        SettingsTerminalConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput =
+        SettingsTerminalConfig.getPayPeriodInputConfig();
     public rentConfig: ITaInput = SettingsTerminalConfig.getRentConfig();
-    public parkingSlotConfig: ITaInput = SettingsTerminalConfig.getParkingSlotConfig();
-    public fullParkingSlotConfig: ITaInput = SettingsTerminalConfig.getFullParkingSlotConfig();
+    public parkingSlotConfig: ITaInput =
+        SettingsTerminalConfig.getParkingSlotConfig();
+    public fullParkingSlotConfig: ITaInput =
+        SettingsTerminalConfig.getFullParkingSlotConfig();
 
     public svgRoutes = SettingsLocationSvgRoutes;
-    
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -187,7 +192,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             name: [null, [Validators.required, ...terminalNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
+            phone: [null, phoneFaxRegex],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
 
@@ -282,6 +287,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.addTerminal(true);
+                break;
             }
             case TaModalActionEnums.DELETE: {
                 this.deleteTerminalById(this.editData.id);
@@ -299,9 +305,18 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
 
     public openCloseCheckboxCard() {
-        this.isChecked(SettingsFormEnum.OFFICE_CHECKED, SettingsFormEnum.OFFICE_PHONE);
-        this.isChecked(SettingsFormEnum.PARKING_CHECKED, SettingsFormEnum.OFFICE_PHONE);
-        this.isChecked(SettingsFormEnum.WAREHOUSE_CHECKED, SettingsFormEnum.WAREHOUSE_PHONE);
+        this.isChecked(
+            SettingsFormEnum.OFFICE_CHECKED,
+            SettingsFormEnum.OFFICE_PHONE
+        );
+        this.isChecked(
+            SettingsFormEnum.PARKING_CHECKED,
+            SettingsFormEnum.OFFICE_PHONE
+        );
+        this.isChecked(
+            SettingsFormEnum.WAREHOUSE_CHECKED,
+            SettingsFormEnum.WAREHOUSE_PHONE
+        );
     }
 
     public isChecked(formControlName: string, phoneControlName: string) {
@@ -329,8 +344,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             case SettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
-                        ? this.terminalForm.get(SettingsFormEnum.GATE).patchValue(false)
-                        : this.terminalForm.get(SettingsFormEnum.GATE).patchValue(true);
+                        ? this.terminalForm
+                              .get(SettingsFormEnum.GATE)
+                              .patchValue(false)
+                        : this.terminalForm
+                              .get(SettingsFormEnum.GATE)
+                              .patchValue(true);
 
                     return {
                         ...item,
@@ -371,7 +390,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 this.parkingSlots[0].value =
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
-                        this.terminalForm.get(SettingsFormEnum.TERMINAL_PARKING_STOP)
+                        this.terminalForm.get(
+                            SettingsFormEnum.TERMINAL_PARKING_STOP
+                        )
                     );
             });
     }
@@ -385,7 +406,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 this.parkingSlots[1].value =
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
-                        this.terminalForm.get(SettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
+                        this.terminalForm.get(
+                            SettingsFormEnum.TERMINAL_FULL_PARKING_STOP
+                        )
                     );
             });
     }
@@ -517,13 +540,27 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                         this.terminalForm.reset();
 
                         // Reset form values, if we don't set it, they will take null and endpoint will return error
-                        this.terminalForm.get(SettingsFormEnum.IS_OWNER).patchValue(true);
-                        this.terminalForm.get(SettingsFormEnum.OFFICE_CHECKED).patchValue(false);
-                        this.terminalForm.get(SettingsFormEnum.PARKING_CHECKED).patchValue(false);
-                        this.terminalForm.get(SettingsFormEnum.GATE).patchValue(false);
-                        this.terminalForm.get(SettingsFormEnum.SECURITY_CAMERA).patchValue(false);
-                        this.terminalForm.get(SettingsFormEnum.WAREHOUSE_CHECKED).patchValue(false);
-                        this.terminalForm.get(SettingsFormEnum.FUEL_STATION_CHECKED).patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.IS_OWNER)
+                            .patchValue(true);
+                        this.terminalForm
+                            .get(SettingsFormEnum.OFFICE_CHECKED)
+                            .patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.PARKING_CHECKED)
+                            .patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.WAREHOUSE_CHECKED)
+                            .patchValue(false);
+                        this.terminalForm
+                            .get(SettingsFormEnum.FUEL_STATION_CHECKED)
+                            .patchValue(false);
                     } else {
                         this.modalService.setModalSpinner({
                             action: null,

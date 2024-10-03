@@ -23,119 +23,146 @@
             [tooltipMarginTop]="'5px'"
         >
             <svg-icon
-                src="assets/svg/common/ic_plus.svg"
+                [src]="svgRoutes.plus"
                 class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                 (click)="onAction({ modalName: 'office' })"
             ></svg-icon>
         </div>
     </div>
+    
     <div class="settings-body">
         <app-ta-common-card
             *ngFor="
                 let item of officeData?.data;
                 let i = index;
-                trackBy: identityOfficeData
+                trackBy: identity
             "
             [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
             [cardNameCommon]="item.name"
             [hasFooter]="false"
             [haveHeaderText]="true"
             [optionsId]="item.id"
-            [options]="officeActions"
-            (dropActions)="officeDropActions($event, 'office')"
+            [options]="options"
             [paddingDots]="'8px 0px 0px 0px'"
+            (dropActions)="optionsEvent($event, 'office', item)"
+            (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
-                <div *ngIf="item.phone" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/common/ic_phone.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.phone"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.email" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/common/ic_email.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.email"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-                <div *ngIf="item.address.address" class="single-item">
-                    <svg-icon
-                        class="mr-3 svg-fill-light-grey-2"
-                        src="assets/svg/truckassist-table/location-icon.svg"
-                    ></svg-icon>
-                    <app-ta-copy
-                        [copyValue]="item?.address?.address"
-                        [textColor]="'#2f2f2f'"
-                    >
-                    </app-ta-copy>
-                </div>
-            </div>
-            <app-ta-custom-card
-                *ngFor="
-                    let dep of item.departmentContacts;
-                    let i = index;
-                    trackBy: identityOfficeData
-                "
-                [cardName]="dep.department.name"
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
-                [textBottomPossiton]="'-2px'"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="office-template-data">
-                    <div class="office-template-item">
+                <ng-container *ngIf="item.phone">
+                    <div class="single-item">
                         <svg-icon
                             class="mr-3 svg-fill-light-grey-2"
-                            src="assets/svg/common/ic_phone.svg"
+                            [src]="svgRoutes.phone"
                         ></svg-icon>
                         <app-ta-copy
-                            [copyValue]="dep?.phone"
+                            [arrayText]="true"
                             [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
+                            [copyValue]="[
+                                item.phone,
+                                item.extensionPhone
+                                    ? ' x' + item.extensionPhone
+                                    : ''
+                            ]"
+                            type="Contacts"
+                        ></app-ta-copy>
                     </div>
-                    <div class="office-template-item">
-                        <svg-icon
-                            class="office-template-svg"
-                            src="assets/svg/common/ic_phone-extension.svg"
-                        ></svg-icon>
-                        <p class="office-template-value">
-                            {{ dep.extensionPhone }}
-                        </p>
-                    </div>
-                    <div class="office-template-item office-template-email">
+                </ng-container>
+
+                <ng-container *ngIf="item.email">
+                    <div class="single-item">
                         <svg-icon
                             class="mr-3 svg-fill-light-grey-2"
-                            src="assets/svg/common/ic_email.svg"
+                            [src]="svgRoutes.email"
                         ></svg-icon>
                         <app-ta-copy
-                            [copyValue]="dep?.email"
+                            [copyValue]="item?.email"
                             [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
+                        ></app-ta-copy>
                     </div>
-                </div>
-            </app-ta-custom-card>
-            <div *ngIf="item.rent" class="divider"></div>
-            <div *ngIf="item.rent" class="settings-progress-container">
-                <app-ta-progress-expiration
-                    [expireDate]="'03/25/2023'"
-                    [startDate]="'03/12/2023'"
-                    [expiresSettings]="'settings-parking'"
-                    [customText]="generateTextForProgressBar(item)"
-                    [darkText]="true"
-                ></app-ta-progress-expiration>
+                </ng-container>
+
+                <ng-container *ngIf="item.address.address">
+                    <div class="single-item">
+                        <svg-icon
+                            class="mr-3 svg-fill-light-grey-2"
+                            [src]="svgRoutes.location"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [copyValue]="item?.address?.address"
+                            [textColor]="'#2f2f2f'"
+                        ></app-ta-copy>
+                    </div>
+                </ng-container>
             </div>
+
+            <ng-container *ngIf="item.groupedContacts">
+                <app-ta-custom-card
+                    *ngFor="
+                        let department of item.groupedContacts | keyvalue;
+                        let i = index;
+                        trackBy: identityOfficeData
+                    "
+                    [cardName]="department.value.cardName"
+                    [isCardOpen]="department.value.isCardOpen"
+                    [bodyTemplate]="'card'"
+                    [textBottomPossiton]="'-2px'"
+                    [customClass]="'detailsPadding'"
+                    (onOpenCard)="department.value.isCardOpen = $event"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                >
+                    <ng-container
+                        *ngFor="let contact of department.value.values"
+                    >
+                        <div class="office-template-data">
+                            <div class="office-template-item">
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.phone"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [arrayText]="true"
+                                    [textColor]="'#2f2f2f'"
+                                    [copyValue]="[
+                                        contact.phone,
+                                        contact.extensionPhone
+                                            ? ' x' + contact.extensionPhone
+                                            : ''
+                                    ]"
+                                    type="Contacts"
+                                ></app-ta-copy>
+                            </div>
+                            <div
+                                class="office-template-item office-template-email mb-12"
+                            >
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.email"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [copyValue]="contact?.email"
+                                    [textColor]="'#2f2f2f'"
+                                ></app-ta-copy>
+                            </div>
+                        </div>
+                    </ng-container>
+                </app-ta-custom-card>
+            </ng-container>
+
+            <ng-container *ngIf="!item.isOwner">
+                <div class="divider"></div>
+                <div class="settings-progress-container">
+                    <app-ta-progress-expiration
+                        [expireDate]="'03/25/2023'"
+                        [startDate]="'03/12/2023'"
+                        [expiresSettings]="'settings-parking'"
+                        [customText]="generateTextForProgressBar(item)"
+                        [darkText]="true"
+                    ></app-ta-progress-expiration>
+                </div>
+            </ng-container>
         </app-ta-common-card>
     </div>
 </div>

@@ -2,16 +2,16 @@
     <div
         class="padding-inside"
         [ngClass]="{
-            'd-flex justify-content-center align-items-center':
-                !isNoteExpanded,
-            'hovering-note':
-                isHoveringRowIndex === rowIndex,
+            'd-flex justify-content-center align-items-center': !isNoteExpanded,
+            'hovering-note': isHoveringRowIndex === rowIndex,
             'hovering-note-content':
                 isHoveringRowIndex === rowIndex &&
                 truck &&
                 !_note &&
-                isNoteExpanded,
-            'note-default': !truck,
+                isNoteExpanded &&
+                isUnlockable,
+            'note-default': !truck || !isUnlockable,
+            'pe-none': !isUnlockable
         }"
     >
         <div

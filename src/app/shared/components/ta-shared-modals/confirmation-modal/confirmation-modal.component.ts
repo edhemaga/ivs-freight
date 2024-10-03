@@ -76,7 +76,7 @@ export class ConfirmationModalComponent implements OnInit {
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
         private formBuilder: UntypedFormBuilder
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.cdlForm = this.formBuilder.group({
