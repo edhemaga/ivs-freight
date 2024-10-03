@@ -59,10 +59,13 @@ export enum DispatchTableStringEnum {
     PROGRESS_2 = 'Progress',
     PROGRESS_3 = 'progress',
     STATUS = 'STATUS',
+    STATUS_2 = 'status',
     DISPATCHER_1 = 'DISPATCHER',
     PICKUP = 'PICKUP',
     ALL_ASSIGNED = 'All Assigned',
     DISPATCH_TABLE_CONFIG = 'dispatch-table-config',
+    PRE_TRIP = 'PreTrip',
+    CITY = 'city',
 
     // Resize
     CURSOR = 'cursor',

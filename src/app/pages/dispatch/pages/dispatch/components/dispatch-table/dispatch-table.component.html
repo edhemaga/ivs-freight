@@ -82,13 +82,13 @@
                                                     !_isNoteExpanded))
                                     }"
                                     [ngStyle]="{
-                                    width: resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' : tableHeaderItem?.title ===
-                                    'TRUCK' && hasAdditionalFieldTrailer ? tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
-                                    'min-width': resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' :  tableHeaderItem?.title ===
-                                    'TRUCK' && hasAdditionalFieldTrailer  ? tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
-                                    'max-width': resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' :  tableHeaderItem?.title ===
-                                    'TRUCK' && hasAdditionalFieldTrailer  ?tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
-                                }"
+                                        width: resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' : tableHeaderItem?.title ===
+                                        'DRIVER' && isDriverEndorsementActive ? tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
+                                        'min-width': resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' : tableHeaderItem?.title ===
+                                        'DRIVER' && isDriverEndorsementActive ? tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
+                                        'max-width': resizedColumnsWidth[tableHeaderItem.headerProperty] ? resizedColumnsWidth[tableHeaderItem.headerProperty] + 'px' : tableHeaderItem?.title ===
+                                        'DRIVER' && isDriverEndorsementActive ? tableHeaderItem.maxWidth : tableHeaderItem.minWidth,
+                                    }"
                                 >
                                     <div
                                         class="resize d-flex justify-content-between align-items-center"
@@ -1285,22 +1285,40 @@
                 *ngIf="isAllBoardsList || dispatchData?.dispatches?.length"
             >
                 <tfoot>
-                    <tr>
-                        <td>
+                    <tr class="d-flex">
+                        <td
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
+                                'min-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
+                                'max-width': resizedColumnsWidth['truckNumber'] ? resizedColumnsWidth['truckNumber'] + 'px' : hasAdditionalFieldTruck ? '162px' : '122px',
+                            }"
+                        >
                             <app-dispatch-table-info
                                 [type]="'truck'"
                                 [count]="dispatchData.truckCount"
                             ></app-dispatch-table-info>
                         </td>
 
-                        <td>
+                        <td
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
+                                'min-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
+                                'max-width': resizedColumnsWidth['trailerNumber'] ? resizedColumnsWidth['trailerNumber'] + 'px' : hasAdditionalFieldTrailer ? '162px' : '122px',
+                            }"
+                        >
                             <app-dispatch-table-info
                                 [type]="'trailer'"
                                 [count]="dispatchData.trailerCount"
                             ></app-dispatch-table-info>
                         </td>
 
-                        <td>
+                        <td
+                            [ngStyle]="{
+                                width: resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                'min-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                                'max-width': resizedColumnsWidth['firstName'] ? resizedColumnsWidth['firstName'] + 'px' : isDriverEndorsementActive ? '302px' : '242px',
+                            }"
+                        >
                             <app-dispatch-table-info
                                 [type]="'driver'"
                                 [count]="dispatchData.driverCount"
@@ -1313,13 +1331,23 @@
                                 trackBy: trackByIdentity
                             "
                         >
-                            <td></td>
+                            <td
+                                [ngStyle]="
+                                    field | dispatchTableFooterWidths : resizedColumnsWidth
+                                "
+                            ></td>
                         </ng-container>
 
                         <ng-container
                             *ngIf="!columnsToShow[15].hidden; noParking"
                         >
-                            <td>
+                            <td
+                                [ngStyle]="{
+                                    width: resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
+                                    'max-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' :'102px',
+                                    'min-width': resizedColumnsWidth['slotNumber'] ? resizedColumnsWidth['slotNumber'] + 'px' : '102px',
+                                }"
+                            >
                                 <app-dispatch-table-info
                                     [type]="'parking'"
                                     [count]="parkingCount"

@@ -76,6 +76,7 @@ import {
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+import { DispatchResizedColumnsModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -196,7 +197,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public draggingType: string;
 
-    public resizedColumnsWidth = {
+    public resizedColumnsWidth: DispatchResizedColumnsModel = {
         truckNumber: null,
         trailerNumber: null,
         firstName: null,
@@ -1190,7 +1191,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 ? DispatchTableStringEnum.NOTE_3
                 : event.column.field;
 
-        this.resizedColumnsWidth[columnFieldName] = event.width + 11;
+        const maxColWidth =
+            event.column.field === DispatchTableStringEnum.DISPATCHER_2
+                ? 36
+                : event.width + 11;
+
+        this.resizedColumnsWidth[columnFieldName] = maxColWidth;
 
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;
