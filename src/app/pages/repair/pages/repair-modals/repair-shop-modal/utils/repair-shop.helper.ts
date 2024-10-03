@@ -46,20 +46,31 @@ export class RepairShopHelper {
             };
         });
     }
-    // 
+    
     static createOpenHour(
-        day:OpenHours | RepairShopOpenHoursResponse,
+        day: any,
         formBuilder: UntypedFormBuilder,
         isWorkingDay: boolean
     ): UntypedFormGroup {
+        // TODO: ANY
+        const shifts = (day as any).shifts?.map((shift) =>
+            formBuilder.group({
+                startTime: [shift.startTime],
+                endTime: [shift.endTime],
+            })
+        ) || [
+            formBuilder.group({
+                startTime: [day.startTime],
+                endTime: [day.endTime],
+            })
+        ];
+    
         return formBuilder.group({
             isWorkingDay: [isWorkingDay],
             dayOfWeek: [day.dayOfWeek],
-            startTime: [day.startTime],
-            endTime: [day.endTime],
-            isDoubleShift: [null],
-            secondStartTime: [null],
-            secondEndTime: [null],
+            shifts: formBuilder.array(shifts),
         });
     }
+    
+    
 }

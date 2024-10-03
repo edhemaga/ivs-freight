@@ -29,6 +29,7 @@ import {
     FileResponse,
     RepairShopContactCommand,
     RepairShopContactResponse,
+    RepairShopOpenHoursCommand,
     RepairShopResponse,
     ServiceType,
     SignInResponse,
@@ -605,34 +606,106 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private initWorkingHours(repairShop: RepairShopResponse): void {
-        if(this.editData?.id) {
+        // Ensure repairShop is defined
+        if (this.editData?.id) {
             this.workingDaysLabel.forEach((day) => {
-                const isWorkingDay = repairShop.openHours.find(openDay => openDay.dayOfWeek === day.dayOfWeek);
-                
-                this.openHours.push(
-                    RepairShopHelper.createOpenHour(isWorkingDay ?? day, this.formBuilder, !!isWorkingDay)
-                )
-            }
-            );
+                const matchingOpenHours = repairShop.openHours.filter(
+                    (openDay) => openDay.dayOfWeek === day.dayOfWeek
+                );
+
+                // If the day has shifts (is a working day)
+                if (matchingOpenHours.length > 0) {
+                    // Push each matching open hour shifts into the form array
+                    this.openHours.push(
+                        RepairShopHelper.createOpenHour(
+                            {
+                                ...day,
+                                shifts: matchingOpenHours.map((openDay) => ({
+                                    startTime: openDay.startTime,
+                                    endTime: openDay.endTime,
+                                })),
+                            },
+                            this.formBuilder,
+                            true // is working day
+                        )
+                    );
+                } else {
+                    // Non-working day, just push the empty day
+                    this.openHours.push(
+                        RepairShopHelper.createOpenHour(
+                            day,
+                            this.formBuilder,
+                            false // not a working day
+                        )
+                    );
+                }
+            });
         } else {
+            // For non-edit mode, populate default open hours
             this.workingDaysLabel.forEach((day) =>
                 this.openHours.push(
-                    RepairShopHelper.createOpenHour(day, this.formBuilder, day.isWorkingDay)
+                    RepairShopHelper.createOpenHour(
+                        day,
+                        this.formBuilder,
+                        day.isWorkingDay
+                    )
                 )
             );
         }
-    
+
+        // Initialize holiday hours
+        const holidayData = repairShop?.openHours?.find(
+            (openDay) => openDay.dayOfWeek === 'Holiday'
+        ) as any;
+
+        if (holidayData) {
             this.holidayHours.push(
                 RepairShopHelper.createOpenHour(
                     {
-                        ...RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS[0],
-                        [RepairShopModalStringEnum.DAY_OF_WEEK]: 'Holiday',
-                        [RepairShopModalStringEnum.IS_WORKING_DAY]: false,
+                        dayOfWeek: 'Holiday',
+                        shifts: [
+                            {
+                                startTime: holidayData.startTime,
+                                endTime: holidayData.endTime,
+                            },
+                        ],
+                        isWorkingDay: holidayData.isWorkingDay,
+                    },
+                    this.formBuilder,
+                    holidayData.isWorkingDay
+                )
+            );
+        } else {
+            this.holidayHours.push(
+                RepairShopHelper.createOpenHour(
+                    {
+                        dayOfWeek: 'Holiday',
+                        shifts: [
+                            {
+                                startTime: OpenWorkingHours.EIGHTAM,
+                                endTime: OpenWorkingHours.FIVEPM,
+                            },
+                        ],
+                        isWorkingDay: false,
                     },
                     this.formBuilder,
                     false
                 )
             );
+        }
+
+        console.log(this.holidayHours)
+    }
+
+    public addShift(dayIndex: number): void {
+        const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
+        const shifts = openHour.get('shifts') as UntypedFormArray;
+        shifts.push(
+            this.formBuilder.group({
+                startTime: [null],
+                endTime: [null],
+            })
+        );
     }
 
     // Working hours
@@ -672,11 +745,22 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         dayActiveField.patchValue(!dayActiveField.value);
     }
 
-    public toggleDoubleWorkingTime(index: number): void {
-        const dayActiveField = this.openHours
-            .at(index)
-            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
-        dayActiveField.patchValue(!dayActiveField.value);
+    public toggleDoubleWorkingTime(dayIndex: number): void {
+        const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
+        const shifts = openHour.get('shifts') as UntypedFormArray;
+
+        if (shifts.length === 1) {
+            // Add second shift
+            shifts.push(
+                this.formBuilder.group({
+                    startTime: [OpenWorkingHours.EIGHTAM],
+                    endTime: [OpenWorkingHours.FIVEPM],
+                })
+            );
+        } else {
+            // Remove second shift
+            shifts.removeAt(1);
+        }
     }
 
     public toggle247WorkingHours(): void {
@@ -916,7 +1000,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            openHours: this.openHours.value.filter(value => value.isWorkingDay),
+            openHours: this.formatOpenHours(),
             weeklyDay: this.selectedWeeklyDay
                 ? this.selectedWeeklyDay.id
                 : null,
@@ -935,6 +1019,25 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
         return repairModel;
     }
+    private formatOpenHours(): RepairShopOpenHoursCommand[] {
+        const formattedOpenHours: RepairShopOpenHoursCommand[] = [];
+
+        this.openHours.value.forEach((openHour: any) => {
+            if (openHour.isWorkingDay) {
+                openHour.shifts.forEach((shift: any) => {
+                    formattedOpenHours.push({
+                        // isWorkingDay: openHour.isWorkingDay,
+                        dayOfWeek: openHour.dayOfWeek,
+                        startTime: shift.startTime,
+                        endTime: shift.endTime,
+                    });
+                });
+            }
+        });
+
+        return formattedOpenHours;
+    }
+
     private createDocumentsForRequest(): Array<Blob> {
         let documents: Array<Blob> = [];
         (this.files as UploadFile[]).map((item) => {
