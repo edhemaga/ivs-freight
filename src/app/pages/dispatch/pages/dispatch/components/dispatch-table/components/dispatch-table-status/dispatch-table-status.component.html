@@ -3,7 +3,7 @@
         <div
             class="status-container d-flex flex-column justify-content-center"
             [ngClass]="{ hovering: isHoveringRow }"
-            [ngStyle]="{ cursor: canUnlock ? 'pointer' : 'auto' }"
+            [ngStyle]="{ cursor: isUnlockable ? 'pointer' : 'auto' }"
             ngbTooltip
             mainContent
             [mainTooltip]="'Change Status'"
@@ -11,8 +11,8 @@
             [tooltipBackground]="'#424242'"
             tooltipColor="'#ffff'"
             tooltipTextAlign="center"
-            (click)="canUnlock ? getStatusDropdonw(ngbStatus) : {}"
-            [disableTooltip]="!canUnlock"
+            (click)="isUnlockable ? getStatusDropdonw(ngbStatus) : {}"
+            [disableTooltip]="!isUnlockable"
         >
             <div
                 class="status ta-font-bold"

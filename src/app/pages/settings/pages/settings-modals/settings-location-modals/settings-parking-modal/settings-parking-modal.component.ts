@@ -103,7 +103,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public parkingForm: UntypedFormGroup;
 
-
     public gateBtns = [
         {
             id: 511,
@@ -164,18 +163,24 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public svgRoutes = SettingsLocationSvgRoutes;
-    
+
     public formConfig = SettingsParkingConfig;
-    
+
     public phoneConfig: ITaInput = SettingsParkingConfig.getPhoneInputConfig();
-    public phoneExtConfig: ITaInput = SettingsParkingConfig.getPhoneExtInputConfig();
+    public phoneExtConfig: ITaInput =
+        SettingsParkingConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsParkingConfig.getEmailInputConfig();
-    public addressConfig: ITaInput = SettingsParkingConfig.getAddressInputConfig();
-    public addressUnitConfig: ITaInput = SettingsParkingConfig.getAddressUnitInputConfig();
-    public payPeriodConfig: ITaInput = SettingsParkingConfig.getPayPeriodInputConfig();
+    public addressConfig: ITaInput =
+        SettingsParkingConfig.getAddressInputConfig();
+    public addressUnitConfig: ITaInput =
+        SettingsParkingConfig.getAddressUnitInputConfig();
+    public payPeriodConfig: ITaInput =
+        SettingsParkingConfig.getPayPeriodInputConfig();
     public rentConfig: ITaInput = SettingsParkingConfig.getRentConfig();
-    public parkingSlotConfig: ITaInput = SettingsParkingConfig.getParkingSlotConfig();
-    public fullParkingSlotConfig: ITaInput = SettingsParkingConfig.getFullParkingSlotConfig();
+    public parkingSlotConfig: ITaInput =
+        SettingsParkingConfig.getParkingSlotConfig();
+    public fullParkingSlotConfig: ITaInput =
+        SettingsParkingConfig.getFullParkingSlotConfig();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -224,8 +229,12 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             case SettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
-                        ? this.parkingForm.get(SettingsFormEnum.GATE).patchValue(false)
-                        : this.parkingForm.get(SettingsFormEnum.GATE).patchValue(true);
+                        ? this.parkingForm
+                              .get(SettingsFormEnum.GATE)
+                              .patchValue(false)
+                        : this.parkingForm
+                              .get(SettingsFormEnum.GATE)
+                              .patchValue(true);
 
                     return {
                         ...item,
@@ -293,7 +302,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 this.addParking(true);
                 break;
             }
-            case TaModalActionEnums.DELETE:  {
+            case TaModalActionEnums.DELETE: {
                 this.deleteParkingById(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'delete',
@@ -433,21 +442,26 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    private getUpdatedAddress(
+        address: AddressEntity,
+        addressUnit: string
+    ): AddressEntity {
+        return {
+            ...address,
+            addressUnit: addressUnit,
+        };
+    }
+
     private addParking(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
+        const updatedAddress = this.selectedAddress
+            ? this.getUpdatedAddress(this.selectedAddress, addressUnit)
+            : null;
 
         const newData: CreateParkingCommand = {
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: updatedAddress?.address ? updatedAddress : null,
             rent: rent
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
                 : null,
@@ -486,11 +500,17 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if(addNew) {
+                    if (addNew) {
                         this.parkingForm.reset();
-                        this.parkingForm.get(SettingsFormEnum.IS_OWNER).patchValue(true);
-                        this.parkingForm.get(SettingsFormEnum.SECURITY_CAMERA).patchValue(true);
-                        this.parkingForm.get(SettingsFormEnum.GATE).patchValue(false);
+                        this.parkingForm
+                            .get(SettingsFormEnum.IS_OWNER)
+                            .patchValue(true);
+                        this.parkingForm
+                            .get(SettingsFormEnum.SECURITY_CAMERA)
+                            .patchValue(true);
+                        this.parkingForm
+                            .get(SettingsFormEnum.GATE)
+                            .patchValue(false);
                         this.selectedAddress = null;
                     } else {
                         this.modalService.setModalSpinner({
