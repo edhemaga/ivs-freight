@@ -24,7 +24,6 @@ import { DriverModalSvgRoutes } from '@pages/driver/pages/driver-modals/driver-m
 // modules
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { CroppieOptions } from 'croppie';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -39,6 +38,7 @@ import { BankVerificationService } from '@shared/services/bank-verification.serv
 import { FormService } from '@shared/services/form.service';
 
 // helpers
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
@@ -75,6 +75,7 @@ import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -109,7 +110,6 @@ import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-mo
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
-import { CaUploadFilesComponent } from 'ca-components';
 
 @Component({
     selector: 'app-driver-modal',
@@ -221,7 +221,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isFileModified: boolean = false;
 
     // logo
-    public croppieOptions: CroppieOptions;
+    public uploadOptionsConstants = DriverModalConstants.UPLOAD_OPTIONS;
 
     // payroll
     public payrollDefaultValues: PayrollDefaultValues;
@@ -388,8 +388,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverSliderOptions = JSON.parse(
             JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
         );
-
-        this.croppieOptions = DriverModalConstants.CROPPIE_OPTIONS;
     }
 
     private isOwnerSelected(): void {
@@ -933,19 +931,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any): void {
-        const base64String = event?.files[0]?.url;
-        if (!base64String) {
-            this.driverForm.get('logo').patchValue(null);
-            return;
-        }
-
-        const parts = base64String.split(',');
-        const base64Data = parts[1];
-
-        if (base64Data)
-            this.driverForm
-                .get(DriverModalStringEnum.AVATAR)
-                .patchValue(base64Data);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.driverForm
+            .get(DriverModalStringEnum.AVATAR)
+            .patchValue(base64Data);
         this.driverForm.get(DriverModalStringEnum.AVATAR).setErrors(null);
     }
 

@@ -33,11 +33,13 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // validations
@@ -92,11 +94,9 @@ import {
     BankResponse,
     EnumValue,
 } from 'appcoretruckassist';
-import { CroppieOptions } from 'croppie';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
-import { CaUploadFilesComponent } from 'ca-components';
 
 // svg routes
 import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
@@ -135,6 +135,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public companyForm: UntypedFormGroup;
+    public uploadOptionsConstants = SettingsModalConstants.UPLOAD_OPTIONS;
 
     public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
@@ -204,7 +205,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public selectedFleetType: string = null;
 
     // logo actions
-    public croppieOptions: CroppieOptions;
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
 
@@ -250,7 +250,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.commonOptions = SettingsModalConstants.COMMON_OPTIONS;
         this.dispatcherOptions = SettingsModalConstants.DISPATCHER_OPTIONS;
         this.managerOptions = SettingsModalConstants.MANAGER_OPTIONS;
-        this.croppieOptions = SettingsModalConstants.CROPPIE_OPTIONS;
 
         this.animationObject = SettingsModalConstants.ANIMATION_OPTIONS;
 
@@ -1026,16 +1025,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any) {
-        const base64String = event?.files[0]?.url;
-        if (!base64String) {
-            this.companyForm.get('logo').patchValue(null);
-            return;
-        }
-
-        const parts = base64String.split(',');
-        const base64Data = parts[1];
-
-        if (base64Data) this.companyForm.get('logo').patchValue(base64Data);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.companyForm.get('logo').patchValue(base64Data);
         this.companyForm.get('logo').setErrors(null);
     }
 
