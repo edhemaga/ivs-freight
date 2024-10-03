@@ -997,7 +997,8 @@
                                             {{ row[column.field].invoice }}
                                         </div>
 
-                                        <svg-icon
+                                        <!-- Hide LTL and FTL icons for now  -->
+                                        <!-- <svg-icon
                                             *ngIf="row[column.field].type"
                                             [src]="
                                                 row[column.field].type === 'LTL'
@@ -1008,7 +1009,7 @@
                                                 'width.px': '14',
                                                 'height.px': '14'
                                             }"
-                                        ></svg-icon>
+                                        ></svg-icon> -->
                                     </div>
 
                                     <!-- NAME LINK COLUMN -->
