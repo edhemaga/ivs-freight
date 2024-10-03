@@ -12,14 +12,16 @@ import {
     styleUrls: ['./dispatch-table-pickup-delivery.component.scss'],
 })
 export class DispatchTablePickupDeliveryComponent {
+    @Input() set columnWidth(value: number) {
+        this._columnWidth = value - 10;
+    }
+
     @Input() public dispatchResponse: DispatchResponse;
     @Input() public isHoveringRowIndex: number;
     @Input() public rowIndex: number;
     @Input() public isDispatchBoardLocked: boolean;
     @Input() public dispatchLoads: DispatchGroupedLoadsResponse;
-    @Input() set columnWidth(value: number) {
-        this._columnWidth = value - 10;
-    }
+
     public _columnWidth = 340;
 
     constructor() {}
