@@ -41,13 +41,13 @@ export class ChatHubService {
         if (
             !ChatHubService.hubConnection &&
             ChatHubService.hubConnection?.state !==
-                signalR.HubConnectionState.Connecting &&
+            signalR.HubConnectionState.Connecting &&
             ChatHubService.hubConnection?.state !==
-                signalR.HubConnectionState.Connected
+            signalR.HubConnectionState.Connected
         )
             return;
 
-        ChatHubService.hubConnection.start().then();
+        ChatHubService.hubConnection.start();
 
         ChatHubService.hubConnection.onclose(() => {
             ChatHubService.hubConnection.start();

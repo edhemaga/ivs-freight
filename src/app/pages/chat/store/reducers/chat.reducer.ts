@@ -15,6 +15,7 @@ import {
     closeAllProfileInformation,
     setUnreadCount,
     setProfileDetails,
+    setAttachmentUploadActiveStatus,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -27,6 +28,7 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
+    isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
     isConversationParticipantsDisplayed: false,
     profileDetails: null,
@@ -171,5 +173,9 @@ export const chatDataReducer = createReducer(
     on(setUnreadCount, (state, newState) => ({
         ...state,
         unreadCount: newState.count,
+    })),
+    on(setAttachmentUploadActiveStatus, (state, newState) => ({
+        ...state,
+        isAttachmentUploadActive: newState.isDisplayed,
     }))
 );

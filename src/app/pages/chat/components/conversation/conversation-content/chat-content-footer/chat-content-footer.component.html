@@ -157,8 +157,8 @@
                         context: {
                             item: {
                                 icon: chatSvgRoutes.faceEmojiIcon,
-                                action: openEmojiSelection
-                            }
+                            },
+                            action: openEmojiSelection
                         }
                     "
                 ></ng-container>
@@ -170,8 +170,8 @@
                         context: {
                             item: {
                                 icon: chatSvgRoutes.documentIcon,
-                                action: uploadAttachmentDragAndDrop
-                            }
+                            },
+                            action: uploadAttachmentDragAndDrop
                         }
                     "
                 ></ng-container>
@@ -187,11 +187,11 @@
                                 item: {
                                     text: 'Save Changes',
                                     icon: chatSvgRoutes.sendMessageIcon,
-                                    action: editMessage,
                                     customClass:
-                                        isMessageSendable &&
-                                        ChatAttachmentCustomClassEnum.BLUE
-                                }
+                                    isMessageSendable &&
+                                    ChatAttachmentCustomClassEnum.BLUE
+                                },
+                                action: editMessage,
                             }
                         "
                     ></ng-container
@@ -205,11 +205,11 @@
                                 item: {
                                     text: 'Send Message',
                                     icon: chatSvgRoutes.sendMessageIcon,
-                                    action: sendMessage,
                                     customClass:
-                                        isMessageSendable &&
-                                        ChatAttachmentCustomClassEnum.BLUE
-                                }
+                                    isMessageSendable &&
+                                    ChatAttachmentCustomClassEnum.BLUE
+                                },
+                                action: sendMessage,
                             }
                         "
                     ></ng-container>
@@ -249,10 +249,10 @@
     </div>
 </ng-template>
 
-<ng-template #iconAction let-item="item">
+<ng-template #iconAction let-item="item" let-action="action">
     <div
         class="action-wrapper gray d-flex justify-content-center align-content-center"
-        (click)="messageAction(item.actionType)"
+        (click)="action()"
         [ngClass]="item.customClass"
     >
         <div class="action d-flex justify-content-center align-content-center">

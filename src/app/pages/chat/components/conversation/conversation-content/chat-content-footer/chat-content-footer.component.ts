@@ -27,6 +27,7 @@ import {
     resetReplyAndEditMessage,
     selectEditMessage,
     selectReplyMessage,
+    setAttachmentUploadActiveStatus,
 } from '@pages/chat/store';
 
 // Models
@@ -35,7 +36,6 @@ import {
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { ConversationResponse } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
@@ -63,8 +63,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
     @Input() public conversation!: ChatSelectedConversation;
@@ -83,7 +82,6 @@ export class ChatContentFooterComponent
     public currentMessage!: string;
 
     // Attachment upload
-    public isAttachmentUploadActive: boolean = false;
     public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
         []
     );
@@ -128,16 +126,17 @@ export class ChatContentFooterComponent
     ngOnInit(): void {
         this.creteForm();
         this.listenForTyping();
-        this.getReplyAndEditMessages();
+        this.getDataFromStore();
     }
 
-    private getReplyAndEditMessages(): void {
+    private getDataFromStore(): void {
         this.editMessage$ = this.store
             .select(selectEditMessage)
             .pipe(takeUntil(this.destroy$));
         this.replyMessage$ = this.store
             .select(selectReplyMessage)
             .pipe(takeUntil(this.destroy$));
+
     }
 
     public handleSend(): void {
@@ -160,7 +159,7 @@ export class ChatContentFooterComponent
             });
     }
 
-    public sendMessage(parentMessageId?: number): void {
+    public sendMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
 
         if (!this.conversation?.id || !this.isMessageSendable) return;
@@ -184,9 +183,9 @@ export class ChatContentFooterComponent
                 this.messageForm.reset();
                 this.closeReplyAndEdit();
             });
-    }
+    };
 
-    public editMessage(parentMessageId?: number): void {
+    public editMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
         const messageId: number = parentMessageId;
 
@@ -198,7 +197,7 @@ export class ChatContentFooterComponent
             .subscribe(() => {
                 this.closeReplyAndEdit();
             });
-    }
+    };
 
     private creteForm(): void {
         this.messageForm = this.formBuilder.group({
@@ -211,17 +210,21 @@ export class ChatContentFooterComponent
     }
 
     // TODO implement emoji selection
-    public openEmojiSelection(): void {
+    public openEmojiSelection = (): void => {
         this.isEmojiSelectionActive = true;
-    }
+    };
 
-    public uploadAttachmentDragAndDrop(): void {
-        this.isAttachmentUploadActive = true;
-    }
+    public uploadAttachmentDragAndDrop = (): void => {
+        this.store.dispatch(
+            setAttachmentUploadActiveStatus({ isDisplayed: true })
+        );
+    };
 
     public addAttachments(files: UploadFile[]): void {
         this.attachments$.next([...this.attachments$.value, ...files]);
-        this.isAttachmentUploadActive = false;
+        this.store.dispatch(
+            setAttachmentUploadActiveStatus({ isDisplayed: false })
+        );
 
         this.enableChatInput();
     }

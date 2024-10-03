@@ -65,3 +65,8 @@ export const setUnreadCount = createAction(
     '[Chat] Set Unread Count',
     props<{ count: number }>()
 );
+
+export const setAttachmentUploadActiveStatus = createAction(
+    '[Chat] Attachment Upload Active',
+    props<{ isDisplayed: boolean }>()
+);

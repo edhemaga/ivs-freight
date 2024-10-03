@@ -13,6 +13,7 @@ import {
     setConversation,
     setProfileDetails,
     getConversationProfileDetails,
+    isAttachmentUploadActive,
 } from '@pages/chat/store';
 
 // Models
@@ -76,7 +77,7 @@ export class ChatComponent
 
     public ConversationTypeEnum = ConversationTypeEnum;
 
-    public isAttachmentUploadActive: boolean = false;
+    public isAttachmentUploadActive!: Observable<boolean>;
 
     // User Profile Data
     public isProfileDetailsDisplayed: Observable<boolean>;
@@ -148,6 +149,9 @@ export class ChatComponent
             .pipe(takeUntil(this.destroy$));
         this.isParticipantsDisplayed = this.store
             .select(getIsConversationParticipantsDisplayed)
+            .pipe(takeUntil(this.destroy$));
+        this.isAttachmentUploadActive = this.store
+            .select(isAttachmentUploadActive)
             .pipe(takeUntil(this.destroy$));
     }
 
