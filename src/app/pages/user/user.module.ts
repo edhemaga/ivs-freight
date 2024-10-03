@@ -23,6 +23,7 @@ import { CardValuePipe, FlipCardsPipe, FormatCurrencyPipe, FormatDatePipe } from
 // store
 import { StoreModule } from '@ngrx/store';
 import { userCardModalReducer } from '@pages/user/pages/user-card-modal/state';
+import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import { userCardModalReducer } from '@pages/user/pages/user-card-modal/state';
         FormatCurrencyPipe,
         FlipCardsPipe,
         CardValuePipe,
+        ActivityTimePipe,
 
         // store
         StoreModule.forFeature('userCardData', userCardModalReducer),
