@@ -14,7 +14,9 @@
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
     >
-        <ng-container *ngFor="let item of dispatchTableList | async">
+        <ng-container
+            *ngFor="let item of dispatchTableList | async; let index = index"
+        >
             <div class="dispatch-groups">
                 <app-dispatch-table
                     [dispatchTableData]="item"
@@ -29,6 +31,7 @@
                     [isNoteExpanded]="isNoteExpanded"
                     [sortBy]="sortBy"
                     [sortDirection]="sortDirection"
+                    [gridIndex]="index"
                     (onTableUnlockEmitter)="onToolBarAction($event)"
                     (onToggleNoteEmitter)="toggleNote($event)"
                 ></app-dispatch-table>
