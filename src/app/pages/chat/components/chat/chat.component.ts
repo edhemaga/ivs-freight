@@ -14,6 +14,7 @@ import {
     setProfileDetails,
     getConversationProfileDetails,
 } from '@pages/chat/store';
+import { setUnreadCount } from '@pages/chat/store/actions/chat.actions';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
@@ -48,7 +49,6 @@ import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper'
 
 // Animations
 import { chatFadeHorizontallyAnimation } from '@shared/animations';
-import { setUnreadCount } from '../../store/actions/chat.actions';
 
 @Component({
     selector: 'app-chat',
@@ -58,8 +58,7 @@ import { setUnreadCount } from '../../store/actions/chat.actions';
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public title!: string;
 
     // Data
@@ -198,7 +197,7 @@ export class ChatComponent
             });
     }
 
-    private getConversationData(): void {}
+    private getConversationData(): void { }
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
