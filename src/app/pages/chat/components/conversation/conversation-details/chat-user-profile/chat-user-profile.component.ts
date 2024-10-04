@@ -16,6 +16,7 @@ import {
     ChatSearchPlaceHolders,
     ChatUserProfileResourceTypeEnum,
 } from '@pages/chat/enums';
+import { ChatStoreService } from '@pages/chat/services';
 
 @Component({
     selector: 'app-chat-user-profile',
@@ -40,11 +41,11 @@ export class ChatUserProfileComponent implements OnInit {
     // Attachment and links status
     public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
 
-    constructor(private store: Store) {}
+    constructor(private chatStoreService: ChatStoreService) {}
 
     ngOnInit(): void {}
 
     public closeProfileDetails(): void {
-        this.store.dispatch(closeAllProfileInformation());
+        this.chatStoreService.closeAllProfileInformation();
     }
 }

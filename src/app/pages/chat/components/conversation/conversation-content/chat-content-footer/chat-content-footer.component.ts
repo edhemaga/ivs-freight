@@ -43,7 +43,11 @@ import {
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
-import { ChatHubService, UserChatService } from '@pages/chat/services';
+import {
+    ChatHubService,
+    ChatStoreService,
+    UserChatService,
+} from '@pages/chat/services';
 
 // Helpers
 import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -115,13 +119,10 @@ export class ChatContentFooterComponent
 
         // Services
         private chatService: UserChatService,
+        private chatStoreService: ChatStoreService,
 
         // Renderer
-        private renderer: Renderer2,
-        private el: ElementRef,
-
-        // Store
-        private store: Store
+        private renderer: Renderer2
     ) {
         super();
     }
@@ -133,12 +134,8 @@ export class ChatContentFooterComponent
     }
 
     private getDataFromStore(): void {
-        this.editMessage$ = this.store
-            .select(selectEditMessage)
-            .pipe(takeUntil(this.destroy$));
-        this.replyMessage$ = this.store
-            .select(selectReplyMessage)
-            .pipe(takeUntil(this.destroy$));
+        this.editMessage$ = this.chatStoreService.selectEditMessage();
+        this.replyMessage$ = this.chatStoreService.selectReplyMessage();
         this.attachments$ = this.store
             .select(selectAttachments)
             .pipe(takeUntil(this.destroy$));
@@ -227,13 +224,18 @@ export class ChatContentFooterComponent
     // TODO implement emoji selection
     public openEmojiSelection = (): void => {
         this.isEmojiSelectionActive = true;
-    };
+    }
 
-    public uploadAttachmentDragAndDrop = (): void => {
-        this.store.dispatch(
-            setAttachmentUploadActiveStatus({ isDisplayed: true })
-        );
-    };
+    public uploadAttachmentDragAndDrop(): void {
+        this.isAttachmentUploadActive = true;
+    }
+
+    public addAttachments(files: UploadFile[]): void {
+        this.attachments$.next([...this.attachments$.value, ...files]);
+        this.isAttachmentUploadActive = false;
+
+        this.enableChatInput();
+    }
 
     public setHoveredAttachment(attachment: ChatAttachmentForThumbnail): void {
         this.hoveredAttachment = attachment;
@@ -361,6 +363,6 @@ export class ChatContentFooterComponent
     }
 
     public closeReplyAndEdit(): void {
-        this.store.dispatch(resetReplyAndEditMessage());
+        this.chatStoreService.resetReplyAndEditMessage();
     }
 }

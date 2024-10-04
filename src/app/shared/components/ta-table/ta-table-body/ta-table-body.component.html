@@ -3148,7 +3148,6 @@
                                     </div>
 
                                     <!-- USER ACTIVITY COLUMN -->
-                                     
                                     <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
@@ -5696,7 +5695,9 @@
             <!-- Action -->
             <div
                 class="table-list-dropdown-content"
-                (click)="
+                appPreventMultipleclicks
+                [cooldownDuration]="500"
+                (cooldownComplete)="
                     !action?.isDropdown
                         ? onDropAction(action)
                         : onShowInnerDropdown(action)

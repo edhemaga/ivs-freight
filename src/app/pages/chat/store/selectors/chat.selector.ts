@@ -18,7 +18,9 @@ export const selectMessageResponse = createSelector(
         pageIndex: state.messageResponsePageIndex,
         pageSize: state.messageResponsePageSize,
         count: state.messageResponseCount,
-        data: state.messageResponseData,
+        data: state.messageResponseData.filter(
+            (message: ChatMessage) => message.id !== 0
+        ),
     })
 );
 
@@ -63,12 +65,7 @@ export const getUnreadCount = createSelector(
     (state: ChatState): number => state.unreadCount
 );
 
-export const getIsAttachmentUploadActive = createSelector(
+export const getUserTyping = createSelector(
     selectChatState,
-    (state: ChatState): boolean => state.isAttachmentUploadActive
-);
-
-export const selectAttachments = createSelector(
-    selectChatState,
-    (state: ChatState): UploadFile[] => state.attachments
+    (state: ChatState): string => state.userTyping
 );

@@ -1,17 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs';
-
-// Store
-import { Store } from '@ngrx/store';
-import {
-    activeReplyOrEdit,
-    deleteMessage,
-    editMessage,
-    replyMessage,
-    resetReplyAndEditMessage,
-    selectEditMessage,
-    selectReplyMessage,
-} from '@pages/chat/store';
+import { takeUntil, combineLatest } from 'rxjs';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
@@ -24,7 +12,7 @@ import {
 } from '@pages/chat/enums';
 
 // Services
-import { UserChatService } from '@pages/chat/services';
+import { ChatStoreService, UserChatService } from '@pages/chat/services';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -67,9 +55,9 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     public chatMessageActionEnum = ChatMessageActionEnum;
 
     constructor(
+        // Services
         private chatService: UserChatService,
-        //Store
-        private store: Store
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -81,28 +69,23 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     private getActiveReplyOrEdit(): void {
-        this.store
-            .select(activeReplyOrEdit)
+        combineLatest([
+            this.chatStoreService.selectActiveReplyOrEdit(),
+            this.chatStoreService.selectReplyMessage(),
+            this.chatStoreService.selectEditMessage(),
+        ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((id: number) => {
+            .subscribe(([id, replyMessage, editMessage]) => {
+                // Handle activeReplyOrEdit
                 this.selectedMessageId = id;
-                if (!id) this.hasActionsDisplayed = false;
-                if (this.message.id === id) {
-                    this.hasActionsDisplayed = true;
-                    this.isFocused = true;
-                }
-            });
-        this.store
-            .select(selectReplyMessage)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((msg) => {
-                this.messageReply = msg;
-            });
-        this.store
-            .select(selectEditMessage)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((msg) => {
-                this.messageEdit = msg;
+                this.hasActionsDisplayed = !!id && this.message.id === id;
+                this.isFocused = this.hasActionsDisplayed;
+
+                // Handle selectReplyMessage
+                this.messageReply = replyMessage;
+
+                // Handle selectEditMessage
+                this.messageEdit = editMessage;
             });
     }
 
@@ -140,19 +123,19 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     public messageAction(actionType: ChatMessageActionEnum): void {
         switch (actionType) {
             case ChatMessageActionEnum.REPLY:
-                this.store.dispatch(resetReplyAndEditMessage());
-                this.store.dispatch(replyMessage(this.message));
+                this.chatStoreService.resetReplyAndEditMessage();
+                this.chatStoreService.replyMessage(this.message);
                 break;
             case ChatMessageActionEnum.EDIT:
-                this.store.dispatch(resetReplyAndEditMessage());
-                this.store.dispatch(editMessage(this.message));
+                this.chatStoreService.resetReplyAndEditMessage();
+                this.chatStoreService.editMessage(this.message);
                 break;
             case ChatMessageActionEnum.DELETE:
                 this.chatService
                     .deleteMessage(this.message?.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
-                        this.store.dispatch(deleteMessage(this.message));
+                        this.chatStoreService.deleteMessage(this.message);
                     });
                 return;
             default:

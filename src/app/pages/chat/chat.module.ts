@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ChatRoutingModule } from '@pages/chat/chat-routing.module';
+import { StoreModule } from '@ngrx/store';
 
 // Components
 import { ChatComponent } from '@pages/chat/components/chat/chat.component';
@@ -61,9 +62,6 @@ import {
     ToggleBackgroundDirective,
 } from '@pages/chat/utils/directives';
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
-
-// Store
-import { StoreModule } from '@ngrx/store';
 
 @NgModule({
     declarations: [

@@ -3,9 +3,8 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 
-// Store
-import { Store } from '@ngrx/store';
-import { displayConversationParticipants } from '@pages/chat/store';
+// Service
+import { ChatStoreService } from '@pages/chat/services';
 
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
@@ -45,8 +44,9 @@ export class ChatChannelParticipantListComponent
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        // Store
-        private store: Store
+
+        // Services
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -80,8 +80,6 @@ export class ChatChannelParticipantListComponent
     }
 
     public closeOverview(): void {
-        this.store.dispatch(
-            displayConversationParticipants({ isDisplayed: false })
-        );
+        this.chatStoreService.closeAllProfileInformation();
     }
 }

@@ -123,7 +123,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             email: [null],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            noticeOfAssigment: [null],
+            noticeOfAssigment: [null, Validators.required],
             note: [null],
         });
 

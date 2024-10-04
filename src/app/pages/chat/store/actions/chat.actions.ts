@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 // Models
 import {
+    ChatDisplayedFlagType,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -44,8 +45,7 @@ export const setConversation = createAction(
 );
 
 export const displayProfileDetails = createAction(
-    '[Chat] Display Profile',
-    props<{ isDisplayed: boolean }>()
+    '[Chat] Display Profile Details'
 );
 
 export const setProfileDetails = createAction(
@@ -54,10 +54,8 @@ export const setProfileDetails = createAction(
 );
 
 export const displayConversationParticipants = createAction(
-    '[Chat] Display Conversation Participants',
-    props<{ isDisplayed: boolean }>()
+    '[Chat] Display Conversation Participants'
 );
-
 export const closeAllProfileInformation = createAction(
     '[Chat] Close All Profile Information'
 );
@@ -65,6 +63,11 @@ export const closeAllProfileInformation = createAction(
 export const setUnreadCount = createAction(
     '[Chat] Set Unread Count',
     props<{ count: number }>()
+);
+
+export const setUserTyping = createAction(
+    '[Chat] Set User Typing',
+    props<{ name: string }>()
 );
 
 export const setAttachmentUploadActiveStatus = createAction(

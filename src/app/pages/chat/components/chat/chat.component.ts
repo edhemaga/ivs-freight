@@ -1,17 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, takeUntil } from 'rxjs';
+import { Observable, takeUntil, tap } from 'rxjs';
 
 // Store
-import { Store } from '@ngrx/store';
 import {
-    closeAllProfileInformation,
-    displayProfileDetails,
     getIsConversationParticipantsDisplayed,
     getIsProfileDetailsDisplayed,
     getSelectedConversation,
-    setConversation,
-    setProfileDetails,
     getConversationProfileDetails,
     getIsAttachmentUploadActive,
 } from '@pages/chat/store';
@@ -42,14 +37,17 @@ import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Service
-import { UserChatService, UserProfileService } from '@pages/chat/services';
+import {
+    ChatStoreService,
+    UserChatService,
+    UserProfileService,
+} from '@pages/chat/services';
 
 // Helpers
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
 // Animations
 import { chatFadeHorizontallyAnimation } from '@shared/animations';
-import { setUnreadCount } from '../../store/actions/chat.actions';
 
 @Component({
     selector: 'app-chat',
@@ -59,8 +57,7 @@ import { setUnreadCount } from '../../store/actions/chat.actions';
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public title!: string;
 
     // Data
@@ -73,17 +70,19 @@ export class ChatComponent
 
     public unreadCount!: number;
     public selectedConversation: number;
-    public conversation!: Observable<ChatSelectedConversation>;
+    public conversation$!: Observable<ChatSelectedConversation>;
 
     public ConversationTypeEnum = ConversationTypeEnum;
 
     public isAttachmentUploadActive!: Observable<boolean>;
 
     // User Profile Data
-    public isProfileDetailsDisplayed: Observable<boolean>;
-    public isParticipantsDisplayed: Observable<boolean>;
+    public isProfileDetailsDisplayed$!: Observable<boolean>;
+    public isParticipantsDisplayed$!: Observable<boolean>;
 
-    public conversationProfileDetails!: Observable<ConversationInfoResponse>;
+    public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
+
+    public isAttachmentUploadActive: boolean = false;
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -101,9 +100,7 @@ export class ChatComponent
         // Services
         private chatService: UserChatService,
         public userProfileService: UserProfileService,
-
-        // Store
-        private store: Store
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -126,30 +123,23 @@ export class ChatComponent
                     this.companyUsers.count +
                     this.departments.length;
 
-                this.store.dispatch(
-                    setUnreadCount({
-                        count: this.getUnreadCount(
-                            this.companyUsers,
-                            this.drivers
-                        ),
-                    })
+                const unreadCount = this.getUnreadCount(
+                    this.companyUsers,
+                    this.drivers
                 );
-
-                this.store.dispatch(closeAllProfileInformation());
+                this.chatStoreService.setUnreadCount(unreadCount);
+                this.chatStoreService.closeAllProfileInformation();
             });
     }
 
     private selectStoreData(): void {
-        this.conversation = this.store.select(getSelectedConversation);
-        this.isProfileDetailsDisplayed = this.store
-            .select(getIsProfileDetailsDisplayed)
-            .pipe(takeUntil(this.destroy$));
-        this.conversationProfileDetails = this.store
-            .select(getConversationProfileDetails)
-            .pipe(takeUntil(this.destroy$));
-        this.isParticipantsDisplayed = this.store
-            .select(getIsConversationParticipantsDisplayed)
-            .pipe(takeUntil(this.destroy$));
+        this.conversation$ = this.chatStoreService.selectConversation();
+        this.isProfileDetailsDisplayed$ =
+            this.chatStoreService.selectIsProfileDetailsDisplayed();
+        this.conversationProfileDetails$ =
+            this.chatStoreService.selectConversationProfileDetails();
+        this.isParticipantsDisplayed$ =
+            this.chatStoreService.selectIsConversationParticipantsDisplayed();
         this.isAttachmentUploadActive = this.store
             .select(getIsAttachmentUploadActive)
             .pipe(takeUntil(this.destroy$));
@@ -185,16 +175,16 @@ export class ChatComponent
             .subscribe((conversation) => {
                 if (!conversation?.id) return;
 
-                this.store.dispatch(closeAllProfileInformation());
+                this.chatStoreService.closeAllProfileInformation();
                 this.selectedConversation = conversation.id;
 
-                this.store.dispatch(
-                    setConversation({
-                        id: conversation?.id,
-                        conversationType,
-                        group,
-                    })
-                );
+                const selectedConversation: ChatSelectedConversation = {
+                    id: conversation?.id,
+                    conversationType,
+                    group,
+                };
+                this.chatStoreService.setConversation(selectedConversation);
+
                 this.router.navigate([
                     ChatRoutesEnum.CONVERSATION,
                     conversation.id,
@@ -202,7 +192,7 @@ export class ChatComponent
             });
     }
 
-    private getConversationData(): void {}
+    private getConversationData(): void { }
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -244,19 +234,22 @@ export class ChatComponent
         return totalUnreadCount;
     }
 
-    public displayProfileDetails(value: boolean): void {
-        this.store.dispatch(displayProfileDetails({ isDisplayed: value }));
+    public closeProfileDetails(): void {
+        this.chatStoreService.closeAllProfileInformation();
+    }
 
-        if (!this.selectedConversation) return;
+    public displayProfileDetails(): void {
+        if (!this.selectedConversation) {
+            this.chatStoreService.displayProfileDetails();
+            return;
+        }
 
         this.chatService
             .getAllConversationFiles(this.selectedConversation)
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: ConversationInfoResponse) => {
-                this.store.dispatch(
-                    displayProfileDetails({ isDisplayed: value })
-                );
-                this.store.dispatch(setProfileDetails(data));
-            });
+                this.chatStoreService.setProfileDetails(data);
+            })
+            .add(() => this.chatStoreService.displayProfileDetails());
     }
 }
