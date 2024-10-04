@@ -10,15 +10,31 @@
                     <div class="payroll_chip">3 LOAD</div>
                     <div class="payroll_chip blue">+1 DAY</div>
                 </div>
-                <div class="report-count-item-load d-flex">
+                <div
+                    class="report-count-item-load d-flex"
+                    *ngIf="
+                        (payrollReport$ | async)
+                            ?.perMilesEntity as payroll_report
+                    "
+                >
                     <div class="report-count-item-load-right d-flex">
                         <div class="report-tickets">
-                            Empty
-                            <span>{{ 233 | currency : 'USD' }}</span>
+                            EMPTY
+                            <span>{{
+                                payroll_report?.emptyMile | currency : 'USD'
+                            }}</span>
                         </div>
                         <div class="report-tickets">
-                            Loaded
-                            <span>{{ 123 | currency : 'USD' }}</span>
+                            LOADED
+                            <span>{{
+                                payroll_report?.loadedMile | currency : 'USD'
+                            }}</span>
+                        </div>
+                        <div class="report-tickets">
+                            EXTRA STOP
+                            <span>{{
+                                payroll_report?.perStop | currency : 'USD'
+                            }}</span>
                         </div>
                         <div class="edit">
                             <svg-icon
@@ -141,54 +157,68 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <td class="text-center">
-        <div class="td-container">
-            <div class="td-content-container">
-                <svg-icon
-                    [src]="'assets/ca-components/svg/common/ic_two_arrows.svg'"
-                    [svgStyle]="{ color: '#919191', display: 'flex' }"
-                ></svg-icon>
+    <ng-container
+        *ngIf="includedLoads$ | async | payrollTableTotal as payroll_totals"
+    >
+        <td class="text-center">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <svg-icon
+                        [src]="
+                            'assets/ca-components/svg/common/ic_two_arrows.svg'
+                        "
+                        [svgStyle]="{ color: '#919191', display: 'flex' }"
+                    ></svg-icon>
+                </div>
             </div>
-        </div>
-    </td>
-    <td colspan="4">
-        <div class="td-container">
-            <div class="td-content-container">
-                <div class="custom-load-index text b-600">Total</div>
+        </td>
+        <td colspan="4">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">Total</div>
+                </div>
             </div>
-        </div>
-    </td>
-    <td class="text-right">
-        <div class="td-container">
-            <div class="td-content-container">
-                <div class="custom-load-index text b-600">$304.30</div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.empty | currency }}
+                    </div>
+                </div>
             </div>
-        </div>
-    </td>
-    <td class="text-right">
-        <div class="td-container">
-            <div class="td-content-container">
-                <div class="custom-load-index text b-600">$1,627.30</div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.loaded | currency }}
+                    </div>
+                </div>
             </div>
-        </div>
-    </td>
-    <td class="text-right">
-        <div class="td-container">
-            <div class="td-content-container">
-                <div class="custom-load-index text b-600">$1,931.73</div>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.miles | currency }}
+                    </div>
+                </div>
             </div>
-        </div>
-    </td>
-    <td>
-        <div class="td-container">
-            <div class="td-content-container"></div>
-        </div>
-    </td>
-    <td class="text-right">
-        <div class="td-container">
-            <div class="td-content-container">
-                <div class="custom-load-index text b-600">$2.131.73</div>
+        </td>
+        <td>
+            <div class="td-container">
+                <div class="td-content-container"></div>
             </div>
-        </div>
-    </td>
+        </td>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text b-600">
+                        {{ payroll_totals.subtotal | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+    </ng-container>
 </ng-template>

@@ -510,27 +510,35 @@ export class PayrollReportComponent implements OnInit {
         );
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
             (payrollLoadList) => {
-                console.log('PAYROLLL LIST DATAAAAAAAAAA');
 
-                this.allowedLoadIds = payrollLoadList
+                const filteredPayrollList = payrollLoadList.filter(
+                    (load) => !(load as any).rowType
+                );
+
+                this.allowedLoadIds = filteredPayrollList
                     .map((loads, index) => {
                         const load = loads as MilesStopShortResponse;
-                        const nextLoad = payrollLoadList[
+                        const nextLoad = filteredPayrollList[
                             index + 1
+                        ] as MilesStopShortResponse;
+
+                        const prevLoad = filteredPayrollList[
+                            index - 1
                         ] as MilesStopShortResponse;
 
                         const currentLoadId = load.loadId;
                         const nextLoadId = nextLoad?.loadId;
 
-                        if (nextLoadId != currentLoadId || !nextLoad) {
+                        if (!prevLoad) {
                             return index;
+                        } else if (nextLoadId != currentLoadId) {
+                            return index + 1;
                         }
 
                         return null;
                     })
                     .filter((loadId) => loadId != null);
 
-                console.log(this.allowedLoadIds);
                 this.payrollReportList = payrollLoadList;
             }
         );
@@ -574,13 +582,10 @@ export class PayrollReportComponent implements OnInit {
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
         console.log(drag.currentIndex);
         console.log(drag.previousIndex);
-        console.log(
-            'ON DRAG FINISH',
-            drag.container.data
-        );
+        console.log('ON DRAG FINISH', drag.container.data);
 
-        const loadId = drag.container.data[drag.currentIndex -1]?.loadId;
-        console.log("WHAT IS LOAD ID", loadId);
+        const loadId = drag.container.data[drag.currentIndex - 1]?.loadId;
+        console.log('WHAT IS LOAD ID', loadId);
         console.log([
             ...this.openedPayroll.includedLoads,
             ...this.openedPayroll.excludedLoads,
