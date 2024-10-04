@@ -5,12 +5,12 @@
             <div class="messages-header d-flex align-items-center">
                 <ng-container
                     *ngSwitchCase="
-                        (conversation | async)?.participants?.length === 1
+                        (conversation$ | async)?.participants?.length === 1
                     "
                 >
                     <app-ca-profile-image
                         [avatarImg]="
-                            (conversation | async)?.participants[0]?.avatarFile
+                            (conversation$ | async)?.participants[0]?.avatarFile
                                 ?.url
                         "
                         [avatarColor]="{
@@ -18,14 +18,14 @@
                             color: '#9E47EC66'
                         }"
                         [textShortName]="
-                            (conversation | async)?.participants[0]?.fullName
+                            (conversation$ | async)?.participants[0]?.fullName
                                 | nameInitials
                         "
                         [size]="22"
                         [fontSize]="9"
                         [isHoverEffect]="false"
                         [isRound]="
-                            (conversation | async)?.group ===
+                            (conversation$ | async)?.group ===
                             chatGroupEnum.CompanyUser
                         "
                     ></app-ca-profile-image>
@@ -34,7 +34,7 @@
                         *ngTemplateOutlet="
                             headerLeftSide;
                             context: {
-                                name: (conversation | async)?.participants[0]
+                                name: (conversation$ | async)?.participants[0]
                                     ?.fullName
                             }
                         "
@@ -47,7 +47,7 @@
 
                 <ng-container
                     *ngSwitchCase="
-                        (conversation | async)?.participants?.length >= 2
+                        (conversation$ | async)?.participants?.length >= 2
                     "
                 >
                     <div class="messages-header d-flex align-items-center">
@@ -55,7 +55,7 @@
                             class="d-flex justify-content-center align-items-center"
                             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                             [src]="
-                                (conversation | async)?.group
+                                (conversation$ | async)?.group
                                     | chatGroupCheckForIcon
                             "
                         >
@@ -66,7 +66,7 @@
                         *ngTemplateOutlet="
                             headerLeftSide;
                             context: {
-                                name: (conversation | async)?.participants[0]
+                                name: (conversation$ | async)?.participants[0]
                                     ?.fullName
                             }
                         "
@@ -76,7 +76,7 @@
                         *ngTemplateOutlet="
                             headerRightSide;
                             context: {
-                                participants: (conversation | async)
+                                participants: (conversation$ | async)
                                     ?.participants
                             }
                         "
@@ -89,15 +89,15 @@
     <div class="content d-flex flex-column">
         <!-- Messages  -->
         <app-chat-messages
-            [conversation]="conversation"
+            [conversation]="conversation$"
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
             [isAttachmentUploadActive]="isAttachmentUploadActive"
-            [conversationParticipants]="(conversation | async)?.participants"
+            [conversationParticipants]="(conversation$ | async)?.participants"
         ></app-chat-messages>
 
         <!-- Footer -->
         <app-chat-content-footer
-            [conversation]="conversation | async"
+            [conversation]="conversation$ | async"
         ></app-chat-content-footer>
     </div>
 </div>

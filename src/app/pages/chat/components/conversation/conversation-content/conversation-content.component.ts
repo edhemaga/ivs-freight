@@ -1,13 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil, Observable, tap, map } from 'rxjs';
-
-// Store
-import {
-    closeAllProfileInformation,
-    displayConversationParticipants,
-    getSelectedConversation,
-} from '@pages/chat/store';
+import { takeUntil, Observable, map } from 'rxjs';
 
 // Services
 import { ChatStoreService } from '@pages/chat/services';
@@ -49,7 +42,7 @@ export class ConversationContentComponent
     //User data
     private getCurrentUserHelper = GetCurrentUserHelper;
 
-    public conversation!: Observable<ChatSelectedConversation>;
+    public conversation$!: Observable<ChatSelectedConversation>;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
@@ -66,11 +59,15 @@ export class ConversationContentComponent
 
     ngOnInit(): void {
         this.getResolvedData();
+        this.initStoreData();
+    }
+
+    private initStoreData(): void {
+        this.chatStoreService.closeAllProfileInformation();
+        this.conversation$ = this.chatStoreService.selectConversation();
     }
 
     private getResolvedData(): void {
-        // this.chatStoreService.selectConversation();
-
         this.activatedRoute.data
             .pipe(
                 takeUntil(this.destroy$),
@@ -89,8 +86,7 @@ export class ConversationContentComponent
                             ),
                         },
                     };
-                }),
-                tap()
+                })
             )
             .subscribe((res) => {
                 const selectedConversation: ChatSelectedConversation = {
@@ -101,8 +97,6 @@ export class ConversationContentComponent
                     updatedAt: res.information?.updatedAt,
                 };
                 this.chatStoreService.setConversation(selectedConversation);
-                this.chatStoreService.closeAllProfileInformation();
-                this.chatStoreService.selectConversation();
             });
     }
 
