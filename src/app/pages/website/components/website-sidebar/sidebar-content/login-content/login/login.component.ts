@@ -87,6 +87,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authFacadeService.logIn(this.loginForm.value);
     }
 
+    public toggleLoggedIn(): void {
+        const stayLoggedIn = this.loginForm.get(WebsiteStringEnum.STAY_LOGGED_IN);
+        stayLoggedIn.patchValue(!stayLoggedIn.value);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

@@ -19,7 +19,6 @@ import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { NavigationComponent } from '@core/components/navigation/pages/navigation/navigation.component';
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
-import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 
 // Pipes
@@ -38,8 +37,6 @@ import { WebsiteUserLoggedService } from '@pages/website/services/website-user-l
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
-import { CaComponentsLibModule } from 'ca-components';
-
 // Lottie
 import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -57,7 +54,6 @@ function playerFactory() {
         BrowserAnimationsModule,
         HttpClientModule,
         SharedModule,
-        TaTooltipSlideComponent,
         LottieModule.forRoot({ player: playerFactory }),
         // AgmCoreModule.forRoot({
         //     apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
@@ -82,7 +78,6 @@ function playerFactory() {
 
         // routing
         AppRoutingModule,
-        CaComponentsLibModule,
     ],
     providers: [
         {
@@ -110,9 +105,9 @@ function playerFactory() {
         StaticInjectorService,
         DatePipe,
         CurrencyPipe,
-        BlockedContentPipe
+        BlockedContentPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

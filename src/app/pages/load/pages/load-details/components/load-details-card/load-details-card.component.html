@@ -17,7 +17,8 @@
                     stopOrder: +load?.status?.statusCheckInNumber
                 },
                 loadDeliveryTime: load?.loadDeliveryTime,
-                dateCreated: load.dateCreated
+                dateCreated: load.dateCreated,
+                dispatcher: load.dispatcher
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-load-details-title-card>
@@ -122,7 +123,7 @@
                     <app-ta-custom-card
                         [cardName]="'Document'"
                         [hasCounter]="load?.files?.length || -1"
-                        [isCardOpen]="load?.files?.length"
+                        [isCardOpen]="!!load?.files?.length"
                         [disabledCard]="!load?.files?.length"
                         [bodyTemplate]="'card'"
                         [animationMarginParams]="{

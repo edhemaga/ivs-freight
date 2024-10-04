@@ -398,16 +398,37 @@
                             [disableAnimation]="disableCardAnimation"
                             (onActionEvent)="handleDeleteClick($event)"
                         >
-                            <app-ta-logo-change
-                                [croppieOptions]="croppieOptions"
-                                [croppieShape]="'rectangle'"
-                                [customClass]="'modal-container-M'"
-                                [imageUrl]="this.companyForm.get('logo').value"
-                                [displayUploadZone]="displayUploadZone"
-                                (validationEvent)="onImageValidation($event)"
-                                (base64ImageEvent)="onUploadImage($event)"
-                                (saveLogoEvent)="onSaveLogoAction($event)"
-                            ></app-ta-logo-change>
+                            <app-ca-upload-files
+                                [files]="uploadOptionsConstants.files"
+                                [slider]="uploadOptionsConstants.slider"
+                                [carouselConfig]="
+                                    uploadOptionsConstants.carouselConfig
+                                "
+                                [hasCrop]="uploadOptionsConstants.hasCrop"
+                                [isRoundCrop]="
+                                    uploadOptionsConstants.isRoundCrop
+                                "
+                                [containWithinAspectRatio]="
+                                    uploadOptionsConstants.containWithinAspectRatio
+                                "
+                                [aspectRatio]="
+                                    uploadOptionsConstants.aspectRatio
+                                "
+                                [initialCropperPosition]="
+                                    uploadOptionsConstants.initialCropperPosition
+                                "
+                                [dropzoneCustomWidth]="
+                                    uploadOptionsConstants.dropzoneCustomWidth
+                                "
+                                [dropzoneConf]="
+                                    uploadOptionsConstants.dropzoneConf
+                                "
+                                [review]="uploadOptionsConstants.review"
+                                [configFile]="uploadOptionsConstants.configFile"
+                                [size]="uploadOptionsConstants.size"
+                                [slideWidth]="uploadOptionsConstants.slideWidth"
+                                (onFileEvent)="onUploadImage($event)"
+                            ></app-ca-upload-files>
                         </app-ta-custom-card>
                     </div>
                 </ng-container>
@@ -541,7 +562,9 @@
                                                     "
                                                 >
                                                     <svg-icon
-                                                        src="assets/svg/common/ic_trash.svg"
+                                                        [src]="
+                                                            svgRoutes.iconTrashSvgRoute
+                                                        "
                                                     ></svg-icon>
                                                 </div>
                                             </div>
@@ -673,7 +696,9 @@
 
                                                 <svg-icon
                                                     class="common-fake-table-check"
-                                                    src="assets/svg/common/ic_confirm.svg"
+                                                    [src]="
+                                                        svgRoutes.iconConfirmSvgRoute
+                                                    "
                                                 ></svg-icon>
 
                                                 <div
@@ -693,7 +718,9 @@
                                                     position="top"
                                                 >
                                                     <svg-icon
-                                                        src="assets/svg/common/ic_trash.svg"
+                                                        [src]="
+                                                            svgRoutes.iconTrashSvgRoute
+                                                        "
                                                     ></svg-icon>
                                                 </div>
                                             </div>
@@ -726,7 +753,9 @@
                                     <div class="common-fake-table-label">
                                         <p>
                                             <svg-icon
-                                                src="assets/svg/common/ic_modal_card_sort.svg"
+                                                [src]="
+                                                    svgRoutes.iconModalCardSortSvgRoute
+                                                "
                                             ></svg-icon>
                                         </p>
                                         <p>NICKNAME</p>
@@ -838,7 +867,9 @@
                                                     "
                                                 >
                                                     <svg-icon
-                                                        src="assets/svg/common/ic_trash.svg"
+                                                        [src]="
+                                                            svgRoutes.iconTrashSvgRoute
+                                                        "
                                                     ></svg-icon>
                                                 </div>
                                             </div>
@@ -1002,7 +1033,7 @@
                                             <app-ta-input
                                                 formControlName="mvrMonths"
                                                 [inputConfig]="{
-                                                    name: 'months',
+                                                    name: 'mvrMonths',
                                                     type: 'text',
                                                     placeholderText: 'months',
                                                     label: 'MVR',
@@ -1013,11 +1044,11 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                                            svg: svgRoutes.iconDecrementSvgRoute
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: 'assets/svg/common/ic_pm_increment.svg'
+                                                            svg: svgRoutes.iconIncrementSvgRoute
                                                         }
                                                     }
                                                 }"
@@ -1029,7 +1060,7 @@
                                                 formControlName="truckInspectionMonths"
                                                 [inputConfig]="{
                                                     id: 'Truck Inspection MONTHS',
-                                                    name: 'months',
+                                                    name: 'truckInspectionMonths',
                                                     type: 'text',
                                                     placeholderText: 'months',
                                                     label: 'Truck Inspection',
@@ -1040,11 +1071,11 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                                            svg: svgRoutes.iconDecrementSvgRoute
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: 'assets/svg/common/ic_pm_increment.svg'
+                                                            svg: svgRoutes.iconIncrementSvgRoute
                                                         }
                                                     }
                                                 }"
@@ -1056,7 +1087,7 @@
                                                 formControlName="trailerInspectionMonths"
                                                 [inputConfig]="{
                                                     id: 'Trailer Inspection MONTHS',
-                                                    name: 'months',
+                                                    name: 'trailerInspectionMonths',
                                                     type: 'text',
                                                     placeholderText: 'months',
                                                     label: 'Trailer Inspection',
@@ -1067,11 +1098,11 @@
                                                         type: 'months',
                                                         firstCommand: {
                                                             name: 'minus',
-                                                            svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                                            svg: svgRoutes.iconDecrementSvgRoute
                                                         },
                                                         secondCommand: {
                                                             name: 'plus',
-                                                            svg: 'assets/svg/common/ic_pm_increment.svg'
+                                                            svg: svgRoutes.iconIncrementSvgRoute
                                                         }
                                                     }
                                                 }"

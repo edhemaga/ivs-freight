@@ -44,6 +44,12 @@
             ? 'Delete Driver'
             : editData?.template === 'comment'
             ? 'Delete Comment'
+            : editData?.template === 'Company Terminal'
+            ? 'Delete Terminal' 
+            : editData?.template === 'Company Parking'
+            ? 'Delete Parking'
+            : editData?.template === 'Company Office'
+            ? 'Delete Office'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
@@ -333,10 +339,10 @@
                             "
                         >
                             <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                                <p class="m-0 confirmation-text-1 large-text-1">
                                     {{ editData?.data?.name }}
                                 </p>
-                                <p class="m-0 confirmation-text-2">
+                                <p class="m-0 confirmation-text-2 large-text-2">
                                     Address:
                                     {{ editData?.data?.address?.address }}
                                 </p>

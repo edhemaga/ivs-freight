@@ -19,7 +19,7 @@
     }
 
     &.opened_parking_editor {
-        justify-content: end;
+        justify-content: flex-end;
     }
 
     .font_editor {
@@ -129,7 +129,7 @@
             &.parking_tooltip {
                 width: 100%;
                 display: flex;
-                justify-content: end;
+                justify-content: flex-end;
             }
 
             &.popover_text_color {
@@ -205,7 +205,7 @@
 
                 .editor_buttons_colors {
                     position: relative;
-                    
+
                     border-radius: 1px;
                     transition: transform opacity 0.3s ease-in-out;
                     overflow: hidden;

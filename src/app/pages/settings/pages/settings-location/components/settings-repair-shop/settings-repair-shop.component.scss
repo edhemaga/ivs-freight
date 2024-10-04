@@ -1,15 +1,5 @@
 @import '/src/assets/scss/settings.global.scss';
 
-.settings-repair-shop {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
-
-    .settings-name {
-        padding: 7px 4px;
-    }
-}
 // Repair Shop Template
 .repair-shop-template-data {
     display: grid;
@@ -69,7 +59,4 @@
     &.no-line {
         margin-bottom: 0px !important;
     }
-}
-.copy-icon {
-    margin-left: 1px !important;
 }

@@ -18,7 +18,6 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 
 // services
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
-import { NotificationService } from '@shared/services/notification.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
@@ -46,7 +45,6 @@ export class SettingsInsurancepolicyComponent
     public toggler: boolean[] = [];
     constructor(
         private settingsCompanyService: SettingsCompanyService,
-        private notificationService: NotificationService,
         private clipboar: Clipboard,
         private confirmationService: ConfirmationService,
         private modalService: ModalService

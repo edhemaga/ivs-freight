@@ -23,6 +23,7 @@ import { TaMapToolbarComponent } from '@shared/components/ta-map-toolbar/ta-map-
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { CaMapComponent } from 'ca-components';
 
 @NgModule({
     declarations: [RoutingMapComponent],
@@ -31,12 +32,12 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
         CommonModule,
         RoutingRoutingModule,
         DragDropModule,
-      //  AgmCoreModule,
+        //  AgmCoreModule,
         NgbModule,
         NgbPopoverModule,
         FormsModule,
         ReactiveFormsModule,
-       // AgmSnazzyInfoWindowModule,
+        // AgmSnazzyInfoWindowModule,
         AngularSvgIconModule,
 
         // Components
@@ -44,6 +45,7 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
         TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
         TaDetailsDropdownComponent,
+        CaMapComponent,
 
         // Pipes
         ThousandSeparatorPipe,

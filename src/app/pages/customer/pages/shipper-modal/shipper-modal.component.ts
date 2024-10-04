@@ -79,17 +79,22 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-//Constants
+// Constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
 
-//Config
+// Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
 import { AddressService } from '@shared/services/address.service';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -296,11 +301,24 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
             // Delete
             if (data.action === 'delete' && this.editData) {
-                this.deleteShipperById(this.editData.id);
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.DELETE },
+                    {
+                        id: this.editData.id,
+                        data: this.editData.data,
+                        template: TableStringEnum.SHIPPER,
+                        type: TableStringEnum.DELETE,
+                        svg: true,
+                        modalHeaderTitle:
+                            ConfirmationModalStringEnum.DELETE_SHIPPER,
+                    }
+                );
+
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: null,
                     status: true,
-                    close: false,
+                    close: true,
                 });
             }
         }
@@ -600,7 +618,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -803,28 +821,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteShipperById(id: number) {
-        this.shipperService
-            .deleteShipperById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: false,
                         close: false,
                     });
@@ -1226,14 +1222,15 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         ) {
             this.addressService
                 .getAddressByLongLat(
-                    [ShipperModalString.LOCALITY],
+                    [ShipperModalString.ADDRESS],
                     this.shipperForm.get(ShipperModalString.LONGITUDE).value,
                     this.shipperForm.get(ShipperModalString.LATITUDE).value
                 )
                 .pipe()
                 .subscribe((res) => {
                     this.shipperForm.patchValue({
-                        countryStateAddress: res.address,
+                        countryStateAddress:
+                            res?.county + ', ' + res.stateShortName,
                         address: res.address,
                     });
 

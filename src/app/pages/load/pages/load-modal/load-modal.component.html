@@ -1,5 +1,5 @@
 <app-ta-modal
-[isVisibleMap]="true"
+    [isVisibleMap]="true"
     [modalTitle]="modalTitle"
     [editData]="editData"
     [editName]="editName"
@@ -38,7 +38,10 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editLoad,
-                    'select-template': !isConvertedToTemplate && !isActiveLoad && labelsTemplate.length
+                    'select-template':
+                        !isConvertedToTemplate &&
+                        !isActiveLoad &&
+                        labelsTemplate.length
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -65,7 +68,13 @@
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate && !isActiveLoad && labelsTemplate.length">
+                <ng-container
+                    *ngIf="
+                        !isConvertedToTemplate &&
+                        !isActiveLoad &&
+                        labelsTemplate.length
+                    "
+                >
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -115,7 +124,9 @@
                                             )
                                         "
                                     >
-                                        <p class="m-0 text-truncate">{{ template.name }}</p>
+                                        <p class="m-0 text-truncate">
+                                            {{ template.name }}
+                                        </p>
                                     </div>
                                 </ng-container>
                             </div>
@@ -261,12 +272,13 @@
                     [hasDivider]="false"
                     [animationMarginParams]="{
                         marginTop: '10px',
-                        marginBottom: '12px'
+                        marginBottom: '0'
                     }"
                 >
-                    <div class="pt-2">
+                    <div class="pt-3">
                         <div class="load-requirements-load-first-row">
                             <app-ta-input-dropdown
+                                #truckInputDropdown
                                 formControlName="truckTypeId"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="getTruckTypeIdInputConfig"
@@ -278,6 +290,7 @@
                             ></app-ta-input-dropdown>
 
                             <app-ta-input-dropdown
+                                #trailerInputDropdown
                                 formControlName="trailerTypeId"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="getTrailerInputConfig"
@@ -668,7 +681,7 @@
                                         "
                                         [preventOpening]="isDragAndDropActive"
                                         [firstOrLast]="false"
-                                        [stopNumber]="indx + 2"
+                                        [stopNumber]="extraStopNumbers?.[indx] ?? 1"
                                         [isDelivery]="
                                             selectExtraStopType[indx]
                                                 ?.toString()
@@ -1110,7 +1123,9 @@
 
                     <app-load-modal-stop
                         [firstOrLast]="true"
-                        [stopNumber]="loadForm.get('deliveryStopOrder').value"
+                        [stopNumber]="
+                            loadForm.get('deliveryStopOrder').value || 1
+                        "
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1664,13 +1679,17 @@
 
             <div class="load-modal-row">
                 <app-ta-custom-card
-                    [hasCounter]="documents?.length"
                     [cardName]="'Document'"
-                    [isCardOpen]="documents?.length"
-                    (onOpenCard)="handleOpenCloseDocumentsCard($event)"
+                    [isCardOpen]="!!documents.length"
+                    [hasBodyData]="true"
+                    [hasDivider]="true"
+                    [hasCounter]="documents?.length"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
                 >
                     <app-ta-upload-files
-                        *ngIf="isDocumentsCardOpen"
                         [files]="documents"
                         [size]="'medium'"
                         [showDropzone]="true"
@@ -1726,7 +1745,7 @@
         ></app-load-modal-hazardous>
 
         <!-- Map -->
-        <app-ca-map [data]="data"></app-ca-map>
+        <app-ca-map *ngIf="!isHazardousVisible" [data]="data"></app-ca-map>
         <!-- <app-ta-maps
             *ngIf="!isHazardousVisible"
             [mapType]="'routing'"

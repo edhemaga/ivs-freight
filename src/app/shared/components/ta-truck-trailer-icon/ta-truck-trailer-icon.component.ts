@@ -40,32 +40,37 @@ export class TaTruckTrailerIconComponent implements OnInit {
     };
 
     private trailerColorMap = {
-        [TrailerNameStringEnum.REEFER]: TooltipColorsStringEnum.BLUE,
-        [TrailerNameStringEnum.DRY_VAN]: TooltipColorsStringEnum.DARK_BLUE,
-        [TrailerNameStringEnum.DUMPER]: TooltipColorsStringEnum.PURPLE,
-        [TrailerNameStringEnum.TANKER]: TooltipColorsStringEnum.GREEN,
-        [TrailerNameStringEnum.PNEUMATIC_TANKER]:
-            TooltipColorsStringEnum.LIGHT_GREEN,
-        [TrailerNameStringEnum.CAR_HAULER]: TooltipColorsStringEnum.PINK,
+        [TrailerNameStringEnum.FLAT_BED]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.STEP_DECK]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.LOW_BOY_RGN]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.CHASSIS]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.CONESTOGA]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.SIDE_KIT]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.CONTAINER]: TooltipColorsStringEnum.BLUE,
+        [TrailerNameStringEnum.DRY_VAN]: TooltipColorsStringEnum.YELLOW,
+        [TrailerNameStringEnum.REEFER]: TooltipColorsStringEnum.YELLOW,
+        [TrailerNameStringEnum.END_DUMP]: TooltipColorsStringEnum.RED,
+        [TrailerNameStringEnum.BOTTOM_DUMP]: TooltipColorsStringEnum.RED,
+        [TrailerNameStringEnum.HOPPER]: TooltipColorsStringEnum.RED,
+        [TrailerNameStringEnum.TANKER]: TooltipColorsStringEnum.RED,
+        [TrailerNameStringEnum.PNEUMATIC_TANKER]: TooltipColorsStringEnum.RED,
+        [TrailerNameStringEnum.CAR_HAULER]: TooltipColorsStringEnum.LIGHT_GREEN,
         [TrailerNameStringEnum.CAR_HAULER_STINGER]:
-            TooltipColorsStringEnum.PINK,
-        [TrailerNameStringEnum.CHASSIS]: TooltipColorsStringEnum.BROWN,
-        [TrailerNameStringEnum.LOW_BOY_RGN]: TooltipColorsStringEnum.RED,
-        [TrailerNameStringEnum.STEP_DECK]: TooltipColorsStringEnum.RED,
-        [TrailerNameStringEnum.FLAT_BED]: TooltipColorsStringEnum.RED,
-        [TrailerNameStringEnum.SIDE_KIT]: TooltipColorsStringEnum.ORANGE,
-        [TrailerNameStringEnum.CONESTOGA]: TooltipColorsStringEnum.GOLD,
-        [TrailerNameStringEnum.CONTAINER]: TooltipColorsStringEnum.YELLOW,
+            TooltipColorsStringEnum.LIGHT_GREEN,
     };
 
     private truckColorMap = {
-        [TruckNameStringEnum.SEMI_TRUCK]: TooltipColorsStringEnum.LIGHT_GREEN,
-        [TruckNameStringEnum.SEMI_SLEEPER]: TooltipColorsStringEnum.YELLOW,
-        [TruckNameStringEnum.BOX_TRUCK]: TooltipColorsStringEnum.RED,
-        [TruckNameStringEnum.CARGO_VAN]: TooltipColorsStringEnum.BLUE,
-        [TruckNameStringEnum.CAR_HAULER]: TooltipColorsStringEnum.PINK,
-        [TruckNameStringEnum.TOW_TRUCK]: TooltipColorsStringEnum.PURPLE,
-        [TruckNameStringEnum.SPOTTER]: TooltipColorsStringEnum.BROWN,
+        [TruckNameStringEnum.SEMI_TRUCK]: TooltipColorsStringEnum.BLUE,
+        [TruckNameStringEnum.SEMI_SLEEPER]: TooltipColorsStringEnum.BLUE,
+        [TruckNameStringEnum.BOX_TRUCK]: TooltipColorsStringEnum.YELLOW,
+        [TruckNameStringEnum.REEFER_TRUCK]: TooltipColorsStringEnum.YELLOW,
+        [TruckNameStringEnum.CARGO_VAN]: TooltipColorsStringEnum.YELLOW,
+        [TruckNameStringEnum.DUMP_TRUCK]: TooltipColorsStringEnum.RED,
+        [TruckNameStringEnum.CEMENT_TRUCK]: TooltipColorsStringEnum.RED,
+        [TruckNameStringEnum.GARBAGE_TRUCK]: TooltipColorsStringEnum.RED,
+        [TruckNameStringEnum.TOW_TRUCK]: TooltipColorsStringEnum.LIGHT_GREEN,
+        [TruckNameStringEnum.CAR_HAULER]: TooltipColorsStringEnum.LIGHT_GREEN,
+        [TruckNameStringEnum.SPOTTER]: TooltipColorsStringEnum.LIGHT_GREEN,
     };
 
     constructor() {}
@@ -92,10 +97,10 @@ export class TaTruckTrailerIconComponent implements OnInit {
             color:
                 this.trailerColorMap[trailerType.name] ||
                 TooltipColorsStringEnum.DEFAULT,
-            className: trailerType.logoName.replace(
-                TableStringEnum.SVG,
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            ),
+            className: trailerType.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
         };
     }
 
@@ -107,10 +112,10 @@ export class TaTruckTrailerIconComponent implements OnInit {
             color:
                 this.truckColorMap[truckType.name] ||
                 TooltipColorsStringEnum.DEFAULT,
-            className: truckType.logoName.replace(
-                TableStringEnum.SVG,
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            ),
+            className: truckType.name
+                .trim()
+                .replace(' ', TableStringEnum.EMPTY_STRING_PLACEHOLDER)
+                .toLowerCase(),
         };
     }
 }

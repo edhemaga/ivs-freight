@@ -1,0 +1,1 @@
+export * from './settings-office-form.config'

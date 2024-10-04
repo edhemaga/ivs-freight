@@ -2,7 +2,9 @@
     <div class="conversation-list-search" [formGroup]="searchForm">
         <app-ta-input
             formControlName="searchTerm"
-            [inputConfig]="ChatInput.userSearchInput"
+            [inputConfig]="
+                chatInput.userSearchInput(chatSearchPlaceholdersEnum.CHAT)
+            "
         ></app-ta-input>
     </div>
     <div class="conversation-list-wrapper">
@@ -41,7 +43,7 @@
                                 trackBy: '' | trackByProperty
                             "
                         >
-                            <div [@fadeInOut]>
+                            <div [@fadeInOutVertical]>
                                 <ng-container
                                     *ngTemplateOutlet="
                                         isAdvancedView
@@ -49,7 +51,9 @@
                                             : listItemRegular;
                                         context: {
                                             type: conversationTypeEnum.CHANNEL,
-                                            item: department
+                                            item: department,
+                                            group: group.id,
+                                            group_id: group.id
                                         }
                                     "
                                 ></ng-container>
@@ -69,7 +73,8 @@
                                 state: group.state,
                                 header_title: chatGroupEnum.CompanyUser,
                                 type: conversationTypeEnum.SINGLE_CHAT,
-                                is_round: true
+                                is_round: true,
+                                group_id: group.id
                             }
                         "
                     ></ng-container>
@@ -86,7 +91,8 @@
                                 state: group.state,
                                 header_title: chatGroupEnum.Driver,
                                 type: conversationTypeEnum.SINGLE_CHAT,
-                                is_round: false
+                                is_round: false,
+                                group_id: group.id
                             }
                         "
                     ></ng-container>
@@ -130,7 +136,7 @@
 
 <ng-template
     #userListHolder
-    let-group_id="group-id"
+    let-group_id="group_id"
     let-state="state"
     let-data="data"
     let-count="count"
@@ -162,6 +168,7 @@
                     isAdvancedView ? listItemAdvanced : listItemRegular;
                     context: {
                         type: type,
+                        group: group_id,
                         item: {
                             id: item.companyUser?.id,
                             name: item.companyUser?.fullName,
@@ -177,14 +184,14 @@
     </ng-container>
 </ng-template>
 
-<ng-template #listItemRegular let-item="item" let-type="type">
+<ng-template #listItemRegular let-item="item" let-type="type" let-group="group">
     <div
         class="conversation-list-item"
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
-        (click)="selectConversation(item, type)"
+        [@fadeInOutVertical]
+        (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-regular d-flex">
             <div
@@ -235,14 +242,19 @@
     </div>
 </ng-template>
 
-<ng-template #listItemAdvanced let-item="item" let-type="type">
+<ng-template
+    #listItemAdvanced
+    let-item="item"
+    let-type="type"
+    let-group="group"
+>
     <div
         class="conversation-list-item"
         appHover
         hoverColor="#eee"
         appToggleBackground
-        [@fadeInOut]
-        (click)="selectConversation(item, type)"
+        [@fadeInOutVertical]
+        (click)="selectConversation(item, type, group)"
     >
         <div class="conversation-list-item-advanced d-flex flex-grow-1">
             <div

@@ -8,6 +8,8 @@ import {
     Renderer2,
     ElementRef,
     OnDestroy,
+    EventEmitter,
+    Output,
 } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -24,6 +26,9 @@ import { DispatchParkingSvgRoutes } from '@pages/dispatch/pages/dispatch/compone
 export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     public svgRoutes = DispatchParkingSvgRoutes;
 
+    @Output() firstElementHeightChange = new EventEmitter<number>();
+    @Output() secondElementHeightChange = new EventEmitter<number>();
+    
     @Input() initialFirstElementHeight: number;
     @Input() initialSecondElementHeight: number;
     @Input() minHeightFirstElement: number = 50;
@@ -31,7 +36,7 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isFirstElementOpen: boolean = true;
     @Input() isSecondElementOpen: boolean = true;
     @Input() isLoadList: boolean = false;
-
+    @Input() isResizeEnabled: boolean = false;
     public firstElementHeight: number;
     public secondElementHeight: number;
     public isDragging = false;
@@ -51,6 +56,11 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
             this.updateHeights();
         }
     }
+
+    private emitHeightChanges() : void {
+        this.firstElementHeightChange.emit(this.firstElementHeight);
+        this.secondElementHeightChange.emit(this.secondElementHeight);
+      }
 
     ngOnDestroy(): void {
         this.removeGlobalEventListeners();
@@ -90,6 +100,7 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
             );
         }
 
+        this.emitHeightChanges();
     }
 
     public setHeights(firstElementHeight: number, secondElementHeight: number): void {
@@ -100,6 +111,8 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onMouseDown(event: MouseEvent): void {
+        if(!this.isResizeEnabled) return;
+        
         this.isDragging = true;
         this.renderer.setStyle(document.body, 'cursor', 'row-resize');
         event.preventDefault();
@@ -125,6 +138,7 @@ export class TaResizerComponent implements OnInit, OnChanges, OnDestroy {
             this.firstElementHeight = newFirstElementHeight;
             this.secondElementHeight = newSecondElementHeight;
         }
+        this.emitHeightChanges();
     }
 
     private onMouseUp(): void {

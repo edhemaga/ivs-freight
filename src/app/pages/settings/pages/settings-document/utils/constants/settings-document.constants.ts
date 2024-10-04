@@ -19,4 +19,13 @@ export class SettingsDocumentsConstants {
         },
         actions: [],
     };
+
+    public static DROPZONE_CONFIG = {
+        dropZoneType: 'files',
+        dropZoneSvg: 'assets/svg/common/drag-image-dropzone-files.svg',
+        dropZoneAvailableFiles:
+            'application/pdf, image/png, image/jpeg, image/jpg',
+        multiple: true,
+        globalDropZone: true,
+    };
 }

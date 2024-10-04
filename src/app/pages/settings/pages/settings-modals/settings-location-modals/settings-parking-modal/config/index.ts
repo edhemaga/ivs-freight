@@ -1,0 +1,1 @@
+export * from './settings-parking-form.config'

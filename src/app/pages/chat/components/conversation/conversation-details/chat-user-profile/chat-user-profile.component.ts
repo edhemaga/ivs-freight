@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
@@ -13,32 +7,43 @@ import { ConversationInfoResponse } from 'appcoretruckassist';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import { ChatUserProfileResourceTypeEnum } from '@pages/chat/enums';
-
+import {
+    ChatConversationProfileDetailsType,
+    ChatSearchPlaceHolders,
+    ChatUserProfileResourceTypeEnum,
+} from '@pages/chat/enums';
 
 @Component({
-  selector: 'app-chat-user-profile',
-  templateUrl: './chat-user-profile.component.html',
-  styleUrls: ['./chat-user-profile.component.scss']
+    selector: 'app-chat-user-profile',
+    templateUrl: './chat-user-profile.component.html',
+    styleUrls: ['./chat-user-profile.component.scss'],
 })
 export class ChatUserProfileComponent implements OnInit {
+    @Input() data: ConversationInfoResponse;
+    @Input() profileDetailsType!: ChatConversationProfileDetailsType;
 
-  @Input() data: ConversationInfoResponse;
+    @Output() isProfileDetailsClosed: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
 
-  @Output() isProfileDetailsClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
+    // TODO connect to hub, replace dummy value
+    public activityStatus: string = 'Offline';
 
-  // Assets route
-  public ChatSvgRoutes = ChatSvgRoutes;
+    // Assets route
+    public chatSvgRoutes = ChatSvgRoutes;
 
-  // Attachment and links status
-  public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
+    // Enums
+    public chatSearchPlaceHolders = ChatSearchPlaceHolders;
+    public chatConversationProfileDetailsType =
+        ChatConversationProfileDetailsType;
 
-  constructor() { }
+    // Attachment and links status
+    public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
 
-  ngOnInit(): void { }
+    constructor() {}
 
-  public closeProfileDetails(): void {
-    this.isProfileDetailsClosed.emit(false);
-  }
+    ngOnInit(): void {}
 
+    public closeProfileDetails(): void {
+        this.isProfileDetailsClosed.emit(false);
+    }
 }

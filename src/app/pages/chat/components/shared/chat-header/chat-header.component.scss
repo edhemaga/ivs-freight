@@ -1,9 +1,10 @@
 @import 'src/theme/variables';
 
 .header-wrapper {
-    min-width: 318px;
+    min-width: 280px;
     min-height: 36px;
     height: fit-content;
+
     padding: 6px 6px 0 6px;
 
     .header-content {
@@ -12,7 +13,7 @@
 
     .horizontal-border {
         width: auto;
-        margin: 6px auto auto auto;
+        margin: 4px auto auto auto;
         border-bottom: 1px solid $bw-9;
     }
 }

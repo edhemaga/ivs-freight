@@ -54,7 +54,7 @@ export function getDispatchColumnDefinition() {
             isPined: true,
 
             width: 400,
-            minWidth: 240,
+            minWidth: 160,
         },
         {
             ngTemplate: 'text',

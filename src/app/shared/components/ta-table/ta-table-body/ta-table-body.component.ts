@@ -96,7 +96,9 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 // constants
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
-import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
+
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
 
 @Titles()
 @Component({
@@ -138,6 +140,9 @@ import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/con
         ThousandToShortFormatPipe,
         LoadStatusColorPipe,
         TableLoadStatusPipe,
+
+        // Directives
+        PreventMultipleclicksDirective
     ],
     providers: [
         {
@@ -229,7 +234,6 @@ export class TaTableBodyComponent
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
         private sanitizer: DomSanitizer,
-        private statusService: LoadTableStatusConstants,
         private loadService: LoadService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
@@ -935,6 +939,7 @@ export class TaTableBodyComponent
 
     // Dropdown Actions
     onDropAction(action: any) {
+
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
             this.mySelection = [];
@@ -963,6 +968,7 @@ export class TaTableBodyComponent
         this.tooltip.close();
     }
 
+    
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {
         this.onRemoveClickEventListener();

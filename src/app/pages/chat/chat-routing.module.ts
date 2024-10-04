@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 //Components
-import { ChatComponent } from "@pages/chat/components/chat/chat.component";
-import { ChatMessagesComponent } from "@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component";
+import { ChatComponent } from '@pages/chat/components/chat/chat.component';
+import { ConversationContentComponent } from '@pages/chat/components/conversation/conversation-content/conversation-content.component';
 
 //Resolvers
 import {
@@ -11,7 +11,7 @@ import {
     ChatDriverResolver,
     ChatCompanyChannelResolver,
     ChatConversationResolver,
-    ChatConversationInformationResolver
+    ChatConversationInformationResolver,
 } from './resolvers';
 
 const routes: Routes = [
@@ -24,26 +24,26 @@ const routes: Routes = [
             drivers: ChatDriverResolver,
         },
         data: {
-            title: 'Chat'
+            title: 'Chat',
         },
         children: [
             {
                 path: 'conversation/:conversationId',
-                component: ChatMessagesComponent,
+                component: ConversationContentComponent,
                 resolve: {
                     information: ChatConversationInformationResolver,
-                    messages: ChatConversationResolver
+                    messages: ChatConversationResolver,
                 },
                 data: {
-                    title: 'Conversation'
+                    title: 'Conversation',
                 },
-            }
-        ]
-    }
+            },
+        ],
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class ChatRoutingModule { }
+export class ChatRoutingModule {}
