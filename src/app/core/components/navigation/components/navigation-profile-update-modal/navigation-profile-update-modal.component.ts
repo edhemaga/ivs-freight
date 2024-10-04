@@ -29,9 +29,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 import { FormService } from '@shared/services/form.service';
 
-// modules
-import Croppie from 'croppie';
-
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -49,6 +46,10 @@ import {
     UpdateUserCommand,
     UserResponse,
 } from 'appcoretruckassist';
+
+// utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
@@ -80,6 +81,8 @@ export class NavigationProfileUpdateModalComponent
 {
     private destroy$ = new Subject<void>();
 
+    public uploadOptionsConstants = NavigationDataConstants.UPLOAD_OPTIONS;
+
     private user: SignInResponse;
 
     public selectedTab: number = 1;
@@ -99,19 +102,6 @@ export class NavigationProfileUpdateModalComponent
             name: 'Additional',
         },
     ];
-
-    public croppieOptions: Croppie.CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 194,
-            height: 194,
-            type: 'circle',
-        },
-        boundary: {
-            width: 456,
-            height: 194,
-        },
-    };
 
     public animationObject = {
         value: this.selectedTab,
@@ -303,17 +293,8 @@ export class NavigationProfileUpdateModalComponent
     }
 
     public onUploadImage(event: any) {
-        const base64String = event?.files[0]?.url;
-        if (!base64String) {
-            this.profileUserForm.get('avatar').patchValue(null);
-            return;
-        }
-
-        const parts = base64String.split(',');
-        const base64Data = parts[1];
-
-        if (base64Data)
-            this.profileUserForm.get('avatar').patchValue(base64Data);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
     }
 

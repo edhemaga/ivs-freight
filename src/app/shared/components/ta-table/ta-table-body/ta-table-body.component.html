@@ -334,9 +334,7 @@
                                     >
                                         <!-- IF USER IS OWNER -->
                                         <svg-icon
-                                            *ngIf="
-                                                row.userStatus === 'Owner'
-                                            "
+                                            *ngIf="row.userStatus === 'Owner'"
                                             [src]="
                                                 'assets/svg/truckassist-table/user-owner-icon.svg'
                                             "
@@ -348,9 +346,7 @@
 
                                         <!-- IF USER IS NOT OWNER -->
                                         <input
-                                            *ngIf="
-                                                row.userStatus !== 'Owner'
-                                            "
+                                            *ngIf="row.userStatus !== 'Owner'"
                                             (change)="onSelectItem(row, i)"
                                             [checked]="row.isSelected"
                                             class="table-checkbox"
@@ -377,9 +373,7 @@
                                                     : '#FFFFFF'
                                             "
                                             position="bottom"
-                                            *ngIf="
-                                                row.userStatus !== 'Owner'
-                                            "
+                                            *ngIf="row.userStatus !== 'Owner'"
                                             class="table-checkbox-label"
                                             for="checkbox-table-{{ i }}"
                                         ></label>
@@ -906,7 +900,7 @@
 
                                     <!-- USER STATUS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content"
                                         *ngIf="
                                             column.ngTemplate === 'user-status'
                                         "
@@ -937,6 +931,44 @@
                                             {{ row[column.field].status }}
                                         </div>
                                     </div>
+
+                                    <!-- USER ACTIVITY COLUMN -->
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'user-activity'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                class="user-activity-container d-flex gap-1 align-items-center table-text"
+                                                [class.ta-font-semi-bold]="
+                                                    row[column.field] ===
+                                                    'Online'
+                                                "
+                                            >
+                                                <ng-cotainer
+                                                    *ngIf="
+                                                        row[column.field] ===
+                                                        'Online'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="online-icon"
+                                                    ></div>
+                                                </ng-cotainer>
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- INVOICE COLUMN -->
                                     <div
@@ -3083,7 +3115,7 @@
 
                                     <!-- USER STATUS COLUMN -->
                                     <div
-                                        class="td-content set-center"
+                                        class="td-content"
                                         *ngIf="
                                             column.ngTemplate === 'user-status'
                                         "
@@ -3114,6 +3146,44 @@
                                             {{ row[column.field].status }}
                                         </div>
                                     </div>
+
+                                    <!-- USER ACTIVITY COLUMN -->
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'user-activity'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content set-center"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                class="user-activity-container d-flex gap-1 align-items-center table-text"
+                                                [class.ta-font-semi-bold]="
+                                                    row[column.field] ===
+                                                    'Online'
+                                                "
+                                            >
+                                                <ng-cotainer
+                                                    *ngIf="
+                                                        row[column.field] ===
+                                                        'Online'
+                                                    "
+                                                >
+                                                    <div
+                                                        class="online-icon"
+                                                    ></div>
+                                                </ng-cotainer>
+                                                {{ row[column.field] }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- NAME LINK COLUMN -->
                                     <div
@@ -5625,7 +5695,9 @@
             <!-- Action -->
             <div
                 class="table-list-dropdown-content"
-                (click)="
+                appPreventMultipleclicks
+                [cooldownDuration]="500"
+                (cooldownComplete)="
                     !action?.isDropdown
                         ? onDropAction(action)
                         : onShowInnerDropdown(action)

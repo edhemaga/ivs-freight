@@ -754,11 +754,8 @@ table.truckassist-table-body-style {
 
                         // USER STATUS COLUMN
                         .user-status-container {
-                            min-width: 68px;
-                            border-radius: 1px;
                             color: $bw6-2;
                             font-size: 11px;
-                            padding: 0 4px;
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
@@ -767,6 +764,16 @@ table.truckassist-table-body-style {
                             &::selection {
                                 color: $bw6-2;
                                 background: $bw6-3;
+                            }
+                        }
+
+                        .user-activity-container {
+                            .online-icon {
+                                width: 10px;
+                                height: 10px;
+
+                                border-radius: 100%;
+                                background-color: $ta-green;
                             }
                         }
 
