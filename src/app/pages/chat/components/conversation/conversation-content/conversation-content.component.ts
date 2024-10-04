@@ -29,7 +29,8 @@ import { ChatDropzone } from '@pages/chat/utils/configs';
 })
 export class ConversationContentComponent
     extends UnsubscribeHelper
-    implements OnInit {
+    implements OnInit
+{
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         if (event.key === 'Escape')

@@ -71,7 +71,8 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
     @Input() public conversation!: ChatSelectedConversation;
@@ -224,7 +225,7 @@ export class ChatContentFooterComponent
     // TODO implement emoji selection
     public openEmojiSelection = (): void => {
         this.isEmojiSelectionActive = true;
-    }
+    };
 
     public uploadAttachmentDragAndDrop(): void {
         this.isAttachmentUploadActive = true;
