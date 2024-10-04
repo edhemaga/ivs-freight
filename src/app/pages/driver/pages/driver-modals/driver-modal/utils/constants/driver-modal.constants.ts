@@ -78,6 +78,7 @@ export class DriverModalConstants {
     };
 
     static UPLOAD_OPTIONS = {
+        isVisibleCropAndDrop: true,
         files: [],
         slider: {
             dontUseSlider: false,

@@ -116,6 +116,7 @@ export class SettingsModalConstants {
     };
 
     static UPLOAD_OPTIONS = {
+        isVisibleCropAndDrop: true,
         files: [],
         slider: {
             dontUseSlider: false,
