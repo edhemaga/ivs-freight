@@ -20,14 +20,7 @@ import {
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 // Store
-import { Store } from '@ngrx/store';
-import {
-    editMessage,
-    replyMessage,
-    resetReplyAndEditMessage,
-    selectEditMessage,
-    selectReplyMessage,
-} from '@pages/chat/store';
+import { selectEditMessage, selectReplyMessage } from '@pages/chat/store';
 
 // Models
 import {
@@ -35,11 +28,14 @@ import {
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
-import { ConversationResponse } from 'appcoretruckassist';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
-import { ChatHubService, UserChatService } from '@pages/chat/services';
+import {
+    ChatHubService,
+    ChatStoreService,
+    UserChatService,
+} from '@pages/chat/services';
 
 // Helpers
 import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -114,13 +110,10 @@ export class ChatContentFooterComponent
 
         // Services
         private chatService: UserChatService,
+        private chatStoreService: ChatStoreService,
 
         // Renderer
-        private renderer: Renderer2,
-        private el: ElementRef,
-
-        // Store
-        private store: Store
+        private renderer: Renderer2
     ) {
         super();
     }
@@ -132,12 +125,8 @@ export class ChatContentFooterComponent
     }
 
     private getReplyAndEditMessages(): void {
-        this.editMessage$ = this.store
-            .select(selectEditMessage)
-            .pipe(takeUntil(this.destroy$));
-        this.replyMessage$ = this.store
-            .select(selectReplyMessage)
-            .pipe(takeUntil(this.destroy$));
+        this.editMessage$ = this.chatStoreService.selectEditMessage();
+        this.replyMessage$ = this.chatStoreService.selectReplyMessage();
     }
 
     public handleSend(): void {
@@ -355,6 +344,6 @@ export class ChatContentFooterComponent
     }
 
     public closeReplyAndEdit(): void {
-        this.store.dispatch(resetReplyAndEditMessage());
+        this.chatStoreService.resetReplyAndEditMessage();
     }
 }

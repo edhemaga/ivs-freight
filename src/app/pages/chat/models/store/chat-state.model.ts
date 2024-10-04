@@ -34,7 +34,7 @@ export type ChatState = {
     isProfileDetailsDisplayed?: boolean;
     isConversationParticipantsDisplayed?: boolean;
     profileDetails: ConversationInfoResponse | null;
-    userTyping?: unknown;
+    userTyping: string;
 
     // Actions
     messageToReply?: ChatMessage | null;

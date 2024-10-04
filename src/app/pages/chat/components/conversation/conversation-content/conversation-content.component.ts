@@ -1,35 +1,22 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, takeUntil, Observable, filter } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil, Observable, tap, map } from 'rxjs';
 
 // Store
-import { Store } from '@ngrx/store';
 import {
     closeAllProfileInformation,
     displayConversationParticipants,
     getSelectedConversation,
-    setConversation,
-    setMessageResponse,
 } from '@pages/chat/store';
 
+// Services
+import { ChatStoreService } from '@pages/chat/services';
+
 // Models
-import {
-    ChatConversationMessageAction,
-    ChatMessage,
-    ChatMessageResponse,
-    ChatSelectedConversation,
-} from '@pages/chat/models';
-import {
-    CompanyUserShortResponse,
-    ConversationResponse,
-} from 'appcoretruckassist';
+import { ChatSelectedConversation } from '@pages/chat/models';
 
 // Enums
-import {
-    ChatConversationType,
-    ChatGroupEnum,
-    ChatMessageActionEnum,
-} from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
 import {
@@ -69,11 +56,10 @@ export class ConversationContentComponent
 
     constructor(
         // Router
-        private router: Router,
         private activatedRoute: ActivatedRoute,
 
-        // Store
-        private store: Store
+        // Services
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -83,40 +69,44 @@ export class ConversationContentComponent
     }
 
     private getResolvedData(): void {
-        this.store.dispatch(closeAllProfileInformation());
+        // this.chatStoreService.selectConversation();
 
         this.activatedRoute.data
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                map((res) => {
+                    return {
+                        ...res,
+                        information: {
+                            ...res?.information,
+                            name:
+                                res.information.name ??
+                                res.information?.participants[0]?.fullName,
+                            participants: res.information?.participants.filter(
+                                (participant) =>
+                                    participant.id !==
+                                    this.getCurrentUserHelper.currentUserId
+                            ),
+                        },
+                    };
+                }),
+                tap()
+            )
             .subscribe((res) => {
-                this.store.dispatch(
-                    setConversation({
-                        participants: res.information?.participants.filter(
-                            (participant) =>
-                                participant.id !==
-                                this.getCurrentUserHelper.currentUserId
-                        ),
-                        name:
-                            res.information.name ??
-                            res.information?.participants[0]?.fullName,
-                        description: res.information?.description,
-                        createdAt: res.information?.createdAt,
-                        updatedAt: res.information?.updatedAt,
-                    })
-                );
-
-                this.store.dispatch(
-                    setMessageResponse({
-                        ...res?.messages,
-                    })
-                );
-                this.conversation = this.store.select(getSelectedConversation);
-                this.store.dispatch(closeAllProfileInformation());
+                const selectedConversation: ChatSelectedConversation = {
+                    participants: res.information.participants,
+                    name: res.information.name,
+                    description: res.information?.description,
+                    createdAt: res.information?.createdAt,
+                    updatedAt: res.information?.updatedAt,
+                };
+                this.chatStoreService.setConversation(selectedConversation);
+                this.chatStoreService.closeAllProfileInformation();
+                this.chatStoreService.selectConversation();
             });
     }
 
     public displayGroupParticipants(): void {
-        this.store.dispatch(
-            displayConversationParticipants({ isDisplayed: true })
-        );
+        this.chatStoreService.displayConversationParticipants();
     }
 }

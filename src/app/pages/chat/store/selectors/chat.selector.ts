@@ -17,7 +17,9 @@ export const selectMessageResponse = createSelector(
         pageIndex: state.messageResponsePageIndex,
         pageSize: state.messageResponsePageSize,
         count: state.messageResponseCount,
-        data: state.messageResponseData,
+        data: state.messageResponseData.filter(
+            (message: ChatMessage) => message.id !== 0
+        ),
     })
 );
 
@@ -60,4 +62,9 @@ export const getConversationProfileDetails = createSelector(
 export const getUnreadCount = createSelector(
     selectChatState,
     (state: ChatState): number => state.unreadCount
+);
+
+export const getUserTyping = createSelector(
+    selectChatState,
+    (state: ChatState): string => state.userTyping
 );

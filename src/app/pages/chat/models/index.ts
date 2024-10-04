@@ -16,3 +16,4 @@ export * from './company-user.model';
 export * from './conversation-content/chat-conversation-message-action.model';
 export * from './chat-selected-conversation.model';
 export * from './store/chat-state.model';
+export * from './store/chat-displayed-flag.model';

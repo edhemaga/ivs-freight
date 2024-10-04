@@ -15,6 +15,7 @@ import {
     closeAllProfileInformation,
     setUnreadCount,
     setProfileDetails,
+    setUserTyping,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -32,6 +33,7 @@ const initialState: ChatState = {
     profileDetails: null,
     messageToReply: null,
     messageToEdit: null,
+    userTyping: '',
 };
 
 // TODO deconstruct each newState
@@ -140,16 +142,18 @@ export const chatDataReducer = createReducer(
             ...newState,
         },
     })),
-    on(displayProfileDetails, (state, newState) => ({
+    on(displayProfileDetails, (state) => ({
         ...state,
-        isProfileDetailsDisplayed: newState.isDisplayed,
+        isProfileDetailsDisplayed: true,
         isConversationParticipantsDisplayed: false,
     })),
-    on(displayConversationParticipants, (state, newState) => ({
+
+    on(displayConversationParticipants, (state) => ({
         ...state,
-        isConversationParticipantsDisplayed: newState.isDisplayed,
+        isConversationParticipantsDisplayed: true,
         isProfileDetailsDisplayed: false,
     })),
+
     on(setProfileDetails, (state, newState) => ({
         ...state,
         profileDetails: {
@@ -171,5 +175,9 @@ export const chatDataReducer = createReducer(
     on(setUnreadCount, (state, newState) => ({
         ...state,
         unreadCount: newState.count,
+    })),
+    on(setUserTyping, (state, newState) => ({
+        ...state,
+        userTyping: newState.name,
     }))
 );
