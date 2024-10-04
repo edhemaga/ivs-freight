@@ -100,7 +100,6 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
 // Directive
 import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
 
-
 @Titles()
 @Component({
     selector: 'app-ta-table-body',
