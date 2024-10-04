@@ -608,16 +608,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     public addDepartmentContacts(event: { check: boolean; action: string }) {
-        const form = this.createDepartmentContacts();
-        if (event.check) {
+        if (event.check && this.departmentContacts.valid) {
+            const form = this.createDepartmentContacts();
             this.departmentContacts.push(form);
-        }
 
-        this.inputService.customInputValidator(
-            form.get(SettingsModalEnum.EMAIL),
-            SettingsModalEnum.EMAIL,
-            this.destroy$
-        );
+            this.inputService.customInputValidator(
+                form.get(SettingsModalEnum.EMAIL),
+                SettingsModalEnum.EMAIL,
+                this.destroy$
+            );
+        }
     }
 
     public removeDepartmentContacts(id: number) {
@@ -678,20 +678,24 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data?.id ? data.id : 0],
-            bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
+            bankId: [
+                data?.bankId ? data.bankId : null,
+                [Validators.required, ...bankValidation], 
+            ],
             routing: [
                 data?.routing ? data.routing : null,
-                [...routingBankValidation],
+                [Validators.required, ...routingBankValidation],
             ],
             account: [
                 data?.account ? data.account : null,
-                [...accountBankValidation],
+                [Validators.required, ...accountBankValidation], 
             ],
         });
     }
 
     public addBankAccount(event: { check: boolean; action: string }) {
-        if (event.check) this.bankAccounts.push(this.createBankAccount());
+        if (event.check && this.bankAccounts.valid)
+            this.bankAccounts.push(this.createBankAccount());
     }
 
     public removeBankAccount(id: number) {
@@ -733,19 +737,29 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: [data?.id ? data.id : 0],
             nickname: [
                 data?.nickname ? data.nickname : null,
-                nicknameValidation,
+                [Validators.required, ...nicknameValidation], 
             ],
             card: [
                 data?.card ? data.card : null,
-                [Validators.minLength(15), Validators.maxLength(16)],
+                [
+                    Validators.minLength(15),
+                    Validators.maxLength(16),
+                    Validators.required,
+                ],
             ],
-            cvc: [data?.cvc ? data.cvc : null, cvcValidation],
-            expireDate: [data?.expireDate ? data.expireDate : null],
+            cvc: [
+                data?.cvc ? data.cvc : null,
+                [Validators.required, ...cvcValidation], 
+            ],
+            expireDate: [
+                data?.expireDate ? data.expireDate : null,
+                [Validators.required],
+            ],
         });
     }
 
     public addBankCard(event: { check: boolean; action: string }) {
-        if (event.check) {
+        if (event.check && this.bankCards.valid) {
             this.bankCards.push(this.createBankCard());
         }
     }
