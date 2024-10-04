@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs';
+import { takeUntil, combineLatest } from 'rxjs';
 
 //Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
@@ -69,22 +69,24 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     private getActiveReplyOrEdit(): void {
-        this.chatStoreService
-            .selectActiveReplyOrEdit()
-            .subscribe((id: number) => {
+        combineLatest([
+            this.chatStoreService.selectActiveReplyOrEdit(),
+            this.chatStoreService.selectReplyMessage(),
+            this.chatStoreService.selectEditMessage(),
+        ])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(([id, replyMessage, editMessage]) => {
+                // Handle activeReplyOrEdit
                 this.selectedMessageId = id;
-                if (!id) this.hasActionsDisplayed = false;
-                if (this.message.id === id) {
-                    this.hasActionsDisplayed = true;
-                    this.isFocused = true;
-                }
+                this.hasActionsDisplayed = !!id && this.message.id === id;
+                this.isFocused = this.hasActionsDisplayed;
+
+                // Handle selectReplyMessage
+                this.messageReply = replyMessage;
+
+                // Handle selectEditMessage
+                this.messageEdit = editMessage;
             });
-        this.chatStoreService.selectReplyMessage().subscribe((msg) => {
-            this.messageReply = msg;
-        });
-        this.chatStoreService.selectEditMessage().subscribe((msg) => {
-            this.messageEdit = msg;
-        });
     }
 
     private checkImageDimensions(url: string): void {
