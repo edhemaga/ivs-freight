@@ -91,6 +91,14 @@ export class DriverModalConstants {
         },
         hasCrop: true,
         isRoundCrop: false,
+        containWithinAspectRatio: false,
+        aspectRatio: [1, 1],
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 184,
+            y2: 184,
+        },
         dropzoneCustomWidth: '603px',
         dropzoneConf: [
             {

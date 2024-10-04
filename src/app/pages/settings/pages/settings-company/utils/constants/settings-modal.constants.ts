@@ -129,6 +129,14 @@ export class SettingsModalConstants {
         },
         hasCrop: true,
         isRoundCrop: false,
+        containWithinAspectRatio: true,
+        aspectRatio: [3, 1],
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 552,
+            y2: 184,
+        },
         dropzoneCustomWidth: '603px',
         dropzoneConf: [
             {
