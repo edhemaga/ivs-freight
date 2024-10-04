@@ -72,13 +72,6 @@ export class ChatMessagesComponent
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
-    @HostListener('window:keydown', ['$event'])
-    handleKeyDown(event: KeyboardEvent) {
-        if (event.key === 'Escape') this.isAttachmentUploadActive = false;
-    }
-
-    @Input() public isAttachmentUploadActive: boolean = false;
-    @Input() public isProfileDetailsDisplayed: boolean = false;
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
 

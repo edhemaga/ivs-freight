@@ -18,7 +18,7 @@ import {
     setAttachmentUploadActiveStatus,
     setAttachment,
     deleteAttachment,
-    deleteAllAttachment
+    deleteAllAttachment,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -31,7 +31,7 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
-    attachments: null,
+    attachments: [],
     isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
     isConversationParticipantsDisplayed: false,
@@ -210,13 +210,13 @@ export const chatDataReducer = createReducer(
         ...state,
         attachments: [
             ...state.attachments,
-            ...state.attachments.filter(
+            ...state.attachments?.filter(
                 (attachment) => attachment.fileId !== newState.fileId
             ),
         ],
     })),
     on(deleteAllAttachment, (state) => ({
         ...state,
-        attachments: null
+        attachments: null,
     }))
 );

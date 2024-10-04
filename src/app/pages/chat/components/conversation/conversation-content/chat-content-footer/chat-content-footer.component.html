@@ -60,14 +60,7 @@
             <ng-template #chatInputField>
                 <div class="form-wrapper" [formGroup]="messageForm">
                     <ng-container *ngIf="(attachments$ | async)?.length">
-                        <div
-                            class="attachment-list d-flex"
-                            [ngClass]="
-                                isChatTypingBlurred
-                                    ? 'attachment-list-dark'
-                                    : 'attachment-list-light'
-                            "
-                        >
+                        <div class="attachment-list d-flex">
                             <ng-container
                                 *ngFor="
                                     let attachment of attachments$ | async;

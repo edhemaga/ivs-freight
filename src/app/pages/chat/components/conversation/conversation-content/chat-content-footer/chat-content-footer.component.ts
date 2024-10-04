@@ -31,7 +31,7 @@ import {
     selectAttachments,
     deleteAllAttachment,
     deleteAttachment,
-    setAttachment
+    setAttachment,
 } from '@pages/chat/store';
 
 // Models
@@ -139,8 +139,9 @@ export class ChatContentFooterComponent
         this.replyMessage$ = this.store
             .select(selectReplyMessage)
             .pipe(takeUntil(this.destroy$));
-        this.attachments$ = this.store.select(selectAttachments).pipe(takeUntil(this.destroy$));
-
+        this.attachments$ = this.store
+            .select(selectAttachments)
+            .pipe(takeUntil(this.destroy$));
     }
 
     public handleSend(): void {
@@ -166,15 +167,18 @@ export class ChatContentFooterComponent
     public sendMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
 
-        if (!this.conversation?.id || !this.isMessageSendable || !message) return;
+        if (!this.conversation?.id || !this.isMessageSendable || !message)
+            return;
 
         this.isMessageSendable = false;
 
-        const completeSubject: BehaviorSubject<void> = new BehaviorSubject(null);
+        const completeSubject: BehaviorSubject<void> = new BehaviorSubject(
+            null
+        );
 
         this.attachments$
             .pipe(takeUntil(completeSubject))
-            .subscribe(attachments => {
+            .subscribe((attachments) => {
                 this.chatService
                     .sendMessage(
                         this.conversation.id,
@@ -192,7 +196,7 @@ export class ChatContentFooterComponent
                         this.closeReplyAndEdit();
                         completeSubject.next();
                     });
-            })
+            });
         completeSubject.complete();
     };
 
@@ -231,32 +235,21 @@ export class ChatContentFooterComponent
         );
     };
 
-    public addAttachments(files: UploadFile[]): void {
-        files.forEach(file => {
-            this.store.dispatch(setAttachment(file));
-        })
-        this.store.dispatch(
-            setAttachmentUploadActiveStatus({ isDisplayed: false })
-        );
-
-        this.enableChatInput();
-    }
-
     public setHoveredAttachment(attachment: ChatAttachmentForThumbnail): void {
         this.hoveredAttachment = attachment;
     }
 
     public clearHoveredAttachment(): void {
-        this.documentPreview.forEach((div: ElementRef) => {
-            this.renderer.removeClass(
-                div.nativeElement,
-                ChatAttachmentHoveredClassStringEnum.LIGHT
-            ),
-                this.renderer.removeClass(
-                    div.nativeElement,
-                    ChatAttachmentHoveredClassStringEnum.DARK
-                );
-        });
+        // this.documentPreview.forEach((div: ElementRef) => {
+        //     this.renderer.removeClass(
+        //         div.nativeElement,
+        //         ChatAttachmentHoveredClassStringEnum.LIGHT
+        //     ),
+        //         this.renderer.removeClass(
+        //             div.nativeElement,
+        //             ChatAttachmentHoveredClassStringEnum.DARK
+        //         );
+        // });
 
         this.hoveredAttachment = null;
     }
@@ -265,40 +258,40 @@ export class ChatContentFooterComponent
         attachment: ChatAttachmentForThumbnail,
         index: number
     ): string {
-        const isSelectedAttachment: boolean =
-            attachment === this.hoveredAttachment;
+        // const isSelectedAttachment: boolean =
+        //     attachment === this.hoveredAttachment;
 
-        const element = this.documentPreview.find(
-            (div: ElementRef) =>
-                div.nativeElement.getAttribute('data-id') === String(index)
-        );
-        if (element && isSelectedAttachment) {
-            const classToAdd: string = this.isChatTypingBlurred
-                ? ChatAttachmentHoveredClassStringEnum.LIGHT
-                : ChatAttachmentHoveredClassStringEnum.DARK;
-            this.renderer.addClass(element.nativeElement, classToAdd);
-        }
+        // const element = this.documentPreview.find(
+        //     (div: ElementRef) =>
+        //         div.nativeElement.getAttribute('data-id') === String(index)
+        // );
+        // if (element && isSelectedAttachment) {
+        //     const classToAdd: string = this.isChatTypingBlurred
+        //         ? ChatAttachmentHoveredClassStringEnum.LIGHT
+        //         : ChatAttachmentHoveredClassStringEnum.DARK;
+        //     this.renderer.addClass(element.nativeElement, classToAdd);
+        // }
 
         let icon: string;
 
-        switch (true) {
-            case this.isChatTypingBlurred && !isSelectedAttachment:
-                icon = ChatSvgRoutes.darkXIcon;
-                break;
-            case this.isChatTypingBlurred && isSelectedAttachment:
-                icon = ChatSvgRoutes.darkFocusedXIcon;
-                break;
-            case !this.isChatTypingBlurred && !isSelectedAttachment:
-                icon = ChatSvgRoutes.lightXIcon;
-                break;
-            case !this.isChatTypingBlurred && isSelectedAttachment:
-                icon = ChatSvgRoutes.lightFocusedXIcon;
-                break;
-            default:
-                icon = '';
-                this.clearHoveredAttachment();
-                break;
-        }
+        // switch (true) {
+        //     case this.isChatTypingBlurred && !isSelectedAttachment:
+        //         icon = ChatSvgRoutes.darkXIcon;
+        //         break;
+        //     case this.isChatTypingBlurred && isSelectedAttachment:
+        //         icon = ChatSvgRoutes.darkFocusedXIcon;
+        //         break;
+        //     case !this.isChatTypingBlurred && !isSelectedAttachment:
+        //         icon = ChatSvgRoutes.lightXIcon;
+        //         break;
+        //     case !this.isChatTypingBlurred && isSelectedAttachment:
+        //         icon = ChatSvgRoutes.lightFocusedXIcon;
+        //         break;
+        //     default:
+        //         icon = '';
+        //         this.clearHoveredAttachment();
+        //         break;
+        // }
 
         return icon;
     }

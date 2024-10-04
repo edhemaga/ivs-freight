@@ -1,6 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, takeUntil, Observable, filter } from 'rxjs';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    HostListener,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil, Observable } from 'rxjs';
 
 // Store
 import { Store } from '@ngrx/store';
@@ -10,19 +17,17 @@ import {
     getSelectedConversation,
     setConversation,
     setMessageResponse,
-    selectAttachments
+    selectAttachments,
+    setAttachmentUploadActiveStatus,
+    getIsAttachmentUploadActive,
+    setAttachment,
 } from '@pages/chat/store';
 
 // Models
-import {
-    ChatSelectedConversation,
-} from '@pages/chat/models';
+import { ChatSelectedConversation } from '@pages/chat/models';
 
 // Enums
-import {
-    ChatConversationType,
-    ChatGroupEnum,
-} from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
 import {
@@ -33,6 +38,7 @@ import {
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { ChatDropzone } from '@pages/chat/utils/configs';
 
 @Component({
     selector: 'app-conversation-content',
@@ -42,8 +48,14 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 export class ConversationContentComponent
     extends UnsubscribeHelper
     implements OnInit {
+    @HostListener('window:keydown', ['$event'])
+    handleKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Escape')
+            this.store.dispatch(
+                setAttachmentUploadActiveStatus({ isDisplayed: false })
+            );
+    }
     @Input() group: ChatGroupEnum;
-    @Input() public isAttachmentUploadActive: boolean = false;
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
         new EventEmitter();
@@ -56,9 +68,11 @@ export class ConversationContentComponent
     private getCurrentUserHelper = GetCurrentUserHelper;
 
     public conversation$!: Observable<ChatSelectedConversation>;
+    public isAttachmentUploadActive: Observable<boolean>;
 
-    // Assets
+    // Assets & configs
     public chatSvgRoutes = ChatSvgRoutes;
+    public chatDropzone = ChatDropzone;
 
     constructor(
         // Router
@@ -76,6 +90,9 @@ export class ConversationContentComponent
 
     private getResolvedData(): void {
         this.store.dispatch(closeAllProfileInformation());
+        this.isAttachmentUploadActive = this.store
+            .select(getIsAttachmentUploadActive)
+            .pipe(takeUntil(this.destroy$));
 
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
@@ -110,5 +127,16 @@ export class ConversationContentComponent
         this.store.dispatch(
             displayConversationParticipants({ isDisplayed: true })
         );
+    }
+
+    public addAttachments(files: UploadFile[]): void {
+        files.forEach((file) => {
+            this.store.dispatch(setAttachment(file));
+        });
+        this.store.dispatch(
+            setAttachmentUploadActiveStatus({ isDisplayed: false })
+        );
+
+        // this.enableChatInput();
     }
 }

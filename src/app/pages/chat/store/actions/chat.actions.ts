@@ -83,5 +83,5 @@ export const deleteAttachment = createAction(
 );
 
 export const deleteAllAttachment = createAction(
-    '[Chat] Delete All Attachments',
-)
+    '[Chat] Delete All Attachments'
+);

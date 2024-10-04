@@ -13,7 +13,7 @@ import {
     setConversation,
     setProfileDetails,
     getConversationProfileDetails,
-    isAttachmentUploadActive,
+    getIsAttachmentUploadActive,
 } from '@pages/chat/store';
 
 // Models
@@ -151,7 +151,7 @@ export class ChatComponent
             .select(getIsConversationParticipantsDisplayed)
             .pipe(takeUntil(this.destroy$));
         this.isAttachmentUploadActive = this.store
-            .select(isAttachmentUploadActive)
+            .select(getIsAttachmentUploadActive)
             .pipe(takeUntil(this.destroy$));
     }
 

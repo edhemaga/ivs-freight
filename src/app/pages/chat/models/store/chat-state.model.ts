@@ -12,6 +12,7 @@ import {
 
 // Enums
 import { ChatViewTypeEnum } from '@pages/chat/enums';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 export type ChatState = {
     // Conversation list
@@ -30,7 +31,7 @@ export type ChatState = {
     messageResponseCount: number;
     messageResponseData: ChatMessage[];
     unreadCount?: number;
-    attachments: ChatExtendedUploadFile[] | null;
+    attachments: UploadFile[];
 
     // Conversation details
     isProfileDetailsDisplayed?: boolean;

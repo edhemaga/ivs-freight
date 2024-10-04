@@ -63,7 +63,7 @@ export const getUnreadCount = createSelector(
     (state: ChatState): number => state.unreadCount
 );
 
-export const isAttachmentUploadActive = createSelector(
+export const getIsAttachmentUploadActive = createSelector(
     selectChatState,
     (state: ChatState): boolean => state.isAttachmentUploadActive
 );
