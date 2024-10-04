@@ -89,6 +89,7 @@ export class SettingsOfficeConfig {
             name: 'Input Dropdown',
             type: 'text',
             label: 'Day',
+            isRequired: value,
             isDropdown: true,
             isDisabled: !value,
             dropdownWidthClass: 'w-col-148',

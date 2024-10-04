@@ -17,7 +17,8 @@
                     stopOrder: +load?.status?.statusCheckInNumber
                 },
                 loadDeliveryTime: load?.loadDeliveryTime,
-                dateCreated: load.dateCreated
+                dateCreated: load.dateCreated,
+                dispatcher: load.dispatcher
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-load-details-title-card>
