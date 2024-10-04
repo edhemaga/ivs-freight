@@ -1,7 +1,9 @@
 <div class="settings-factoring">
-    <div class="settings-header">
-        <div class="settings-name">
-            <p>Factoring Company</p>
+    <div class="settings-header d-flex align-items-center justify-items-center">
+        <div class="settings-name d-flex flex-1 align-items-center">
+            <p class="ta-font-extra-bold text-size-16 text-color-black">
+                Factoring Company
+            </p>
         </div>
 
         <div
@@ -14,7 +16,7 @@
             <div class="settings-header-button">
                 <svg-icon
                     src="ic_pen.svg"
-                    class="settings-edit-button"
+                    class="settings-edit-button d-flex align-items-center justify-content-center svg-hover-bw6-2 c-pointer"
                     (click)="
                         onAction({
                             modalName: 'factoring',
@@ -33,7 +35,7 @@
                 <div class="border-left"></div>
                 <svg-icon
                     src="assets/svg/common/ic_trash.svg"
-                    class="settings-trash-button"
+                    class="settings-trash-button svg-fill-muted svg-hover-trash-red d-flex align-items-center justify-content-center c-pointer"
                     (click)="onDeleteFactoringCompany()"
                 ></svg-icon>
             </div>
@@ -42,7 +44,7 @@
             <div class="border-left"></div>
             <svg-icon
                 src="assets/svg/common/ic_plus.svg"
-                class="settings-plus-button"
+                class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
                 (click)="onAction({ modalName: 'basic', type: 'new' })"
             ></svg-icon>
         </div>
@@ -52,7 +54,12 @@
             [cardNameCommon]="factoringData?.factoringCompany?.name"
             [haveHeaderText]="true"
             [haveDots]="false"
-            [hasFooter]="false"
+            [noteIcons]="
+                factoringData?.factoringCompany?.note
+                    ? svgRoutes.noteSvgRoute
+                    : svgRoutes.noteEmptySvgRoute
+            "
+            (resizePage)="toggleNoteVisibility()"
             *ngIf="factoringData?.factoringCompany?.name"
         >
             <div class="settings-body-items factoring-body-padding">
@@ -61,7 +68,7 @@
                     *ngIf="factoringData?.factoringCompany?.phone"
                 >
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
                     <app-ta-copy
@@ -75,7 +82,7 @@
                     *ngIf="factoringData?.factoringCompany?.email"
                 >
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
                     <app-ta-copy
@@ -89,7 +96,7 @@
                     *ngIf="factoringData?.factoringCompany?.address?.address"
                 >
                     <svg-icon
-                        class="company-icons"
+                        class="mr-3 svg-fill-light-grey-2"
                         src="assets/svg/truckassist-table/location-icon.svg"
                     ></svg-icon>
                     <span class="single-item-address">{{
@@ -112,14 +119,17 @@
                     "
                 ></div>
             </app-ta-custom-card>
-            <div class="divider"></div>
-            <div class="note-details-holder">
-                <div class="note-item">
+            <div
+                [ngClass]="{ 'body-show': isNoteVisible }"
+                [@showHideCardBody]="isNoteVisible"
+            >
+                <div class="divider"></div>
+                <div class="card-note">
                     <app-ta-input-note
                         [formControl]="factoringNote"
                         [isVisibleDivider]="false"
                         [isVisibleNote]="true"
-                        [isVisibleArrow]="true"
+                        [isVisibleArrow]="false"
                         [minRows]="1"
                         [placeholder]="'Write something.'"
                         [customClass]="'note-small'"

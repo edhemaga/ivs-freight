@@ -91,7 +91,10 @@ model/accountColorResponse.ts
 model/activateConversationCommand.ts
 model/activateDeactivateEFSFuelCard.ts
 model/activeLoadProgressBarResponse.ts
+model/activityLogActionFilterResponse.ts
+model/activityLogDepartmentResponse.ts
 model/activityLogModuleFilterResponse.ts
+model/activityLogUserReponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
 model/addIntegrationCommand.ts
@@ -413,6 +416,7 @@ model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
+model/dispatchHistoryTruckLastLocationResponse.ts
 model/dispatchHosCommand.ts
 model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
@@ -628,6 +632,7 @@ model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadShortResponse.ts
+model/loadSortBy.ts
 model/loadStatus.ts
 model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
@@ -656,6 +661,7 @@ model/mapMarkerListResponse.ts
 model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
+model/markMessageAsReadCommand.ts
 model/markerNamesResponse.ts
 model/markerNamesResponsePagination.ts
 model/medicalCertificateFeedbackResponse.ts
@@ -703,6 +709,7 @@ model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
+model/openHoursDayOfWeek.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
@@ -743,7 +750,6 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
-model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusMinimalResponse.ts
 model/payrollBonusModalResponse.ts
@@ -766,8 +772,6 @@ model/payrollDeductionResponse.ts
 model/payrollDeductionType.ts
 model/payrollDriverCommissionByIdResponse.ts
 model/payrollDriverCommissionClosedByIdResponse.ts
-model/payrollDriverCommissionResponse.ts
-model/payrollDriverCommissionResponsePagination.ts
 model/payrollDriverFlatRateByIdResponse.ts
 model/payrollDriverFlatRateClosedByIdResponse.ts
 model/payrollDriverFlatRateMinimalResponse.ts
@@ -776,26 +780,15 @@ model/payrollDriverMileageClosedByIdResponse.ts
 model/payrollDriverMileageListResponse.ts
 model/payrollFlatRateTotalSum.ts
 model/payrollFuelMinimalResponse.ts
-model/payrollListResponse.ts
 model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
-model/payrollMainListResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
-model/payrollMilesShortResponse.ts
-model/payrollMinimalListResponse.ts
-model/payrollMinimalResponse.ts
-model/payrollMinimalResponsePagination.ts
 model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts
-model/payrollOwnerResponsePagination.ts
 model/payrollPaymentCommand.ts
-model/payrollPaymentResponse.ts
-model/payrollPaymentShortResponse.ts
 model/payrollPaymentType.ts
 model/payrollPaymentsMinimalResponse.ts
-model/payrollResponse.ts
-model/payrollResponsePagination.ts
 model/pendingLoadProgressBarResponse.ts
 model/perMileEntity.ts
 model/performanceGraphListResponse.ts
@@ -933,6 +926,7 @@ model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
 model/signupUserCommand.ts
+model/sortOrder.ts
 model/specialCheck.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts

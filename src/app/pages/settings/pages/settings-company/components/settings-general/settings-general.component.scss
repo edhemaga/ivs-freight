@@ -148,6 +148,7 @@
     display: grid;
     grid-template-rows: 32px auto;
     row-gap: 12px;
+    margin-bottom: 8px;
 
     .settings-body {
         // Basic Info & Logo
@@ -352,8 +353,11 @@
         }
     }
 }
+.settings-additional-info {
+    background-color: $settings-background;
+}
 .cards-custom {
-    padding: 0 8px;
+    padding: 0 12px 1px 12px;
 }
 .show-hide {
     display: flex;
@@ -369,32 +373,8 @@
         }
         margin-left: 6px;
     }
-    .copy-icon {
-        margin-left: 6px;
-        display: none;
-        cursor: pointer;
-        svg {
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
-        }
-    }
-    &:hover {
-        .copy-icon {
-            display: flex;
-        }
-    }
 }
-.department-template-data {
-    display: grid;
-    grid-template-columns: 105px 123px 89px 60px;
-    grid-column-gap: 15px;
-    column-gap: 15px;
-    grid-auto-flow: column;
-    padding: 0 10px;
-    padding-bottom: 6px;
+.department-template-item {
     .department-header-name {
         font-size: 12px;
         font-weight: $settings-font-semibold;
@@ -409,12 +389,14 @@
         }
     }
 }
+.department-template-body-wrapper {
+    display: grid;
+    row-gap: 12px;
+}
 .department-template-body {
     display: grid;
-    padding: 0 10px;
-    grid-template-columns: 105px 122px 90px 60px;
-    column-gap: 15px;
-    padding-bottom: 6px;
+    grid-template-columns: repeat(3, 130px);
+    column-gap: 64px;
 
     .body-value-department {
         font-size: 14px;

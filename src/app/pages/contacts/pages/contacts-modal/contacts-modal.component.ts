@@ -17,7 +17,6 @@ import {
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
-import { CroppieOptions } from 'croppie';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +33,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaUploadFilesComponent } from 'ca-components';
 
 // validations
 import {
@@ -71,6 +71,9 @@ import {
 } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
 
+// utils
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+
 @Component({
     selector: 'app-contact-modal',
     templateUrl: './contacts-modal.component.html',
@@ -98,6 +101,7 @@ import { EditData } from '@shared/models/edit-data.model';
         TaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
+        CaUploadFilesComponent,
     ],
 })
 export class ContactsModalComponent implements OnInit, OnDestroy {
@@ -105,14 +109,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
     public isFormValidationDisabled: boolean = false;
     public isCardAnimationDisabled: boolean = false;
-
-    public croppieOptions: CroppieOptions =
-        ContactsModalConstants.CROPIE_OPTIONS;
 
     public contactLabels: EnumValue[] = [];
     public selectedContactLabel: CompanyContactLabelResponse = null;
@@ -137,6 +139,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
+
+    private isUploadInProgress: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -177,6 +181,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        if (this.isUploadInProgress) return;
+
         switch (data.action) {
             case ContactsModalStringEnum.CLOSE:
                 break;
@@ -186,7 +192,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
 
                     return;
                 }
-
+                this.isUploadInProgress = true;
                 this.addCompanyContact();
 
                 this.modalService.openModal(ContactsModalComponent, {
@@ -201,6 +207,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
+                this.isUploadInProgress = true;
                 if (this.editData) {
                     this.updateCompanyContact(this.editData.id);
                 } else {
@@ -458,6 +465,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: true,
                     });
+                    this.enableSaving();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -465,8 +473,16 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: false,
                     });
+                    this.enableSaving();
                 },
             });
+    }
+
+    private enableSaving(): void {
+        // wait for modal to close
+        setTimeout(() => {
+            this.isUploadInProgress = false;
+        }, 200);
     }
 
     private updateCompanyContact(id: number): void {
@@ -526,6 +542,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: true,
                         close: true,
                     });
+                    this.enableSaving();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -533,6 +550,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         status: false,
                         close: false,
                     });
+                    this.enableSaving();
                 },
             });
     }
@@ -586,7 +604,10 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event) {
-        this.contactForm.get(ContactsModalStringEnum.AVATAR).patchValue(event);
+        const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
+        this.contactForm
+            .get(ContactsModalStringEnum.AVATAR)
+            .patchValue(base64Data);
         this.contactForm.get(ContactsModalStringEnum.AVATAR).setErrors(null);
     }
 

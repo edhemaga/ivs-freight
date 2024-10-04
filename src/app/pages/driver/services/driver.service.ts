@@ -34,6 +34,7 @@ import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
+import { DispatcherService } from '@pages/dispatch/services';
 
 // components
 import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.model';
@@ -59,6 +60,7 @@ export class DriverService {
         private MvrService: MvrService,
         private TestService: TestService,
         private tableService: TruckassistTableService,
+        private dispatcherService: DispatcherService,
 
         // store
         private driversActiveQuery: DriverQuery,
@@ -105,49 +107,60 @@ export class DriverService {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
         );
     }
 
-    public addDriver(data: any): Observable<any> {
+    public addDriver(
+        data: any,
+        isDispatchCall: boolean = false
+    ): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.driverService.apiDriverPost().pipe(
             tap((res) => {
                 this.getDriverById(res.id).subscribe({
                     next: (driver: any) => {
-                        driver = {
-                            ...driver,
-                            name: driver.firstName + ' ' + driver.lastName,
-                        };
+                        if (!isDispatchCall) {
+                            driver = {
+                                ...driver,
+                                name: driver.firstName + ' ' + driver.lastName,
+                            };
 
-                        this.driverStore.add(driver);
-                        this.driverMinimimalListStore.add(driver);
+                            this.driverStore.add(driver);
+                            this.driverMinimimalListStore.add(driver);
 
-                        const driverCount = JSON.parse(
-                            localStorage.getItem(
-                                TableStringEnum.DRIVER_TABLE_COUNT
-                            )
-                        );
+                            const driverCount = JSON.parse(
+                                localStorage.getItem(
+                                    TableStringEnum.DRIVER_TABLE_COUNT
+                                )
+                            );
 
-                        driverCount.active++;
+                            if (driverCount) {
+                                driverCount.active++;
 
-                        localStorage.setItem(
-                            TableStringEnum.DRIVER_TABLE_COUNT,
-                            JSON.stringify({
-                                applicant: driverCount.applicant,
-                                active: driverCount.active,
-                                inactive: driverCount.inactive,
-                            })
-                        );
+                                localStorage.setItem(
+                                    TableStringEnum.DRIVER_TABLE_COUNT,
+                                    JSON.stringify({
+                                        applicant: driverCount.applicant,
+                                        active: driverCount.active,
+                                        inactive: driverCount.inactive,
+                                    })
+                                );
+                            }
 
-                        this.tableService.sendActionAnimation({
-                            animation: TableStringEnum.ADD,
-                            data: driver,
-                            id: driver.id,
-                        });
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.ADD,
+                                data: driver,
+                                id: driver.id,
+                            });
+                        } else {
+                            this.dispatcherService.updateDispatcherData = true;
+                        }
                     },
                 });
             })
@@ -363,6 +376,107 @@ export class DriverService {
         number: string
     ): Observable<CheckOwnerSsnEinResponse> {
         return this.ownerService.apiOwnerCheckSsnEinGet(number);
+    }
+
+    public changeDriverListStatus(
+        driverIds: number[],
+        tabSelected?: string
+    ): Observable<any> {
+        return this.driverService
+            .apiDriverStatusListPut({ ids: driverIds })
+            .pipe(
+                tap(() => {
+                    /* Get Table Tab Count */
+                    const driverCount = JSON.parse(
+                        localStorage.getItem(TableStringEnum.DRIVER_TABLE_COUNT)
+                    );
+
+                    driverIds.forEach((driverId) => {
+                        /* Get Data From Store To Update */
+                        let driverToUpdate =
+                            tabSelected === TableStringEnum.ACTIVE
+                                ? this.driversActiveQuery.getAll({
+                                      filterBy: ({ id }) => id === driverId,
+                                  })
+                                : this.driversInactiveQuery.getAll({
+                                      filterBy: ({ id }) => id === driverId,
+                                  });
+
+                        /* Remove Data From Store */
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.driverStore.remove(
+                                  ({ id }) => id === driverId
+                              )
+                            : this.driverInactiveStore.remove(
+                                  ({ id }) => id === driverId
+                              );
+
+                        /* Add Data To New Store */
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.driverInactiveStore.add({
+                                  ...driverToUpdate[0],
+                                  status: 0,
+                              })
+                            : this.driverStore.add({
+                                  ...driverToUpdate[0],
+                                  status: 1,
+                              });
+
+                        /* Update Table Tab Count */
+                        if (tabSelected === TableStringEnum.ACTIVE) {
+                            driverCount.active--;
+                            driverCount.inactive++;
+                        } else if (tabSelected === TableStringEnum.INACTIVE) {
+                            driverCount.active++;
+                            driverCount.inactive--;
+                        }
+                    });
+
+                    /* Send Table Tab Count To Local Storage */
+                    localStorage.setItem(
+                        TableStringEnum.DRIVER_TABLE_COUNT,
+                        JSON.stringify({
+                            applicant: driverCount.applicant,
+                            active: driverCount.active,
+                            inactive: driverCount.inactive,
+                        })
+                    );
+
+                    this.getDrivers(
+                        tabSelected === TableStringEnum.ACTIVE ? 0 : 1,
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ).subscribe({
+                        next: (driversList) => {
+                            let updatedDrivers =
+                                driversList.pagination.data.filter((driver) =>
+                                    driverIds.includes(driver.id)
+                                );
+
+                            updatedDrivers.map((driver: any) => {
+                                driver = {
+                                    ...driver,
+                                    fullName:
+                                        driver.firstName +
+                                        ' ' +
+                                        driver.lastName,
+                                };
+                                this.dlStore.update(driver.id, {
+                                    status: driver.status,
+                                });
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_MULTIPLE,
+                                data: updatedDrivers,
+                            });
+                        },
+                    });
+                })
+            );
     }
 
     public changeDriverStatus(

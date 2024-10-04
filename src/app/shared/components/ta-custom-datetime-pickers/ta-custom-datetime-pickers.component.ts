@@ -8,6 +8,7 @@ import {
     ViewChild,
     ViewContainerRef,
     OnDestroy,
+    AfterContentInit,
     AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,7 @@ import { TaCustomDateTimePickersDateCalendarsComponent } from '@shared/component
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // constants
-import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-datetime-pickers/constants/custom-datetime-pickers.constants'
+import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-datetime-pickers/constants/custom-datetime-pickers.constants';
 
 @Component({
     selector: 'app-ta-custom-datetime-pickers',
@@ -40,7 +41,7 @@ import { CustomDatetimePickersConstants } from '@shared/components/ta-custom-dat
     ],
 })
 export class TaCustomDatetimePickersComponent
-    implements OnInit, OnDestroy, AfterViewInit
+    implements OnInit, OnDestroy, AfterContentInit, AfterViewInit
 {
     @Input() dateTime: Date;
     @ViewChild('ref', { read: ViewContainerRef }) ref: ViewContainerRef;
@@ -140,7 +141,9 @@ export class TaCustomDatetimePickersComponent
         });
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit() {}
+
+    ngAfterViewInit(): void {
         this.setTimeValue();
         this.changeOpened();
     }
@@ -149,13 +152,16 @@ export class TaCustomDatetimePickersComponent
         const dateInputArray = moment(this.dateTime)
             .format('H/mm/A')
             .split('/');
-        this.scrollTypes.hourScroll = this.hourTimes.indexOf(
-            parseInt(dateInputArray[0])
-        );
-        this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
-            dateInputArray[1]
-        );
-        this.scrollTypes.pmAmScroll = dateInputArray[2] == 'AM' ? 0 : 1;
+        setTimeout(() => {
+            this.scrollTypes.hourScroll = this.hourTimes.indexOf(
+                parseInt(dateInputArray[0])
+            );
+            this.scrollTypes.minutesScroll = this.timeMinutes.indexOf(
+                dateInputArray[1]
+            );
+
+            this.scrollTypes.pmAmScroll = dateInputArray[2] === 'AM' ? 0 : 1;
+        });
     }
 
     public setListPreview(value: string): void {

@@ -45,7 +45,7 @@ export class PayrollService {
     }
 
     getPayrollCommisionDriverOpenReport(id: number) {
-        return this.payrollService.apiPayrollDriverCommissionGet(id);
+        return this.payrollService.apiPayrollDriverCommissionIdGet(id);
     }
     // This gives error as with getPayrollOwnerOpenReport
     getPayrollMileageDriverOpenReport() {
@@ -53,7 +53,7 @@ export class PayrollService {
     }
 
     getPayrollList() {
-        return this.payrollService.apiPayrollListGet();
+        // return this.payrollService.apiPayrollListGet();
     }
 
     set payrollList(data) {

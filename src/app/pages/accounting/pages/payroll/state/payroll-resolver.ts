@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 // Services
 import { PayrollService } from '@pages/accounting/services/payroll.service';
@@ -12,10 +12,11 @@ export class PayrolldResolver  {
     constructor(private payrollService: PayrollService) {}
 
     resolve(): Observable<any> {
-        return this.payrollService.getPayrollList().pipe(
-            tap((result) => {
-                this.payrollService.payrollList = result;
-            })
-        );
+        return of(true);
+        // return this.payrollService.getPayrollList().pipe(
+        //     tap((result) => {
+        //         this.payrollService.payrollList = result;
+        //     })
+        // );
     }
 }

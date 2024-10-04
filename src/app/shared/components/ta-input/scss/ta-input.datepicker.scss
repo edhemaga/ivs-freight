@@ -68,6 +68,13 @@
         }
     }
 
+    span.reset-selection-color {
+        &::selection {
+            background-color: transparent !important;
+            color: $ta-black-2 !important;
+        }
+    }
+
     &.focus {
         opacity: 1;
         padding-left: 35px;
@@ -105,6 +112,19 @@
         span .border-picker {
             color: white !important;
         }
+
+        &:hover {
+            background: #3B73ED66 !important;
+        }
+    }
+
+    &.dark.valid-focus-in {
+        background: $default-focus-input-blue-commands !important;
+
+        span,
+        span .border-picker {
+            color: white !important;
+        }
     }
 
     &.focus {
@@ -132,4 +152,9 @@
             padding: 0 3px;
         }
     }
+
+    &_bank_card {
+        padding-left: 37px;
+    }
 }
+ 

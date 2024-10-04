@@ -25,6 +25,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // validations
 import {
@@ -66,6 +67,7 @@ import {
     CreateResponse,
     EnumValue,
 } from 'appcoretruckassist';
+import { Tabs } from '@shared/models/tabs.model';
 
 //Components
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
@@ -80,6 +82,16 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { UserModalStringEnum } from '@pages/user/pages/user-modal/enums';
+
+// svg-routes
+import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-routes/user-modal-svg-routes';
+
+// config
+import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
+
 @Component({
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
@@ -93,6 +105,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // components
         TaAppTooltipV2Component,
@@ -111,48 +124,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-    public typeOfEmploye = [
-        {
-            id: 3,
-            name: 'User',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'Admin',
-            checked: false,
-        },
-    ];
-    public ownerType = [
-        {
-            id: 10,
-            name: 'Owner',
-            checked: true,
-        },
-    ];
-    public typeOfPayroll = [
-        {
-            id: 5,
-            name: '1099',
-            checked: true,
-        },
-        {
-            id: 6,
-            name: 'W-2',
-            checked: false,
-        },
-    ];
+    public tabs: Tabs[] = UserModalConfig.MODAL_MAIN_TABS;
+    public typeOfEmploye = UserModalConfig.TYPE_OF_EMPLOYEE;
+    public typeOfPayroll = UserModalConfig.TYPE_OF_PAYROLL;
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
@@ -188,8 +162,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public userStatus: boolean = true;
     public disableCardAnimation: boolean = false;
     private destroy$ = new Subject<void>();
-
-    public isUserReturned: boolean = false;
+    public isEmailCheckCompleted: boolean;
+    public currentUserStatus: string;
+    public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -214,13 +189,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save': {
+            case TableStringEnum.SAVE: {
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
-
                     return;
                 }
                 if (this.editData?.id) {
@@ -240,27 +211,23 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'deactivate': {
-                if (this.editData) {
-                    this.updateUserStatus(this.editData.id);
-                }
+            case TableStringEnum.DEACTIVATE:
+                if (this.editData)
+                    this.updateUserStatus(this.editData.id, false);
                 break;
-            }
 
-            case 'delete': {
+            case TableStringEnum.DELETE:
                 if (this.editData) {
                     this.deleteUserById(this.editData.id);
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: TableStringEnum.DELETE,
                         status: true,
                         close: false,
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -300,19 +267,17 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectedTab(event: any, action: string) {
+    public onSelectedTab(event: Tabs, action: string): void {
+        event.checked = true;
         switch (action) {
-            case 'user-admin': {
+            case UserModalStringEnum.USER_ADMIN:
                 this.selectedUserAdmin = event;
                 break;
-            }
-            case '1099-w2': {
+            case UserModalStringEnum.W2_1099:
                 this.selectedW21099 = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -375,18 +340,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         ...form
                     } = this.userForm.value;
 
-                    if (this.selectedAddress) {
-                        this.selectedAddress = {
-                            ...this.selectedAddress,
-                            addressUnit: addressUnit,
-                        };
-                    }
                     newData.data = {
                         ...form,
                         phone: form.phone ?? null,
-                        address: this.selectedAddress?.address
-                            ? this.selectedAddress
-                            : null,
+                        address: this.updateSelectedAddressUnit(addressUnit),
                         departmentId: this.selectedDepartment
                             ? this.selectedDepartment.id
                             : null,
@@ -503,6 +460,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
             }
         }
     }
+    private updateSelectedAddressUnit(addressUnit: string): AddressEntity {
+        if (this.selectedAddress) {
+            const updatedAddress = {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            };
+            
+            return updatedAddress.address ? updatedAddress : null;
+        }
+
+        return null;
+    }
 
     private createForm() {
         this.userForm = this.formBuilder.group({
@@ -534,6 +503,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             base: [null],
             commission: [null],
             note: [null],
+            resetPassword: [false],
         });
 
         this.inputService.customInputValidator(
@@ -549,26 +519,26 @@ export class UserModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    private checkUserEmail() {
+    private checkUserEmail(): void {
+        if (this.editData?.type === TableStringEnum.EDIT) return;
         this.userForm
-            .get('email')
+            .get(TableStringEnum.EMAIL_2)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
-                takeWhile(() => !this.isUserReturned),
+                takeWhile(() => !this.isEmailCheckCompleted),
                 debounceTime(500),
                 switchMap((value) => {
-                    if (this.userForm.get('email').valid) {
+                    if (this.userForm.get(TableStringEnum.EMAIL_2).valid)
                         return this.userProfileUpdateService.checkUserByEmail(
                             value
                         );
-                    }
                     return of(null);
                 })
             )
             .subscribe({
                 next: (res: CheckUserByEmailResponse) => {
+                    this.isEmailCheckCompleted = true;
                     if (res) {
-                        this.isUserReturned = true;
                         this.userForm.patchValue({
                             firstName: res.firstName,
                             lastName: res.lastName,
@@ -581,14 +551,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.isUserReturned = false;
+                    this.isEmailCheckCompleted = false;
                 },
             });
     }
 
     public resetDataByEmail(event: boolean) {
         if (event) {
-            this.isUserReturned = false;
+            this.isEmailCheckCompleted = false;
             this.userForm.patchValue({
                 firstName: null,
                 lastName: null,
@@ -705,19 +675,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
 
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: this.updateSelectedAddressUnit(addressUnit),
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -782,18 +744,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
-
         const newData: CreateCompanyUserCommand = {
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: this.updateSelectedAddressUnit(addressUnit),
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -845,7 +798,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     private deleteUserById(id: number) {
         this.companyUserService
-            .deleteUserById(id)
+            .deleteUserById(
+                id,
+                this.selectedTab
+                    ? TableStringEnum.ACTIVE
+                    : TableStringEnum.INACTIVE
+            )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -921,6 +879,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
                     this.selectedPayment = res.paymentType;
+                    this.currentUserStatus = res.userStatus;
+
+                    this.typeOfEmploye = this.typeOfEmploye.map(
+                        (item, index) => ({
+                            ...item,
+                            checked: index === (res.isAdmin ? 1 : 0),
+                        })
+                    );
+
+                    this.selectedUserAdmin = {
+                        ...this.typeOfEmploye[res.isAdmin ? 1 : 0],
+                    };
 
                     this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
                         this.selectedPayment?.name
@@ -1000,9 +970,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateUserStatus(id: number) {
+    private updateUserStatus(id: number, activate: boolean): void {
         this.companyUserService
-            .updateUserStatus(id)
+            .updateUserStatus(id, activate)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: HttpResponseBase) => {
@@ -1010,7 +980,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.userStatus = !this.userStatus;
 
                         this.modalService.changeModalStatus({
-                            name: 'deactivate',
+                            name: TableStringEnum.DEACTIVATE,
                             status: this.userStatus,
                         });
                     }

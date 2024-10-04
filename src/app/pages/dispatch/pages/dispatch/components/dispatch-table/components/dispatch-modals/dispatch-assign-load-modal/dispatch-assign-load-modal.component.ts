@@ -87,7 +87,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isAdditonalViewOpened: boolean;
     public selectedLoad: LoadResponse;
 
-    public isAssignLoadCardOpen: boolean = true;
+    public isAssignLoadCardOpen: boolean = false;
     public isUnAssignLoadCardOpen: boolean = true;
 
     // Additional load
@@ -111,8 +111,15 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     public isLoading: boolean;
     public originalLoads: AssignedLoadResponse[] = null;
 
+    public firstElementHeight!: number;
+    public secondElementHeight!: number;
+    public _initialSecondElementHeight: number = 400;
+    public _initialFirstElementHeight: number = 400;
+
     constructor(
         private formBuilder: FormBuilder,
+
+        // services
         private loadService: LoadService,
         private modalService: ModalService,
         private dispatchService: DispatcherService,
@@ -201,20 +208,30 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
 
                     this.tableService.sendActionAnimation({
                         animation: LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
-                        data: res.dispatches,
+                        data: res.dispatchers,
                         id: null,
                     });
                 }
 
                 this.unassignedLoads = res.unassignedLoads;
-                this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+
+                if (this.selectedDispatches) {
+                    this.isUnAssignLoadCardOpen = !!res.unassignedLoads.length;
+                } else {
+                    this.isUnAssignLoadCardOpen = true;
+                }
+
                 this.dispatchFutureTimes = res.dispatchFutureTimes;
 
                 this.mapDispatchers(res.dispatches);
+
                 if (this.editData?.dispatchId) {
+                    this.resetHeight();
+
                     const dispatchIndex = this.labelsDispatches.find(
                         (dispatch) => dispatch.id === this.editData.dispatchId
                     );
+
                     if (dispatchIndex) {
                         this.onDispatchChange(dispatchIndex);
                         this.getLoadsForDispatchId(this.editData.dispatchId);
@@ -223,12 +240,20 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     this.clearInputValue();
                     this.assignedLoads = [];
                     this.closeLoadDetails();
+                    this._initialSecondElementHeight = 400;
                 }
             });
     }
 
+    private resetHeight(): void {
+        this._initialFirstElementHeight = 220;
+        this._initialSecondElementHeight = 220;
+    }
+
     public selectNewDispatcher(event: { id: number }) {
         this.editData.dispatchId = event?.id ?? null;
+
+        this.resetHeight();
 
         this.loadModalData();
         this.closeLoadDetails();
@@ -256,6 +281,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         };
 
         this.selectedDispatches = null;
+        this.isUnAssignLoadCardOpen = true;
+        this.isAssignLoadCardOpen = false;
         this.showReorderButton = false;
     }
 
@@ -326,7 +353,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onDispatchChange(dispatch: any) {
+    public onDispatchChange(dispatch: any): void {
         this.selectedDispatches = {
             ...dispatch,
             name: dispatch?.truck?.name
@@ -356,7 +383,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     {
                         id: dispatch?.truck?.id,
                         value: dispatch?.truck?.name,
-                        logoName: dispatch?.truck?.logoName,
+                        logoName:
+                            dispatch?.truck?.logoName &&
+                            LoadModalStringEnum.TRUCKS_SVG_ROUTE +
+                                dispatch?.truck?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
@@ -365,7 +395,10 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                     },
                     {
                         value: dispatch?.trailer?.name,
-                        logoName: dispatch?.trailer?.logoName,
+                        logoName:
+                            dispatch?.trailer?.logoName &&
+                            LoadModalStringEnum.TRAILERS_SVG_ROUTE +
+                                dispatch?.trailer?.logoName,
                         isImg: false,
                         isSvg: true,
                         folder: LoadModalStringEnum.COMMON,
@@ -516,7 +549,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
             this.unassignedLoads.push(movedLoad);
             this.isUnAssignLoadCardOpen = true;
         } else {
-            const loadIndex = this.assignedLoads.findIndex(
+            const loadIndex = this.unassignedLoads.findIndex(
                 (load) => load.id === loadId
             );
 
@@ -624,12 +657,13 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.isReorderingActive = false;
             this.showReorderButton = true;
+            this.isUnAssignLoadCardOpen = false;
         } else {
             this.isReorderingActive = true;
             this.showReorderButton = false;
             this.isUnAssignLoadCardOpen = false;
             setTimeout(() => {
-                this.resizerComponent.setHeights(440, 35);
+                this.resizerComponent.setHeights(440, 45);
             }, 10);
         }
     }
@@ -722,6 +756,30 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         }
 
         this.loadModalData();
+    }
+
+    public toggleUnAssignedList(): void {
+        this.isUnAssignLoadCardOpen = !this.isUnAssignLoadCardOpen;
+        this.setUnAssignCardFullHeight();
+    }
+
+    public toggleAssignList(): void {
+        this.isAssignLoadCardOpen = !this.isAssignLoadCardOpen;
+        this.setUnAssignCardFullHeight();
+    }
+
+    private setUnAssignCardFullHeight(): void {
+        if (this.isUnAssignLoadCardOpen && !this.isAssignLoadCardOpen) {
+            this._initialSecondElementHeight = 400;
+        }
+    }
+
+    public onFirstElementHeightChange(height: number): void {
+        this.firstElementHeight = height;
+    }
+
+    public onSecondElementHeightChange(height: number): void {
+        this.secondElementHeight = height;
     }
 
     public ngOnDestroy(): void {

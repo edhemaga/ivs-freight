@@ -1,121 +1,131 @@
 <div class="custom_editor_holder d-flex" [formGroup]="noticeForm">
-    <div *ngIf="settings.fontSize" class="custom_select_holder font-family">
-        <app-ta-input-dropdown
-            formControlName="fontSize"
-            [template]="'double-text-template'"
-            [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: activeFont?.name,
-                placeholderInsteadOfLabel: true,
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-134',
-                hideClear: true,
-                blackInput: true,
-                hideColorValidations: true
-            }"
-            [options]="fontSizeList"
-            [activeItem]="activeFont"
-            (selectedItem)="changeFontSize($event)"
-        ></app-ta-input-dropdown>
-    </div>
-    <div *ngIf="settings.textTransform" class="wysiwyg_button_group d-flex">
-        <div
-            (click)="executeEditor('bold')"
-            [class.active]="activeOptions.bold"
-            class="sysiwyg_button_item"
-        >
-            <svg-icon
-                src="assets/svg/truckassist-table/note/bold-icon.svg"
-            ></svg-icon>
+    <ng-container *ngIf="settings.fontSize">
+        <div class="custom_select_holder font-family">
+            <app-ta-input-dropdown
+                formControlName="fontSize"
+                [template]="'double-text-template'"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: activeFont?.name,
+                    placeholderInsteadOfLabel: true,
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-134',
+                    hideClear: true,
+                    blackInput: true,
+                    hideColorValidations: true
+                }"
+                [options]="fontSizeOptions"
+                [activeItem]="activeFont"
+                (selectedItem)="changeFontSize($event)"
+            ></app-ta-input-dropdown>
         </div>
-        <div
-            (click)="executeEditor('italic')"
-            [class.active]="activeOptions.italic"
-            class="sysiwyg_button_item"
-        >
-            <svg-icon
-                src="assets/svg/truckassist-table/note/italic-icon.svg"
-            ></svg-icon>
+    </ng-container>
+    <ng-container *ngIf="settings.textTransform">
+        <div class="wysiwyg_button_group d-flex">
+            <div
+                (click)="executeEditor(constants.TOOLBAR_ACTION_BOLD)"
+                [class.active]="toolbarActions.bold"
+                class="sysiwyg_button_item"
+            >
+                <svg-icon
+                    [src]="svgRoutes.ICON_TEXT_BOLD_SVG_ROUTE"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor(constants.TOOLBAR_ACTION_ITALIC)"
+                [class.active]="toolbarActions.italic"
+                class="sysiwyg_button_item"
+            >
+                <svg-icon
+                    [src]="svgRoutes.ICON_TEXT_ITALIC_SVG_ROUTE"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor(constants.TOOLBAR_ACTION_UNDERLINE)"
+                [class.active]="toolbarActions.underline"
+                class="sysiwyg_button_item"
+            >
+                <svg-icon
+                    [src]="svgRoutes.ICON_TEXT_UNDERLINE_SVG_ROUTE"
+                ></svg-icon>
+            </div>
         </div>
-        <div
-            (click)="executeEditor('underline')"
-            [class.active]="activeOptions.underline"
-            class="sysiwyg_button_item"
-        >
-            <svg-icon
-                src="assets/svg/truckassist-table/note/underline-icon.svg"
-            ></svg-icon>
-        </div>
-    </div>
+    </ng-container>
     <div
         [class.small_width]="sidebarWidth < 528"
         class="wysiwyg-text-transform-buttons d-flex"
     >
         <div class="text-align-buttons d-flex">
-            <div *ngFor="let align of alignOptions">
+            <ng-container *ngFor="let align of alignOptions; trackBy: identifyAlignOption">
                 <div
                     (click)="executeEditor(align.name)"
                     [class.active]="align.value"
                     class="align-buttons"
                 >
-                    <svg-icon src="{{ align.image }}"></svg-icon>
+                    <svg-icon [src]="align.imageUrl"></svg-icon>
+                </div>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="settings.textIndent">
+            <div class="paragraph-buttons d-flex">
+                <div
+                    (click)="executeEditor(constants.TOOLBAR_ACTION_INDENT)"
+                    [class.active]="toolbarActions.indent"
+                    class="align-buttons"
+                >
+                    <svg-icon [src]="svgRoutes.ICON_TEXT_PARAGRAPH_INSIDE_SVG_ROUTE"></svg-icon>
+                </div>
+                <div
+                    (click)="executeEditor(constants.TOOLBAR_ACTION_OUTDENT)"
+                    [class.active]="toolbarActions.outdent"
+                    class="align-buttons"
+                >
+                    <svg-icon
+                        [src]="svgRoutes.ICON_TEXT_PARAGRAPH_OUTSIDE_SVG_ROUTE"
+                    ></svg-icon>
                 </div>
             </div>
-        </div>
-        <div *ngIf="settings.textIndent" class="paragraph-buttons d-flex">
-            <div
-                (click)="executeEditor('indent')"
-                [class.active]="activeOptions.indent"
-                class="align-buttons"
-            >
-                <svg-icon src="assets/img/svgs/paragraph-inside.svg"></svg-icon>
+        </ng-container>
+        <ng-container *ngIf="settings.textLists">
+            <div class="paragraph-buttons d-flex">
+                <div
+                    (click)="executeEditor(constants.TOOLBAR_ACTION_INSERT_UNORDERED_LIST)"
+                    [class.active]="toolbarActions.insertUnorderedList"
+                    class="align-buttons"
+                >
+                    <svg-icon [src]="svgRoutes.ICON_LIST_UNORDERED_SVG_ROUTE"></svg-icon>
+                </div>
+                <div
+                    (click)="executeEditor(constants.TOOLBAR_ACTION_INSERT_ORDERED_LIST)"
+                    [class.active]="toolbarActions.insertOrderedList"
+                    class="align-buttons"
+                >
+                    <svg-icon [src]="svgRoutes.ICON_LIST_ORDERED_SVG_ROUTE"></svg-icon>
+                </div>
             </div>
-            <div
-                (click)="executeEditor('outdent')"
-                [class.active]="activeOptions.outdent"
-                class="align-buttons"
-            >
-                <svg-icon
-                    src="assets/img/svgs/paragraph-outside.svg"
-                ></svg-icon>
-            </div>
-        </div>
-        <div *ngIf="settings.textLists" class="paragraph-buttons d-flex">
-            <div
-                (click)="executeEditor('insertUnorderedList')"
-                [class.active]="activeOptions.insertUnorderedList"
-                class="align-buttons"
-            >
-                <svg-icon src="assets/img/svgs/unordered-list.svg"></svg-icon>
-            </div>
-            <div
-                (click)="executeEditor('insertOrderedList')"
-                [class.active]="activeOptions.insertOrderedList"
-                class="align-buttons"
-            >
-                <svg-icon src="assets/img/svgs/ordered-list.svg"></svg-icon>
-            </div>
-        </div>
+        </ng-container>
     </div>
     <div class="color_picker_holder">
-        <div
-            class="color_main_hold"
-            *ngFor="let item of customSelectColor; let i = index"
-        >
+        <ng-container *ngFor="let item of customSelectColor; let i = index; trackBy: identifyColor">
             <div
-                class="color_picker_color"
-                (click)="executeEditor('foreColor', item)"
-                [ngStyle]="{
-                    'background-color': item
-                }"
+                class="color_main_hold"
             >
-                <svg-icon
-                    *ngIf="selectedColorName == item"
-                    src="/assets/svg/applicant/check.svg"
-                ></svg-icon>
+                <div
+                    class="color_picker_color"
+                    (click)="executeEditor('foreColor', item)"
+                    [ngStyle]="{
+                        'background-color': item
+                    }"
+                >
+                    <ng-container *ngIf="selectedColorName === item">
+                        <svg-icon
+                            [src]="svgRoutes.ICON_CHECK_SVG_ROUTE"
+                        ></svg-icon>
+                    </ng-container>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
 </div>
 <div class="w-100">
@@ -124,7 +134,6 @@
         (focus)="focusElement()"
         (blur)="blurElement()"
         (keyup)="updateNoteMain($event)"
-        [innerHTML]="shownValue | safeHtml"
         class="notice_editor"
         placeholder="Write a notice..."
         contenteditable

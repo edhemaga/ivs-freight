@@ -61,13 +61,9 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import {
-    GetTrailerModalResponse,
-    VinDecodeResponse,
-    TrailerAutocompleteModelResponse,
-} from 'appcoretruckassist';
-import { TrailerModalConfig } from './utils/configs/trailer-modal.config';
+import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -443,6 +439,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
+                    console.log('res', res.trailerTypes);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,

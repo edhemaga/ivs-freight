@@ -4,10 +4,10 @@
     position: relative;
     .subroutes {
         height: 28px;
-        width: 230px;
+        width: calc(100% - 18px);
         position: relative;
-        left: -7px;
         bottom: 3px;
+        margin-left: 10px;
         border-radius: 3px;
         color: $nav-text-color;
         font-weight: $nav-font-medium;
@@ -18,11 +18,15 @@
         -ms-user-select: none;
         user-select: none;
 
+        &:hover {
+            background-color: $nav-text-color-grey;
+        }
+
         margin-bottom: 1px;
 
         .nav-item-arrow_top {
             position: absolute;
-            right: -6px;
+            right: 2px;
             opacity: 0;
             top: 7px;
             width: 12.6px;
@@ -33,6 +37,10 @@
                 width: 12.6px;
                 height: 12.6px;
                 display: flex;
+
+                path {
+                    transition: $nav-transition-015;
+                }
             }
         }
         &:nth-child(1) {
@@ -51,22 +59,22 @@
             opacity: 0;
             position: absolute;
             top: 4px;
-            left: 16px;
+            left: 8px;
 
             svg {
                 path {
-                    fill: $nav-svg-active;
+                    fill: $nav-light-icon;
                 }
             }
         }
 
         .subroutes-item {
             margin: 0;
-            margin-left: 45px;
+            margin-left: 32px;
             font-size: $nav-font-size;
             position: relative;
             top: 4px;
-            color: $nav-white;
+            color: $nav-text-color;
         }
         .route-not-active {
             color: #787878;
@@ -78,9 +86,16 @@
                 opacity: 1;
                 z-index: 9;
             }
+
+            .subroutes-item:not(.route-not-active) {
+                color: $nav-white;
+            }
         }
         .nav-item-arrow_top {
             z-index: 9;
+            svg path {
+                fill: $nav-text-color;
+            }
 
             &:hover {
                 svg {
@@ -112,139 +127,14 @@
             transition: $nav-transition;
             opacity: 1;
             svg {
-                height: 18px;
-                width: 18px;
+                width: 14px;
+                height: 14px;
             }
         }
         .subroutes-item {
             font-weight: 700 !important;
-            color: $nav-active-lighter;
+            color: $nav-light-icon;
         }
-    }
-
-    .new-magic-line {
-        display: inline-block;
-        position: absolute;
-        left: 4px;
-        top: 1px;
-        content: '';
-        height: 27px;
-        width: 231px;
-        background: $nav-hover-color;
-        border-radius: 2px;
-        transition: $magic-line-transition;
-        z-index: -1;
-    }
-
-    .new-magic-line-selected {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    .subroutes:nth-child(1):hover ~ .new-magic-line {
-        transform: translateY(0px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-        transform: translateY(0px);
-    }
-
-    .subroutes:nth-child(2):hover ~ .new-magic-line {
-        transform: translateY(26px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
-        transform: translateY(26px);
-    }
-
-    .subroutes:nth-child(3):hover ~ .new-magic-line {
-        transform: translateY(55px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
-        transform: translateY(55px);
-    }
-
-    .subroutes:nth-child(4):hover ~ .new-magic-line {
-        transform: translateY(84px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(4) ~ .new-magic-line {
-        transform: translateY(84px);
-    }
-
-    .subroutes:nth-child(5):hover ~ .new-magic-line {
-        transform: translateY(113px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(5) ~ .new-magic-line {
-        transform: translateY(113px);
-    }
-
-    .subroutes:nth-child(6):hover ~ .new-magic-line {
-        transform: translateY(142px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
-        transform: translateY(142px);
-    }
-
-    .subroutes:nth-child(7):hover ~ .new-magic-line {
-        transform: translateY(171px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(7) ~ .new-magic-line {
-        transform: translateY(171px);
-    }
-
-    .subroutes:nth-child(8):hover ~ .new-magic-line {
-        transform: translateY(200px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
-        transform: translateY(200px);
-    }
-
-    .subroutes:nth-child(9):hover ~ .new-magic-line {
-        transform: translateY(229px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
-        transform: translateY(229px);
-    }
-
-    .subroutes:nth-child(10):hover ~ .new-magic-line {
-        transform: translateY(258px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
-        transform: translateY(258px);
-    }
-
-    .subroutes:nth-child(11):hover ~ .new-magic-line {
-        transform: translateY(287px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
-        transform: translateY(287px);
-    }
-
-    .subroutes:nth-child(12):hover ~ .new-magic-line {
-        transform: translateY(316px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
-        transform: translateY(316px);
-    }
-
-    .subroutes:nth-child(13):hover ~ .new-magic-line {
-        transform: translateY(345px) !important;
-    }
-
-    .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
-        transform: translateY(345px);
     }
 }
 .hide {

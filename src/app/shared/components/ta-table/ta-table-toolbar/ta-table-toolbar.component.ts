@@ -48,6 +48,7 @@ import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
+import { UserCardModalComponent } from '@pages/user/pages/user-card-modal/user-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -188,7 +189,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.selectedTab = changes.selectedTab.currentValue;
 
             const td = this.tableData.find((t) => t.field === this.selectedTab);
-
+            if(!td) return;
             this.listName = td.gridNameTitle;
 
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
@@ -227,6 +228,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.DRIVER_1) {
             this.modalService.openModal(DriverCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.USER) {
+            this.modalService.openModal(UserCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {
@@ -328,6 +333,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     private getActiveTableData(): void {
         const td = this.tableData.find((table) => table.isActive);
+        if(!td) return;
 
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
@@ -492,6 +498,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             action: TableStringEnum.TAB_SELECTED,
             tabData: selectedTabData,
         });
+
+        // There is bug if popover is open and we click on new tab, data is not updated
+        // If we first close popover then select tab data is changed 
+        this.optionsPopupOpen = false;
+        this.setColumnsOptionsGroups();
     }
 
     public onToolBarAction(actionType: string): void {
@@ -707,7 +718,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     // Reset Table
     public onResetTable(): void {
         this.tableReseting = true;
-        
         if (this.tableConfigurationType) {
             localStorage.removeItem(
                 `table-${this.tableConfigurationType}-Configuration`
@@ -726,6 +736,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Column
     public onToaggleColumn(column: any, index: number): void {
+        if(column.isPined || column.disabled) return;
+
         clearTimeout(this.timeOutToaggleColumn);
 
         this.timeOutToaggleColumn = setTimeout(() => {
@@ -845,6 +857,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getActiveTableData();
     }
+
+    public identity(index: number, item: any): number {
+        return item.id;
+    }
+
 
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {

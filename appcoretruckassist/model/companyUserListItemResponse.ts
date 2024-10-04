@@ -23,9 +23,9 @@ export interface CompanyUserListItemResponse {
     avatar?: string | null;
     department?: string | null;
     companyOffice?: string | null;
-    companyOfficePhone?: string | null;
-    companyOfficeExtensionPhone?: string | null;
-    companyOfficeEmail?: string | null;
+    phone?: string | null;
+    extensionPhone?: string | null;
+    email?: string | null;
     personalPhone?: string | null;
     personalEmail?: string | null;
     address?: AddressEntity;

@@ -103,7 +103,7 @@ export class DropdownContentHelper {
         return [
             {
                 title: TableStringEnum.EDIT_2,
-                name: 'edit-cutomer-or-shipper',
+                name: TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
@@ -288,6 +288,22 @@ export class DropdownContentHelper {
                     height: 18,
                 },
                 svgClass: 'regular',
+                tableListDropdownContentStyle: {
+                    'margin-bottom.px': 4,
+                },
+            },
+            {
+                title: data.status ? 'Create Template' : 'Create Load',
+                name: data.status
+                    ? TableStringEnum.CONVERT_TO_TEMPLATE
+                    : TableStringEnum.CONVERT_TO_LOAD,
+                svgUrl: `assets/svg/truckassist-table/new-list-dropdown/${
+                    data.status ? 'slider' : 'plus'
+                }.svg`,
+                svgStyle: {
+                    width: 18,
+                    height: 18,
+                },
                 hasBorder: true,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,

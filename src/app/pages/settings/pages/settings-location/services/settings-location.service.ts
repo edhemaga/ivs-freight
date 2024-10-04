@@ -31,13 +31,16 @@ import { CompanyOfficeService } from '@shared/services/company-office.service';
 //Components
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 //Stores
 import { ParkingStore } from '@pages/settings/state/parking-state/company-parking.store';
 import { OfficeStore } from '@pages/settings/state/setting-ofice-state/company-office.store';
 import { TerminalStore } from '@pages/settings/state/settings-terminal-state/company-terminal.store';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -64,7 +67,7 @@ export class SettingsLocationService implements OnDestroy {
      * @param type - payload
      * @param modalName - modal name
      */
-    public onModalAction(data: { modalName: string; type?: any }) {
+    public onModalAction(data: { modalName: string; type?: any, id?: any }, id?: any, companyOwned?: boolean) {
         switch (data.modalName) {
             case 'parking': {
                 this.modalService.openModal(
@@ -82,17 +85,15 @@ export class SettingsLocationService implements OnDestroy {
                     {
                         size: 'small',
                     },
-                    { ...data.type }
+                    { ...data.type },
                 );
                 break;
             }
             case 'repairshop': {
                 this.modalService.openModal(
-                    SettingsRepairshopModalComponent,
-                    {
-                        size: 'small',
-                    },
-                    { ...data.type }
+                    RepairShopModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {id, companyOwned},
                 );
                 break;
             }

@@ -16,14 +16,14 @@ export class DispatchAssignLoadModalHelper {
             },
             {
                 label: 'PICKUP',
-                className: 'dispatch-load-header text-color-green ta-font-bold',
+                className: 'dispatch-load-header text-color-muted ta-font-bold',
                 svgIcon: '/assets/svg/common/ic_arrow-line-left.svg',
                 iconClassName: 'pickup-arrow',
             },
             {
                 label: 'DELIVERY',
                 className:
-                    'dispatch-load-header text-color-red-10 ta-font-bold',
+                    'dispatch-load-header text-color-muted ta-font-bold',
                 svgIcon: '/assets/svg/common/ic_arrow-right-line.svg',
                 iconClassName: 'pickup-arrow arrow-right',
             },

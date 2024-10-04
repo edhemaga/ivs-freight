@@ -1,69 +1,67 @@
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 // SingalR
 import * as signalR from '@microsoft/signalr';
 
 // Models
-import { ChatMessageResponse } from '@pages/chat/models/chat-message-reponse.model';
+import { ChatMessageResponse } from '@pages/chat/models';
 
 // Env
 import { environment } from 'src/environments/environment';
-import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ChatHubService {
-
     private token: string = localStorage.getItem('user')
         ? JSON.parse(localStorage.getItem('user')).token
         : 0;
-    private hubConnection!: signalR.HubConnection;
+    private static hubConnection: signalR.HubConnection;
 
     private establishInitialConnection(): void {
         if (!this.token) return;
-        this.hubConnection = new signalR.HubConnectionBuilder()
+
+        ChatHubService.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(`${environment.API_ENDPOINT}/chatHub`, {
                 withCredentials: false,
                 skipNegotiation: false,
-                accessTokenFactory: () => this.token
+                accessTokenFactory: () => this.token,
             })
-            .configureLogging(signalR.LogLevel.Information)
             .withAutomaticReconnect()
             .build();
     }
 
-    public connect(): Observable<void> {
+    public connect(): void {
         if (!this.token) return;
 
         this.establishInitialConnection();
 
-        if (!this.hubConnection) return;
+        if (
+            !ChatHubService.hubConnection &&
+            ChatHubService.hubConnection?.state !==
+                signalR.HubConnectionState.Connecting &&
+            ChatHubService.hubConnection?.state !==
+                signalR.HubConnectionState.Connected
+        )
+            return;
 
-        return new Observable<void>((observer) => {
-            this.hubConnection
-                .start()
-                .then(() => {
-                    observer.next();
-                })
-                .catch((error) => {
-                    observer.error(error);
-                });
+        ChatHubService.hubConnection.start().then();
+
+        ChatHubService.hubConnection.onclose(() => {
+            ChatHubService.hubConnection.start();
         });
     }
 
     public disconnect(): void {
-        this.hubConnection
-            .stop()
-            .then();
+        ChatHubService.hubConnection.stop().then();
     }
 
-    public receiveMessage(): Observable<ChatMessageResponse> {
+    public static receiveMessage(): Observable<ChatMessageResponse> {
         return new Observable<ChatMessageResponse>((observer) => {
-            this.hubConnection.on('ReceiveMessage',
-                (
-                    newMessage: ChatMessageResponse
-                ) => {
+            ChatHubService.hubConnection.on(
+                'ReceiveMessage',
+                (newMessage: ChatMessageResponse) => {
                     return observer.next(newMessage);
                 }
             );
@@ -73,19 +71,19 @@ export class ChatHubService {
     public notifyTyping(conversationId: number): void {
         // If function within a hub is called 'invoke' is a must
         // invoke(name of the function, arguments)
-        // Send would not work
-        this.hubConnection.invoke(`NotifyTyping`, conversationId);
+        // Send not working
+        ChatHubService.hubConnection.invoke(`NotifyTyping`, conversationId);
     }
 
     public receiveTypingNotification(): Observable<number> {
         return new Observable<number>((observer) => {
-            this.hubConnection.on('ReceiveTypingNotification',
+            ChatHubService.hubConnection.on(
+                'ReceiveTypingNotification',
                 (companyUserId: number) => {
                     observer.next(companyUserId);
-                });
+                }
+            );
             observer.next(0);
-        })
+        });
     }
-
-
 }

@@ -37,7 +37,14 @@ import {
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { FileEvent } from '@shared/models/file-event.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
-import { RepeairShopModalInput, RepairShopTabs, RepairShopModalService, DisplayServiceTab, RepairShopModalAction, CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
+import {
+    RepeairShopModalInput,
+    RepairShopTabs,
+    RepairShopModalService,
+    DisplayServiceTab,
+    RepairShopModalAction,
+    CreateShopModel,
+} from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -90,7 +97,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { ActionTypesEnum, FileActionEvent, OpenWorkingHours, RepairShopModalStringEnum, RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import {
+    ActionTypesEnum,
+    FileActionEvent,
+    OpenWorkingHours,
+    RepairShopModalStringEnum,
+    RepairShopModalEnum,
+} from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 // Constants
 import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
@@ -99,8 +112,9 @@ import { RepairShopConstants } from './utils/constants/repair-shop-modal.constan
 import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
 
 // Types
-import { OpenedTab } from "@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type";
+import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -132,6 +146,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaUserReviewComponent,
+        TaCheckboxCardComponent,
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
@@ -190,7 +205,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public files: UploadFile[] | FileResponse[] = [];
     public filesForDelete: any[] = [];
     public companyUser: SignInResponse = null;
+    public daysOfWeekDropdown: EnumValue[];
+    public payPeriodsDropdown: EnumValue[];
+    public daysOfMonthDropdown: EnumValue[];
+    public selectedPayPeriod: EnumValue;
+    public selectedWeeklyDay: EnumValue;
+    public selectedMonthlyDays: EnumValue;
+    public isMonthlyPeriodSeleced: boolean;
+    public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
+    public openHoursFormField: ITaInput = RepairShopConfig.getOpenHoursFormField();
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -219,10 +243,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public get isEditMode() {
-        return this.editData?.data;
+        return this.editData?.data || this.editData?.id;
+    }
+
+    public get isCompanyOwnedOptionAvailable(): boolean {
+        return this.editData?.companyOwned;
     }
 
     public get modalTitle(): string {
+        if (this.isCompanyOwnedOptionAvailable) {
+            return this.isEditMode
+                ? RepairShopModalEnum.COMPANY_MODAL_TITLE_EDIT
+                : RepairShopModalEnum.COMPANY_MODAL_TITLE_ADD;
+        }
+
         return this.isEditMode
             ? RepairShopModalEnum.MODAL_TITLE_EDIT
             : RepairShopModalEnum.MODAL_TITLE_ADD;
@@ -241,11 +275,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ? this.RepairShopModalEnum.REMOVE_FAVORITE
             : this.RepairShopModalEnum.ADD_FAVORITE;
     }
-
     // Open hours
     public get openHours(): UntypedFormArray {
         return this.repairShopForm.get(
             RepairShopModalStringEnum.OPEN_HOURS
+        ) as UntypedFormArray;
+    }
+
+    public get holidayHours(): UntypedFormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.HOLIDAY
         ) as UntypedFormArray;
     }
 
@@ -277,6 +316,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return RepairShopConfig.getBankInputConfig();
     }
 
+    public get payPeriodConfig(): ITaInput {
+        return RepairShopConfig.getPayPeriodConfig();
+    }
+
+    public get payDayConfig(): ITaInput {
+        return RepairShopConfig.getDayConfig();
+    }
+
+    public get payMonthlyConfig(): ITaInput {
+        return RepairShopConfig.getMonthlyPeriodConfig();
+    }
+
     get accountNumberInputConfig(): ITaInput {
         return RepairShopConfig.getAccountNumberInputConfig(
             this.isBankSelected
@@ -287,6 +338,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return RepairShopConfig.getRoutingNumberInputConfig(
             this.isBankSelected
         );
+    }
+
+    public get rentInputConfig(): ITaInput {
+        return RepairShopConfig.getRentInputConfig();
     }
 
     public get getServiceCounter(): number {
@@ -339,6 +394,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ],
             [RepairShopModalStringEnum.LONGITUDE]: [null],
             [RepairShopModalStringEnum.LATITUDE]: [null],
+            [RepairShopModalStringEnum.COMPANY_OWNED]: [true],
+            [RepairShopModalStringEnum.WEEKLY_DAY]: [null],
+            [RepairShopModalStringEnum.PAY_PERIOD]: [null],
+            [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
+            [RepairShopModalStringEnum.RENT]: [null],
+            [RepairShopModalStringEnum.HOLIDAY]: this.formBuilder.array([]),
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -362,6 +423,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.repairTypes = dropdowns.shopServiceTypes;
                     this.banks = dropdowns.banks;
                     this.departments = dropdowns.departments;
+                    this.payPeriodsDropdown = dropdowns.payPeriods;
+                    this.daysOfWeekDropdown = dropdowns.daysOfWeek;
+                    this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
                         this.repairShopForm.patchValue({
@@ -377,14 +441,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.ADDRESS]:
                                 repairShop.address.address,
                             [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
-                                repairShop.openHoursSameAllDays,
-                            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
-                                repairShop.startTimeAllDays,
-                            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
-                                repairShop.endTimeAllDays,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
-                                repairShop.openAlways,
-                            [RepairShopModalStringEnum.ROUTING]:
                                 repairShop.routing,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
@@ -398,6 +454,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.longitude,
                             [RepairShopModalStringEnum.LATITUDE]:
                                 repairShop.latitude,
+                            [RepairShopModalStringEnum.COMPANY_OWNED]:
+                                repairShop.companyOwned,
+                            [RepairShopModalStringEnum.WEEKLY_DAY]:
+                                repairShop.weeklyDay,
+                            [RepairShopModalStringEnum.PAY_PERIOD]:
+                                repairShop.payPeriod,
+                            [RepairShopModalStringEnum.MONTHLY_DAYS]:
+                                repairShop.monthlyDay,
+                            [RepairShopModalStringEnum.RENT]: repairShop.rent,
+                            [RepairShopModalStringEnum.HOLIDAY]: true,
                         });
                         this.mapEditData(repairShop);
                     }
@@ -413,6 +479,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
+        if (res.payPeriod) {
+            this.selectedPayPeriod =
+                this.payPeriodsDropdown.find(
+                    (payPeriod) => payPeriod.id === res.payPeriod.id
+                ) ?? null;
+        }
+
+        if (res.weeklyDay) {
+            this.selectedWeeklyDay =
+                this.daysOfWeekDropdown.find(
+                    (weeklyDay) => weeklyDay.id === res.weeklyDay.id
+                ) ?? null;
+        }
+
+        if (res.monthlyDay) {
+            this.selectedMonthlyDays =
+                this.daysOfMonthDropdown.find(
+                    (monthlyDay) => monthlyDay.id === res.monthlyDay.id
+                ) ?? null;
+        }
+
         if (res.bank) {
             this.selectedBank =
                 this.banks.find((bank) => bank.id === res.bank.id) ?? null;
@@ -429,7 +516,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.contacts = res.contacts;
+        this.checkForPayPeriodMethod(res.payPeriod);
         this.mapRatings(res);
+    }
+
+    private checkForPayPeriodMethod(payPeriod: EnumValue | null) {
+        this.isMonthlyPeriodSeleced = payPeriod?.id === 2;
     }
 
     private preSelectService(shopServiceType?: EnumValue): void {
@@ -455,7 +547,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private initTabs(): void {
-        if (this.editData) this.selectedTab = this.editData.openedTab ?? TableStringEnum.DETAILS;
+        if (this.editData)
+            this.selectedTab =
+                this.editData.openedTab ?? TableStringEnum.DETAILS;
         this.tabs = RepairShopHelper.TABS(!this.isEditMode, this.selectedTab);
     }
 
@@ -497,39 +591,78 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private patchWorkingDayTime(
         item: any,
-        startTime: Date,
-        endTime: Date
+        startTime: string | Date,
+        endTime: string | Date,
+        isWorkingDay: boolean
     ): void {
         item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
         item.get(RepairShopModalStringEnum.END_TIME)?.patchValue(endTime);
+        item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.patchValue(
+            isWorkingDay
+        );
     }
 
     private initWorkingHours(): void {
-        RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
+        this.workingDaysLabel.forEach((day) =>
             this.openHours.push(
                 RepairShopHelper.createOpenHour(day, this.formBuilder)
             )
         );
+
+        this.holidayHours.push(
+            RepairShopHelper.createOpenHour(
+                {
+                    ...RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS[0],
+                    [RepairShopModalStringEnum.DAY_LABEL]: 'Holiday',
+                    [RepairShopModalStringEnum.IS_WORKING_DAY]: false,
+                },
+                this.formBuilder
+            )
+        );
     }
 
-    public toggleDays(): void {
-        this.isDaysVisible = !this.isDaysVisible;
-    }
-
-    public addNewWorkingDays(index: number): void {
+    // Working hours
+    public toggleWorkingDay(index: number): void {
         const newWorkingDay = this.openHours.at(index);
-        const isShopOpen =
-            newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value ===
-            null;
-        const startTime = isShopOpen
-            ? this.convertTime(OpenWorkingHours.EIGHTAM)
+
+        // Toggle value
+        const dayActiveField = this.openHours
+            .at(index)
+            .get(RepairShopModalStringEnum.IS_WORKING_DAY);
+        dayActiveField.patchValue(!dayActiveField.value);
+
+        const startTime = dayActiveField.value
+            ? this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.EIGHTAM
             : null;
 
-        const endTime = isShopOpen
-            ? this.convertTime(OpenWorkingHours.FIVEPM)
+        const endTime = dayActiveField.value
+            ? this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.FIVEPM
             : null;
 
-        this.patchWorkingDayTime(newWorkingDay, startTime, endTime);
+        this.patchWorkingDayTime(
+            newWorkingDay,
+            startTime,
+            endTime,
+            dayActiveField.value
+        );
+    }
+
+    public toggleDoubleWorkingTimeForHoliday(): void {
+        const dayActiveField = this.holidayHours
+            .at(0)
+            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
+        dayActiveField.patchValue(!dayActiveField.value);
+    }
+
+    public toggleDoubleWorkingTime(index: number): void {
+        const dayActiveField = this.openHours
+            .at(index)
+            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
+        dayActiveField.patchValue(!dayActiveField.value);
     }
 
     public toggle247WorkingHours(): void {
@@ -548,13 +681,31 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         this.openHours.controls.forEach((item) => {
             if (item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value) {
-                this.patchWorkingDayTime(item, startTime, endTime);
+                this.patchWorkingDayTime(item, startTime, endTime, true);
             }
         });
     }
 
     public convertTime(time: string): Date {
         return MethodsCalculationsHelper.convertTimeFromBackend(time);
+    }
+
+    public applyMondayToAllDays(): void {
+        const monday = this.openHours.controls[0];
+
+        this.openHours.controls.forEach((item, index) => {
+            if (
+                item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value &&
+                index
+            ) {
+                item.patchValue({
+                    ...monday.value,
+                    [RepairShopModalStringEnum.DAY_LABEL]: item.get(
+                        RepairShopModalStringEnum.DAY_LABEL
+                    ).value,
+                });
+            }
+        });
     }
 
     // Services
@@ -595,6 +746,36 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 .patchValue(null);
 
         this.checkBankField();
+    }
+
+    public onPayPeriodSelect(event: EnumValue): void {
+        this.selectedPayPeriod = event;
+        this.onWeeklyDaySelected(null);
+        this.onMonthlyDaySelected(null);
+        this.checkForPayPeriodMethod(event);
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.PAY_PERIOD)
+                .patchValue(null);
+    }
+
+    public onWeeklyDaySelected(event: EnumValue): void {
+        this.selectedWeeklyDay = event;
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.WEEKLY_DAY)
+                .patchValue(null);
+    }
+
+    public onMonthlyDaySelected(event: EnumValue): void {
+        this.selectedMonthlyDays = event;
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.MONTHLY_DAYS)
+                .patchValue(null);
     }
 
     private checkBankField(): void {
@@ -721,21 +902,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            // TODO: HOURS NOT DONE yet
-            openHoursSameAllDays: !this.isDaysVisible,
-            startTimeAllDays: !this.isDaysVisible
-                ? this.openHours.value.at(0).startTime
+            openHours: [],
+            weeklyDay: this.selectedWeeklyDay
+                ? this.selectedWeeklyDay.id
                 : null,
-            endTimeAllDays: !this.isDaysVisible
-                ? this.openHours.value.at(0).endTime
+            payPeriod: this.selectedPayPeriod
+                ? this.selectedPayPeriod.id
                 : null,
-            // weeklyDay: null,
-            // monthlyDay: null,
-            // openHours: [],
-            // payPeriod: 'Weekly',
-            // TODO: Check meaning of this fields since we are not showing them on FE
-            // companyOwned: false,
-            // rent: 1,
+            monthlyDay: this.selectedMonthlyDays
+                ? this.selectedMonthlyDays.id
+                : null,
+            companyOwned: this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED),
+            rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            // TODO: Holiday should go inside open hours as well
+            holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),
         };
         return repairModel;
     }

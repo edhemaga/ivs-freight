@@ -100,23 +100,23 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     get dispatchHistoryTimeConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTimeConfig();
+        return DispatchHistoryModalConfig.getDispatchHistoryTimeConfig(!!this.selectedTime, this.isDisplayingCustomPeriodRange);
     }
 
     get dispatchHistoryDispatchBoardConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryDispatchBoardConfig();
+        return DispatchHistoryModalConfig.getDispatchHistoryDispatchBoardConfig(!!this.selectedDispatchBoard);
     }
 
     get dispatchHistoryTruckConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTruckConfig();
+        return DispatchHistoryModalConfig.getDispatchHistoryTruckConfig(!!this.selectedTruck);
     }
 
     get dispatchHistoryTrailerConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTrailerConfig();
+        return DispatchHistoryModalConfig.getDispatchHistoryTrailerConfig(!!this.selectedTrailer);
     }
 
     get dispatchHistoryDriverConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig();
+        return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig(!!this.selectedDriver);
     }
 
     public trackByIdentity = (index: number): number => index;

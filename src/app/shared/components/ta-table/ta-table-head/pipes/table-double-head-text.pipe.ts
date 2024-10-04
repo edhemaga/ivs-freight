@@ -74,13 +74,23 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             : tableHeadTitle === TableHeadTitleStringEnum.BUSSINESS_NAME
             ? TableHeadTitleStringEnum.BROKER_2
             : tableHeadTitle === TableHeadTitleStringEnum.TRUCK_3
-            ? TableHeadTitleStringEnum.REQUIREM
+            ? TableHeadTitleStringEnum.ASSIGNED
             : tableHeadTitle === TableHeadTitleStringEnum.LOADED
             ? TableHeadTitleStringEnum.MILES
             : tableHeadTitle === TableHeadTitleStringEnum.RATE
             ? TableHeadTitleStringEnum.BILLING
             : tableHeadTitle === TableHeadTitleStringEnum.TERM_3
             ? TableHeadTitleStringEnum.BILLING
+            : (tableHeadTitle === TableHeadTitleStringEnum.PHONE ||
+                  tableHeadTitle === TableHeadTitleStringEnum.EMAIL) &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.PERSONAL
+            : tableHeadTitle === TableHeadTitleStringEnum.OFFICE &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.EMPLOYEE
+            : tableHeadTitle === TableHeadTitleStringEnum.PAY_TYPE &&
+              gridNameTitle === TableHeadTitleStringEnum.USER
+            ? TableHeadTitleStringEnum.PAYROLL
             : TableHeadTitleStringEnum.MVR;
     }
 }

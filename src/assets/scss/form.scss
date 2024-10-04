@@ -9,6 +9,9 @@
     &.form-container-mt-12 {
         margin-top: 12px !important;
     }
+    &.form-container-mt-22 {
+        margin-top: 22px !important;
+    }
 
     &.row-settings-location-additional {
         margin-top: 26px !important;
@@ -587,33 +590,16 @@
 //---------------- Gate, Security Camera ----------------
 .parking-gate-securityCamera {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 180px 1fr;
     grid-template-rows: 26px;
     align-items: center;
-    padding-left: 6px;
+    gap: 12px;
 
     .gate-field,
     .camera-field {
         display: flex;
         align-items: center;
-        gap: 8px;
-
-        p {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: $bw5;
-
-            &::-moz-selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-
-            &::selection {
-                background-color: rgb(145, 145, 145, 0.2);
-                color: $bw5;
-            }
-        }
+        gap: 6px;
     }
 
     &-location-terminal {
@@ -660,17 +646,16 @@
             line-height: 18px;
 
             svg {
-                width: 100%;
-                height: 100%;
                 path {
                     fill: $muted;
+                    transition: fill 0.3s ease-in-out;
                 }
             }
         }
 
         &:hover {
-            background-color: #e5e5e5;
-            color: #2f2f2f;
+            background-color: $bw-9;
+            color: $ta-black;
 
             svg-icon {
                 svg {
@@ -691,17 +676,17 @@
             svg-icon {
                 svg {
                     path {
-                        fill: $ta-blue-13;
+                        fill: $ta-blue-14;
                     }
                 }
             }
 
             p {
-                color: $ta-blue-13;
+                color: $ta-blue-14;
             }
 
             &:hover {
-                background: $ta-blue-22;
+                background: $ta-blue-17;
 
                 svg-icon {
                     svg {
@@ -771,6 +756,14 @@
 .repair-shop-services {
     grid-template-columns: repeat(4, 111px);
     grid-template-rows: repeat(4, 22px);
+    &-large {
+        grid-template-columns: repeat(7, 62px);
+        grid-template-rows: repeat(1, 26px);
+
+        .repair-shop-service p {
+            font-size: 14px;
+        }
+    }
 }
 
 .violation-special-checks {
@@ -1123,11 +1116,10 @@
 .load-requirements-load-second-row {
     display: grid;
     grid-template-columns: 100px 120px 150px 117px 81px;
-    grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    margin-bottom: 22px;
+    margin-bottom: 1rem;
 }
 
 .load-modal-row {
@@ -1339,6 +1331,57 @@ app-load-modal {
 
             .input-control {
                 background-color: $bw2 !important;
+            }
+        }
+    }
+}
+
+.repair-shop {
+    // Override tabs to match figma design
+    &__contact-table {
+        width: 600px;
+        overflow-x: scroll;
+        overflow-x: visible;
+        padding: 0;
+        scrollbar-width: thin !important;
+        .contact-table-header {
+            .table-header-box {
+                &:nth-child(1),
+                &:nth-child(2) {
+                    position: absolute;
+                    left: 0;
+                    top: auto;
+                    border-top-width: 1px;
+                    margin-top: -1px;
+                    background-color: $white;
+                }
+
+                &:nth-child(1) {
+                    width: 26px;
+                }
+                &:nth-child(2) {
+                    width: 170px;
+                    left: 26px;
+                }
+            }
+        }
+
+        .contact-table-container {
+            .contact-pinned {
+                position: absolute;
+                left: 0;
+                top: auto;
+                border-top-width: 1px;
+                margin-top: -1px;
+                background-color: $white;
+                z-index: 11;
+            }
+            .contact-number {
+                width: 26px;
+            }
+            .contact-name {
+                width: 170px;
+                left: 26px;
             }
         }
     }

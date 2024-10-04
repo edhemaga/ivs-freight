@@ -28,7 +28,9 @@ export interface DispatchResponse {
     dispatchBoardId?: number | null;
     dispatcher?: CompanyUserShortResponse;
     truck?: TruckMinimalResponse;
+    allowedTrailerIds?: Array<number> | null;
     trailer?: TrailerMinimalResponse;
+    allowedTruckIds?: Array<number> | null;
     driver?: DriverDispatchResponse;
     coDriver?: DriverDispatchResponse;
     phone?: string | null;
@@ -37,7 +39,7 @@ export interface DispatchResponse {
     latitude?: number | null;
     longitude?: number | null;
     status?: DispatchStatusResponse;
-    lastStatusDateTime?: string;
+    lastStatusPassed?: { [key: string]: number; } | null;
     currentStopType?: EnumValue;
     nextStopType?: EnumValue;
     hoursOfService?: Array<DispatchHosResponse> | null;

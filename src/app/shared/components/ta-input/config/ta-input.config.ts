@@ -29,7 +29,6 @@ export interface ITaInput {
     inputCursorOnRightSide?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
-    pattern?: string;
     autocomplete?: string;
     showCount?: boolean;
     minLength?: number;
@@ -131,6 +130,13 @@ export interface ITaInput {
     selectedDropdown?: boolean;
     mergeDropdownBodyWithInput?: boolean;
     hideAllItemsInInputDropdown?: boolean;
+    isBlueDropdown?: boolean;
+    isItemSelected?: boolean;
+    isDisplayingCustomPeriodRange?: boolean;
+    isUsingCustomPeriodRange?: boolean
+
+    // Address Dropdown
+    isDispatchLocationDropdown?: boolean;
 
     // Label dropdown
     dropdownLabel?: boolean;
@@ -151,5 +157,6 @@ export interface ITaInput {
     isRemovedIconMovedOnLeft?: boolean;
     removeLeadingZero?: boolean;
     negativeLeadingZero?: boolean;
-    minutesGapFive?: boolean
+    isHoverRow?: boolean;
+    minutesGapFive?: boolean;
 }

@@ -190,6 +190,8 @@ export class BrokerService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2
@@ -233,26 +235,30 @@ export class BrokerService implements OnDestroy {
     // Delete Broker List
     public deleteBrokerList(brokerIds: number[]): Observable<any> {
         return this.brokerService.apiBrokerListDelete(brokerIds).pipe(
-            tap(() => {
-                const brokerShipperCount = JSON.parse(
-                    localStorage.getItem('brokerShipperTableCount')
-                );
+            tap((res) => {
+                if (res?.deletedIds) {
+                    const brokerShipperCount = JSON.parse(
+                        localStorage.getItem('brokerShipperTableCount')
+                    );
 
-                brokerIds.forEach((brokerId) => {
-                    this.brokerStore.remove(({ id }) => id === brokerId);
-                    this.brokerMinimalStore.remove(({ id }) => id === brokerId);
-                    this.bls.remove(({ id }) => id === brokerId);
+                    res.deletedIds.forEach((brokerId) => {
+                        this.brokerStore.remove(({ id }) => id === brokerId);
+                        this.brokerMinimalStore.remove(
+                            ({ id }) => id === brokerId
+                        );
+                        this.bls.remove(({ id }) => id === brokerId);
 
-                    brokerShipperCount.broker--;
-                });
+                        brokerShipperCount.broker--;
+                    });
 
-                localStorage.setItem(
-                    'brokerShipperTableCount',
-                    JSON.stringify({
-                        broker: brokerShipperCount.broker,
-                        shipper: brokerShipperCount.shipper,
-                    })
-                );
+                    localStorage.setItem(
+                        'brokerShipperTableCount',
+                        JSON.stringify({
+                            broker: brokerShipperCount.broker,
+                            shipper: brokerShipperCount.shipper,
+                        })
+                    );
+                }
             })
         );
     }
@@ -643,6 +649,8 @@ export class BrokerService implements OnDestroy {
             pageSize,
             companyId,
             sort,
+            null,
+            null,
             search,
             search1,
             search2

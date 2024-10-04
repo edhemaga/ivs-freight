@@ -1,4 +1,11 @@
-<div class="main_inside driver-container" [class.filled]="driver">
+<div
+    class="main_inside driver-container"
+    [ngClass]="{
+        filled: driver,
+        'drop-disabled': driver && isDrag && isActiveLoad,
+        'active-load': isActiveLoad
+    }"
+>
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
@@ -76,7 +83,14 @@
                             </span>
                         </div>
                     </ng-container>
-                    <div class="driver-items-hold d-flex align-items-center">
+                    <div
+                        class="driver-items-hold d-flex align-items-center"
+                        [ngStyle]="{
+                            'max-width': isBoardLocked
+                                ? '100%'
+                                : 'calc( 100% - 53px )'
+                        }"
+                    >
                         <ng-container *ngIf="driverHover.indx !== rowIndex">
                             <ng-container *ngIf="isHosShown">
                                 <div

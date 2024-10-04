@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 // svg routes
@@ -13,6 +20,9 @@ import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+
+// helpers
+import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // config
 import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
@@ -38,13 +48,7 @@ import {
     templateUrl: './dispatch-table-truck-trailer.component.html',
     styleUrls: ['./dispatch-table-truck-trailer.component.scss'],
 })
-export class DispatchTableTruckTrailerComponent {
-    @Input() set hasAdditionalFieldTruck(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTruck = hasAdditionalField;
-    }
-    @Input() set hasAdditionalFieldTrailer(hasAdditionalField: boolean) {
-        this._hasAdditionalFieldTrailer = hasAdditionalField;
-    }
+export class DispatchTableTruckTrailerComponent implements OnChanges {
     @Input() set truckDropdownWidth(value: number) {
         this._truckDropdownWidth = Math.round(value - 2);
     }
@@ -56,6 +60,9 @@ export class DispatchTableTruckTrailerComponent {
     }
     @Input() set truckList(values: TruckDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
+    }
+    @Input() set previousDragTrailerTypeId(value: number) {
+        this.handleTrailerDrag(value);
     }
 
     @Input() isTrailerAddNewHidden: boolean;
@@ -84,9 +91,6 @@ export class DispatchTableTruckTrailerComponent {
     public truckTrailerFormControl: UntypedFormControl =
         new UntypedFormControl();
 
-    public _hasAdditionalFieldTruck: boolean = false;
-    public _hasAdditionalFieldTrailer: boolean = false;
-
     public _trailerList: DispatchTrailerListItemModel[] = [];
     public _truckList: DispatchTruckListItemModel[] = [];
 
@@ -103,13 +107,21 @@ export class DispatchTableTruckTrailerComponent {
 
     public hasAddNew: boolean = false;
 
+    public isTrailerDropAllowed: boolean = false;
+
     constructor(private modalService: ModalService) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            this.type === DispatchTableStringEnum.TRUCK &&
+            !changes?.truck?.currentValue
+        )
+            this.truckTrailerFormControl.reset();
+    }
 
     get truckTrailerInputConfig(): ITaInput {
         return DispatchConfig.getTruckTrailerInputConfig({
             type: this.type,
-            hasAdditionalFieldTruck: this._hasAdditionalFieldTruck,
-            hasAdditionalFieldTrailer: this._hasAdditionalFieldTrailer,
             truckDropdownWidth: this._truckDropdownWidth,
             trailerDropdownWidth: this._trailerDropdownWidth,
         });
@@ -207,7 +219,7 @@ export class DispatchTableTruckTrailerComponent {
 
         this.hasAddNew = !values?.length;
 
-        if (!values.length && !findAllAssigned) {
+        if (!values?.length && !findAllAssigned) {
             this.type === DispatchTableStringEnum.TRUCK
                 ? this._truckList.unshift({
                       id: 7656,
@@ -218,5 +230,13 @@ export class DispatchTableTruckTrailerComponent {
                       name: DispatchTableStringEnum.ALL_ASSIGNED,
                   });
         }
+    }
+
+    private handleTrailerDrag(trailerId: number): void {
+        const allowedTruckIds =
+            DispatchTableDragNDropHelper.getTrailerAllowedTruckIds(trailerId);
+
+        this.isTrailerDropAllowed =
+            allowedTruckIds.includes(this.truck?.truckType?.id) || !this.truck;
     }
 }

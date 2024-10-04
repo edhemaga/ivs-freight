@@ -17,6 +17,19 @@ import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-to
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 
+// pipes
+import {
+    CardValuePipe,
+    FlipCardsPipe,
+    FormatCurrencyPipe,
+    FormatDatePipe,
+    ActivityTimePipe,
+} from '@shared/pipes';
+
+// store
+import { StoreModule } from '@ngrx/store';
+import { userCardModalReducer } from '@pages/user/pages/user-card-modal/state';
+
 @NgModule({
     imports: [
         // modules
@@ -32,6 +45,16 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
         TaAppTooltipV2Component,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
+
+        // pipes
+        FormatDatePipe,
+        FormatCurrencyPipe,
+        FlipCardsPipe,
+        CardValuePipe,
+        ActivityTimePipe,
+
+        // store
+        StoreModule.forFeature('userCardData', userCardModalReducer),
     ],
     declarations: [UserTableComponent, UserCardComponent],
 })

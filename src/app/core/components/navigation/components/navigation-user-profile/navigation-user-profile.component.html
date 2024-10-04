@@ -64,7 +64,7 @@
                     "
                     class="user-content-text user-content-text-status"
                 >
-                    Set <b>Busy</b> Status
+                    Set Busy Status
                 </p>
                 <p
                     *ngIf="
@@ -73,18 +73,10 @@
                     "
                     class="user-content-text user-content-text-status"
                 >
-                    Set <b>Active</b> Status
+                    Set Active Status
                 </p>
             </div>
         </div>
-
-        <div
-            *ngIf="isNavigationHovered && isUserPanelOpen"
-            [@showHideDetails]="
-                isNavigationHovered && isUserPanelOpen ? 'true' : 'false'
-            "
-            class="new-magic-line"
-        ></div>
     </div>
 
     <div class="panel-user" (click)="onUserPanelClose()">
@@ -128,8 +120,12 @@
                     }"
                     class="status-marker"
                 >
-                    <svg-icon src="assets/svg/applicant/user-active.svg">
-                    </svg-icon>
+                <ng-container *ngIf="isNavigationHovered; else whitePanel">
+                    <svg-icon src="assets/svg/applicant/user-active.svg"> </svg-icon>
+                </ng-container>
+                <ng-template #whitePanel>
+                    <svg-icon src="assets/svg/user-active-white.svg"> </svg-icon>
+                </ng-template>
                 </div>
             </div>
         </div>
