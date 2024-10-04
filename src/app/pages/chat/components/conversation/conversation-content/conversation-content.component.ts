@@ -14,6 +14,7 @@ import { ChatStoreService } from '@pages/chat/services';
 
 // Models
 import { ChatSelectedConversation } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
@@ -26,7 +27,6 @@ import {
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import { ChatDropzone } from '@pages/chat/utils/configs';
 
 @Component({
@@ -119,5 +119,12 @@ export class ConversationContentComponent
 
     public displayGroupParticipants(): void {
         this.chatStoreService.displayConversationParticipants();
+    }
+
+    public addAttachments(files: UploadFile[]): void {
+        files.forEach((file: UploadFile) => {
+            this.chatStoreService.setAttachment(file);
+        });
+        this.chatStoreService.closeAttachmentUpload();
     }
 }

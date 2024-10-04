@@ -1,105 +1,109 @@
 <div class="conversation-content-container">
-    <!-- Header with basic information -->
-    <app-chat-header
-        [isBottomBorderDisplayed]="!isAttachmentUploadActive$ | async"
-    >
-        <ng-container [ngSwitch]="true">
-            <div class="messages-header d-flex align-items-center">
-                <ng-container
-                    *ngSwitchCase="
-                        (conversation$ | async)?.participants?.length === 1
-                    "
-                >
-                    <app-ca-profile-image
-                        [avatarImg]="
-                            (conversation$ | async)?.participants[0]?.avatarFile
-                                ?.url
-                        "
-                        [avatarColor]="{
-                            background: '#DFC2F9',
-                            color: '#9E47EC66'
-                        }"
-                        [textShortName]="
-                            (conversation$ | async)?.participants[0]?.fullName
-                                | nameInitials
-                        "
-                        [size]="22"
-                        [fontSize]="9"
-                        [isHoverEffect]="false"
-                        [isRound]="
-                            (conversation$ | async)?.group ===
-                            chatGroupEnum.CompanyUser
-                        "
-                    ></app-ca-profile-image>
-
+    <ng-container *ngIf="!(isAttachmentUploadActive$ | async); else upload">
+        <!-- Header with basic information -->
+        <app-chat-header
+            [isBottomBorderDisplayed]="!isAttachmentUploadActive$ | async"
+        >
+            <ng-container [ngSwitch]="true">
+                <div class="messages-header d-flex align-items-center">
                     <ng-container
-                        *ngTemplateOutlet="
-                            headerLeftSide;
-                            context: {
-                                name: (conversation$ | async)?.participants[0]
-                                    ?.fullName
-                            }
+                        *ngSwitchCase="
+                            (conversation$ | async)?.participants?.length === 1
                         "
-                    ></ng-container>
-
-                    <ng-container
-                        *ngTemplateOutlet="headerRightSide"
-                    ></ng-container>
-                </ng-container>
-
-                <ng-container
-                    *ngSwitchCase="
-                        (conversation$ | async)?.participants?.length >= 2
-                    "
-                >
-                    <div class="messages-header d-flex align-items-center">
-                        <svg-icon
-                            class="d-flex justify-content-center align-items-center"
-                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            [src]="
-                                (conversation$ | async)?.group
-                                    | chatGroupCheckForIcon
+                    >
+                        <app-ca-profile-image
+                            [avatarImg]="
+                                (conversation$ | async)?.participants[0]
+                                    ?.avatarFile?.url
                             "
-                        >
-                        </svg-icon>
-                    </div>
+                            [avatarColor]="{
+                                background: '#DFC2F9',
+                                color: '#9E47EC66'
+                            }"
+                            [textShortName]="
+                                (conversation$ | async)?.participants[0]
+                                    ?.fullName | nameInitials
+                            "
+                            [size]="22"
+                            [fontSize]="9"
+                            [isHoverEffect]="false"
+                            [isRound]="
+                                (conversation$ | async)?.group ===
+                                chatGroupEnum.CompanyUser
+                            "
+                        ></app-ca-profile-image>
+
+                        <ng-container
+                            *ngTemplateOutlet="
+                                headerLeftSide;
+                                context: {
+                                    name: (conversation$ | async)
+                                        ?.participants[0]?.fullName
+                                }
+                            "
+                        ></ng-container>
+
+                        <ng-container
+                            *ngTemplateOutlet="headerRightSide"
+                        ></ng-container>
+                    </ng-container>
 
                     <ng-container
-                        *ngTemplateOutlet="
-                            headerLeftSide;
-                            context: {
-                                name: (conversation$ | async)?.participants[0]
-                                    ?.fullName
-                            }
+                        *ngSwitchCase="
+                            (conversation$ | async)?.participants?.length >= 2
                         "
-                    ></ng-container>
+                    >
+                        <div class="messages-header d-flex align-items-center">
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center"
+                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                [src]="
+                                    (conversation$ | async)?.group
+                                        | chatGroupCheckForIcon
+                                "
+                            >
+                            </svg-icon>
+                        </div>
 
-                    <ng-container
-                        *ngTemplateOutlet="
-                            headerRightSide;
-                            context: {
-                                participants: (conversation$ | async)
-                                    ?.participants
-                            }
-                        "
-                    ></ng-container>
-                </ng-container>
-            </div>
-        </ng-container>
-    </app-chat-header>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                headerLeftSide;
+                                context: {
+                                    name: (conversation$ | async)
+                                        ?.participants[0]?.fullName
+                                }
+                            "
+                        ></ng-container>
 
-    <div class="content d-flex flex-column">
-        <!-- Messages  -->
-        <app-chat-messages
-            [conversation]="conversation$"
-            [conversationParticipants]="(conversation$ | async)?.participants"
-        ></app-chat-messages>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                headerRightSide;
+                                context: {
+                                    participants: (conversation$ | async)
+                                        ?.participants
+                                }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </app-chat-header>
 
-        <!-- Footer -->
-        <app-chat-content-footer
-            [conversation]="conversation$ | async"
-        ></app-chat-content-footer>
-    </div>
+        <div class="content d-flex flex-column">
+            <!-- Messages  -->
+            <app-chat-messages
+                [conversation]="conversation$"
+                [conversationParticipants]="
+                    (conversation$ | async)?.participants
+                "
+            ></app-chat-messages>
+
+            <!-- Footer -->
+            <app-chat-content-footer
+                [conversation]="conversation$ | async"
+            ></app-chat-content-footer>
+        </div>
+    </ng-container>
 </div>
 
 <!-- Templates -->
@@ -118,7 +122,6 @@
         ></app-ta-upload-files>
     </div>
 </ng-template>
-
 <ng-template #headerLeftSide let-name="name">
     <div class="name ta-font-extra-bold">
         {{ name }}

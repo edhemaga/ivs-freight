@@ -6,9 +6,6 @@ import {
     Component,
     ElementRef,
     ViewChild,
-    HostListener,
-    Output,
-    EventEmitter,
     Input,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
@@ -17,9 +14,6 @@ import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
 import { ChatSvgRoutes, ChatPngRoutes } from '@pages/chat/utils/routes';
-
-// Config
-import { ChatDropzone } from '@pages/chat/utils/configs';
 
 // Services
 import {
@@ -72,9 +66,6 @@ export class ChatMessagesComponent
     // Assets route
     public ChatSvgRoutes = ChatSvgRoutes;
     public ChatPngRoutes = ChatPngRoutes;
-
-    // Config
-    public ChatDropzone = ChatDropzone;
 
     // Messages
     public messages$!: Observable<ChatMessageResponse>;

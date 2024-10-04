@@ -11,6 +11,7 @@ import {
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
 } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import {
@@ -65,8 +66,6 @@ export class ChatComponent
     public conversation$!: Observable<ChatSelectedConversation>;
 
     public ConversationTypeEnum = ConversationTypeEnum;
-
-    public isAttachmentUploadActive!: Observable<boolean>;
 
     // User Profile Data
     public isProfileDetailsDisplayed$!: Observable<boolean>;
@@ -132,7 +131,7 @@ export class ChatComponent
             this.chatStoreService.selectConversationProfileDetails();
         this.isParticipantsDisplayed$ =
             this.chatStoreService.selectIsConversationParticipantsDisplayed();
-        this.isAttachmentUploadActive =
+        this.isAttachmentUploadActive$ =
             this.chatStoreService.selectAttachmentUploadStatus();
     }
 

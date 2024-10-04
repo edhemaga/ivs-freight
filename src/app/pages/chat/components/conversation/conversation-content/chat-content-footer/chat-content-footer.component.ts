@@ -201,18 +201,9 @@ export class ChatContentFooterComponent
         this.isEmojiSelectionActive = true;
     };
 
-    public uploadAttachmentDragAndDrop(): void {
+    public uploadAttachmentUpload = (): void => {
         this.chatStoreService.openAttachmentUpload();
-    }
-
-    public addAttachments(files: UploadFile[]): void {
-        files.forEach((file: UploadFile) => {
-            this.chatStoreService.setAttachment(file);
-        });
-        this.chatStoreService.closeAttachmentUpload();
-
-        this.enableChatInput();
-    }
+    };
 
     public setHoveredAttachment(attachment: ChatAttachmentForThumbnail): void {
         this.hoveredAttachment = attachment;
