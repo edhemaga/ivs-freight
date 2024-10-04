@@ -7,6 +7,8 @@ import { TaNoticeOfAsignmentSvgRoutes } from '@shared/components/ta-notice-of-as
 export class TaNoticeOfAssignmentConstants {
     static STRING_EMPTY = '';
 
+    static HTML_ELEMENT_BR = '<br>';
+
     static FONT_SIZE_SMALL: number = 10;
     static FONT_SIZE_DEFAULT: number = 13;
     static FONT_SIZE_LARGE: number = 18;
