@@ -11,3 +11,4 @@ export * from './get-dispatch-history-data.model';
 export * from './get-dispatch-history-layout-params.model';
 export * from './truck-trailer-config-params.model';
 export * from './dispatch-progress-bar-data.model';
+export * from './dispatch-resized-columns.model';
