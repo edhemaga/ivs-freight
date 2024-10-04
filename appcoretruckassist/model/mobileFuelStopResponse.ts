@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { AddressEntity } from './addressEntity';
 import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
@@ -39,6 +40,7 @@ export interface MobileFuelStopResponse {
     note?: string | null;
     isClosed?: boolean;
     transaction?: number | null;
+    cover?: FileResponse;
     totalCost?: number | null;
     createdAt?: string;
     updatedAt?: string;

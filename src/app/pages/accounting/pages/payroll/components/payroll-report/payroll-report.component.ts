@@ -33,6 +33,7 @@ import {
 import { ICaMapProps, ColumnConfig } from 'ca-components';
 import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 
 @Component({
     selector: 'app-payroll-report',
@@ -43,9 +44,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 export class PayrollReportComponent implements OnInit {
     columns: ColumnConfig[];
     @Input() reportId: number;
-    payrollReport$: Observable<PayrollDriverMileageResponse>;
+    payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
     payrollMileageDriverLoads$: Observable<MilesStopShortReponseWithRowType[]>;
-    includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    includedLoads$: Observable<MilesStopShortResponse[]>;
     public loading$: Observable<boolean>;
     payrollReportList: MilesStopShortReponseWithRowType[] = [];
     allowedLoadIds: number[];
@@ -510,7 +511,6 @@ export class PayrollReportComponent implements OnInit {
         );
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$.subscribe(
             (payrollLoadList) => {
-
                 const filteredPayrollList = payrollLoadList.filter(
                     (load) => !(load as any).rowType
                 );
@@ -602,5 +602,12 @@ export class PayrollReportComponent implements OnInit {
                 );
             }
         }
+    }
+
+    onReorderItem({_included, _title}: {
+        _included: PayrollReportTableResponse[];
+        _title: string;
+    }) {
+        console.log("dfsfsdfds", _included, _title);
     }
 }

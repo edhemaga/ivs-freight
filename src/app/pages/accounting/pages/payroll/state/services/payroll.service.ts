@@ -54,7 +54,7 @@ export class PayrollFacadeService {
     > = this.store.pipe(select(selectPayrollDriverMileageStops));
 
     public selectPayrollReportIncludedLoads$: Observable<
-        LoadWithMilesStopResponse[]
+        MilesStopShortResponse[]
     > = this.store.pipe(select(selectPayrollReportsIncludedStops));
 
     public selectPayrollTabCounts$: Observable<{

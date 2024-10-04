@@ -63,7 +63,13 @@ export const selectPayrollOpenedReport = createSelector(
 export const selectPayrollReportsIncludedStops = createSelector(
     selectPayrollState,
     (state) => {
-        return state.payrollOpenedReport?.includedLoads || [];
+        const included_only = state.payrollOpenedReport?.includedLoads || [];
+        let allInculdedLoads: MilesStopShortResponse[] = [];
+        included_only.map(
+            (loads) =>
+                (allInculdedLoads = [...allInculdedLoads, ...loads.milesStops])
+        );
+        return allInculdedLoads;
     }
 );
 

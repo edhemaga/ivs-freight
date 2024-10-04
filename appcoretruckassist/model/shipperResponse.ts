@@ -51,6 +51,7 @@ export interface ShipperResponse {
     avgDeliveryTimeInMin?: number | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
+    cover?: FileResponse;
     createdAt?: string;
     updatedAt?: string;
     lastUsedAt?: string | null;

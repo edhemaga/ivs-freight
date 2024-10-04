@@ -4,11 +4,21 @@
             <div
                 class="report-card-title d-flex align-items-center justify-content-between"
             >
-                <div class="d-flex align-items-center">
+                <div
+                    *ngIf="payrollReport$ | async as payroll_report"
+                    class="d-flex align-items-center"
+                >
                     <div class="payroll_report_title">Report</div>
-                    <div class="payroll_chip">12 STOP (4 EXTRA)</div>
-                    <div class="payroll_chip">3 LOAD</div>
-                    <div class="payroll_chip blue">+1 DAY</div>
+                    <div class="payroll_chip">
+                        {{ (includedLoads$ | async)?.length }} STOP ({{
+                            payroll_report.extraStopCount
+                        }}
+                        EXTRA)
+                    </div>
+                    <div class="payroll_chip">
+                        {{ payroll_report.loadCount }} LOAD
+                    </div>
+                    <!-- <div class="payroll_chip blue">+1 DAY</div> -->
                 </div>
                 <div
                     class="report-count-item-load d-flex"
@@ -90,6 +100,7 @@
             </div>
             <div class="small-table-holder-main">
                 <app-ca-period-content
+                    (reorderedDataEmiter)="onReorderItem($event)"
                     [isOpen]="true"
                     [type]="'MILEAGE'"
                     [componentData]="payrollReport$ | async"
@@ -158,7 +169,12 @@
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
     <ng-container
-        *ngIf="includedLoads$ | async | payrollTableTotal as payroll_totals"
+        *ngIf="
+            includedLoads$
+                | async
+                | payrollTableTotal
+                    : (payrollReport$ | async).perMilesEntity as payroll_totals
+        "
     >
         <td class="text-center">
             <div class="td-container">

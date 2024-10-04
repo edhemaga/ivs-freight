@@ -1,30 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-    LoadWithMilesStopResponse,
-    MilesStopShortResponse,
-} from 'appcoretruckassist';
+import { MilesStopShortResponse, PerMileEntity } from 'appcoretruckassist';
 
 @Pipe({
     name: 'payrollTableTotal',
 })
 export class PayrollTableTotalPipe implements PipeTransform {
-    transform(includedLoads: LoadWithMilesStopResponse[]): {
+    transform(
+        includedLoads: MilesStopShortResponse[],
+        payPerMile: PerMileEntity
+    ): {
         empty: string;
         loaded: string;
         miles: string;
         subtotal: string;
     } {
-        let allInculdedLoads: MilesStopShortResponse[] = [];
-        includedLoads.map(
-            (loads) =>
-                (allInculdedLoads = [...allInculdedLoads, ...loads.milesStops])
-        );
-
-        const result = allInculdedLoads.reduce(
+        const result = includedLoads.reduce(
             (prev, current) => {
-                prev.empty += current.empty;
-                prev.loaded += current.loaded;
-                prev.miles += current.miles;
+                prev.empty = current.empty * payPerMile.emptyMile;
+                prev.loaded = current.loaded * payPerMile.loadedMile;
+                prev.miles = current.miles * payPerMile.perStop;
                 prev.subtotal += current.subtotal;
                 return prev;
             },

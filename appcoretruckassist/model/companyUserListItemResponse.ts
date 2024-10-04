@@ -29,8 +29,6 @@ export interface CompanyUserListItemResponse {
     personalPhone?: string | null;
     personalEmail?: string | null;
     address?: AddressEntity;
-    userType?: EnumValue;
-    status?: number | null;
     userStatus?: string | null;
     lastLogin?: string | null;
     bank?: BankResponse;
@@ -41,11 +39,8 @@ export interface CompanyUserListItemResponse {
     base?: number | null;
     commission?: number | null;
     salary?: number | null;
-    isAdmin?: boolean;
-    isUser?: boolean;
     is1099?: boolean;
     note?: string | null;
-    verified?: boolean;
     avatarFile?: FileResponse;
     startDate?: string;
     createdAt?: string;
