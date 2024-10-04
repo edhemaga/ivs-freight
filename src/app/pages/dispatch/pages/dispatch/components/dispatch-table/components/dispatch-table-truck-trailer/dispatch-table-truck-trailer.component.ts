@@ -21,6 +21,9 @@ import { ModalService } from '@shared/services/modal.service';
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
 
+// helpers
+import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
+
 // config
 import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/configs';
 
@@ -57,6 +60,9 @@ export class DispatchTableTruckTrailerComponent implements OnChanges {
     }
     @Input() set truckList(values: TruckDispatchModalResponse[]) {
         this.handleTruckTrailerList(values);
+    }
+    @Input() set previousDragTrailerTypeId(value: number) {
+        this.handleTrailerDrag(value);
     }
 
     @Input() isTrailerAddNewHidden: boolean;
@@ -100,6 +106,8 @@ export class DispatchTableTruckTrailerComponent implements OnChanges {
     public trailerIndex: number = -1;
 
     public hasAddNew: boolean = false;
+
+    public isTrailerDropAllowed: boolean = false;
 
     constructor(private modalService: ModalService) {}
 
@@ -222,5 +230,13 @@ export class DispatchTableTruckTrailerComponent implements OnChanges {
                       name: DispatchTableStringEnum.ALL_ASSIGNED,
                   });
         }
+    }
+
+    private handleTrailerDrag(trailerId: number): void {
+        const allowedTruckIds =
+            DispatchTableDragNDropHelper.getTrailerAllowedTruckIds(trailerId);
+
+        this.isTrailerDropAllowed =
+            allowedTruckIds.includes(this.truck?.truckType?.id) || !this.truck;
     }
 }

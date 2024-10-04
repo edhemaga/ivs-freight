@@ -1,4 +1,11 @@
-<div class="main_inside driver-container" [class.filled]="driver">
+<div
+    class="main_inside driver-container"
+    [ngClass]="{
+        filled: driver,
+        'drop-disabled': driver && isDrag && isActiveLoad,
+        'active-load': isActiveLoad
+    }"
+>
     <ng-container
         *ngIf="openedDriverDropdown !== rowIndex; else driverDropdown"
     >
