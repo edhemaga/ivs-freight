@@ -19,21 +19,6 @@ import {
 } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-// Store
-import { Store } from '@ngrx/store';
-import {
-    editMessage,
-    replyMessage,
-    resetReplyAndEditMessage,
-    selectEditMessage,
-    selectReplyMessage,
-    setAttachmentUploadActiveStatus,
-    selectAttachments,
-    deleteAllAttachment,
-    deleteAttachment,
-    setAttachment,
-} from '@pages/chat/store';
-
 // Models
 import {
     ChatAttachmentForThumbnail,
@@ -56,10 +41,7 @@ import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import {
-    ChatAttachmentCustomClassEnum,
-    ChatAttachmentHoveredClassStringEnum,
-} from '@pages/chat/enums';
+import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
@@ -76,10 +58,7 @@ export class ChatContentFooterComponent
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
     @Input() public conversation!: ChatSelectedConversation;
-    @Input() currentUserTyping: BehaviorSubject<string | null> =
-        new BehaviorSubject(null);
-
-    @Output() closeReplyOrEditEvent: EventEmitter<boolean> = new EventEmitter();
+    public currentUserTyping!: Observable<string>;
 
     public replyMessage$!: Observable<ChatMessage | null>;
     public editMessage$!: Observable<ChatMessage | null>;
@@ -120,10 +99,7 @@ export class ChatContentFooterComponent
 
         // Services
         private chatService: UserChatService,
-        private chatStoreService: ChatStoreService,
-
-        // Renderer
-        private renderer: Renderer2
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -137,9 +113,7 @@ export class ChatContentFooterComponent
     private getDataFromStore(): void {
         this.editMessage$ = this.chatStoreService.selectEditMessage();
         this.replyMessage$ = this.chatStoreService.selectReplyMessage();
-        this.attachments$ = this.store
-            .select(selectAttachments)
-            .pipe(takeUntil(this.destroy$));
+        this.attachments$ = this.chatStoreService.selectAttachments();
     }
 
     public handleSend(): void {
@@ -189,7 +163,7 @@ export class ChatContentFooterComponent
                     .pipe(takeUntil(this.destroy$))
                     .subscribe(() => {
                         this.isMessageSendable = true;
-                        this.store.dispatch(deleteAllAttachment());
+                        this.chatStoreService.deleteAllAttachments();
                         this.messageForm.reset();
                         this.closeReplyAndEdit();
                         completeSubject.next();
@@ -228,12 +202,14 @@ export class ChatContentFooterComponent
     };
 
     public uploadAttachmentDragAndDrop(): void {
-        this.isAttachmentUploadActive = true;
+        this.chatStoreService.openAttachmentUpload();
     }
 
     public addAttachments(files: UploadFile[]): void {
-        this.attachments$.next([...this.attachments$.value, ...files]);
-        this.isAttachmentUploadActive = false;
+        files.forEach((file: UploadFile) => {
+            this.chatStoreService.setAttachment(file);
+        });
+        this.chatStoreService.closeAttachmentUpload();
 
         this.enableChatInput();
     }
@@ -300,7 +276,7 @@ export class ChatContentFooterComponent
     }
 
     public removeAttachment(attachment: UploadFile): void {
-        this.store.dispatch(deleteAttachment(attachment));
+        this.chatStoreService.deleteAttachment(attachment);
     }
 
     public blurInput(): void {

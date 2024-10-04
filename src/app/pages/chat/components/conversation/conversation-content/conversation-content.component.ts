@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    HostListener,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, Observable, map } from 'rxjs';
 
@@ -34,9 +41,7 @@ export class ConversationContentComponent
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         if (event.key === 'Escape')
-            this.store.dispatch(
-                setAttachmentUploadActiveStatus({ isDisplayed: false })
-            );
+            this.chatStoreService.closeAttachmentUpload();
     }
     @Input() group: ChatGroupEnum;
 
@@ -51,7 +56,7 @@ export class ConversationContentComponent
     private getCurrentUserHelper = GetCurrentUserHelper;
 
     public conversation$!: Observable<ChatSelectedConversation>;
-    public isAttachmentUploadActive: Observable<boolean>;
+    public isAttachmentUploadActive$: Observable<boolean>;
 
     // Assets & configs
     public chatSvgRoutes = ChatSvgRoutes;
@@ -75,14 +80,11 @@ export class ConversationContentComponent
     private initStoreData(): void {
         this.chatStoreService.closeAllProfileInformation();
         this.conversation$ = this.chatStoreService.selectConversation();
+        this.isAttachmentUploadActive$ =
+            this.chatStoreService.selectAttachmentUploadStatus();
     }
 
     private getResolvedData(): void {
-        this.store.dispatch(closeAllProfileInformation());
-        this.isAttachmentUploadActive = this.store
-            .select(getIsAttachmentUploadActive)
-            .pipe(takeUntil(this.destroy$));
-
         this.activatedRoute.data
             .pipe(
                 takeUntil(this.destroy$),

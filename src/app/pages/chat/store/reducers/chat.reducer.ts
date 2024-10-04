@@ -16,10 +16,11 @@ import {
     setUnreadCount,
     setProfileDetails,
     setUserTyping,
-    setAttachmentUploadActiveStatus,
+    openAttachmentUpload,
+    closeAttachmentUpload,
     setAttachment,
     deleteAttachment,
-    deleteAllAttachment,
+    deleteAllAttachments,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -182,9 +183,13 @@ export const chatDataReducer = createReducer(
         ...state,
         unreadCount: newState.count,
     })),
-    on(setAttachmentUploadActiveStatus, (state, newState) => ({
+    on(openAttachmentUpload, (state) => ({
         ...state,
-        isAttachmentUploadActive: newState.isDisplayed,
+        isAttachmentUploadActive: true,
+    })),
+    on(closeAttachmentUpload, (state) => ({
+        ...state,
+        isAttachmentUploadActive: true,
     })),
     on(setAttachment, (state, newState) => ({
         ...state,
@@ -219,7 +224,7 @@ export const chatDataReducer = createReducer(
             ),
         ],
     })),
-    on(deleteAllAttachment, (state) => ({
+    on(closeAttachmentUpload, (state) => ({
         ...state,
         attachments: null,
     })),

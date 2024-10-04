@@ -157,7 +157,7 @@
         </div>
 
         <!-- Profile details -->
-        <ng-container *ngIf="!(isAttachmentUploadActive | async)">
+        <ng-container *ngIf="!(isAttachmentUploadActive$ | async)">
             <div class="profile-details-wrapper d-flex">
                 <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
                     <div class="profile-details">

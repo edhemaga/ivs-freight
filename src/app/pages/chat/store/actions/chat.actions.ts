@@ -2,7 +2,6 @@ import { createAction, props } from '@ngrx/store';
 
 // Models
 import {
-    ChatDisplayedFlagType,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -70,9 +69,12 @@ export const setUserTyping = createAction(
     props<{ name: string }>()
 );
 
-export const setAttachmentUploadActiveStatus = createAction(
-    '[Chat] Attachment Upload Active',
-    props<{ isDisplayed: boolean }>()
+export const openAttachmentUpload = createAction(
+    '[Chat] Open Attachment Upload '
+);
+
+export const closeAttachmentUpload = createAction(
+    '[Chat] Close Attachment Upload'
 );
 
 export const setAttachment = createAction(
@@ -85,6 +87,6 @@ export const deleteAttachment = createAction(
     props<UploadFile>()
 );
 
-export const deleteAllAttachment = createAction(
+export const deleteAllAttachments = createAction(
     '[Chat] Delete All Attachments'
 );

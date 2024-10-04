@@ -69,3 +69,13 @@ export const getUserTyping = createSelector(
     selectChatState,
     (state: ChatState): string => state.userTyping
 );
+
+export const selectAttachmentUploadStatus = createSelector(
+    selectChatState,
+    (state: ChatState): boolean => state.isAttachmentUploadActive
+);
+
+export const selectAttachments = createSelector(
+    selectChatState,
+    (state: ChatState): UploadFile[] => state.attachments
+);
