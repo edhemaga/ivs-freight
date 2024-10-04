@@ -39,6 +39,7 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -125,8 +126,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    @Input() set canUnlock(value: boolean) {
-        this._canUnlock = value;
+    @Input() set isUnlockable(value: boolean) {
+        this._isUnlockable = value;
     }
 
     @Input() gridIndex: number;
@@ -217,7 +218,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public progressBarData: DispatchProgressBarData[] = [];
 
-    public _canUnlock: boolean = false;
+    public _isUnlockable: boolean = false;
 
     openedHosData = [];
 
@@ -230,7 +231,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         // Services
         private dispatcherService: DispatcherService,
-        private parkingService: ParkingService
+        private parkingService: ParkingService,
+        private tableService: TruckassistTableService
     ) {}
 
     set checkEmptySet(value: string) {

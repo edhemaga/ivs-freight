@@ -773,9 +773,23 @@
                         }
                     }
 
+                    .location,
+                    .mileages,
+                    .mileage-normal {
+                        color: $white !important;
+                    }
+
                     .dispatch-parking {
                         .dispatch-parking-text {
                             color: $white !important;
+                        }
+                    }
+
+                    .note-container {
+                        .all_note_holder {
+                            .note_inner_text {
+                                color: $white !important;
+                            }
                         }
                     }
 
@@ -788,10 +802,7 @@
                 .add-new-container {
                     background: transparent !important;
 
-                    p {
-                        color: $white !important;
-                    }
-
+                    p,
                     .icon {
                         display: none !important;
                     }

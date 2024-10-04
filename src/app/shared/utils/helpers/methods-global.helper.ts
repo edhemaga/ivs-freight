@@ -142,4 +142,15 @@ export class MethodsGlobalHelper {
     static checkIfAnyItemInArrayHasNoValue<T>(array: T[]) {
         return array.some((element) => element === null);
     }
+
+    static getBase64DataFromEvent(event: any): string | null {
+        const base64String = event?.files[0]?.url;
+
+        if (!base64String) {
+            return null;
+        }
+
+        const parts = base64String.split(',');
+        return parts[1] || null;
+    }
 }
