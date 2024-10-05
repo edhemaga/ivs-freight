@@ -3716,7 +3716,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 });
             });
         }
-
         // delivery
         if (this.selectedDeliveryShipper) {
             const { legHours, legMinutes, legMiles } = this.mapLegTime(
@@ -3730,7 +3729,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: deliveryStopOrder,
+                stopLoadOrder: this.loadExtraStops().length + 2,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
@@ -5237,8 +5236,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ? (loadModalData as any).name
                     : null,
             name: (loadModalData as any).name,
-            referenceNumber: referenceNumber,
-            weight: weight,
+            referenceNumber: referenceNumber ?? null,
+            weight: weight ?? null,
             liftgate: loadRequirements?.liftgate,
             driverMessage: loadRequirements?.driverMessage,
             loadRequirementsId: loadRequirements.id,
@@ -5277,10 +5276,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 : null,
 
             // billing & payment
-            baseRate: baseRate,
-            advancePay: advancePay,
-            driverRate,
-            adjustedRate,
+            baseRate: baseRate  ?? null,
+            advancePay: advancePay ?? null,
+            driverRate: driverRate ?? null,
+            adjustedRate: adjustedRate ?? null,
 
             // total
             loadMiles: loadedMiles,
@@ -5290,8 +5289,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             invoicedDate,
             ageUnpaid: ageUnpaid,
             daysToPay,
-            tonuRate,
-            revisedRate,
+            tonuRate: tonuRate ?? null,
+            revisedRate: revisedRate ?? null,
             statusType: statusType?.name || statusType,
             arrive: pickupStop?.arrive,
             depart: pickupStop?.depart,
