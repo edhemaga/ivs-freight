@@ -37,6 +37,7 @@ import {
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { ActivityTimePipe } from '@shared/pipes/activity-time.pipe';
 
 // constants
 import { UserConstants } from '@pages/user/utils/constants/user.constants';
@@ -57,7 +58,12 @@ import { UserTableData } from '@pages/user/pages/user-table/models';
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
     styleUrls: ['./user-table.component.scss'],
-    providers: [FormatPhonePipe, NameInitialsPipe, ThousandSeparatorPipe],
+    providers: [
+        FormatPhonePipe,
+        NameInitialsPipe,
+        ThousandSeparatorPipe,
+        ActivityTimePipe,
+    ],
 })
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -108,6 +114,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private phoneFormater: FormatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
         public datePipe: DatePipe,
+        public activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
@@ -565,7 +572,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableTableHired: data?.startDate
                 ? this.datePipe.transform(data?.startDate, 'MM/dd/yy')
                 : '',
-            tableDeactivated: 'NA',
+            tableDeactivated: data?.deactivatedAt
+                ? this.datePipe.transform(data.deactivatedAt, 'MM/dd/yy')
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePersonalDetailsPhone: data?.personalPhone
                 ? this.phoneFormater.transform(data.personalPhone)
                 : '',
@@ -593,6 +602,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
                 : '',
+            tableActivity: data.lastLogin
+                ? this.activityTimePipe.transform(data.lastLogin)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableCantSelect: data.userStatus === TableStringEnum.OWNER,
             // User Dropdown Action Set Up
             tableDropdownContent: {
@@ -611,7 +623,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
-        const dropdownContent = UserConstants.getUserTableDropdown(data);
+        const dropdownContent = UserConstants.getUserTableDropdown(data, this.selectedTab);
         data.userStatus !== TableStringEnum.INVITED &&
         data.userStatus !== TableStringEnum.EXPIRED
             ? dropdownContent.splice(2, 1)

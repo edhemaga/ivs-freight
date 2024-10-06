@@ -213,7 +213,10 @@
                                     | tableHeadBorder : column.tableHeadTitle,
                                 'pickup-delivery':
                                     column.tableHeadTitle === 'PICKUP DELIVERY',
-                                status: column.tableHeadTitle === 'STATUS'
+                                status:
+                                    column.tableHeadTitle === 'STATUS' &&
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle !== 'User'
                             }"
                             [innerHTML]="
                                 column.tableHeadTitle | tableDoubleHeadPayroll

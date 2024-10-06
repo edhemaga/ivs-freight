@@ -9,21 +9,33 @@ import {
     OnInit,
     Output,
     QueryList,
+    ViewChild,
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { catchError, of, Subject, takeUntil, tap } from 'rxjs';
+import {
+    catchError,
+    forkJoin,
+    of,
+    Subject,
+    switchMap,
+    takeUntil,
+    tap,
+} from 'rxjs';
 
 // animations
 import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-background.animation';
 
 // modules
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
 import { DispatchColorFinderPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-color-finder.pipe';
+
+// helpers
+import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
 
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
@@ -65,6 +77,7 @@ import {
     DispatchTableUnlock,
 } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+import { DispatchResizedColumnsModel } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -77,6 +90,7 @@ import { DispatchProgressBarData } from '@pages/dispatch/pages/dispatch/componen
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
     @ViewChildren('columnField') columnFieldElements: QueryList<ElementRef>;
+    @ViewChild('tableBodyRow') tableBodyRow: ElementRef;
 
     @Input() set dispatchTableData(data: DispatchBoardResponse) {
         this.initDispatchData(data);
@@ -115,6 +129,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set isUnlockable(value: boolean) {
         this._isUnlockable = value;
     }
+
+    @Input() gridIndex: number;
 
     @Input() toolbarWidth: number = 0;
     @Input() isAllBoardsList: boolean;
@@ -182,7 +198,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public draggingType: string;
 
-    public resizedColumnsWidth = {
+    public resizedColumnsWidth: DispatchResizedColumnsModel = {
         truckNumber: null,
         trailerNumber: null,
         firstName: null,
@@ -195,12 +211,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         note: null,
     };
 
+    private previousDragIndex: number;
+    private previousDragTrailerTypeId: number;
+
+    public tableBodyRowWidth: number;
+
     public progressBarData: DispatchProgressBarData[] = [];
 
     public _isUnlockable: boolean = false;
-
-    startIndexTrailer: number;
-    startIndexDriver: number;
 
     openedHosData = [];
 
@@ -229,6 +247,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getConstantData();
 
         this.getMainBoardColumnWidths();
+
+        this.getTableBodyRowWidth();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -247,6 +267,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
+
+        console.log('this.dispatchData', this.dispatchData);
 
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
@@ -732,24 +754,16 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
     }
 
-    // CDL DRAG AND DROP
-
-    dropList<T>(event: CdkDragDrop<T>): void {
-        const { currentIndex, previousIndex } = event;
-
+    private reorderDispatchBoard(): void {
         const dispatchBoardId = this.dispatchData.id;
-        const dispatchDataDispatches = this.dispatchData.dispatches;
-
-        const dispatches = [
-            {
-                id: dispatchDataDispatches[currentIndex].id,
-                order: dispatchDataDispatches[previousIndex].order,
-            },
-            {
-                id: dispatchDataDispatches[previousIndex].id,
-                order: dispatchDataDispatches[currentIndex].order,
-            },
-        ];
+        const dispatches = this.dispatchData.dispatches.map(
+            (dispatch, index) => {
+                return {
+                    id: dispatch.id,
+                    order: index + 1,
+                };
+            }
+        );
 
         const data = {
             dispatchBoardId,
@@ -760,213 +774,262 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         this.dispatcherService
             .reorderDispatchboard(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.isDispatchBoardChangeInProgress = false;
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    // CDL DRAG AND DROP
+
+    public dragStartRow(): void {
+        this.isDrag = true;
+    }
+
+    public dragStartTrailer(index: number): void {
+        this.previousDragTrailerTypeId =
+            this.dispatchData.dispatches[index].trailer?.trailerType?.id;
+
+        this.previousDragIndex = index;
+        this.isDrag = true;
+        this.draggingType = DispatchTableStringEnum.TRAILER;
+    }
+
+    public dragStartDriver(index: number): void {
+        this.previousDragIndex = index;
+        this.isDrag = true;
+        this.draggingType = DispatchTableStringEnum.DRIVER;
+    }
+
+    public dragEnd(): void {
+        this.isDrag = false;
+        this.draggingType = null;
+    }
+
+    public dragEndRow<T>(event: CdkDragDrop<T>): void {
+        const { currentIndex, previousIndex } = event;
+
+        const dispatchDataDispatches = this.dispatchData.dispatches;
+
+        if (
+            dispatchDataDispatches[previousIndex].order ===
+            dispatchDataDispatches[currentIndex].order
+        )
+            return;
+
+        moveItemInArray(dispatchDataDispatches, previousIndex, currentIndex);
+
+        const dispatchBoardId = this.dispatchData.id;
+        const dispatches = this.dispatchData.dispatches.map(
+            (dispatch, index) => {
+                return {
+                    id: dispatch.id,
+                    order: index + 1,
+                };
+            }
+        );
+
+        const data = {
+            dispatchBoardId,
+            dispatches,
+        };
+
+        this.isDispatchBoardChangeInProgress = true;
+
+        this.dispatcherService
+            .reorderDispatchboard(data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.isDispatchBoardChangeInProgress = false;
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    public dragEndTrailer(currentDragIndex: number): void {
+        if (
+            currentDragIndex === this.previousDragIndex ||
+            currentDragIndex === -1
+        )
+            return;
+
+        const currentDragIndexData = this.getDragDataForUpdate(
+            this.dispatchData.dispatches[currentDragIndex]
+        );
+        const previousDragIndexData = this.getDragDataForUpdate(
+            this.dispatchData.dispatches[this.previousDragIndex]
+        );
+
+        const dispatchBoardId = this.dispatchData.id;
+        const dispatches = {
+            firstDispatch: {
+                ...previousDragIndexData,
+                trailerId:
+                    this.dispatchData.dispatches[currentDragIndex]?.trailer?.id,
+            },
+            secondDispatch: {
+                ...currentDragIndexData,
+                trailerId:
+                    this.dispatchData.dispatches[this.previousDragIndex]
+                        ?.trailer?.id,
+            },
+        };
+
+        const data = {
+            dispatchBoardId,
+            ...dispatches,
+        };
+
+        this.isDispatchBoardChangeInProgress = true;
+
+        this.dispatcherService
+            .switchDispathboard(data)
             .pipe(
                 takeUntil(this.destroy$),
-                catchError(() => {
-                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
-                    this.isDispatchBoardChangeInProgress = false;
-
-                    return of([]);
-                })
+                switchMap(() =>
+                    forkJoin([
+                        this.dispatcherService.updateDispatchboardRowById(
+                            this.dispatchData.dispatches[this.previousDragIndex]
+                                .id,
+                            this.dispatchData.id
+                        ),
+                        this.dispatcherService.updateDispatchboardRowById(
+                            this.dispatchData.dispatches[currentDragIndex].id,
+                            this.dispatchData.id
+                        ),
+                    ])
+                )
             )
             .subscribe(() => {
-                [
-                    dispatchDataDispatches[currentIndex].order,
-                    dispatchDataDispatches[previousIndex].order,
-                ] = [
-                    dispatchDataDispatches[previousIndex].order,
-                    dispatchDataDispatches[currentIndex].order,
-                ];
-
-                moveItemInArray(
-                    dispatchDataDispatches,
-                    previousIndex,
-                    currentIndex
-                );
-
                 this.isDispatchBoardChangeInProgress = false;
-
-                this.cdRef.detectChanges();
             });
+    }
 
-        /*  this.isDispatchBoardChangeInProgress = true;
+    public dragEndDriver(currentDragIndex: number): void {
+        if (
+            currentDragIndex === this.previousDragIndex ||
+            currentDragIndex === -1
+        )
+            return;
+
+        const currentDragIndexData = this.getDragDataForUpdate(
+            this.dispatchData.dispatches[currentDragIndex]
+        );
+        const previousDragIndexData = this.getDragDataForUpdate(
+            this.dispatchData.dispatches[this.previousDragIndex]
+        );
+
+        const dispatchBoardId = this.dispatchData.id;
+        const dispatches = {
+            firstDispatch: {
+                ...previousDragIndexData,
+                driverId:
+                    this.dispatchData.dispatches[currentDragIndex]?.driver?.id,
+            },
+            secondDispatch: {
+                ...currentDragIndexData,
+                driverId:
+                    this.dispatchData.dispatches[this.previousDragIndex]?.driver
+                        ?.id,
+            },
+        };
+
+        const data = {
+            dispatchBoardId,
+            ...dispatches,
+        };
+
+        this.isDispatchBoardChangeInProgress = true;
 
         this.dispatcherService
-            .reorderDispatchboard({
-                dispatchBoardId: this.dispatchData.id,
-                dispatches: [
-                    {
-                        id: this.dispatchData.dispatches[event.currentIndex].id,
-                        order: this.dispatchData.dispatches[event.previousIndex]
-                            .order,
-                    },
-                    {
-                        id: this.dispatchData.dispatches[event.previousIndex]
-                            .id,
-                        order: this.dispatchData.dispatches[event.currentIndex]
-                            .order,
-                    },
-                ],
-            })
+            .switchDispathboard(data)
             .pipe(
-                catchError(() => {
-                    this.checkEmptySet = DispatchTableStringEnum.EMPTY_STRING;
-                    this.isDispatchBoardChangeInProgress = false;
-                    return of([]);
-                })
+                takeUntil(this.destroy$),
+                switchMap(() =>
+                    forkJoin([
+                        this.dispatcherService.updateDispatchboardRowById(
+                            this.dispatchData.dispatches[this.previousDragIndex]
+                                .id,
+                            this.dispatchData.id
+                        ),
+                        this.dispatcherService.updateDispatchboardRowById(
+                            this.dispatchData.dispatches[currentDragIndex].id,
+                            this.dispatchData.id
+                        ),
+                    ])
+                )
             )
             .subscribe(() => {
-                this.dispatchData.dispatches[event.currentIndex].order =
-                    this.dispatchData.dispatches[event.previousIndex].order;
-                this.dispatchData.dispatches[event.previousIndex].order =
-                    this.dispatchData.dispatches[event.currentIndex].order;
-
                 this.isDispatchBoardChangeInProgress = false;
-
-                this.cdRef.detectChanges();
-            });
-
-        moveItemInArray(
-            this.dispatchData.dispatches,
-            event.previousIndex,
-            event.currentIndex
-        ); */
-    }
-
-    dropTrailer(event, finalIndx): void {
-        if (finalIndx === this.startIndexTrailer) return;
-        if (finalIndx == -1) return; // TODO
-        const finalIndexData = this.getDataForUpdate(
-            this.dispatchData.dispatches[finalIndx]
-        );
-        const startingIndexData = this.getDataForUpdate(
-            this.dispatchData.dispatches[this.startIndexTrailer]
-        );
-
-        this.isDispatchBoardChangeInProgress = true;
-        this.dispatcherService
-            .switchDispathboard({
-                dispatchBoardId: this.dispatchData.id,
-                firstDispatch: {
-                    ...startingIndexData,
-                    id: this.dispatchData.dispatches[this.startIndexTrailer].id,
-                    trailerId:
-                        this.dispatchData.dispatches[finalIndx]?.trailer?.id,
-                },
-                secondDispatch: {
-                    ...finalIndexData,
-                    id: this.dispatchData.dispatches[finalIndx].id,
-                    trailerId:
-                        this.dispatchData.dispatches[this.startIndexTrailer]
-                            ?.trailer?.id,
-                },
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.dispatcherService
-                    .updateDispatchboardRowById(
-                        this.dispatchData.dispatches[this.startIndexTrailer].id,
-                        this.dispatchData.id
-                    )
-                    .subscribe(() => {
-                        this.isDispatchBoardChangeInProgress = false;
-                    });
-                this.dispatcherService
-                    .updateDispatchboardRowById(
-                        this.dispatchData.dispatches[finalIndx].id,
-                        this.dispatchData.id
-                    )
-                    .subscribe(() => {
-                        this.isDispatchBoardChangeInProgress = false;
-                    });
             });
     }
 
-    dropDriver(event, finalIndx): void {
-        if (finalIndx === this.startIndexDriver) return;
-        if (finalIndx == -1) return; // Todo
-        const finalIndexData = this.getDataForUpdate(
-            this.dispatchData.dispatches[finalIndx]
-        );
-        const startingIndexData = this.getDataForUpdate(
-            this.dispatchData.dispatches[this.startIndexDriver]
-        );
+    public dragPositionPredictionTrailer = (
+        _: number,
+        item: CdkDrag<DispatchResponse>
+    ): boolean => {
+        // use arrow function notation to access component 'this'
 
-        this.isDispatchBoardChangeInProgress = true;
-        this.dispatcherService
-            .switchDispathboard({
-                dispatchBoardId: this.dispatchData.id,
-                firstDispatch: {
-                    ...startingIndexData,
-                    id: this.dispatchData.dispatches[this.startIndexDriver].id,
-                    driverId:
-                        this.dispatchData.dispatches[finalIndx]?.driver?.id,
-                },
-                secondDispatch: {
-                    ...finalIndexData,
-                    id: this.dispatchData.dispatches[finalIndx].id,
-                    driverId:
-                        this.dispatchData.dispatches[this.startIndexDriver]
-                            ?.driver?.id,
-                },
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.dispatcherService
-                    .updateDispatchboardRowById(
-                        this.dispatchData.dispatches[this.startIndexDriver].id,
-                        this.dispatchData.id
-                    )
-                    .subscribe(() => {
-                        this.isDispatchBoardChangeInProgress = false;
-                    });
-                this.dispatcherService
-                    .updateDispatchboardRowById(
-                        this.dispatchData.dispatches[finalIndx].id,
-                        this.dispatchData.id
-                    )
-                    .subscribe(() => {
-                        this.isDispatchBoardChangeInProgress = false;
-                    });
-            });
+        const {
+            data: { truck, activeLoad },
+        } = item;
+
+        const allowedTruckIds =
+            DispatchTableDragNDropHelper.getTrailerAllowedTruckIds(
+                this.previousDragTrailerTypeId
+            );
+
+        const isDropAllowed =
+            (allowedTruckIds.includes(truck?.truckType?.id) || !truck) &&
+            activeLoad?.statusType?.name !== DispatchTableStringEnum.ACTIVE_2;
+
+        return isDropAllowed;
+    };
+
+    public dragPositionPredictionDriver(
+        _: number,
+        item: CdkDrag<DispatchResponse>
+    ): boolean {
+        const {
+            data: { activeLoad },
+        } = item;
+
+        const isDropAllowed =
+            activeLoad?.statusType?.name !== DispatchTableStringEnum.ACTIVE_2;
+
+        return isDropAllowed;
     }
 
-    getDataForUpdate(oldData): SwitchDispatchCommand {
+    private getDragDataForUpdate(
+        dispatch: DispatchResponse
+    ): SwitchDispatchCommand {
         return {
-            truckId: oldData.truck ? oldData.truck?.id : null,
-            trailerId: oldData.trailer ? oldData.trailer?.id : null,
-            driverId: oldData.driver ? oldData.driver?.id : null,
-            coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
-            location: oldData.location?.address ? oldData.location : null,
+            id: dispatch.id,
+            truckId: dispatch.truck?.id ?? null,
+            trailerId: dispatch.trailer?.id ?? null,
+            driverId: dispatch.driver?.id ?? null,
+            coDriverId: dispatch.coDriver?.id ?? null,
+            location: dispatch.location?.address ? dispatch.location : null,
         };
     }
 
-    cdkDragStartedRow(event, indx) {
-        this.isDrag = true;
-    }
+    private getTableBodyRowWidth(): void {
+        setTimeout(() => {
+            const tableBodyRowElement = this.tableBodyRow?.nativeElement;
 
-    cdkDragStartedTrailer(event, indx) {
-        this.startIndexTrailer = indx;
-        this.isDrag = true;
-        /*  this.draggingType = DispatchTableStringEnum.TRUCK; */
-        this.draggingType = 'trailer';
-    }
+            if (tableBodyRowElement) {
+                const tableBodyRowElementStyles =
+                    window.getComputedStyle(tableBodyRowElement);
+                const tableBodyRowWidth = parseInt(
+                    tableBodyRowElementStyles.width
+                );
 
-    cdkDragStartedDriver(event, indx) {
-        this.startIndexDriver = indx;
-        this.isDrag = true;
-        this.draggingType = 'driver';
+                this.tableBodyRowWidth = tableBodyRowWidth - 1;
+            }
+        }, 200);
     }
-
-    dragEnd() {
-        this.isDrag = false;
-        this.draggingType = DispatchTableStringEnum.EMPTY_STRING;
-    }
-
-    // USE ARROW FUNCTION NOTATION TO ACCESS COMPONENT "THIS"
-    trailerPositionPrediction = () => {
-        return true;
-    };
 
     public unlockTable(): void {
         this.onTableUnlockEmitter.emit({
@@ -1130,7 +1193,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 ? DispatchTableStringEnum.NOTE_3
                 : event.column.field;
 
-        this.resizedColumnsWidth[columnFieldName] = event.width + 11;
+        const maxColWidth =
+            event.column.field === DispatchTableStringEnum.DISPATCHER_2
+                ? 36
+                : event.width + 11;
+
+        this.resizedColumnsWidth[columnFieldName] = maxColWidth;
 
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;

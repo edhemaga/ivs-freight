@@ -129,6 +129,15 @@
                                     <ng-container
                                         *ngIf="cardRow.type !== 'money'"
                                     >
+                                        <ng-container
+                                            *ngIf="
+                                                cardRow.title === 'Activity' &&
+                                                (card | cardValue : cardRow) ===
+                                                    'Online'
+                                            "
+                                        >
+                                            <div class="online-icon"></div>
+                                        </ng-container>
                                         {{ card | cardValue : cardRow }}
                                     </ng-container>
                                 </div>

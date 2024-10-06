@@ -20,7 +20,7 @@ export class UserCardsModalData {
         },
         {
             title: 'Activity',
-            key: 'lastLogin',
+            key: 'tableActivity',
             selected: true,
         },
     ];
@@ -106,7 +106,7 @@ export class UserCardsModalData {
         },
         {
             title: 'Activity',
-            key: 'lastLogin',
+            key: 'tableActivity',
         },
         {
             isDropdown: true,
@@ -161,19 +161,19 @@ export class UserCardsModalData {
         },
         {
             title: 'Date Hired',
-            key: 'createdAt',
+            key: 'tableTableHired',
         },
         {
             title: 'Date Deactivated',
-            key: 'createdAt',
+            key: 'tableDeactivated',
         },
         {
             title: 'Date Added',
-            key: 'createdAt',
+            key: 'tableAdded',
         },
         {
             title: 'Date Edited',
-            key: 'updatedAt',
+            key: 'tableEdited',
         },
     ];
 }
