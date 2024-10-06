@@ -189,7 +189,7 @@ export const chatDataReducer = createReducer(
     })),
     on(closeAttachmentUpload, (state) => ({
         ...state,
-        isAttachmentUploadActive: true,
+        isAttachmentUploadActive: false,
     })),
     on(setAttachment, (state, newState) => ({
         ...state,
@@ -224,9 +224,9 @@ export const chatDataReducer = createReducer(
             ),
         ],
     })),
-    on(closeAttachmentUpload, (state) => ({
+    on(deleteAllAttachments, (state) => ({
         ...state,
-        attachments: null,
+        attachments: [],
     })),
     on(setUserTyping, (state, newState) => ({
         ...state,

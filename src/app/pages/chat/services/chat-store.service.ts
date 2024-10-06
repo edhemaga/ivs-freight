@@ -202,7 +202,7 @@ export class ChatStoreService {
     }
 
     public selectAttachments(): Observable<UploadFile[]> {
-        if (this.attachments$)
+        if (!this.attachments$)
             this.attachments$ = this.store.select(selectAttachments);
         return this.attachments$;
     }

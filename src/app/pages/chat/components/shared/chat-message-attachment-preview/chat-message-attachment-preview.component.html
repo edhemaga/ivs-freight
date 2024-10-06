@@ -24,11 +24,7 @@
                 [ngStyle]="{ width: isInMessage && 'fit-content' }"
             >
                 <div
-                    [ngClass]="
-                        isChatTypingBlurred && !isInMessage
-                            ? 'name-dark'
-                            : 'name-light'
-                    "
+                    [ngClass]="isInMessage ? 'name-dark' : 'name-light'"
                     [class.text-reduced]="isNameReduced"
                     class="name ta-font-medium"
                 >

@@ -39,14 +39,7 @@
         ></ng-container>
     </ng-container>
 
-    <div
-        class="chat-footer d-flex"
-        [ngStyle]="
-            isChatTypingActivated && (attachments$ | async)?.length
-                ? { height: '72px' }
-                : { height: 'fit-content' }
-        "
-    >
+    <div class="chat-footer d-flex">
         <div class="left-side d-flex">
             <ng-container *ngIf="!isChatTypingActivated; else chatInputField">
                 <div
@@ -85,27 +78,29 @@
                                     (mouseleave)="clearHoveredAttachment()"
                                 >
                                     <app-chat-message-attachment-preview
-                                        [isChatTypingBlurred]="
-                                            isChatTypingBlurred
-                                        "
                                         [index]="ind"
                                         [attachment]="attachment"
                                         [isNameReduced]="true"
                                     ></app-chat-message-attachment-preview>
-                                    <svg-icon
-                                        class="d-flex justify-content-center align-items-center"
-                                        [svgStyle]="{
-                                            'width.px': 14,
-                                            'height.px': 14
-                                        }"
-                                        [src]="
-                                            handleHoveredAttachment(
-                                                attachment,
-                                                ind
-                                            )
-                                        "
-                                        (click)="removeAttachment(attachment)"
-                                    ></svg-icon>
+                                    <div class="close-attachment">
+                                        <div
+                                            class="close-attachment-wrapper d-flex justify-content-center align-items-center"
+                                        >
+                                            <svg-icon
+                                                class="d-flex justify-content-center align-items-center"
+                                                [svgStyle]="{
+                                                    'width.px': 7,
+                                                    'height.px': 7
+                                                }"
+                                                [src]="
+                                                    chatSvgRoutes.noBorderXIcon
+                                                "
+                                                (click)="
+                                                    removeAttachment(attachment)
+                                                "
+                                            ></svg-icon>
+                                        </div>
+                                    </div>
                                 </div>
                             </ng-container>
                         </div>
@@ -136,14 +131,7 @@
                     : 'align-items-center'
             "
         >
-            <div
-                class="d-flex align-items-center"
-                [ngStyle]="
-                    isChatTypingActivated && (attachments$ | async)?.length
-                        ? { height: '8px' }
-                        : { height: '24px' }
-                "
-            >
+            <div class="d-flex align-items-center">
                 <ng-container
                     *ngTemplateOutlet="
                         iconAction;

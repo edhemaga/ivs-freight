@@ -209,74 +209,15 @@ export class ChatContentFooterComponent
         this.hoveredAttachment = attachment;
     }
 
-    public clearHoveredAttachment(): void {
-        // this.documentPreview.forEach((div: ElementRef) => {
-        //     this.renderer.removeClass(
-        //         div.nativeElement,
-        //         ChatAttachmentHoveredClassStringEnum.LIGHT
-        //     ),
-        //         this.renderer.removeClass(
-        //             div.nativeElement,
-        //             ChatAttachmentHoveredClassStringEnum.DARK
-        //         );
-        // });
-
-        this.hoveredAttachment = null;
-    }
-
-    public handleHoveredAttachment(
-        attachment: ChatAttachmentForThumbnail,
-        index: number
-    ): string {
-        // const isSelectedAttachment: boolean =
-        //     attachment === this.hoveredAttachment;
-
-        // const element = this.documentPreview.find(
-        //     (div: ElementRef) =>
-        //         div.nativeElement.getAttribute('data-id') === String(index)
-        // );
-        // if (element && isSelectedAttachment) {
-        //     const classToAdd: string = this.isChatTypingBlurred
-        //         ? ChatAttachmentHoveredClassStringEnum.LIGHT
-        //         : ChatAttachmentHoveredClassStringEnum.DARK;
-        //     this.renderer.addClass(element.nativeElement, classToAdd);
-        // }
-
-        let icon: string;
-
-        // switch (true) {
-        //     case this.isChatTypingBlurred && !isSelectedAttachment:
-        //         icon = ChatSvgRoutes.darkXIcon;
-        //         break;
-        //     case this.isChatTypingBlurred && isSelectedAttachment:
-        //         icon = ChatSvgRoutes.darkFocusedXIcon;
-        //         break;
-        //     case !this.isChatTypingBlurred && !isSelectedAttachment:
-        //         icon = ChatSvgRoutes.lightXIcon;
-        //         break;
-        //     case !this.isChatTypingBlurred && isSelectedAttachment:
-        //         icon = ChatSvgRoutes.lightFocusedXIcon;
-        //         break;
-        //     default:
-        //         icon = '';
-        //         this.clearHoveredAttachment();
-        //         break;
-        // }
-
-        return icon;
-    }
-
     public removeAttachment(attachment: UploadFile): void {
         this.chatStoreService.deleteAttachment(attachment);
     }
 
     public blurInput(): void {
         this.isChatTypingBlurred = false;
-        this.clearHoveredAttachment();
     }
 
     public focusInput(): void {
-        this.clearHoveredAttachment();
         this.isChatTypingBlurred = true;
     }
 
