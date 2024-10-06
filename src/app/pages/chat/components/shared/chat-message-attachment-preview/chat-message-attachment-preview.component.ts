@@ -19,6 +19,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
     @Input() public isNameReduced: boolean = false;
     @Input() public attachment!: ChatExtendedUploadFile;
     @Input() public isInMessage: boolean = false;
+    @Input() public isFocused: boolean = false;
     @Input() public isSizeDisplayed: boolean = true;
     @Input() public isDateDisplayed: boolean = false;
 

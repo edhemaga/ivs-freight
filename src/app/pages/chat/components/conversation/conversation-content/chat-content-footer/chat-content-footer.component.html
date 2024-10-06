@@ -71,11 +71,6 @@
                                             ? 'attachment-preview-container-short'
                                             : 'attachment-preview-container-long'
                                     "
-                                    [attr.data-id]="ind"
-                                    (mouseenter)="
-                                        setHoveredAttachment(attachment)
-                                    "
-                                    (mouseleave)="clearHoveredAttachment()"
                                 >
                                     <app-chat-message-attachment-preview
                                         [index]="ind"

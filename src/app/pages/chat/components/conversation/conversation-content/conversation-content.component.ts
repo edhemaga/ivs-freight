@@ -107,8 +107,9 @@ export class ConversationContentComponent
             )
             .subscribe((res) => {
                 const selectedConversation: ChatSelectedConversation = {
-                    participants: res.information.participants,
-                    name: res.information.name,
+                    id: res.information?.id,
+                    participants: res.information?.participants,
+                    name: res.information?.name,
                     description: res.information?.description,
                     createdAt: res.information?.createdAt,
                     updatedAt: res.information?.updatedAt,
