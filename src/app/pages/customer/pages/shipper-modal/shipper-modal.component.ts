@@ -357,7 +357,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 [Validators.required, ...departmentValidation],
             ],
             phone: [
-                data?.phone ? data.phone : null,
+                data?.phone ? data?.phone : null,
                 [Validators.required, phoneFaxRegex],
             ],
             phoneExt: [data?.phoneExt ? data.phoneExt : null],
@@ -366,20 +366,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     public addShipperContacts(event: { check: boolean; action: string }) {
-        const form = this.createShipperContacts();
-        if (event.check) {
-            this.shipperContacts.push(form);
+        if (this.shipperContacts.valid) {
+            const form = this.createShipperContacts();
+            if (event.check) {
+                this.shipperContacts.push(form);
+            }
+
+            this.inputService.customInputValidator(
+                form.get('email'),
+                'email',
+                this.destroy$
+            );
         }
-
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        setTimeout(() => {
-            this.trackShipperContactEmail();
-        }, 50);
     }
 
     public removeShipperContacts(id: number) {
@@ -387,39 +385,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.selectedContractDepartmentFormArray.splice(id, 1);
     }
 
-    public trackShipperContactEmail() {
-        const helper = new Array(this.shipperContacts.length).fill(false);
-
-        this.shipperContacts.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
-            .subscribe((items) => {
-                items.forEach((item, index) => {
-                    if (item.email && helper[index] === false) {
-                        helper[index] = true;
-
-                        this.inputService.changeValidators(
-                            this.shipperContacts.at(index).get('phone'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-
-                    if (!item.email && helper[index] === true) {
-                        this.shipperContacts
-                            .at(index)
-                            .get('email')
-                            .patchValue(null);
-                        this.inputService.changeValidators(
-                            this.shipperContacts.at(index).get('phone'),
-                            true,
-                            [phoneFaxRegex]
-                        );
-                        helper[index] = false;
-                    }
-                });
-            });
-    }
+    public trackShipperContactEmail() {}
 
     public onScrollingShipperContacts(event: any) {
         this.isContactCardsScrolling = event.target.scrollLeft > 1;
@@ -756,7 +722,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
-            files: documents ? documents : this.shipperForm.value.files,
+            files: documents ?? this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             locationType: this.selectedPhysicalAddressTab,
             longitude:

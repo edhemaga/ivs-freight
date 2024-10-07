@@ -17,6 +17,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
+// Modals
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
@@ -1281,7 +1284,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: data?.ban || data?.dnu || !data?.status,
                       isDnu: data?.dnu,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1381,7 +1384,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: !data?.status,
                       isDnu: false,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1893,6 +1896,14 @@ export class CustomerTableComponent
 
                     this.mapsService.addRating(res);
                 });
+        } else if (event.type === TableStringEnum.CREATE_LOAD) {
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: TableStringEnum.LOAD },
+                {
+                    data: { broker: event.data },
+                }
+            );
         }
     }
 

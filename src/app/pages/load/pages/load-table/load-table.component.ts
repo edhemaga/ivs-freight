@@ -39,8 +39,7 @@ import {
 import {
     CardDetails,
     DeleteComment,
-    DropdownItem,
-    LastStatusPassed,
+    DropdownItem, 
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';

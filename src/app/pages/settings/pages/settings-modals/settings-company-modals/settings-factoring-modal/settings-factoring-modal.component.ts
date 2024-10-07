@@ -85,6 +85,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public constants = SettingsFactoringModalConstants;
 
+    private nameInputBlurTimeoutCleaner: NodeJS.Timeout = null;
+
     noticeValue: any = '';
     range: any;
     selectedEditor: HTMLAnchorElement;
@@ -279,7 +281,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
                 .replace('{{CompanyName}}', this.factoringForm.get('name').value);
     
             this.factoringForm.get('noticeOfAssigment').setValue(noticeOfAssignmentBaseText);
-            this.isInitialCompanyNameSet = !this.isInitialCompanyNameSet;
+
+            this.nameInputBlurTimeoutCleaner = setTimeout(() => this.isInitialCompanyNameSet = !this.isInitialCompanyNameSet, 100);
         }
     }
 
@@ -295,5 +298,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
+        clearTimeout(this.nameInputBlurTimeoutCleaner);
     }
 }

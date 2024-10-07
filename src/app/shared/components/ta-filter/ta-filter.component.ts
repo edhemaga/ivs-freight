@@ -1275,7 +1275,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             item2.isSelected = false;
                         }
                     } else {
-                        if (item2.id === id) {
+                        if (item2.trailerType.id === item?.trailerType.id) {
                             item2.isSelected = false;
                         }
                     }
