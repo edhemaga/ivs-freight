@@ -856,6 +856,10 @@
             &:nth-child(11) {
                 width: 236px;
             }
+
+            &.hidden {
+                display: none;
+            }
         }
 
         &.first-row {
