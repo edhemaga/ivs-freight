@@ -367,117 +367,138 @@
                                 [formGroupName]="ind"
                             >
                                 <ng-container
-                                    *ngIf="!!openHour.get('isWorkingDay').value"
+                                    *ngIf="
+                                        !!openHour.get('isWorkingDay').value ||
+                                        openHour.get('id').value === 7
+                                    "
                                 >
                                     <div
                                         class="timeline__card timeline__card-inputs align-items-start"
                                     >
-                                        <div
-                                            class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                        <ng-container
+                                            *ngIf="
+                                                openHour.get('id').value !== 7;
+                                                else isHolidayRow
+                                            "
                                         >
-                                            {{
-                                                openHour.get(
-                                                    RepairShopModalStringEnum.DAY_OF_WEEK
-                                                ).value
-                                            }}
-                                        </div>
+                                            <div
+                                                class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
+                                            >
+                                                {{
+                                                    openHour.get(
+                                                        RepairShopModalStringEnum.DAY_OF_WEEK
+                                                    ).value
+                                                }}
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-template #isHolidayRow>
+                                            <app-ta-checkbox
+                                                [formControlName]="
+                                                    RepairShopModalStringEnum.IS_WORKING_DAY
+                                                "
+                                                [label]="'Holiday' + openHour.get('isWorkingDay').value"
+                                            ></app-ta-checkbox>
+                                        </ng-template>
 
                                         <!-- Iterate over shifts array -->
-                                        <div formArrayName="shifts">
-                                            <div
-                                                *ngFor="
-                                                    let shift of openHour.get(
-                                                        'shifts'
-                                                    ).controls;
-                                                    let shiftInd = index
-                                                "
-                                                [formGroupName]="shiftInd"
-                                                class="timeline__card-shift-grid"
-                                            >
-                                                <div class="d-flex flex-column">
-                                                    <app-ta-input
-                                                        [inputConfig]="
-                                                            openHoursFormField
-                                                        "
-                                                        formControlName="startTime"
-                                                    ></app-ta-input>
-                                                </div>
-                                                <div class="d-flex flex-column">
-                                                    <app-ta-input
-                                                        [inputConfig]="
-                                                            openHoursFormField
-                                                        "
-                                                        formControlName="endTime"
-                                                    ></app-ta-input>
+                                        <ng-container *ngIf="openHour.get('isWorkingDay').value">
+                                            <div formArrayName="shifts">
+                                                <div
+                                                    *ngFor="
+                                                        let shift of openHour.get(
+                                                            'shifts'
+                                                        ).controls;
+                                                        let shiftInd = index
+                                                    "
+                                                    [formGroupName]="shiftInd"
+                                                    class="timeline__card-shift-grid"
+                                                >
+                                                    <div class="d-flex flex-column">
+                                                        <app-ta-input
+                                                            [inputConfig]="
+                                                                openHoursFormField
+                                                            "
+                                                            formControlName="startTime"
+                                                        ></app-ta-input>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <app-ta-input
+                                                            [inputConfig]="
+                                                                openHoursFormField
+                                                            "
+                                                            formControlName="endTime"
+                                                        ></app-ta-input>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    openHour.get('shifts').value
-                                                        .length === 1
-                                                "
+    
+                                            <div
+                                                class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
                                             >
-                                                <div
-                                                    mainTooltip="Split Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
+                                                <ng-container
+                                                    *ngIf="
+                                                        openHour.get('shifts').value
+                                                            .length === 1
+                                                    "
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            repairShopModalSvgRoutes.plusIcon
-                                                        "
-                                                        [ngClass]="
-                                                            openHour.get(
-                                                                'shifts'
-                                                            ).value.length > 1
-                                                                ? 'svg-fill-light-grey-6'
-                                                                : 'svg-fill-muted svg-hover-black'
-                                                        "
-                                                        (click)="
-                                                            toggleDoubleWorkingTime(
-                                                                ind
-                                                            )
-                                                        "
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
-                                                </div>
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    openHour.get('shifts').value
-                                                        .length > 1
-                                                "
-                                            >
-                                                <div
-                                                    mainTooltip="Remove Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
-                                                    class="svg-fill-muted svg-hover-black"
+                                                    <div
+                                                        mainTooltip="Split Shift"
+                                                        tooltipMarginTop="5px"
+                                                        ngbTooltip
+                                                        position="bottom"
+                                                        tooltipBackground="#424242"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                repairShopModalSvgRoutes.plusIcon
+                                                            "
+                                                            [ngClass]="
+                                                                openHour.get(
+                                                                    'shifts'
+                                                                ).value.length > 1
+                                                                    ? 'svg-fill-light-grey-6'
+                                                                    : 'svg-fill-muted svg-hover-black'
+                                                            "
+                                                            (click)="
+                                                                toggleDoubleWorkingTime(
+                                                                    ind
+                                                                )
+                                                            "
+                                                            class="svg-size-14"
+                                                        ></svg-icon>
+                                                    </div>
+                                                </ng-container>
+    
+                                                <ng-container
+                                                    *ngIf="
+                                                        openHour.get('shifts').value
+                                                            .length > 1
+                                                    "
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            repairShopModalSvgRoutes.minusIcon
-                                                        "
-                                                        (click)="
-                                                            toggleDoubleWorkingTime(
-                                                                ind
-                                                            )
-                                                        "
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
-                                                </div>
-                                            </ng-container>
-                                        </div>
+                                                    <div
+                                                        mainTooltip="Remove Shift"
+                                                        tooltipMarginTop="5px"
+                                                        ngbTooltip
+                                                        position="bottom"
+                                                        tooltipBackground="#424242"
+                                                        class="svg-fill-muted svg-hover-black"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                repairShopModalSvgRoutes.minusIcon
+                                                            "
+                                                            (click)="
+                                                                toggleDoubleWorkingTime(
+                                                                    ind
+                                                                )
+                                                            "
+                                                            class="svg-size-14"
+                                                        ></svg-icon>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </ng-container>
                             </div>
@@ -569,13 +590,68 @@
                 >
                     <app-ca-upload-files
                         [files]="[]"
-                        [slider]="{dontUseSlider: false, hasCarouselBottomTabs: false}"
-                        [carouselConfig]="{files: [], customClass: 'medium', customDetailsPageClass: 'modals', hasCarouselBottomTabs: true}"
+                        [slider]="{
+                            dontUseSlider: false,
+                            hasCarouselBottomTabs: false
+                        }"
+                        [carouselConfig]="{
+                            files: [],
+                            customClass: 'medium',
+                            customDetailsPageClass: 'modals',
+                            hasCarouselBottomTabs: true
+                        }"
                         [hasCrop]="true"
                         [isRoundCrop]="false"
-                        [dropzoneConf]="[{template: 'imageCropTemplate', config: {dropzone: {dropZoneType: 'image', multiple: true, globalDropZone: false, dropZonePages: 'cdl'}, dropzoneOption: {customClassName: 'documents-dropzone', size: 'medium', modalSize: 'lg', showDropzone: true, dropzoneClose: false}}}]"
-                        [review]="{isReview: true, reviewMode: 'REVIEW_MODE', feedbackText: 'Sample feedback text', categoryTag: 'General'}"
-                        [configFile]="{id: 111, customClassName: 'modals', file: {url: '', incorrect: false, lastHovered: false, fileSize: 1200, fileName: ''}, hasTagsDropdown: false, hasNumberOfPages: true, activePage: 1, tags: ['Example'], type: 'modal', hasLandscapeOption: false, tagsOptions: [{tagName: 'HOS Agreement', checked: false}, {tagName: 'Unsafe Driving AGT', checked: false}]}"
+                        [dropzoneConf]="[
+                            {
+                                template: 'imageCropTemplate',
+                                config: {
+                                    dropzone: {
+                                        dropZoneType: 'image',
+                                        multiple: true,
+                                        globalDropZone: false,
+                                        dropZonePages: 'cdl'
+                                    },
+                                    dropzoneOption: {
+                                        customClassName: 'documents-dropzone',
+                                        size: 'medium',
+                                        modalSize: 'lg',
+                                        showDropzone: true,
+                                        dropzoneClose: false
+                                    }
+                                }
+                            }
+                        ]"
+                        [review]="{
+                            isReview: true,
+                            reviewMode: 'REVIEW_MODE',
+                            feedbackText: 'Sample feedback text',
+                            categoryTag: 'General'
+                        }"
+                        [configFile]="{
+                            id: 111,
+                            customClassName: 'modals',
+                            file: {
+                                url: '',
+                                incorrect: false,
+                                lastHovered: false,
+                                fileSize: 1200,
+                                fileName: ''
+                            },
+                            hasTagsDropdown: false,
+                            hasNumberOfPages: true,
+                            activePage: 1,
+                            tags: ['Example'],
+                            type: 'modal',
+                            hasLandscapeOption: false,
+                            tagsOptions: [
+                                { tagName: 'HOS Agreement', checked: false },
+                                {
+                                    tagName: 'Unsafe Driving AGT',
+                                    checked: false
+                                }
+                            ]
+                        }"
                         [size]="'medium'"
                         [slideWidth]="180"
                         (onFileEvent)="onUploadCoverPhoto($event)"

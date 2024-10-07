@@ -4,6 +4,7 @@ import { TableStringEnum,  } from '@shared/enums/table-string.enum';
 import { RepairShopModalEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
 import { OpenHours, RepairShopTabs, RepairShopModalService } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
+import { RepairShopConstants } from './constants/repair-shop-modal.constants';
 
 export class RepairShopHelper {
     static TABS(isAddMode: boolean, openedTab: OpenedTab): RepairShopTabs[] {
@@ -52,8 +53,7 @@ export class RepairShopHelper {
         formBuilder: UntypedFormBuilder,
         isWorkingDay: boolean
     ): UntypedFormGroup {
-        // TODO: ANY
-        const shifts = (day as any).shifts?.map((shift) =>
+        let shifts = (day as any).shifts?.map((shift) =>
             formBuilder.group({
                 startTime: [shift.startTime],
                 endTime: [shift.endTime],

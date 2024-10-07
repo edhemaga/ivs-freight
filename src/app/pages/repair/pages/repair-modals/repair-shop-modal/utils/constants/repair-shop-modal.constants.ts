@@ -9,14 +9,14 @@ import { OpenHours } from '@pages/repair/pages/repair-modals/repair-shop-modal/m
 
 export type WorkingHoursType = OpenHourDays[];
 
-const startTime = MethodsCalculationsHelper.convertTimeFromBackend(
-    OpenWorkingHours.EIGHTAM
-);
-const endTime = MethodsCalculationsHelper.convertTimeFromBackend(
-    OpenWorkingHours.FIVEAM
-);
-
 export class RepairShopConstants {
+    static startTime = MethodsCalculationsHelper.convertTimeFromBackend(
+        OpenWorkingHours.EIGHTAM
+    );
+    static endTime = MethodsCalculationsHelper.convertTimeFromBackend(
+        OpenWorkingHours.FIVEAM
+    );
+
     static OPEN_HOUR_DAYS: WorkingHoursType = [
         OpenHourDays.Sunday,
         OpenHourDays.Monday,
@@ -27,86 +27,72 @@ export class RepairShopConstants {
         OpenHourDays.Saturday,
     ];
 
+    static Holiday: OpenHours = {
+        dayOfWeek: OpenHourDays.Holiday,
+        index: 7,
+        isWorkingDay: false,
+        startTime: RepairShopConstants.startTime,
+        endTime: RepairShopConstants.endTime,
+        isDoubleShift: false,
+    }
+
     static DEFAULT_OPEN_HOUR_DAYS: OpenHours[] = [
         {
             dayOfWeek: OpenHourDays.Monday,
             index: 1,
             isWorkingDay: true,
-            startTime,
-            endTime,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: endTime,
-            secondStartTime: startTime
         },
         {
             dayOfWeek: OpenHourDays.Tuesday,
             index: 2,
             isWorkingDay: true,
-            startTime,
-            endTime,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: endTime,
-            secondStartTime: startTime
         },
         {
             dayOfWeek: OpenHourDays.Wednesday,
             index: 3,
             isWorkingDay: true,
-            startTime,
-            endTime,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: endTime,
-            secondStartTime: startTime
         },
         {
             dayOfWeek: OpenHourDays.Thursday,
             index: 4,
             isWorkingDay: true,
-            startTime,
-            endTime,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: endTime,
-            secondStartTime: startTime
         },
         {
             dayOfWeek: OpenHourDays.Friday,
             index: 5,
             isWorkingDay: true,
-            startTime,
-            endTime,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: endTime,
-            secondStartTime: startTime
         },
         {
             dayOfWeek: OpenHourDays.Saturday,
             index: 6,
             isWorkingDay: false,
-            startTime: null,
-            endTime: null,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: null,
-            secondStartTime: null
         },
         {
             dayOfWeek: OpenHourDays.Sunday,
             index: 0,
             isWorkingDay: false,
-            startTime: null,
-            endTime: null,
+            startTime: RepairShopConstants.startTime,
+            endTime: RepairShopConstants.endTime,
             isDoubleShift: false,
-            secondEndTime: null,
-            secondStartTime: null
         },
-        {
-            dayOfWeek: OpenHourDays.Holiday,
-            index: 7,
-            isWorkingDay: false,
-            startTime: null,
-            endTime: null,
-            isDoubleShift: false,
-            secondEndTime: null,
-            secondStartTime: null
-        },
+        RepairShopConstants.Holiday,
     ];
 }

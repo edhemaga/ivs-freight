@@ -6,8 +6,6 @@ export interface OpenHours {
     startTime: Date | null;
     endTime: Date | null;
     isDoubleShift: boolean,
-    secondStartTime: Date | null,
-    secondEndTime: Date | null,
     shifts?: {
         startTime: Date | string;
         endTime: Date | string;}[];

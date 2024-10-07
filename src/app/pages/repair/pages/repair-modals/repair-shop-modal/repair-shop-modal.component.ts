@@ -161,7 +161,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
-    
+
     // Inputs
     @Input() editData: RepeairShopModalInput;
 
@@ -675,13 +675,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 ? OpenWorkingHours.MIDNIGHT
                 : OpenWorkingHours.FIVEPM
             : null;
-
-        this.patchWorkingDayTime(
-            newWorkingDay,
-            startTime,
-            endTime,
-            dayActiveField.value
-        );
+        newWorkingDay.patchValue({
+            ...newWorkingDay,
+            shifts: [{ startTime, endTime }],
+        });
     }
 
     public toggleDoubleWorkingTime(dayIndex: number): void {
@@ -738,7 +735,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 index
             ) {
                 item.patchValue({
-                    ...monday.value,
+                    [RepairShopModalStringEnum.SHIFTS]: monday.get(
+                        RepairShopModalStringEnum.SHIFTS
+                    ).value,
                     [RepairShopModalStringEnum.DAY_OF_WEEK]: item.get(
                         RepairShopModalStringEnum.DAY_OF_WEEK
                     ).value,
@@ -995,8 +994,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private convertCoverDocumentForRequest(): any {
-        return this.repairShopForm
-        .get(RepairShopModalStringEnum.COVER).value;
+        return this.repairShopForm.get(RepairShopModalStringEnum.COVER).value;
     }
 
     private mapContacts(): RepairShopContactCommand[] {
