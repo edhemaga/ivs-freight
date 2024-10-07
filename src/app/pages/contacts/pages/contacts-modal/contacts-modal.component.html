@@ -241,10 +241,10 @@
                 [disableAnimation]="isCardAnimationDisabled"
                 [isCardOpen]="true"
             >
-                <!-- [isVisibleCropAndDrop]="
-                        uploadOptionsConstants.isVisibleCropAndDrop
-                    " -->
                 <app-ca-upload-files
+                    [isVisibleCropAndDrop]="
+                        uploadOptionsConstants.isVisibleCropAndDrop
+                    "
                     [files]="uploadOptionsConstants.files"
                     [slider]="uploadOptionsConstants.slider"
                     [carouselConfig]="uploadOptionsConstants.carouselConfig"
