@@ -661,23 +661,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 )
             );
         } else {
+            const newHoliday = {
+                dayOfWeek: 'Holiday',  
+                shifts: [{
+                    startTime: [OpenWorkingHours.EIGHTAM],
+                    endTime: [OpenWorkingHours.FIVEPM],
+                }]
+            };
+            
             this.holidayHours.push(
-                RepairShopHelper.createOpenHour(
-                    {
-                        dayOfWeek: 'Holiday',
-                        shifts: [
-                            {
-                                startTime: OpenWorkingHours.EIGHTAM,
-                                endTime: OpenWorkingHours.FIVEPM,
-                            },
-                        ],
-                        isWorkingDay: false,
-                    },
-                    this.formBuilder,
-                    false
-                )
+                RepairShopHelper.createOpenHour(newHoliday, this.formBuilder, false)
             );
+            
         }
+        console.log(this.holidayHours)
     }
 
     public addShift(dayIndex: number): void {
@@ -722,11 +719,22 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public toggleDoubleWorkingTimeForHoliday(): void {
-        const dayActiveField = this.holidayHours
-            .at(0)
-            .get(RepairShopModalStringEnum.DOUBLE_SHIFT);
-        dayActiveField.patchValue(!dayActiveField.value);
+        const holidayFormGroup = this.holidayHours.at(0) as UntypedFormGroup;
+    
+        const shifts = holidayFormGroup.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
+    
+        if (shifts.length === 1) {
+            shifts.push(
+                this.formBuilder.group({
+                    startTime: [OpenWorkingHours.EIGHTAM],
+                    endTime: [OpenWorkingHours.FIVEPM],
+                })
+            );
+        } else if (shifts.length === 2) {
+            shifts.removeAt(1);
+        }
     }
+    
 
     public toggleDoubleWorkingTime(dayIndex: number): void {
         const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;

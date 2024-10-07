@@ -429,109 +429,42 @@
                         
                         </div>
 
-                        <!-- <div
-                            [formArrayName]="RepairShopModalStringEnum.HOLIDAY"
-                        >
-                            <div
-                                *ngFor="
-                                    let holiday of holidayHours.controls;
-                                    let ind = index
-                                "
-                                [formGroupName]="ind"
-                            >
-                                <div
-                                    class="timeline__card timeline__card-inputs align-items-start"
-                                >
-                                    <div
-                                        class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center"
-                                    >
+                        <div [formArrayName]="RepairShopModalStringEnum.HOLIDAY">
+                            <div *ngFor="let holiday of holidayHours.controls; let ind = index" [formGroupName]="ind">
+                                <div class="timeline__card timeline__card-inputs align-items-start">
+                                    <div class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center">
                                         <app-ta-checkbox
-                                            [formControlName]="
-                                                RepairShopModalStringEnum.IS_WORKING_DAY
-                                            "
+                                            [formControlName]="RepairShopModalStringEnum.IS_WORKING_DAY"
                                             [label]="'Holiday'"
                                         ></app-ta-checkbox>
                                     </div>
-
-                                    <ng-container
-                                        *ngIf="
-                                            !!holiday.get(
-                                                RepairShopModalStringEnum.IS_WORKING_DAY
-                                            ).value
-                                        "
-                                    >
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="
-                                                    openHoursFormField
-                                                "
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.START_TIME
-                                                "
-                                            ></app-ta-input>
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ).value
-                                                "
+                        
+                                    <!-- Only show time inputs if it is a working day -->
+                                    <ng-container *ngIf="!!holiday.get(RepairShopModalStringEnum.IS_WORKING_DAY).value">
+                                        <!-- Iterate over shifts array for holidays -->
+                                        <div formArrayName="shifts">
+                                            <div
+                                                *ngFor="let shift of holiday.get('shifts').controls; let shiftInd = index"
+                                                [formGroupName]="shiftInd"
+                                                class="timeline__card-shift-grid"
                                             >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_START_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
+                                                <div class="d-flex flex-column">
+                                                    <app-ta-input
+                                                        [inputConfig]="openHoursFormField"
+                                                        formControlName="startTime"
+                                                    ></app-ta-input>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <app-ta-input
+                                                        [inputConfig]="openHoursFormField"
+                                                        formControlName="endTime"
+                                                    ></app-ta-input>
+                                                </div>
+                                            </div>
                                         </div>
-
-                                        <div class="d-flex flex-column">
-                                            <app-ta-input
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.END_TIME
-                                                "
-                                            ></app-ta-input>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ).value
-                                                "
-                                            >
-                                                <app-ta-input
-                                                    [inputConfig]="
-                                                        openHoursFormField
-                                                    "
-                                                    [formControlName]="
-                                                        RepairShopModalStringEnum.SECOND_END_TIME
-                                                    "
-                                                    class="timeline__card-double-shift"
-                                                ></app-ta-input>
-                                            </ng-container>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    !!holiday.get(
-                                                        RepairShopModalStringEnum.DOUBLE_SHIFT
-                                                    ) as doubleShift
-                                                "
-                                            >
+                        
+                                        <div class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer">
+                                            <ng-container *ngIf="holiday.get('shifts').value.length === 1">
                                                 <div
                                                     mainTooltip="Split Shift"
                                                     tooltipMarginTop="5px"
@@ -540,55 +473,41 @@
                                                     tooltipBackground="#424242"
                                                 >
                                                     <svg-icon
-                                                        [src]="
-                                                            repairShopModalSvgRoutes.plusIcon
-                                                        "
+                                                        [src]="repairShopModalSvgRoutes.plusIcon"
                                                         [ngClass]="
-                                                            doubleShift.value
+                                                            holiday.get('shifts').value.length > 1
                                                                 ? 'svg-fill-light-grey-6'
                                                                 : 'svg-fill-muted svg-hover-black'
                                                         "
-                                                        (click)="
-                                                            doubleShift.value
-                                                                ? ''
-                                                                : toggleDoubleWorkingTimeForHoliday(
-                                                                      ind
-                                                                  )
-                                                        "
+                                                        (click)="toggleDoubleWorkingTimeForHoliday(ind)"
                                                         class="svg-size-14"
                                                     ></svg-icon>
                                                 </div>
-
-                                                <ng-container
-                                                    *ngIf="doubleShift.value"
+                                            </ng-container>
+                        
+                                            <ng-container *ngIf="holiday.get('shifts').value.length > 1">
+                                                <div
+                                                    mainTooltip="Remove Shift"
+                                                    tooltipMarginTop="5px"
+                                                    ngbTooltip
+                                                    position="bottom"
+                                                    tooltipBackground="#424242"
+                                                    class="svg-fill-muted svg-hover-black"
                                                 >
-                                                    <div
-                                                        mainTooltip="Remove Shift"
-                                                        tooltipMarginTop="5px"
-                                                        ngbTooltip
-                                                        position="bottom"
-                                                        tooltipBackground="#424242"
-                                                        class="svg-fill-muted svg-hover-black"
-                                                    >
-                                                        <svg-icon
-                                                            [src]="
-                                                                repairShopModalSvgRoutes.minusIcon
-                                                            "
-                                                            (click)="
-                                                                toggleDoubleWorkingTimeForHoliday(
-                                                                    ind
-                                                                )
-                                                            "
-                                                            class="svg-size-14"
-                                                        ></svg-icon>
-                                                    </div>
-                                                </ng-container>
+                                                    <svg-icon
+                                                        [src]="repairShopModalSvgRoutes.minusIcon"
+                                                        (click)="toggleDoubleWorkingTimeForHoliday(ind)"
+                                                        class="svg-size-14"
+                                                    ></svg-icon>
+                                                </div>
                                             </ng-container>
                                         </div>
                                     </ng-container>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
+                        
+                        
                     </app-ta-custom-card>
 
                     <!-- Bank Account -->
