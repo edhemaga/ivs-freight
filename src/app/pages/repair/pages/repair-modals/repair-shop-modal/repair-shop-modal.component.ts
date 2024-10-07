@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+    FormArray,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -610,16 +611,21 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             this.workingDaysLabel.forEach((day) => {
                 const matchingOpenHours = repairShop.openHours.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
-                );
+                )
 
                 // Create the open hour entry
                 const openHourEntry = RepairShopHelper.createOpenHour(
                     {
                         ...day,
-                        shifts: matchingOpenHours.map((openDay) => ({
+                        shifts:matchingOpenHours.length ? matchingOpenHours.map((openDay) => ({
                             startTime: openDay.startTime,
                             endTime: openDay.endTime,
-                        })),
+                        })) : [
+                            {
+                                startTime: RepairShopConstants.startTime,
+                                endTime: RepairShopConstants.endTime,
+                            },
+                        ],
                     },
                     this.formBuilder,
                     matchingOpenHours.length > 0
@@ -675,10 +681,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 ? OpenWorkingHours.MIDNIGHT
                 : OpenWorkingHours.FIVEPM
             : null;
-        newWorkingDay.patchValue({
-            ...newWorkingDay,
-            shifts: [{ startTime, endTime }],
-        });
+            
+            const shiftsArray = newWorkingDay.get(RepairShopModalStringEnum.SHIFTS) as FormArray;
+            
+            const newShift = { startTime, endTime };
+            if(!dayActiveField.value) {
+                shiftsArray.patchValue([this.formBuilder.group(newShift)]); 
+            } else {
+                shiftsArray.clear(); 
+                shiftsArray.push(this.formBuilder.group(newShift)); 
+            }
     }
 
     public toggleDoubleWorkingTime(dayIndex: number): void {
@@ -716,9 +728,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         );
 
         this.openHours.controls.forEach((item) => {
-            if (item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value) {
-                this.patchWorkingDayTime(item, startTime, endTime, true);
-            }
+            const shiftsArray = item.get(RepairShopModalStringEnum.SHIFTS) as FormArray;
+            
+            const newShift = { startTime, endTime };
+            
+            shiftsArray.clear(); 
+            shiftsArray.push(this.formBuilder.group(newShift));
         });
     }
 
