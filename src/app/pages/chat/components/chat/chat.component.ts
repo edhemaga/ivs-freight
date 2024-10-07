@@ -125,9 +125,6 @@ export class ChatComponent
 
     private selectStoreData(): void {
         this.conversation$ = this.chatStoreService.selectConversation();
-        this.conversation$.subscribe(() =>
-            this.chatStoreService.closeAttachmentUpload()
-        );
         this.isProfileDetailsDisplayed$ =
             this.chatStoreService.selectIsProfileDetailsDisplayed();
         this.conversationProfileDetails$ =
@@ -136,6 +133,10 @@ export class ChatComponent
             this.chatStoreService.selectIsConversationParticipantsDisplayed();
         this.isAttachmentUploadActive$ =
             this.chatStoreService.selectAttachmentUploadStatus();
+
+        this.conversation$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.chatStoreService.closeAttachmentUpload());
     }
 
     private getDataOnLoad(): void {

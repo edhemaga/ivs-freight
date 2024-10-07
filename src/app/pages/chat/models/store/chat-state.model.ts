@@ -1,7 +1,6 @@
 // Models
 import {
     ChatCompanyChannelExtended,
-    ChatExtendedUploadFile,
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
@@ -9,10 +8,10 @@ import {
     CompanyUserChatResponsePagination,
     ConversationInfoResponse,
 } from 'appcoretruckassist';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import { ChatViewTypeEnum } from '@pages/chat/enums';
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 export type ChatState = {
     // Conversation list

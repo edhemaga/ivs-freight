@@ -1,12 +1,6 @@
-import {
-    Component,
-    Input,
-    OnInit,
-    OnDestroy,
-    ElementRef,
-    ViewChildren,
-    QueryList,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     BehaviorSubject,
     takeUntil,
@@ -14,7 +8,6 @@ import {
     Observable,
     concatMap,
 } from 'rxjs';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 // Models
 import {
@@ -42,7 +35,6 @@ import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-chat-content-footer',
@@ -113,9 +105,11 @@ export class ChatContentFooterComponent
         this.editMessage$ = this.chatStoreService.selectEditMessage();
         this.replyMessage$ = this.chatStoreService.selectReplyMessage();
         this.attachments$ = this.chatStoreService.selectAttachments();
-        this.attachments$.subscribe((attachments: UploadFile[]) => {
-            this.attachments = attachments;
-        });
+        this.attachments$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((attachments: UploadFile[]) => {
+                this.attachments = attachments;
+            });
     }
 
     public handleSend(): void {
@@ -144,10 +138,6 @@ export class ChatContentFooterComponent
         if (!this.conversation?.id || !this.isMessageSendable || !message)
             this.isMessageSendable = false;
 
-        const completeSubject: BehaviorSubject<void> = new BehaviorSubject(
-            null
-        );
-
         this.chatService
             .sendMessage(
                 this.conversation.id,
@@ -163,7 +153,6 @@ export class ChatContentFooterComponent
                 this.chatStoreService.deleteAllAttachments();
                 this.messageForm.reset();
                 this.closeReplyAndEdit();
-                completeSubject.next();
             });
     };
 
