@@ -434,6 +434,24 @@
                             </div>
                         </div>
                     </app-ta-custom-card>
+
+                    <div class="ta-card-body-overflow-none">
+                        <app-ta-custom-card
+                            [hasCounter]="documents?.length ?? 0"
+                            [cardName]="'Document'"
+                            [disableAnimation]="disableCardAnimation"
+                            [isCardOpen]="!!documents.length"
+                        >
+                            <app-ta-upload-files
+                                [files]="documents"
+                                [size]="'medium'"
+                                [showDropzone]="true"
+                                (onFileEvent)="onFilesEvent($event)"
+                                [customClassName]="'modals'"
+                            ></app-ta-upload-files>
+                        </app-ta-custom-card>
+                    </div>
+
                     <app-ta-input-note
                         formControlName="note"
                         [isVisibleNote]="

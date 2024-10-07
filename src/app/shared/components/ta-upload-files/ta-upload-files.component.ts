@@ -97,7 +97,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     @Input() dropzoneFocus: boolean = false;
     @Input() showDropzone: boolean = false;
     @Input() dropzoneColumn: boolean = false;
-    @Input() dropZoneConfig: DropZoneConfig
+    @Input() dropZoneConfig: DropZoneConfig;
 
     // Review
     @Input() isReview: boolean;
@@ -110,7 +110,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     public currentSlide: number = 0;
     private destroy$ = new Subject<void>();
 
-    constructor(private uploadFileService: TaUploadFileService) { }
+    constructor(private uploadFileService: TaUploadFileService) {}
 
     ngOnInit(): void {
         this.uploadFileService.uploadedFiles$
@@ -186,19 +186,19 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                         this.modalCarousel.customClass == 'large'
                             ? 3
                             : this.modalCarousel.customClass == 'medium'
-                                ? 2
-                                : 1;
+                            ? 2
+                            : 1;
                     const allowSlide =
                         this.modalCarousel.customClass == 'large' &&
-                            this._files.length > 2
+                        this._files.length > 2
                             ? true
                             : this.modalCarousel.customClass == 'medium' &&
-                                this._files.length > 1
-                                ? true
-                                : this.modalCarousel.customClass == 'small' &&
-                                    this._files.length > 0
-                                    ? true
-                                    : false;
+                              this._files.length > 1
+                            ? true
+                            : this.modalCarousel.customClass == 'small' &&
+                              this._files.length > 0
+                            ? true
+                            : false;
                     if (allowSlide) {
                         this.modalCarousel.slideToFile(
                             this._files.length - slideTo
@@ -276,19 +276,19 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                     this.modalCarousel?.customClass == 'large'
                         ? 3
                         : this.modalCarousel?.customClass == 'medium'
-                            ? 2
-                            : 1;
+                        ? 2
+                        : 1;
                 const allowSlide =
                     this.modalCarousel?.customClass == 'large' &&
-                        this._files.length > 2
+                    this._files.length > 2
                         ? true
                         : this.modalCarousel?.customClass == 'medium' &&
-                            this._files.length > 1
-                            ? true
-                            : this.modalCarousel?.customClass == 'small' &&
-                                this._files.length > 0
-                                ? true
-                                : false;
+                          this._files.length > 1
+                        ? true
+                        : this.modalCarousel?.customClass == 'small' &&
+                          this._files.length > 0
+                        ? true
+                        : false;
                 if (allowSlide) {
                     this.modalCarousel?.slideToFile(
                         this._files.length - slideTo
@@ -341,7 +341,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
             this._files.map((item, index) => {
                 if (
                     (checkById && file?.fileId == item.fileId) ||
-                    (!checkById && file?.realFile.name == item.realFile.name)
+                    (!checkById && file?.realFile?.name == item.realFile?.name)
                 ) {
                     this.uploadedFiles['_results'][index].updateHover(true);
                 } else {
