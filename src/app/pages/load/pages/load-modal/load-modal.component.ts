@@ -3849,16 +3849,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
         }
 
-        if (routes.length > 1) {
-            const validRoutes = routes.filter(
-                (item) =>
-                    item &&
-                    item.longitude !== undefined &&
-                    item.longitude !== null &&
-                    item.latitude !== undefined &&
-                    item.latitude !== null
-            );
+        const validRoutes = routes.filter(
+            (item) =>
+                item &&
+                item.longitude !== undefined &&
+                item.longitude !== null &&
+                item.latitude !== undefined &&
+                item.latitude !== null
+        );
 
+        if (validRoutes) {
             this.loadService
                 .getRouting(
                     JSON.stringify(
@@ -3873,9 +3873,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .pipe(debounceTime(2000), takeUntil(this.destroy$))
                 .subscribe({
                     next: (res: RoutingResponse) => {
-                        // TODO: Populate lat and long with routesPoints
-
-                        // render on map routes
                         this.loadStopRoutes[0] = {
                             routeColor: LoadModalStringEnum.COLOR_4,
                             stops: routes.map((route, index) => {
@@ -3906,7 +3903,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             };
                         });
 
-                        // store in form values
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
                                 // pickup
@@ -3945,12 +3941,31 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                             LoadModalStringEnum.PICKUP_LEG_COST
                                         )
                                         .patchValue(item.cost);
-                                }
-                                // extra stops
-                                if (
-                                    index > 0 &&
-                                    this.loadExtraStops().length === index
-                                ) {
+                                } else if(index === res.legs.length - 1 || res.legs.length === 2){
+                                    this.loadForm
+                                        .get(
+                                            LoadModalStringEnum.DELIVERY_LEG_MILES
+                                        )
+                                        .patchValue(res?.legs[index].miles);
+                                    this.loadForm
+                                        .get(
+                                            LoadModalStringEnum.DELIVERY_LEG_HOURS
+                                        )
+                                        .patchValue(res?.legs[index].hours);
+                                    this.loadForm
+                                        .get(
+                                            LoadModalStringEnum.DELIVERY_LEG_MINUTES
+                                        )
+                                        .patchValue(res?.legs[index].minutes);
+                                    this.loadForm
+                                        .get(
+                                            LoadModalStringEnum.DELIVERY_LEG_COST
+                                        )
+                                        .patchValue(res?.legs[index].cost);
+                                    this.loadForm
+                                        .get(LoadModalStringEnum.DELIVERY_SHAPE)
+                                        .patchValue(res?.legs[index].shape);
+                                } else {
                                     this.loadExtraStops()
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_MILES)
@@ -3972,78 +3987,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         .get(LoadModalStringEnum.LEG_COST)
                                         .patchValue(item.cost);
                                 }
-                                // delivery
-                                else {
-                                    if (res?.legs?.length === 1) {
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_MILES
-                                            )
-                                            .patchValue(res?.legs[0].miles);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_HOURS
-                                            )
-                                            .patchValue(res?.legs[0].hours);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_MINUTES
-                                            )
-                                            .patchValue(res?.legs[0].minutes);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_SHAPE
-                                            )
-                                            .patchValue(res?.legs[0].minutes);
-                                    } else {
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_MILES
-                                            )
-                                            .patchValue(res?.legs[index].miles);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_HOURS
-                                            )
-                                            .patchValue(res?.legs[index].hours);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_MINUTES
-                                            )
-                                            .patchValue(
-                                                res?.legs[index].minutes
-                                            );
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_LEG_COST
-                                            )
-                                            .patchValue(res?.legs[index].cost);
-                                        this.loadForm
-                                            .get(
-                                                LoadModalStringEnum.DELIVERY_SHAPE
-                                            )
-                                            .patchValue(res?.legs[index].shape);
-                                    }
-                                }
+                                this.loadForm
+                                    .get(LoadModalStringEnum.TOTAL_MILES)
+                                    .patchValue(res?.totalMiles);
+                                this.totalLegMiles = res.totalMiles;
+                                this.totalLegHours = res.totalHours;
+                                this.totalLegMinutes = res.totalMinutes;
+                                this.totalLegCost = res.totalCost;
+                                this.emptyMiles = res.legs[0]?.miles || 0;
+
+                                clearTimeout(this.lastCallTimeout);
+
+                                this.lastCallTimeout = setTimeout(() => {
+                                    this.watchFormChanges();
+                                }, this.debounceDelay);
                             });
-
-                            this.loadForm
-                                .get(LoadModalStringEnum.TOTAL_MILES)
-                                .patchValue(res?.totalMiles);
-                            this.totalLegMiles = res.totalMiles;
-                            this.totalLegHours = res.totalHours;
-                            this.totalLegMinutes = res.totalMinutes;
-                            this.totalLegCost = res.totalCost;
-                            this.emptyMiles = res.legs[0]?.miles || 0;
                         }
-
-                        clearTimeout(this.lastCallTimeout);
-
-                        this.lastCallTimeout = setTimeout(() => {
-                            this.watchFormChanges();
-                        }, this.debounceDelay);
                     },
-                    error: () => {},
                 });
         }
     }
