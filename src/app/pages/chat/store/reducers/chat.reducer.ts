@@ -196,7 +196,7 @@ export const chatDataReducer = createReducer(
         attachments: [
             ...state.attachments,
             {
-                fileId: newState.fileId,
+                fileId: state.attachments?.length + 1 ?? 0,
                 name: newState.name,
                 fileName: newState.fileName,
                 url: newState.url,
@@ -218,9 +218,8 @@ export const chatDataReducer = createReducer(
     on(deleteAttachment, (state, newState) => ({
         ...state,
         attachments: [
-            ...state.attachments,
             ...state.attachments?.filter(
-                (attachment) => attachment.fileId !== newState.fileId
+                (attachment) => attachment?.fileId !== newState?.fileId
             ),
         ],
     })),

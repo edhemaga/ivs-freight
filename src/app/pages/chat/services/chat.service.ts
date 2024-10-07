@@ -128,8 +128,10 @@ export class UserChatService {
         if (!conversationId) return;
 
         const attachments: File[] = attachmentsList.map((item) => {
-            return item.realFile;
+            return { ...item.realFile, fileId: null };
         });
+
+        console.log(attachments);
 
         const links = linksList?.map((link) => {
             return {

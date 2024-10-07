@@ -125,6 +125,9 @@ export class ChatComponent
 
     private selectStoreData(): void {
         this.conversation$ = this.chatStoreService.selectConversation();
+        this.conversation$.subscribe(() =>
+            this.chatStoreService.closeAttachmentUpload()
+        );
         this.isProfileDetailsDisplayed$ =
             this.chatStoreService.selectIsProfileDetailsDisplayed();
         this.conversationProfileDetails$ =

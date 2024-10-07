@@ -99,14 +99,6 @@ export class ConversationListComponent
         });
     }
 
-    private listenForNewMessage(): void {
-        ChatHubService.receiveMessage()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((msg) => {
-                // TODO implement new logic
-            });
-    }
-
     private initializeChatGroupStates(): void {
         this.groupsState = [
             {
