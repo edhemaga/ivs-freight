@@ -44,5 +44,7 @@ export interface ApiShipperPostRequest {
     ShipperContacts?: Array<ShipperContactCommand>;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;
+    Cover?: Blob;
+    CoverIdForDelete?: number;
 }
 

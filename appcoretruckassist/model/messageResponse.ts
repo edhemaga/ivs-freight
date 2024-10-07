@@ -26,6 +26,7 @@ export interface MessageResponse {
     createdAt?: string;
     updatedAt?: string;
     isEdited?: boolean;
+    isDeleted?: boolean;
     files?: Array<FileResponse> | null;
     filesCount?: number;
     media?: Array<FileResponse> | null;
