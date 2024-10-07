@@ -591,16 +591,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private initWorkingHours(repairShop: RepairShopResponse): void {
-        // Ensure repairShop is defined
         if (this.editData?.id) {
+            // Handle regular working days
             this.workingDaysLabel.forEach((day) => {
                 const matchingOpenHours = repairShop.openHours.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
                 );
-
-                // If the day has shifts (is a working day)
+    
+                // If there are shifts for this day, map them to the form array
                 if (matchingOpenHours.length > 0) {
-                    // Push each matching open hour shifts into the form array
                     this.openHours.push(
                         RepairShopHelper.createOpenHour(
                             {
@@ -611,20 +610,57 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 })),
                             },
                             this.formBuilder,
-                            true // is working day
+                            true 
                         )
                     );
                 } else {
-                    // Non-working day, just push the empty day
+                    // No shifts for this day, treat it as a non-working day
                     this.openHours.push(
                         RepairShopHelper.createOpenHour(
                             day,
                             this.formBuilder,
-                            false // not a working day
+                            false 
                         )
                     );
                 }
             });
+    
+            // Handle holiday hours
+            const holidayOpenHours = repairShop.openHours.filter(
+                (openDay) => openDay.dayOfWeek === RepairShopModalStringEnum.HOLIDAY_LABEL
+            );
+    
+            if (holidayOpenHours.length > 0) {
+                this.holidayHours.push(
+                    RepairShopHelper.createOpenHour(
+                        {
+                            dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
+                            shifts: holidayOpenHours.map((openDay) => ({
+                                startTime: openDay.startTime,
+                                endTime: openDay.endTime,
+                            })),
+                        },
+                        this.formBuilder,
+                        true
+                    )
+                );
+            } else {
+                this.holidayHours.push(
+                    RepairShopHelper.createOpenHour(
+                        {
+                            dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
+                            shifts: [
+                                {
+                                    startTime: OpenWorkingHours.EIGHTAM,
+                                    endTime: OpenWorkingHours.FIVEPM,
+                                },
+                            ],
+                        },
+                        this.formBuilder,
+                        false 
+                    )
+                );
+            }
         } else {
             // For non-edit mode, populate default open hours
             this.workingDaysLabel.forEach((day) =>
@@ -636,50 +672,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     )
                 )
             );
-        }
-
-        // Initialize holiday hours
-        const holidayData = repairShop?.openHours?.find(
-            (openDay) => openDay.dayOfWeek === 'Holiday'
-        ) as any;
-
-        if (holidayData) {
-            this.holidayHours.push(
-                RepairShopHelper.createOpenHour(
+    
+            // Add default holiday hours
+            const defaultHoliday = {
+                dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
+                shifts: [
                     {
-                        dayOfWeek: 'Holiday',
-                        shifts: [
-                            {
-                                startTime: holidayData.startTime,
-                                endTime: holidayData.endTime,
-                            },
-                        ],
-                        isWorkingDay: holidayData.isWorkingDay,
+                        startTime: OpenWorkingHours.EIGHTAM,
+                        endTime: OpenWorkingHours.FIVEPM,
                     },
-                    this.formBuilder,
-                    holidayData.isWorkingDay
-                )
-            );
-        } else {
-            const newHoliday = {
-                dayOfWeek: 'Holiday',  
-                shifts: [{
-                    startTime: [OpenWorkingHours.EIGHTAM],
-                    endTime: [OpenWorkingHours.FIVEPM],
-                }]
+                ],
             };
-            
             this.holidayHours.push(
-                RepairShopHelper.createOpenHour(newHoliday, this.formBuilder, false)
+                RepairShopHelper.createOpenHour(defaultHoliday, this.formBuilder, false)
             );
-            
         }
-        console.log(this.holidayHours)
     }
+    
 
     public addShift(dayIndex: number): void {
         const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
-        const shifts = openHour.get('shifts') as UntypedFormArray;
+        const shifts = openHour.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
         shifts.push(
             this.formBuilder.group({
                 startTime: [null],
@@ -738,7 +751,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public toggleDoubleWorkingTime(dayIndex: number): void {
         const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
-        const shifts = openHour.get('shifts') as UntypedFormArray;
+        const shifts = openHour.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
 
         if (shifts.length === 1) {
             // Add second shift
@@ -1012,8 +1025,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
     private formatOpenHours(): RepairShopOpenHoursCommand[] {
         const formattedOpenHours: RepairShopOpenHoursCommand[] = [];
+        const openHours = [...this.openHours.value, ...this.holidayHours.value];
 
-        this.openHours.value.forEach((openHour: any) => {
+        openHours.forEach((openHour: any) => {
             if (openHour.isWorkingDay) {
                 openHour.shifts.forEach((shift: any) => {
                     formattedOpenHours.push({
@@ -1025,6 +1039,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 });
             }
         });
+ 
 
         return formattedOpenHours;
     }
