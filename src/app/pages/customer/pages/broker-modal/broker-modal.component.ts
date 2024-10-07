@@ -850,9 +850,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: BrokerModalResponse) => {
-                    this.labelsDepartments = reasponse.departments;
-                    this.labelsPayTerms = reasponse.payTerms;
+                next: (res: BrokerModalResponse) => {
+                    this.labelsDepartments = res.departments;
+                    this.labelsPayTerms = res.payTerms;
 
                     // From Another Modal Data
                     if (this.editData?.type === 'edit-contact') {
@@ -1069,7 +1069,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 ? parseFloat(creditLimit.toString().replace(/,/g, ''))
                 : null,
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
-            files: documents ? documents : this.brokerForm.value.files,
+            files: documents ?? this.brokerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -1145,94 +1145,92 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: any) => {
+                next: (res: any) => {
                     this.brokerForm.patchValue({
-                        businessName: reasponse.businessName,
-                        dbaName: reasponse.dbaName,
-                        mcNumber: reasponse.mcNumber,
-                        ein: reasponse.ein,
-                        email: reasponse.email,
-                        phone: reasponse.phone,
+                        businessName: res.businessName,
+                        dbaName: res.dbaName,
+                        mcNumber: res.mcNumber,
+                        ein: res.ein,
+                        email: res.email,
+                        phone: res.phone,
                         // Physical Address
-                        physicalAddress: reasponse.mainAddress
-                            ? reasponse.mainAddress.address
+                        physicalAddress: res.mainAddress
+                            ? res.mainAddress.address
                             : null,
-                        physicalAddressUnit: reasponse.mainAddress
-                            ? reasponse.mainAddress.addressUnit
+                        physicalAddressUnit: res.mainAddress
+                            ? res.mainAddress.addressUnit
                             : null,
-                        physicalPoBox: reasponse.mainPoBox
-                            ? reasponse.mainPoBox.poBox
+                        physicalPoBox: res.mainPoBox
+                            ? res.mainPoBox.poBox
                             : null,
-                        physicalPoBoxCity: reasponse.mainPoBox
-                            ? reasponse.mainPoBox.city
+                        physicalPoBoxCity: res.mainPoBox
+                            ? res.mainPoBox.city
                             : null,
                         // Billing Address
                         isCheckedBillingAddress:
-                            reasponse.mainAddress.address ===
-                            reasponse.billingAddress.address,
-                        billingAddress: reasponse.billingAddress
-                            ? reasponse.billingAddress.address
+                            res.mainAddress.address ===
+                            res.billingAddress.address,
+                        billingAddress: res.billingAddress
+                            ? res.billingAddress.address
                             : null,
-                        billingAddressUnit: reasponse.billingAddress
-                            ? reasponse.billingAddress.addressUnit
+                        billingAddressUnit: res.billingAddress
+                            ? res.billingAddress.addressUnit
                             : null,
-                        billingPoBox: reasponse.billingPoBox
-                            ? reasponse.billingPoBox.poBox
+                        billingPoBox: res.billingPoBox
+                            ? res.billingPoBox.poBox
                             : null,
-                        billingPoBoxCity: reasponse.billingPoBox
-                            ? reasponse.billingPoBox.city
+                        billingPoBoxCity: res.billingPoBox
+                            ? res.billingPoBox.city
                             : null,
-                        creditType: reasponse.creditType,
+                        creditType: res.creditType,
                         creditLimit:
-                            reasponse.creditType.name === 'Custom'
+                            res.creditType.name === 'Custom'
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                      reasponse.creditLimit
+                                      res.creditLimit
                                   )
                                 : null,
-                        availableCredit: reasponse.availableCredit,
-                        payTerm: reasponse.payTerm
-                            ? reasponse.payTerm.name
-                            : null,
-                        note: reasponse.note,
-                        ban: reasponse.ban,
-                        dnu: reasponse.dnu,
+                        availableCredit: res.availableCredit,
+                        payTerm: res.payTerm ? res.payTerm.name : null,
+                        note: res.note,
+                        ban: res.ban,
+                        dnu: res.dnu,
                         brokerContacts: [],
                     });
 
-                    this.brokerName = reasponse.businessName;
+                    this.brokerName = res.businessName;
 
                     this.modalService.changeModalStatus({
                         name: 'dnu',
-                        status: reasponse.dnu,
+                        status: res.dnu,
                     });
-                    this.brokerDnuStatus = reasponse.dnu;
+                    this.brokerDnuStatus = res.dnu;
 
                     this.modalService.changeModalStatus({
                         name: 'bfb',
-                        status: reasponse.ban,
+                        status: res.ban,
                     });
 
-                    this.brokerBanStatus = reasponse.ban;
-                    this.documents = reasponse.files;
+                    this.brokerBanStatus = res.ban;
+                    this.documents = res.files;
 
-                    this.selectedPhysicalAddress = reasponse.mainAddress
-                        ? reasponse.mainAddress
+                    this.selectedPhysicalAddress = res.mainAddress
+                        ? res.mainAddress
                         : null;
-                    this.selectedPhysicalPoBox = reasponse.mainPoBox
-                        ? reasponse.mainPoBox
+                    this.selectedPhysicalPoBox = res.mainPoBox
+                        ? res.mainPoBox
                         : null;
-                    this.selectedBillingAddress = reasponse.billingAddress
-                        ? reasponse.billingAddress
+                    this.selectedBillingAddress = res.billingAddress
+                        ? res.billingAddress
                         : null;
-                    this.selectedBillingPoBox = reasponse.billingPoBox
-                        ? reasponse.billingPoBox
+                    this.selectedBillingPoBox = res.billingPoBox
+                        ? res.billingPoBox
                         : null;
 
-                    this.selectedPayTerm = reasponse.payTerm;
+                    this.selectedPayTerm = res.payTerm;
 
                     // Contacts
-                    if (reasponse.brokerContacts) {
-                        for (const contact of reasponse.brokerContacts) {
+                    if (res.brokerContacts) {
+                        for (const contact of res.brokerContacts) {
                             this.brokerContacts.push(
                                 this.createBrokerContacts({
                                     contactName: contact.contactName,
@@ -1250,7 +1248,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     }
 
                     // Review
-                    this.reviews = reasponse.ratingReviews.map((item) => ({
+                    this.reviews = res.ratingReviews.map((item) => ({
                         ...item,
                         id: item.reviewId,
                         companyUser: {
@@ -1272,15 +1270,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
-                        downRatingCount: reasponse.downCount,
-                        upRatingCount: reasponse.upCount,
-                        currentCompanyUserRating:
-                            reasponse.currentCompanyUserRating,
+                        downRatingCount: res.downCount,
+                        upRatingCount: res.upCount,
+                        currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
                     this.isCredit(
                         this.billingCredit.find(
-                            (item) => item.name === reasponse.creditType.name
+                            (item) => item.name === res.creditType.name
                         )
                     );
 
@@ -1302,8 +1299,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.tabBillingAddressChange(
                         this.selectedBillingAddressTab === 5 ||
-                            reasponse.mainAddress.address ===
-                                reasponse.billingAddress.address
+                            res.mainAddress.address ===
+                                res.billingAddress.address
                             ? {
                                   id: 5,
                                   name: 'Billing Address',

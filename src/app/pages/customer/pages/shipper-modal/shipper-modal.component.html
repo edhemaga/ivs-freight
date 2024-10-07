@@ -314,9 +314,7 @@
                     </app-ta-custom-card>
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
-                            [hasCounter]="
-                                documents.length ? documents.length : 0
-                            "
+                            [hasCounter]="documents?.length ?? 0"
                             [cardName]="'Document'"
                             [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="!!documents.length"
