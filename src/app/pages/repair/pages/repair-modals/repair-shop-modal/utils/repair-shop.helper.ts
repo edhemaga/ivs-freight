@@ -48,7 +48,7 @@ export class RepairShopHelper {
     }
     
     static createOpenHour(
-        day: any,
+        day: OpenHours,
         formBuilder: UntypedFormBuilder,
         isWorkingDay: boolean
     ): UntypedFormGroup {
@@ -66,6 +66,7 @@ export class RepairShopHelper {
         ];
     
         return formBuilder.group({
+            id: [day.index],
             isWorkingDay: [isWorkingDay],
             dayOfWeek: [day.dayOfWeek],
             shifts: formBuilder.array(shifts),

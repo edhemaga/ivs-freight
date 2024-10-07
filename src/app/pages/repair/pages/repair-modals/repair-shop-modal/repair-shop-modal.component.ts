@@ -284,12 +284,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         ) as UntypedFormArray;
     }
 
-    public get holidayHours(): UntypedFormArray {
-        return this.repairShopForm.get(
-            RepairShopModalStringEnum.HOLIDAY
-        ) as UntypedFormArray;
-    }
-
     public get nameInputConfig(): ITaInput {
         return RepairShopConfig.getNameInputConfig();
     }
@@ -396,7 +390,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.PAY_PERIOD]: [null],
             [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
             [RepairShopModalStringEnum.RENT]: [null],
-            [RepairShopModalStringEnum.HOLIDAY]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
         });
 
@@ -428,31 +421,46 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
-                        this.repairShopForm.patchValue({ 
+                        this.repairShopForm.patchValue({
                             [RepairShopModalStringEnum.NAME]: repairShop.name,
-                            [RepairShopModalStringEnum.PINNED]: repairShop.pinned,
+                            [RepairShopModalStringEnum.PINNED]:
+                                repairShop.pinned,
                             [RepairShopModalStringEnum.PHONE]: repairShop.phone,
-                            [RepairShopModalStringEnum.PHONE_EXT]: repairShop.phoneExt,
+                            [RepairShopModalStringEnum.PHONE_EXT]:
+                                repairShop.phoneExt,
                             [RepairShopModalStringEnum.EMAIL]: repairShop.email,
-                            [RepairShopModalStringEnum.ADDRESS_UNIT]: repairShop.address.addressUnit,
-                            [RepairShopModalStringEnum.ADDRESS]: repairShop.address.address,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false, 
-                            [RepairShopModalStringEnum.ACCOUNT]: repairShop.account,
+                            [RepairShopModalStringEnum.ADDRESS_UNIT]:
+                                repairShop.address.addressUnit,
+                            [RepairShopModalStringEnum.ADDRESS]:
+                                repairShop.address.address,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false,
+                            [RepairShopModalStringEnum.ACCOUNT]:
+                                repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
-                            [RepairShopModalStringEnum.CONTACTS]: repairShop.contacts,
+                            [RepairShopModalStringEnum.CONTACTS]:
+                                repairShop.contacts,
                             [RepairShopModalStringEnum.FILES]: repairShop.files,
-                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: repairShop.shopServiceType.id,
-                            [RepairShopModalStringEnum.ROUTING]: repairShop.routing,
-                            [RepairShopModalStringEnum.BANK_ID]: repairShop?.bank?.id ?? null, 
-                            [RepairShopModalStringEnum.LONGITUDE]: repairShop.longitude,
-                            [RepairShopModalStringEnum.LATITUDE]: repairShop.latitude,
-                            [RepairShopModalStringEnum.COMPANY_OWNED]: repairShop.companyOwned,
-                            [RepairShopModalStringEnum.WEEKLY_DAY]: repairShop.weeklyDay,
-                            [RepairShopModalStringEnum.PAY_PERIOD]: repairShop.payPeriod,
-                            [RepairShopModalStringEnum.MONTHLY_DAYS]: repairShop.monthlyDay,
+                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
+                                repairShop.shopServiceType.id,
+                            [RepairShopModalStringEnum.ROUTING]:
+                                repairShop.routing,
+                            [RepairShopModalStringEnum.BANK_ID]:
+                                repairShop?.bank?.id ?? null,
+                            [RepairShopModalStringEnum.LONGITUDE]:
+                                repairShop.longitude,
+                            [RepairShopModalStringEnum.LATITUDE]:
+                                repairShop.latitude,
+                            [RepairShopModalStringEnum.COMPANY_OWNED]:
+                                repairShop.companyOwned,
+                            [RepairShopModalStringEnum.WEEKLY_DAY]:
+                                repairShop.weeklyDay,
+                            [RepairShopModalStringEnum.PAY_PERIOD]:
+                                repairShop.payPeriod,
+                            [RepairShopModalStringEnum.MONTHLY_DAYS]:
+                                repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
                         });
-                        
+
                         this.mapEditData(repairShop);
                     }
                     this.preSelectService(repairShop?.shopServiceType);
@@ -490,7 +498,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (res.bank) {
             this.selectedBank =
-                this.banks.find((bank) => bank.id === res.bank.id) ?? null; 
+                this.banks.find((bank) => bank.id === res.bank.id) ?? null;
         }
 
         // Patch address
@@ -592,107 +600,45 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private initWorkingHours(repairShop: RepairShopResponse): void {
         if (this.editData?.id) {
-            // Handle regular working days
             this.workingDaysLabel.forEach((day) => {
                 const matchingOpenHours = repairShop.openHours.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
                 );
-    
-                // If there are shifts for this day, map them to the form array
-                if (matchingOpenHours.length > 0) {
-                    this.openHours.push(
-                        RepairShopHelper.createOpenHour(
-                            {
-                                ...day,
-                                shifts: matchingOpenHours.map((openDay) => ({
-                                    startTime: openDay.startTime,
-                                    endTime: openDay.endTime,
-                                })),
-                            },
-                            this.formBuilder,
-                            true 
-                        )
-                    );
-                } else {
-                    // No shifts for this day, treat it as a non-working day
-                    this.openHours.push(
-                        RepairShopHelper.createOpenHour(
-                            day,
-                            this.formBuilder,
-                            false 
-                        )
-                    );
-                }
+
+                // Create the open hour entry
+                const openHourEntry = RepairShopHelper.createOpenHour(
+                    {
+                        ...day,
+                        shifts: matchingOpenHours.map((openDay) => ({
+                            startTime: openDay.startTime,
+                            endTime: openDay.endTime,
+                        })),
+                    },
+                    this.formBuilder,
+                    matchingOpenHours.length > 0
+                );
+
+                this.openHours.push(openHourEntry);
             });
-    
-            // Handle holiday hours
-            const holidayOpenHours = repairShop.openHours.filter(
-                (openDay) => openDay.dayOfWeek === RepairShopModalStringEnum.HOLIDAY_LABEL
-            );
-    
-            if (holidayOpenHours.length > 0) {
-                this.holidayHours.push(
-                    RepairShopHelper.createOpenHour(
-                        {
-                            dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
-                            shifts: holidayOpenHours.map((openDay) => ({
-                                startTime: openDay.startTime,
-                                endTime: openDay.endTime,
-                            })),
-                        },
-                        this.formBuilder,
-                        true
-                    )
-                );
-            } else {
-                this.holidayHours.push(
-                    RepairShopHelper.createOpenHour(
-                        {
-                            dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
-                            shifts: [
-                                {
-                                    startTime: OpenWorkingHours.EIGHTAM,
-                                    endTime: OpenWorkingHours.FIVEPM,
-                                },
-                            ],
-                        },
-                        this.formBuilder,
-                        false 
-                    )
-                );
-            }
         } else {
-            // For non-edit mode, populate default open hours
-            this.workingDaysLabel.forEach((day) =>
+            // For new repair shop
+            RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((defaultDay) => {
                 this.openHours.push(
                     RepairShopHelper.createOpenHour(
-                        day,
+                        defaultDay,
                         this.formBuilder,
-                        day.isWorkingDay
+                        defaultDay.isWorkingDay
                     )
-                )
-            );
-    
-            // Add default holiday hours
-            const defaultHoliday = {
-                dayOfWeek: RepairShopModalStringEnum.HOLIDAY_LABEL,
-                shifts: [
-                    {
-                        startTime: OpenWorkingHours.EIGHTAM,
-                        endTime: OpenWorkingHours.FIVEPM,
-                    },
-                ],
-            };
-            this.holidayHours.push(
-                RepairShopHelper.createOpenHour(defaultHoliday, this.formBuilder, false)
-            );
+                );
+            });
         }
     }
-    
 
     public addShift(dayIndex: number): void {
         const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
-        const shifts = openHour.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
+        const shifts = openHour.get(
+            RepairShopModalStringEnum.SHIFTS
+        ) as UntypedFormArray;
         shifts.push(
             this.formBuilder.group({
                 startTime: [null],
@@ -731,27 +677,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    public toggleDoubleWorkingTimeForHoliday(): void {
-        const holidayFormGroup = this.holidayHours.at(0) as UntypedFormGroup;
-    
-        const shifts = holidayFormGroup.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
-    
-        if (shifts.length === 1) {
-            shifts.push(
-                this.formBuilder.group({
-                    startTime: [OpenWorkingHours.EIGHTAM],
-                    endTime: [OpenWorkingHours.FIVEPM],
-                })
-            );
-        } else if (shifts.length === 2) {
-            shifts.removeAt(1);
-        }
-    }
-    
-
     public toggleDoubleWorkingTime(dayIndex: number): void {
         const openHour = this.openHours.at(dayIndex) as UntypedFormGroup;
-        const shifts = openHour.get(RepairShopModalStringEnum.SHIFTS) as UntypedFormArray;
+        const shifts = openHour.get(
+            RepairShopModalStringEnum.SHIFTS
+        ) as UntypedFormArray;
 
         if (shifts.length === 1) {
             // Add second shift
@@ -1018,14 +948,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopModalStringEnum.COMPANY_OWNED
             ),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
-            // TODO: Holiday should go inside open hours as well
-            holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),
         };
         return repairModel;
     }
     private formatOpenHours(): RepairShopOpenHoursCommand[] {
         const formattedOpenHours: RepairShopOpenHoursCommand[] = [];
-        const openHours = [...this.openHours.value, ...this.holidayHours.value];
+        const openHours = [...this.openHours.value];
 
         openHours.forEach((openHour: any) => {
             if (openHour.isWorkingDay) {
@@ -1039,7 +967,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 });
             }
         });
- 
 
         return formattedOpenHours;
     }

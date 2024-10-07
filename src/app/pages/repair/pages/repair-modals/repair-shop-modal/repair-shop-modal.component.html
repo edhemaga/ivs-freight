@@ -298,7 +298,8 @@
                                     let ind = index
                                 "
                             >
-                                <div
+                                <ng-container *ngIf="openHour.get('id').value !== 7">
+                                    <div
                                     (click)="toggleWorkingDay(ind)"
                                     [ngClass]="{
                                         active: openHour.get(
@@ -317,6 +318,7 @@
                                         }}
                                     </p>
                                 </div>
+                                </ng-container>
                             </ng-container>
                         </div>
                         <div class="timeline__card">
@@ -428,86 +430,6 @@
                         </div>
                         
                         </div>
-
-                        <div [formArrayName]="RepairShopModalStringEnum.HOLIDAY">
-                            <div *ngFor="let holiday of holidayHours.controls; let ind = index" [formGroupName]="ind">
-                                <div class="timeline__card timeline__card-inputs align-items-start">
-                                    <div class="ta-font-medium text-color-black text-size-14 timeline__card-day-label d-flex align-items-center">
-                                        <app-ta-checkbox
-                                            [formControlName]="RepairShopModalStringEnum.IS_WORKING_DAY"
-                                            [label]="'Holiday'"
-                                        ></app-ta-checkbox>
-                                    </div>
-                        
-                                    <!-- Only show time inputs if it is a working day -->
-                                    <ng-container *ngIf="!!holiday.get(RepairShopModalStringEnum.IS_WORKING_DAY).value">
-                                        <!-- Iterate over shifts array for holidays -->
-                                        <div formArrayName="shifts">
-                                            <div
-                                                *ngFor="let shift of holiday.get('shifts').controls; let shiftInd = index"
-                                                [formGroupName]="shiftInd"
-                                                class="timeline__card-shift-grid"
-                                            >
-                                                <div class="d-flex flex-column">
-                                                    <app-ta-input
-                                                        [inputConfig]="openHoursFormField"
-                                                        formControlName="startTime"
-                                                    ></app-ta-input>
-                                                </div>
-                                                <div class="d-flex flex-column">
-                                                    <app-ta-input
-                                                        [inputConfig]="openHoursFormField"
-                                                        formControlName="endTime"
-                                                    ></app-ta-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                        
-                                        <div class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer">
-                                            <ng-container *ngIf="holiday.get('shifts').value.length === 1">
-                                                <div
-                                                    mainTooltip="Split Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
-                                                >
-                                                    <svg-icon
-                                                        [src]="repairShopModalSvgRoutes.plusIcon"
-                                                        [ngClass]="
-                                                            holiday.get('shifts').value.length > 1
-                                                                ? 'svg-fill-light-grey-6'
-                                                                : 'svg-fill-muted svg-hover-black'
-                                                        "
-                                                        (click)="toggleDoubleWorkingTimeForHoliday(ind)"
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
-                                                </div>
-                                            </ng-container>
-                        
-                                            <ng-container *ngIf="holiday.get('shifts').value.length > 1">
-                                                <div
-                                                    mainTooltip="Remove Shift"
-                                                    tooltipMarginTop="5px"
-                                                    ngbTooltip
-                                                    position="bottom"
-                                                    tooltipBackground="#424242"
-                                                    class="svg-fill-muted svg-hover-black"
-                                                >
-                                                    <svg-icon
-                                                        [src]="repairShopModalSvgRoutes.minusIcon"
-                                                        (click)="toggleDoubleWorkingTimeForHoliday(ind)"
-                                                        class="svg-size-14"
-                                                    ></svg-icon>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
                     </app-ta-custom-card>
 
                     <!-- Bank Account -->

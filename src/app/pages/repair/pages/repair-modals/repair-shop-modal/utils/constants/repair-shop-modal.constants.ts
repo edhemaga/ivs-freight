@@ -98,5 +98,15 @@ export class RepairShopConstants {
             secondEndTime: null,
             secondStartTime: null
         },
+        {
+            dayOfWeek: OpenHourDays.Holiday,
+            index: 7,
+            isWorkingDay: false,
+            startTime: null,
+            endTime: null,
+            isDoubleShift: false,
+            secondEndTime: null,
+            secondStartTime: null
+        },
     ];
 }
