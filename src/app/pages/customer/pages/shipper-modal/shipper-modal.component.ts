@@ -385,9 +385,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.selectedContractDepartmentFormArray.splice(id, 1);
     }
 
-    public trackShipperContactEmail() {
-        
-    }
+    public trackShipperContactEmail() {}
 
     public onScrollingShipperContacts(event: any) {
         this.isContactCardsScrolling = event.target.scrollLeft > 1;
@@ -724,7 +722,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
-            files: documents ? documents : this.shipperForm.value.files,
+            files: documents ?? this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             locationType: this.selectedPhysicalAddressTab,
             longitude:

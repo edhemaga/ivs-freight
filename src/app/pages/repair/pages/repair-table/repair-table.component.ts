@@ -772,10 +772,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: TableStringEnum.TRUCK_2,
                 field: TableStringEnum.ACTIVE,
                 length: repairTruckTrailerCount.repairTrucks,
-                moneyCount:
-                    this.selectedTab === TableStringEnum.ACTIVE
-                        ? repairTruckTrailerCount.truckMoneyTotal
-                        : 0,
+                moneyCount: 0,
                 moneyCountSelected: false,
                 data: repairTruckData,
                 gridNameTitle: TableStringEnum.REPAIR,
@@ -793,10 +790,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 title: TableStringEnum.TRAILER,
                 field: TableStringEnum.INACTIVE,
                 length: repairTruckTrailerCount.repairTrailers,
-                moneyCount:
-                    this.selectedTab === TableStringEnum.INACTIVE
-                        ? repairTruckTrailerCount.trailerMoneyTotal
-                        : 0,
+                moneyCount: 0,
                 moneyCountSelected: false,
                 data: repairTrailerData,
                 gridNameTitle: TableStringEnum.REPAIR,
@@ -1250,11 +1244,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const updatedTableData = [...this.tableData];
 
         updatedTableData[0].length = repairTruckTrailerCount.repairTrucks;
-        updatedTableData[0].moneyCount =
-            repairTruckTrailerCount.truckMoneyTotal;
         updatedTableData[1].length = repairTruckTrailerCount.repairTrailers;
-        updatedTableData[1].moneyCount =
-            repairTruckTrailerCount.trailerMoneyTotal;
         updatedTableData[2].length = repairTruckTrailerCount.repairShops;
 
         this.tableData = [...updatedTableData];
@@ -1276,8 +1266,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.selectedTab === TableStringEnum.INACTIVE &&
                 !this.inactiveTabClicked
             ) {
-                forkJoin([
-                    this.repairService.getRepairList(
+                this.repairService
+                    .getRepairList(
                         null,
                         2,
                         null,
@@ -1297,14 +1287,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         null,
                         null,
                         null
-                    ),
-                    this.tableService.getTableConfig(11),
-                ])
+                    )
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe(([repairTrailerPagination, tableConfig]) => {
-                        if (tableConfig) {
-                            const config = JSON.parse(tableConfig.config);
-                        }
+                    .subscribe((repairTrailerPagination) => {
                         this.repairTrailerStore.set(
                             repairTrailerPagination.pagination.data
                         );

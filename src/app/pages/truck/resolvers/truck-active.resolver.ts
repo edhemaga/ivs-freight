@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 
-
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { TruckService } from '@shared/services/truck.service';
 
 // store
-import {
-    TruckActiveState,
-    TruckActiveStore,
-} from '@pages/truck/state/truck-active-state/truck-active.store';
+import { TruckActiveStore } from '@pages/truck/state/truck-active-state/truck-active.store';
+
+// models
+import { TruckListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TruckActiveResolver  {
+export class TruckActiveResolver {
     constructor(
         private truckService: TruckService,
-        private truckStore: TruckActiveStore,
-        private tableService: TruckassistTableService
+        private truckStore: TruckActiveStore
     ) {}
-    resolve(): Observable<any> {
-        return forkJoin([this.truckService.getTruckList(1, null, 1, 25)]).pipe(
-            tap(([truckPagination, tableConfig]) => {
+    resolve(): Observable<TruckListResponse> {
+        return this.truckService.getTruckList(1, null, 1, 25).pipe(
+            tap((truckPagination) => {
                 localStorage.setItem(
                     'truckTableCount',
                     JSON.stringify({
@@ -32,15 +29,6 @@ export class TruckActiveResolver  {
                         inactive: truckPagination.inactiveCount,
                     })
                 );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
 
                 this.truckStore.set(truckPagination.pagination?.data);
             })

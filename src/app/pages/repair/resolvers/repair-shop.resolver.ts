@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
 
-
-import { Observable, forkJoin, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // Store
-import {
-    RepairShopState,
-    RepairShopStore,
-} from '@pages/repair/state/repair-shop-state/repair-shop.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
 // Services
 import { RepairService } from '@shared/services/repair.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
+// models
+import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RepairShopResolver  {
+export class RepairShopResolver {
     constructor(
         private repairService: RepairService,
-        private tableService: TruckassistTableService,
         private repairShopStore: RepairShopStore
     ) {}
 
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.repairService.getRepairShopList(
+    resolve(): Observable<RepairShopNewListResponse> {
+        return this.repairService
+            .getRepairShopList(
                 undefined,
                 undefined,
                 undefined,
@@ -39,18 +36,13 @@ export class RepairShopResolver  {
                 undefined,
                 1,
                 25
-            ),
-            this.tableService.getTableConfig(11),
-        ]).pipe(
-            tap(([repairTrailerPagination, tableConfig]) => {
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-                }
-
-                this.repairShopStore.set(
-                    repairTrailerPagination.pagination.data
-                );
-            })
-        );
+            )
+            .pipe(
+                tap((repairTrailerPagination) => {
+                    this.repairShopStore.set(
+                        repairTrailerPagination.pagination.data
+                    );
+                })
+            );
     }
 }
