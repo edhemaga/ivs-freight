@@ -2,14 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, takeUntil, tap } from 'rxjs';
 
-// Store
-import {
-    getIsConversationParticipantsDisplayed,
-    getIsProfileDetailsDisplayed,
-    getSelectedConversation,
-    getConversationProfileDetails,
-} from '@pages/chat/store';
-
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
 import {
@@ -19,6 +11,7 @@ import {
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
 } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import {
@@ -80,7 +73,7 @@ export class ChatComponent
 
     public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
 
-    public isAttachmentUploadActive: boolean = false;
+    public isAttachmentUploadActive$: Observable<boolean>;
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -138,6 +131,12 @@ export class ChatComponent
             this.chatStoreService.selectConversationProfileDetails();
         this.isParticipantsDisplayed$ =
             this.chatStoreService.selectIsConversationParticipantsDisplayed();
+        this.isAttachmentUploadActive$ =
+            this.chatStoreService.selectAttachmentUploadStatus();
+
+        this.conversation$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.chatStoreService.closeAttachmentUpload());
     }
 
     private getDataOnLoad(): void {

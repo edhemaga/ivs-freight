@@ -18,8 +18,8 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
     @Input() public index: number;
     @Input() public isNameReduced: boolean = false;
     @Input() public attachment!: ChatExtendedUploadFile;
-    @Input() public isChatTypingBlurred: boolean = false;
     @Input() public isInMessage: boolean = false;
+    @Input() public isFocused: boolean = false;
     @Input() public isSizeDisplayed: boolean = true;
     @Input() public isDateDisplayed: boolean = false;
 
@@ -81,7 +81,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
             case ChatAttachmentTypeEnum.PNG:
                 this.isDocument = false;
                 this.isMedia = true;
-                if (!this.isInMessage) this.previewWidth = '40px';
+                if (!this.isInMessage) this.previewWidth = '100%';
                 break;
 
             default:

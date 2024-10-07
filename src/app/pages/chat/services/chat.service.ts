@@ -146,6 +146,8 @@ export class UserChatService {
             parentMessageId,
         };
 
+        console.log(data);
+
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.http.post(

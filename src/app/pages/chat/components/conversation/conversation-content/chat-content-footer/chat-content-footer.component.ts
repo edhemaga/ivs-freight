@@ -1,15 +1,6 @@
-import {
-    Component,
-    Input,
-    OnInit,
-    Output,
-    EventEmitter,
-    OnDestroy,
-    ElementRef,
-    Renderer2,
-    ViewChildren,
-    QueryList,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     BehaviorSubject,
     takeUntil,
@@ -17,10 +8,6 @@ import {
     Observable,
     concatMap,
 } from 'rxjs';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-
-// Store
-import { selectEditMessage, selectReplyMessage } from '@pages/chat/store';
 
 // Models
 import {
@@ -44,10 +31,7 @@ import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
 // Enums
-import {
-    ChatAttachmentCustomClassEnum,
-    ChatAttachmentHoveredClassStringEnum,
-} from '@pages/chat/enums';
+import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
 
 // Configs
 import { ChatInput } from '@pages/chat/utils/configs';
@@ -61,13 +45,8 @@ export class ChatContentFooterComponent
     extends UnsubscribeHelper
     implements OnInit, OnDestroy
 {
-    @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
-
     @Input() public conversation!: ChatSelectedConversation;
-    @Input() currentUserTyping: BehaviorSubject<string | null> =
-        new BehaviorSubject(null);
-
-    @Output() closeReplyOrEditEvent: EventEmitter<boolean> = new EventEmitter();
+    public currentUserTyping!: Observable<string>;
 
     public replyMessage$!: Observable<ChatMessage | null>;
     public editMessage$!: Observable<ChatMessage | null>;
@@ -79,10 +58,9 @@ export class ChatContentFooterComponent
     public currentMessage!: string;
 
     // Attachment upload
-    public isAttachmentUploadActive: boolean = false;
-    public attachments$: BehaviorSubject<UploadFile[]> = new BehaviorSubject(
-        []
-    );
+    public attachments$: Observable<UploadFile[]>;
+    public attachments: UploadFile[];
+
     public hoveredAttachment!: ChatAttachmentForThumbnail;
 
     // Links
@@ -112,8 +90,7 @@ export class ChatContentFooterComponent
         private chatService: UserChatService,
         private chatStoreService: ChatStoreService,
 
-        // Renderer
-        private renderer: Renderer2
+        private activatedRoute: ActivatedRoute
     ) {
         super();
     }
@@ -121,12 +98,18 @@ export class ChatContentFooterComponent
     ngOnInit(): void {
         this.creteForm();
         this.listenForTyping();
-        this.getReplyAndEditMessages();
+        this.getDataFromStore();
     }
 
-    private getReplyAndEditMessages(): void {
+    private getDataFromStore(): void {
         this.editMessage$ = this.chatStoreService.selectEditMessage();
         this.replyMessage$ = this.chatStoreService.selectReplyMessage();
+        this.attachments$ = this.chatStoreService.selectAttachments();
+        this.attachments$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((attachments: UploadFile[]) => {
+                this.attachments = attachments;
+            });
     }
 
     public handleSend(): void {
@@ -149,33 +132,31 @@ export class ChatContentFooterComponent
             });
     }
 
-    public sendMessage(parentMessageId?: number): void {
+    public sendMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
 
-        if (!this.conversation?.id || !this.isMessageSendable) return;
-        if (!message && !this.attachments$?.value?.length) return;
-
-        this.isMessageSendable = false;
+        if (!this.conversation?.id || !this.isMessageSendable || !message)
+            this.isMessageSendable = false;
 
         this.chatService
             .sendMessage(
                 this.conversation.id,
                 1,
                 message,
-                this.attachments$.value,
+                this.attachments,
                 this.links,
                 parentMessageId
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.isMessageSendable = true;
-                this.attachments$.next([]);
+                this.chatStoreService.deleteAllAttachments();
                 this.messageForm.reset();
                 this.closeReplyAndEdit();
             });
-    }
+    };
 
-    public editMessage(parentMessageId?: number): void {
+    public editMessage = (parentMessageId?: number): void => {
         const message = this.messageForm?.value?.message;
         const messageId: number = parentMessageId;
 
@@ -187,7 +168,7 @@ export class ChatContentFooterComponent
             .subscribe(() => {
                 this.closeReplyAndEdit();
             });
-    }
+    };
 
     private creteForm(): void {
         this.messageForm = this.formBuilder.group({
@@ -200,96 +181,27 @@ export class ChatContentFooterComponent
     }
 
     // TODO implement emoji selection
-    public openEmojiSelection(): void {
+    public openEmojiSelection = (): void => {
         this.isEmojiSelectionActive = true;
-    }
+    };
 
-    public uploadAttachmentDragAndDrop(): void {
-        this.isAttachmentUploadActive = true;
-    }
-
-    public addAttachments(files: UploadFile[]): void {
-        this.attachments$.next([...this.attachments$.value, ...files]);
-        this.isAttachmentUploadActive = false;
-
-        this.enableChatInput();
-    }
+    public uploadAttachmentUpload = (): void => {
+        this.chatStoreService.openAttachmentUpload();
+    };
 
     public setHoveredAttachment(attachment: ChatAttachmentForThumbnail): void {
         this.hoveredAttachment = attachment;
     }
 
-    public clearHoveredAttachment(): void {
-        this.documentPreview.forEach((div: ElementRef) => {
-            this.renderer.removeClass(
-                div.nativeElement,
-                ChatAttachmentHoveredClassStringEnum.LIGHT
-            ),
-                this.renderer.removeClass(
-                    div.nativeElement,
-                    ChatAttachmentHoveredClassStringEnum.DARK
-                );
-        });
-
-        this.hoveredAttachment = null;
-    }
-
-    public handleHoveredAttachment(
-        attachment: ChatAttachmentForThumbnail,
-        index: number
-    ): string {
-        const isSelectedAttachment: boolean =
-            attachment === this.hoveredAttachment;
-
-        const element = this.documentPreview.find(
-            (div: ElementRef) =>
-                div.nativeElement.getAttribute('data-id') === String(index)
-        );
-        if (element && isSelectedAttachment) {
-            const classToAdd: string = this.isChatTypingBlurred
-                ? ChatAttachmentHoveredClassStringEnum.LIGHT
-                : ChatAttachmentHoveredClassStringEnum.DARK;
-            this.renderer.addClass(element.nativeElement, classToAdd);
-        }
-
-        let icon: string;
-
-        switch (true) {
-            case this.isChatTypingBlurred && !isSelectedAttachment:
-                icon = ChatSvgRoutes.darkXIcon;
-                break;
-            case this.isChatTypingBlurred && isSelectedAttachment:
-                icon = ChatSvgRoutes.darkFocusedXIcon;
-                break;
-            case !this.isChatTypingBlurred && !isSelectedAttachment:
-                icon = ChatSvgRoutes.lightXIcon;
-                break;
-            case !this.isChatTypingBlurred && isSelectedAttachment:
-                icon = ChatSvgRoutes.lightFocusedXIcon;
-                break;
-            default:
-                icon = '';
-                this.clearHoveredAttachment();
-                break;
-        }
-
-        return icon;
-    }
-
     public removeAttachment(attachment: UploadFile): void {
-        const currentAttachments = this.attachments$.value.filter(
-            (arg) => arg !== attachment
-        );
-        this.attachments$.next(currentAttachments);
+        this.chatStoreService.deleteAttachment(attachment);
     }
 
     public blurInput(): void {
         this.isChatTypingBlurred = false;
-        this.clearHoveredAttachment();
     }
 
     public focusInput(): void {
-        this.clearHoveredAttachment();
         this.isChatTypingBlurred = true;
     }
 

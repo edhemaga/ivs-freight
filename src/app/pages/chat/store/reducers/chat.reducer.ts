@@ -16,6 +16,11 @@ import {
     setUnreadCount,
     setProfileDetails,
     setUserTyping,
+    openAttachmentUpload,
+    closeAttachmentUpload,
+    setAttachment,
+    deleteAttachment,
+    deleteAllAttachments,
 } from '@pages/chat/store/actions/chat.actions';
 
 // Models
@@ -28,6 +33,8 @@ const initialState: ChatState = {
     messageResponseCount: 0,
     messageResponseData: [],
     unreadCount: 0,
+    attachments: [],
+    isAttachmentUploadActive: false,
     isProfileDetailsDisplayed: false,
     isConversationParticipantsDisplayed: false,
     profileDetails: null,
@@ -175,6 +182,50 @@ export const chatDataReducer = createReducer(
     on(setUnreadCount, (state, newState) => ({
         ...state,
         unreadCount: newState.count,
+    })),
+    on(openAttachmentUpload, (state) => ({
+        ...state,
+        isAttachmentUploadActive: true,
+    })),
+    on(closeAttachmentUpload, (state) => ({
+        ...state,
+        isAttachmentUploadActive: false,
+    })),
+    on(setAttachment, (state, newState) => ({
+        ...state,
+        attachments: [
+            ...state.attachments,
+            {
+                fileId: state.attachments?.length + 1 ?? 0,
+                name: newState.name,
+                fileName: newState.fileName,
+                url: newState.url,
+                extension: newState.extension,
+                guid: newState.guid,
+                size: newState.size,
+                fileSize: newState.fileSize,
+                tags: newState.tags,
+                realFile: newState.realFile,
+                tagId: newState.tagId,
+                incorrect: newState.incorrect,
+                tagChanged: newState.tagChanged,
+                savedTag: newState.savedTag,
+                tagGeneratedByUser: newState.tagGeneratedByUser,
+                lastHovered: newState.lastHovered,
+            },
+        ],
+    })),
+    on(deleteAttachment, (state, newState) => ({
+        ...state,
+        attachments: [
+            ...state.attachments?.filter(
+                (attachment) => attachment?.fileId !== newState?.fileId
+            ),
+        ],
+    })),
+    on(deleteAllAttachments, (state) => ({
+        ...state,
+        attachments: [],
     })),
     on(setUserTyping, (state, newState) => ({
         ...state,

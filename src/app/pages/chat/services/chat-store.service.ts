@@ -25,6 +25,13 @@ import {
     selectReplyMessage,
     activeReplyOrEdit,
     setMessageResponse,
+    selectAttachments,
+    deleteAttachment,
+    deleteAllAttachments,
+    setAttachment,
+    openAttachmentUpload,
+    closeAttachmentUpload,
+    selectAttachmentUploadStatus,
 } from '@pages/chat/store';
 
 // Models
@@ -34,6 +41,7 @@ import {
     ChatSelectedConversation,
 } from '@pages/chat/models';
 import { ConversationInfoResponse } from 'appcoretruckassist';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Injectable({
     providedIn: 'root',
@@ -47,6 +55,8 @@ export class ChatStoreService {
     private editMessage$: Observable<ChatMessage>;
     private replyMessage$: Observable<ChatMessage>;
     private activeReplyOrEdit$: Observable<number>;
+    private attachments$: Observable<UploadFile[]>;
+    private isAttachmentUploadActive$: Observable<boolean>;
 
     constructor(private store: Store) {}
 
@@ -109,6 +119,26 @@ export class ChatStoreService {
         this.store.dispatch(setUserTyping({ name }));
     }
 
+    public openAttachmentUpload(): void {
+        this.store.dispatch(openAttachmentUpload());
+    }
+
+    public closeAttachmentUpload(): void {
+        this.store.dispatch(closeAttachmentUpload());
+    }
+
+    public setAttachment(attachment: UploadFile): void {
+        this.store.dispatch(setAttachment(attachment));
+    }
+
+    public deleteAttachment(attachment: UploadFile): void {
+        this.store.dispatch(deleteAttachment(attachment));
+    }
+
+    public deleteAllAttachments(): void {
+        this.store.dispatch(deleteAllAttachments());
+    }
+
     // Selectors
     public selectMessages(): Observable<ChatMessageResponse> {
         if (!this.messages$)
@@ -161,5 +191,19 @@ export class ChatStoreService {
         if (!this.activeReplyOrEdit$)
             this.activeReplyOrEdit$ = this.store.select(activeReplyOrEdit);
         return this.activeReplyOrEdit$;
+    }
+
+    public selectAttachmentUploadStatus(): Observable<boolean> {
+        if (!this.isAttachmentUploadActive$)
+            this.isAttachmentUploadActive$ = this.store.select(
+                selectAttachmentUploadStatus
+            );
+        return this.isAttachmentUploadActive$;
+    }
+
+    public selectAttachments(): Observable<UploadFile[]> {
+        if (!this.attachments$)
+            this.attachments$ = this.store.select(selectAttachments);
+        return this.attachments$;
     }
 }

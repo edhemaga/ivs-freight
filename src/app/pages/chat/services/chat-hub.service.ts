@@ -47,7 +47,7 @@ export class ChatHubService {
         )
             return;
 
-        ChatHubService.hubConnection.start().then();
+        ChatHubService.hubConnection.start();
 
         ChatHubService.hubConnection.onclose(() => {
             ChatHubService.hubConnection.start();

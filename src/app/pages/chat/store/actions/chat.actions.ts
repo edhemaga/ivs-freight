@@ -2,11 +2,11 @@ import { createAction, props } from '@ngrx/store';
 
 // Models
 import {
-    ChatDisplayedFlagType,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
 } from '@pages/chat/models';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import { ConversationInfoResponse } from 'appcoretruckassist';
 
 export const setMessageResponse = createAction(
@@ -67,4 +67,26 @@ export const setUnreadCount = createAction(
 export const setUserTyping = createAction(
     '[Chat] Set User Typing',
     props<{ name: string }>()
+);
+
+export const openAttachmentUpload = createAction(
+    '[Chat] Open Attachment Upload '
+);
+
+export const closeAttachmentUpload = createAction(
+    '[Chat] Close Attachment Upload'
+);
+
+export const setAttachment = createAction(
+    '[Chat] Upload Attachment',
+    props<UploadFile>()
+);
+
+export const deleteAttachment = createAction(
+    '[Chat] Delete Attachment',
+    props<UploadFile>()
+);
+
+export const deleteAllAttachments = createAction(
+    '[Chat] Delete All Attachments'
 );

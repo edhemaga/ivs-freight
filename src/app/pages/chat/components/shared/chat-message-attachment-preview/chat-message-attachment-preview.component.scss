@@ -1,44 +1,55 @@
 @import 'src/theme/variables';
 
 .attachment-preview {
+    width: 100%; /* Ensure the preview takes up the full width of the container */
+
     &-document {
-        width: fit-content;
+        display: flex;
+        width: 100%;
         padding-left: 6px;
-
-        &-info {
-            line-height: 14px;
-            font-size: 11px;
-            width: 84px;
-            height: 14px;
-
-            .text-reduced {
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-
-            .name {
-                padding: 4px;
-            }
-
-            .name-light {
-                color: $bw5;
-            }
-
-            .name-dark {
-                color: $white;
-            }
-
-            .info {
-                color: $bw5;
-                padding: 0 4px;
-            }
-        }
+        align-items: center;
 
         &-thumbnail {
             height: 40px;
             width: 40px;
             padding-right: 6px;
         }
+
+        &-info {
+            flex-grow: 1;
+            line-height: 14px;
+            font-size: 11px;
+            overflow: hidden; /* Ensures the content stays within the container */
+        }
+    }
+
+    .text-reduced {
+        white-space: nowrap; /* Prevents text wrapping */
+        text-overflow: ellipsis; /* Adds ellipsis when text overflows */
+        overflow: hidden; /* Hides overflowing text */
+        max-width: 82px;
+    }
+
+    .name {
+        padding: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%; /* Ensure it stays within the container */
+    }
+
+    .info {
+        padding: 0 4px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    &.name-light {
+        color: #ffffff;
+    }
+
+    &.name-dark {
+        color: #919191;
     }
 }

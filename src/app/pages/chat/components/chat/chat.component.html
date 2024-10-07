@@ -157,7 +157,7 @@
         </div>
 
         <!-- Profile details -->
-        <ng-container *ngIf="!isAttachmentUploadActive">
+        <ng-container *ngIf="!(isAttachmentUploadActive$ | async)">
             <div class="profile-details-wrapper d-flex">
                 <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
                     <div class="profile-details">
@@ -193,6 +193,7 @@
     </div>
 </div>
 
+<!-- Templates -->
 <ng-template #conversationNotSelected>
     <div class="not-selected-wrapper">
         <app-chat-header>
