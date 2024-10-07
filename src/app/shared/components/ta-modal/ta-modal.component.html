@@ -882,7 +882,8 @@
                                     'comment',
                                     'Company Terminal',
                                     'Company Parking',
-                                    'Company Office'
+                                    'Company Office',
+                                    'delete-review'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -948,9 +949,11 @@
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
                                 ),
-                                'modal-red-btn': ['load', 'comment'].includes(
-                                    confirmationData.template
-                                ),
+                                'modal-red-btn': [
+                                    'load',
+                                    'comment',
+                                    'delete-review'
+                                ].includes(confirmationData.template),
                                 'not-clickable': disableDelete
                             }"
                         >
