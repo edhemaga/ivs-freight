@@ -33,6 +33,7 @@ export enum DispatchTableStringEnum {
     TEAM_BOARD = 'Team Board',
     ALL_BOARDS = 'All Boards',
     ACTIVE = 'active',
+    ACTIVE_2 = 'Active',
     DISPATCH = 'Dispatch',
     TOGGLE_LOCKED = 'toggle-locked',
     OPEN_DISPATCH_LOAD_MODAL = 'open-dispatch-load-modal',
@@ -58,10 +59,13 @@ export enum DispatchTableStringEnum {
     PROGRESS_2 = 'Progress',
     PROGRESS_3 = 'progress',
     STATUS = 'STATUS',
+    STATUS_2 = 'status',
     DISPATCHER_1 = 'DISPATCHER',
     PICKUP = 'PICKUP',
     ALL_ASSIGNED = 'All Assigned',
     DISPATCH_TABLE_CONFIG = 'dispatch-table-config',
+    PRE_TRIP = 'PreTrip',
+    CITY = 'city',
 
     // Resize
     CURSOR = 'cursor',

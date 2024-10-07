@@ -92,7 +92,13 @@
                 </div>
 
                 <div class="modal-header-rightside">
-                    <ng-container *ngIf="editDate && (editData.data?.createdAt || editData.data?.updatedAt)">
+                    <ng-container
+                        *ngIf="
+                            editDate &&
+                            (editData.data?.createdAt ||
+                                editData.data?.updatedAt)
+                        "
+                    >
                         <div
                             ngbTooltip
                             mainTooltip="Added    {{
@@ -146,7 +152,7 @@
                     <ng-container *ngIf="hasFutureTimeFilter">
                         <div class="me-1">
                             <app-ca-filter
-                            [type]="'timeFilter'"
+                                [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
                                 [timeSubType]="'future'"
@@ -453,7 +459,12 @@
 
                             <!-- Deactivated -->
 
-                            <ng-container *ngIf="editData?.disableButton && !isDisableButtonHidden">
+                            <ng-container
+                                *ngIf="
+                                    editData?.disableButton &&
+                                    !isDisableButtonHidden
+                                "
+                            >
                                 <button
                                     (click)="onAction('deactivate')"
                                     class="modal-deactivate-btn"
@@ -563,7 +574,11 @@
                                     (click)="onAction('assign-create-load')"
                                     class="d-flex align-items-center ta-font-bold dispatch-create-load"
                                     type="button"
-                                    [ngClass]="isReorderingActive ? 'modal-save-btn' : 'modal-convert-to-template-btn'"
+                                    [ngClass]="
+                                        isReorderingActive
+                                            ? 'modal-save-btn'
+                                            : 'modal-convert-to-template-btn'
+                                    "
                                 >
                                     Create Load
                                 </button>
@@ -718,7 +733,9 @@
                             "
                         >
                             <button
-                                (click)="onAction('save')"
+                                appPreventMultipleclicks
+                                [cooldownDuration]="500"
+                                (cooldownComplete)="onAction('save')"
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
@@ -865,12 +882,12 @@
                                     'comment',
                                     'Company Terminal',
                                     'Company Parking',
-                                    'Company Office',
+                                    'Company Office'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
                         >
-                            No 
+                            No
                         </button>
                     </ng-container>
 

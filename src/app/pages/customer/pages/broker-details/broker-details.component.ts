@@ -122,6 +122,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
+
+        this.resetTableSelectedRows();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -742,6 +744,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.backLoadFilterQuery.sort = event.sortDirection;
 
         this.loadBackFilter(this.backLoadFilterQuery);
+    }
+
+    private resetTableSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows([]);
+        this.tableService.sendBanListSelectedRows([]);
+        this.tableService.sendBussinessSelectedRows([]);
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
     }
 
     ngOnDestroy(): void {

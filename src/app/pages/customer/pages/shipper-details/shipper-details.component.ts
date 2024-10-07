@@ -118,6 +118,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.getShipperConfig();
 
         this.loadsSearchListener();
+
+        this.resetTableSelectedRows();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -631,6 +633,12 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.backLoadFilterQuery.sort = event.sortDirection;
 
         this.loadBackFilter(this.backLoadFilterQuery);
+    }
+
+    private resetTableSelectedRows(): void {
+        this.tableService.sendBussinessSelectedRows([]);
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
     }
 
     ngOnDestroy(): void {

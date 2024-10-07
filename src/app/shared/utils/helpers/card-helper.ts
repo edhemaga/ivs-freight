@@ -261,4 +261,9 @@ export class CardHelper {
 
         return [...this.isCardFlippedCheckInCards];
     }
+
+    public resetSelectedCards(): void {
+        this.mySelection = [];
+        this.isCheckboxCheckedArray = [];
+    }
 }

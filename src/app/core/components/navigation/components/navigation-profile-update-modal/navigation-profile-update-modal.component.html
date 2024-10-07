@@ -220,12 +220,31 @@
                             marginBottom: '18px'
                         }"
                     >
-                        <app-ta-logo-change
-                            [imageUrl]="profileUserForm.get('avatar').value"
-                            [croppieOptions]="croppieOptions"
-                            (validationEvent)="onImageValidation($event)"
-                            (base64ImageEvent)="onUploadImage($event)"
-                        ></app-ta-logo-change>
+                        <app-ca-upload-files
+                            [isVisibleCropAndDrop]="
+                                uploadOptionsConstants.isVisibleCropAndDrop
+                            "
+                            [files]="uploadOptionsConstants.files"
+                            [slider]="uploadOptionsConstants.slider"
+                            [carouselConfig]="
+                                uploadOptionsConstants.carouselConfig
+                            "
+                            [hasCrop]="uploadOptionsConstants.hasCrop"
+                            [isRoundCrop]="uploadOptionsConstants.isRoundCrop"
+                            [containWithinAspectRatio]="
+                                uploadOptionsConstants.containWithinAspectRatio
+                            "
+                            [aspectRatio]="uploadOptionsConstants.aspectRatio"
+                            [initialCropperPosition]="
+                                uploadOptionsConstants.initialCropperPosition
+                            "
+                            [dropzoneConf]="uploadOptionsConstants.dropzoneConf"
+                            [review]="uploadOptionsConstants.review"
+                            [configFile]="uploadOptionsConstants.configFile"
+                            [size]="uploadOptionsConstants.size"
+                            [slideWidth]="uploadOptionsConstants.slideWidth"
+                            (onFileEvent)="onUploadImage($event)"
+                        ></app-ca-upload-files>
                     </app-ta-custom-card>
                 </div>
             </div>

@@ -213,7 +213,10 @@
                                     | tableHeadBorder : column.tableHeadTitle,
                                 'pickup-delivery':
                                     column.tableHeadTitle === 'PICKUP DELIVERY',
-                                status: column.tableHeadTitle === 'STATUS'
+                                status:
+                                    column.tableHeadTitle === 'STATUS' &&
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle !== 'User'
                             }"
                             [innerHTML]="
                                 column.tableHeadTitle | tableDoubleHeadPayroll
@@ -246,6 +249,7 @@
                                     ? column.width - 55
                                     : column.width - 20
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{
@@ -531,6 +535,7 @@
                         [ngClass]="{
                             'icon-hover': column.ngTemplate !== 'hire'
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{

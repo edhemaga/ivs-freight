@@ -12,7 +12,7 @@
                 'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
                 'dispatch-parking_assigned': isParkingAssigned,
                 'dispatch-parking-hover': isParkingAvailable,
-                'dispatch-parking-disabled': !canUnlock,
+                'dispatch-parking-disabled': !isUnlockable,
                 hovering: (!!trailerId || !!truckId) && isHoveringRow
             }"
         >
@@ -22,7 +22,7 @@
                     [ngClass]="{
                         'dispatch-parking-large': isWideTable
                     }"
-                    (click)="canUnlock ? onInputClick() : {}"
+                    (click)="isUnlockable ? onInputClick() : {}"
                 >
                     <ng-container *ngIf="!isInputInFocus; else showInput">
                         <ng-container *ngIf="isParkingAssigned; else noTooltip">
@@ -56,7 +56,7 @@
                             {{
                                 isParkingAssigned
                                     ? parkingSlot?.slotNumber
-                                    : canUnlock
+                                    : isUnlockable
                                     ? 'ASSIGN'
                                     : ''
                             }}
@@ -87,7 +87,7 @@
                     [popoverClass]="'parking-popover'"
                     [container]="'body'"
                     [placement]="'bottom auto'"
-                    (click)="canUnlock ? onInputClick() : {}"
+                    (click)="isUnlockable ? onInputClick() : {}"
                     (shown)="onPopoverShown()"
                     (hidden)="isInputInFocus = false"
                 >

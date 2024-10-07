@@ -7,15 +7,24 @@ import {
     OnInit,
     Output,
     EventEmitter,
+    OnDestroy,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+
+// Models
 import type { DispatchColumn } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models';
+
+// Enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Directive({
     selector: '[appResizable]',
     standalone: true,
 })
-export class ResizableDirective implements OnInit {
+export class ResizableDirective implements OnInit, OnDestroy {
     @Input() title: string;
     @Input() set columns(values: DispatchColumn[]) {
         if (values) this._columns = values;
@@ -55,6 +64,8 @@ export class ResizableDirective implements OnInit {
         column: DispatchColumn;
     }>();
 
+    private destroy$ = new Subject<void>();
+
     private _columns: DispatchColumn[] = [];
     private isResizeEnabled: boolean = true;
     private _isNoteExpanded: boolean = true;
@@ -72,7 +83,13 @@ export class ResizableDirective implements OnInit {
     private _hasAdditionalFieldTruck: boolean = false;
     private _hasAdditionalFieldTrailer: boolean = false;
 
-    constructor(private el: ElementRef, private renderer: Renderer2) {}
+    constructor(
+        private el: ElementRef,
+        private renderer: Renderer2,
+
+        // Services
+        private tableService: TruckassistTableService
+    ) {}
 
     ngOnInit(): void {
         if (this.isResizeEnabled) {
@@ -84,11 +101,16 @@ export class ResizableDirective implements OnInit {
         }
 
         this.checkWidth();
+
+        this.resetColumnsSubscribe();
     }
 
     @HostListener('mousedown', ['$event'])
-    onMouseDown(event: MouseEvent): void {
-        if (!this.isResizeEnabled) return;
+    onMouseDown(event): void {
+        const resizeIconClicked =
+            event?.target?.classList?.contains('show-after');
+
+        if (!this.isResizeEnabled || !resizeIconClicked) return;
         event.preventDefault();
 
         this.isResizing = true;
@@ -362,8 +384,56 @@ export class ResizableDirective implements OnInit {
 
         if (currentColumn)
             this.onResizeAction.emit({
-                width: this.el.nativeElement.offsetWidth,
+                width: newWidth,
                 column: currentColumn,
             });
+    }
+
+    // Reset Columns
+    public resetColumnsSubscribe(): void {
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    let newColumnWidth;
+
+                    switch (this.title) {
+                        case DispatchTableStringEnum.NOTE:
+                            newColumnWidth = 238;
+                            break;
+                        case DispatchTableStringEnum.PROGRESS:
+                            newColumnWidth = 228;
+                            break;
+                        case DispatchTableStringEnum.PARKING_1:
+                            newColumnWidth = 102;
+                            break;
+                        case DispatchTableStringEnum.TRAILER_1:
+                            newColumnWidth = 122;
+                            break;
+                        case DispatchTableStringEnum.DRIVER_1:
+                            newColumnWidth = 242;
+                            break;
+                        case DispatchTableStringEnum.TRUCK_1:
+                            newColumnWidth = 122;
+                            break;
+                        case DispatchTableStringEnum.STATUS:
+                            newColumnWidth = 142;
+                            break;
+                        case DispatchTableStringEnum.LAST_LOCATION:
+                            newColumnWidth = 162;
+                            break;
+                        case DispatchTableStringEnum.PICKUP:
+                            newColumnWidth = 342;
+                            break;
+                    }
+
+                    this.setNewWidthValue(newColumnWidth - 11);
+                }
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -97,6 +97,9 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-body',
@@ -137,6 +140,9 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         ThousandToShortFormatPipe,
         LoadStatusColorPipe,
         TableLoadStatusPipe,
+
+        // Directives
+        PreventMultipleclicksDirective
     ],
     providers: [
         {
@@ -221,7 +227,6 @@ export class TaTableBodyComponent
     public isLeftScrollLineShown = false;
     public isRightScrollLineShown = false;
     public loadId: number;
-    public isActionInProgress: boolean = false;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -934,8 +939,6 @@ export class TaTableBodyComponent
 
     // Dropdown Actions
     onDropAction(action: any) {
-        if (this.isActionInProgress) return;
-        this.isActionInProgress = true;
 
         // To Unselect All Selected Rows
         if (action.name === 'activate-item') {
@@ -962,14 +965,9 @@ export class TaTableBodyComponent
             });
         }
 
-        this.enableNewAction();
         this.tooltip.close();
     }
-    private enableNewAction(): void {
-        setTimeout(() => {
-            this.isActionInProgress = false;
-        }, 300);
-    }
+
     
     // On Show Inner Dropdown
     onShowInnerDropdown(action) {

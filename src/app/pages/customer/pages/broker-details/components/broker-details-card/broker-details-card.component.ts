@@ -11,15 +11,16 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
-//Store
+// Store
 import { BrokerQuery } from '@pages/customer/state/broker-state/broker.query';
 import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
-//Services
+// Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
+import { ModalService } from '@shared/services/modal.service';
 
-//Models
+// Models
 import {
     BrokerInvoiceAgeingResponse,
     BrokerResponse,
@@ -31,25 +32,26 @@ import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
-//Constants
+// Constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
 import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/broker.constants';
+import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-invoice-aging-tabs.constants';
 
-//Components
+// Components
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
-//Pipes
+// Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
-//Enums
+// Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Svg routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
-
-// Constants
-import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-invoice-aging-tabs.constants';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-broker-details-card',
@@ -138,7 +140,9 @@ export class BrokerDetailsCardComponent
 
         // Services
         private detailsPageDriverSer: DetailsPageService,
-        private brokerService: BrokerService
+        private brokerService: BrokerService,
+        private modalService: ModalService,
+        private tableService: TruckassistTableService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -158,6 +162,8 @@ export class BrokerDetailsCardComponent
             (brokerId) => brokerId.id === this.broker.id
         );
         this.brokerIndex = currentIndex;
+
+        this.actionAnimationSubscribe();
     }
 
     public tabsButton(): void {
@@ -228,8 +234,16 @@ export class BrokerDetailsCardComponent
         });
     }
 
-    public onSelectBroker(event: { id: number }): void {
+    public onSelectBroker(event: { id: number; name?: string }): void {
         if (event && event.id !== this.broker.id) {
+            if (event.name === TableStringEnum.ADD_NEW_3) {
+                this.modalService.openModal(BrokerModalComponent, {
+                    size: TableStringEnum.MEDIUM,
+                });
+
+                return;
+            }
+
             this.brokerList = this.brokerQuery.getAll().map((item) => {
                 return {
                     id: item.id,
@@ -238,6 +252,7 @@ export class BrokerDetailsCardComponent
                     active: item.id === event.id,
                 };
             });
+            
             this.detailsPageDriverSer.getDataDetailId(event.id);
         }
     }
@@ -563,6 +578,20 @@ export class BrokerDetailsCardComponent
         if (event.id === 1)
             this.inoviceAgingData = this.broker.brokerUnpaidInvoiceAgeing;
         else this.inoviceAgingData = this.broker.brokerPaidInvoiceAgeing;
+    }
+
+    public actionAnimationSubscribe(): void {
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                // Add Broker
+                if (
+                    res?.animation === TableStringEnum.ADD &&
+                    res.tab === TableStringEnum.BROKER
+                ) {
+                    this.getBrokerDropdown();
+                }
+            });
     }
 
     ngOnDestroy(): void {

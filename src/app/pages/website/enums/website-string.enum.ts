@@ -24,6 +24,7 @@ export enum WebsiteStringEnum {
     EIN = 'ein',
     COMPANY_NAME_2 = 'companyName',
     PHONE = 'phone',
+    STAY_LOGGED_IN = 'stayLoggedIn',
 
     EMAIL_HASH = 'EmailHash',
     CODE = 'Code',

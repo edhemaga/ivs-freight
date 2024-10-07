@@ -1001,7 +1001,12 @@
 
         <ng-container *ngIf="activeViewMode === 'Card'">
             <!-- Columns -->
-            <div class="options" (click)="openCards()">
+            <div
+                class="options"
+                appPreventMultipleclicks
+                [cooldownDuration]="500"
+                (cooldownComplete)="openCards()"
+            >
                 <div class="text">Columns</div>
                 <div class="icon">
                     <svg-icon

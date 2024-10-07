@@ -17,6 +17,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
+// Modals
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
@@ -329,8 +332,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -365,8 +367,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -394,8 +395,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -422,8 +422,7 @@ export class CustomerTableComponent
                     clearInterval(interval);
                 }, 900);
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -434,8 +433,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -464,8 +462,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -501,8 +498,7 @@ export class CustomerTableComponent
 
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -517,8 +513,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -533,8 +528,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -549,8 +543,7 @@ export class CustomerTableComponent
             .subscribe(() => {
                 this.sendCustomerData();
 
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
+                this.resetTableSelectedRows();
             });
     }
 
@@ -1186,6 +1179,8 @@ export class CustomerTableComponent
 
         this.setCustomerData(td);
         this.updateCardView();
+
+        this.resetTableSelectedRows();
     }
 
     private getTabData(dataType: string): BrokerResponse[] {
@@ -1434,22 +1429,20 @@ export class CustomerTableComponent
             DropdownContentHelper.getDropdownBrokerContent(data);
 
         dropdownContent.map((dropItem) => {
-            if (
+            const firstDisableCondition =
                 dropItem.name === TableStringEnum.CREATE_LOAD &&
-                (data.ban || data.dnu)
-            )
-                dropItem.mutedStyle = true;
-            else dropItem.mutedStyle = false;
-
-            if (
+                (data.ban || data.dnu);
+            const secondDisableCondition =
                 !data.status &&
                 [
+                    TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER.toString(),
                     TableStringEnum.CREATE_LOAD.toString(),
                     TableStringEnum.ADD_CONTRACT.toString(),
                     TableStringEnum.WRITE_REVIEW.toString(),
                     TableStringEnum.MOVE_TO_BAN_LIST.toString(),
-                ].includes(dropItem.name)
-            )
+                ].includes(dropItem.name);
+
+            if (firstDisableCondition || secondDisableCondition)
                 dropItem.mutedStyle = true;
             else dropItem.mutedStyle = false;
 
@@ -1901,6 +1894,14 @@ export class CustomerTableComponent
 
                     this.mapsService.addRating(res);
                 });
+        } else if(event.type === TableStringEnum.CREATE_LOAD) {
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: TableStringEnum.LOAD },
+                {
+                    data: {broker: event.data}
+                }
+            );
         }
     }
 
@@ -2024,8 +2025,7 @@ export class CustomerTableComponent
             clearInterval(interval);
         }, 900);
 
-        this.tableService.sendRowsSelected([]);
-        this.tableService.sendResetSelectedColumns(true);
+        this.resetTableSelectedRows();
     }
 
     private rowsSelected(): void {
@@ -2238,5 +2238,13 @@ export class CustomerTableComponent
                 break;
         }
         this.customerCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private resetTableSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows([]);
+        this.tableService.sendBanListSelectedRows([]);
+        this.tableService.sendBussinessSelectedRows([]);
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
     }
 }

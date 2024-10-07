@@ -79,17 +79,22 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-//Constants
+// Constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
 
-//Config
+// Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
 import { AddressService } from '@shared/services/address.service';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -296,11 +301,24 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
             // Delete
             if (data.action === 'delete' && this.editData) {
-                this.deleteShipperById(this.editData.id);
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.DELETE },
+                    {
+                        id: this.editData.id,
+                        data: this.editData.data,
+                        template: TableStringEnum.SHIPPER,
+                        type: TableStringEnum.DELETE,
+                        svg: true,
+                        modalHeaderTitle:
+                            ConfirmationModalStringEnum.DELETE_SHIPPER,
+                    }
+                );
+
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: null,
                     status: true,
-                    close: false,
+                    close: true,
                 });
             }
         }
@@ -339,7 +357,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 [Validators.required, ...departmentValidation],
             ],
             phone: [
-                data?.phone ? data.phone : null,
+                data?.phone ? data?.phone : null,
                 [Validators.required, phoneFaxRegex],
             ],
             phoneExt: [data?.phoneExt ? data.phoneExt : null],
@@ -348,20 +366,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     public addShipperContacts(event: { check: boolean; action: string }) {
-        const form = this.createShipperContacts();
-        if (event.check) {
-            this.shipperContacts.push(form);
+        if (this.shipperContacts.valid) {
+            const form = this.createShipperContacts();
+            if (event.check) {
+                this.shipperContacts.push(form);
+            }
+
+            this.inputService.customInputValidator(
+                form.get('email'),
+                'email',
+                this.destroy$
+            );
         }
-
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        setTimeout(() => {
-            this.trackShipperContactEmail();
-        }, 50);
     }
 
     public removeShipperContacts(id: number) {
@@ -370,37 +386,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     public trackShipperContactEmail() {
-        const helper = new Array(this.shipperContacts.length).fill(false);
-
-        this.shipperContacts.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
-            .subscribe((items) => {
-                items.forEach((item, index) => {
-                    if (item.email && helper[index] === false) {
-                        helper[index] = true;
-
-                        this.inputService.changeValidators(
-                            this.shipperContacts.at(index).get('phone'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-
-                    if (!item.email && helper[index] === true) {
-                        this.shipperContacts
-                            .at(index)
-                            .get('email')
-                            .patchValue(null);
-                        this.inputService.changeValidators(
-                            this.shipperContacts.at(index).get('phone'),
-                            true,
-                            [phoneFaxRegex]
-                        );
-                        helper[index] = false;
-                    }
-                });
-            });
+        
     }
 
     public onScrollingShipperContacts(event: any) {
@@ -803,28 +789,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteShipperById(id: number) {
-        this.shipperService
-            .deleteShipperById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: false,
                         close: false,
                     });

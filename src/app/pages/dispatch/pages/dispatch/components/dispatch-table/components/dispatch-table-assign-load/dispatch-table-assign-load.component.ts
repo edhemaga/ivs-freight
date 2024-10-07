@@ -35,7 +35,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     @Input() isActiveLoad: LoadShortResponse;
     @Input() dispatchId: number;
     @Input() isHoveringRow: boolean;
-    @Input() canUnlock: boolean;
+    @Input() isUnlockable: boolean;
 
     public svgRoutes = DispatchTableSvgRoutes;
 
@@ -46,7 +46,7 @@ export class DispatchTableAssignLoadComponent implements OnInit, OnDestroy {
     ngOnInit(): void {}
 
     public get isButtonDisabled(): boolean {
-        if (!this.canUnlock) return true;
+        if (!this.isUnlockable) return true;
 
         if (!this.driver) return true;
 

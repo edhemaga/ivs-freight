@@ -101,10 +101,14 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
     storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
 
     manuallyStarted: any = false;
-    
+
     responseMessage: string = '';
 
     apiConfObj: any[] = [
+        {
+            api: 'driver/status/list',
+            value: 'DRIVERS',
+        },
         {
             api: 'driver',
             value: 'DRIVER',
@@ -361,7 +365,7 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             return false;
         }
 
-        if ( this.responseMessage ) {
+        if (this.responseMessage) {
             this.message = this.responseMessage;
             return false;
         }
@@ -414,16 +418,22 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                     this.httpRequest.body.lastName;
                 this.message = userName;
                 break;
+            case 'DRIVERS':
+                if (this.httpRequest.body?.ids)
+                    this.message =
+                        '(' + this.httpRequest.body?.ids.length + ') Drivers';
+
+                break;
             case 'DRIVER':
                 let bodyName = '';
 
-                if (this.httpRequest.body?.has('firstName')) {
+                if (this.httpRequest.body?.has?.('firstName')) {
                     bodyName = this.httpRequest.body.getAll('firstName')[0];
                 }
 
                 let bodyLastName = '';
 
-                if (this.httpRequest.body?.has('lastName')) {
+                if (this.httpRequest.body?.has?.('lastName')) {
                     bodyLastName = this.httpRequest.body.getAll('lastName')[0];
                 }
 
@@ -434,6 +444,7 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                 }
 
                 let active = this.DetailsDataService.mainData?.status ? 1 : 0;
+
                 if (!driverNameFull) {
                     driverNameFull = this.DetailsDataService.mainData?.fullName
                         ? this.DetailsDataService.mainData?.fullName

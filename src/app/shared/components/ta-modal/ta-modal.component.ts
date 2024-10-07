@@ -59,6 +59,9 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { AssignedLoadResponse } from 'appcoretruckassist';
 import { TaModalActionEnums } from './enums';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
 @Component({
     selector: 'app-ta-modal',
     templateUrl: './ta-modal.component.html',
@@ -84,6 +87,9 @@ import { TaModalActionEnums } from './enums';
         TaFilterComponent,
         TaSearchComponent,
         CaFilterComponent,
+
+        // Directives
+        PreventMultipleclicksDirective,
     ],
     animations: [
         trigger('widthGrow', [
@@ -151,12 +157,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
     @Input() showCloseBusinessButton = false;
-    @Input() isAdditionalAssignLoadModalVisible = false;    
+    @Input() isAdditionalAssignLoadModalVisible = false;
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
     @Input() isDisableButtonHidden: boolean = false;
-    
-    
     // -----------------
 
     @Input() specificCaseModalName: boolean;

@@ -378,6 +378,107 @@ export class DriverService {
         return this.ownerService.apiOwnerCheckSsnEinGet(number);
     }
 
+    public changeDriverListStatus(
+        driverIds: number[],
+        tabSelected?: string
+    ): Observable<any> {
+        return this.driverService
+            .apiDriverStatusListPut({ ids: driverIds })
+            .pipe(
+                tap(() => {
+                    /* Get Table Tab Count */
+                    const driverCount = JSON.parse(
+                        localStorage.getItem(TableStringEnum.DRIVER_TABLE_COUNT)
+                    );
+
+                    driverIds.forEach((driverId) => {
+                        /* Get Data From Store To Update */
+                        let driverToUpdate =
+                            tabSelected === TableStringEnum.ACTIVE
+                                ? this.driversActiveQuery.getAll({
+                                      filterBy: ({ id }) => id === driverId,
+                                  })
+                                : this.driversInactiveQuery.getAll({
+                                      filterBy: ({ id }) => id === driverId,
+                                  });
+
+                        /* Remove Data From Store */
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.driverStore.remove(
+                                  ({ id }) => id === driverId
+                              )
+                            : this.driverInactiveStore.remove(
+                                  ({ id }) => id === driverId
+                              );
+
+                        /* Add Data To New Store */
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.driverInactiveStore.add({
+                                  ...driverToUpdate[0],
+                                  status: 0,
+                              })
+                            : this.driverStore.add({
+                                  ...driverToUpdate[0],
+                                  status: 1,
+                              });
+
+                        /* Update Table Tab Count */
+                        if (tabSelected === TableStringEnum.ACTIVE) {
+                            driverCount.active--;
+                            driverCount.inactive++;
+                        } else if (tabSelected === TableStringEnum.INACTIVE) {
+                            driverCount.active++;
+                            driverCount.inactive--;
+                        }
+                    });
+
+                    /* Send Table Tab Count To Local Storage */
+                    localStorage.setItem(
+                        TableStringEnum.DRIVER_TABLE_COUNT,
+                        JSON.stringify({
+                            applicant: driverCount.applicant,
+                            active: driverCount.active,
+                            inactive: driverCount.inactive,
+                        })
+                    );
+
+                    this.getDrivers(
+                        tabSelected === TableStringEnum.ACTIVE ? 0 : 1,
+                        undefined,
+                        undefined,
+                        undefined,
+                        1,
+                        25
+                    ).subscribe({
+                        next: (driversList) => {
+                            let updatedDrivers =
+                                driversList.pagination.data.filter((driver) =>
+                                    driverIds.includes(driver.id)
+                                );
+
+                            updatedDrivers.map((driver: any) => {
+                                driver = {
+                                    ...driver,
+                                    fullName:
+                                        driver.firstName +
+                                        ' ' +
+                                        driver.lastName,
+                                };
+                                this.dlStore.update(driver.id, {
+                                    status: driver.status,
+                                });
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_MULTIPLE,
+                                data: updatedDrivers,
+                            });
+                        },
+                    });
+                })
+            );
+    }
+
     public changeDriverStatus(
         driverId: number,
         tabSelected?: string

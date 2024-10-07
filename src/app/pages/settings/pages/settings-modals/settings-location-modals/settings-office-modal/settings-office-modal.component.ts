@@ -175,7 +175,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public departmentContacts: CompanyOfficeDepartmentContactResponse[] = [];
 
     public isResetSelected: boolean = false;
-    
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -226,7 +226,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             this.handleModalClose();
         } else if (action === TaModalActionEnums.SAVE) {
             this.handleModalSave();
-        }  else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        } else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
             this.handleModalSave(true);
         } else if (action === TaModalActionEnums.DELETE) {
             this.deleteCompanyOfficeById(this.editData.id);
@@ -292,17 +292,26 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     private handlePayPeriodSelection(event: EnumValue): void {
         this.selectedPayPeriod = event;
+
         this.officeForm
             .get(SettingsOfficeModalStringEnum.MONTHLY_DAY)
             .patchValue(null);
+
         this.officeForm
             .get(SettingsOfficeModalStringEnum.WEEKLY_DAY)
             .patchValue(null);
+
         this.selectedDay = null;
+
         this.dayOptions =
             event.name === SettingsOfficeModalStringEnum.WEEKLY
                 ? this.weeklyDays
                 : this.monthlyDays;
+
+        this.inputService.changeValidators(
+            this.officeForm.get(SettingsOfficeModalStringEnum.MONTHLY_DAY),
+            true
+        );
     }
 
     private updateCompanyOffice(id: number): void {
@@ -368,11 +377,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if(addNew) {
+                    if (addNew) {
                         this.officeForm.reset();
                         this.officeForm
-                        .get(SettingsFormEnum.IS_OWNER)
-                        .patchValue(true);
+                            .get(SettingsFormEnum.IS_OWNER)
+                            .patchValue(true);
                         this.departmentContacts = [];
                         this.isCreatedNewDepartmentRow = false;
                         this.isNewContactAdded = false;

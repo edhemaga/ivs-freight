@@ -17,7 +17,7 @@ export class DispatchTableNoteComponent {
     @Input() public isHoveringRowIndex: number;
     @Input() public rowIndex: number;
     @Input() public dispatchId: number;
-    @Input() public canUnlock: boolean;
+    @Input() public isUnlockable: boolean;
 
     @Input() public set noteWidth(value: number) {
         this._noteWidth = value;

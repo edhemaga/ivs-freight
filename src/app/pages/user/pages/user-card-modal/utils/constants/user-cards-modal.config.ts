@@ -22,7 +22,7 @@ export class UserCardsModalConfig {
 
         {
             title: 'Activity',
-            key: 'lastLogin',
+            key: 'tableActivity',
         },
         null,
         null,
@@ -74,7 +74,7 @@ export class UserCardsModalConfig {
 
         {
             title: 'Activity',
-            key: 'lastLogin',
+            key: 'tableActivity',
         },
         null,
         null,
