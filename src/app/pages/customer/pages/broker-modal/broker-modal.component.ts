@@ -306,7 +306,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
-        if(this.isUploadInProgress) return;
+        if (this.isUploadInProgress) return;
+
         if (data.action === 'bfb' || data.action === 'dnu') {
             // DNU
             if (data.action === 'dnu' && this.editData) {
@@ -385,7 +386,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             } else {
                 // Save & Update
                 if (data.action === 'save') {
-
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
@@ -662,21 +662,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
-            case 'delete': {
+            case 'delete':
                 this.deleteReview(reviews);
+
                 break;
-            }
-            case 'add': {
+            case 'add':
                 this.addReview(reviews);
+
                 break;
-            }
-            case 'update': {
+            case 'update':
                 this.updateReview(reviews);
+
                 break;
-            }
-            default: {
+            case 'cancel':
+                this.reviews = this.reviews.filter((review) => review.id);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 
@@ -804,6 +807,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
+
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
@@ -812,6 +816,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
+
+        console.log('UPDATE', reviews);
+
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
             comment: reviews.data.commentContent,
@@ -820,25 +827,21 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.reviewRatingService
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public onSelectDropDown(event: any, action: string, index?: number) {
         switch (action) {
-            case 'paytype': {
+            case 'paytype':
                 this.selectedPayTerm = event;
+
                 break;
-            }
-            case 'contact-department': {
+            case 'contact-department':
                 this.selectedContactDepartmentFormArray[index] = event;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -1036,7 +1039,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.isUploadInProgress = false;
                     } else this.setModalSpinner(null, true, true);
                 },
-                error: () => this.setModalSpinner(null, false, false)
+                error: () => this.setModalSpinner(null, false, false),
             });
     }
 
@@ -1245,9 +1248,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
+
                     // Review
                     this.reviews = reasponse.ratingReviews.map((item) => ({
                         ...item,
+                        id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
                             avatar: item.companyUser.avatar,
@@ -1757,7 +1762,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             action: action,
             status: status,
             close: close,
-        }); 
+        });
     }
 
     ngOnDestroy(): void {
