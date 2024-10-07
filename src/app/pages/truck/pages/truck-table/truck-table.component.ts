@@ -621,7 +621,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO any type
     private mapTruckData(data: any): any {
-        console.log('data', data);
         const {
             id,
             axles,

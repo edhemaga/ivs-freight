@@ -439,7 +439,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
-                    console.log('res', res.trailerTypes);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,

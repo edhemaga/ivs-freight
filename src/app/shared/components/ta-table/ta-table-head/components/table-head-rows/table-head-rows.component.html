@@ -249,6 +249,7 @@
                                     ? column.width - 55
                                     : column.width - 20
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{
@@ -534,6 +535,7 @@
                         [ngClass]="{
                             'icon-hover': column.ngTemplate !== 'hire'
                         }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         <svg-icon
                             [svgStyle]="{

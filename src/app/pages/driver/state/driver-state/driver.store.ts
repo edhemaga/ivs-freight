@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // models
-import { DriverShortResponse } from 'appcoretruckassist';
+import { DriverListItemResponse } from 'appcoretruckassist';
 
-export interface DriverState extends EntityState<DriverShortResponse, number> {}
+export interface DriverState
+    extends EntityState<DriverListItemResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'driver' })

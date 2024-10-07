@@ -68,6 +68,9 @@ import {
     UntypedFormControl,
 } from '@angular/forms';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-toolbar',
@@ -92,6 +95,9 @@ import {
 
         // Pipes
         ListNameCasePipe,
+        
+        // Directives
+        PreventMultipleclicksDirective
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {

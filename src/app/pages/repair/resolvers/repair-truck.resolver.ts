@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
 
-
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { RepairService } from '@shared/services/repair.service';
 
 // Store
-import {
-    RepairTruckState,
-    RepairTruckStore,
-} from '@pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
+
+// models
+import { RepairListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class RepairTruckResolver  {
+export class RepairTruckResolver {
     constructor(
         private repairService: RepairService,
-        private repairTruckStore: RepairTruckStore,
-        private tableService: TruckassistTableService
+        private repairTruckStore: RepairTruckStore
     ) {}
 
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.repairService.getRepairList(
+    resolve(): Observable<RepairListResponse> {
+        return this.repairService
+            .getRepairList(
                 undefined,
                 1,
                 undefined,
@@ -41,34 +38,22 @@ export class RepairTruckResolver  {
                 undefined,
                 1,
                 25
-            ),
-            this.tableService.getTableConfig(11),
-        ]).pipe(
-            tap(([repairTruckPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'repairTruckTrailerTableCount',
-                    JSON.stringify({
-                        repairShops: repairTruckPagination.repairShopCount,
-                        repairTrucks: repairTruckPagination.truckCount,
-                        repairTrailers: repairTruckPagination.trailerCount,
-                        truckMoneyTotal: repairTruckPagination?.truckMoneyTotal
-                            ? repairTruckPagination.truckMoneyTotal
-                            : 'NA',
-                        trailerMoneyTotal:
-                            repairTruckPagination?.trailerMoneyTotal
-                                ? repairTruckPagination.trailerMoneyTotal
-                                : 'NA',
-                    })
-                );
+            )
+            .pipe(
+                tap((repairTruckPagination) => {
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairShops: repairTruckPagination.repairShopCount,
+                            repairTrucks: repairTruckPagination.truckCount,
+                            repairTrailers: repairTruckPagination.trailerCount,
+                        })
+                    );
 
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-                }
-
-                this.repairTruckStore.set(
-                    repairTruckPagination.pagination.data
-                );
-            })
-        );
+                    this.repairTruckStore.set(
+                        repairTruckPagination.pagination.data
+                    );
+                })
+            );
     }
 }
