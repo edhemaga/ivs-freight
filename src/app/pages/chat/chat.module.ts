@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ChatRoutingModule } from '@pages/chat/chat-routing.module';
+import { StoreModule } from '@ngrx/store';
 
 // Components
 import { ChatComponent } from '@pages/chat/components/chat/chat.component';
 import { ConversationContentComponent } from '@pages/chat/components/conversation/conversation-content/conversation-content.component';
 import { ConversationListComponent } from '@pages/chat/components/conversation/conversation-list/conversation-list.component';
-import { ChatUserListComponent } from '@pages/chat/components/conversation/conversation-list/chat-user-list/chat-user-list.component';
 import { ChatMessageComponent } from '@pages/chat/components/conversation/conversation-content/chat-message/chat-message.component';
 import { ChatMessagesComponent } from '@pages/chat/components/conversation/conversation-content/chat-messages/chat-messages.component';
 import { ChatContentFooterComponent } from '@pages/chat/components/conversation/conversation-content/chat-content-footer/chat-content-footer.component';
@@ -34,6 +34,9 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { CaProfileImageComponent } from 'ca-components';
+
+// Store
+import { chatDataReducer } from '@pages/chat/store';
 
 // Pipes
 import {
@@ -66,7 +69,6 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 
         // Chat list
         ConversationListComponent,
-        ChatUserListComponent,
 
         // Conversation
         ConversationContentComponent,
@@ -129,6 +131,9 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 
         // Directives
         HoverSvgDirective,
+
+        // Store
+        StoreModule.forFeature('chat', chatDataReducer),
     ],
 })
 export class ChatModule {}

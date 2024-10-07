@@ -68,11 +68,12 @@
             <div
                 class="icon-wrapper d-flex justify-content-center align-items-center"
                 [ngStyle]="{
-                    backgroundColor: isProfileDetailsDisplayed
-                        ? '#424242'
-                        : '#ffffff'
+                    backgroundColor:
+                        (isProfileDetailsDisplayed$ | async)
+                            ? '#424242'
+                            : '#ffffff'
                 }"
-                (click)="displayProfileDetails(true)"
+                (click)="displayProfileDetails()"
             >
                 <svg-icon
                     class="d-flex"
@@ -124,7 +125,8 @@
         class="chat-main-content"
         [ngStyle]="{
             'grid-template-columns':
-                isProfileDetailsDisplayed || isGroupMembersDisplayed
+                (isProfileDetailsDisplayed$ | async) ||
+                (isParticipantsDisplayed$ | async)
                     ? chatGridLayout.MAX_AUTO_MAX
                     : chatGridLayout.MAX_AUTO
         }"
@@ -144,7 +146,7 @@
         <!-- Messages -->
         <div class="conversation-wrapper">
             <ng-container *ngIf="selectedConversation; else noConversation">
-                <router-outlet (activate)="onActivate($event)"></router-outlet>
+                <router-outlet></router-outlet>
             </ng-container>
 
             <ng-template #noConversation>
@@ -155,44 +157,39 @@
         </div>
 
         <!-- Profile details -->
-        <div>
-            <ng-container *ngIf="!isAttachmentUploadActive">
-                <div class="profile-details-wrapper d-flex">
-                    <ng-container *ngIf="isProfileDetailsDisplayed">
-                        <div class="profile-details">
-                            <app-chat-user-profile
-                                [data]="userProfileData | async"
-                                [profileDetailsType]="
-                                    chatConversationProfileDetailsType.SAFETY
-                                "
-                                (isProfileDetailsClosed)="
-                                    displayProfileDetails($event)
-                                "
-                            ></app-chat-user-profile>
-                        </div>
-                    </ng-container>
-
-                    <ng-container
-                        *ngIf="
-                            isGroupMembersDisplayed &&
-                            conversationParticipants.length
-                        "
-                    >
-                        <div class="profile-details">
-                            <app-chat-channel-participant-list
-                                [@fadeInOutHorizontal]
-                                [conversationParticipants]="
-                                    conversationParticipants
-                                "
-                                (closeGroupMembersOverviewEvent)="
-                                    closeGroupMembersOverview($event.value)
-                                "
-                            ></app-chat-channel-participant-list>
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
+        <ng-container *ngIf="!isAttachmentUploadActive">
+            <div class="profile-details-wrapper d-flex">
+                <ng-container *ngIf="isProfileDetailsDisplayed$ | async">
+                    <div class="profile-details">
+                        <app-chat-user-profile
+                            [data]="conversationProfileDetails$ | async"
+                            [profileDetailsType]="
+                                chatConversationProfileDetailsType.SAFETY
+                            "
+                            (isProfileDetailsClosed)="closeProfileDetails()"
+                        ></app-chat-user-profile>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        (isParticipantsDisplayed$ | async) &&
+                        (conversation$ | async)?.participants?.length
+                    "
+                >
+                    <div class="profile-details">
+                        <app-chat-channel-participant-list
+                            [@fadeInOutHorizontal]
+                            [conversationParticipants]="
+                                (conversation$ | async)?.participants
+                            "
+                            (closeGroupMembersOverviewEvent)="
+                                closeGroupMembersOverview($event.value)
+                            "
+                        ></app-chat-channel-participant-list>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
     </div>
 </div>
 

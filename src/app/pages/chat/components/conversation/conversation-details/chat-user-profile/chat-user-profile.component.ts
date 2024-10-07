@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+// Store
+import { Store } from '@ngrx/store';
+import { closeAllProfileInformation } from '@pages/chat/store';
+
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
 
@@ -12,6 +16,7 @@ import {
     ChatSearchPlaceHolders,
     ChatUserProfileResourceTypeEnum,
 } from '@pages/chat/enums';
+import { ChatStoreService } from '@pages/chat/services';
 
 @Component({
     selector: 'app-chat-user-profile',
@@ -21,9 +26,6 @@ import {
 export class ChatUserProfileComponent implements OnInit {
     @Input() data: ConversationInfoResponse;
     @Input() profileDetailsType!: ChatConversationProfileDetailsType;
-
-    @Output() isProfileDetailsClosed: EventEmitter<boolean> =
-        new EventEmitter<boolean>();
 
     // TODO connect to hub, replace dummy value
     public activityStatus: string = 'Offline';
@@ -39,11 +41,11 @@ export class ChatUserProfileComponent implements OnInit {
     // Attachment and links status
     public ChatUserProfileResourceTypeEnum = ChatUserProfileResourceTypeEnum;
 
-    constructor() {}
+    constructor(private chatStoreService: ChatStoreService) {}
 
     ngOnInit(): void {}
 
     public closeProfileDetails(): void {
-        this.isProfileDetailsClosed.emit(false);
+        this.chatStoreService.closeAllProfileInformation();
     }
 }

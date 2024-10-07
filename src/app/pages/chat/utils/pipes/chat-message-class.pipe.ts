@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ChatMessage } from '@pages/chat/models';
 
 @Pipe({
     name: 'chatMessageClass',
@@ -8,22 +7,13 @@ export class ChatMessageClassPipe implements PipeTransform {
     transform(
         currentUserId: number,
         senderId: number,
-        isMessageReply: boolean,
-        isMessageEdit: boolean,
-        isOpen: boolean
+        isSelected: boolean
     ): string {
         const isCurrentUser: boolean = currentUserId === senderId;
-        const isSelected: boolean = (isMessageReply || isMessageEdit) && isOpen;
 
         let classString = '';
 
         switch (true) {
-            case !isOpen && isCurrentUser:
-                classString = 'current-user';
-                break;
-            case !isOpen && !isCurrentUser:
-                classString = 'other';
-                break;
             case isCurrentUser && isSelected:
                 classString = 'current-user-selected';
                 break;

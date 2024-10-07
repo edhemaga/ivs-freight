@@ -12,7 +12,7 @@ import {
     Input,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject, debounceTime, map, takeUntil } from 'rxjs';
+import { Observable, takeUntil, debounceTime, map, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 // Assets routes
@@ -26,6 +26,7 @@ import {
     UserChatService,
     ChatHubService,
     UserProfileService,
+    ChatStoreService,
 } from '@pages/chat/services';
 
 // Models
@@ -33,7 +34,11 @@ import {
     CompanyUserShortResponse,
     ConversationResponse,
 } from 'appcoretruckassist';
-import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
+import {
+    ChatConversationMessageAction,
+    ChatMessage,
+    ChatMessageResponse,
+} from '@pages/chat/models';
 
 // Enums
 import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
@@ -67,13 +72,6 @@ export class ChatMessagesComponent
     @Input() public isProfileDetailsDisplayed: boolean = false;
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
-    @Input() public isReplyOrEditOpen: boolean = false;
-
-    @Output() public userTypingEmitter: EventEmitter<number> =
-        new EventEmitter();
-    @Output()
-    public messageReplyOrEditEvent: EventEmitter<ChatConversationMessageAction> =
-        new EventEmitter();
 
     //User data
     public getCurrentUserHelper = GetCurrentUserHelper;
@@ -86,9 +84,8 @@ export class ChatMessagesComponent
     public ChatDropzone = ChatDropzone;
 
     // Messages
+    public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
-    public currentUserTypingName: BehaviorSubject<string | null> =
-        new BehaviorSubject(null);
     public messageIdActionsDisplayed!: number;
 
     // Form
@@ -105,8 +102,8 @@ export class ChatMessagesComponent
         private activatedRoute: ActivatedRoute,
 
         // Services
-        private chatService: UserChatService,
         private chatHubService: ChatHubService,
+        private chatStoreService: ChatStoreService,
         public userProfileService: UserProfileService
     ) {
         super();
@@ -125,37 +122,21 @@ export class ChatMessagesComponent
         this.activatedRoute.data
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.messages = [
-                    ...res?.messages?.pagination?.data?.filter(
-                        (message) => message.id !== 0
-                    ),
-                ];
+                this.chatStoreService.setMessageResponse(res?.messages);
                 this.conversation = res?.information;
+                this.initStoreValues();
             });
     }
 
-    public getMessages(): void {
-        this.chatService
-            .getMessages(this.conversation?.id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.messages = [
-                    ...res?.pagination?.data?.filter(
-                        (message) => message.id !== 0
-                    ),
-                ];
-            });
-    }
-
-    public handleMessageDelete(): void {
-        this.getMessages();
+    public initStoreValues(): void {
+        this.messages$ = this.chatStoreService.selectMessages();
     }
 
     private connectToHub(): void {
         ChatHubService.receiveMessage()
             .pipe(
                 takeUntil(this.destroy$),
-                map((message) => {
+                map((message: ChatMessage) => {
                     const transformedMessage: ChatMessage =
                         chatMessageSenderFullname(this.messages, message);
                     return {
@@ -176,9 +157,7 @@ export class ChatMessagesComponent
                 })
             )
             .subscribe((message: ChatMessage) => {
-                if (message) {
-                    this.messages = [...this.messages, message];
-                }
+                this.chatStoreService.addMessage(message);
             });
 
         this.chatHubService
@@ -186,22 +165,21 @@ export class ChatMessagesComponent
             .pipe(debounceTime(150), takeUntil(this.destroy$))
             .subscribe((companyUserId: number) => {
                 const filteredUser: CompanyUserShortResponse =
-                    this.conversationParticipants.find(
+                    this.conversationParticipants?.find(
                         (user) => user.id === companyUserId
                     );
-                this.currentUserTypingName.next(filteredUser?.fullName);
-                this.userTypingEmitter.emit(companyUserId);
 
+                this.chatStoreService.setUserTyping(filteredUser?.fullName);
+            })
+            .add(() => {
                 setTimeout(() => {
-                    this.currentUserTypingName.next(null);
-                    this.userTypingEmitter.emit(0);
+                    this.chatStoreService.setUserTyping('');
                 }, 1000);
             });
     }
 
     public handleMessageReplyOrEdit(data: ChatConversationMessageAction): void {
         this.messageIdActionsDisplayed = data.message?.id;
-        this.messageReplyOrEditEvent.emit(data);
     }
 
     ngOnDestroy(): void {

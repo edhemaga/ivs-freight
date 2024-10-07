@@ -10,16 +10,32 @@ import {
     ViewChildren,
     QueryList,
 } from '@angular/core';
-import { BehaviorSubject, takeUntil, debounceTime } from 'rxjs';
+import {
+    BehaviorSubject,
+    takeUntil,
+    debounceTime,
+    Observable,
+    concatMap,
+} from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
+// Store
+import { selectEditMessage, selectReplyMessage } from '@pages/chat/store';
+
 // Models
-import { ChatAttachmentForThumbnail, ChatMessage } from '@pages/chat/models';
-import { ConversationResponse } from 'appcoretruckassist';
+import {
+    ChatAttachmentForThumbnail,
+    ChatMessage,
+    ChatSelectedConversation,
+} from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
-import { ChatHubService, UserChatService } from '@pages/chat/services';
+import {
+    ChatHubService,
+    ChatStoreService,
+    UserChatService,
+} from '@pages/chat/services';
 
 // Helpers
 import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
@@ -32,6 +48,8 @@ import {
     ChatAttachmentCustomClassEnum,
     ChatAttachmentHoveredClassStringEnum,
 } from '@pages/chat/enums';
+
+// Configs
 import { ChatInput } from '@pages/chat/utils/configs';
 
 @Component({
@@ -45,16 +63,14 @@ export class ChatContentFooterComponent
 {
     @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
 
-    @Input() public conversation!: ConversationResponse;
+    @Input() public conversation!: ChatSelectedConversation;
     @Input() currentUserTyping: BehaviorSubject<string | null> =
-        new BehaviorSubject(null);
-    @Input() replyMessage$: BehaviorSubject<ChatMessage | null> =
-        new BehaviorSubject(null);
-    @Input() editMessage$: BehaviorSubject<ChatMessage | null> =
         new BehaviorSubject(null);
 
     @Output() closeReplyOrEditEvent: EventEmitter<boolean> = new EventEmitter();
 
+    public replyMessage$!: Observable<ChatMessage | null>;
+    public editMessage$!: Observable<ChatMessage | null>;
     // Form
     public messageForm!: UntypedFormGroup;
 
@@ -94,10 +110,10 @@ export class ChatContentFooterComponent
 
         // Services
         private chatService: UserChatService,
+        private chatStoreService: ChatStoreService,
 
         // Renderer
-        private renderer: Renderer2,
-        private el: ElementRef
+        private renderer: Renderer2
     ) {
         super();
     }
@@ -105,25 +121,41 @@ export class ChatContentFooterComponent
     ngOnInit(): void {
         this.creteForm();
         this.listenForTyping();
+        this.getReplyAndEditMessages();
+    }
+
+    private getReplyAndEditMessages(): void {
+        this.editMessage$ = this.chatStoreService.selectEditMessage();
+        this.replyMessage$ = this.chatStoreService.selectReplyMessage();
     }
 
     public handleSend(): void {
-        if (this.editMessage$.value) {
-            this.editMessage();
-            return;
-        }
-        this.sendMessage();
+        const isComplete: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+        this.editMessage$
+            .pipe(
+                concatMap((editMessage: ChatMessage) => {
+                    if (editMessage) {
+                        this.editMessage(editMessage.id);
+                    }
+                    return this.replyMessage$;
+                }),
+                takeUntil(this.destroy$ || isComplete)
+            )
+            .subscribe((replyMessage: ChatMessage) => {
+                this.sendMessage(replyMessage?.id);
+                isComplete.next(true);
+                isComplete.complete();
+            });
     }
 
-    public sendMessage(): void {
+    public sendMessage(parentMessageId?: number): void {
         const message = this.messageForm?.value?.message;
 
         if (!this.conversation?.id || !this.isMessageSendable) return;
         if (!message && !this.attachments$?.value?.length) return;
 
         this.isMessageSendable = false;
-
-        const parentMessageId: number = this.replyMessage$.value?.id;
 
         this.chatService
             .sendMessage(
@@ -143,9 +175,9 @@ export class ChatContentFooterComponent
             });
     }
 
-    public editMessage(): void {
+    public editMessage(parentMessageId?: number): void {
         const message = this.messageForm?.value?.message;
-        const messageId: number = this.editMessage$?.value?.id;
+        const messageId: number = parentMessageId;
 
         if (!messageId || !message) return;
 
@@ -311,27 +343,7 @@ export class ChatContentFooterComponent
         this.currentMessage = message;
     }
 
-    public handleMessageReply(messageToReply: ChatMessage): void {
-        this.replyMessage$.next(messageToReply);
-    }
-
-    public handleMessageEdit(messageToEdit: ChatMessage): void {
-        this.editMessage$.next(messageToEdit);
-    }
-
-    public handleMessageDelete(deleted: boolean): void {
-        // TODO Emit event, later move to hub
-        // this.getMessages();
-    }
-
     public closeReplyAndEdit(): void {
-        this.closeReplyOrEditEvent.emit(true);
-        this.replyMessage$.next(null);
-        this.editMessage$.next(null);
-    }
-
-    ngOnDestroy(): void {
-        this.replyMessage$.complete();
-        this.editMessage$.complete();
+        this.chatStoreService.resetReplyAndEditMessage();
     }
 }

@@ -3,6 +3,9 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 
+// Service
+import { ChatStoreService } from '@pages/chat/services';
+
 // Models
 import { CompanyUserShortResponse } from 'appcoretruckassist';
 
@@ -39,7 +42,12 @@ export class ChatChannelParticipantListComponent
     public chatInput = ChatInput;
     public chatSearchPlaceHolders = ChatSearchPlaceHolders;
 
-    constructor(private formBuilder: UntypedFormBuilder) {
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+
+        // Services
+        private chatStoreService: ChatStoreService
+    ) {
         super();
     }
 
@@ -72,6 +80,6 @@ export class ChatChannelParticipantListComponent
     }
 
     public closeOverview(): void {
-        this.closeGroupMembersOverviewEvent.emit(false);
+        this.chatStoreService.closeAllProfileInformation();
     }
 }

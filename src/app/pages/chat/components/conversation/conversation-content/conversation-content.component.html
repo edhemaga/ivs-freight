@@ -5,32 +5,37 @@
             <div class="messages-header d-flex align-items-center">
                 <ng-container
                     *ngSwitchCase="
-                        group === chatGroupEnum.CompanyUser ||
-                        group === chatGroupEnum.Driver
+                        (conversation$ | async)?.participants?.length === 1
                     "
                 >
                     <app-ca-profile-image
                         [avatarImg]="
-                            conversationParticipants[0]?.avatarFile?.url
+                            (conversation$ | async)?.participants[0]?.avatarFile
+                                ?.url
                         "
                         [avatarColor]="{
                             background: '#DFC2F9',
                             color: '#9E47EC66'
                         }"
                         [textShortName]="
-                            conversationParticipants[0]?.fullName | nameInitials
+                            (conversation$ | async)?.participants[0]?.fullName
+                                | nameInitials
                         "
                         [size]="22"
                         [fontSize]="9"
                         [isHoverEffect]="false"
-                        [isRound]="group === chatGroupEnum.CompanyUser"
+                        [isRound]="
+                            (conversation$ | async)?.group ===
+                            chatGroupEnum.CompanyUser
+                        "
                     ></app-ca-profile-image>
 
                     <ng-container
                         *ngTemplateOutlet="
                             headerLeftSide;
                             context: {
-                                name: conversationParticipants[0]?.fullName
+                                name: (conversation$ | async)?.participants[0]
+                                    ?.fullName
                             }
                         "
                     ></ng-container>
@@ -42,16 +47,17 @@
 
                 <ng-container
                     *ngSwitchCase="
-                        group === chatGroupEnum.Department ||
-                        group === chatGroupEnum.Truck ||
-                        group === chatGroupEnum.Dispatch
+                        (conversation$ | async)?.participants?.length >= 2
                     "
                 >
                     <div class="messages-header d-flex align-items-center">
                         <svg-icon
                             class="d-flex justify-content-center align-items-center"
                             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            [src]="group | chatGroupCheckForIcon"
+                            [src]="
+                                (conversation$ | async)?.group
+                                    | chatGroupCheckForIcon
+                            "
                         >
                         </svg-icon>
                     </div>
@@ -60,7 +66,8 @@
                         *ngTemplateOutlet="
                             headerLeftSide;
                             context: {
-                                name: conversationParticipants[0]?.fullName
+                                name: (conversation$ | async)?.participants[0]
+                                    ?.fullName
                             }
                         "
                     ></ng-container>
@@ -69,7 +76,8 @@
                         *ngTemplateOutlet="
                             headerRightSide;
                             context: {
-                                participants: conversationParticipants
+                                participants: (conversation$ | async)
+                                    ?.participants
                             }
                         "
                     ></ng-container>
@@ -81,24 +89,15 @@
     <div class="content d-flex flex-column">
         <!-- Messages  -->
         <app-chat-messages
-            [conversation]="conversation"
+            [conversation]="conversation$"
             [isProfileDetailsDisplayed]="isProfileDetailsDisplayed"
             [isAttachmentUploadActive]="isAttachmentUploadActive"
-            [conversationParticipants]="conversationParticipants"
-            [isReplyOrEditOpen]="
-                messageToEdit$
-                    | async
-                    | chatAnyExist : (messageToReply$ | async)
-            "
-            (messageReplyOrEditEvent)="handleMessageEvent($event)"
+            [conversationParticipants]="(conversation$ | async)?.participants"
         ></app-chat-messages>
 
         <!-- Footer -->
         <app-chat-content-footer
-            [conversation]="conversation"
-            [editMessage$]="messageToEdit$"
-            [replyMessage$]="messageToReply$"
-            (closeReplyOrEditEvent)="closeReplyOrEditHandle($event)"
+            [conversation]="conversation$ | async"
         ></app-chat-content-footer>
     </div>
 </div>
@@ -130,10 +129,9 @@
                         }
                     "
                 ></ng-container>
+                <app-chat-vertical-divider></app-chat-vertical-divider>
             </ng-container>
         </div>
-        <app-chat-vertical-divider></app-chat-vertical-divider>
-
         <div
             class="icon-wrapper d-flex justify-content-center align-items-center"
         >
@@ -143,7 +141,7 @@
                     'width.px': 18,
                     'height.px': 18
                 }"
-                [src]="chatSvgRoutes.replyXIcon"
+                [src]="chatSvgRoutes.listOptionsIcon"
             >
             </svg-icon>
         </div>
@@ -182,6 +180,7 @@
             <ng-container *ngSwitchCase="ind === 5">
                 <div
                     class="remaining-participants-number profile-image-wrapper align-content-center ta-font-extra-bold"
+                    [ngStyle]="{ 'border-radius': true && '50px' }"
                 >
                     <div>+{{ participants?.length - 5 }}</div>
                 </div>

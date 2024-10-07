@@ -1,20 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil, Observable, map } from 'rxjs';
+
+// Services
+import { ChatStoreService } from '@pages/chat/services';
 
 // Models
-import { ChatConversationMessageAction, ChatMessage } from '@pages/chat/models';
-import {
-    CompanyUserShortResponse,
-    ConversationResponse,
-} from 'appcoretruckassist';
+import { ChatSelectedConversation } from '@pages/chat/models';
 
 // Enums
-import {
-    ChatConversationType,
-    ChatGroupEnum,
-    ChatMessageActionEnum,
-} from '@pages/chat/enums';
+import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 
 // Helpers
 import {
@@ -39,17 +34,6 @@ export class ConversationContentComponent
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
         new EventEmitter();
-    @Output() isConversationParticipantsDisplayed: EventEmitter<{
-        isDisplayed: boolean;
-        conversationParticipants: CompanyUserShortResponse[];
-    }> = new EventEmitter();
-
-    // Messages
-    public messages: ChatMessage[] = [];
-    public messageToReply$: BehaviorSubject<ChatMessage | null> =
-        new BehaviorSubject(null);
-    public messageToEdit$: BehaviorSubject<ChatMessage | null> =
-        new BehaviorSubject(null);
 
     // Group info
     public chatConversationType = ChatConversationType;
@@ -58,85 +42,65 @@ export class ConversationContentComponent
     //User data
     private getCurrentUserHelper = GetCurrentUserHelper;
 
-    public conversation!: ConversationResponse;
-    public conversationParticipants!: CompanyUserShortResponse[];
+    public conversation$!: Observable<ChatSelectedConversation>;
 
     // Assets
     public chatSvgRoutes = ChatSvgRoutes;
 
     constructor(
-        //Router
-        private router: Router,
-        private activatedRoute: ActivatedRoute
+        // Router
+        private activatedRoute: ActivatedRoute,
+
+        // Services
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.getResolvedData();
-        this.getDataOnRouteChange();
+        this.initStoreData();
+    }
+
+    private initStoreData(): void {
+        this.chatStoreService.closeAllProfileInformation();
+        this.conversation$ = this.chatStoreService.selectConversation();
     }
 
     private getResolvedData(): void {
         this.activatedRoute.data
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                map((res) => {
+                    return {
+                        ...res,
+                        information: {
+                            ...res?.information,
+                            name:
+                                res.information.name ??
+                                res.information?.participants[0]?.fullName,
+                            participants: res.information?.participants.filter(
+                                (participant) =>
+                                    participant.id !==
+                                    this.getCurrentUserHelper.currentUserId
+                            ),
+                        },
+                    };
+                })
+            )
             .subscribe((res) => {
-                this.messages = [...res.messages?.pagination?.data];
-
-                // Conversation participants
-                this.conversation = res.information;
-
-                this.conversationParticipants =
-                    this.conversation?.participants.filter(
-                        (participant) =>
-                            participant.id !==
-                            this.getCurrentUserHelper.currentUserId
-                    );
+                const selectedConversation: ChatSelectedConversation = {
+                    participants: res.information.participants,
+                    name: res.information.name,
+                    description: res.information?.description,
+                    createdAt: res.information?.createdAt,
+                    updatedAt: res.information?.updatedAt,
+                };
+                this.chatStoreService.setConversation(selectedConversation);
             });
     }
 
     public displayGroupParticipants(): void {
-        this.isConversationParticipantsDisplayed.emit({
-            isDisplayed: true,
-            conversationParticipants: this.conversationParticipants,
-        });
-    }
-
-    private getDataOnRouteChange(): void {
-        this.router.events.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.isProfileDetailsDisplayed.emit(false);
-        });
-
-        this.activatedRoute.queryParams.subscribe((params) => {
-            this.group =
-                params[this.chatConversationType.CHANNEL] != this.group
-                    ? params[this.chatConversationType.CHANNEL]
-                    : this.group;
-        });
-    }
-
-    public closeReplyOrEditHandle($event: boolean): void {
-        this.messageToEdit$.next(null);
-        this.messageToReply$.next(null);
-    }
-
-    public handleMessageEvent(data: ChatConversationMessageAction): void {
-        switch (data.type) {
-            case ChatMessageActionEnum.EDIT:
-                this.messageToEdit$.next(data.message);
-                this.messageToReply$.next(null);
-                break;
-            case ChatMessageActionEnum.REPLY:
-                this.messageToReply$.next(data.message);
-                this.messageToEdit$.next(null);
-                break;
-            default:
-                return;
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.messageToEdit$.complete();
-        this.messageToReply$.complete();
+        this.chatStoreService.displayConversationParticipants();
     }
 }
