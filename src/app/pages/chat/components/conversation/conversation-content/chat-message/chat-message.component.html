@@ -4,7 +4,7 @@
     (mouseenter)="toggleActions(true)"
     (mouseleave)="toggleActions(false)"
 >
-    <ng-container *ngIf="message.content">
+    <ng-container *ngIf="message.content || message.mediaCount">
         <div
             class="content-wrapper d-flex justify-content-end"
             [ngClass]="
@@ -99,7 +99,9 @@
                         }
                     "
                 ></ng-container>
-                <div>{{ message.content }}</div>
+                <ng-container *ngIf="message.content">
+                    <div>{{ message.content }}</div>
+                </ng-container>
 
                 <ng-container *ngIf="message.filesCount">
                     <div
@@ -123,6 +125,7 @@
                                     [attachment]="attachment"
                                     [isNameReduced]="true"
                                     [isInMessage]="true"
+                                    [isFocused]="isFocused"
                                     [previewWidth]="'100%'"
                                 ></app-chat-message-attachment-preview>
                             </div>
@@ -149,45 +152,43 @@
                     </div>
                 </ng-container>
             </div>
-
-            <ng-container *ngIf="message.mediaCount">
-                <div
-                    class="media-preview-wrapper d-flex"
-                    [ngClass]="
-                        currentUserId ===
-                        (message.senderId || message.sender?.id)
-                            ? 'flex-row-reverse'
-                            : 'flex-row'
+        </div>
+        <ng-container *ngIf="message.mediaCount">
+            <div
+                class="media-preview-wrapper d-flex"
+                [ngClass]="
+                    currentUserId === (message.senderId || message.sender?.id)
+                        ? 'flex-row-reverse'
+                        : 'flex-row'
+                "
+            >
+                <ng-container
+                    *ngFor="
+                        let attachment of message.media;
+                        let ind = index;
+                        trackBy: '' | trackByProperty
                     "
                 >
-                    <ng-container
-                        *ngFor="
-                            let attachment of message.media;
-                            let ind = index;
-                            trackBy: '' | trackByProperty
-                        "
-                    >
-                        <div class="media-preview d-flex">
-                            <img
-                                class="media-preview-thumbnail"
-                                [ngStyle]="
-                            (message.mediaCount || message.media?.length) > 1 ? {
-                                height: '120px',
-                                width: '120px',  
-                            } : {
-                                'max-width': '300px',
-                                'max-height': '300px',
-                                'aspect-ration':  singleImageAspectRation
-                            }
-                        "
-                                [src]="attachment.url"
-                                [alt]="attachment.fileName"
-                            />
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
+                    <div class="media-preview d-flex">
+                        <img
+                            class="media-preview-thumbnail"
+                            [ngStyle]="
+                        (message.mediaCount || message.media?.length) > 1 ? {
+                            height: '120px',
+                            width: '120px',  
+                        } : {
+                            'max-width': '300px',
+                            'max-height': '300px',
+                            'aspect-ration':  singleImageAspectRation
+                        }
+                    "
+                            [src]="attachment.url"
+                            [alt]="attachment.fileName"
+                        />
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
     </ng-container>
 </div>
 

@@ -1,8 +1,4 @@
-<div
-    class="attachment-preview"
-    [ngStyle]="{ width: previewWidth }"
-    (click)="isInMessage && downloadFile()"
->
+<div class="attachment-preview" (click)="isInMessage && downloadFile()">
     <ng-container *ngIf="isMedia; else document">
         <img
             [src]="attachment.url"
@@ -19,18 +15,18 @@
                 [alt]="attachment.name"
                 class="attachment-preview-document-thumbnail"
             />
-            <div
-                class="attachment-preview-document-info"
-                [ngStyle]="{ width: isInMessage && 'fit-content' }"
-            >
+            <div class="attachment-preview-document-info">
                 <div
-                    [ngClass]="isInMessage ? 'name-dark' : 'name-light'"
-                    [class.text-reduced]="isNameReduced"
-                    class="name ta-font-medium"
+                    class="name ta-font-medium attachment-name"
+                    [ngClass]="isFocused ? 'name-light' : 'name-dark'"
+                    [ngStyle]="{ maxWidth: isNameReduced ? '82px' : '100%' }"
                 >
                     {{ attachment.fileName }}
                 </div>
-                <div class="text info">
+                <div
+                    class="text info"
+                    [ngStyle]="{ color: isFocused ? '#ffffff' : '#919191' }"
+                >
                     <ng-container [ngSwitch]="displayMode">
                         <ng-container *ngSwitchCase="'size'">
                             {{ attachment.size || attachment.fileSize }} kB

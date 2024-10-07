@@ -81,7 +81,7 @@ export class ChatMessageAttachmentPreviewComponent implements OnInit {
             case ChatAttachmentTypeEnum.PNG:
                 this.isDocument = false;
                 this.isMedia = true;
-                if (!this.isInMessage) this.previewWidth = '40px';
+                if (!this.isInMessage) this.previewWidth = '100%';
                 break;
 
             default:

@@ -62,7 +62,6 @@
                                 "
                             >
                                 <div
-                                    #documentPreview
                                     class="attachment-preview-container pointer d-flex"
                                     [ngClass]="
                                         attachment.extension === 'jpg' ||
@@ -76,6 +75,8 @@
                                         [index]="ind"
                                         [attachment]="attachment"
                                         [isNameReduced]="true"
+                                        [isFocused]="false"
+                                        [isInMessage]="false"
                                     ></app-chat-message-attachment-preview>
                                     <div class="close-attachment">
                                         <div

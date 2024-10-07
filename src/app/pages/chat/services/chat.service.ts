@@ -128,10 +128,8 @@ export class UserChatService {
         if (!conversationId) return;
 
         const attachments: File[] = attachmentsList.map((item) => {
-            return { ...item.realFile, fileId: null };
+            return item.realFile;
         });
-
-        console.log(attachments);
 
         const links = linksList?.map((link) => {
             return {
@@ -147,6 +145,8 @@ export class UserChatService {
             links,
             parentMessageId,
         };
+
+        console.log(data);
 
         this.formDataService.extractFormDataFromFunction(data);
 

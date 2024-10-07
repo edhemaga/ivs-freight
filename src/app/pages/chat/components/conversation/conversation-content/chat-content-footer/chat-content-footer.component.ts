@@ -53,8 +53,6 @@ export class ChatContentFooterComponent
     extends UnsubscribeHelper
     implements OnInit, OnDestroy
 {
-    @ViewChildren('documentPreview') documentPreview!: QueryList<ElementRef>;
-
     @Input() public conversation!: ChatSelectedConversation;
     public currentUserTyping!: Observable<string>;
 
