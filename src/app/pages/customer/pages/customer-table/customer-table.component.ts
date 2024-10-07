@@ -1282,7 +1282,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: data?.ban || data?.dnu || !data?.status,
                       isDnu: data?.dnu,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1382,7 +1382,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: !data?.status,
                       isDnu: false,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1894,12 +1894,12 @@ export class CustomerTableComponent
 
                     this.mapsService.addRating(res);
                 });
-        } else if(event.type === TableStringEnum.CREATE_LOAD) {
+        } else if (event.type === TableStringEnum.CREATE_LOAD) {
             this.modalService.openModal(
                 LoadModalComponent,
                 { size: TableStringEnum.LOAD },
                 {
-                    data: {broker: event.data}
+                    data: { broker: event.data },
                 }
             );
         }

@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
 
-
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { OwnerService } from '@pages/owner/services/owner.service';
 
 // store
-import {
-    OwnerActiveState,
-    OwnerActiveStore,
-} from '@pages/owner/state/owner-active-state/owner-active.store';
+import { OwnerActiveStore } from '@pages/owner/state/owner-active-state/owner-active.store';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class OwnerActiveResolver  {
+export class OwnerActiveResolver {
     constructor(
         private ownerService: OwnerService,
-        private ownerStore: OwnerActiveStore,
-        private tableService: TruckassistTableService
+        private ownerStore: OwnerActiveStore
     ) {}
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.ownerService.getOwner(
+    resolve(): Observable<GetOwnerListResponse> {
+        return this.ownerService
+            .getOwner(
                 1,
                 undefined,
                 undefined,
@@ -34,29 +29,19 @@ export class OwnerActiveResolver  {
                 undefined,
                 1,
                 25
-            ),
-            this.tableService.getTableConfig(17),
-        ]).pipe(
-            tap(([ownerPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'ownerTableCount',
-                    JSON.stringify({
-                        active: ownerPagination.activeCount,
-                        inactive: ownerPagination.inactiveCount,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            )
+            .pipe(
+                tap((ownerPagination) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'ownerTableCount',
+                        JSON.stringify({
+                            active: ownerPagination.activeCount,
+                            inactive: ownerPagination.inactiveCount,
+                        })
                     );
-                }
 
-                this.ownerStore.set(ownerPagination.pagination.data);
-            })
-        );
+                    this.ownerStore.set(ownerPagination.pagination.data);
+                })
+            );
     }
 }

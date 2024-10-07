@@ -1439,27 +1439,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.APPLICANTS &&
                 !this.applicantTabActive
             ) {
-                forkJoin([
-                    this.applicantService.getApplicantAdminList(
+                this.applicantService
+                    .getApplicantAdminList(
                         undefined,
                         undefined,
                         undefined,
                         1,
                         25
-                    ),
-                    this.tableService.getTableConfig(7),
-                ])
+                    )
                     .pipe(takeUntil(this.destroy$))
-                    .subscribe(([applicantPagination, tableConfig]) => {
-                        if (tableConfig) {
-                            const config = JSON.parse(tableConfig.config);
-
-                            localStorage.setItem(
-                                `table-${tableConfig.tableType}-Configuration`,
-                                JSON.stringify(config)
-                            );
-                        }
-
+                    .subscribe((applicantPagination) => {
                         this.applicantStore.set(
                             applicantPagination.pagination.data
                         );
