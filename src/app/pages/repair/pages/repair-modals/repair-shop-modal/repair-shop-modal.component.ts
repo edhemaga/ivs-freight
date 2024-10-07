@@ -378,10 +378,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 null,
                 [...addressUnitValidation],
             ],
-            [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
             [RepairShopModalStringEnum.OPEN_ALWAYS]: [false],
-            [RepairShopModalStringEnum.BANK_ID]: [null, [...bankValidation]],
-            [RepairShopModalStringEnum.ROUTING]: [null, routingBankValidation],
             [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
             [RepairShopModalStringEnum.NOTE]: [null],
             [RepairShopModalStringEnum.CONTACTS]: [[]],
@@ -390,6 +387,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 null,
                 Validators.required,
             ],
+            [RepairShopModalStringEnum.ROUTING]: [null, routingBankValidation],
+            [RepairShopModalStringEnum.BANK_ID]: [null, [...bankValidation]],
             [RepairShopModalStringEnum.LONGITUDE]: [null],
             [RepairShopModalStringEnum.LATITUDE]: [null],
             [RepairShopModalStringEnum.COMPANY_OWNED]: [true],
@@ -398,6 +397,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.HOLIDAY]: this.formBuilder.array([]),
+            [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -428,49 +428,31 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
 
                     if (repairShop) {
-                        this.repairShopForm.setValue({
+                        this.repairShopForm.patchValue({ 
                             [RepairShopModalStringEnum.NAME]: repairShop.name,
-                            [RepairShopModalStringEnum.PINNED]:
-                                repairShop.pinned,
+                            [RepairShopModalStringEnum.PINNED]: repairShop.pinned,
                             [RepairShopModalStringEnum.PHONE]: repairShop.phone,
-                            [RepairShopModalStringEnum.PHONE_EXT]:
-                                repairShop.phoneExt,
+                            [RepairShopModalStringEnum.PHONE_EXT]: repairShop.phoneExt,
                             [RepairShopModalStringEnum.EMAIL]: repairShop.email,
-                            [RepairShopModalStringEnum.ADDRESS_UNIT]:
-                                repairShop.address.addressUnit,
-                            [RepairShopModalStringEnum.ADDRESS]:
-                                repairShop.address.address,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]: [false],
-                            [RepairShopModalStringEnum.ACCOUNT]:
-                                repairShop.account,
+                            [RepairShopModalStringEnum.ADDRESS_UNIT]: repairShop.address.addressUnit,
+                            [RepairShopModalStringEnum.ADDRESS]: repairShop.address.address,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false, 
+                            [RepairShopModalStringEnum.ACCOUNT]: repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
-                            [RepairShopModalStringEnum.CONTACTS]:
-                                repairShop.contacts,
+                            [RepairShopModalStringEnum.CONTACTS]: repairShop.contacts,
                             [RepairShopModalStringEnum.FILES]: repairShop.files,
-                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
-                                repairShop.shopServiceType.id,
-                                [RepairShopModalStringEnum.ROUTING]:
-                                    repairShop.routing,
-                            [RepairShopModalStringEnum.BANK_ID]: [
-                                repairShop?.bank?.id,
-                                [...bankValidation],
-                            ],
-                            [RepairShopModalStringEnum.LONGITUDE]:
-                                repairShop.longitude,
-                            [RepairShopModalStringEnum.LATITUDE]:
-                                repairShop.latitude,
-                            [RepairShopModalStringEnum.COMPANY_OWNED]:
-                                repairShop.companyOwned,
-                            [RepairShopModalStringEnum.WEEKLY_DAY]:
-                                repairShop.weeklyDay,
-                            [RepairShopModalStringEnum.PAY_PERIOD]:
-                                repairShop.payPeriod,
-                            [RepairShopModalStringEnum.MONTHLY_DAYS]:
-                                repairShop.monthlyDay,
+                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: repairShop.shopServiceType.id,
+                            [RepairShopModalStringEnum.ROUTING]: repairShop.routing,
+                            [RepairShopModalStringEnum.BANK_ID]: repairShop?.bank?.id ?? null, 
+                            [RepairShopModalStringEnum.LONGITUDE]: repairShop.longitude,
+                            [RepairShopModalStringEnum.LATITUDE]: repairShop.latitude,
+                            [RepairShopModalStringEnum.COMPANY_OWNED]: repairShop.companyOwned,
+                            [RepairShopModalStringEnum.WEEKLY_DAY]: repairShop.weeklyDay,
+                            [RepairShopModalStringEnum.PAY_PERIOD]: repairShop.payPeriod,
+                            [RepairShopModalStringEnum.MONTHLY_DAYS]: repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
-                            [RepairShopModalStringEnum.HOLIDAY]: true,
-                            [RepairShopModalStringEnum.OPEN_HOURS]: [],
                         });
+                        
                         this.mapEditData(repairShop);
                     }
                     this.preSelectService(repairShop?.shopServiceType);
@@ -508,7 +490,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (res.bank) {
             this.selectedBank =
-                this.banks.find((bank) => bank.id === res.bank.id) ?? null;
+                this.banks.find((bank) => bank.id === res.bank.id) ?? null; 
         }
 
         // Patch address
@@ -696,8 +678,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 )
             );
         }
-
-        console.log(this.holidayHours);
     }
 
     public addShift(dayIndex: number): void {
