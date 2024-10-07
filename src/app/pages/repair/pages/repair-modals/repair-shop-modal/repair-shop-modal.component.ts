@@ -86,7 +86,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { CaUploadFilesComponent } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
@@ -116,6 +116,8 @@ import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-s
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types/open-tabs.type';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -144,7 +146,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
         TaInputAddressDropdownComponent,
         TaInputNoteComponent,
         TaCheckboxComponent,
-        TaUploadFilesComponent,
+        CaUploadFilesComponent,
         TaModalTableComponent,
         TaUserReviewComponent,
         TaCheckboxCardComponent,
@@ -158,6 +160,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public RepairShopModalEnum = RepairShopModalEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
+    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
+    
     // Inputs
     @Input() editData: RepeairShopModalInput;
 
@@ -204,6 +208,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private isContactFormValid: boolean = true;
     public disableOneMoreReview: boolean;
     public files: UploadFile[] | FileResponse[] = [];
+    public coverPhoto: UploadFile | FileResponse;
     public filesForDelete: any[] = [];
     public companyUser: SignInResponse = null;
     public daysOfWeekDropdown: EnumValue[];
@@ -391,6 +396,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.MONTHLY_DAYS]: [null],
             [RepairShopModalStringEnum.RENT]: [null],
             [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
+            [RepairShopModalStringEnum.COVER]: [null],
         });
 
         this.tabTitle = this.editData?.data?.name;
@@ -459,6 +465,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.MONTHLY_DAYS]:
                                 repairShop.monthlyDay,
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
+                            [RepairShopModalStringEnum.COVER]: repairShop.cover,
                         });
 
                         this.mapEditData(repairShop);
@@ -824,6 +831,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
+    public onUploadCoverPhoto(event): void {
+        this.coverPhoto = event;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.COVER)
+            .patchValue(event);
+    }
+
     public onFilesEvent(event: FileEvent): void {
         this.files = event.files;
 
@@ -948,6 +962,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 RepairShopModalStringEnum.COMPANY_OWNED
             ),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
+            cover: this.convertCoverDocumentForRequest(),
         };
         return repairModel;
     }
@@ -977,6 +992,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             if (item.realFile) documents.push(item.realFile);
         });
         return documents;
+    }
+
+    private convertCoverDocumentForRequest(): any {
+        return this.repairShopForm
+        .get(RepairShopModalStringEnum.COVER).value;
     }
 
     private mapContacts(): RepairShopContactCommand[] {

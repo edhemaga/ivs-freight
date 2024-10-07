@@ -36,5 +36,6 @@ export enum RepairShopModalStringEnum {
     HOLIDAY = 'holiday',
     HOLIDAY_LABEL = 'Holiday',
     DAY_LABEL = 'dayLabel',
-    DAY_OF_WEEK = 'dayOfWeek'
+    DAY_OF_WEEK = 'dayOfWeek',
+    COVER = 'cover'
 }
