@@ -35,13 +35,7 @@
                     class="m-tab"
                 >
                     <div class="row">
-                        <div
-                            [ngClass]="
-                                !isCompanyOwnedOptionAvailable
-                                    ? 'col-11'
-                                    : 'col-12'
-                            "
-                        >
+                        <div [ngClass]="'col-11'">
                             <app-ta-input
                                 [inputConfig]="nameInputConfig"
                                 [formControlName]="
@@ -50,25 +44,21 @@
                             ></app-ta-input>
                         </div>
 
-                        <ng-container *ngIf="!isCompanyOwnedOptionAvailable">
-                            <div class="col-1">
-                                <div
-                                    [mainTooltip]="favoriteLabel"
-                                    ngbTooltip
-                                    position="bottom"
-                                    tooltipBackground="#424242"
-                                >
-                                    <svg-icon
-                                        (click)="addShopToFavorite()"
-                                        [class.svg-hover-blue-15]="isFavorite"
-                                        class="repair-shop__favorite c-pointer svg-hover-black svg-fill-blue-13"
-                                        [src]="
-                                            repairShopModalSvgRoutes.starIcon
-                                        "
-                                    ></svg-icon>
-                                </div>
+                        <div class="col-1">
+                            <div
+                                [mainTooltip]="favoriteLabel"
+                                ngbTooltip
+                                position="bottom"
+                                tooltipBackground="#424242"
+                            >
+                                <svg-icon
+                                    (click)="addShopToFavorite()"
+                                    [class.svg-hover-blue-15]="isFavorite"
+                                    class="repair-shop__favorite c-pointer svg-hover-black svg-fill-blue-13"
+                                    [src]="repairShopModalSvgRoutes.starIcon"
+                                ></svg-icon>
                             </div>
-                        </ng-container>
+                        </div>
                     </div>
 
                     <div
@@ -138,93 +128,89 @@
                         </div>
                     </div>
 
-                    <ng-container *ngIf="isCompanyOwnedOptionAvailable">
-                        <app-ta-checkbox-card
-                            formControlName="companyOwned"
-                            [label]="'Company Owned'"
-                            [name]="'company-owned'"
-                            [hasArrow]="false"
-                            [withoutToggle]="true"
-                            [animationMarginParams]="{
-                                marginTop: '0px',
-                                marginBottom: '0px'
-                            }"
-                            [isCardOpen]="
-                                !repairShopForm.get(
-                                    RepairShopModalStringEnum.COMPANY_OWNED
-                                ).value
-                            "
-                        >
-                            <ng-container body>
-                                <div class="row">
-                                    <div class="col-4">
+                    <app-ta-checkbox-card
+                        formControlName="companyOwned"
+                        [label]="'Company Owned'"
+                        [name]="'company-owned'"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '0px'
+                        }"
+                        [isCardOpen]="
+                            !repairShopForm.get(
+                                RepairShopModalStringEnum.COMPANY_OWNED
+                            ).value
+                        "
+                    >
+                        <ng-container body>
+                            <div class="row">
+                                <div class="col-4">
+                                    <app-ta-input-dropdown
+                                        [canAddNew]="true"
+                                        [inputConfig]="payPeriodConfig"
+                                        [options]="payPeriodsDropdown"
+                                        [template]="'svg-template'"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.PAY_PERIOD
+                                        "
+                                        [canAddNew]="false"
+                                        [activeItem]="selectedPayPeriod"
+                                        (selectedItem)="
+                                            onPayPeriodSelect($event)
+                                        "
+                                    ></app-ta-input-dropdown>
+                                </div>
+                                <div class="col-4">
+                                    <ng-container
+                                        *ngIf="
+                                            isMonthlyPeriodSeleced;
+                                            else dayPeriod
+                                        "
+                                    >
                                         <app-ta-input-dropdown
-                                            [canAddNew]="true"
-                                            [inputConfig]="payPeriodConfig"
-                                            [options]="payPeriodsDropdown"
+                                            [canAddNew]="false"
+                                            [inputConfig]="payMonthlyConfig"
+                                            [options]="daysOfMonthDropdown"
                                             [template]="'svg-template'"
                                             [formControlName]="
-                                                RepairShopModalStringEnum.PAY_PERIOD
+                                                RepairShopModalStringEnum.MONTHLY_DAYS
                                             "
                                             [canAddNew]="false"
-                                            [activeItem]="selectedPayPeriod"
+                                            [activeItem]="selectedMonthlyDays"
                                             (selectedItem)="
-                                                onPayPeriodSelect($event)
+                                                onMonthlyDaySelected($event)
                                             "
                                         ></app-ta-input-dropdown>
-                                    </div>
-                                    <div class="col-4">
-                                        <ng-container
-                                            *ngIf="
-                                                isMonthlyPeriodSeleced;
-                                                else dayPeriod
-                                            "
-                                        >
-                                            <app-ta-input-dropdown
-                                                [canAddNew]="true"
-                                                [inputConfig]="payMonthlyConfig"
-                                                [options]="daysOfMonthDropdown"
-                                                [template]="'svg-template'"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.MONTHLY_DAYS
-                                                "
-                                                [canAddNew]="false"
-                                                [activeItem]="
-                                                    selectedMonthlyDays
-                                                "
-                                                (selectedItem)="
-                                                    onMonthlyDaySelected($event)
-                                                "
-                                            ></app-ta-input-dropdown>
-                                        </ng-container>
-                                        <ng-template #dayPeriod>
-                                            <app-ta-input-dropdown
-                                                [canAddNew]="true"
-                                                [inputConfig]="payDayConfig"
-                                                [options]="daysOfWeekDropdown"
-                                                [template]="'svg-template'"
-                                                [formControlName]="
-                                                    RepairShopModalStringEnum.WEEKLY_DAY
-                                                "
-                                                [activeItem]="selectedWeeklyDay"
-                                                (selectedItem)="
-                                                    onWeeklyDaySelected($event)
-                                                "
-                                            ></app-ta-input-dropdown>
-                                        </ng-template>
-                                    </div>
-                                    <div class="col-4">
-                                        <app-ta-input
+                                    </ng-container>
+                                    <ng-template #dayPeriod>
+                                        <app-ta-input-dropdown
+                                            [canAddNew]="false"
+                                            [inputConfig]="payDayConfig"
+                                            [options]="daysOfWeekDropdown"
+                                            [template]="'svg-template'"
                                             [formControlName]="
-                                                RepairShopModalStringEnum.RENT
+                                                RepairShopModalStringEnum.WEEKLY_DAY
                                             "
-                                            [inputConfig]="rentInputConfig"
-                                        ></app-ta-input>
-                                    </div>
+                                            [activeItem]="selectedWeeklyDay"
+                                            (selectedItem)="
+                                                onWeeklyDaySelected($event)
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </ng-template>
                                 </div>
-                            </ng-container>
-                        </app-ta-checkbox-card>
-                    </ng-container>
+                                <div class="col-4">
+                                    <app-ta-input
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.RENT
+                                        "
+                                        [inputConfig]="rentInputConfig"
+                                    ></app-ta-input>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
 
                     <!-- Repair Shop Services -->
                     <app-ta-custom-card
@@ -402,7 +388,12 @@
                                         </ng-template>
 
                                         <!-- Iterate over shifts array -->
-                                        <ng-container *ngIf="openHour.get('isWorkingDay').value">
+                                        <ng-container
+                                            *ngIf="
+                                                openHour.get('isWorkingDay')
+                                                    .value
+                                            "
+                                        >
                                             <div formArrayName="shifts">
                                                 <div
                                                     *ngFor="
@@ -414,7 +405,9 @@
                                                     [formGroupName]="shiftInd"
                                                     class="timeline__card-shift-grid"
                                                 >
-                                                    <div class="d-flex flex-column">
+                                                    <div
+                                                        class="d-flex flex-column"
+                                                    >
                                                         <app-ta-input
                                                             [inputConfig]="
                                                                 openHoursFormField
@@ -422,7 +415,9 @@
                                                             formControlName="startTime"
                                                         ></app-ta-input>
                                                     </div>
-                                                    <div class="d-flex flex-column">
+                                                    <div
+                                                        class="d-flex flex-column"
+                                                    >
                                                         <app-ta-input
                                                             [inputConfig]="
                                                                 openHoursFormField
@@ -432,14 +427,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <div
                                                 class="d-flex align-items-end flex-column timeline__card-icon-plus c-pointer"
                                             >
                                                 <ng-container
                                                     *ngIf="
-                                                        openHour.get('shifts').value
-                                                            .length === 1
+                                                        openHour.get('shifts')
+                                                            .value.length === 1
                                                     "
                                                 >
                                                     <div
@@ -456,7 +451,8 @@
                                                             [ngClass]="
                                                                 openHour.get(
                                                                     'shifts'
-                                                                ).value.length > 1
+                                                                ).value.length >
+                                                                1
                                                                     ? 'svg-fill-light-grey-6'
                                                                     : 'svg-fill-muted svg-hover-black'
                                                             "
@@ -469,11 +465,11 @@
                                                         ></svg-icon>
                                                     </div>
                                                 </ng-container>
-    
+
                                                 <ng-container
                                                     *ngIf="
-                                                        openHour.get('shifts').value
-                                                            .length > 1
+                                                        openHour.get('shifts')
+                                                            .value.length > 1
                                                     "
                                                 >
                                                     <div
