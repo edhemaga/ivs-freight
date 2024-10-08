@@ -11,4 +11,5 @@ export interface DispatchColumn {
     isPined?: boolean;
     minWidth?: number;
     width?: number;
+    maxWidth?: number;
 }

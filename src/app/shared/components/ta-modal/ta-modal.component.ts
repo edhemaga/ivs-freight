@@ -114,7 +114,13 @@ import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multi
     providers: [AuthGuard],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+    @Input() set isResetDnuBtn(isReset: boolean) {
+        if (isReset) this.isDNU = !this.isDNU;
+    }
+    @Input() set isResetBfbBtn(isReset: boolean) {
+        if (isReset) this.isBFB = !this.isBFB;
+    }
+
     @Input() modalTitle: string;
     @Input() editName: string;
     @Input() loadModalTemplate: boolean;
@@ -134,8 +140,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() disableDelete: boolean;
     @Input() isFinishOrder?: boolean = false;
     @Input() isDeactivated: boolean;
-    @Input() isDNU: boolean;
-    @Input() isBFB: boolean;
     @Input() editDate: boolean;
     @Input() resendEmail: boolean;
     @Input() modalAdditionalPart: boolean;
@@ -213,6 +217,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Output() filterActions = new EventEmitter<any>();
 
+    private destroy$ = new Subject<void>();
+
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;
     public deleteSpinnerVisibility: boolean = false;
@@ -222,6 +228,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public setMapRouteSpinnerVisibility: boolean = false;
 
     public stepperCounter: number = 0;
+
+    public isDNU: boolean;
+    public isBFB: boolean;
 
     // Drag & Drop properties
     public isDropZoneVisible: boolean = false;

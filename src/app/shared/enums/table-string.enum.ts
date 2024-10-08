@@ -20,6 +20,7 @@ export enum TableStringEnum {
     PENDING_2 = 'Pending',
     MAP = 'Map',
     SHOW_MORE = 'show-more',
+    DISPATCH = 'Dispatch',
 
     // Aactions
     ADD = 'add',
