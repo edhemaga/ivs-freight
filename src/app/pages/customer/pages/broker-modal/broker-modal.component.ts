@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
+
 import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 
 // Modules
@@ -37,6 +38,7 @@ import {
 import { BrokerService } from '@pages/customer/services/broker.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Models
 import {
@@ -88,6 +90,7 @@ import { ReviewComment } from '@shared/models/review-comment.model';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
 
 @Component({
     selector: 'app-broker-modal',
@@ -186,6 +189,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ];
 
     public reviews: any[] = [];
+    public previousReviews: any[] = [];
 
     public selectedPhysicalAddress: AddressEntity = null;
     public selectedPhysicalPoBox: AddressEntity = null;
@@ -236,7 +240,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         private brokerService: BrokerService,
         private reviewRatingService: ReviewsRatingService,
         private taLikeDislikeService: TaLikeDislikeService,
-        private formService: FormService
+        private formService: FormService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -244,6 +249,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.getBrokerDropdown();
         this.isCredit({ id: 300, name: 'Unlimited', checked: true });
         this.followIsBillingAddressSame();
+
+        this.confirmationSubscribe();
 
         if (this.editData?.tab) this.selectedTab = this.editData.tab;
 
@@ -294,6 +301,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    if (res?.template === BrokerModalStringEnum.DELETE_REVIEW) {
+                        const review = {
+                            action: res.type,
+                            data: res.data.id,
+                            sortData: [],
+                        };
+
+                        this.deleteReview(false, review);
+                    }
+
+                    if (res?.action === BrokerModalStringEnum.CLOSE)
+                        this.reviews = this.previousReviews;
+                },
+            });
+    }
+
     public tabChange(event: any): void {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector(
@@ -307,6 +335,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         if (this.isUploadInProgress) return;
+
         if (data.action === 'bfb' || data.action === 'dnu') {
             // DNU
             if (data.action === 'dnu' && this.editData) {
@@ -659,23 +688,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public changeReviewsEvent(reviews: ReviewComment) {
-        switch (reviews.action) {
-            case 'delete': {
-                this.deleteReview(reviews);
+    public changeReviewsEvent(review: ReviewComment) {
+        switch (review.action) {
+            case 'delete':
+                this.deleteReview(true, review);
+
                 break;
-            }
-            case 'add': {
-                this.addReview(reviews);
+            case 'add':
+                this.addReview(review);
+
                 break;
-            }
-            case 'update': {
-                this.updateReview(reviews);
+            case 'update':
+                this.updateReview(review);
+
                 break;
-            }
-            default: {
+            case 'cancel':
+                this.reviews = this.reviews.filter((review) => review.id);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 
@@ -772,19 +804,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewComment) {
-        const review: CreateReviewCommand = {
+    private addReview(review: ReviewComment) {
+        const reviewData: CreateReviewCommand = {
             entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
-            comment: reviews.data.commentContent,
+            comment: review.data.commentContent,
         };
 
         this.reviewRatingService
-            .addReview(review)
+            .addReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    this.reviews = reviews.sortData.map((item, index) => {
+                    this.reviews = review.sortData.map((item, index) => {
                         if (index === 0) {
                             return {
                                 ...item,
@@ -800,44 +832,72 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        this.disableOneMoreReview = false;
+    private deleteReview(isOpenModal: boolean, review?: ReviewComment) {
+        if (isOpenModal) {
+            const { id, companyUser, updatedAt } = this.reviews.find(
+                (reviewItem) => reviewItem.id === review.data
+            );
+
+            const data = {
+                id,
+                reviewer: companyUser.fullName,
+                updatedAt,
+                businessName: this.brokerForm.get(
+                    BrokerModalStringEnum.BUSINESS_NAME
+                ).value,
+            };
+
+            this.previousReviews = [...this.reviews];
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                {
+                    size: BrokerModalStringEnum.SMALL,
+                },
+                {
+                    type: BrokerModalStringEnum.DELETE,
+                    subType: BrokerModalStringEnum.BROKER,
+                    data,
+                    template: BrokerModalStringEnum.DELETE_REVIEW,
+                }
+            );
+        } else {
+            this.reviews = review.sortData;
+            this.disableOneMoreReview = false;
+
+            this.reviewRatingService
+                .deleteReview(review.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+    }
+
+    private updateReview(review: ReviewComment) {
+        this.reviews = review.sortData;
+
+        const reviewData: UpdateReviewCommand = {
+            id: review.data.id,
+            comment: review.data.commentContent,
+        };
+
         this.reviewRatingService
-            .deleteReview(reviews.data)
+            .updateReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        const review: UpdateReviewCommand = {
-            id: reviews.data.id,
-            comment: reviews.data.commentContent,
-        };
-
-        this.reviewRatingService
-            .updateReview(review)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-    }
-
     public onSelectDropDown(event: any, action: string, index?: number) {
         switch (action) {
-            case 'paytype': {
+            case 'paytype':
                 this.selectedPayTerm = event;
+
                 break;
-            }
-            case 'contact-department': {
+            case 'contact-department':
                 this.selectedContactDepartmentFormArray[index] = event;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -1242,9 +1302,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
+
                     // Review
                     this.reviews = res.ratingReviews.map((item) => ({
                         ...item,
+                        id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
                             avatar: item.companyUser.avatar,
