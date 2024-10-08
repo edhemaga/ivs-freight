@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import moment from 'moment';
 
 @Pipe({
     name: 'activityTime',
@@ -6,12 +7,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ActivityTimePipe implements PipeTransform {
     transform(value: Date | string | number): string {
-        const currentTime = new Date().getTime();
-        const givenTime = new Date(new Date(value).toUTCString()).getTime();;
-        const diffInSeconds = Math.floor((currentTime - givenTime) / 1000);
+        const backendTime = moment.utc(value).local().unix();
 
-        if (diffInSeconds < 600)
-            return 'Online';
+        const currentTime = moment().unix();
+
+        const diffInSeconds = currentTime - backendTime;
+
+        if (diffInSeconds < 600) return 'Online';
         else if (diffInSeconds < 3600) {
             const minutes = Math.floor(diffInSeconds / 60);
             return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
