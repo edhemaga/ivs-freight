@@ -271,7 +271,7 @@ export class OwnerService {
                 ? this.ownerActiveQuery.getAll()
                 : this.ownerInactiveQuery.getAll();
 
-        storeOwners.map((owner: OwnerResponse) => {
+        storeOwners.map((owner) => {
             if (data.id === owner.id) {
                 data.selectedTab === TableActionsStringEnum.ACTIVE
                     ? this.ownerActiveStore.update(owner.id, (entity) => ({

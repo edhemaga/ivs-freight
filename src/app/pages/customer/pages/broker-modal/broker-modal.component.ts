@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
+
 import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
 
 // Modules
@@ -37,6 +38,7 @@ import {
 import { BrokerService } from '@pages/customer/services/broker.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Models
 import {
@@ -88,6 +90,7 @@ import { ReviewComment } from '@shared/models/review-comment.model';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
 
 @Component({
     selector: 'app-broker-modal',
@@ -186,6 +189,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ];
 
     public reviews: any[] = [];
+    public previousReviews: any[] = [];
 
     public selectedPhysicalAddress: AddressEntity = null;
     public selectedPhysicalPoBox: AddressEntity = null;
@@ -236,7 +240,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         private brokerService: BrokerService,
         private reviewRatingService: ReviewsRatingService,
         private taLikeDislikeService: TaLikeDislikeService,
-        private formService: FormService
+        private formService: FormService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -244,6 +249,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.getBrokerDropdown();
         this.isCredit({ id: 300, name: 'Unlimited', checked: true });
         this.followIsBillingAddressSame();
+
+        this.confirmationSubscribe();
 
         if (this.editData?.tab) this.selectedTab = this.editData.tab;
 
@@ -294,6 +301,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    if (res?.template === BrokerModalStringEnum.DELETE_REVIEW) {
+                        const review = {
+                            action: res.type,
+                            data: res.data.id,
+                            sortData: [],
+                        };
+
+                        this.deleteReview(false, review);
+                    }
+
+                    if (res?.action === BrokerModalStringEnum.CLOSE)
+                        this.reviews = this.previousReviews;
+                },
+            });
+    }
+
     public tabChange(event: any): void {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector(
@@ -306,7 +334,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
-        if(this.isUploadInProgress) return;
+        if (this.isUploadInProgress) return;
+
         if (data.action === 'bfb' || data.action === 'dnu') {
             // DNU
             if (data.action === 'dnu' && this.editData) {
@@ -385,7 +414,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             } else {
                 // Save & Update
                 if (data.action === 'save') {
-
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
                         return;
@@ -660,23 +688,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public changeReviewsEvent(reviews: ReviewComment) {
-        switch (reviews.action) {
-            case 'delete': {
-                this.deleteReview(reviews);
+    public changeReviewsEvent(review: ReviewComment) {
+        switch (review.action) {
+            case 'delete':
+                this.deleteReview(true, review);
+
                 break;
-            }
-            case 'add': {
-                this.addReview(reviews);
+            case 'add':
+                this.addReview(review);
+
                 break;
-            }
-            case 'update': {
-                this.updateReview(reviews);
+            case 'update':
+                this.updateReview(review);
+
                 break;
-            }
-            default: {
+            case 'cancel':
+                this.reviews = this.reviews.filter((review) => review.id);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 
@@ -773,19 +804,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewComment) {
-        const review: CreateReviewCommand = {
+    private addReview(review: ReviewComment) {
+        const reviewData: CreateReviewCommand = {
             entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
-            comment: reviews.data.commentContent,
+            comment: review.data.commentContent,
         };
 
         this.reviewRatingService
-            .addReview(review)
+            .addReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    this.reviews = reviews.sortData.map((item, index) => {
+                    this.reviews = review.sortData.map((item, index) => {
                         if (index === 0) {
                             return {
                                 ...item,
@@ -801,44 +832,72 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        this.disableOneMoreReview = false;
+    private deleteReview(isOpenModal: boolean, review?: ReviewComment) {
+        if (isOpenModal) {
+            const { id, companyUser, updatedAt } = this.reviews.find(
+                (reviewItem) => reviewItem.id === review.data
+            );
+
+            const data = {
+                id,
+                reviewer: companyUser.fullName,
+                updatedAt,
+                businessName: this.brokerForm.get(
+                    BrokerModalStringEnum.BUSINESS_NAME
+                ).value,
+            };
+
+            this.previousReviews = [...this.reviews];
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                {
+                    size: BrokerModalStringEnum.SMALL,
+                },
+                {
+                    type: BrokerModalStringEnum.DELETE,
+                    subType: BrokerModalStringEnum.BROKER,
+                    data,
+                    template: BrokerModalStringEnum.DELETE_REVIEW,
+                }
+            );
+        } else {
+            this.reviews = review.sortData;
+            this.disableOneMoreReview = false;
+
+            this.reviewRatingService
+                .deleteReview(review.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+    }
+
+    private updateReview(review: ReviewComment) {
+        this.reviews = review.sortData;
+
+        const reviewData: UpdateReviewCommand = {
+            id: review.data.id,
+            comment: review.data.commentContent,
+        };
+
         this.reviewRatingService
-            .deleteReview(reviews.data)
+            .updateReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        const review: UpdateReviewCommand = {
-            id: reviews.data.id,
-            comment: reviews.data.commentContent,
-        };
-
-        this.reviewRatingService
-            .updateReview(review)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-    }
-
     public onSelectDropDown(event: any, action: string, index?: number) {
         switch (action) {
-            case 'paytype': {
+            case 'paytype':
                 this.selectedPayTerm = event;
+
                 break;
-            }
-            case 'contact-department': {
+            case 'contact-department':
                 this.selectedContactDepartmentFormArray[index] = event;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -847,9 +906,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: BrokerModalResponse) => {
-                    this.labelsDepartments = reasponse.departments;
-                    this.labelsPayTerms = reasponse.payTerms;
+                next: (res: BrokerModalResponse) => {
+                    this.labelsDepartments = res.departments;
+                    this.labelsPayTerms = res.payTerms;
 
                     // From Another Modal Data
                     if (this.editData?.type === 'edit-contact') {
@@ -1036,7 +1095,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.isUploadInProgress = false;
                     } else this.setModalSpinner(null, true, true);
                 },
-                error: () => this.setModalSpinner(null, false, false)
+                error: () => this.setModalSpinner(null, false, false),
             });
     }
 
@@ -1066,7 +1125,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 ? parseFloat(creditLimit.toString().replace(/,/g, ''))
                 : null,
             payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
-            files: documents ? documents : this.brokerForm.value.files,
+            files: documents ?? this.brokerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -1142,94 +1201,92 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: any) => {
+                next: (res: any) => {
                     this.brokerForm.patchValue({
-                        businessName: reasponse.businessName,
-                        dbaName: reasponse.dbaName,
-                        mcNumber: reasponse.mcNumber,
-                        ein: reasponse.ein,
-                        email: reasponse.email,
-                        phone: reasponse.phone,
+                        businessName: res.businessName,
+                        dbaName: res.dbaName,
+                        mcNumber: res.mcNumber,
+                        ein: res.ein,
+                        email: res.email,
+                        phone: res.phone,
                         // Physical Address
-                        physicalAddress: reasponse.mainAddress
-                            ? reasponse.mainAddress.address
+                        physicalAddress: res.mainAddress
+                            ? res.mainAddress.address
                             : null,
-                        physicalAddressUnit: reasponse.mainAddress
-                            ? reasponse.mainAddress.addressUnit
+                        physicalAddressUnit: res.mainAddress
+                            ? res.mainAddress.addressUnit
                             : null,
-                        physicalPoBox: reasponse.mainPoBox
-                            ? reasponse.mainPoBox.poBox
+                        physicalPoBox: res.mainPoBox
+                            ? res.mainPoBox.poBox
                             : null,
-                        physicalPoBoxCity: reasponse.mainPoBox
-                            ? reasponse.mainPoBox.city
+                        physicalPoBoxCity: res.mainPoBox
+                            ? res.mainPoBox.city
                             : null,
                         // Billing Address
                         isCheckedBillingAddress:
-                            reasponse.mainAddress.address ===
-                            reasponse.billingAddress.address,
-                        billingAddress: reasponse.billingAddress
-                            ? reasponse.billingAddress.address
+                            res.mainAddress.address ===
+                            res.billingAddress.address,
+                        billingAddress: res.billingAddress
+                            ? res.billingAddress.address
                             : null,
-                        billingAddressUnit: reasponse.billingAddress
-                            ? reasponse.billingAddress.addressUnit
+                        billingAddressUnit: res.billingAddress
+                            ? res.billingAddress.addressUnit
                             : null,
-                        billingPoBox: reasponse.billingPoBox
-                            ? reasponse.billingPoBox.poBox
+                        billingPoBox: res.billingPoBox
+                            ? res.billingPoBox.poBox
                             : null,
-                        billingPoBoxCity: reasponse.billingPoBox
-                            ? reasponse.billingPoBox.city
+                        billingPoBoxCity: res.billingPoBox
+                            ? res.billingPoBox.city
                             : null,
-                        creditType: reasponse.creditType,
+                        creditType: res.creditType,
                         creditLimit:
-                            reasponse.creditType.name === 'Custom'
+                            res.creditType.name === 'Custom'
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                      reasponse.creditLimit
+                                      res.creditLimit
                                   )
                                 : null,
-                        availableCredit: reasponse.availableCredit,
-                        payTerm: reasponse.payTerm
-                            ? reasponse.payTerm.name
-                            : null,
-                        note: reasponse.note,
-                        ban: reasponse.ban,
-                        dnu: reasponse.dnu,
+                        availableCredit: res.availableCredit,
+                        payTerm: res.payTerm ? res.payTerm.name : null,
+                        note: res.note,
+                        ban: res.ban,
+                        dnu: res.dnu,
                         brokerContacts: [],
                     });
 
-                    this.brokerName = reasponse.businessName;
+                    this.brokerName = res.businessName;
 
                     this.modalService.changeModalStatus({
                         name: 'dnu',
-                        status: reasponse.dnu,
+                        status: res.dnu,
                     });
-                    this.brokerDnuStatus = reasponse.dnu;
+                    this.brokerDnuStatus = res.dnu;
 
                     this.modalService.changeModalStatus({
                         name: 'bfb',
-                        status: reasponse.ban,
+                        status: res.ban,
                     });
 
-                    this.brokerBanStatus = reasponse.ban;
-                    this.documents = reasponse.files;
+                    this.brokerBanStatus = res.ban;
+                    this.documents = res.files;
 
-                    this.selectedPhysicalAddress = reasponse.mainAddress
-                        ? reasponse.mainAddress
+                    this.selectedPhysicalAddress = res.mainAddress
+                        ? res.mainAddress
                         : null;
-                    this.selectedPhysicalPoBox = reasponse.mainPoBox
-                        ? reasponse.mainPoBox
+                    this.selectedPhysicalPoBox = res.mainPoBox
+                        ? res.mainPoBox
                         : null;
-                    this.selectedBillingAddress = reasponse.billingAddress
-                        ? reasponse.billingAddress
+                    this.selectedBillingAddress = res.billingAddress
+                        ? res.billingAddress
                         : null;
-                    this.selectedBillingPoBox = reasponse.billingPoBox
-                        ? reasponse.billingPoBox
+                    this.selectedBillingPoBox = res.billingPoBox
+                        ? res.billingPoBox
                         : null;
 
-                    this.selectedPayTerm = reasponse.payTerm;
+                    this.selectedPayTerm = res.payTerm;
 
                     // Contacts
-                    if (reasponse.brokerContacts) {
-                        for (const contact of reasponse.brokerContacts) {
+                    if (res.brokerContacts) {
+                        for (const contact of res.brokerContacts) {
                             this.brokerContacts.push(
                                 this.createBrokerContacts({
                                     contactName: contact.contactName,
@@ -1245,9 +1302,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
+
                     // Review
-                    this.reviews = reasponse.ratingReviews.map((item) => ({
+                    this.reviews = res.ratingReviews.map((item) => ({
                         ...item,
+                        id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
                             avatar: item.companyUser.avatar,
@@ -1267,15 +1326,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
-                        downRatingCount: reasponse.downCount,
-                        upRatingCount: reasponse.upCount,
-                        currentCompanyUserRating:
-                            reasponse.currentCompanyUserRating,
+                        downRatingCount: res.downCount,
+                        upRatingCount: res.upCount,
+                        currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
                     this.isCredit(
                         this.billingCredit.find(
-                            (item) => item.name === reasponse.creditType.name
+                            (item) => item.name === res.creditType.name
                         )
                     );
 
@@ -1297,8 +1355,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.tabBillingAddressChange(
                         this.selectedBillingAddressTab === 5 ||
-                            reasponse.mainAddress.address ===
-                                reasponse.billingAddress.address
+                            res.mainAddress.address ===
+                                res.billingAddress.address
                             ? {
                                   id: 5,
                                   name: 'Billing Address',
@@ -1757,7 +1815,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             action: action,
             status: status,
             close: close,
-        }); 
+        });
     }
 
     ngOnDestroy(): void {

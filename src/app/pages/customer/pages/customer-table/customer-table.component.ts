@@ -17,6 +17,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
+// Modals
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
@@ -77,6 +80,7 @@ import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -222,29 +226,45 @@ export class CustomerTableComponent
                         if (res.subType === TableStringEnum.BAN_LIST)
                             this.changeBanStatus(res.data);
                         else this.changeDnuStatus(res.data);
+
                         break;
                     case TableStringEnum.INFO:
                         if (this.selectedTab === TableStringEnum.ACTIVE)
                             this.changeBussinesStatusBroker(res.data);
                         else this.changeBussinesStatusShipper(res.data);
+
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.deleteShipperList(res.array);
                         else this.deleteBrokerList(res.array);
+
                         break;
                     case TableStringEnum.CLOSE:
-                        if (this.selectedTab === TableStringEnum.INACTIVE)
-                            this.changeBussinesStatusShipper(res.data);
+                        if (this.selectedTab === TableStringEnum.INACTIVE) {
+                            if (
+                                res.template !==
+                                BrokerModalStringEnum.DELETE_REVIEW
+                            ) {
+                                this.changeBussinesStatusShipper(res.data);
+                            }
+                        }
+
                         break;
                     case TableStringEnum.OPEN:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.changeBussinesStatusShipper(res.data);
+
                         break;
                     case TableStringEnum.DELETE:
-                        if (this.selectedTab === TableStringEnum.ACTIVE)
-                            this.deleteBrokerById(res.id);
-                        else this.deleteShipperById(res.id);
+                        if (
+                            res.template !== BrokerModalStringEnum.DELETE_REVIEW
+                        ) {
+                            if (this.selectedTab === TableStringEnum.ACTIVE)
+                                this.deleteBrokerById(res.id);
+                            else this.deleteShipperById(res.id);
+                        }
+
                         break;
                     default:
                         break;
@@ -1279,7 +1299,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: data?.ban || data?.dnu || !data?.status,
                       isDnu: data?.dnu,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1379,7 +1399,7 @@ export class CustomerTableComponent
                 ? {
                       hasBanDnu: !data?.status,
                       isDnu: false,
-                      isClosed: data?.status === 0 ?? false,
+                      isClosed: data?.status === 0 || false,
                       name: data?.businessName
                           ? data.businessName
                           : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1891,6 +1911,14 @@ export class CustomerTableComponent
 
                     this.mapsService.addRating(res);
                 });
+        } else if (event.type === TableStringEnum.CREATE_LOAD) {
+            this.modalService.openModal(
+                LoadModalComponent,
+                { size: TableStringEnum.LOAD },
+                {
+                    data: { broker: event.data },
+                }
+            );
         }
     }
 

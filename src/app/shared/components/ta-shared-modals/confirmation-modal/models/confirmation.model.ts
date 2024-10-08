@@ -35,4 +35,5 @@ export interface Confirmation {
     rating?: boolean; // has rating or not
     modalHeader?: boolean;
     modalHeaderTitle?: string;
+    action?: string;
 }

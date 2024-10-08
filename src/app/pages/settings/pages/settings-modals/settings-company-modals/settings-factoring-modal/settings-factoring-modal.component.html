@@ -97,12 +97,14 @@
             [cardName]="'Notice of Assignment'"
             [disableAnimation]="disableCardAnimation"
             [disabledCard]="
-                factoringForm.get('name')?.invalid || 
-                factoringForm.get('name').value === 'null'
+                (factoringForm.get('name')?.invalid || 
+                factoringForm.get('name').value === 'null') &&
+                factoringForm.get('noticeOfAssigment').invalid
             "
             [isCardOpen]="
                 factoringForm.get('noticeOfAssigment').value &&
-                factoringForm.get('noticeOfAssigment').value !== 'null'
+                factoringForm.get('noticeOfAssigment').value !== 'null' &&
+                !isInitialCompanyNameSet
                     ? true
                     : false
             "

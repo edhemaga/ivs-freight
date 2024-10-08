@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 
-
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { TrailerService } from '@shared/services/trailer.service';
 
 // store
-import {
-    TrailerActiveState,
-    TrailerActiveStore,
-} from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+import { TrailerActiveStore } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+
+// models
+import { TrailerListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TrailerActiveResolver  {
+export class TrailerActiveResolver {
     constructor(
         private trailerService: TrailerService,
-        private trailerStore: TrailerActiveStore,
-        private tableService: TruckassistTableService
+        private trailerStore: TrailerActiveStore
     ) {}
-    resolve(): Observable<any> {
-        return forkJoin([this.trailerService.getTrailers(1, null, 1, 25)]).pipe(
-            tap(([trailerPagination, tableConfig]) => {
+    resolve(): Observable<TrailerListResponse> {
+        return this.trailerService.getTrailers(1, null, 1, 25).pipe(
+            tap((trailerPagination) => {
                 localStorage.setItem(
                     'trailerTableCount',
                     JSON.stringify({
@@ -32,15 +29,6 @@ export class TrailerActiveResolver  {
                         inactive: trailerPagination.inactiveCount,
                     })
                 );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
 
                 this.trailerStore.set(trailerPagination.pagination.data);
             })

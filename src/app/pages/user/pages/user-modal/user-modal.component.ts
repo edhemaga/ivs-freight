@@ -340,18 +340,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         ...form
                     } = this.userForm.value;
 
-                    if (this.selectedAddress) {
-                        this.selectedAddress = {
-                            ...this.selectedAddress,
-                            addressUnit: addressUnit,
-                        };
-                    }
                     newData.data = {
                         ...form,
                         phone: form.phone ?? null,
-                        address: this.selectedAddress?.address
-                            ? this.selectedAddress
-                            : null,
+                        address: this.updateSelectedAddressUnit(addressUnit),
                         departmentId: this.selectedDepartment
                             ? this.selectedDepartment.id
                             : null,
@@ -467,6 +459,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+    private updateSelectedAddressUnit(addressUnit: string): AddressEntity {
+        if (this.selectedAddress) {
+            const updatedAddress = {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            };
+            
+            return updatedAddress.address ? updatedAddress : null;
+        }
+
+        return null;
     }
 
     private createForm() {
@@ -671,19 +675,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
 
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: this.updateSelectedAddressUnit(addressUnit),
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -748,18 +744,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
-
         const newData: CreateCompanyUserCommand = {
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: this.updateSelectedAddressUnit(addressUnit),
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,

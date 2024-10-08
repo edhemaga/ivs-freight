@@ -20,6 +20,7 @@ export enum TableStringEnum {
     PENDING_2 = 'Pending',
     MAP = 'Map',
     SHOW_MORE = 'show-more',
+    DISPATCH = 'Dispatch',
 
     // Aactions
     ADD = 'add',
@@ -188,6 +189,8 @@ export enum TableStringEnum {
     ADD_CONTRACT = 'add-contact',
     ADD_CONTRACT_2 = 'Add Contact',
     REVIEW = 'Review',
+    REVIEW_2 = 'review',
+    DELETE_REVIEW = 'delete-review',
     DETAILS = 'Details',
     DETAIL = 'Detail',
     CONTRACT = 'Contact',
@@ -353,6 +356,8 @@ export enum TableStringEnum {
     TRAILER_REPAIR = 'trailer repair',
     REPAIR_ORDER = 'repair order',
     REPAIR_REVIEW = 'repair-review',
+    BROKER_REVIEW = 'broker-review',
+    SHIPPER_REVIEW = 'shipper-review',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -532,7 +537,7 @@ export enum TableStringEnum {
     COLUMN_TOGGLE = 'columnToggle',
     CONVERT_TO_LOAD = 'create-new-load',
     CONVERT_TO_TEMPLATE = 'create-template-from-load',
-    INVITED = "Invited",
-    EXPIRED = "Expired",
-    ZERO = "0",
+    INVITED = 'Invited',
+    EXPIRED = 'Expired',
+    ZERO = '0',
 }
