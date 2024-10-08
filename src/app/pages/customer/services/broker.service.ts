@@ -222,6 +222,7 @@ export class BrokerService implements OnDestroy {
             }
             this.brokerId = this.brokerList[this.currentIndex].id;
         }
+
         return this.brokerService.apiBrokerIdGet(brokerId);
     }
 
