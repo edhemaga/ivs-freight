@@ -107,6 +107,8 @@ export class SettingsRepairShopComponent
                 this.repairShopData.data = this.processOfficeData(
                     this.repairShopData.data
                 );
+                this.notes.clear();
+                
                 this.repairShopData.data.forEach((shop: RepairShopListDto) => {
                     this.addNote(shop.note);
                     this.isServiceCardOpened.push(true);

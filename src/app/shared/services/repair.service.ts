@@ -305,14 +305,14 @@ export class RepairService {
                                     repairShops: repairCount.repairShops,
                                 })
                             );
-
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
                         }
+                        
+                        this.tableService.sendActionAnimation({
+                            animation: 'add',
+                            tab: 'repair-shop',
+                            data: shop,
+                            id: shop.id,
+                        });
                     },
                 });
             })
