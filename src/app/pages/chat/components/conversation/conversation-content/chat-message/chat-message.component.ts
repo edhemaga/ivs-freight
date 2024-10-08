@@ -114,6 +114,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
     }
 
     public toggleActions(displayed: boolean): void {
+        if (this.message?.isDeleted) return;
         if (this.selectedMessageId === this.message.id) {
             return;
         }

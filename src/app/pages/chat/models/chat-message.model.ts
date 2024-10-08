@@ -19,6 +19,7 @@ export interface ChatMessage {
     parentMessageSenderFullname?: string;
     createdAt?: string;
     updatedAt: string;
+    isDeleted?: boolean;
     isEdited?: boolean;
     files?: Array<FileResponse>;
     filesCount?: number;

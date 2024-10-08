@@ -15,7 +15,7 @@
                         trackBy: 'id' | trackByProperty
                     "
                 >
-                    <ng-container *ngIf="message?.messageType">
+                    <ng-container *ngIf="message">
                         <ng-container
                             *ngIf="
                                 (message.createdAt | chatDatePipe) !==

@@ -55,10 +55,31 @@ export const chatDataReducer = createReducer(
     })),
     on(deleteMessage, (state, newState) => ({
         ...state,
-        messageResponseCount: state.messageResponseCount - 1,
-        messageResponseData: state.messageResponseData.filter(
-            (message) => message.id !== newState.id
-        ),
+        messageResponseData: state.messageResponseData.map((message) => {
+            if (message.id !== newState.id) return message;
+            return {
+                id: message.id,
+                messageType: null,
+                sender: message.sender,
+                senderId: message.senderId,
+                conversationId: message.conversationId,
+                content: null,
+                parentId: null,
+                parentMessageId: null,
+                parentMessageContent: null,
+                parentMessageSenderFullname: null,
+                createdAt: null,
+                updatedAt: null,
+                isDeleted: true,
+                isEdited: message.isEdited,
+                files: null,
+                filesCount: null,
+                media: null,
+                mediaCount: null,
+                links: null,
+                linksCount: null,
+            };
+        }),
     })),
     on(addMessage, (state, newState) => ({
         ...state,
