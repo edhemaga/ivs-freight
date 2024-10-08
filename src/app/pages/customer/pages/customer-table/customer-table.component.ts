@@ -160,7 +160,7 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
-        private confiramtionService: ConfirmationService,
+        private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
@@ -218,7 +218,7 @@ export class CustomerTableComponent
     }
 
     private confirmationSubscribe(): void {
-        this.confiramtionService.confirmationData$
+        this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res.type) {
@@ -275,20 +275,22 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.filter = false;
-                    this.tableService.sendResetSpecialFilters(true);
+                    if (res?.tableType) {
+                        this.filter = false;
+                        this.tableService.sendResetSpecialFilters(true);
 
-                    if (!res.array) {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanStatus(res.data);
+                        if (!res.array) {
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanStatus(res.data);
+                            } else {
+                                this.changeDnuStatus(res.data);
+                            }
                         } else {
-                            this.changeDnuStatus(res.data);
-                        }
-                    } else {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanListStatus(res.array);
-                        } else {
-                            this.changeDnuListStatus(res.array);
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanListStatus(res.array);
+                            } else {
+                                this.changeDnuListStatus(res.array);
+                            }
                         }
                     }
                 }
@@ -1733,10 +1735,10 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT ||
                             event.type === TableStringEnum.EDIT_CONTACT ||
                             event.type === TableStringEnum.DELTETE_CONTACT
-                                ? TableStringEnum.CONTRACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }
