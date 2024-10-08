@@ -124,7 +124,7 @@ export class UserChatService {
         attachmentsList?: UploadFile[],
         linksList?: string[],
         parentMessageId?: number
-    ): Observable<any> {
+    ): Observable<{}> {
         if (!conversationId) return;
 
         const attachments: File[] = attachmentsList.map((item) => {
@@ -145,8 +145,6 @@ export class UserChatService {
             links,
             parentMessageId,
         };
-
-        console.log(data);
 
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -182,6 +180,16 @@ export class UserChatService {
     ): Observable<ConversationInfoResponse> {
         return this.http.get<ConversationInfoResponse>(
             `${environment.API_ENDPOINT}/api/chat/conversation/${conversationId}/files`,
+            {
+                headers: this.headers,
+            }
+        );
+    }
+
+    public joinChannel(conversationId: number): Observable<{}> {
+        return this.http.put(
+            `${environment.API_ENDPOINT}/api/chat/conversation/join`,
+            { conversationId },
             {
                 headers: this.headers,
             }
