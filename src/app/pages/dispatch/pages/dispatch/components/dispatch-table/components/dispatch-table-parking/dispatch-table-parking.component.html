@@ -9,7 +9,7 @@
         <div
             class="dispatch-parking"
             [ngClass]="{
-                'dispatch-parking_empty': !isParkingAssigned && !isInputInFocus,
+                'dispatch-parking_empty svg-fill-light-grey-6 svg-hover-muted': !isParkingAssigned && !isInputInFocus,
                 'dispatch-parking_assigned': isParkingAssigned,
                 'dispatch-parking-hover': isParkingAvailable,
                 'dispatch-parking-disabled': !isUnlockable,
@@ -34,7 +34,7 @@
                             >
                                 <svg-icon
                                     [src]="svgRoutes.parking"
-                                    class="mr-1 dispatch-parking-icon dispatch-parking-icon_assigned"
+                                    class="mr-1 dispatch-parking-icon dispatch-parking-icon_assigned svg-fill-ta-blue-26"
                                 >
                                 </svg-icon>
                             </span>
@@ -64,7 +64,7 @@
 
                         <div class="dispatch-parking-remove-wrapper">
                             <span
-                                class="d-flex align-items-center justify-content-center dispatch-parking-remove"
+                                class="d-flex align-items-center justify-content-center dispatch-parking-remove svg-hover-red-14"
                                 ngbTooltip
                                 position="bottom"
                                 [mainTooltip]="'Remove'"
@@ -182,7 +182,7 @@
                                                         ADD NEW
                                                     </span>
                                                     <svg-icon
-                                                        class="dispatch-parking-dropdown-caret"
+                                                        class="dispatch-parking-dropdown-caret svg-fill-blue-19 svg-size-12"
                                                         [src]="svgRoutes.plus"
                                                     ></svg-icon>
                                                 </div>
@@ -237,7 +237,7 @@
                                 >
                                     <span class="ta-font-bold"> ADD NEW </span>
                                     <svg-icon
-                                        class="dispatch-parking-dropdown-caret"
+                                    class="dispatch-parking-dropdown-caret svg-fill-blue-19 svg-size-12"
                                         [src]="svgRoutes.plus"
                                     ></svg-icon>
                                 </div>
