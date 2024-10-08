@@ -402,7 +402,9 @@
                                 [isVisibleCropAndDrop]="
                                     uploadOptionsConstants.isVisibleCropAndDrop
                                 "
-                                [files]="uploadOptionsConstants.files"
+                                [files]="[
+                                    { url: editData?.company?.logoFile?.url }
+                                ]"
                                 [slider]="uploadOptionsConstants.slider"
                                 [carouselConfig]="
                                     uploadOptionsConstants.carouselConfig
