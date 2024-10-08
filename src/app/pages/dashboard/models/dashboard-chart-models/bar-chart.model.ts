@@ -62,21 +62,21 @@ export interface BarChartLabels {
     filteredTooltipLabels: string[];
 }
 
-export interface BarChart extends Chart {
-    updateTime: (currentTab: string, period?: string) => void;
-    updateMuiliBar: (
-        selectedStates: TopRatedListItem[] | ByStateListItem[],
-        data: number[],
-        dataPercentages: number[],
-        colors: string[],
-        hoverColors: string[]
-    ) => void;
-    removeMultiBarData: (
-        removedData: TopRatedListItem | ByStateListItem,
-        showDefault?: boolean
-    ) => void;
-    hoverBarChart: (hoveredData: TopRatedListItem | ByStateListItem) => void;
-    displayBarChartDefaultValues(): () => void;
+// export interface BarChart extends Chart {
+//     updateTime: (currentTab: string, period?: string) => void;
+//     updateMuiliBar: (
+//         selectedStates: TopRatedListItem[] | ByStateListItem[],
+//         data: number[],
+//         dataPercentages: number[],
+//         colors: string[],
+//         hoverColors: string[]
+//     ) => void;
+//     removeMultiBarData: (
+//         removedData: TopRatedListItem | ByStateListItem,
+//         showDefault?: boolean
+//     ) => void;
+//     hoverBarChart: (hoveredData: TopRatedListItem | ByStateListItem) => void;
+//     displayBarChartDefaultValues(): () => void;
 
-    selectedDrivers: TopRatedListItem[];
-}
+//     selectedDrivers: TopRatedListItem[];
+// }

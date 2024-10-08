@@ -72,10 +72,10 @@ export interface DoughnutChartConfig extends ChartConfiguration {
     dottedZeroLine?: boolean;
 }
 
-export interface DoughnutChart extends Chart {
-    chartInnitProperties: ChartInitProperties[];
-    selectedDrivers: TopRatedListItem[];
+// export interface DoughnutChart extends Chart {
+//     chartInnitProperties: ChartInitProperties[];
+//     selectedDrivers: TopRatedListItem[];
 
-    chartUpdated: (data: number[]) => void;
-    hoverDoughnut: (elements: number, type?: string) => void;
-}
+//     chartUpdated: (data: number[]) => void;
+//     hoverDoughnut: (elements: number, type?: string) => void;
+// }

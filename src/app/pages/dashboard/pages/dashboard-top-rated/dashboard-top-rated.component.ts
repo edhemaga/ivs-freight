@@ -40,13 +40,13 @@ import {
 } from '@pages/dashboard/models/colors-pallete.model';
 import {
     ChartInitProperties,
-    DoughnutChart,
+    //DoughnutChart,
     DoughnutChartConfig,
     DoughnutChartPercentage,
     DoughnutChartSigns,
 } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import {
-    BarChart,
+    //BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
@@ -66,8 +66,8 @@ import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard
     encapsulation: ViewEncapsulation.None,
 })
 export class DashboardTopRatedComponent implements OnInit, OnDestroy {
-    @ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
-    @ViewChild('barChart') public barChart: BarChart;
+    //@ViewChild('doughnutChart') public doughnutChart: DoughnutChart;
+    //@ViewChild('barChart') public barChart: BarChart;
 
     private destroy$: Subject<void> = new Subject<void>();
 
@@ -156,10 +156,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public resetSelectedValues(): void {
         for (let i = 0; i < this.selectedTopRatedList.length; i++) {
-            this.barChart?.removeMultiBarData(
-                this.selectedTopRatedList[i],
-                true
-            );
+            // this.barChart?.removeMultiBarData(
+            //     this.selectedTopRatedList[i],
+            //     true
+            // );
         }
 
         this.selectedTopRatedList = [];
@@ -485,16 +485,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         index: number,
         removeHover: boolean = false
     ): void {
-        if (!removeHover) {
-            this.doughnutChart?.hoverDoughnut(
-                index,
-                DashboardChartStringEnum.NUMBER
-            );
-            this.barChart?.hoverBarChart(this.selectedTopRatedList[index]);
-        } else {
-            this.doughnutChart?.hoverDoughnut(null);
-            this.barChart?.hoverBarChart(null);
-        }
+        // if (!removeHover) {
+        //     this.doughnutChart?.hoverDoughnut(
+        //         index,
+        //         DashboardChartStringEnum.NUMBER
+        //     );
+        //     this.barChart?.hoverBarChart(this.selectedTopRatedList[index]);
+        // } else {
+        //     this.doughnutChart?.hoverDoughnut(null);
+        //     this.barChart?.hoverBarChart(null);
+        // }
     }
 
     private getConstantData(): void {
@@ -1828,41 +1828,41 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         chartCenterStats: ChartInitProperties[],
         topRatedList: TopRatedListItem[]
     ): void {
-        this.doughnutChartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.DOUGHNUT,
-                        data: dataValues,
-                        backgroundColor: dataColors,
-                        borderColor: DashboardChartStringEnum.CHART_COLOR_WHITE,
-                        hoverBackgroundColor: [
-                            DashboardChartStringEnum.CHART_COLOR_WHITE,
-                        ],
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_WHITE,
-                    },
-                },
-            ],
-            chartInnitProperties: chartCenterStats,
-            showLegend: true,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.DOUGHNUT,
-            type: DashboardChartStringEnum.DOUGHNUT,
-            chartWidth: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
-            chartHeight: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
-            removeChartMargin: true,
-            dataLabels: [],
-            driversList: topRatedList,
-            allowAnimation: true,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-            dontUseResponsive: true,
-        };
+        // this.doughnutChartConfig = {
+        //     dataProperties: [
+        //         {
+        //             defaultConfig: {
+        //                 type: DashboardChartStringEnum.DOUGHNUT,
+        //                 data: dataValues,
+        //                 backgroundColor: dataColors,
+        //                 borderColor: DashboardChartStringEnum.CHART_COLOR_WHITE,
+        //                 hoverBackgroundColor: [
+        //                     DashboardChartStringEnum.CHART_COLOR_WHITE,
+        //                 ],
+        //                 hoverBorderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_WHITE,
+        //             },
+        //         },
+        //     ],
+        //     chartInnitProperties: chartCenterStats,
+        //     showLegend: true,
+        //     chartValues: [2, 2],
+        //     defaultType: DashboardChartStringEnum.DOUGHNUT,
+        //     type: DashboardChartStringEnum.DOUGHNUT,
+        //     chartWidth: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
+        //     chartHeight: DashboardChartStringEnum.DOUGHNUT_1800_DIMENSION,
+        //     removeChartMargin: true,
+        //     dataLabels: [],
+        //     driversList: topRatedList,
+        //     allowAnimation: true,
+        //     noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
+        //     dontUseResponsive: true,
+        // };
 
-        if (this.doughnutChart) {
-            this.doughnutChart.chartInnitProperties = chartCenterStats;
-            this.doughnutChart.chartUpdated(dataValues);
-        }
+        // if (this.doughnutChart) {
+        //     this.doughnutChart.chartInnitProperties = chartCenterStats;
+        //     this.doughnutChart.chartUpdated(dataValues);
+        // }
     }
 
     private setDoughnutChartData(
@@ -1952,92 +1952,92 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
-        this.barChartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues
-                            ?.topRatedBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.topRatedBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        label:
-                            this.topRatedList.length <= 10
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_3
-                                : this.topRatedList.length > 10 &&
-                                  this.topRatedList.length <= 30
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_5
-                                : DashboardChartStringEnum.BAR_LABEL_TOP_10,
-                        id: DashboardChartStringEnum.BAR_ID_TOP,
-                    },
-                },
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues?.otherBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.otherBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        label: DashboardChartStringEnum.BAR_LABEL_OTHER,
-                        id: DashboardChartStringEnum.BAR_ID_OTHER,
-                    },
-                },
-            ],
-            showLegend: false,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.BAR,
-            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
-            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
-            removeChartMargin: true,
-            gridHoverBackground: true,
-            startGridBackgroundFromZero: true,
-            dataMaxRows: 4,
-            hasHoverData: true,
-            hassecondTabValueage: true,
-            allowAnimation: true,
-            offset: true,
-            tooltipOffset: { min: 105, max: 279 },
-            dataLabels: this.barChartLabels,
-            dataTooltipLabels: this.barChartTooltipLabels,
-            selectedTab: this.currentActiveTab.name,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        };
+        // this.barChartConfig = {
+        //     dataProperties: [
+        //         {
+        //             defaultConfig: {
+        //                 type: DashboardChartStringEnum.BAR,
+        //                 data: barChartValues?.defaultBarValues
+        //                     ?.topRatedBarValues,
+        //                 dataPercentages:
+        //                     barChartValues?.defaultBarPercentages
+        //                         ?.topRatedBarPercentage,
+        //                 backgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 borderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_4,
+        //                 hoverBackgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_5,
+        //                 hoverBorderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 label:
+        //                     this.topRatedList.length <= 10
+        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_3
+        //                         : this.topRatedList.length > 10 &&
+        //                           this.topRatedList.length <= 30
+        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_5
+        //                         : DashboardChartStringEnum.BAR_LABEL_TOP_10,
+        //                 id: DashboardChartStringEnum.BAR_ID_TOP,
+        //             },
+        //         },
+        //         {
+        //             defaultConfig: {
+        //                 type: DashboardChartStringEnum.BAR,
+        //                 data: barChartValues?.defaultBarValues?.otherBarValues,
+        //                 dataPercentages:
+        //                     barChartValues?.defaultBarPercentages
+        //                         ?.otherBarPercentage,
+        //                 backgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
+        //                 borderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_3,
+        //                 hoverBackgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 hoverBorderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
+        //                 label: DashboardChartStringEnum.BAR_LABEL_OTHER,
+        //                 id: DashboardChartStringEnum.BAR_ID_OTHER,
+        //             },
+        //         },
+        //     ],
+        //     showLegend: false,
+        //     chartValues: [2, 2],
+        //     defaultType: DashboardChartStringEnum.BAR,
+        //     chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
+        //     chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
+        //     removeChartMargin: true,
+        //     gridHoverBackground: true,
+        //     startGridBackgroundFromZero: true,
+        //     dataMaxRows: 4,
+        //     hasHoverData: true,
+        //     hassecondTabValueage: true,
+        //     allowAnimation: true,
+        //     offset: true,
+        //     tooltipOffset: { min: 105, max: 279 },
+        //     dataLabels: this.barChartLabels,
+        //     dataTooltipLabels: this.barChartTooltipLabels,
+        //     selectedTab: this.currentActiveTab.name,
+        //     noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
+        // };
 
-        // bar max value
-        const barChartMaxValue = +this.topRatedList[0]?.value;
+        // // bar max value
+        // const barChartMaxValue = +this.topRatedList[0]?.value;
 
-        // bar axes
-        this.barChartAxes = {
-            verticalLeftAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: barChartMaxValue,
-                stepSize: 10,
-                showGridLines: true,
-            },
-            horizontalAxes: {
-                visible: true,
-                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-                showGridLines: false,
-            },
-        };
+        // // bar axes
+        // this.barChartAxes = {
+        //     verticalLeftAxes: {
+        //         visible: true,
+        //         minValue: 0,
+        //         maxValue: barChartMaxValue,
+        //         stepSize: 10,
+        //         showGridLines: true,
+        //     },
+        //     horizontalAxes: {
+        //         visible: true,
+        //         position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+        //         showGridLines: false,
+        //     },
+        // };
     }
 
     private setBarChartData(
@@ -2068,23 +2068,23 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 ];
             }
 
-            if (this.barChart) {
-                this.barChart?.updateMuiliBar(
-                    topRatedList,
-                    chartValues,
-                    chartPercentages,
-                    selectedColors,
-                    selectedHoverColors
-                );
-            }
+            // if (this.barChart) {
+            //     this.barChart?.updateMuiliBar(
+            //         topRatedList,
+            //         chartValues,
+            //         chartPercentages,
+            //         selectedColors,
+            //         selectedHoverColors
+            //     );
+            // }
         } else {
             const displayChartDefaultValue =
                 this.selectedTopRatedList.length === 0;
 
-            this.barChart?.removeMultiBarData(
-                topRatedListItem,
-                displayChartDefaultValue
-            );
+            // this.barChart?.removeMultiBarData(
+            //     topRatedListItem,
+            //     displayChartDefaultValue
+            // );
         }
     }
 

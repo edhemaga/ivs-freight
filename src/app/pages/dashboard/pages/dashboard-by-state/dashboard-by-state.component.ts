@@ -35,7 +35,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
-    BarChart,
+    //BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
@@ -57,7 +57,7 @@ import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/ma
     styleUrls: ['./dashboard-by-state.component.scss'],
 })
 export class DashboardByStateComponent implements OnInit, OnDestroy {
-    @ViewChild('barChart') public barChart: BarChart;
+    //@ViewChild('barChart') public barChart: BarChart;
 
     private destroy$ = new Subject<void>();
 
@@ -142,9 +142,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         item.name;
 
     public resetSelectedValues(): void {
-        for (let i = 0; i < this.selectedByStateList.length; i++) {
-            this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
-        }
+        // for (let i = 0; i < this.selectedByStateList.length; i++) {
+        //     this.barChart?.removeMultiBarData(this.selectedByStateList[i], true);
+        // }
 
         this.selectedByStateList = [];
 
@@ -440,11 +440,11 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         index: number,
         removeHover: boolean = false
     ): void {
-        if (!removeHover) {
-            this.barChart?.hoverBarChart(this.selectedByStateList[index]);
-        } else {
-            this.barChart?.hoverBarChart(null);
-        }
+        // if (!removeHover) {
+        //     this.barChart?.hoverBarChart(this.selectedByStateList[index]);
+        // } else {
+        //     this.barChart?.hoverBarChart(null);
+        // }
     }
 
     private getConstantData(): void {
@@ -1451,92 +1451,92 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     }
 
     private setBarChartConfigAndAxes(barChartValues: BarChartValues): void {
-        this.barChartConfig = {
-            dataProperties: [
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues
-                            ?.topRatedBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.topRatedBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_4,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_5,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        label:
-                            this.byStateList.length <= 10
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_3
-                                : this.byStateList.length > 10 &&
-                                  this.byStateList.length <= 30
-                                ? DashboardChartStringEnum.BAR_LABEL_TOP_5
-                                : DashboardChartStringEnum.BAR_LABEL_TOP_10,
-                        id: DashboardChartStringEnum.BAR_ID_TOP,
-                    },
-                },
-                {
-                    defaultConfig: {
-                        type: DashboardChartStringEnum.BAR,
-                        data: barChartValues?.defaultBarValues?.otherBarValues,
-                        dataPercentages:
-                            barChartValues?.defaultBarPercentages
-                                ?.otherBarPercentage,
-                        backgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        borderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_3,
-                        hoverBackgroundColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY,
-                        hoverBorderColor:
-                            DashboardChartStringEnum.CHART_COLOR_GREY_2,
-                        label: DashboardChartStringEnum.BAR_LABEL_OTHER,
-                        id: DashboardChartStringEnum.BAR_ID_OTHER,
-                    },
-                },
-            ],
-            showLegend: false,
-            chartValues: [2, 2],
-            defaultType: DashboardChartStringEnum.BAR,
-            chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
-            chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
-            removeChartMargin: true,
-            gridHoverBackground: true,
-            startGridBackgroundFromZero: true,
-            dataMaxRows: 4,
-            hasHoverData: true,
-            hassecondTabValueage: true,
-            allowAnimation: true,
-            offset: true,
-            tooltipOffset: { min: 105, max: 279 },
-            dataLabels: this.barChartLabels,
-            dataTooltipLabels: this.barChartTooltipLabels,
-            selectedTab: this.currentActiveTab.name,
-            noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
-        };
+        // this.barChartConfig = {
+        //     dataProperties: [
+        //         {
+        //             defaultConfig: {
+        //                 type: DashboardChartStringEnum.BAR,
+        //                 data: barChartValues?.defaultBarValues
+        //                     ?.topRatedBarValues,
+        //                 dataPercentages:
+        //                     barChartValues?.defaultBarPercentages
+        //                         ?.topRatedBarPercentage,
+        //                 backgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 borderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_4,
+        //                 hoverBackgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_5,
+        //                 hoverBorderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 label:
+        //                     this.byStateList.length <= 10
+        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_3
+        //                         : this.byStateList.length > 10 &&
+        //                           this.byStateList.length <= 30
+        //                         ? DashboardChartStringEnum.BAR_LABEL_TOP_5
+        //                         : DashboardChartStringEnum.BAR_LABEL_TOP_10,
+        //                 id: DashboardChartStringEnum.BAR_ID_TOP,
+        //             },
+        //         },
+        //         {
+        //             defaultConfig: {
+        //                 type: DashboardChartStringEnum.BAR,
+        //                 data: barChartValues?.defaultBarValues?.otherBarValues,
+        //                 dataPercentages:
+        //                     barChartValues?.defaultBarPercentages
+        //                         ?.otherBarPercentage,
+        //                 backgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
+        //                 borderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_3,
+        //                 hoverBackgroundColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY,
+        //                 hoverBorderColor:
+        //                     DashboardChartStringEnum.CHART_COLOR_GREY_2,
+        //                 label: DashboardChartStringEnum.BAR_LABEL_OTHER,
+        //                 id: DashboardChartStringEnum.BAR_ID_OTHER,
+        //             },
+        //         },
+        //     ],
+        //     showLegend: false,
+        //     chartValues: [2, 2],
+        //     defaultType: DashboardChartStringEnum.BAR,
+        //     chartWidth: DashboardChartStringEnum.BAR_1800_WIDTH,
+        //     chartHeight: DashboardChartStringEnum.BAR_1800_HEIGHT,
+        //     removeChartMargin: true,
+        //     gridHoverBackground: true,
+        //     startGridBackgroundFromZero: true,
+        //     dataMaxRows: 4,
+        //     hasHoverData: true,
+        //     hassecondTabValueage: true,
+        //     allowAnimation: true,
+        //     offset: true,
+        //     tooltipOffset: { min: 105, max: 279 },
+        //     dataLabels: this.barChartLabels,
+        //     dataTooltipLabels: this.barChartTooltipLabels,
+        //     selectedTab: this.currentActiveTab.name,
+        //     noChartImage: DashboardChartStringEnum.NO_CHART_IMG,
+        // };
 
-        // bar max value
-        const barChartMaxValue = +this.byStateList[0]?.value;
+        // // bar max value
+        // const barChartMaxValue = +this.byStateList[0]?.value;
 
-        // bar axes
-        this.barChartAxes = {
-            verticalLeftAxes: {
-                visible: true,
-                minValue: 0,
-                maxValue: barChartMaxValue,
-                stepSize: 10,
-                showGridLines: true,
-            },
-            horizontalAxes: {
-                visible: true,
-                position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
-                showGridLines: false,
-            },
-        };
+        // // bar axes
+        // this.barChartAxes = {
+        //     verticalLeftAxes: {
+        //         visible: true,
+        //         minValue: 0,
+        //         maxValue: barChartMaxValue,
+        //         stepSize: 10,
+        //         showGridLines: true,
+        //     },
+        //     horizontalAxes: {
+        //         visible: true,
+        //         position: DashboardChartStringEnum.BAR_AXES_POSITION_BOTTOM,
+        //         showGridLines: false,
+        //     },
+        // };
     }
 
     private setBarChartData(
@@ -1567,23 +1567,23 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 ];
             }
 
-            if (this.barChart) {
-                this.barChart?.updateMuiliBar(
-                    byStateList,
-                    chartValues,
-                    chartPercentages,
-                    selectedColors,
-                    selectedHoverColors
-                );
-            }
+            // if (this.barChart) {
+            //     this.barChart?.updateMuiliBar(
+            //         byStateList,
+            //         chartValues,
+            //         chartPercentages,
+            //         selectedColors,
+            //         selectedHoverColors
+            //     );
+            // }
         } else {
             const displayChartDefaultValue =
                 this.selectedByStateList.length === 0;
 
-            this.barChart?.removeMultiBarData(
-                byStateListItem,
-                displayChartDefaultValue
-            );
+            // this.barChart?.removeMultiBarData(
+            //     byStateListItem,
+            //     displayChartDefaultValue
+            // );
         }
     }
 

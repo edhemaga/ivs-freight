@@ -41,7 +41,7 @@ import { ChartConstants } from '@shared/components/ta-chart/utils/constants/char
 import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
 
 // components
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+//import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 // models
 import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
@@ -555,12 +555,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 this.chartDataSet(
                     this.stackedBarChart,
                     this.stackedBarChartConfig,
-                    this.stackedBarChartLegend,
+                    //this.stackedBarChartLegend,
                     this.stackedBarAxes,
                     item,
                     hideAnimation,
                     false,
-                    true
+                    //true
                 );
             });
     }
@@ -599,7 +599,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 this.chartDataSet(
                     this.payrollChart,
                     this.payrollChartConfig,
-                    this.barChartLegend,
+                    //this.barChartLegend,
                     this.barAxes,
                     item,
                     hideAnimation,
@@ -629,7 +629,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 this.chartDataSet(
                     this.revenueChart,
                     this.revenueChartConfig,
-                    this.barChartLegend2,
+                    //this.barChartLegend2,
                     this.barAxes2,
                     item,
                     hideAnimation,
@@ -791,7 +791,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public chartDataSet(
-        chart: TaChartComponent,
+        //chart: TaChartComponent,
         config: DoughnutChartConfig,
         legend: LegendAttributes[],
         axes: BarChartAxes,
@@ -875,9 +875,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             config.dataProperties[0].defaultConfig.barThickness = 18;
             config.dataProperties[1].defaultConfig.barThickness = 18;
         }
-        chart.toolTipData = [];
+       // chart.toolTipData = [];
         mapData.map((data) => {
-            chart.toolTipData.push(data);
+            //chart.toolTipData.push(data);
             let dataVal1 = data?.fuelCost
                 ? data.fuelCost
                 : data?.milesPerGallon
@@ -916,10 +916,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         config.dataProperties[1].defaultConfig.data = reverse
             ? fuelCost
             : repairCost;
-        chart.chartDataCheck(config.chartValues);
-        chart.updateChartData(hideAnimation);
-        chart.saveValues = JSON.parse(JSON.stringify(legend));
-        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
+        // chart.chartDataCheck(config.chartValues);
+        // chart.updateChartData(hideAnimation);
+        // chart.saveValues = JSON.parse(JSON.stringify(legend));
+        // chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
     public setFeatureNumber(truck: TruckResponse): void {

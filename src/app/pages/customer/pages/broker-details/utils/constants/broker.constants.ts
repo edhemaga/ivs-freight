@@ -11,60 +11,60 @@ import { ChartImagesStringEnum } from '@shared/components/ta-chart/enums/chart-i
 import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
 import { ChartTypesStringEnum } from '@shared/components/ta-chart/enums/chart-types-string.enum';
 export class BrokerConstants {
-    static MILEAGE_CHART_CONFIG: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesStringEnum.LINE,
-                    data: [],
-                    label: ChartLegendDataStringEnum.SALARY,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: ChartTypesStringEnum.BAR,
-                    data: [],
-                    label: ChartLegendDataStringEnum.MILES,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsStringEnum.PEACH,
-                    backgroundColor: ChartColorsStringEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
-                    hasGradiendBackground: true,
-                    colors: [
-                        ChartColorsStringEnum.CYAN,
-                        ChartColorsStringEnum.APRICOT,
-                    ],
-                    hoverColors: [
-                        ChartColorsStringEnum.TEAL,
-                        ChartColorsStringEnum.AMBER,
-                    ],
-                    maxBarThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesStringEnum.BAR,
-        chartWidth: ChartDefaultStringEnum.WIDTH_417,
-        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
-        onHoverAnnotation: true,
-        offset: true,
-        hoverTimeDisplay: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [],
-        noChartImage: ChartImagesStringEnum.MIXED_NO_DATA,
-        showHoverTooltip: true,
-        showZeroLine: true,
-        dottedZeroLine: true,
-    };
+    // static MILEAGE_CHART_CONFIG: DoughnutChartConfig = {
+    //     dataProperties: [
+    //         {
+    //             defaultConfig: {
+    //                 type: ChartTypesStringEnum.LINE,
+    //                 data: [],
+    //                 label: ChartLegendDataStringEnum.SALARY,
+    //                 yAxisID: 'y-axis-0', //leave this as a string
+    //                 borderColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointBackgroundColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointHoverBorderColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverRadius: 3,
+    //                 pointBorderWidth: 2,
+    //             },
+    //         },
+    //         {
+    //             defaultConfig: {
+    //                 type: ChartTypesStringEnum.BAR,
+    //                 data: [],
+    //                 label: ChartLegendDataStringEnum.MILES,
+    //                 yAxisID: 'y-axis-0', //leave this as a string
+    //                 borderColor: ChartColorsStringEnum.PEACH,
+    //                 backgroundColor: ChartColorsStringEnum.PEACH,
+    //                 hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
+    //                 hasGradiendBackground: true,
+    //                 colors: [
+    //                     ChartColorsStringEnum.CYAN,
+    //                     ChartColorsStringEnum.APRICOT,
+    //                 ],
+    //                 hoverColors: [
+    //                     ChartColorsStringEnum.TEAL,
+    //                     ChartColorsStringEnum.AMBER,
+    //                 ],
+    //                 maxBarThickness: 18,
+    //             },
+    //         },
+    //     ],
+    //     showLegend: false,
+    //     chartValues: [],
+    //     defaultType: ChartTypesStringEnum.BAR,
+    //     chartWidth: ChartDefaultStringEnum.WIDTH_417,
+    //     chartHeight: ChartDefaultStringEnum.HEIGHT_130,
+    //     onHoverAnnotation: true,
+    //     offset: true,
+    //     hoverTimeDisplay: true,
+    //     allowAnimation: true,
+    //     animationOnlyOnLoad: true,
+    //     dataLabels: [],
+    //     noChartImage: ChartImagesStringEnum.MIXED_NO_DATA,
+    //     showHoverTooltip: true,
+    //     showZeroLine: true,
+    //     dottedZeroLine: true,
+    // };
 
     static MILEAGE_BAR_AXES = {
         verticalLeftAxes: {
@@ -106,44 +106,44 @@ export class BrokerConstants {
         },
     ];
 
-    static PAYMENT_CHART_CONFIG: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesStringEnum.LINE,
-                    data: [],
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                    fill: true,
-                    hasGradiendBackground: true,
-                    colors: [
-                        ChartColorsStringEnum.PASTEL_BLUE,
-                        ChartColorsStringEnum.RGB_WHITE,
-                    ],
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesStringEnum.BAR,
-        chartWidth: ChartDefaultStringEnum.WIDTH_417,
-        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
-        annotation: 0,
-        onHoverAnnotation: true,
-        hoverTimeDisplay: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        dataLabels: [],
-        noChartImage: ChartImagesStringEnum.NO_DATA_PAY,
-        showHoverTooltip: true,
-        showZeroLine: true,
-        dottedZeroLine: true,
-    };
+    // static PAYMENT_CHART_CONFIG: DoughnutChartConfig = {
+    //     dataProperties: [
+    //         {
+    //             defaultConfig: {
+    //                 type: ChartTypesStringEnum.LINE,
+    //                 data: [],
+    //                 yAxisID: 'y-axis-0', //leave this as a string
+    //                 borderColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointBackgroundColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointHoverBorderColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverRadius: 3,
+    //                 pointBorderWidth: 2,
+    //                 fill: true,
+    //                 hasGradiendBackground: true,
+    //                 colors: [
+    //                     ChartColorsStringEnum.PASTEL_BLUE,
+    //                     ChartColorsStringEnum.RGB_WHITE,
+    //                 ],
+    //             },
+    //         },
+    //     ],
+    //     showLegend: false,
+    //     chartValues: [],
+    //     defaultType: ChartTypesStringEnum.BAR,
+    //     chartWidth: ChartDefaultStringEnum.WIDTH_417,
+    //     chartHeight: ChartDefaultStringEnum.HEIGHT_130,
+    //     annotation: 0,
+    //     onHoverAnnotation: true,
+    //     hoverTimeDisplay: true,
+    //     allowAnimation: true,
+    //     animationOnlyOnLoad: true,
+    //     dataLabels: [],
+    //     noChartImage: ChartImagesStringEnum.NO_DATA_PAY,
+    //     showHoverTooltip: true,
+    //     showZeroLine: true,
+    //     dottedZeroLine: true,
+    // };
 
     static PAYMENT_CHART_LEGEND = [
         {
@@ -178,51 +178,51 @@ export class BrokerConstants {
         },
     };
 
-    static INVOICE_CHART_CONFIG: DoughnutChartConfig = {
-        dataProperties: [
-            {
-                defaultConfig: {
-                    type: ChartTypesStringEnum.LINE,
-                    data: [],
-                    label: ChartLegendDataStringEnum.SALARY,
-                    yAxisID: 'y-axis-1', //leave this as a string
-                    borderColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointBackgroundColor: ChartColorsStringEnum.WHITE,
-                    pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
-                    pointHoverBorderColor: ChartColorsStringEnum.WHITE,
-                    pointHoverRadius: 3,
-                    pointBorderWidth: 2,
-                },
-            },
-            {
-                defaultConfig: {
-                    type: ChartTypesStringEnum.BAR,
-                    data: [],
-                    label: ChartLegendDataStringEnum.MILES,
-                    yAxisID: 'y-axis-0', //leave this as a string
-                    borderColor: ChartColorsStringEnum.PEACH,
-                    backgroundColor: ChartColorsStringEnum.PEACH,
-                    hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
-                    barThickness: 18,
-                },
-            },
-        ],
-        showLegend: false,
-        chartValues: [],
-        defaultType: ChartTypesStringEnum.BAR,
-        chartWidth: ChartDefaultStringEnum.WIDTH_417,
-        chartHeight: ChartDefaultStringEnum.HEIGHT_130,
-        hasValue: false,
-        dataLabels: [],
-        onHoverAnnotation: true,
-        offset: true,
-        allowAnimation: true,
-        animationOnlyOnLoad: true,
-        hoverTimeDisplay: true,
-        noChartImage: ChartImagesStringEnum.YELLOW_NO_DATA,
-        showHoverTooltip: true,
-        showZeroLine: true,
-    };
+    // static INVOICE_CHART_CONFIG: DoughnutChartConfig = {
+    //     dataProperties: [
+    //         {
+    //             defaultConfig: {
+    //                 type: ChartTypesStringEnum.LINE,
+    //                 data: [],
+    //                 label: ChartLegendDataStringEnum.SALARY,
+    //                 yAxisID: 'y-axis-1', //leave this as a string
+    //                 borderColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointBackgroundColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverBackgroundColor: ChartColorsStringEnum.SKY_BLUE,
+    //                 pointHoverBorderColor: ChartColorsStringEnum.WHITE,
+    //                 pointHoverRadius: 3,
+    //                 pointBorderWidth: 2,
+    //             },
+    //         },
+    //         {
+    //             defaultConfig: {
+    //                 type: ChartTypesStringEnum.BAR,
+    //                 data: [],
+    //                 label: ChartLegendDataStringEnum.MILES,
+    //                 yAxisID: 'y-axis-0', //leave this as a string
+    //                 borderColor: ChartColorsStringEnum.PEACH,
+    //                 backgroundColor: ChartColorsStringEnum.PEACH,
+    //                 hoverBackgroundColor: ChartColorsStringEnum.ORANGE,
+    //                 barThickness: 18,
+    //             },
+    //         },
+    //     ],
+    //     showLegend: false,
+    //     chartValues: [],
+    //     defaultType: ChartTypesStringEnum.BAR,
+    //     chartWidth: ChartDefaultStringEnum.WIDTH_417,
+    //     chartHeight: ChartDefaultStringEnum.HEIGHT_130,
+    //     hasValue: false,
+    //     dataLabels: [],
+    //     onHoverAnnotation: true,
+    //     offset: true,
+    //     allowAnimation: true,
+    //     animationOnlyOnLoad: true,
+    //     hoverTimeDisplay: true,
+    //     noChartImage: ChartImagesStringEnum.YELLOW_NO_DATA,
+    //     showHoverTooltip: true,
+    //     showZeroLine: true,
+    // };
 
     static INVOICE_CHART_AXES = {
         verticalLeftAxes: {

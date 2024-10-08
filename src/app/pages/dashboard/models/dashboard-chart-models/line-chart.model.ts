@@ -44,17 +44,17 @@ export interface LineChartConfig {
     noChartImage: string;
 }
 
-export interface LineChart extends Chart {
-    resetLineChartData: () => void;
-    insertNewChartData: (
-        action: string,
-        performanceDataTitle: string,
-        selectedColor?: string
-    ) => void;
-    changeChartFillProperty: (
-        performanceDataTitle: string,
-        selectedColor: string
-    ) => void;
-    showChartTooltip: (chartDataValue: number) => void;
-    chartHoverOut: () => void;
-}
+// export interface LineChart extends Chart {
+//     resetLineChartData: () => void;
+//     insertNewChartData: (
+//         action: string,
+//         performanceDataTitle: string,
+//         selectedColor?: string
+//     ) => void;
+//     changeChartFillProperty: (
+//         performanceDataTitle: string,
+//         selectedColor: string
+//     ) => void;
+//     showChartTooltip: (chartDataValue: number) => void;
+//     chartHoverOut: () => void;
+// }

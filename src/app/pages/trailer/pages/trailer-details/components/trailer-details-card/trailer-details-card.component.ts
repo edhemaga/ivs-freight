@@ -37,7 +37,7 @@ import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar
 import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
 
 //components
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+//import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 
 //enums
@@ -394,7 +394,7 @@ export class TrailerDetailsCardComponent
     }
 
     public chartDataSet(
-        chart: TaChartComponent,
+        //chart: TaChartComponent,
         config: DoughnutChartConfig,
         legend: LegendAttributes[],
         axes: BarChartAxes,
@@ -478,7 +478,7 @@ export class TrailerDetailsCardComponent
             config.dataProperties[0].defaultConfig.barThickness = 18;
             config.dataProperties[1].defaultConfig.barThickness = 18;
         }
-        chart.toolTipData = [];
+        //chart.toolTipData = [];
 
         axes.verticalLeftAxes.maxValue = maxValue;
         axes.verticalRightAxes.maxValue = maxValue2;
@@ -490,10 +490,10 @@ export class TrailerDetailsCardComponent
         config.dataProperties[1].defaultConfig.data = reverse
             ? fuelCost
             : repairCost;
-        chart.chartDataCheck(config.chartValues);
-        chart.updateChartData(hideAnimation);
-        chart.saveValues = JSON.parse(JSON.stringify(legend));
-        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
+        // chart.chartDataCheck(config.chartValues);
+        // chart.updateChartData(hideAnimation);
+        // chart.saveValues = JSON.parse(JSON.stringify(legend));
+        // chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
     ngOnDestroy(): void {

@@ -22,7 +22,7 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+//import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -81,7 +81,7 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaChartComponent,
+        //TaChartComponent,
         DriverDetailsTitleCardComponent,
         DriverDetailsAssignToCardComponent,
         DriverDetailsAdditionalInfoCardComponent,
@@ -97,7 +97,7 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
 export class DriverDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
 {
-    @ViewChild('payrollChart') public payrollChart: TaChartComponent;
+    //@ViewChild('payrollChart') public payrollChart: TaChartComponent;
 
     @Input() driver: DriverResponse;
 
@@ -167,7 +167,7 @@ export class DriverDetailsCardComponent
             JSON.stringify(DriverDetailsCardConstants.BAR_CHART_TABS)
         );
 
-        this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
+        //this.barChartConfig = DriverDetailsCardConstants.BAR_CHART_CONFIG;
         this.barChartLegend = DriverDetailsCardConstants.BAR_CHART_LEGEND;
         this.barAxes = DriverDetailsCardConstants.BAR_CHART_AXES;
         this.barChartPayrollCall =
@@ -249,7 +249,7 @@ export class DriverDetailsCardComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 this.setChartData(
-                    this.payrollChart,
+                    //this.payrollChart,
                     this.barChartConfig,
                     this.barChartLegend,
                     this.barAxes,
@@ -260,7 +260,7 @@ export class DriverDetailsCardComponent
     }
 
     private setChartData(
-        chart: TaChartComponent,
+        //chart: TaChartComponent,
         config: DoughnutChartConfig,
         legend: LegendAttributes[],
         axes: BarChartAxes,
@@ -295,10 +295,10 @@ export class DriverDetailsCardComponent
         config.dataProperties[1].defaultConfig.barThickness =
             mapData?.length > 17 ? 10 : 18;
 
-        chart.toolTipData = [];
+        //chart.toolTipData = [];
 
         mapData.map((data) => {
-            chart.toolTipData.push(data);
+            //chart.toolTipData.push(data);
 
             let first_chart_value = data?.salary ?? 0;
             let second_chart_value = data?.miles ?? 0;
@@ -327,17 +327,17 @@ export class DriverDetailsCardComponent
         config.dataProperties[0].defaultConfig.data = miilesCost;
         config.dataProperties[1].defaultConfig.data = salaryCost;
 
-        chart.chartDataCheck(config.chartValues);
-        chart.updateChartData(hideAnimation);
+        // chart.chartDataCheck(config.chartValues);
+        // chart.updateChartData(hideAnimation);
 
-        chart.saveValues = JSON.parse(JSON.stringify(legend));
-        chart.legendAttributes = JSON.parse(JSON.stringify(legend));
+        // chart.saveValues = JSON.parse(JSON.stringify(legend));
+        // chart.legendAttributes = JSON.parse(JSON.stringify(legend));
     }
 
     public onPayrollTabChange(tab: TabOptions): void {
-        const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
+        //const chartType = this.payrollChart?.detailsTimePeriod(tab.name);
 
-        this.getDriverPayrollChartData(this.driver.id, chartType);
+        //this.getDriverPayrollChartData(this.driver.id, chartType);
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
