@@ -165,13 +165,15 @@
 
                     <ng-container *ngIf="hasTimeFilter">
                         <div class="me-1">
-                            <app-ta-filter
+                            <app-ca-filter
                                 [type]="'timeFilter'"
                                 [icon]="'ic_time'"
                                 [filterTitle]="'Time Filter'"
+                                [timeSubType]="'past'"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 

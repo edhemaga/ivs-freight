@@ -141,7 +141,13 @@
     </ng-container>
 
     <!-- LOCATION FILTER -->
-    <app-ta-filter
+    <app-ca-filter
+        *ngIf="options.toolbarActions.showLocationFilter"
+        [type]="'locationFilter'"
+        [filterTitle]="'Area Filter'"
+        [icon]="'ic_address'"
+    ></app-ca-filter>
+    <!-- <app-ta-filter
         *ngIf="options.toolbarActions.showLocationFilter"
         [type]="'locationFilter'"
         [icon]="'address'"
@@ -155,7 +161,7 @@
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ta-filter> -->
 
     <!-- FUEL STOP FILTER -->
     <app-ta-filter
@@ -205,22 +211,19 @@
     ></app-ta-special-filter>
 
     <!-- TIME FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTimeFilter"
         [type]="'timeFilter'"
         [icon]="'ic_time'"
         [filterTitle]="'Time Filter'"
+        [timeSubType]="'past'"
         (setFilter)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.time
-                ? 'order-' + options.toolbarActions.filtersOrder.time
-                : ''
-        "
+        (clearAll)="onFilter($event)"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- TRUCK FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showTruckFilter ||
             options.toolbarActions.showTruckPmFilter ||
@@ -232,6 +235,7 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
         [class]="
@@ -240,7 +244,7 @@
                 : ''
         "
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- VACATION FILTER -->
     <app-ta-filter
@@ -380,13 +384,14 @@
         [defFilterHolder]="true"
         [noLeftIcon]="false"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
         [class]="
             options?.toolbarActions?.filtersOrder?.status
                 ? 'order-' + options.toolbarActions.filtersOrder.status
                 : ''
         "
-        [loadStatusOptionsArray]="activeTableData.data[0].status"
+        [loadStatusOptionsArray]="loadStatusOptionsArray"
     >
     </app-ca-filter>
 

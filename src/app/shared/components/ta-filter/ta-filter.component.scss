@@ -1219,7 +1219,8 @@
                     }
                 }
 
-                &.valid-focus-out, &.valid-focus-in {
+                &.valid-focus-out,
+                &.valid-focus-in {
                     .input-control {
                         background-color: $ta-blue-20;
                     }
@@ -1887,7 +1888,6 @@
 }
 
 .time-filter-holder {
-    padding: 10px 6px 6px 6px;
     width: 260px;
     border-radius: 3px;
     background-color: $ta-black-2;

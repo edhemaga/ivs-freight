@@ -30,6 +30,8 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -68,6 +70,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     ];
     public showLtl: boolean = true;
     public showFtl: boolean = true;
+    private destroy$ = new Subject<void>();
+
+    public loadStatusOptionsArray: any;
     constructor(private tableSevice: TruckassistTableService) {}
     public customerFilter: {
         filteredArray: any;
@@ -80,7 +85,28 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     // --------------------------------NgOnInit---------------------------------
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.tableSevice.currentLoadStatusFilterOptions
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                console.log('checcc if som happens', res);
+                if (res) {
+                    this.loadStatusOptionsArray = [...res.options];
+                }
+            });
+
+        this.tableSevice.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                console.log('checcc if som happens', res);
+                if (res?.animation === 'list-update') {
+                    this.loadStatusOptionsArray = res.data.statuses;
+                }
+                // if (res) {
+                //     this.loadStatusOptionsArray = res.options;
+                // }
+            });
+    }
 
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges) {
@@ -112,7 +138,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     public changeFilterView(event: string): void {
         this.loadFilterData.map((filterData) => {
-            filterData.active = filterData.name === event ?? false;
+            filterData.active = filterData.name === event || false;
             if (filterData.active) {
                 if (filterData.name == TableStringEnum.ALL) {
                     this.showFtl = true;
@@ -144,12 +170,17 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
-        console.log(
-            event,
-            'senddddd',
-            this.activeTableData
-            //.data[0].status
-        );
+        console.log(event, this.loadStatusOptionsArray, 'senddddd');
+        // if (event.action === 'Clear')
+        //     this.loadStatusOptionsArray.forEach((item) => {
+        //         item.isSelected = false;
+        //     });
+
+        // console.log(
+        //     event.action === 'Clear',
+        //     event.action,
+        //     this.loadStatusOptionsArray
+        // );
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 
@@ -157,31 +188,31 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public onSpecialFilter(event: any, data: string): void {
         if (this.activeTableData?.ftlArray)
             this.activeTableData.ftlArray.selectedFilter =
-                data == TableStringEnum.FTL_ARRAY ?? false;
+                data == TableStringEnum.FTL_ARRAY || false;
 
         if (this.activeTableData?.ltlArray)
             this.activeTableData.ltlArray.selectedFilter =
-                data == TableStringEnum.LTL_ARRAY ?? false;
+                data == TableStringEnum.LTL_ARRAY || false;
 
         if (this.activeTableData?.repairArray)
             this.activeTableData.repairArray.selectedFilter =
-                data == TableStringEnum.REPAIR_ARRAY ?? false;
+                data == TableStringEnum.REPAIR_ARRAY || false;
 
         if (this.activeTableData?.fuelArray)
             this.activeTableData.fuelArray.selectedFilter =
-                data == TableStringEnum.FUEL_ARRAY ?? false;
+                data == TableStringEnum.FUEL_ARRAY || false;
 
         if (this.activeTableData?.closedArray)
             this.activeTableData.closedArray.selectedFilter =
-                data == TableStringEnum.CLOSED_ARRAY ?? false;
+                data == TableStringEnum.CLOSED_ARRAY || false;
 
         if (this.activeTableData?.driverArhivedArray)
             this.activeTableData.driverArhivedArray.selectedFilter =
-                data == TableStringEnum.DRIVER_ARCHIVED_ARRAY ?? false;
+                data == TableStringEnum.DRIVER_ARCHIVED_ARRAY || false;
 
         if (this.activeTableData?.deactivatedUserArray)
             this.activeTableData.deactivatedUserArray.selectedFilter =
-                data == TableStringEnum.DEACTIVATED_ARHIVED_ARRAY ?? false;
+                data == TableStringEnum.DEACTIVATED_ARHIVED_ARRAY || false;
 
         if (this.activeTableData?.bannedArray)
             this.activeTableData.bannedArray.selectedFilter =
