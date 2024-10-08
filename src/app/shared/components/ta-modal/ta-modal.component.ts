@@ -482,18 +482,22 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'change-status': {
                 this.confirmationAction.emit(this.confirmationData);
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_AND_ASSIGN_NEW: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_CREATE_LOAD: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             case LoadModalStringEnum.DISPATCH_LOAD_SAVE_CHANGES: {
                 this.action.emit({ action: action, bool: false });
+
                 break;
             }
             default: {

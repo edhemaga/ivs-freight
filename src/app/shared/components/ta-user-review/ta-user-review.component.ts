@@ -66,7 +66,7 @@ export class TaUserReviewComponent implements OnChanges {
     constructor(
         private reviewSortPipe: ReviewsSortPipe,
         private titlecasePipe: TitleCasePipe
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (

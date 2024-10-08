@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { OwnerResponse } from 'appcoretruckassist';
+import { OwnerTableResponse } from 'appcoretruckassist';
 
 export interface OwnerInactiveState
-    extends EntityState<OwnerResponse, number> {}
+    extends EntityState<OwnerTableResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'ownerInactive' })

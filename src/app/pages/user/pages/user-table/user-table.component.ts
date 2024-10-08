@@ -623,7 +623,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public getDropdownContent(data: CompanyUserResponse): DropdownItem[] {
-        const dropdownContent = UserConstants.getUserTableDropdown(data);
+        const dropdownContent = UserConstants.getUserTableDropdown(
+            data,
+            this.selectedTab
+        );
         data.userStatus !== TableStringEnum.INVITED &&
         data.userStatus !== TableStringEnum.EXPIRED
             ? dropdownContent.splice(2, 1)
