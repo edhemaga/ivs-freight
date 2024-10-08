@@ -8,4 +8,7 @@ export enum BrokerModalStringEnum {
     DELETE_REVIEW = 'delete-review',
 
     BUSINESS_NAME = 'businessName',
+
+    DNU = 'dnu',
+    BFB = 'bfb',
 }
