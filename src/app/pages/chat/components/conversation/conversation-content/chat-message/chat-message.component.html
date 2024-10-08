@@ -15,7 +15,7 @@
                 *ngTemplateOutlet="
                     deletedMessage;
                     context: {
-                        message: message,
+                        message,
                         user: currentUserId
                     }
                 "
@@ -28,7 +28,7 @@
                             context: {
                                 asset: chatSvgRoutes,
                                 type: chatMessageActionEnum,
-                                message: message,
+                                message,
                                 user: currentUserId
                             }
                         "
@@ -103,7 +103,7 @@
                             *ngTemplateOutlet="
                                 links;
                                 context: {
-                                    message: message
+                                    message
                                 }
                             "
                         ></ng-container>
@@ -112,7 +112,7 @@
                         *ngTemplateOutlet="
                             media;
                             context: {
-                                message: message
+                                message
                             }
                         "
                     ></ng-container>
