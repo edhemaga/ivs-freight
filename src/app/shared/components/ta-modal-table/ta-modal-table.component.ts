@@ -141,7 +141,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isHazardous: boolean;
     @Input() selectedTrailer: TrailerTypeResponse;
     @Input() departments: DepartmentResponse[];
-    
+
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]

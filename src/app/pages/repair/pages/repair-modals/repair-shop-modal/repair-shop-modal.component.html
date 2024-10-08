@@ -768,10 +768,7 @@
                         [isCardOpen]="contactAddedCounter"
                         [hasScrollBodyXAxis]="true"
                     >
-                        <div
-                            (scroll)="onScrollingContacts($event)"
-                            class="repair-shop__contact-table"
-                        >
+                        <div class="repair-shop__contact-table">
                             <app-ta-modal-table
                                 [tableType]="modalTableTypeEnum.CONTACT"
                                 [modalTableData]="contacts"

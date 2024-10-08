@@ -8,7 +8,8 @@
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
             'repair-order-table-header': isRepairOrderTable,
-            'contact-table-header ': isContactTable || isDepartmentContactTable,
+            'contact-table-header': isContactTable,
+            'department-contact-table-header': isDepartmentContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
@@ -37,7 +38,9 @@
                     'first-item':
                         i === 0 && isContactTable && isDepartmentContactTable,
                     'stop-items-number': isLoadItemTable && i === 0,
-                    'stop-items-desc': isLoadItemTable && i === 1
+                    'stop-items-desc': isLoadItemTable && i === 1,
+                    'scroll-first-item': isContactTable && i === 0,
+                    'scroll-second-item': isContactTable && i === 1,
                 }"
             >
                 <ng-container

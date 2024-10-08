@@ -197,7 +197,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public showPhoneExt: boolean = false;
     // Reviews
     public reviews: any[] = [];
-    public contacts = [];
+    public contacts: RepairShopContactResponse[] = [];
     public isRequestInProgress: boolean;
     private departments: DepartmentResponse[];
     private isContactFormValid: boolean = true;
@@ -214,7 +214,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isMonthlyPeriodSeleced: boolean;
     public workingDaysLabel = RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS;
 
-    public openHoursFormField: ITaInput = RepairShopConfig.getOpenHoursFormField();
+    public openHoursFormField: ITaInput =
+        RepairShopConfig.getOpenHoursFormField();
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -912,7 +914,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             monthlyDay: this.selectedMonthlyDays
                 ? this.selectedMonthlyDays.id
                 : null,
-            companyOwned: this.getFromFieldValue(RepairShopModalStringEnum.COMPANY_OWNED),
+            companyOwned: this.getFromFieldValue(
+                RepairShopModalStringEnum.COMPANY_OWNED
+            ),
             rent: this.getFromFieldValue(RepairShopModalStringEnum.RENT),
             // TODO: Holiday should go inside open hours as well
             holiday: this.getFromFieldValue(RepairShopModalStringEnum.HOLIDAY),
@@ -1048,11 +1052,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }, 400);
     }
 
-    public handleModalTableValueEmit(modalTableDataValue): void {
+    public handleModalTableValueEmit(
+        modalTableDataValue: RepairShopContactCommand[]
+    ): void {
         this.contactAddedCounter = modalTableDataValue.length;
+
         this.repairShopForm
             .get(RepairShopModalStringEnum.CONTACTS)
             .patchValue(modalTableDataValue);
+
         this.cdr.detectChanges();
     }
 

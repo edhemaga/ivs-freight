@@ -7,6 +7,7 @@ import {
     Validators,
 } from '@angular/forms';
 import {
+    ChangeDetectorRef,
     Component,
     Input,
     OnDestroy,
@@ -73,15 +74,19 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
-import { Tabs } from '@shared/models/tabs.model';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/broker-modal.constants';
+
+// svg routes
+import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/broker-modal-svg-routes';
 
 // models
 import { ReviewComment } from '@shared/models/review-comment.model';
@@ -96,8 +101,10 @@ import {
     UpdateReviewCommand,
     EnumValue,
     DepartmentResponse,
+    BrokerContactResponse,
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 @Component({
     selector: 'app-broker-modal',
@@ -129,6 +136,7 @@ import { AnimationOptions } from '@shared/models/animation-options.model';
         TaUserReviewComponent,
         TaInputNoteComponent,
         TaSpinnerComponent,
+        TaModalTableComponent,
     ],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
@@ -142,6 +150,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public brokerName: string;
 
+    public brokerModalSvgRoutes = BrokerModalSvgRoutes;
+
     public tabs: Tabs[] = [];
     public physicalAddressTabs: Tabs[] = [];
     public billingAddressTabs: Tabs[] = [];
@@ -153,9 +163,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public animationObject: AnimationOptions;
 
     public billingCredit: Tabs[] = [];
-
-    public reviews: any[] = [];
-    public previousReviews: any[] = [];
 
     public selectedPhysicalAddress: AddressEntity;
     public selectedPhysicalPoBox: AddressEntity;
@@ -183,20 +190,29 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public isOneMoreReviewDisabled: boolean = false;
     public isCardAnimationDisabled: boolean = false;
 
+    public longitude: number;
+    public latitude: number;
+
+    // documents
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
-    public longitude: number;
-    public latitude: number;
+    // reviews
+    public reviews: any[] = [];
+    public previousReviews: any[] = [];
+
+    // contacts
 
     constructor(
         // modal
-
         private ngbActiveModal: NgbActiveModal,
 
         // form
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdRef: ChangeDetectorRef,
 
         // services
         private inputService: TaInputService,
@@ -231,6 +247,43 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.getCompanyUser();
     }
+    //////////////////////////////////////////////////////////////////////////
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
+    public contacts: BrokerContactResponse[] = [];
+
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
+
+    public addContact(): void {
+        if (!this.isEachContactRowValid) return;
+
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: BrokerContactResponse[]
+    ): void {
+        this.contacts = modalTableDataValue;
+
+        this.brokerForm
+            .get(BrokerModalStringEnum.CONTACTS)
+            .patchValue(this.contacts);
+
+        this.cdRef.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private createForm() {
         this.brokerForm = this.formBuilder.group({
@@ -266,6 +319,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ban: [null],
             dnu: [null],
             brokerContacts: this.formBuilder.array([]),
+            contacts: [null],
             files: [null],
         });
 

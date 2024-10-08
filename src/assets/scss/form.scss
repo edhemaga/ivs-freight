@@ -145,6 +145,10 @@
         margin-bottom: 12px !important;
     }
 
+    &.form-container-with-card-2 {
+        margin-bottom: 8px !important;
+    }
+
     &.form-container-without-mb {
         margin-bottom: 0px !important;
     }
@@ -1345,6 +1349,7 @@ app-load-modal {
         overflow-x: visible;
         padding: 0;
         scrollbar-width: thin !important;
+
         .contact-table-header {
             .table-header-box {
                 &:nth-child(1),

@@ -4,6 +4,7 @@ export enum BrokerModalStringEnum {
     CLOSE = 'close',
 
     BROKER = 'broker',
+    CONTACTS = 'contacts',
 
     DELETE_REVIEW = 'delete-review',
 
