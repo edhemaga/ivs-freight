@@ -10,6 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import {
     FormArray,
+    FormGroup,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -29,6 +30,7 @@ import {
     EnumValue,
     FileResponse,
     RepairShopContactCommand,
+    RepairShopContactListResponse,
     RepairShopContactResponse,
     RepairShopOpenHoursCommand,
     RepairShopResponse,
@@ -223,6 +225,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public openHoursFormField: ITaInput =
         RepairShopConfig.getOpenHoursFormField();
+    public departmentContactsVisible: boolean;
+    public isCreatedNewDepartmentRow: boolean;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -381,7 +385,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.OPEN_ALWAYS]: [false],
             [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
             [RepairShopModalStringEnum.NOTE]: [null],
-            [RepairShopModalStringEnum.CONTACTS]: [[]],
+            [RepairShopModalStringEnum.CONTACTS]: [this.formBuilder.array([])],
             [RepairShopModalStringEnum.FILES]: [[]],
             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
                 null,
@@ -444,8 +448,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
-                            [RepairShopModalStringEnum.CONTACTS]:
-                                repairShop.contacts,
+                            [RepairShopModalStringEnum.CONTACTS]: [
+                                this.formBuilder.array([]),
+                            ],
                             [RepairShopModalStringEnum.FILES]: repairShop.files,
                             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
                                 repairShop.shopServiceType.id,
@@ -518,6 +523,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 longitude: res.longitude,
             },
         });
+
+        this.repairShopForm.setControl(
+            RepairShopModalStringEnum.CONTACTS,
+            this.formBuilder.array(
+                res.contacts.map((contact) => ({
+                    ...contact,
+                    departmentId: this.departments.find(
+                        (department) =>
+                            department.name === contact.department.name
+                    )?.id,
+                }))
+            )
+        );
 
         this.contacts = res.contacts;
         this.checkForPayPeriodMethod(res.payPeriod);
@@ -593,39 +611,28 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.favoriteField.patchValue(!this.isFavorite);
     }
 
-    private patchWorkingDayTime(
-        item: any,
-        startTime: string | Date,
-        endTime: string | Date,
-        isWorkingDay: boolean
-    ): void {
-        item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
-        item.get(RepairShopModalStringEnum.END_TIME)?.patchValue(endTime);
-        item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.patchValue(
-            isWorkingDay
-        );
-    }
-
     private initWorkingHours(repairShop: RepairShopResponse): void {
         if (this.editData?.id) {
             this.workingDaysLabel.forEach((day) => {
                 const matchingOpenHours = repairShop.openHours.filter(
                     (openDay) => openDay.dayOfWeek === day.dayOfWeek
-                )
+                );
 
                 // Create the open hour entry
                 const openHourEntry = RepairShopHelper.createOpenHour(
                     {
                         ...day,
-                        shifts:matchingOpenHours.length ? matchingOpenHours.map((openDay) => ({
-                            startTime: openDay.startTime,
-                            endTime: openDay.endTime,
-                        })) : [
-                            {
-                                startTime: RepairShopConstants.startTime,
-                                endTime: RepairShopConstants.endTime,
-                            },
-                        ],
+                        shifts: matchingOpenHours.length
+                            ? matchingOpenHours.map((openDay) => ({
+                                  startTime: openDay.startTime,
+                                  endTime: openDay.endTime,
+                              }))
+                            : [
+                                  {
+                                      startTime: RepairShopConstants.startTime,
+                                      endTime: RepairShopConstants.endTime,
+                                  },
+                              ],
                     },
                     this.formBuilder,
                     matchingOpenHours.length > 0
@@ -681,16 +688,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 ? OpenWorkingHours.MIDNIGHT
                 : OpenWorkingHours.FIVEPM
             : null;
-            
-            const shiftsArray = newWorkingDay.get(RepairShopModalStringEnum.SHIFTS) as FormArray;
-            
-            const newShift = { startTime, endTime };
-            if(!dayActiveField.value) {
-                shiftsArray.patchValue([this.formBuilder.group(newShift)]); 
-            } else {
-                shiftsArray.clear(); 
-                shiftsArray.push(this.formBuilder.group(newShift)); 
-            }
+
+        const shiftsArray = newWorkingDay.get(
+            RepairShopModalStringEnum.SHIFTS
+        ) as FormArray;
+
+        const newShift = { startTime, endTime };
+        if (!dayActiveField.value) {
+            shiftsArray.patchValue([this.formBuilder.group(newShift)]);
+        } else {
+            shiftsArray.clear();
+            shiftsArray.push(this.formBuilder.group(newShift));
+        }
     }
 
     public toggleDoubleWorkingTime(dayIndex: number): void {
@@ -728,11 +737,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         );
 
         this.openHours.controls.forEach((item) => {
-            const shiftsArray = item.get(RepairShopModalStringEnum.SHIFTS) as FormArray;
-            
+            const shiftsArray = item.get(
+                RepairShopModalStringEnum.SHIFTS
+            ) as FormArray;
+
             const newShift = { startTime, endTime };
-            
-            shiftsArray.clear(); 
+
+            shiftsArray.clear();
             shiftsArray.push(this.formBuilder.group(newShift));
         });
     }
@@ -1126,19 +1137,50 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // Contact tab
     public addContact(): void {
-        this.isNewContactAdded = true;
+        if (this.isContactFormValid) {
+            this.isNewContactAdded = true;
+            this.isCreatedNewDepartmentRow = true;
+            this.departmentContactsVisible = true;
 
-        setTimeout(() => {
-            this.isNewContactAdded = false;
-        }, 400);
+            setTimeout(() => {
+                this.isNewContactAdded = false;
+                this.isCreatedNewDepartmentRow = false;
+            }, 400);
+        }
     }
 
-    public handleModalTableValueEmit(modalTableDataValue): void {
-        this.contactAddedCounter = modalTableDataValue.length;
-        this.repairShopForm
-            .get(RepairShopModalStringEnum.CONTACTS)
-            .patchValue(modalTableDataValue);
-        this.cdr.detectChanges();
+    public handleModalTableValueEmit(
+        modalTableDataValue: RepairShopContactListResponse[]
+    ): void {
+        const departmentContactsArray = this.repairShopForm.get(
+            RepairShopModalStringEnum.CONTACTS
+        ) as FormArray;
+
+        departmentContactsArray.clear();
+
+        modalTableDataValue.forEach(
+            (
+                contact: RepairShopContactListResponse & { department: string }
+            ) => {
+                departmentContactsArray.push(
+                    this.createDepartmentContactFormGroup(contact)
+                );
+            }
+        );
+
+        this.departmentContactsVisible = !!modalTableDataValue.length;
+    }
+
+    private createDepartmentContactFormGroup(
+        contact: RepairShopContactListResponse & { department: string }
+    ): FormGroup {
+        return this.formBuilder.group({
+            fullName: [contact.fullName || null],
+            department: [contact.department || null],
+            phone: [contact.phone || null],
+            phoneExt: [contact.phoneExt || null],
+            email: [contact.email || null],
+        });
     }
 
     public handleModalTableValidStatusEmit(validStatus: boolean): void {

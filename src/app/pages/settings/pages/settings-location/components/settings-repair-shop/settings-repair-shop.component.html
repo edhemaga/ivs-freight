@@ -135,6 +135,7 @@
                                 >
                                     Bank
                                 </div>
+                                <!-- TODO: Once bankend is ready change this to item.bank data-->
                                 <!-- <svg-icon
                                 [src]="svgRoutes + item.bank.logoName"
                                 class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
@@ -148,7 +149,7 @@
                             >
                                 Routing
                             </div>
-                            <div class="text-size-145">
+                            <div class="text-size-14">
                                 {{ item.routing }}
                             </div>
                         </div>
@@ -166,6 +167,66 @@
                             ></app-ta-password-account-hidden-characters>
                         </div>
                     </div>
+                </app-ta-custom-card>
+            </ng-container>
+
+            <ng-container *ngIf="item.groupedContacts">
+                <app-ta-custom-card
+                    *ngFor="
+                        let department of item.groupedContacts | keyvalue;
+                        let i = index;
+                        trackBy: identityOfficeData
+                    "
+                    [cardName]="department.value.cardName"
+                    [isCardOpen]="department.value.isCardOpen"
+                    [bodyTemplate]="'card'"
+                    [textBottomPossiton]="'-2px'"
+                    [customClass]="'detailsPadding'"
+                    (onOpenCard)="department.value.isCardOpen = $event"
+                    [hasCounter]="department.value.values.length"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0'
+                    }"
+                >
+                    <ng-container
+                        *ngFor="let contact of department.value.values"
+                    >
+                        <div class="text-size-14 text-color-black-2 mb-3">
+                            {{ contact.fullName }}
+                        </div>
+                        <div class="office-template-data">
+                            <div class="office-template-item">
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.phone"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [arrayText]="true"
+                                    [textColor]="'#2f2f2f'"
+                                    [copyValue]="[
+                                        contact.phone,
+                                        contact.phoneExt
+                                            ? ' x' + contact.phoneExt
+                                            : ''
+                                    ]"
+                                    type="Contacts"
+                                ></app-ta-copy>
+                            </div>
+                            <div
+                                class="office-template-item office-template-email mb-3"
+                            >
+                                <svg-icon
+                                    class="mr-3 svg-fill-light-grey-2"
+                                    [src]="svgRoutes.email"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [copyValue]="contact?.email"
+                                    [textColor]="'#2f2f2f'"
+                                ></app-ta-copy>
+                            </div>
+                        </div>
+                    </ng-container>
                 </app-ta-custom-card>
             </ng-container>
 

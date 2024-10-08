@@ -8,6 +8,7 @@
     [editData]="editData"
     [editDate]="!!editData"
     [showCloseBusinessButton]="isEditMode"
+    [isDisableButtonHidden]="true"
 >
     <ng-container origin *ngIf="repairShopForm">
         <app-ta-tab-switch
@@ -678,12 +679,11 @@
                         }"
                         [cardName]="'Contact'"
                         [disableAnimation]="disableCardAnimation"
-                        [disabledCard]="!contactAddedCounter"
                         [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                         [hasArrow]="false"
-                        [hasCounter]="contactAddedCounter"
-                        [hasScrollBody]="contactAddedCounter > 10"
-                        [isCardOpen]="contactAddedCounter"
+                        [hasCounter]="contacts.length"
+                        [hasScrollBody]="contacts.length > 10"
+                        [isCardOpen]="!!departmentContactsVisible"
                         [hasScrollBodyXAxis]="true"
                     >
                         <div
@@ -704,7 +704,7 @@
                             </app-ta-modal-table>
                         </div>
                     </app-ta-custom-card>
-                    <ng-container *ngIf="!contactAddedCounter">
+                    <ng-container *ngIf="!departmentContactsVisible">
                         <svg-icon
                             class="no-review-svg"
                             [src]="repairShopModalSvgRoutes.noContactIcon"

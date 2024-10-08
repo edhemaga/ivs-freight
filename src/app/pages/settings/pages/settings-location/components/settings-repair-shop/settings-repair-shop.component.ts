@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import {  takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -17,8 +17,9 @@ import { SettingsLocationBaseComponent } from '../settings-location-base/setting
 import { DropDownService } from '@shared/services/drop-down.service';
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
-import { RepairShopResponse } from 'appcoretruckassist';
+import { RepairShopListDto, RepairShopResponse } from 'appcoretruckassist';
 
+import { SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -26,9 +27,10 @@ import { RepairShopResponse } from 'appcoretruckassist';
     styleUrls: ['./settings-repair-shop.component.scss'],
     providers: [FormatCurrencyPipe],
 })
-export class SettingsRepairShopComponent 
-extends SettingsLocationBaseComponent
-implements OnInit {
+export class SettingsRepairShopComponent
+    extends SettingsLocationBaseComponent
+    implements OnInit
+{
     public repairShopData: any;
     public count: number = 0;
     public repairsActions: any;
@@ -42,7 +44,7 @@ implements OnInit {
         protected activatedRoute: ActivatedRoute,
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
-        public FormatCurrencyPipe: FormatCurrencyPipe,
+        public FormatCurrencyPipe: FormatCurrencyPipe
     ) {
         super(
             tableService,
@@ -55,13 +57,12 @@ implements OnInit {
         );
     }
 
-  
     ngOnInit(): void {
         // Required for subscriptions to work
         super.ngOnInit();
 
         this.getInitalList();
-    } 
+    }
 
     public getList(): void {
         this.repairShopSrv
@@ -69,11 +70,42 @@ implements OnInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
                 this.repairShopData = item.pagination;
+                this.repairShopData.data = this.processOfficeData(
+                    this.repairShopData.data
+                );
             });
     }
 
-    public getInitalList(): void  {
+    public getInitalList(): void {
         this.getList();
+    }
+
+    private processOfficeData(
+        data: RepairShopListDto[]
+    ): RepairShopListDto[] {
+        return data.map((office) => {
+            const groupedContacts = office.contacts.reduce((acc, contact) => {
+                const departmentName = contact.departmentName;
+
+                if (departmentName) {
+                    if (!acc[departmentName]) {
+                        acc[departmentName] = {
+                            isCardOpen: true,
+                            cardName: departmentName,
+                            values: [],
+                        };
+                    }
+                    acc[departmentName].values.push(contact);
+                }
+
+                return acc;
+            }, {} as Record<string, SettingsDepartmentCardModel>);
+
+            return {
+                ...office,
+                groupedContacts,
+            };
+        });
     }
 
     public getActiveServices(data: RepairShopResponse) {
