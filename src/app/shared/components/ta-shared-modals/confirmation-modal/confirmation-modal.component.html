@@ -45,13 +45,15 @@
             : editData?.template === 'comment'
             ? 'Delete Comment'
             : editData?.template === 'Company Terminal'
-            ? 'Delete Terminal' 
+            ? 'Delete Terminal'
             : editData?.template === 'Company Parking'
             ? 'Delete Parking'
             : editData?.template === 'Company Office'
             ? 'Delete Office'
             : editData?.template === 'Company Repair Shop'
             ? 'Delete Repair Shop'
+            : editData?.template === 'delete-review'
+            ? 'Delete Review'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
@@ -80,6 +82,7 @@
     [confirmationData]="editData"
     [isCloseIconRemoved]="true"
     (confirmationAction)="onModalAction($event)"
+    (action)="onModalAction($event)"
 >
     <div
         origin
@@ -912,28 +915,26 @@
                             </div>
                         </ng-container>
 
-                        <!-- Repair Shop Review -->
+                        <!-- Repair Shop Review,  Broker-Shipper Review-->
 
-                        <ng-container *ngSwitchCase="'repair-review'">
+                        <ng-container *ngSwitchCase="'delete-review'">
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
                                     <p
-                                        class="m-0 text-1 ta-font-bold limit-text"
+                                        class="text-1 ta-font-bold limit-text mr-1"
                                     >
-                                        {{ editData?.data?.comment }}
+                                        {{ editData?.data?.reviewer }}
                                     </p>
 
-                                    <span>
-                                        <svg-icon
-                                            [src]="
-                                                confirmationImageRoutes.confirmationReviewLikeSvg
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 18,
-                                                'height.px': 18
-                                            }"
-                                        ></svg-icon>
-                                    </span>
+                                    <svg-icon
+                                        [src]="
+                                            confirmationImageRoutes.confirmationReviewLikeSvg
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                    ></svg-icon>
                                 </div>
 
                                 <p class="m-0 text-2">
@@ -942,6 +943,18 @@
                                             | formatDateP : 'date-time'
                                     }}
                                 </p>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.businessName"
+                                >
+                                    <div
+                                        class="item-card mt-3 mb-1 d-flex justify-content-center align-items-center"
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{ editData?.data?.businessName }}
+                                        </p>
+                                    </div>
+                                </ng-container>
                             </div>
                         </ng-container>
 
