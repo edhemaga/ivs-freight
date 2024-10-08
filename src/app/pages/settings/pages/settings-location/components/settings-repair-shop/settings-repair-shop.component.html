@@ -120,43 +120,52 @@
                 <div>Time here</div>
             </app-ta-custom-card>
 
-            <ng-container *ngIf="item.bank">
+            <!-- TODO: Once bankend is ready change this to item.bank data-->
+            <ng-container *ngIf="item.bankName">
                 <app-ta-custom-card
                     [cardName]="'Bank Info'"
                     [isCardOpen]="true"
                     [bodyTemplate]="'card'"
                 >
-                    <div>
-                        <div
-                            class="ta-font-bold text-size-11 text-color-black-2"
-                        >
-                            Bank
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <div
+                                    class="ta-font-bold text-size-11 text-color-black-2"
+                                >
+                                    Bank
+                                </div>
+                                <!-- <svg-icon
+                                [src]="svgRoutes + item.bank.logoName"
+                                class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
+                                (click)="onAction({ modalName: 'repairshop' })"
+                            ></svg-icon> -->
+                            </div>
                         </div>
-                        <svg-icon
-                            [src]="svgRoutes + item.bank.logoName"
-                            class="settings-plus-button svg-fill-blue-13 svg-hover-blue-15 d-flex align-items-center justify-content-center c-pointer"
-                            (click)="onAction({ modalName: 'repairshop' })"
-                        ></svg-icon>
-                    </div>
-                    
-                    <div>
-                        <div
-                            class="ta-font-bold text-size-11 text-color-black-2"
-                        >
-                            Routing
+                        <div class="col-6">
+                            <div
+                                class="ta-font-bold text-size-11 text-color-black-2"
+                            >
+                                Routing
+                            </div>
+                            <div class="text-size-145">
+                                {{ item.routing }}
+                            </div>
                         </div>
-                        {{ item.bank.routing }}
-                    </div>
 
-                    <div>
-                        <div
-                            class="ta-font-bold text-size-11 text-color-black-2"
-                        >
-                            Account
+                        <div class="col-12">
+                            <div
+                                class="ta-font-bold text-size-11 text-color-black-2"
+                            >
+                                Account
+                            </div>
+                            <app-ta-password-account-hidden-characters
+                                [passwordOrAccount]="item.account"
+                                [showEyeIcon]="true"
+                                [isRightSideIcon]="true"
+                            ></app-ta-password-account-hidden-characters>
                         </div>
-                        {{ item.bank.routing }}
                     </div>
-
                 </app-ta-custom-card>
             </ng-container>
 
