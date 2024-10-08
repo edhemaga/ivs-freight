@@ -68,18 +68,21 @@
         padding-right: 6px;
         cursor: text;
         max-width: 607px;
+        transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        will-change: height, opacity;
 
         &.innactive {
-            height: 0px !important;
-            overflow: hidden !important;
-            opacity: 0 !important;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-bottom: 0 !important;
         }
 
         &.active {
-            overflow: visible !important;
-            opacity: 1 !important;
+            opacity: 1;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            height: 100%;
         }
 
         .note-textarea {
