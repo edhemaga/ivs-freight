@@ -101,6 +101,7 @@
             <div class="small-table-holder-main">
                 <app-ca-period-content
                     (reorderedDataEmiter)="onReorderItem($event)"
+                    (proccessPayroll)="onProccessPayroll()"
                     [isOpen]="true"
                     [type]="'MILEAGE'"
                     [componentData]="payrollReport$ | async"

@@ -13,9 +13,9 @@ export interface PayrollState {
     loading: boolean;
     reportLoading: boolean;
     lastLoadDate?: string;
-    selectedDeducionIds?: string[],
-    selectedCreditIds?: string[],
-    selectedBonusIds?: string[]
+    selectedDeducionIds?: number[],
+    selectedCreditIds?: number[],
+    selectedBonusIds?: number[]
 }
 
 export interface IPayrollCountsSelector {

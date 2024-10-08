@@ -8,32 +8,26 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
 
 // services
 import { PayrollService } from '@pages/accounting/services/payroll.service';
 
-// constants
-import { PayrollCommisionDriverOpenLoads } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-commision-driver-open-loads.constants';
+// models
+import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
 import {
-    PayrollOwnerOpenLoads,
-    PayrollOwnerOpenLoadsResizable,
-} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-owner-open-load.constants';
-import {
-    PayrollMilesDriverOpenLoads,
-    PayrollMilesDriverOpenLoadsResizable,
-} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
-import { PayrollFacadeService } from '../../state/services/payroll.service';
-import { Observable } from 'rxjs';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
-import {
-    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
+
+// constants
+import { PayrollFacadeService } from '../../state/services/payroll.service';
+
 import { ICaMapProps, ColumnConfig } from 'ca-components';
-import { MilesStopShortReponseWithRowType } from '../../state/models/payroll.model';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import { ModalService } from '@shared/services/modal.service';
+import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 @Component({
     selector: 'app-payroll-report',
@@ -350,7 +344,8 @@ export class PayrollReportComponent implements OnInit {
         // Ref
         private dch: ChangeDetectorRef,
         // Services
-        private payrollFacadeService: PayrollFacadeService
+        private payrollFacadeService: PayrollFacadeService,
+        private modalService: ModalService
     ) {}
 
     ngAfterViewInit() {
@@ -484,9 +479,9 @@ export class PayrollReportComponent implements OnInit {
     openedPayroll: PayrollDriverMileageByIdResponse;
 
     subscribeToStoreData() {
-        this.payrollFacadeService.getPayrollDriverMileageReport(
-            `${this.reportId}`
-        );
+        this.payrollFacadeService.getPayrollDriverMileageReport({
+            reportId: `${this.reportId}`,
+        });
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
@@ -544,41 +539,6 @@ export class PayrollReportComponent implements OnInit {
         );
     }
 
-    getDataBasedOnTitle(data: { id: number; title: string }) {
-        this.title = data.title;
-        switch (data.title) {
-            case 'Owner':
-                this.tableSettings = PayrollOwnerOpenLoads;
-                this.tableSettingsResizable = PayrollOwnerOpenLoadsResizable;
-                // They changed back in service is same error it need to be checked further to resolve error
-                // this.payrollService.getPayrollOwnerOpenReport(data.id).subscribe((res) => {
-                //     this.reportMainData = res;
-                //     this.dch.detectChanges();
-                // });
-                break;
-            case 'Driver (Commission)':
-            // this.tableSettings = PayrollCommisionDriverOpenLoads;
-            // this.payrollService
-            //     .getPayrollCommisionDriverOpenReport(data.id)
-            //     .subscribe((res) => {
-            //         this.reportMainData = res;
-            //         this.dch.detectChanges();
-            //     });
-            // break;
-            case 'Driver (Miles)':
-                this.tableSettings = PayrollMilesDriverOpenLoads;
-                this.tableSettingsResizable =
-                    PayrollMilesDriverOpenLoadsResizable;
-                this.payrollService.getPayrollMileageDriverOpenReport();
-                // Same error as above
-                // .subscribe((res) => {
-                //     this.reportMainData = res;
-                //     this.dch.detectChanges();
-                // });
-                break;
-        }
-    }
-
     onReorderDone(drag: CdkDragDrop<any[] | null, any, any>) {
         console.log(drag.currentIndex);
         console.log(drag.previousIndex);
@@ -596,18 +556,62 @@ export class PayrollReportComponent implements OnInit {
                 ...this.openedPayroll.excludedLoads,
             ].find((load) => load.loadId == loadId);
             if (load) {
-                this.payrollFacadeService.getPayrollDriverMileageReport(
-                    `${this.reportId}`,
-                    load.date
-                );
+                this.payrollFacadeService.getPayrollDriverMileageReport({
+                    reportId: `${this.reportId}`,
+                    lastLoadDate: load.date,
+                });
             }
         }
     }
 
-    onReorderItem({_included, _title}: {
+    onReorderItem({
+        _included,
+        _title,
+    }: {
         _included: PayrollReportTableResponse[];
         _title: string;
     }) {
-        console.log("dfsfsdfds", _included, _title);
+        let dataSend = {
+            reportId: `${this.reportId}`,
+            selectedCreditIds: null,
+            selectedDeducionIds: null,
+            selectedBonusIds: null,
+        };
+        if (_title === 'Credit') {
+            dataSend = {
+                ...dataSend,
+                selectedCreditIds: _included.map((load) => load.id),
+            };
+        } else if (_title === 'Deduction') {
+            dataSend = {
+                ...dataSend,
+                selectedDeducionIds: _included.map((load) => load.id),
+            };
+        } else if (_title === 'Bonus') {
+            dataSend = {
+                ...dataSend,
+                selectedBonusIds: _included.map((load) => load.id),
+            };
+        }
+
+        this.payrollFacadeService.getPayrollDriverMileageReport(dataSend);
+    }
+
+    onProccessPayroll() {
+        console.log('open payroll');
+
+        this.modalService.openModal(
+            PayrollProccessPaymentModalComponent,
+            {
+                size: 'small',
+            },
+            {
+                type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
+                data: {
+                    id: null, // id for edit,
+                    // driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
+                }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+            }
+        );
     }
 }

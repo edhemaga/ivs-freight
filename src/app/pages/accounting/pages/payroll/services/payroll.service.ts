@@ -30,11 +30,34 @@ export class PayrollService {
 
     public getPayrollSoloMileageDriverReport(
         reportId: string,
-        lastLoadDate: string
+        lastLoadDate: string,
+        selectedCreditIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedBonusIds?: number[]
     ): Observable<PayrollDriverMileageResponse> {
         let params = new HttpParams();
         if (lastLoadDate) {
             params = params.append('LastLoadDate', lastLoadDate);
+        }
+        if (selectedCreditIds) {
+            selectedCreditIds.map(
+                (creditId) =>
+                    (params = params.append('SelectedCreditIds', creditId))
+            );
+        }
+
+        if (selectedDeducionIds) {
+            selectedDeducionIds.map(
+                (deductionId) =>
+                    (params = params.append('SelectedDeducionIds', deductionId))
+            );
+        }
+
+        if (selectedBonusIds) {
+            selectedBonusIds.map(
+                (bonusId) =>
+                    (params = params.append('SelectedBonusIds', bonusId))
+            );
         }
 
         return this.http.get<PayrollDriverMileageResponse>(

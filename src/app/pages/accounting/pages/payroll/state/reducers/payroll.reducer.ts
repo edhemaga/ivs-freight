@@ -36,10 +36,22 @@ export const payrollReducer = createReducer(
         })
     ),
 
-    on(PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver, (state) => ({
-        ...state,
-        reportLoading: true,
-    })),
+    on(
+        PayrollSoloMileageDriver.getPayrollSoloMileageReportDriver,
+        (state, params) => {
+            return {
+                ...state,
+                // reportLoading: true,
+                lastLoadDate: params.lastLoadDate,
+                selectedDeducionIds:
+                    params.selectedDeducionIds ?? state.selectedDeducionIds,
+                selectedBonusIds:
+                    params.selectedBonusIds ?? state.selectedBonusIds,
+                selectedCreditIds:
+                    params.selectedCreditIds ?? state.selectedCreditIds,
+            };
+        }
+    ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,
         (state) => ({

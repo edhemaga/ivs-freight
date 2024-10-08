@@ -57,7 +57,10 @@ export class PayrollEffect {
                     return this.payrollService
                         .getPayrollSoloMileageDriverReport(
                             action.reportId,
-                            action.lastLoadDate
+                            action.lastLoadDate,
+                            action.selectedCreditIds,
+                            action.selectedDeducionIds,
+                            action.selectedBonusIds
                         )
                         .pipe(
                             map((data) => {

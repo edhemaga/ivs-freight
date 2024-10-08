@@ -26,10 +26,14 @@ import { StoreModule } from '@ngrx/store';
 import { payrollReducer } from './pages/payroll/state/reducers/payroll.reducer';
 import { PayrollEffect } from './pages/payroll/state/effects/payroll.effect';
 import { PayrollTableNamesPipe } from './pages/payroll/pipes/payroll-table-names/payroll-table-names.pipe';
-import { CaMapComponent, CaMainTableComponent, CaPeriodContentComponent, CaPayrollListSummaryOverviewComponent } from 'ca-components';
 import { DriverMileageSoloTableComponent } from './pages/payroll/components/tables/driver-mileage-solo-table/driver-mileage-solo-table.component';
 import { PayrollTableTotalPipe } from './pages/payroll/pipes/payroll-table-total/payroll-table-total.pipe';
-
+import {
+    CaMapComponent,
+    CaMainTableComponent,
+    CaPeriodContentComponent,
+    CaPayrollListSummaryOverviewComponent,
+} from 'ca-components';
 @NgModule({
     declarations: [
         // Components
@@ -44,7 +48,7 @@ import { PayrollTableTotalPipe } from './pages/payroll/pipes/payroll-table-total
         PayrollTablePipe,
         PayrollTableNamesPipe,
         DriverMileageSoloTableComponent,
-        PayrollTableTotalPipe
+        PayrollTableTotalPipe,
     ],
     imports: [
         // Modules
@@ -63,7 +67,7 @@ import { PayrollTableTotalPipe } from './pages/payroll/pipes/payroll-table-total
         CaMapComponent,
         CaMainTableComponent,
         CaPeriodContentComponent,
-        CaPayrollListSummaryOverviewComponent
+        CaPayrollListSummaryOverviewComponent,
     ],
     exports: [PayrollTableComponent],
 })

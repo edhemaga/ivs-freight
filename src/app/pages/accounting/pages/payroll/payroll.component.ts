@@ -8,8 +8,7 @@ import {
     ViewChild,
     ViewContainerRef,
     inject,
-    ComponentRef,
-    ChangeDetectorRef,
+    ComponentRef
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 

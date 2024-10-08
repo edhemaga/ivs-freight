@@ -79,10 +79,19 @@ export class PayrollFacadeService {
         );
     }
 
-    public getPayrollDriverMileageReport(
-        reportId: string,
-        lastLoadDate?: string
-    ) {
+    public getPayrollDriverMileageReport({
+        reportId,
+        lastLoadDate,
+        selectedCreditIds,
+        selectedBonusIds,
+        selectedDeducionIds,
+    }: {
+        reportId: string;
+        lastLoadDate?: string;
+        selectedCreditIds?: number[];
+        selectedBonusIds?: number[];
+        selectedDeducionIds?: number[];
+    }) {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
@@ -90,6 +99,13 @@ export class PayrollFacadeService {
                     PayrollDriverMileageSolo.getPayrollSoloMileageReportDriver({
                         reportId,
                         lastLoadDate: lastLoadDate ?? payrollState.lastLoadDate,
+                        selectedCreditIds:
+                            selectedCreditIds ?? payrollState.selectedCreditIds,
+                        selectedBonusIds:
+                            selectedBonusIds ?? payrollState.selectedBonusIds,
+                        selectedDeducionIds:
+                            selectedDeducionIds ??
+                            payrollState.selectedDeducionIds,
                     })
                 );
             });
