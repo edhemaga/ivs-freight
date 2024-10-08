@@ -21,6 +21,7 @@ export class UserConstants {
                 },
                 svgClass: TableStringEnum.REGULAR,
                 hasBorder: true,
+                mutedStyle: selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: 'Reset Password',
@@ -58,12 +59,14 @@ export class UserConstants {
                             ? 18
                             : 14,
                 },
-                svgClass: data.userStatus !== TableStringEnum.EXPIRED &&
+                svgClass:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
                     data.userStatus !== TableStringEnum.INVITED
-                    ? TableStringEnum.CHECK
-                    : TableStringEnum.REGULAR,
+                        ? TableStringEnum.CHECK
+                        : TableStringEnum.REGULAR,
                 hasBorder: true,
-                mutedStyle: data.userStatus !== TableStringEnum.EXPIRED &&
+                mutedStyle:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
                     data.userStatus !== TableStringEnum.INVITED,
             },
             {
@@ -163,7 +166,8 @@ export class UserConstants {
                     data.userStatus !== TableStringEnum.INVITED
                         ? TableStringEnum.CHECK
                         : TableStringEnum.REGULAR,
-                mutedStyle: data.userStatus !== TableStringEnum.EXPIRED &&
+                mutedStyle:
+                    data.userStatus !== TableStringEnum.EXPIRED &&
                     data.userStatus !== TableStringEnum.INVITED,
             },
         ];

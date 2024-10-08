@@ -7,7 +7,6 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { HttpResponseBase } from '@angular/common/http';
 
 import {
     distinctUntilChanged,
@@ -81,6 +80,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -212,8 +212,31 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TableStringEnum.DEACTIVATE:
-                if (this.editData)
-                    this.updateUserStatus(this.editData.id, false);
+                if (data.action === TableStringEnum.DEACTIVATE) {
+                    const mappedEvent = {
+                        ...this.editData,
+                        data: {
+                            ...this.editData.data,
+                            name: this.editData.data.firstName,
+                        },
+                    };
+        
+                    this.ngbActiveModal.close();
+        
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...mappedEvent,
+                            template: TableStringEnum.USER_1,
+                            type:
+                                this.selectedTab
+                                    ? TableStringEnum.DEACTIVATE
+                                    : TableStringEnum.ACTIVATE,
+                            image: true,
+                        }
+                    );
+                }
                 break;
 
             case TableStringEnum.DELETE:
@@ -965,25 +988,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    private updateUserStatus(id: number, activate: boolean): void {
-        this.companyUserService
-            .updateUserStatus(id, activate)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: HttpResponseBase) => {
-                    if (res.status === 200 || res.status === 204) {
-                        this.userStatus = !this.userStatus;
-
-                        this.modalService.changeModalStatus({
-                            name: TableStringEnum.DEACTIVATE,
-                            status: this.userStatus,
-                        });
-                    }
                 },
                 error: () => {},
             });
