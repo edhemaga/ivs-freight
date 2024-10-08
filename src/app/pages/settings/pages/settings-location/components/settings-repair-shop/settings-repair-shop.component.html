@@ -43,8 +43,9 @@
             [haveHeaderText]="true"
             [options]="options"
             [optionsId]="item.id"
-            (dropActions)="optionsEvent($event, 'repair-shop', item)"
             [paddingDots]="'8px 0px 0px 0px'"
+            (dropActions)="optionsEvent($event, 'repair-shop', item)"
+            (isCardOpenEmitter)="onCardToggle(i)"
         >
             <div class="settings-body-items">
                 <div *ngIf="item.phone" class="single-item">
@@ -81,9 +82,10 @@
             <app-ta-custom-card
                 [hasCounter]="getActiveServices(item).length"
                 [cardName]="'Service Type - ' + item.shopServiceType.name"
-                [isCardOpen]="true"
+                [isCardOpen]="isServiceCardOpened[i]"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
+                (onOpenCard)="isServiceCardOpened[i] = $event"
             >
                 <div
                     class="repair-shop-template-data"
@@ -116,6 +118,8 @@
                 [cardName]="'Working Hours'"
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
+                [isCardOpen]="isWorkingCardOpened[i]"
+                (onOpenCard)="isWorkingCardOpened[i] = $event"
             >
                 <div>Time here</div>
             </app-ta-custom-card>
@@ -124,7 +128,8 @@
             <ng-container *ngIf="item.bankName">
                 <app-ta-custom-card
                     [cardName]="'Bank Info'"
-                    [isCardOpen]="true"
+                    [isCardOpen]="isBankingInfoOpened[i]"
+                    (onOpenCard)="isBankingInfoOpened[i] = $event"
                     [bodyTemplate]="'card'"
                 >
                     <div class="row">
@@ -230,7 +235,7 @@
                 </app-ta-custom-card>
             </ng-container>
 
-            <ng-container *ngIf="item.isOwner">
+            <ng-container *ngIf="item.companyOwned">
                 <div class="divider"></div>
                 <div class="settings-progress-container">
                     <app-ta-progress-expiration
@@ -242,6 +247,8 @@
                     ></app-ta-progress-expiration>
                 </div>
             </ng-container>
+
+            <!-- TODO: Note + files -->
         </app-ta-common-card>
     </div>
 </div>

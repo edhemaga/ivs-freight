@@ -19,7 +19,10 @@ import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-m
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 import { RepairShopListDto, RepairShopResponse } from 'appcoretruckassist';
 
-import { SettingsDepartmentCardModel } from '@pages/settings/pages/settings-location/models';
+import {
+    CompanyOfficeResponseWithGroupedContacts,
+    SettingsDepartmentCardModel,
+} from '@pages/settings/pages/settings-location/models';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -35,6 +38,9 @@ export class SettingsRepairShopComponent
     public count: number = 0;
     public repairsActions: any;
     public repairShopDataId: any;
+    public isServiceCardOpened: boolean[] = [];
+    public isWorkingCardOpened: boolean[] = [];
+    public isBankingInfoOpened: boolean[] = [];
     constructor(
         private repairShopSrv: CompanyRepairShopService,
         private repairService: RepairService,
@@ -73,6 +79,12 @@ export class SettingsRepairShopComponent
                 this.repairShopData.data = this.processOfficeData(
                     this.repairShopData.data
                 );
+                this.repairShopData.data.forEach(() => {
+                    this.isServiceCardOpened.push(true);
+                    this.isWorkingCardOpened.push(true);
+                    this.isBankingInfoOpened.push(true);
+                }
+                );
             });
     }
 
@@ -80,9 +92,7 @@ export class SettingsRepairShopComponent
         this.getList();
     }
 
-    private processOfficeData(
-        data: RepairShopListDto[]
-    ): RepairShopListDto[] {
+    private processOfficeData(data: RepairShopListDto[]): RepairShopListDto[] {
         return data.map((office) => {
             const groupedContacts = office.contacts.reduce((acc, contact) => {
                 const departmentName = contact.departmentName;
@@ -122,5 +132,21 @@ export class SettingsRepairShopComponent
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
         }
+    }
+
+    public onCardToggle(i: number): void {
+        const office = this.repairShopData.data[
+            i
+        ] as CompanyOfficeResponseWithGroupedContacts;
+
+        if (office.groupedContacts) {
+            Object.keys(office.groupedContacts).forEach((key) => {
+                office.groupedContacts[key].isCardOpen = false;
+            });
+        }
+        
+        this.isServiceCardOpened[i] = false;
+        this.isWorkingCardOpened[i] = false;
+        this.isBankingInfoOpened[i] = false;
     }
 }
