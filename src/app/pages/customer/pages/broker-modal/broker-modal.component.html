@@ -7,6 +7,8 @@
     [isModalValid]="brokerForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
+    [isResetDnuBtn]="isResetDnuBtn"
+    [isResetBfbBtn]="isResetBfbBtn"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -348,7 +350,7 @@
                     <app-ta-custom-card
                         [cardName]="'Billing'"
                         [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -439,7 +441,7 @@
                         <app-ta-custom-card
                             [hasCounter]="documents?.length ?? 0"
                             [cardName]="'Document'"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [isCardOpen]="!!documents.length"
                         >
                             <app-ta-upload-files
@@ -471,17 +473,15 @@
                 <!-------------------------------- Contact Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
                     <app-ta-custom-card
-                        [hasCounter]="
-                            brokerContacts.length ? brokerContacts.length : 0
-                        "
+                        [hasCounter]="brokerContacts.length ?? 0"
                         [cardName]="'Contact'"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasArrow]="false"
-                        [isCardOpen]="brokerContacts.length > 0"
+                        [isCardOpen]="brokerContacts.length"
                         [hasScrollBody]="brokerContacts.length > 10"
-                        [hasBodyData]="brokerContacts.length > 0"
+                        [hasBodyData]="brokerContacts.length"
                         [disabledCard]="!brokerContacts.length"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
@@ -626,8 +626,8 @@
                         [isCardOpen]="true"
                         [hasBodyData]="reviews.length"
                         [hasScrollBody]="reviews.length > 6"
-                        [disableMultipleReviews]="disableOneMoreReview"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableMultipleReviews]="isOneMoreReviewDisabled"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
