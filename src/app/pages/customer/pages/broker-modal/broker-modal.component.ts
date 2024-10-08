@@ -41,18 +41,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 
-// Models
-import {
-    BrokerAvailableCreditResponse,
-    BrokerResponse,
-    AddressEntity,
-    BrokerModalResponse,
-    CreateRatingCommand,
-    CreateReviewCommand,
-    SignInResponse,
-    UpdateReviewCommand,
-} from 'appcoretruckassist';
-
 // Validators
 import {
     name2_24Validation,
@@ -86,13 +74,30 @@ import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 
-// models
-import { ReviewComment } from '@shared/models/review-comment.model';
-
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
+import { Tabs } from '@shared/models/tabs.model';
+
+// constants
+import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/broker-modal.constants';
+
+// models
+import { ReviewComment } from '@shared/models/review-comment.model';
+import {
+    BrokerAvailableCreditResponse,
+    BrokerResponse,
+    AddressEntity,
+    BrokerModalResponse,
+    CreateRatingCommand,
+    CreateReviewCommand,
+    SignInResponse,
+    UpdateReviewCommand,
+    EnumValue,
+    DepartmentResponse,
+} from 'appcoretruckassist';
+import { AnimationOptions } from '@shared/models/animation-options.model';
 
 @Component({
     selector: 'app-broker-modal',
@@ -133,84 +138,37 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public brokerForm: UntypedFormGroup;
 
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Detail',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Contact',
-        },
-    ];
-
-    public selectedPhysicalAddressTab: any = 3;
-    public physicalAddressTabs: any[] = [
-        {
-            id: 3,
-            name: 'Physical Address',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'PO Box',
-            checked: false,
-        },
-    ];
-
-    public selectedBillingAddressTab: number = 5;
-    public billingAddressTabs: any[] = [
-        {
-            id: 5,
-            name: 'Billing Address',
-            checked: true,
-        },
-        {
-            id: 6,
-            name: 'PO Box',
-            checked: false,
-        },
-    ];
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
-    public billingCredit = [
-        {
-            id: 300,
-            name: 'Unlimited',
-            checked: true,
-        },
-        {
-            id: 301,
-            name: 'Custom',
-            checked: false,
-        },
-    ];
-
-    public companyUser: SignInResponse = null;
+    public companyUser: SignInResponse;
 
     public brokerName: string;
+
+    public tabs: Tabs[] = [];
+    public physicalAddressTabs: Tabs[] = [];
+    public billingAddressTabs: Tabs[] = [];
+
+    public selectedTab: number = 1;
+    public selectedPhysicalAddressTab: number = 3;
+    public selectedBillingAddressTab: number = 5;
+
+    public animationObject: AnimationOptions;
+
+    public billingCredit: Tabs[] = [];
 
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
-    public selectedPhysicalAddress: AddressEntity = null;
-    public selectedPhysicalPoBox: AddressEntity = null;
-    public selectedBillingAddress: AddressEntity = null;
-    public selectedBillingPoBox: AddressEntity = null;
-    public selectedPayTerm: any = null;
+    public selectedPhysicalAddress: AddressEntity;
+    public selectedPhysicalPoBox: AddressEntity;
+    public selectedBillingAddress: AddressEntity;
+    public selectedBillingPoBox: AddressEntity;
+    public selectedPayTerm: EnumValue;
+
+    public selectedContactDepartmentFormArray: DepartmentResponse[] = [];
 
     public selectedDnuOrBfb: string;
 
-    public labelsPayTerms: any[] = [];
-    public labelsDepartments: any[] = [];
-
-    public selectedContactDepartmentFormArray: any[] = [];
+    public labelsPayTerms: EnumValue[] = [];
+    public labelsDepartments: DepartmentResponse[] = [];
 
     public brokerBanStatus: boolean = true;
     public brokerDnuStatus: boolean = true;
@@ -254,9 +212,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        this.getBrokerDropdown();
+        this.getConstantData();
 
-        this.isCredit({ id: 300, name: 'Unlimited', checked: true });
+        this.isCredit(
+            JSON.parse(
+                JSON.stringify(BrokerModalConstants.BILLING_CREDIT_TABS[0])
+            )
+        );
+
+        this.getBrokerDropdown();
 
         this.followIsBillingAddressSame();
 
@@ -309,6 +273,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             this.brokerForm.get('email'),
             'email',
             this.destroy$
+        );
+    }
+
+    private getConstantData(): void {
+        this.tabs = JSON.parse(JSON.stringify(BrokerModalConstants.TABS));
+        this.physicalAddressTabs = JSON.parse(
+            JSON.stringify(BrokerModalConstants.ADDRESS_TABS)
+        );
+        this.billingAddressTabs = JSON.parse(
+            JSON.stringify(BrokerModalConstants.BILLING_TABS)
+        );
+
+        this.animationObject = JSON.parse(
+            JSON.stringify(BrokerModalConstants.ANIMATION_OBJECT)
+        );
+
+        this.billingCredit = JSON.parse(
+            JSON.stringify(BrokerModalConstants.BILLING_CREDIT_TABS)
         );
     }
 

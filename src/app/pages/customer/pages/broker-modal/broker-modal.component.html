@@ -366,8 +366,10 @@
                                     brokerForm.get('availableCredit').value
                             }"
                         >
-                            <div class="broker-billing-field credit">
-                                <p>Credit</p>
+                            <div
+                                class="align-items-center broker-billing-field credit"
+                            >
+                                <p class="m-0 ta-font-medium">CREDIT</p>
 
                                 <app-ta-tab-switch
                                     [tabs]="billingCredit"
@@ -376,6 +378,7 @@
                                 >
                                 </app-ta-tab-switch>
                             </div>
+
                             <div class="broker-billing-field">
                                 <app-ta-input
                                     formControlName="creditLimit"
@@ -397,6 +400,7 @@
                                     (blurInput)="onBlurCreditLimit()"
                                 ></app-ta-input>
                             </div>
+
                             <div class="broker-billing-field">
                                 <app-ta-input-dropdown
                                     formControlName="payTerm"
