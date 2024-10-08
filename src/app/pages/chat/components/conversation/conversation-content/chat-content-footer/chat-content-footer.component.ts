@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     BehaviorSubject,
@@ -26,6 +25,7 @@ import {
 
 // Helpers
 import { checkForLink, UnsubscribeHelper } from '@pages/chat/utils/helpers';
+import moment from 'moment';
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -46,6 +46,7 @@ export class ChatContentFooterComponent
     implements OnInit, OnDestroy
 {
     @Input() public conversation!: ChatSelectedConversation;
+    public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
 
     public replyMessage$!: Observable<ChatMessage | null>;
@@ -88,9 +89,7 @@ export class ChatContentFooterComponent
 
         // Services
         private chatService: UserChatService,
-        private chatStoreService: ChatStoreService,
-
-        private activatedRoute: ActivatedRoute
+        private chatStoreService: ChatStoreService
     ) {
         super();
     }
@@ -99,6 +98,9 @@ export class ChatContentFooterComponent
         this.creteForm();
         this.listenForTyping();
         this.getDataFromStore();
+        this.conversationRemoveInDate = moment(this.conversation?.updatedAt)
+            .subtract(45, 'days')
+            .format();
     }
 
     private getDataFromStore(): void {
