@@ -248,7 +248,31 @@
                 </div>
             </ng-container>
 
-            <!-- TODO: Note + files -->
+            <!-- TODO: files -->
+            <ng-container
+                *ngIf="
+                    repairShopForm.get(RepairShopModalStringEnum.NOTE).controls[
+                        i
+                    ]
+                "
+            >
+                <form [formGroup]="repairShopForm">
+                    <div [formArrayName]="RepairShopModalStringEnum.NOTE">
+                        <app-ta-input-note
+                            [isVisibleNote]="
+                                isVisibleNoteCard[i]
+                            "
+                            [note]="
+                                repairShopForm.get(
+                                    RepairShopModalStringEnum.NOTE
+                                ).controls[i].value
+                            "
+                            [formControlName]="i"
+                            (toggleCard)="isVisibleNoteCard[i] = $event"
+                        ></app-ta-input-note>
+                    </div>
+                </form>
+            </ng-container>
         </app-ta-common-card>
     </div>
 </div>

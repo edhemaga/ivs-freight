@@ -863,19 +863,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .patchValue(event);
     }
 
-    public onFilesEvent(event: FileEvent): void {
-        this.files = event.files;
+    public onFilesEvent(event): void {
+        this.files = event;
 
-        switch (event.action) {
-            case FileActionEvent.ADD:
-                this.updateFilesField(event.files);
-                break;
-            case FileActionEvent.DELETE:
-                this.handleDeleteEvent(event);
-                break;
-            default:
-                console.warn(`Unhandled file event action: ${event.action}`);
-        }
+        // switch (event.action) {
+        //     case FileActionEvent.ADD:
+        //         this.updateFilesField(event.files);
+        //         break;
+        //     case FileActionEvent.DELETE:
+        //         this.handleDeleteEvent(event);
+        //         break;
+        //     default:
+        //         console.warn(`Unhandled file event action: ${event.action}`);
+        // }
     }
 
     private updateFilesField(files: any[]): void {

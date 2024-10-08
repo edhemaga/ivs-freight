@@ -23,6 +23,12 @@ import {
     CompanyOfficeResponseWithGroupedContacts,
     SettingsDepartmentCardModel,
 } from '@pages/settings/pages/settings-location/models';
+import { RepairShopModalStringEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    FormArray,
+} from '@angular/forms';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -34,6 +40,8 @@ export class SettingsRepairShopComponent
     extends SettingsLocationBaseComponent
     implements OnInit
 {
+    public RepairShopModalStringEnum = RepairShopModalStringEnum;
+
     public repairShopData: any;
     public count: number = 0;
     public repairsActions: any;
@@ -41,6 +49,8 @@ export class SettingsRepairShopComponent
     public isServiceCardOpened: boolean[] = [];
     public isWorkingCardOpened: boolean[] = [];
     public isBankingInfoOpened: boolean[] = [];
+    public isVisibleNoteCard: boolean[] = [];
+    public repairShopForm: UntypedFormGroup;
     constructor(
         private repairShopSrv: CompanyRepairShopService,
         private repairService: RepairService,
@@ -50,7 +60,8 @@ export class SettingsRepairShopComponent
         protected activatedRoute: ActivatedRoute,
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
-        public FormatCurrencyPipe: FormatCurrencyPipe
+        public FormatCurrencyPipe: FormatCurrencyPipe,
+        private formBuilder: UntypedFormBuilder
     ) {
         super(
             tableService,
@@ -68,6 +79,23 @@ export class SettingsRepairShopComponent
         super.ngOnInit();
 
         this.getInitalList();
+
+        this.repairShopForm = this.formBuilder.group({
+            [RepairShopModalStringEnum.NOTE]: this.formBuilder.array([]), // Initialize as an empty FormArray
+        });
+    }
+
+    private addNote(value: string): void {
+        const notesArray = this.repairShopForm.get(
+            RepairShopModalStringEnum.NOTE
+        ) as FormArray;
+        notesArray.push(this.formBuilder.control(value));
+    }
+
+    public get notes(): FormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.NOTE
+        ) as FormArray;
     }
 
     public getList(): void {
@@ -79,12 +107,13 @@ export class SettingsRepairShopComponent
                 this.repairShopData.data = this.processOfficeData(
                     this.repairShopData.data
                 );
-                this.repairShopData.data.forEach(() => {
+                this.repairShopData.data.forEach((shop: RepairShopListDto) => {
+                    this.addNote(shop.note);
                     this.isServiceCardOpened.push(true);
                     this.isWorkingCardOpened.push(true);
                     this.isBankingInfoOpened.push(true);
-                }
-                );
+                    this.isVisibleNoteCard.push(!!shop.note);
+                });
             });
     }
 
@@ -144,9 +173,10 @@ export class SettingsRepairShopComponent
                 office.groupedContacts[key].isCardOpen = false;
             });
         }
-        
+
         this.isServiceCardOpened[i] = false;
         this.isWorkingCardOpened[i] = false;
         this.isBankingInfoOpened[i] = false;
+        this.isVisibleNoteCard[i] = false;
     }
 }
