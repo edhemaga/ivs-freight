@@ -368,21 +368,27 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 this.viewData = this.viewData.map((broker) => {
                     if (res?.deletedIds) {
-                        res?.deletedIds?.map((id) => {
+                        res?.deletedIds?.forEach((id) => {
                             if (broker.id === id)
-                                broker.actionAnimation =
-                                    TableStringEnum.DELETE_MULTIPLE;
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
                         });
 
-                        res?.notDeletedIds?.map((notDeletedId) => {
+                        res?.notDeletedIds?.forEach((notDeletedId) => {
                             if (broker.id === notDeletedId)
-                                broker.isSelected = false;
+                                broker = { ...broker, isSelected: false };
                         });
                     } else {
-                        ids.map((id) => {
+                        ids.forEach((id) => {
                             if (broker.id === id)
-                                broker.actionAnimation =
-                                    TableStringEnum.DELETE_MULTIPLE;
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
                         });
                     }
 
@@ -1388,6 +1394,16 @@ export class CustomerTableComponent
                   this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : TableStringEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : TableStringEnum.NUMBER_0,
+            },
             tableContactData: data?.brokerContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
