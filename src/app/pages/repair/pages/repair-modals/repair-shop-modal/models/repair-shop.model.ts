@@ -26,4 +26,5 @@ export interface CreateShopModel {
     address: AddressEntity;
     filesForDeleteIds: string[];
     cover?: Blob;
+    status?: number;
 }

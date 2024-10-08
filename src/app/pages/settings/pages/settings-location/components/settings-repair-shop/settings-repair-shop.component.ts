@@ -29,6 +29,7 @@ import {
     UntypedFormBuilder,
     FormArray,
 } from '@angular/forms';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 @Component({
     selector: 'app-settings-repair-shop',
@@ -61,7 +62,8 @@ export class SettingsRepairShopComponent
         protected settingsLocationService: SettingsLocationService,
         public dropDownService: DropDownService,
         public FormatCurrencyPipe: FormatCurrencyPipe,
-        private formBuilder: UntypedFormBuilder
+        private formBuilder: UntypedFormBuilder,
+        private confirmationActivationService: ConfirmationActivationService,
     ) {
         super(
             tableService,
@@ -79,9 +81,25 @@ export class SettingsRepairShopComponent
         super.ngOnInit();
 
         this.getInitalList();
+        
+        this.onShopClose();
 
+        this.createForm();
+    }
+
+    private onShopClose() {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.repairService.changeShopStatus(res.data.id);
+                }
+            });
+    }
+
+    private createForm() {
         this.repairShopForm = this.formBuilder.group({
-            [RepairShopModalStringEnum.NOTE]: this.formBuilder.array([]), // Initialize as an empty FormArray
+            [RepairShopModalStringEnum.NOTE]: this.formBuilder.array([]),
         });
     }
 
@@ -108,7 +126,7 @@ export class SettingsRepairShopComponent
                     this.repairShopData.data
                 );
                 this.notes.clear();
-                
+
                 this.repairShopData.data.forEach((shop: RepairShopListDto) => {
                     this.addNote(shop.note);
                     this.isServiceCardOpened.push(true);

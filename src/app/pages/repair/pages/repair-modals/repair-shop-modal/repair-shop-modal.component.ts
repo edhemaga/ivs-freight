@@ -227,6 +227,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         RepairShopConfig.getOpenHoursFormField();
     public departmentContactsVisible: boolean;
     public isCreatedNewDepartmentRow: boolean;
+    public businessStatus: number;
+    private repairShop: RepairShopResponse;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -430,7 +432,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.payPeriodsDropdown = dropdowns.payPeriods;
                     this.daysOfWeekDropdown = dropdowns.daysOfWeek;
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
-
+                    this.businessStatus = repairShop.status;
+                    this.repairShop = repairShop;
+                    
                     if (repairShop) {
                         this.repairShopForm.patchValue({
                             [RepairShopModalStringEnum.NAME]: repairShop.name,
@@ -1112,15 +1116,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private showCloseBusinessModal(): void {
         // close current modal
-        this.setModalSpinner(ActionTypesEnum.DELETE, false, true);
-
-        const data = {
-            data: this.editData,
-        };
         const mappedEvent = {
-            ...data,
-            type: TableStringEnum.CLOSE,
+            ...this.repairShop,
+            data: this.repairShop,
+            type: this.repairShop.status
+                ? TableStringEnum.CLOSE
+                : TableStringEnum.OPEN,
         };
+
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
             { size: TableStringEnum.SMALL },
@@ -1129,15 +1132,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 template: TableStringEnum.INFO,
                 subType: TableStringEnum.REPAIR_SHOP,
                 subTypeStatus: TableStringEnum.BUSINESS,
-                tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
-                modalTitle: this.getFromFieldValue(
-                    RepairShopModalStringEnum.NAME
-                ),
-                modalSecondTitle:
-                    this.selectedAddress.address ??
-                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                tableType:
+                    ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                modalTitle: this.repairShop.name,
+                modalSecondTitle: this.repairShop.address?.address
+                    ? this.repairShop.address.address
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             }
         );
+
+        this.setModalSpinner(null, true, true);
     }
 
     // Contact tab
