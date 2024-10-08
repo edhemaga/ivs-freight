@@ -294,23 +294,25 @@ export class RepairService {
                             localStorage.getItem('repairTruckTrailerTableCount')
                         );
                         this.repairShopStore.add(shop);
-                        repairCount.repairShops++;
+                        if (repairCount) {
+                            repairCount.repairShops++;
 
-                        localStorage.setItem(
-                            'repairTruckTrailerTableCount',
-                            JSON.stringify({
-                                repairTrucks: repairCount.repairTrucks,
-                                repairTrailers: repairCount.repairTrailers,
-                                repairShops: repairCount.repairShops,
-                            })
-                        );
+                            localStorage.setItem(
+                                'repairTruckTrailerTableCount',
+                                JSON.stringify({
+                                    repairTrucks: repairCount.repairTrucks,
+                                    repairTrailers: repairCount.repairTrailers,
+                                    repairShops: repairCount.repairShops,
+                                })
+                            );
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'add',
-                            tab: 'repair-shop',
-                            data: shop,
-                            id: shop.id,
-                        });
+                            this.tableService.sendActionAnimation({
+                                animation: 'add',
+                                tab: 'repair-shop',
+                                data: shop,
+                                id: shop.id,
+                            });
+                        }
                     },
                 });
             })

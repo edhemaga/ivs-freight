@@ -1027,6 +1027,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
             RepairShopModalStringEnum.CONTACTS
         );
+     
+        if(!contacts.length) {
+            return [];
+        }
+
         return contacts.map((contact) => {
             return {
                 ...contact,
