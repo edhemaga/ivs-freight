@@ -31,12 +31,12 @@ export class BrokerModalConstants {
         {
             id: 5,
             name: 'Billing Address',
-            checked: true,
+            checked: false,
         },
         {
             id: 6,
             name: 'PO Box',
-            checked: false,
+            checked: true,
         },
     ];
 

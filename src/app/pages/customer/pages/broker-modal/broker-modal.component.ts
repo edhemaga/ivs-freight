@@ -148,7 +148,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public selectedTab: number = 1;
     public selectedPhysicalAddressTab: number = 3;
-    public selectedBillingAddressTab: number = 5;
+    public selectedBillingAddressTab: number = 6;
 
     public animationObject: AnimationOptions;
 
@@ -1051,7 +1051,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         setTimeout(() => {
                             this.tabChange({
                                 id:
-                                    this.editData?.openedTab === 'Contact'
+                                    this.editData?.openedTab === 'Additional'
                                         ? 2
                                         : this.editData?.openedTab === 'Review'
                                         ? 3
