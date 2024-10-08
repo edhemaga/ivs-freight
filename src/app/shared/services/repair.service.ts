@@ -517,18 +517,20 @@ export class RepairService {
 
                 this.repairShopStore.remove(({ id }) => id === shopId);
 
-                repairCount.repairShops--;
+                if (repairCount) {
+                    repairCount.repairShops--;
 
-                localStorage.setItem(
-                    'repairTruckTrailerTableCount',
-                    JSON.stringify({
-                        repairTrucks: repairCount.repairTrucks,
-                        repairTrailers: repairCount.repairTrailers,
-                        truckMoneyTotal: repairCount.truckMoneyTotal,
-                        trailerMoneyTotal: repairCount.trailerMoneyTotal,
-                        repairShops: repairCount.repairShops,
-                    })
-                );
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairCount.repairTrucks,
+                            repairTrailers: repairCount.repairTrailers,
+                            truckMoneyTotal: repairCount.truckMoneyTotal,
+                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                            repairShops: repairCount.repairShops,
+                        })
+                    );
+                }
 
                 this.tableService.sendActionAnimation({
                     animation: 'delete',
