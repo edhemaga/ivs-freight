@@ -1,14 +1,19 @@
+// Models
 import {
     CompanyUserShortResponse,
-    EnumValue,
     FileResponse,
 } from 'appcoretruckassist/model/models';
-
 import { ChatLink } from '@pages/chat/models';
+
+// Enums
+import { ChatMessageTypeEnum } from '@pages/chat/enums';
 
 export interface ChatMessage {
     id: number;
-    messageType?: EnumValue;
+    messageType?: {
+        id: number;
+        name: ChatMessageTypeEnum;
+    };
     sender?: CompanyUserShortResponse;
     senderId: number;
     conversationId: number;
