@@ -829,16 +829,20 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingFrom
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingFrom
-                                  ),
+                                  )
+                                : null,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingTo
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingTo
-                                  ),
+                                  )
+                                : null,
                         note: res.note,
                         shipperContacts: [],
                     });
@@ -991,8 +995,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             });
                             this.tabs = this.tabs.map((item, index) => {
                                 return {
-                                    ...item, 
-                                    checked: index === 1 && this.editData?.openedTab === 'Contact',
+                                    ...item,
+                                    checked:
+                                        index === 1 &&
+                                        this.editData?.openedTab === 'Contact',
                                 };
                             });
                             this.disableCardAnimation = true;
@@ -1073,8 +1079,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     shippingOpenTwentyFourHours: this.shipperForm.get(
                         'shippingOpenTwentyFourHours'
                     ).value,
-                    shippingFrom: this.shipperForm.get('shippingFrom').value,
-                    shippingTo: this.shipperForm.get('shippingTo').value,
+                    shippingFrom:
+                        this.shipperForm.get('shippingFrom').value ?? null,
+                    shippingTo:
+                        this.shipperForm.get('shippingTo').value ?? null,
                 };
             }
         }
