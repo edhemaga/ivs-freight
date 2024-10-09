@@ -51,6 +51,7 @@ import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/con
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalTableSubTypeEnum } from '@shared/enums/modal-table-sub-type.enum';
 
 // validations
 import {
@@ -125,6 +126,7 @@ import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 })
 export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() tableType: ModalTableTypeEnum;
+    @Input() tableSubType: ModalTableSubTypeEnum;
     @Input() isNewRowCreated: boolean = false;
     @Input() isEdit?: boolean = false;
     @Input() isResetSelected?: boolean = false;
@@ -136,7 +138,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | PMTableData[]
         | DriverDetailsOffDutyLocationResponse[]
         | DriverModalFuelCardResponse[] = [];
-    @Input() dropdownData?: TruckTrailerPmDropdownLists;
+    @Input() dropdownData?: TruckTrailerPmDropdownLists | DepartmentResponse[];
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
     @Input() isHazardous: boolean;
     @Input() selectedTrailer: TrailerTypeResponse;
@@ -169,7 +171,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public contactEmailTypeOptions: EnumValue[] = [];
 
     // contacts table
-    public repairDepartmentOptions: DepartmentResponse[];
+    public departmentOptions: DepartmentResponse[];
 
     // repair bill table
     public selectedTruckTrailerRepairPm = [];
@@ -415,7 +417,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getDropdownLists(
-        dropdownData?: TruckTrailerPmDropdownLists[]
+        dropdownData?: TruckTrailerPmDropdownLists[] | DepartmentResponse[]
     ): void {
         switch (this.tableType) {
             case ModalTableTypeEnum.EMAIL:
@@ -429,7 +431,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case ModalTableTypeEnum.CONTACT:
-                this.getContactDropdownList();
+                this.getContactDropdownList(dropdownData);
 
                 break;
             case ModalTableTypeEnum.PM_TRUCK:
@@ -459,13 +461,36 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    private getContactDropdownList(): void {
-        this.repairService
-            .getRepairShopModalDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.repairDepartmentOptions = res.departments;
-            });
+    private getContactDropdownList(
+        dropdownData?: TruckTrailerPmDropdownLists[] | DepartmentResponse[]
+    ): void {
+        switch (this.tableSubType) {
+            case ModalTableSubTypeEnum.BROKER_CONTACTS:
+            case ModalTableSubTypeEnum.SHIPPER_CONTACTS:
+                this.departmentOptions = dropdownData as DepartmentResponse[];
+
+                break;
+            case ModalTableSubTypeEnum.REPAIR_SHOP_CONTACTS:
+                this.repairService
+                    .getRepairShopModalDropdowns()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((res) => {
+                        this.departmentOptions = res.departments;
+                    });
+
+                break;
+            case ModalTableSubTypeEnum.SETTINGS_OFFICE_CONTACTS:
+                this.repairService
+                    .getRepairShopModalDropdowns()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((res) => {
+                        this.departmentOptions = res.departments;
+                    });
+
+                break;
+            default:
+                break;
+        }
     }
 
     private getPmTruckDropdownList(): void {

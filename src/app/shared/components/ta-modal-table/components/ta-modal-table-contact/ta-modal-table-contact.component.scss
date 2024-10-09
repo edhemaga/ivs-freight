@@ -5,9 +5,10 @@
 
     .contact-pinned {
         display: grid;
-        grid-template-columns: 26px 170px;
+        grid-template-columns: 26px 166px;
         grid-gap: 4px;
         position: absolute;
         left: 0;
+        margin-right: 4px;
     }
 }

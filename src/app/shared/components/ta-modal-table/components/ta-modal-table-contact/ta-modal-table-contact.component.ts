@@ -40,7 +40,7 @@ export class TaModalTableContactComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() repairDepartmentOptions: DepartmentResponse[];
+    @Input() departmentOptions: DepartmentResponse[];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;

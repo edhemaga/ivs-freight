@@ -81,6 +81,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { ModalTableSubTypeEnum } from '@shared/enums/modal-table-sub-type.enum';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/broker-modal.constants';
@@ -151,10 +152,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public brokerName: string;
 
     public brokerModalSvgRoutes = BrokerModalSvgRoutes;
+    public modalTableSubTypeEnum = ModalTableSubTypeEnum;
 
     public tabs: Tabs[] = [];
     public physicalAddressTabs: Tabs[] = [];
     public billingAddressTabs: Tabs[] = [];
+
+    public billingCredit: Tabs[] = [];
 
     public selectedTab: number = 1;
     public selectedPhysicalAddressTab: number = 3;
@@ -162,20 +166,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public animationObject: AnimationOptions;
 
-    public billingCredit: Tabs[] = [];
-
     public selectedPhysicalAddress: AddressEntity;
     public selectedPhysicalPoBox: AddressEntity;
     public selectedBillingAddress: AddressEntity;
     public selectedBillingPoBox: AddressEntity;
     public selectedPayTerm: EnumValue;
 
-    public selectedContactDepartmentFormArray: DepartmentResponse[] = [];
-
     public selectedDnuOrBfb: string;
 
-    public labelsPayTerms: EnumValue[] = [];
-    public labelsDepartments: DepartmentResponse[] = [];
+    public payTermOptions: EnumValue[] = [];
+    public departmentOptions: DepartmentResponse[] = [];
 
     public brokerBanStatus: boolean = true;
     public brokerDnuStatus: boolean = true;
@@ -186,7 +186,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public isAddNewAfterSave: boolean = false;
     public isUploadInProgress: boolean;
-    public isContactCardsScrolling: boolean = false;
     public isOneMoreReviewDisabled: boolean = false;
     public isCardAnimationDisabled: boolean = false;
 
@@ -230,13 +229,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.getConstantData();
 
-        this.isCredit(
-            JSON.parse(
-                JSON.stringify(BrokerModalConstants.BILLING_CREDIT_TABS[0])
-            )
-        );
-
         this.getBrokerDropdown();
+
+        this.getCompanyUser();
 
         this.followIsBillingAddressSame();
 
@@ -244,8 +239,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.confirmationMoveSubscribe();
 
         this.handleEditSelectedTab();
-
-        this.getCompanyUser();
     }
     //////////////////////////////////////////////////////////////////////////
     public modalTableTypeEnum = ModalTableTypeEnum;
@@ -318,7 +311,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             note: [null],
             ban: [null],
             dnu: [null],
-            brokerContacts: this.formBuilder.array([]),
             contacts: [null],
             files: [null],
         });
@@ -328,6 +320,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.brokerForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     private getConstantData(): void {
@@ -454,7 +456,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public tabChange(event: any): void {
+    public tabChange(event: Tabs): void {
         this.selectedTab = event.id;
 
         let dotAnimation = document.querySelector(
@@ -467,11 +469,109 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    private handleEditSelectedTab(): void {
-        if (this.editData?.tab) this.selectedTab = this.editData.tab;
+    public tabPhysicalAddressChange(event: Tabs): void {
+        this.selectedPhysicalAddressTab = event.id;
+
+        if (this.selectedPhysicalAddressTab === 3) {
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalAddress')
+            );
+
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalPoBox'),
+                false
+            );
+
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalPoBoxCity'),
+                false
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalAddress'),
+                false
+            );
+
+            this.brokerForm.get('physicalAddressUnit').reset();
+
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalPoBox')
+            );
+
+            this.inputService.changeValidators(
+                this.brokerForm.get('physicalPoBoxCity')
+            );
+        }
+
+        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === this.selectedPhysicalAddressTab,
+            };
+        });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public tabBillingAddressChange(event: Tabs): void {
+        this.selectedBillingAddressTab = event.id;
+
+        if (this.selectedBillingAddressTab === 5) {
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingAddress')
+            );
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingPoBox'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingPoBoxCity'),
+                false
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingAddress'),
+                false
+            );
+            this.brokerForm.get('billingAddressUnit').reset();
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingPoBox')
+            );
+            this.inputService.changeValidators(
+                this.brokerForm.get('billingPoBoxCity')
+            );
+        }
+
+        this.billingAddressTabs = this.billingAddressTabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === this.selectedBillingAddressTab,
+            };
+        });
+    }
+
+    public tabCreditChange(event: Tabs): void {
+        this.billingCredit.forEach((item) => {
+            if (item.name === event.name) {
+                this.brokerForm.get('creditType').patchValue(item.name);
+            }
+        });
+
+        if (this.brokerForm.get('creditType').value === 'Custom') {
+            this.inputService.changeValidators(
+                this.brokerForm.get('creditLimit')
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.brokerForm.get('creditLimit'),
+                false
+            );
+        }
+
+        this.billingCredit = this.billingCredit.map((item) => {
+            return { ...item, checked: item.id === event.id };
+        });
+    }
+
+    public onModalAction(data: { action: string; bool: boolean }): void {
         if (this.isUploadInProgress) return;
 
         if (
@@ -610,178 +710,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public get brokerContacts(): UntypedFormArray {
-        return this.brokerForm.get('brokerContacts') as UntypedFormArray;
-    }
-
-    private createBrokerContacts(data?: {
-        contactName: string;
-        departmentId: string;
-        phone: string;
-        extensionPhone: string;
-        email: string;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            contactName: [
-                data?.contactName ? data.contactName : null,
-                Validators.required,
-            ],
-            departmentId: [
-                data?.departmentId ? data.departmentId : null,
-                [Validators.required, ...departmentValidation],
-            ],
-            phone: [
-                data?.phone ? data.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            extensionPhone: [
-                data?.extensionPhone ? data.extensionPhone : null,
-                [...phoneExtension],
-            ],
-            email: [data?.email ? data.email : null],
-        });
-    }
-
-    public addBrokerContacts(event: { check: boolean; action: string }) {
-        const form = this.createBrokerContacts();
-        if (!this.brokerContacts.valid) return;
-
-        if (event.check) {
-            this.brokerContacts.push(form);
-        }
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-
-        setTimeout(() => {
-            this.trackBrokerContactEmail();
-        }, 50);
-    }
-
-    public removeBrokerContacts(id: number) {
-        this.brokerContacts.removeAt(id);
-        this.selectedContactDepartmentFormArray.splice(id, 1);
-
-        if (this.brokerContacts.length === 0) {
-            this.brokerForm.markAsUntouched();
-        }
-    }
-
-    public trackBrokerContactEmail() {
-        const helper = new Array(this.brokerContacts.length).fill(false);
-
-        this.brokerContacts.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
-            .subscribe((items) => {
-                items.forEach((item, index) => {
-                    if (item.email && helper[index] === false) {
-                        helper[index] = true;
-
-                        this.inputService.changeValidators(
-                            this.brokerContacts.at(index).get('phone'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-
-                    if (!item.email && helper[index] === true) {
-                        this.brokerContacts
-                            .at(index)
-                            .get('email')
-                            .patchValue(null);
-                        this.inputService.changeValidators(
-                            this.brokerContacts.at(index).get('phone'),
-                            true,
-                            [phoneFaxRegex]
-                        );
-                        helper[index] = false;
-                    }
-                });
-            });
-    }
-
-    public onScrollingBrokerContacts(event: any) {
-        this.isContactCardsScrolling = event.target.scrollLeft > 1;
-    }
-
-    public tabPhysicalAddressChange(event: any): void {
-        this.selectedPhysicalAddressTab = event.id;
-
-        if (this.selectedPhysicalAddressTab === 3) {
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalAddress')
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBox'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBoxCity'),
-                false
-            );
-        } else {
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalAddress'),
-                false
-            );
-            this.brokerForm.get('physicalAddressUnit').reset();
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBox')
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('physicalPoBoxCity')
-            );
-        }
-
-        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedPhysicalAddressTab,
-            };
-        });
-    }
-
-    public tabBillingAddressChange(event: any): void {
-        this.selectedBillingAddressTab = event.id;
-
-        if (this.selectedBillingAddressTab === 5) {
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingAddress')
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingPoBox'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingPoBoxCity'),
-                false
-            );
-        } else {
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingAddress'),
-                false
-            );
-            this.brokerForm.get('billingAddressUnit').reset();
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingPoBox')
-            );
-            this.inputService.changeValidators(
-                this.brokerForm.get('billingPoBoxCity')
-            );
-        }
-
-        this.billingAddressTabs = this.billingAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedBillingAddressTab,
-            };
-        });
-    }
-
-    //taLikeDislikeService
     public onHandleAddress(
         event: {
             address: AddressEntity;
@@ -789,62 +717,486 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             longLat: any;
         },
         action: string
-    ) {
+    ): void {
         switch (action) {
-            case 'physical-address': {
+            case 'physical-address':
                 if (event.valid) {
                     this.selectedPhysicalAddress = event.address;
                     this.longitude = event.longLat.longitude;
                     this.latitude = event.longLat.latitude;
                 }
+
                 break;
-            }
-            case 'physical-pobox': {
+
+            case 'physical-pobox':
                 if (event.valid) {
                     this.selectedPhysicalPoBox = event.address;
                     this.longitude = event.longLat.longitude;
                     this.latitude = event.longLat.latitude;
                 }
+
                 break;
-            }
-            case 'billing-address': {
+
+            case 'billing-address':
                 if (event.valid) this.selectedBillingAddress = event.address;
+
                 break;
-            }
-            case 'billing-pobox': {
+
+            case 'billing-pobox':
                 if (event.valid) this.selectedBillingPoBox = event.address;
+
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
-    public isCredit(event: any) {
-        this.billingCredit.forEach((item) => {
-            if (item.name === event.name) {
-                this.brokerForm.get('creditType').patchValue(item.name);
-            }
-        });
-
-        if (this.brokerForm.get('creditType').value === 'Custom') {
-            this.inputService.changeValidators(
-                this.brokerForm.get('creditLimit')
-            );
-        } else {
-            this.inputService.changeValidators(
-                this.brokerForm.get('creditLimit'),
-                false
-            );
-        }
-
-        this.billingCredit = this.billingCredit.map((item) => {
-            return { ...item, checked: item.id === event.id };
-        });
+    public onSelectDropDown(event: EnumValue): void {
+        this.selectedPayTerm = event;
     }
 
-    public changeReviewsEvent(review: ReviewComment) {
+    public onFilesEvent(event: any): void {
+        this.documents = event.files;
+
+        switch (event.action) {
+            case 'add':
+                this.brokerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.brokerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
+
+                this.fileModified = true;
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public onBlurCreditLimit(): void {
+        let limit = this.brokerForm.get('creditLimit').value;
+
+        if (limit) {
+            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
+
+            this.brokerService
+                .availableCreditBroker({
+                    id: this.editData?.id ? this.editData.id : null,
+                    creditLimit: limit,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res: BrokerAvailableCreditResponse) => {
+                        this.brokerForm
+                            .get('creditLimit')
+                            .patchValue(
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    res.creditLimit
+                                )
+                            );
+
+                        this.brokerForm
+                            .get('availableCredit')
+                            .patchValue(res.availableCredit);
+                    },
+                });
+        }
+    }
+
+    private handleEditSelectedTab(): void {
+        if (this.editData?.tab) this.selectedTab = this.editData.tab;
+    }
+
+    private followIsBillingAddressSame(): void {
+        this.brokerForm
+            .get('isCheckedBillingAddress')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.inputService.changeValidators(
+                        this.brokerForm.get('billingAddress'),
+                        false
+                    );
+
+                    this.inputService.changeValidators(
+                        this.brokerForm.get('billingPoBox'),
+                        false
+                    );
+
+                    this.inputService.changeValidators(
+                        this.brokerForm.get('billingPoBoxCity'),
+                        false
+                    );
+                } else {
+                    if (this.selectedBillingAddressTab === 5) {
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingAddress')
+                        );
+
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingPoBox'),
+                            false
+                        );
+
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingPoBoxCity'),
+                            false
+                        );
+                    } else {
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingAddress'),
+                            false
+                        );
+
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingPoBox')
+                        );
+
+                        this.inputService.changeValidators(
+                            this.brokerForm.get('billingPoBoxCity')
+                        );
+                    }
+                }
+            });
+    }
+
+    public selectedBrokerAddress(): {
+        mainAddress: AddressEntity;
+        billingAddress: AddressEntity;
+        mainPoBox: AddressEntity;
+        billingPoBox: AddressEntity;
+    } {
+        let mainAddress = null;
+        let billingAddress = null;
+        let mainPoBox = null;
+        let billingPoBox = null;
+
+        // If same billing address
+        if (this.brokerForm.get('isCheckedBillingAddress').value) {
+            if (this.selectedPhysicalAddressTab === 3) {
+                mainAddress = {
+                    address: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.address
+                        : null,
+                    city: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.city
+                        : null,
+                    state: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.state
+                        : null,
+                    country: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.country
+                        : null,
+                    zipCode: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.zipCode
+                        : null,
+                    stateShortName: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.stateShortName
+                        : null,
+                    street: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.street
+                        : null,
+                    streetNumber: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.streetNumber
+                        : null,
+                    addressUnit: this.brokerForm.get('physicalAddressUnit')
+                        .value,
+                };
+
+                mainPoBox = null;
+
+                billingAddress = {
+                    address: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.address
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.address
+                        : null,
+                    city: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.city
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.city
+                        : null,
+                    state: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.state
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.state
+                        : null,
+                    country: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.country
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.country
+                        : null,
+                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.zipCode
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.zipCode
+                        : null,
+                    stateShortName: this.brokerForm.get(
+                        'isCheckedBillingAddress'
+                    ).value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.stateShortName
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.stateShortName
+                        : null,
+                    street: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.street
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.street
+                        : null,
+                    streetNumber: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.streetNumber
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.streetNumber
+                        : null,
+                    addressUnit: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.brokerForm.get('physicalAddressUnit').value
+                        : this.brokerForm.get('billingAddressUnit').value,
+                };
+
+                billingPoBox = null;
+            } else {
+                mainAddress = null;
+
+                mainPoBox = {
+                    city: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.city
+                        : null,
+                    state: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.state
+                        : null,
+                    zipCode: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.zipCode
+                        : null,
+                    poBox: this.selectedPhysicalPoBox
+                        ? this.brokerForm.get('physicalPoBox').value
+                        : null,
+                };
+
+                billingPoBox = {
+                    city: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.city
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.city
+                        : null,
+                    state: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.state
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.state
+                        : null,
+                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.zipCode
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.zipCode
+                        : null,
+                    poBox: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.brokerForm.get('physicalPoBox').value
+                            : null
+                        : this.brokerForm.get('billingPoBox').value,
+                };
+
+                billingAddress = null;
+            }
+        }
+        // if not same
+        else {
+            if (this.selectedPhysicalAddressTab === 3) {
+                mainAddress = {
+                    address: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.address
+                        : null,
+                    city: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.city
+                        : null,
+                    state: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.state
+                        : null,
+                    country: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.country
+                        : null,
+                    zipCode: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.zipCode
+                        : null,
+                    stateShortName: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.stateShortName
+                        : null,
+                    street: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.street
+                        : null,
+                    streetNumber: this.selectedPhysicalAddress
+                        ? this.selectedPhysicalAddress.streetNumber
+                        : null,
+                    addressUnit: this.brokerForm.get('physicalAddressUnit')
+                        .value,
+                };
+
+                mainPoBox = null;
+            } else {
+                mainAddress = null;
+
+                mainPoBox = {
+                    city: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.city
+                        : null,
+                    state: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.state
+                        : null,
+                    zipCode: this.selectedPhysicalPoBox
+                        ? this.selectedPhysicalPoBox.zipCode
+                        : null,
+                    poBox: this.selectedPhysicalPoBox
+                        ? this.brokerForm.get('physicalPoBox').value
+                        : null,
+                };
+            }
+
+            if (this.selectedBillingAddressTab === 5) {
+                billingAddress = {
+                    address: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.address
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.address
+                        : null,
+                    city: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.city
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.city
+                        : null,
+                    state: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.state
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.state
+                        : null,
+                    country: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.country
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.country
+                        : null,
+                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.zipCode
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.zipCode
+                        : null,
+                    stateShortName: this.brokerForm.get(
+                        'isCheckedBillingAddress'
+                    ).value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.stateShortName
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.stateShortName
+                        : null,
+                    street: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.street
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.street
+                        : null,
+                    streetNumber: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalAddress
+                            ? this.selectedPhysicalAddress.streetNumber
+                            : null
+                        : this.selectedBillingAddress
+                        ? this.selectedBillingAddress.streetNumber
+                        : null,
+                    addressUnit: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.brokerForm.get('physicalAddressUnit').value
+                        : this.brokerForm.get('billingAddressUnit').value,
+                };
+
+                billingPoBox = null;
+            } else {
+                billingPoBox = {
+                    city: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.city
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.city
+                        : null,
+                    state: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.state
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.state
+                        : null,
+                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
+                        .value
+                        ? this.selectedPhysicalPoBox
+                            ? this.selectedPhysicalPoBox.zipCode
+                            : null
+                        : this.selectedBillingPoBox
+                        ? this.selectedBillingPoBox.zipCode
+                        : null,
+                    poBox: this.brokerForm.get('isCheckedBillingAddress').value
+                        ? this.selectedPhysicalPoBox
+                            ? this.brokerForm.get('physicalPoBox').value
+                            : null
+                        : this.brokerForm.get('billingPoBox').value,
+                };
+
+                billingAddress = null;
+            }
+        }
+        return { mainAddress, billingAddress, mainPoBox, billingPoBox };
+    }
+
+    public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
             case 'delete':
                 this.deleteReview(true, review);
@@ -867,32 +1219,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    // ------ Review ------
-
-    public createReview() {
-        if (
-            this.reviews.some((item) => item.isNewReview) ||
-            this.isOneMoreReviewDisabled
-        ) {
-            return;
-        }
-
-        this.reviews.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    ' ',
-                    this.companyUser.lastName
-                ),
-                /*                 avatar: this.companyUser.avatar, */
-            },
-            commentContent: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        });
-    }
-
-    private ratingChanges() {
+    private ratingChanges(): void {
         this.taLikeDislikeService.userLikeDislike$
             .pipe(takeUntil(this.destroy$))
             .subscribe((action: LikeDislikeModel) => {
@@ -959,7 +1286,30 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(review: ReviewComment) {
+    public createReview(): void {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.isOneMoreReviewDisabled
+        ) {
+            return;
+        }
+
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                /*                 avatar: this.companyUser.avatar, */
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    private addReview(review: ReviewComment): void {
         const reviewData: CreateReviewCommand = {
             entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
@@ -986,7 +1336,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(isOpenModal: boolean, review?: ReviewComment) {
+    private deleteReview(isOpenModal: boolean, review?: ReviewComment): void {
         if (isOpenModal) {
             const { id, companyUser, updatedAt } = this.reviews.find(
                 (reviewItem) => reviewItem.id === review.data
@@ -1026,7 +1376,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private updateReview(review: ReviewComment) {
+    private updateReview(review: ReviewComment): void {
         this.reviews = review.sortData;
 
         const reviewData: UpdateReviewCommand = {
@@ -1040,29 +1390,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number) {
-        switch (action) {
-            case 'paytype':
-                this.selectedPayTerm = event;
-
-                break;
-            case 'contact-department':
-                this.selectedContactDepartmentFormArray[index] = event;
-
-                break;
-            default:
-                break;
-        }
-    }
-
-    private getBrokerDropdown() {
+    private getBrokerDropdown(): void {
         this.brokerService
             .getBrokerDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: BrokerModalResponse) => {
-                    this.labelsDepartments = res.departments;
-                    this.labelsPayTerms = res.payTerms;
+                    this.departmentOptions = res.departments;
+                    this.payTermOptions = res.payTerms;
 
                     // From Another Modal Data
                     if (this.editData?.type === 'edit-contact') {
@@ -1119,8 +1454,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     private addBroker(isSaveAndAddNew?: boolean): void {
-        const { creditLimit, brokerContacts, mcNumber, ...form } =
-            this.brokerForm.value;
+        const { creditLimit, mcNumber, ...form } = this.brokerForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -1145,16 +1479,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             files: documents,
             longitude: this.longitude,
             latitude: this.latitude,
-        };
-
-        for (let index = 0; index < brokerContacts.length; index++) {
-            brokerContacts[index].departmentId =
-                this.selectedContactDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
-            brokerContacts,
         };
 
         this.brokerService
@@ -1188,12 +1512,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                         this.selectedBillingAddress = null;
                         this.selectedBillingPoBox = null;
-                        this.selectedContactDepartmentFormArray = [];
                         this.selectedPayTerm = null;
                         this.selectedPhysicalAddress = null;
                         this.selectedPhysicalPoBox = null;
-
-                        this.brokerContacts.controls = [];
 
                         this.brokerForm
                             .get('isCheckedBillingAddress')
@@ -1253,8 +1574,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateBroker(id: number): void {
-        const { brokerContacts, mcNumber, creditLimit, ...form } =
-            this.brokerForm.value;
+        const { mcNumber, creditLimit, ...form } = this.brokerForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -1282,16 +1602,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
-        };
-
-        for (let index = 0; index < brokerContacts.length; index++) {
-            brokerContacts[index].departmentId =
-                this.selectedContactDepartmentFormArray[index].id;
-        }
-
-        newData = {
-            ...newData,
-            brokerContacts,
         };
 
         this.brokerService
@@ -1381,7 +1691,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                         ban: res.ban,
                         dnu: res.dnu,
-                        brokerContacts: [],
                     });
 
                     this.brokerName = res.businessName;
@@ -1416,23 +1725,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.selectedPayTerm = res.payTerm;
 
                     // Contacts
-                    if (res.brokerContacts) {
-                        for (const contact of res.brokerContacts) {
-                            this.brokerContacts.push(
-                                this.createBrokerContacts({
-                                    contactName: contact.contactName,
-                                    departmentId: contact.department.name,
-                                    phone: contact.phone,
-                                    extensionPhone: contact.extensionPhone,
-                                    email: contact.email,
-                                })
-                            );
-
-                            this.selectedContactDepartmentFormArray.push(
-                                contact.department
-                            );
-                        }
-                    }
 
                     // Review
                     this.reviews = res.ratingReviews.map((item) => ({
@@ -1462,7 +1754,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
-                    this.isCredit(
+                    this.tabCreditChange(
                         this.billingCredit.find(
                             (item) => item.name === res.creditType.name
                         )
@@ -1473,13 +1765,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? {
                                   id: 3,
                                   name: 'Physical Address',
-                                  inputName: 'a',
                                   checked: true,
                               }
                             : {
                                   id: 4,
                                   name: 'PO Box Physical',
-                                  inputName: 'a',
                                   checked: false,
                               }
                     );
@@ -1491,13 +1781,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             ? {
                                   id: 5,
                                   name: 'Billing Address',
-                                  inputName: 'n',
                                   checked: true,
                               }
                             : {
                                   id: 6,
                                   name: 'PO Box Billing',
-                                  inputName: 'n',
                                   checked: false,
                               }
                     );
@@ -1510,436 +1798,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private followIsBillingAddressSame() {
-        this.brokerForm
-            .get('isCheckedBillingAddress')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.brokerForm.get('billingAddress'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.brokerForm.get('billingPoBox'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.brokerForm.get('billingPoBoxCity'),
-                        false
-                    );
-                } else {
-                    if (this.selectedBillingAddressTab === 5) {
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingAddress')
-                        );
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingPoBox'),
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingPoBoxCity'),
-                            false
-                        );
-                    } else {
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingAddress'),
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingPoBox')
-                        );
-                        this.inputService.changeValidators(
-                            this.brokerForm.get('billingPoBoxCity')
-                        );
-                    }
-                }
-            });
-    }
-
-    public selectedBrokerAddress(): {
-        mainAddress;
-        billingAddress;
-        mainPoBox;
-        billingPoBox;
-    } {
-        let mainAddress = null;
-        let billingAddress = null;
-        let mainPoBox = null;
-        let billingPoBox = null;
-
-        // If same billing address
-        if (this.brokerForm.get('isCheckedBillingAddress').value) {
-            if (this.selectedPhysicalAddressTab === 3) {
-                mainAddress = {
-                    address: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.address
-                        : null,
-                    city: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.city
-                        : null,
-                    state: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.state
-                        : null,
-                    country: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.country
-                        : null,
-                    zipCode: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.zipCode
-                        : null,
-                    stateShortName: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.stateShortName
-                        : null,
-                    street: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.street
-                        : null,
-                    streetNumber: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.streetNumber
-                        : null,
-                    addressUnit: this.brokerForm.get('physicalAddressUnit')
-                        .value,
-                };
-                mainPoBox = null;
-                billingAddress = {
-                    address: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.address
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.address
-                        : null,
-                    city: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.city
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.city
-                        : null,
-                    state: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.state
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.state
-                        : null,
-                    country: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.country
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.country
-                        : null,
-                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.zipCode
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.zipCode
-                        : null,
-                    stateShortName: this.brokerForm.get(
-                        'isCheckedBillingAddress'
-                    ).value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.stateShortName
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.stateShortName
-                        : null,
-                    street: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.street
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.street
-                        : null,
-                    streetNumber: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.streetNumber
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.streetNumber
-                        : null,
-                    addressUnit: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.brokerForm.get('physicalAddressUnit').value
-                        : this.brokerForm.get('billingAddressUnit').value,
-                };
-                billingPoBox = null;
-            } else {
-                mainAddress = null;
-                mainPoBox = {
-                    city: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.city
-                        : null,
-                    state: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.state
-                        : null,
-                    zipCode: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.zipCode
-                        : null,
-                    poBox: this.selectedPhysicalPoBox
-                        ? this.brokerForm.get('physicalPoBox').value
-                        : null,
-                };
-                billingPoBox = {
-                    city: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.city
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.city
-                        : null,
-                    state: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.state
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.state
-                        : null,
-                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.zipCode
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.zipCode
-                        : null,
-                    poBox: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.brokerForm.get('physicalPoBox').value
-                            : null
-                        : this.brokerForm.get('billingPoBox').value,
-                };
-                billingAddress = null;
-            }
-        }
-        // if not same
-        else {
-            if (this.selectedPhysicalAddressTab === 3) {
-                mainAddress = {
-                    address: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.address
-                        : null,
-                    city: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.city
-                        : null,
-                    state: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.state
-                        : null,
-                    country: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.country
-                        : null,
-                    zipCode: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.zipCode
-                        : null,
-                    stateShortName: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.stateShortName
-                        : null,
-                    street: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.street
-                        : null,
-                    streetNumber: this.selectedPhysicalAddress
-                        ? this.selectedPhysicalAddress.streetNumber
-                        : null,
-                    addressUnit: this.brokerForm.get('physicalAddressUnit')
-                        .value,
-                };
-                mainPoBox = null;
-            } else {
-                mainAddress = null;
-                mainPoBox = {
-                    city: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.city
-                        : null,
-                    state: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.state
-                        : null,
-                    zipCode: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.zipCode
-                        : null,
-                    poBox: this.selectedPhysicalPoBox
-                        ? this.brokerForm.get('physicalPoBox').value
-                        : null,
-                };
-            }
-
-            if (this.selectedBillingAddressTab === 5) {
-                billingAddress = {
-                    address: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.address
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.address
-                        : null,
-                    city: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.city
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.city
-                        : null,
-                    state: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.state
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.state
-                        : null,
-                    country: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.country
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.country
-                        : null,
-                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.zipCode
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.zipCode
-                        : null,
-                    stateShortName: this.brokerForm.get(
-                        'isCheckedBillingAddress'
-                    ).value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.stateShortName
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.stateShortName
-                        : null,
-                    street: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.street
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.street
-                        : null,
-                    streetNumber: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalAddress
-                            ? this.selectedPhysicalAddress.streetNumber
-                            : null
-                        : this.selectedBillingAddress
-                        ? this.selectedBillingAddress.streetNumber
-                        : null,
-                    addressUnit: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.brokerForm.get('physicalAddressUnit').value
-                        : this.brokerForm.get('billingAddressUnit').value,
-                };
-                billingPoBox = null;
-            } else {
-                billingPoBox = {
-                    city: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.city
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.city
-                        : null,
-                    state: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.state
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.state
-                        : null,
-                    zipCode: this.brokerForm.get('isCheckedBillingAddress')
-                        .value
-                        ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.zipCode
-                            : null
-                        : this.selectedBillingPoBox
-                        ? this.selectedBillingPoBox.zipCode
-                        : null,
-                    poBox: this.brokerForm.get('isCheckedBillingAddress').value
-                        ? this.selectedPhysicalPoBox
-                            ? this.brokerForm.get('physicalPoBox').value
-                            : null
-                        : this.brokerForm.get('billingPoBox').value,
-                };
-                billingAddress = null;
-            }
-        }
-        return { mainAddress, billingAddress, mainPoBox, billingPoBox };
-    }
-
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.brokerForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.brokerForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public onBlurCreditLimit() {
-        let limit = this.brokerForm.get('creditLimit').value;
-
-        if (limit) {
-            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
-            this.brokerService
-                .availableCreditBroker({
-                    id: this.editData?.id ? this.editData.id : null,
-                    creditLimit: limit,
-                })
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: BrokerAvailableCreditResponse) => {
-                        this.brokerForm
-                            .get('creditLimit')
-                            .patchValue(
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    res.creditLimit
-                                )
-                            );
-
-                        this.brokerForm
-                            .get('availableCredit')
-                            .patchValue(res.availableCredit);
-                    },
-                });
-        }
-    }
-
-    private startFormChanges() {
-        this.formService.checkFormChange(this.brokerForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-    }
-
-    private setModalSpinner(action: string, status: boolean, close: boolean) {
+    private setModalSpinner(
+        action: string,
+        status: boolean,
+        close: boolean
+    ): void {
         this.modalService.setModalSpinner({
             action: action,
             status: status,
