@@ -267,7 +267,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 this.cdlForm
                     .get(DriverCdlModalStringEnum.ENDORSEMENTS_HELPER)
                     .setValue(
-                        this.selectedEndorsments.length
+                        this.selectedEndorsments?.length
                             ? JSON.stringify(this.selectedEndorsments)
                             : null
                     );

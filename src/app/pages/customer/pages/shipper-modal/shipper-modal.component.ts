@@ -132,7 +132,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public shipperForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: Tabs[] = [...ShipperModalConfiguration.shipperTabs];
+    public tabs: Tabs[];
 
     public animationObject = {
         value: this.selectedTab,
@@ -944,6 +944,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: ShipperModalResponse) => {
+                    this.tabs = ShipperModalConfiguration.shipperTabs();
                     this.labelsDepartments = res.departments;
 
                     // From Another Modal Data
