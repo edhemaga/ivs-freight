@@ -458,16 +458,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
                                 repairShop.address.address,
-                            [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
-                                repairShop.routing,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
-                            [RepairShopModalStringEnum.CONTACTS]:
+                            [RepairShopModalStringEnum.CONTACTS]: [
                                 this.mapContacts(repairShop.contacts, true),
-                            // [RepairShopModalStringEnum.FILES]: repairShop.files,
+                            ],
+                            [RepairShopModalStringEnum.FILES]: repairShop.files,
                             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
                                 repairShop.shopServiceType.id,
+                            [RepairShopModalStringEnum.ROUTING]:
+                                repairShop.routing,
+                            [RepairShopModalStringEnum.BANK_ID]:
+                                repairShop?.bank?.id ?? null,
                             [RepairShopModalStringEnum.LONGITUDE]:
                                 repairShop.longitude,
                             [RepairShopModalStringEnum.LATITUDE]:
@@ -480,8 +484,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.payPeriod,
                             [RepairShopModalStringEnum.MONTHLY_DAYS]:
                                 repairShop.monthlyDay,
-                            [RepairShopModalStringEnum.RENT]: repairShop.rent,
-                            [RepairShopModalStringEnum.HOLIDAY]: true,
+                            [RepairShopModalStringEnum.RENT]: repairShop.rent
                         });
 
                         this.mapEditData(repairShop);
