@@ -178,26 +178,23 @@
                         [isCardOpen]="!!departmentContactsVisible"
                         [hasScrollBodyXAxis]="true"
                     >
-                        <div class="repair-shop__contact-table">
-                            <app-ta-modal-table
-                                [tableType]="
-                                    modalTableTypeEnum.DEPARTMENT_CONTACT
-                                "
-                                [departments]="departments"
-                                [isNewRowCreated]="isCreatedNewDepartmentRow"
-                                [modalTableData]="departmentContacts"
-                                [isNewRowCreated]="isNewContactAdded"
-                                [isResetSelected]="isResetSelected"
-                                (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
-                                "
-                                (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
-                                "
-                            >
-                            </app-ta-modal-table>
-                        </div>
+                        <app-ta-modal-table
+                            [tableType]="modalTableTypeEnum.DEPARTMENT_CONTACT"
+                            [departments]="departments"
+                            [isNewRowCreated]="isCreatedNewDepartmentRow"
+                            [modalTableData]="departmentContacts"
+                            [isNewRowCreated]="isNewContactAdded"
+                            [isResetSelected]="isResetSelected"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
+                        >
+                        </app-ta-modal-table>
                     </app-ta-custom-card>
+
                     <ng-container *ngIf="!departmentContactsVisible">
                         <svg-icon
                             class="no-review-svg"

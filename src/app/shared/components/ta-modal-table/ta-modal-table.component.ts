@@ -39,7 +39,6 @@ import { TaModalTableDepartmentComponent } from '@shared/components/ta-modal-tab
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ContactsService } from '@shared/services/contacts.service';
-import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 import { FormService } from '@shared/services/form.service';
@@ -51,7 +50,6 @@ import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/con
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalTableSubTypeEnum } from '@shared/enums/modal-table-sub-type.enum';
 
 // validations
 import {
@@ -85,6 +83,7 @@ import {
     TrailerTypeResponse,
     CompanyOfficeDepartmentContactResponse,
     BrokerContactResponse,
+    RepairShopContactResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -126,7 +125,6 @@ import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 })
 export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() tableType: ModalTableTypeEnum;
-    @Input() tableSubType: ModalTableSubTypeEnum;
     @Input() isNewRowCreated: boolean = false;
     @Input() isEdit?: boolean = false;
     @Input() isResetSelected?: boolean = false;
@@ -138,7 +136,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | PMTableData[]
         | DriverDetailsOffDutyLocationResponse[]
         | DriverModalFuelCardResponse[]
-        | BrokerContactResponse[] = [];
+        | BrokerContactResponse[]
+        | RepairShopContactResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists | DepartmentResponse[];
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
     @Input() isHazardous: boolean;
@@ -209,7 +208,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         // services
         private inputService: TaInputService,
         private contactService: ContactsService,
-        private repairService: RepairService,
         private pmService: PmService,
         private driverService: DriverService,
         private formService: FormService
@@ -437,7 +435,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case ModalTableTypeEnum.CONTACT:
-                this.getContactDropdownList(dropdownData);
+                this.departmentOptions = dropdownData as DepartmentResponse[];
 
                 break;
             case ModalTableTypeEnum.PM_TRUCK:
@@ -465,38 +463,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.contactPhoneTypeOptions = res.contactPhoneType;
                 this.contactEmailTypeOptions = res.contactEmailType;
             });
-    }
-
-    private getContactDropdownList(
-        dropdownData?: TruckTrailerPmDropdownLists[] | DepartmentResponse[]
-    ): void {
-        switch (this.tableSubType) {
-            case ModalTableSubTypeEnum.BROKER_CONTACTS:
-            case ModalTableSubTypeEnum.SHIPPER_CONTACTS:
-                this.departmentOptions = dropdownData as DepartmentResponse[];
-
-                break;
-            case ModalTableSubTypeEnum.REPAIR_SHOP_CONTACTS:
-                this.repairService
-                    .getRepairShopModalDropdowns()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((res) => {
-                        this.departmentOptions = res.departments;
-                    });
-
-                break;
-            case ModalTableSubTypeEnum.SETTINGS_OFFICE_CONTACTS:
-                this.repairService
-                    .getRepairShopModalDropdowns()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((res) => {
-                        this.departmentOptions = res.departments;
-                    });
-
-                break;
-            default:
-                break;
-        }
     }
 
     private getPmTruckDropdownList(): void {
@@ -1040,7 +1006,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | PMTableData
             | DriverDetailsOffDutyLocationResponse
             | LoadStopItemCommand
-            | BrokerContactResponse
+            | RepairShopContactResponse
         )[]
     ): void {
         modalTableData.forEach((data, i) => {
@@ -1129,16 +1095,23 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public handleContactData(
-        contactData: BrokerContactResponse,
+        contactData: BrokerContactResponse | RepairShopContactResponse,
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
 
+        const fullName =
+            (contactData as BrokerContactResponse).contactName ||
+            (contactData as RepairShopContactResponse).fullName;
+        const phoneExt =
+            (contactData as BrokerContactResponse).extensionPhone ||
+            (contactData as RepairShopContactResponse).phoneExt;
+
         formGroup.patchValue({
-            fullName: contactData.contactName,
+            fullName,
             department: contactData.department.name,
             phone: contactData.phone,
-            phoneExt: contactData.extensionPhone,
+            phoneExt,
             email: contactData.email,
         });
 

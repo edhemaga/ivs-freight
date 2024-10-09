@@ -10,7 +10,7 @@
                 [formGroupName]="i"
             >
                 <div
-                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
+                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned"
                 >
                     <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
@@ -25,9 +25,7 @@
                     ></svg-icon>
                 </div>
 
-                <div
-                    class="gradient-border-container contact-pinned contact-name"
-                >
+                <div class="gradient-border-container contact-pinned">
                     <app-ta-input-dropdown
                         formControlName="department"
                         [inputConfig]="departmentField"

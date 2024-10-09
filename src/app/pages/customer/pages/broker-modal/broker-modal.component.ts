@@ -78,7 +78,6 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalTableSubTypeEnum } from '@shared/enums/modal-table-sub-type.enum';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/broker-modal.constants';
@@ -151,7 +150,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public brokerModalSvgRoutes = BrokerModalSvgRoutes;
 
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public modalTableSubTypeEnum = ModalTableSubTypeEnum;
 
     public tabs: Tabs[] = [];
     public physicalAddressTabs: Tabs[] = [];
@@ -1615,7 +1613,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         );
 
                         this.isAddNewAfterSave = false;
+
                         this.setModalSpinner('save and add new', false, false);
+
                         this.isUploadInProgress = false;
                     } else this.setModalSpinner(null, true, true);
                 },
