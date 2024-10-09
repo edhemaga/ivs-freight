@@ -17,3 +17,4 @@ export * from './conversation/conversation-list/chat-object-property.enum';
 export * from './routes/chat-routes.enum';
 export * from './shared/chat-local-storage-value.enum';
 export * from './conversation/conversation-content/chat-message-action.enum';
+export * from './shared/chat-message-type.enum';

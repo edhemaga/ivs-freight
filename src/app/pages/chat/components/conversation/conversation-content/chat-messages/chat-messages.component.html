@@ -18,9 +18,11 @@
                     <ng-container *ngIf="message">
                         <ng-container
                             *ngIf="
+                                (message?.createdAt | chatDatePipe) !==
+                                    '01/01/1' &&
                                 (message.createdAt | chatDatePipe) !==
-                                ((messages$ | async).data[ind - 1]?.createdAt
-                                    | chatDatePipe)
+                                    ((messages$ | async).data[ind - 1]
+                                        ?.createdAt | chatDatePipe)
                             "
                         >
                             <div

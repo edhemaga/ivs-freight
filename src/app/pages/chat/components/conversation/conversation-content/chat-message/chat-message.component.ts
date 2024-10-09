@@ -9,6 +9,7 @@ import { ChatMessage } from '@pages/chat/models';
 import {
     ChatImageAspectRatioEnum,
     ChatMessageActionEnum,
+    ChatMessageTypeEnum,
 } from '@pages/chat/enums';
 
 // Services
@@ -53,6 +54,7 @@ export class ChatMessageComponent extends UnsubscribeHelper implements OnInit {
 
     // Enums
     public chatMessageActionEnum = ChatMessageActionEnum;
+    public chatMessageTypeEnum = ChatMessageTypeEnum;
 
     constructor(
         // Services
