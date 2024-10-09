@@ -26,7 +26,8 @@ import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.com
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
-import { TaSpecialFilterComponent } from '../ta-special-filter/ta-special-filter.component';
+import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
+import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -60,6 +61,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
         TaFilterComponent,
         TaSearchComponent,
         TaSpecialFilterComponent,
+        CaSearchMultipleStatesComponent,
 
         //Pipes
         FormatCurrencyPipe,
