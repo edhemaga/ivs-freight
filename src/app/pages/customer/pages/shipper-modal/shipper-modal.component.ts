@@ -958,6 +958,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     checked: index === 1,
                                 };
                             });
+
                             this.selectedTab = 2;
                         }, 50);
                     }
@@ -975,16 +976,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
-                    this.tabs = this.tabs.map((tab) => {
-                        if (
-                            this.editData?.openedTab &&
-                            tab.name === this.editData.openedTab
-                        ) {
-                            return { ...tab, checked: true };
-                        } else {
-                            return { ...tab, checked: false };
-                        }
-                    });
+
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {
@@ -995,6 +987,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                         : this.editData?.openedTab === 'Review'
                                         ? 3
                                         : 1,
+                            });
+                            this.tabs = this.tabs.map((item, index) => {
+                                return {
+                                    ...item, 
+                                    checked: index === 1 && this.editData?.openedTab === 'Contact',
+                                };
                             });
                             this.disableCardAnimation = true;
                         });
