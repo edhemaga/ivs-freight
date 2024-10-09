@@ -16,7 +16,7 @@
                 *ngTemplateOutlet="
                     unsubscribedChannel;
                     context: {
-                        channel: conversation.group
+                        conversation
                     }
                 "
             ></ng-container>
@@ -310,10 +310,25 @@
     </div>
 </ng-template>
 
-<ng-template #unsubscribedChannel let-channel="channel">
-    <div>You are viewing {{ channel }}</div>
-    <div>
-        <button type="button">Join Channel</button>
+<ng-template #unsubscribedChannel let-conversation="conversation">
+    <div
+        class="unsubscribed d-flex justify-content-center align-content-center"
+    >
+        <div>
+            <div class="unsubscribed-text">
+                You are viewing
+                <span class="ta-font-bold">{{ conversation?.name }}</span>
+            </div>
+            <div class="d-flex justify-content-center align-content-center">
+                <button
+                    class="unsubscribed-button ta-font-bold"
+                    type="button"
+                    (click)="joinChannel(conversation.id)"
+                >
+                    Join Channel
+                </button>
+            </div>
+        </div>
     </div>
 </ng-template>
 
