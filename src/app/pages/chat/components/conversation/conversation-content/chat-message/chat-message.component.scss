@@ -62,8 +62,7 @@
         }
 
         .content {
-            // width: fit-content;
-            max-width: 100%;
+            width: fit-content;
             padding: 8px 10px 8px 10px;
             color: $ta-black-2;
             font-size: 14px;
@@ -244,11 +243,11 @@
 }
 
 .mw-66 {
-    max-width: 66%;
+    max-width: calc(66% - 130px);
 }
 
 .mw-100 {
-    max-width: 100%;
+    max-width: calc(100% - 130px);
 }
 
 .deleted-text {
