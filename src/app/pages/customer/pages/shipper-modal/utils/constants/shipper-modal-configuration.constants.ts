@@ -17,17 +17,19 @@ export class ShipperModalConfiguration {
         },
     ]
 
-    static shipperTabs: Tabs[] = [
-        {
-            id: 1,
-            name: ShipperModalString.DETAILS,
-            checked: true,
-        },
-        {
-            id: 2,
-            name: ShipperModalString.CONTACT,
-            checked: false,
-        },
-    ]
+    static shipperTabs() : Tabs[]   {
+        return  [
+            {
+                id: 1,
+                name: ShipperModalString.DETAILS,
+                checked: true,
+            },
+            {
+                id: 2,
+                name: ShipperModalString.CONTACT,
+                checked: false,
+            },
+        ]
+    }
     
 }

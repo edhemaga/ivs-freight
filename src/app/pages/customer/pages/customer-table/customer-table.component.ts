@@ -235,9 +235,15 @@ export class CustomerTableComponent
 
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
-                        if (this.selectedTab === TableStringEnum.INACTIVE)
-                            this.deleteShipperList(res.array);
-                        else this.deleteBrokerList(res.array);
+                        if (this.selectedTab === TableStringEnum.INACTIVE) {
+                            if (res?.array?.length === 1)
+                                this.deleteShipperById(res.array[0]);
+                            else this.deleteShipperList(res.array);
+                        } else {
+                            if (res?.array?.length === 1)
+                                this.deleteBrokerById(res.array[0]);
+                            else this.deleteBrokerList(res.array);
+                        }
 
                         break;
                     case TableStringEnum.CLOSE:
@@ -361,16 +367,30 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.viewData = this.viewData.map((broker) => {
-                    res?.deletedIds?.map((id) => {
-                        if (broker.id === id)
-                            broker.actionAnimation =
-                                TableStringEnum.DELETE_MULTIPLE;
-                    });
+                    if (res?.deletedIds) {
+                        res?.deletedIds?.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
 
-                    res?.notDeletedIds?.map((notDeletedId) => {
-                        if (broker.id === notDeletedId)
-                            broker.isSelected = false;
-                    });
+                        res?.notDeletedIds?.forEach((notDeletedId) => {
+                            if (broker.id === notDeletedId)
+                                broker = { ...broker, isSelected: false };
+                        });
+                    } else {
+                        ids.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
+                    }
 
                     return broker;
                 });
@@ -1374,6 +1394,16 @@ export class CustomerTableComponent
                   this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : TableStringEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : TableStringEnum.NUMBER_0,
+            },
             tableContactData: data?.brokerContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
