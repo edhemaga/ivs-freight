@@ -219,16 +219,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdr: ChangeDetectorRef,
+
+        // services
         private shopService: RepairService,
         private bankVerificationService: BankVerificationService,
-        private cdr: ChangeDetectorRef,
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService,
         private reviewRatingService: ReviewsRatingService
     ) {}
 
-    public get isModalValidToSubmit() {
+    public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
             this.repairShopForm.dirty &&
@@ -923,6 +927,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
         return repairModel;
     }
+
     private createDocumentsForRequest(): Array<Blob> {
         let documents: Array<Blob> = [];
         (this.files as UploadFile[]).map((item) => {
@@ -939,7 +944,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             return {
                 ...contact,
                 departmentId: this.departments.find(
-                    (d) => d.name === contact.department
+                    (department) => department.name === contact.department
                 )?.id,
             };
         });

@@ -43,13 +43,12 @@ import { TaModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/s
     ],
 })
 export class TaModalTableDepartmentComponent {
-
     public svgRoutes = TaModalTableSvgRoutes;
 
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() departments: DepartmentResponse[]; 
+    @Input() departments: DepartmentResponse[];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -98,7 +97,7 @@ export class TaModalTableDepartmentComponent {
     ): void {
         this.onSelectDropdown.emit({
             dropdownEvent,
-            action: TaModalTableStringEnum.CONTACT_EMAIL_TYPE,
+            action: '',
             index,
         });
     }

@@ -1,7 +1,6 @@
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -17,7 +16,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { debounceTime, Subject, takeUntil, switchMap } from 'rxjs';
+import { Subject, takeUntil, switchMap } from 'rxjs';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -50,10 +49,8 @@ import {
     addressUnitValidation,
     addressValidation,
     businessNameValidation,
-    departmentValidation,
     einNumberRegex,
     mcFFValidation,
-    phoneExtension,
     phoneFaxRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
@@ -102,10 +99,10 @@ import {
     UpdateReviewCommand,
     EnumValue,
     DepartmentResponse,
-    BrokerContactResponse,
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 import { Tabs } from '@shared/models/tabs.model';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/broker-contact-extended.model';
 
 @Component({
     selector: 'app-broker-modal',
@@ -152,6 +149,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public brokerName: string;
 
     public brokerModalSvgRoutes = BrokerModalSvgRoutes;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
     public modalTableSubTypeEnum = ModalTableSubTypeEnum;
 
     public tabs: Tabs[] = [];
@@ -202,6 +201,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public previousReviews: any[] = [];
 
     // contacts
+    public brokerContacts: BrokerContactExtended[] = [];
+    public updatedBrokerContacts: BrokerContactExtended[] = [];
+
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
 
     constructor(
         // modal
@@ -240,43 +244,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.handleEditSelectedTab();
     }
-    //////////////////////////////////////////////////////////////////////////
-    public modalTableTypeEnum = ModalTableTypeEnum;
 
-    public contacts: BrokerContactResponse[] = [];
-
-    public isNewContactAdded: boolean = false;
-    public isEachContactRowValid: boolean = true;
-
-    public addContact(): void {
-        if (!this.isEachContactRowValid) return;
-
-        this.isNewContactAdded = true;
-
-        setTimeout(() => {
-            this.isNewContactAdded = false;
-        }, 400);
+    get isModalValidToSubmit(): boolean {
+        return (
+            this.brokerForm.valid &&
+            this.isFormDirty &&
+            this.isEachContactRowValid
+        );
     }
-
-    public handleModalTableValueEmit(
-        modalTableDataValue: BrokerContactResponse[]
-    ): void {
-        this.contacts = modalTableDataValue;
-
-        this.brokerForm
-            .get(BrokerModalStringEnum.CONTACTS)
-            .patchValue(this.contacts);
-
-        this.cdRef.detectChanges();
-    }
-
-    public handleModalTableValidStatusEmit(
-        isEachContactRowValid: boolean
-    ): void {
-        this.isEachContactRowValid = isEachContactRowValid;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private createForm() {
         this.brokerForm = this.formBuilder.group({
@@ -661,26 +636,34 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             else if (data.action === 'save and add new') {
                 if (this.brokerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.brokerForm);
+
                     return;
                 }
                 this.isUploadInProgress = true;
+
                 this.addBroker(true);
+
                 this.setModalSpinner('save and add new', true, false);
+
                 this.isAddNewAfterSave = true;
             } else {
                 // Save & Update
                 if (data.action === 'save') {
                     if (this.brokerForm.invalid || !this.isFormDirty) {
                         this.inputService.markInvalid(this.brokerForm);
+
                         return;
                     }
 
                     this.isUploadInProgress = true;
+
                     if (this.editData?.type.includes('edit')) {
                         this.updateBroker(this.editData.id);
+
                         this.setModalSpinner(null, true, false);
                     } else {
                         this.addBroker();
+
                         this.setModalSpinner(null, true, false);
                     }
                 }
@@ -1196,6 +1179,76 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         return { mainAddress, billingAddress, mainPoBox, billingPoBox };
     }
 
+    public addContact(): void {
+        if (!this.isEachContactRowValid) return;
+
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: BrokerContactExtended[]
+    ): void {
+        this.brokerContacts = modalTableDataValue;
+
+        this.brokerForm
+            .get(BrokerModalStringEnum.CONTACTS)
+            .patchValue(this.brokerContacts);
+
+        this.cdRef.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
+    }
+
+    private mapContacts(
+        contacts: BrokerContactExtended[],
+        isFormPatch: boolean = false
+    ): BrokerContactExtended[] {
+        return contacts.map((contact, index) => {
+            const {
+                contactName,
+                department,
+                phone,
+                extensionPhone,
+                email,
+                fullName,
+                phoneExt,
+            } = contact;
+
+            return isFormPatch
+                ? {
+                      fullName: contactName,
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt: extensionPhone,
+                      email,
+                  }
+                : {
+                      id: this.updatedBrokerContacts[index]?.id,
+                      contactName: fullName,
+                      departmentId: this.departmentOptions.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      extensionPhone: phoneExt,
+                      email,
+                  };
+        });
+    }
+
+    private mapDocuments<T>(): T[] {
+        return this.documents
+            .filter((item) => item.realFile)
+            .map((item) => item.realFile);
+    }
+
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
             case 'delete':
@@ -1402,7 +1455,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     // From Another Modal Data
                     if (this.editData?.type === 'edit-contact') {
                         this.isCardAnimationDisabled = true;
+
                         this.editBrokerById(this.editData.id);
+
                         setTimeout(() => {
                             this.tabs = this.tabs.map((item, index) => {
                                 return {
@@ -1418,11 +1473,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     else {
                         if (this.editData?.id) {
                             this.isCardAnimationDisabled = true;
+
                             this.editBrokerById(this.editData.id);
+
                             this.tabs.push({
                                 id: 3,
                                 name: 'Review',
                             });
+
                             this.ratingChanges();
                         } else {
                             this.startFormChanges();
@@ -1446,6 +1504,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                         ? 3
                                         : 1,
                             });
+
                             this.isCardAnimationDisabled = true;
                         });
                     }
@@ -1456,29 +1515,27 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private addBroker(isSaveAndAddNew?: boolean): void {
         const { creditLimit, mcNumber, ...form } = this.brokerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const addresses = this.selectedBrokerAddress();
 
-        let brAddresses = this.selectedBrokerAddress();
+        const files = this.mapDocuments();
 
-        let newData: any = {
+        const brokerContacts = this.mapContacts(this.brokerContacts);
+
+        const newData = {
             ...form,
-            mainAddress: brAddresses.mainAddress,
-            mainPoBox: brAddresses.mainPoBox,
-            billingAddress: brAddresses.billingAddress,
-            billingPoBox: brAddresses.billingPoBox,
-            mcNumber: mcNumber,
+            mainAddress: addresses.mainAddress,
+            mainPoBox: addresses.mainPoBox,
+            billingAddress: addresses.billingAddress,
+            billingPoBox: addresses.billingPoBox,
+            mcNumber,
             creditLimit: creditLimit
                 ? parseFloat(creditLimit.toString().replace(/,/g, ''))
                 : null,
-            payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
-            files: documents,
+            payTerm: this.selectedPayTerm?.id ?? null,
             longitude: this.longitude,
             latitude: this.latitude,
+            brokerContacts,
+            files,
         };
 
         this.brokerService
@@ -1487,26 +1544,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
-                        switch (this.editData?.key) {
-                            case 'load-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
-
-                            default: {
-                                break;
-                            }
-                        }
+                        if (this.editData?.key === 'load-modal')
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: LoadModalComponent,
+                                size: 'small',
+                                closing: 'slowlest',
+                            });
                     }
+
                     if (this.isAddNewAfterSave) {
                         this.formService.resetForm(this.brokerForm);
 
@@ -1576,32 +1626,29 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private updateBroker(id: number): void {
         const { mcNumber, creditLimit, ...form } = this.brokerForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const addresses = this.selectedBrokerAddress();
 
-        let brAddresses = this.selectedBrokerAddress();
+        const files = this.mapDocuments();
 
-        let newData: any = {
-            id: id,
+        const brokerContacts = this.mapContacts(this.brokerContacts);
+
+        const newData = {
+            id,
             ...form,
-            mainAddress: brAddresses.mainAddress,
-            mainPoBox: brAddresses.mainPoBox,
-            billingAddress: brAddresses.billingAddress,
-            billingPoBox: brAddresses.billingPoBox,
-
-            mcNumber: mcNumber,
+            mainAddress: addresses.mainAddress,
+            mainPoBox: addresses.mainPoBox,
+            billingAddress: addresses.billingAddress,
+            billingPoBox: addresses.billingPoBox,
+            mcNumber,
             creditLimit: creditLimit
                 ? parseFloat(creditLimit.toString().replace(/,/g, ''))
                 : null,
-            payTerm: this.selectedPayTerm ? this.selectedPayTerm.id : null,
-            files: documents ?? this.brokerForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
+            payTerm: this.selectedPayTerm?.id ?? null,
             longitude: this.longitude,
             latitude: this.latitude,
+            brokerContacts,
+            files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.brokerService
@@ -1642,7 +1689,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res) => {
                     this.brokerForm.patchValue({
                         businessName: res.businessName,
                         dbaName: res.dbaName,
@@ -1651,34 +1698,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         email: res.email,
                         phone: res.phone,
                         // Physical Address
-                        physicalAddress: res.mainAddress
-                            ? res.mainAddress.address
-                            : null,
-                        physicalAddressUnit: res.mainAddress
-                            ? res.mainAddress.addressUnit
-                            : null,
-                        physicalPoBox: res.mainPoBox
-                            ? res.mainPoBox.poBox
-                            : null,
-                        physicalPoBoxCity: res.mainPoBox
-                            ? res.mainPoBox.city
-                            : null,
+                        physicalAddress: res.mainAddress?.address ?? null,
+                        physicalAddressUnit:
+                            res.mainAddress?.addressUnit ?? null,
+                        physicalPoBox: res.mainPoBox?.poBox ?? null,
+                        physicalPoBoxCity: res.mainPoBox?.city ?? null,
                         // Billing Address
                         isCheckedBillingAddress:
                             res.mainAddress.address ===
                             res.billingAddress.address,
-                        billingAddress: res.billingAddress
-                            ? res.billingAddress.address
-                            : null,
-                        billingAddressUnit: res.billingAddress
-                            ? res.billingAddress.addressUnit
-                            : null,
-                        billingPoBox: res.billingPoBox
-                            ? res.billingPoBox.poBox
-                            : null,
-                        billingPoBoxCity: res.billingPoBox
-                            ? res.billingPoBox.city
-                            : null,
+                        billingAddress: res.billingAddress?.address ?? null,
+                        billingAddressUnit:
+                            res.billingAddress?.addressUnit ?? null,
+                        billingPoBox: res.billingPoBox?.poBox ?? null,
+                        billingPoBoxCity: res.billingPoBox?.city ?? null,
                         creditType: res.creditType,
                         creditLimit:
                             res.creditType.name === 'Custom'
@@ -1687,10 +1720,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                   )
                                 : null,
                         availableCredit: res.availableCredit,
-                        payTerm: res.payTerm ? res.payTerm.name : null,
+                        payTerm: res.payTerm?.name ?? null,
                         note: res.note,
                         ban: res.ban,
                         dnu: res.dnu,
+                        contacts: this.mapContacts(res.brokerContacts, true),
                     });
 
                     this.brokerName = res.businessName;
@@ -1699,6 +1733,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         name: BrokerModalStringEnum.DNU,
                         status: res.dnu,
                     });
+
                     this.brokerDnuStatus = res.dnu;
 
                     this.modalService.changeModalStatus({
@@ -1709,22 +1744,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.brokerBanStatus = res.ban;
                     this.documents = res.files;
 
-                    this.selectedPhysicalAddress = res.mainAddress
-                        ? res.mainAddress
-                        : null;
-                    this.selectedPhysicalPoBox = res.mainPoBox
-                        ? res.mainPoBox
-                        : null;
-                    this.selectedBillingAddress = res.billingAddress
-                        ? res.billingAddress
-                        : null;
-                    this.selectedBillingPoBox = res.billingPoBox
-                        ? res.billingPoBox
-                        : null;
+                    this.selectedPhysicalAddress = res.mainAddress ?? null;
+                    this.selectedPhysicalPoBox = res.mainPoBox ?? null;
+                    this.selectedBillingAddress = res.billingAddress ?? null;
+                    this.selectedBillingPoBox = res.billingPoBox ?? null;
 
                     this.selectedPayTerm = res.payTerm;
 
                     // Contacts
+                    this.updatedBrokerContacts = res.brokerContacts;
 
                     // Review
                     this.reviews = res.ratingReviews.map((item) => ({
@@ -1732,7 +1760,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
-                            avatar: item.companyUser.avatar,
+                            /*   avatar: item.companyUser.avatar, */
                         },
                         commentContent: item.comment,
                         rating: item.thumb,
@@ -1791,6 +1819,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.startFormChanges();
+
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
                     }, 1000);

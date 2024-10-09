@@ -81,10 +81,10 @@ import {
     EnumValue,
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
-    RepairShopContactResponse,
     LoadStopItemCommand,
     TrailerTypeResponse,
     CompanyOfficeDepartmentContactResponse,
+    BrokerContactResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -137,7 +137,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | RepairItemResponse[]
         | PMTableData[]
         | DriverDetailsOffDutyLocationResponse[]
-        | DriverModalFuelCardResponse[] = [];
+        | DriverModalFuelCardResponse[]
+        | BrokerContactResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists | DepartmentResponse[];
     @Input() stopItemDropdownLists?: LoadStopItemDropdownLists;
     @Input() isHazardous: boolean;
@@ -171,7 +172,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public contactEmailTypeOptions: EnumValue[] = [];
 
     // contacts table
-    public departmentOptions: DepartmentResponse[];
+    public selectedDepartment: DepartmentResponse[] = [];
+    public departmentOptions: DepartmentResponse[] = [];
 
     // repair bill table
     public selectedTruckTrailerRepairPm = [];
@@ -369,6 +371,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
                 this.selectedTruckTrailerRepairPm[index] = dropdownEvent;
+
+                break;
+            case TaModalTableStringEnum.CONTACT_DEPARTMENT_TYPE:
+                this.selectedDepartment[index] = dropdownEvent;
 
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TYPE:
@@ -909,6 +915,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.isInputHoverRows = [...this.isInputHoverRows, newIsInputHoverRow];
+
         this.getFormArray().push(newFormArrayRow);
     }
 
@@ -927,6 +934,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.REPAIR_BILL:
             case ModalTableTypeEnum.REPAIR_ORDER:
                 this.selectedTruckTrailerRepairPm.splice(index, 1);
+
+                break;
+            case ModalTableTypeEnum.CONTACT:
+                this.selectedDepartment.splice(index, 1);
 
                 break;
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
@@ -1029,6 +1040,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | PMTableData
             | DriverDetailsOffDutyLocationResponse
             | LoadStopItemCommand
+            | BrokerContactResponse
         )[]
     ): void {
         modalTableData.forEach((data, i) => {
@@ -1037,6 +1049,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             switch (this.tableType) {
                 case ModalTableTypeEnum.CONTACT:
                     this.handleContactData(data, i);
+
+                    break;
+                case ModalTableTypeEnum.DEPARTMENT_CONTACT:
+                    this.handleDepartmentContactData(data, i);
 
                     break;
                 case ModalTableTypeEnum.PHONE:
@@ -1077,13 +1093,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     });
 
                     this.selectedAddress[i] = addressData.address;
+
                     break;
                 case ModalTableTypeEnum.LOAD_ITEMS:
                     this.handleLoadModalItems(data, i);
-
-                    break;
-                case ModalTableTypeEnum.DEPARTMENT_CONTACT:
-                    this.handleDepartmentContactData(data, i);
 
                     break;
                 default:
@@ -1106,37 +1119,43 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public unitsChanged(event: { unit: EnumValue; index: number }): void {
         const formGroup = this.getFormArray().at(event.index);
+
         formGroup.patchValue({
             units: event.unit.id,
         });
+
         // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
         this.modalTableValueEmitter.emit(this.getFormArray().value);
     }
 
-    handleContactData(contact: RepairShopContactResponse, i: number) {
-        const formGroup = this.getFormArray().at(i);
+    public handleContactData(
+        contactData: BrokerContactResponse,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+
         formGroup.patchValue({
-            phone: contact.phone,
-            phoneExt: contact.phoneExt,
-            department: contact.department?.name,
-            fullName: contact.fullName,
-            email: contact.email,
+            fullName: contactData.contactName,
+            department: contactData.department.name,
+            phone: contactData.phone,
+            phoneExt: contactData.extensionPhone,
+            email: contactData.email,
         });
 
-        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL
-        this.modalTableValueEmitter.emit(this.getFormArray().value);
+        this.selectedDepartment[index] = contactData.department;
     }
 
     private handleDepartmentContactData(
-        contact: CompanyOfficeDepartmentContactResponse,
-        i: number
+        contactData: CompanyOfficeDepartmentContactResponse,
+        index: number
     ) {
-        const formGroup = this.getFormArray().at(i);
+        const formGroup = this.getFormArray().at(index);
+
         formGroup.patchValue({
-            phone: contact.phone ?? null,
-            extensionPhone: contact.extensionPhone ?? null,
-            department: contact.department?.name,
-            email: contact.email ?? null,
+            phone: contactData.phone ?? null,
+            extensionPhone: contactData.extensionPhone ?? null,
+            department: contactData.department?.name,
+            email: contactData.email ?? null,
         });
 
         // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL

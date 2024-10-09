@@ -61,14 +61,14 @@
                         dropdownWidthClass: 'w-col-130',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
-                        hideDropdownArrow:
-                            !isInputHoverRows[i][1],
+                        hideDropdownArrow: !isInputHoverRows[i][1],
                         isInputBackgroundRemoved:
                             contactItemRow.valid && !isInputHoverRows[i][1],
                         blackInput:
                             formArray.at(i).get('department').value &&
                             !isInputHoverRows[i][1]
                     }"
+                    [activeItem]="selectedDepartment[i]"
                     [options]="departmentOptions"
                     (selectedItem)="emitOnSelectDropdown($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 1)"

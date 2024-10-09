@@ -4,7 +4,7 @@
     "
     [editData]="editData"
     [editName]="brokerName"
-    [isModalValid]="brokerForm.valid && isFormDirty"
+    [isModalValid]="isModalValidToSubmit"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     [isResetDnuBtn]="isResetDnuBtn"
@@ -487,12 +487,12 @@
                 <div class="m-tab" [hidden]="selectedTab !== 2">
                     <app-ta-custom-card
                         [cardName]="'Contact'"
-                        [hasCounter]="contacts?.length"
+                        [hasCounter]="brokerContacts?.length"
                         [hasActionSvg]="true"
                         [hasArrow]="false"
-                        [isCardOpen]="!!contacts?.length"
-                        [hasScrollBody]="contacts?.length > 10"
-                        [disabledCard]="!contacts?.length"
+                        [isCardOpen]="!!brokerContacts?.length"
+                        [hasScrollBody]="brokerContacts?.length > 10"
+                        [disabledCard]="!brokerContacts?.length"
                         [disableAnimation]="isCardAnimationDisabled"
                         [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
@@ -506,6 +506,7 @@
                             [tableSubType]="
                                 modalTableSubTypeEnum.BROKER_CONTACTS
                             "
+                            [modalTableData]="updatedBrokerContacts"
                             [dropdownData]="departmentOptions"
                             [isNewRowCreated]="isNewContactAdded"
                             (modalTableValueEmitter)="
@@ -518,7 +519,7 @@
                         </app-ta-modal-table>
                     </app-ta-custom-card>
 
-                    <ng-container *ngIf="!contacts?.length">
+                    <ng-container *ngIf="!brokerContacts?.length">
                         <div class="no-review-broker">
                             <svg-icon
                                 class="no-review-svg"
@@ -530,7 +531,7 @@
 
                 <!-------------------------------- Review Tab -------------------------------->
 
-                <div class="m-tab" [hidden]="selectedTab !== 3 && !editData">
+                <div class="m-tab" [hidden]="selectedTab !== 3">
                     <app-ta-custom-card
                         [hasCounter]="reviews.length ?? 0"
                         [cardName]="'Review'"

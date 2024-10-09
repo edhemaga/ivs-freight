@@ -72,7 +72,9 @@ export class TaModalTablePmComponent {
     ): void {
         this.onSelectDropdown.emit({
             dropdownEvent,
-            action: TaModalTableStringEnum.CONTACT_EMAIL_TYPE,
+            action: this.isPMTruckTable
+                ? TaModalTableStringEnum.PM_TRUCK_TYPE
+                : TaModalTableStringEnum.PM_TRAILER_TYPE,
             index,
         });
     }

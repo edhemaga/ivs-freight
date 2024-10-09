@@ -156,7 +156,7 @@
             <app-ta-modal-table
                 [tableType]="modalTableTypeEnum.PHONE"
                 [isNewRowCreated]="isPhoneRowCreated"
-                [modalTableData]="updateContactPhones"
+                [modalTableData]="updatedContactPhones"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'phone')
                 "
@@ -185,7 +185,7 @@
             <app-ta-modal-table
                 [tableType]="modalTableTypeEnum.EMAIL"
                 [isNewRowCreated]="isEmailRowCreated"
-                [modalTableData]="updateContactEmails"
+                [modalTableData]="updatedContactEmails"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'email')
                 "

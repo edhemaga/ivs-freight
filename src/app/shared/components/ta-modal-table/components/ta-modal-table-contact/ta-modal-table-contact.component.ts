@@ -40,7 +40,8 @@ export class TaModalTableContactComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() departmentOptions: DepartmentResponse[];
+    @Input() departmentOptions: DepartmentResponse[] = [];
+    @Input() selectedDepartment: DepartmentResponse[] = [];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -83,7 +84,7 @@ export class TaModalTableContactComponent {
     ): void {
         this.onSelectDropdown.emit({
             dropdownEvent,
-            action: TaModalTableStringEnum.CONTACT_EMAIL_TYPE,
+            action: TaModalTableStringEnum.CONTACT_DEPARTMENT_TYPE,
             index,
         });
     }
