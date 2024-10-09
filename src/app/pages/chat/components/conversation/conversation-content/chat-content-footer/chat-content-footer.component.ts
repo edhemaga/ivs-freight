@@ -260,4 +260,12 @@ export class ChatContentFooterComponent
     public closeReplyAndEdit(): void {
         this.chatStoreService.resetReplyAndEditMessage();
     }
+
+    public joinChannel(conversationId: number): void {
+        if (!conversationId) return;
+        this.chatService
+            .joinChannel(conversationId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
 }

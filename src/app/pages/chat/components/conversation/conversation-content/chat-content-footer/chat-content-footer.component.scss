@@ -233,7 +233,8 @@
     }
 }
 
-.archived {
+.archived,
+.unsubscribed {
     padding: 18px;
     &-date {
         line-height: 14px;
@@ -263,6 +264,22 @@
         &-red {
             color: $ta-red-11;
             text-align: center;
+        }
+    }
+
+    &-button {
+        width: 120px;
+        line-height: 20px;
+        font-size: 14px;
+        margin-top: 6px;
+        color: $white;
+        background-color: $ta-blue-13;
+        padding: 6px;
+        border: none;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: $ta-blue-15;
         }
     }
 }
