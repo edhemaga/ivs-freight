@@ -188,6 +188,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        const mappedEvent = {
+            ...this.editData,
+            data: {
+                ...this.editData?.data,
+                name: this.editData?.data?.firstName,
+            },
+        };
+
         switch (data.action) {
             case TableStringEnum.SAVE: {
                 if (this.userForm.invalid || !this.isFormDirty) {
@@ -212,42 +220,35 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TableStringEnum.DEACTIVATE:
-                if (data.action === TableStringEnum.DEACTIVATE) {
-                    const mappedEvent = {
-                        ...this.editData,
-                        data: {
-                            ...this.editData.data,
-                            name: this.editData.data.firstName,
-                        },
-                    };
-        
-                    this.ngbActiveModal.close();
-        
-                    this.modalService.openModal(
-                        ConfirmationModalComponent,
-                        { size: TableStringEnum.SMALL },
-                        {
-                            ...mappedEvent,
-                            template: TableStringEnum.USER_1,
-                            type:
-                                this.selectedTab
-                                    ? TableStringEnum.DEACTIVATE
-                                    : TableStringEnum.ACTIVATE,
-                            image: true,
-                        }
-                    );
-                }
+                this.ngbActiveModal.close();
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: TableStringEnum.USER_1,
+                        type: this.selectedTab
+                            ? TableStringEnum.DEACTIVATE
+                            : TableStringEnum.ACTIVATE,
+                        image: true,
+                    }
+                );
                 break;
 
             case TableStringEnum.DELETE:
-                if (this.editData) {
-                    this.deleteUserById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: TableStringEnum.DELETE,
-                        status: true,
-                        close: false,
-                    });
-                }
+                this.ngbActiveModal.close();
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: TableStringEnum.USER_1,
+                        type: TableStringEnum.DELETE,
+                        image: true,
+                    }
+                );
                 break;
             default:
                 break;
@@ -489,7 +490,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             };
-            
+
             return updatedAddress.address ? updatedAddress : null;
         }
 
@@ -697,7 +698,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission,
             ...form
         } = this.userForm.value;
-
 
         const newData: UpdateCompanyUserCommand = {
             id: id,
