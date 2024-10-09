@@ -133,7 +133,7 @@ export class DispatchTableParkingComponent implements OnInit {
 
         // If we have only one parking, open it and remove parking title
         if (!this.isMultipleParkingSlots && this.parkingList.length) {
-            this.openParkingList(0);
+            this.openParkingList(0, true);
         }
     }
 
@@ -162,11 +162,11 @@ export class DispatchTableParkingComponent implements OnInit {
         });
     }
 
-    public openParkingList(index: number): void {
+    public openParkingList(index: number, isDropdownVisible: boolean): void {
         const parking = this.filteredParkingList[index];
         this.filteredParkingList[index] = {
             ...parking,
-            isDropdownVisible: !parking.isDropdownVisible,
+            isDropdownVisible
         };
     }
 

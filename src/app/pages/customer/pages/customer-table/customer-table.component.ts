@@ -160,7 +160,7 @@ export class CustomerTableComponent
         private reviewRatingService: ReviewsRatingService,
         private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
-        private confiramtionService: ConfirmationService,
+        private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
@@ -218,7 +218,7 @@ export class CustomerTableComponent
     }
 
     private confirmationSubscribe(): void {
-        this.confiramtionService.confirmationData$
+        this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 switch (res.type) {
@@ -235,9 +235,15 @@ export class CustomerTableComponent
 
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
-                        if (this.selectedTab === TableStringEnum.INACTIVE)
-                            this.deleteShipperList(res.array);
-                        else this.deleteBrokerList(res.array);
+                        if (this.selectedTab === TableStringEnum.INACTIVE) {
+                            if (res?.array?.length === 1)
+                                this.deleteShipperById(res.array[0]);
+                            else this.deleteShipperList(res.array);
+                        } else {
+                            if (res?.array?.length === 1)
+                                this.deleteBrokerById(res.array[0]);
+                            else this.deleteBrokerList(res.array);
+                        }
 
                         break;
                     case TableStringEnum.CLOSE:
@@ -275,20 +281,22 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.filter = false;
-                    this.tableService.sendResetSpecialFilters(true);
+                    if (res?.tableType) {
+                        this.filter = false;
+                        this.tableService.sendResetSpecialFilters(true);
 
-                    if (!res.array) {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanStatus(res.data);
+                        if (!res.array) {
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanStatus(res.data);
+                            } else {
+                                this.changeDnuStatus(res.data);
+                            }
                         } else {
-                            this.changeDnuStatus(res.data);
-                        }
-                    } else {
-                        if (res.subType === TableStringEnum.BAN) {
-                            this.changeBanListStatus(res.array);
-                        } else {
-                            this.changeDnuListStatus(res.array);
+                            if (res.subType === TableStringEnum.BAN) {
+                                this.changeBanListStatus(res.array);
+                            } else {
+                                this.changeDnuListStatus(res.array);
+                            }
                         }
                     }
                 }
@@ -359,16 +367,30 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.viewData = this.viewData.map((broker) => {
-                    res?.deletedIds?.map((id) => {
-                        if (broker.id === id)
-                            broker.actionAnimation =
-                                TableStringEnum.DELETE_MULTIPLE;
-                    });
+                    if (res?.deletedIds) {
+                        res?.deletedIds?.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
 
-                    res?.notDeletedIds?.map((notDeletedId) => {
-                        if (broker.id === notDeletedId)
-                            broker.isSelected = false;
-                    });
+                        res?.notDeletedIds?.forEach((notDeletedId) => {
+                            if (broker.id === notDeletedId)
+                                broker = { ...broker, isSelected: false };
+                        });
+                    } else {
+                        ids.forEach((id) => {
+                            if (broker.id === id)
+                                broker = {
+                                    ...broker,
+                                    actionAnimation:
+                                        TableStringEnum.DELETE_MULTIPLE,
+                                };
+                        });
+                    }
 
                     return broker;
                 });
@@ -1372,6 +1394,16 @@ export class CustomerTableComponent
                   this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
+            tableRaiting: {
+                hasLiked: data.currentCompanyUserRating === 1,
+                hasDislike: data.currentCompanyUserRating === -1,
+                likeCount: data?.upCount
+                    ? data.upCount
+                    : TableStringEnum.NUMBER_0,
+                dislikeCount: data?.downCount
+                    ? data.downCount
+                    : TableStringEnum.NUMBER_0,
+            },
             tableContactData: data?.brokerContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
@@ -1733,10 +1765,10 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT ||
                             event.type === TableStringEnum.EDIT_CONTACT ||
                             event.type === TableStringEnum.DELTETE_CONTACT
-                                ? TableStringEnum.CONTRACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }

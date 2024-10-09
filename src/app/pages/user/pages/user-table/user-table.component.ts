@@ -868,7 +868,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ...event,
                     type: TableStringEnum.EDIT,
                     disableButton:
-                        event.data?.userStatus !== TableStringEnum.OWNER,
+                        event.data?.userStatus !== TableStringEnum.OWNER &&
+                        event.data?.userStatus !== TableStringEnum.EXPIRED &&
+                        event.data?.userStatus !== TableStringEnum.INVITED,
                 }
             );
         }
@@ -890,7 +892,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ...confirmationModalData,
                     template: TableStringEnum.USER_1,
                     type:
-                        event.data.status === 1
+                        this.selectedTab === TableStringEnum.ACTIVE
                             ? TableStringEnum.DEACTIVATE
                             : TableStringEnum.ACTIVATE,
                     image: true,
