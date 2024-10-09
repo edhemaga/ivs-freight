@@ -432,7 +432,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.payPeriodsDropdown = dropdowns.payPeriods;
                     this.daysOfWeekDropdown = dropdowns.daysOfWeek;
                     this.daysOfMonthDropdown = dropdowns.monthlyDays;
-                    this.businessStatus = repairShop.status;
+                    this.businessStatus = repairShop?.status;
                     this.repairShop = repairShop;
                     
                     if (repairShop) {
