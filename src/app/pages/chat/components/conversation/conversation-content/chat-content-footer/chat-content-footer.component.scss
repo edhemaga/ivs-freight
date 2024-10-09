@@ -232,3 +232,37 @@
         }
     }
 }
+
+.archived {
+    padding: 18px;
+    &-date {
+        line-height: 14px;
+        font-size: 11px;
+        color: $bw5;
+        text-align: center;
+        padding-bottom: 6px;
+    }
+
+    &-text {
+        line-height: 18px;
+        font-size: 14px;
+        color: $ta-black-2;
+        text-align: center;
+        padding-bottom: 6px;
+
+        &-highlighted {
+            color: $ta-black;
+        }
+    }
+
+    &-removed-text {
+        line-height: 18px;
+        font-size: 14px;
+        color: $bw5;
+
+        &-red {
+            color: $ta-red-11;
+            text-align: center;
+        }
+    }
+}

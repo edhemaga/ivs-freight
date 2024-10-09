@@ -4,4 +4,6 @@ import { ConversationResponse } from 'appcoretruckassist';
 export interface ChatSelectedConversation extends ConversationResponse {
     conversationType?: ConversationTypeEnum;
     group?: ChatGroupEnum;
+    isArchived?: boolean;
+    hasLeft?: boolean;
 }
