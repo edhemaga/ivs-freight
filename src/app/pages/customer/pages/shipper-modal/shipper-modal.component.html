@@ -7,6 +7,7 @@
     [isModalValid]="shipperForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
+    [enableClickWhileFormInvalid]="true"
     (action)="onModalAction($event)"
 >
     <div origin>
