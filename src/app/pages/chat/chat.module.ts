@@ -63,6 +63,7 @@ import {
     ToggleBackgroundDirective,
 } from '@pages/chat/utils/directives';
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
+import { ChatDepartmentIconPipeTsPipe } from './utils/pipes/chat-department-icon.pipe.ts.pipe';
 
 @NgModule({
     declarations: [
@@ -101,6 +102,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatDatePipe,
         ChatAnyExist,
         ChatRemoveFullnamePipe,
+        ChatDepartmentIconPipeTsPipe,
     ],
     providers: [
         // Pipes

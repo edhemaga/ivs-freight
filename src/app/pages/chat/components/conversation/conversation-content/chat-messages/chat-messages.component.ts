@@ -55,8 +55,7 @@ import {
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
@@ -67,8 +66,8 @@ export class ChatMessagesComponent
     public getCurrentUserHelper = GetCurrentUserHelper;
 
     // Assets route
-    public ChatSvgRoutes = ChatSvgRoutes;
-    public ChatPngRoutes = ChatPngRoutes;
+    public chatSvgRoutes = ChatSvgRoutes;
+    public chatPngRoutes = ChatPngRoutes;
 
     // Messages
     public messages$!: Observable<ChatMessageResponse>;

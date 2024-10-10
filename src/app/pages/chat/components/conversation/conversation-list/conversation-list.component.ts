@@ -48,8 +48,7 @@ import { ChatConversationGroupStateConstant } from '@pages/chat/utils/constants'
 })
 export class ConversationListComponent
     extends UnsubscribeHelper
-    implements OnInit
-{
+    implements OnInit {
     // Data
     @Input() public departments: ChatCompanyChannelExtended[];
     @Input() public truckChannel: ChatCompanyChannelExtended[];
@@ -66,8 +65,7 @@ export class ConversationListComponent
     public searchForm!: UntypedFormGroup;
 
     // Assets
-    public ChatSvgRoutes = ChatSvgRoutes;
-    //TODO create enum?
+    public chatSvgRoutes = ChatSvgRoutes;
     public titleIcon: string;
 
     // Config
