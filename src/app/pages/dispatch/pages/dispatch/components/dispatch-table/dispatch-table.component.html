@@ -753,6 +753,7 @@
 
                             <ng-container *ngIf="!columnsToShow[15].hidden">
                                 <td
+                                    #columnField
                                     class="parking-field"
                                     [ngStyle]="
                                         resizedColumnsWidth
@@ -772,6 +773,9 @@
                                             parkingList.length
                                         "
                                         [isUnlockable]="_isUnlockable"
+                                        [parkingDropdownWidth]="
+                                            columnSpecifications?.parkingWidth
+                                        "
                                         (updateParking)="
                                             updateParking($event, item.id)
                                         "
@@ -1089,6 +1093,7 @@
 
                         <ng-container *ngIf="!columnsToShow[15].hidden">
                             <td
+                                #columnField
                                 class="parking-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
@@ -1236,6 +1241,7 @@
 
                             <ng-container *ngIf="!columnsToShow[15].hidden">
                                 <td
+                                    #columnField
                                     class="parking-field"
                                     [ngStyle]="
                                         resizedColumnsWidth
