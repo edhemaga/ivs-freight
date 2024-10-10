@@ -1,19 +1,19 @@
 <div class="messages-container d-flex">
     <div class="messages-wrapper">
-        <div class="messages-content" #messagesContent>
-            <!-- TODO This is for DEMO purposes, waiting for BE changes -->
-            <ng-container
-                *ngTemplateOutlet="
-                    conversationInfo;
-                    context: {
-                        item: {
-                            conversation,
-                            conversationType: conversationTypeEnum.CHANNEL
-                        }
+        <!-- TODO This is for DEMO purposes, waiting for BE changes -->
+        <ng-container
+            *ngTemplateOutlet="
+                conversationInfo;
+                context: {
+                    item: {
+                        conversation,
+                        conversationType: conversationTypeEnum.SINGLE_CHAT
                     }
-                "
-            >
-            </ng-container>
+                }
+            "
+        >
+        </ng-container>
+        <div class="messages-content" #messagesContent>
             <ng-container *ngIf="(messages$ | async)?.count">
                 <ng-container
                     *ngFor="
