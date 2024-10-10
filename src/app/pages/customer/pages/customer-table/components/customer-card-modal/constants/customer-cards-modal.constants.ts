@@ -27,6 +27,8 @@ export class CustomerCardsModalData {
             secondKey: 'totalDebt',
             selected: true,
         },
+        null,
+        null,
     ];
     static backDataBroker: CardRows[] = [
         {
@@ -49,6 +51,8 @@ export class CustomerCardsModalData {
             key: 'revenue',
             selected: true,
         },
+        null,
+        null,
     ];
 
     static frontDataShipper: CardRows[] = [
@@ -77,6 +81,8 @@ export class CustomerCardsModalData {
             key: 'loadCount',
             selected: true,
         },
+        null,
+        null,
     ];
 
     static backDataShipper: CardRows[] = [
@@ -108,6 +114,8 @@ export class CustomerCardsModalData {
             key: 'avgDeliveryTimeInMin',
             selected: true,
         },
+        null,
+        null,
     ];
 
     static allDataLoad: CardRows[] = [

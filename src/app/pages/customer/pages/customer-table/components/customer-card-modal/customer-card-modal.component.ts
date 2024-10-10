@@ -283,32 +283,22 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
     }
 
     private setTodefaultCards(): void {
-        this.cardsForm.patchValue({
-            numberOfRows: 4,
+        const cardsData = {
+            numberOfRows: CardsModalConstants.defaultCardsValues.numberOfRows,
             checked: true,
-        });
+            front_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? CustomerCardsModalData.frontDataBroker
+                    : CustomerCardsModalData.frontDataShipper,
+            back_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? CustomerCardsModalData.backDataBroker
+                    : CustomerCardsModalData.backDataShipper,
+        };
 
-        this.setDefaultDataFront.map((item, index) => {
-            this.front_side_form.at(index).patchValue({
-                inputItem:
-                    !item || item.title == CardsModalStringEnum.EMPTY
-                        ? { title: null, key: null }
-                        : item,
-            });
-        });
-
-        this.setDefaultDataBack.map((item, index) => {
-            this.back_side_form.at(index).patchValue({
-                inputItem:
-                    !item || item.title == CardsModalStringEnum.EMPTY
-                        ? { title: null, key: null }
-                        : item,
-            });
-        });
+        this.createForm(cardsData);
 
         this.resetForm = false;
-
-        this.cdr.detectChanges();
     }
 
     public getFormValueOnInit(): void {
