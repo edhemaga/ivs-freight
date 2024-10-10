@@ -24,7 +24,7 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 //Constants
-import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes/shipper-details-item-svg-routes';
+import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes';
 
 @Titles()
 @Component({

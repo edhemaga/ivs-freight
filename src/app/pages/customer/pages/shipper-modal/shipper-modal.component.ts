@@ -21,7 +21,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 
 // Validators
 import {
@@ -85,11 +85,11 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Constants
-import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
+import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
 // Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
+import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
 import { AddressService } from '@shared/services/address.service';
 
 // Enums

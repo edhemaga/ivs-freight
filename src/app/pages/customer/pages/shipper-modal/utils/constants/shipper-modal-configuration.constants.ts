@@ -1,6 +1,6 @@
 
 import { Tabs } from '@shared/models/tabs.model';
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 
 export class ShipperModalConfiguration {
 
