@@ -35,7 +35,10 @@ import {
 } from '@pages/chat/models';
 
 // Enums
-import { ChatAttachmentCustomClassEnum } from '@pages/chat/enums';
+import {
+    ChatAttachmentCustomClassEnum,
+    ChatMessageTypeEnum,
+} from '@pages/chat/enums';
 
 // Helpers
 import {
@@ -125,7 +128,10 @@ export class ChatMessagesComponent
                         chatMessageSenderFullname(this.messages, message);
                     return {
                         ...transformedMessage,
-                        messageType: { name: 'Text', id: 1 },
+                        messageType: message.messageType ?? {
+                            name: ChatMessageTypeEnum.TEXT,
+                            id: 1,
+                        },
                         createdAt:
                             message?.createdAt ?? new Date().toISOString(),
                         fileCount:
