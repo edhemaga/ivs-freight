@@ -261,8 +261,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
 
-        console.log('this.dispatchData', this.dispatchData);
-
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
         )?.length;

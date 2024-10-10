@@ -193,10 +193,12 @@ export enum TableStringEnum {
     DELETE_REVIEW = 'delete-review',
     DETAILS = 'Details',
     DETAIL = 'Detail',
+    BASIC = 'Basic',
     CONTRACT = 'Contact',
     CREATE_LOAD = 'create-load',
     CREATE_LOAD_2 = 'Create Load',
     CLOSE_BUSINESS = 'close-business',
+    ADDITIONAL = 'Additional',
     CLOSE = 'close',
     OPEN = 'open',
     BUSINESS = 'business',
@@ -472,6 +474,9 @@ export enum TableStringEnum {
     CLOSED_ARRAY = 'closedArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
+    DNU_FILTER = 'dnu-filter',
+    BAN_FILTER = 'ban-filter',
+    CLOSED_FILTER = 'closed-filter',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',

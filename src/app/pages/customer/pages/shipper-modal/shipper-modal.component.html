@@ -51,7 +51,6 @@
                     </div>
                     <div class="phone-extension-medium-modal">
                         <div
-                            class="phone-extension"
                             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
                         >
                             <div class="phone-field">
@@ -67,31 +66,6 @@
                                     }"
                                 ></app-ta-input>
                             </div>
-                            <div
-                                class="extension-field"
-                                *ngIf="!isPhoneExtExist"
-                                ngbTooltip
-                                mainTooltip="Add Extension"
-                                position="top"
-                                tooltipBackground="#6c6c6c"
-                                (click)="isPhoneExtExist = !isPhoneExtExist"
-                            >
-                                <svg-icon
-                                    src="assets/svg/common/ic_plus.svg"
-                                ></svg-icon>
-                            </div>
-                            <app-ta-input
-                                *ngIf="isPhoneExtExist"
-                                formControlName="phoneExt"
-                                [inputConfig]="{
-                                    name: 'phone-extension',
-                                    type: 'text',
-                                    label: 'Ext.',
-                                    minLength: 1,
-                                    maxLength: 8,
-                                    placeholderIcon: 'phone-extension'
-                                }"
-                            ></app-ta-input>
                         </div>
                         <div class="email-field">
                             <app-ta-input
@@ -162,7 +136,7 @@
                         </ng-template>
                     </div>
                     <app-ta-custom-card
-                        [cardName]="'Receiving Hours'"
+                        [cardName]="'Receiving Work Hours'"
                         [isCardOpen]="true"
                         [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
@@ -235,7 +209,7 @@
                     <app-ta-checkbox
                         formControlName="shippingHoursSameReceiving"
                         [customClass]="'medium shipper-hours'"
-                        [label]="'Shipping hours is same as receiving hours'"
+                        [label]="'Shipping hours are same as receiving hours'"
                     ></app-ta-checkbox>
 
                     <app-ta-custom-card
