@@ -72,6 +72,7 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -210,15 +211,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 this.ngbActiveModal.close();
 
                 this.modalService.openModal(
-                    ConfirmationModalComponent,
+                    ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: TableStringEnum.USER_1,
-                        type: this.selectedTab
-                            ? TableStringEnum.DEACTIVATE
-                            : TableStringEnum.ACTIVATE,
-                        image: true,
+                        template: TableStringEnum.USER,
+                        subType: TableStringEnum.USER,
+                        type: TableStringEnum.DEACTIVATE,
+                        tableType: TableStringEnum.USER_1,
                     }
                 );
                 break;
