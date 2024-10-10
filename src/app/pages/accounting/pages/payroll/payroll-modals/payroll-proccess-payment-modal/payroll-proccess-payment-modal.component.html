@@ -6,6 +6,28 @@
             [type]="'type2-modal-popup type2-modal-popup-header'"
         >
         </app-ta-tab-switch>
+
+        <form
+            [formGroup]="paymentForm"
+            class="form-container"
+            [ngClass]="{
+                'form-container-without-mb': selectedTab === 1,
+                'form-container-with-inputs': selectedTab === 2
+            }"
+        >
+            <div
+                class="animation-two-tabs"
+                [@animationTabsModal]="animationObject"
+            >
+                <!-------------------------------- Basic Tab -------------------------------->
+                <div class="m-tab" *ngIf="selectedTab === 1">
+                    <app-ca-input
+                        formControlName="amount"
+                        [inputConfig]="inputConfig"
+                    ></app-ca-input>
+                </div>
+            </div>
+        </form>
     </div>
 </app-ta-modal>
 

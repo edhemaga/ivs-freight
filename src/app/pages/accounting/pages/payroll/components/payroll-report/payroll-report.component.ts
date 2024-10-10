@@ -25,7 +25,8 @@ import {
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 
 import { ICaMapProps, ColumnConfig } from 'ca-components';
-import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
+import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type'; 
+
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
