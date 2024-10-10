@@ -484,7 +484,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 repairShop.payPeriod,
                             [RepairShopModalStringEnum.MONTHLY_DAYS]:
                                 repairShop.monthlyDay,
-                            [RepairShopModalStringEnum.RENT]: repairShop.rent
+                            [RepairShopModalStringEnum.RENT]: repairShop.rent,
                         });
 
                         this.mapEditData(repairShop);
@@ -972,7 +972,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                       fullName,
                       department: (department as DepartmentResponse).name,
                       phone,
-                      phoneExt,
+                      phoneExt:
+                          phoneExt ?? RepairShopModalStringEnum.EMPTY_STRING,
                       email,
                   }
                 : {

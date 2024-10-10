@@ -25,4 +25,6 @@ export enum TaModalTableStringEnum {
     DESCRIPTION = 'description',
     HAZARDOUS = 'hazardousMaterialId',
     DEPARTMENT_CONTACT = 'departmentTableItems',
+
+    EMPTY_STRING = '',
 }

@@ -776,14 +776,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     fullName: [null, [Validators.required]],
                     department: [null, [Validators.required]],
                     phone: [null, [Validators.required, phoneFaxRegex]],
-                    phoneExt: [null, phoneExtension],
+                    phoneExt: [
+                        TaModalTableStringEnum.EMPTY_STRING,
+                        phoneExtension,
+                    ],
                     email: [null, [Validators.required]],
                 });
-
-                this.isContactPhoneExtExist = [
-                    ...this.isContactPhoneExtExist,
-                    false,
-                ];
 
                 this.inputService.customInputValidator(
                     newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
@@ -1111,7 +1109,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             fullName,
             department: contactData.department.name,
             phone: contactData.phone,
-            phoneExt,
+            phoneExt: phoneExt ?? TaModalTableStringEnum.EMPTY_STRING,
             email: contactData.email,
         });
 

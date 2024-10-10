@@ -20,8 +20,10 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTACT }"
-            class="form-container form-container-with-card-2"
+            [ngClass]="{
+                'tab-2 form-container-with-card-2': selectedTab === TableStringEnum.CONTACT,
+            }"
+            class="form-container"
         >
             <div
                 [@animationTabsModal]="animationObject"
@@ -799,11 +801,6 @@
                     class="repair-shop-card"
                 >
                     <app-ta-custom-card
-                        (onActionEvent)="createReview()"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         [cardName]="'Rating & Review'"
                         [disableAnimation]="disableCardAnimation"
                         [disableMultipleReviews]="isOneMoreReviewDisabled"
@@ -814,28 +811,23 @@
                         [hasLikeDislike]="true"
                         [hasScrollBody]="reviews.length > 6"
                         [isCardOpen]="true"
+                        (onActionEvent)="createReview()"
                     >
-                        <ng-container *ngIf="!reviews.length; else reviewsData">
-                            <div class="no-review-repair-shop">
-                                <svg-icon
-                                    class="no-review-svg"
-                                    [src]="
-                                        repairShopModalSvgRoutes.noReviewsIcon
-                                    "
-                                ></svg-icon>
-                            </div>
-                        </ng-container>
-
-                        <ng-template #reviewsData>
-                            <app-ta-user-review
-                                [reviewData]="reviews"
-                                [isNewReview]="reviews[0]?.isNewReview"
-                                (changeReviewsEvent)="
-                                    changeReviewsEvent($event)
-                                "
-                            ></app-ta-user-review>
-                        </ng-template>
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0]?.isNewReview"
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                        ></app-ta-user-review>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="!reviews.length">
+                        <div class="no-review-repair-shop">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="repairShopModalSvgRoutes.noReviewsIcon"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </form>

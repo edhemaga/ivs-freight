@@ -1225,7 +1225,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                       fullName: contactName,
                       department: (department as DepartmentResponse).name,
                       phone,
-                      phoneExt: extensionPhone,
+                      phoneExt:
+                          extensionPhone ?? BrokerModalStringEnum.EMPTY_STRING,
                       email,
                   }
                 : {

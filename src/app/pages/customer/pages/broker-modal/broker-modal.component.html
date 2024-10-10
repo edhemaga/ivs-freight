@@ -21,9 +21,10 @@
 
         <form
             [formGroup]="brokerForm"
-            class="form-container form-container-with-card-2"
+            class="form-container"
             [ngClass]="{
-                'tab-2': selectedTab !== 1
+                'tab-2': selectedTab !== 1,
+                'form-container-with-card-2': selectedTab === 2
             }"
         >
             <div
@@ -532,7 +533,7 @@
                     <app-ta-custom-card
                         [hasCounter]="reviews.length ?? 0"
                         [cardName]="'Review'"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasActionSvg]="true"
                         [hasArrow]="false"
                         [hasLikeDislike]="false"
                         [isCardOpen]="true"
@@ -540,31 +541,23 @@
                         [hasScrollBody]="reviews.length > 6"
                         [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [disableAnimation]="isCardAnimationDisabled"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         (onActionEvent)="createReview()"
                     >
-                        <ng-container *ngIf="!reviews.length; else reviewsData">
-                            <div class="no-review-broker">
-                                <svg-icon
-                                    class="no-review-svg"
-                                    [src]="brokerModalSvgRoutes.noReviewsIcon"
-                                ></svg-icon>
-                            </div>
-                        </ng-container>
-
-                        <ng-template #reviewsData>
-                            <app-ta-user-review
-                                [reviewData]="reviews"
-                                [isNewReview]="reviews[0]?.isNewReview"
-                                (changeReviewsEvent)="
-                                    changeReviewsEvent($event)
-                                "
-                            ></app-ta-user-review>
-                        </ng-template>
+                        <app-ta-user-review
+                            [reviewData]="reviews"
+                            [isNewReview]="reviews[0]?.isNewReview"
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                        ></app-ta-user-review>
                     </app-ta-custom-card>
+
+                    <ng-container *ngIf="!reviews.length">
+                        <div class="no-review-broker">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="brokerModalSvgRoutes.noReviewsIcon"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </form>
