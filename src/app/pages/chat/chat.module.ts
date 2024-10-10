@@ -54,6 +54,7 @@ import {
     ChatMessageClassPipe,
     ChatAnyExist,
     ChatRemoveFullnamePipe,
+    ChatDepartmentIconPipe,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -63,7 +64,6 @@ import {
     ToggleBackgroundDirective,
 } from '@pages/chat/utils/directives';
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
-import { ChatDepartmentIconPipeTsPipe } from './utils/pipes/chat-department-icon.pipe.ts.pipe';
 
 @NgModule({
     declarations: [
@@ -102,7 +102,7 @@ import { ChatDepartmentIconPipeTsPipe } from './utils/pipes/chat-department-icon
         ChatDatePipe,
         ChatAnyExist,
         ChatRemoveFullnamePipe,
-        ChatDepartmentIconPipeTsPipe,
+        ChatDepartmentIconPipe,
     ],
     providers: [
         // Pipes

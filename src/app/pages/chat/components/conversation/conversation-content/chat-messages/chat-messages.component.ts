@@ -38,6 +38,7 @@ import {
 import {
     ChatAttachmentCustomClassEnum,
     ChatMessageTypeEnum,
+    ConversationTypeEnum,
 } from '@pages/chat/enums';
 
 // Helpers
@@ -55,7 +56,8 @@ import {
 })
 export class ChatMessagesComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @ViewChild('messagesContent') messagesContent: ElementRef;
     @ViewChild('filesUpload', { static: false }) filesUpload!: ElementRef;
 
@@ -73,6 +75,8 @@ export class ChatMessagesComponent
     public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
+
+    public conversationTypeEnum = ConversationTypeEnum;
 
     // Form
     public messageForm!: UntypedFormGroup;
