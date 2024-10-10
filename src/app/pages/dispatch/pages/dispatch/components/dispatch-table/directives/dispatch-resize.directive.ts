@@ -458,6 +458,7 @@ export class ResizableDirective implements OnInit, OnDestroy {
                     }
 
                     this.setNewWidthValue(newColumnWidth - 11);
+                    this.tableService.sendResetColumns(false);
                 }
             });
     }

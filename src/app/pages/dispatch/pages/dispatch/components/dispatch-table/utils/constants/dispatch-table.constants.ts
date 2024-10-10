@@ -108,5 +108,6 @@ export class DispatchTableConstants {
         { className: 'trailer-field', key: 'trailerWidth' },
         { className: 'driver-field', key: 'driverWidth' },
         { className: 'location-field', key: 'locationWidth' },
+        { className: 'parking-field', key: 'parkingWidth' },
     ];
 }
