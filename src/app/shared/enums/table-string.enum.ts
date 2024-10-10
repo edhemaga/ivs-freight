@@ -474,6 +474,9 @@ export enum TableStringEnum {
     CLOSED_ARRAY = 'closedArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
+    DNU_FILTER = 'dnu-filter',
+    BAN_FILTER = 'ban-filter',
+    CLOSED_FILTER = 'closed-filter',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',
