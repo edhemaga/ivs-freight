@@ -239,8 +239,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.confirmationSubscribe();
         this.confirmationMoveSubscribe();
-
-        this.handleEditSelectedTab();
     }
 
     get isModalValidToSubmit(): boolean {
@@ -792,10 +790,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
-    }
-
-    private handleEditSelectedTab(): void {
-        if (this.editData?.tab) this.selectedTab = this.editData.tab;
     }
 
     private followIsBillingAddressSame(): void {
@@ -1465,6 +1459,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     checked: index === 1,
                                 };
                             });
+
                             this.selectedTab = 2;
                         }, 50);
                     }
@@ -1485,6 +1480,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
+
                     if (this.editData) {
                         this.tabs = this.tabs.map((tab) => ({
                             ...tab,
