@@ -52,6 +52,8 @@
             ? 'Delete Office'
             : editData?.template === 'delete-review'
             ? 'Delete Review'
+            : editData?.template === 'user'
+            ? 'Delete User'
             : 'Confirmation'
     "
     [specificCaseModalName]="editData.modalHeader"
