@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// Enums
+import { ChatDepartmentTypeEnum } from '@pages/chat/enums';
+
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 
@@ -9,26 +12,26 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 export class ChatDepartmentIconPipe implements PipeTransform {
     transform(departmentName: string): string {
         if (!departmentName) {
-            return ''; // Return an empty string if the department name is null or undefined
+            return '';
         }
 
         const normalizedDepartmentName = departmentName.trim().toLowerCase();
 
         switch (normalizedDepartmentName) {
-            case 'general':
+            case ChatDepartmentTypeEnum.General:
                 return ChatSvgRoutes.companyIcon;
-            case 'truck':
+            case ChatDepartmentTypeEnum.Truck:
                 return ChatSvgRoutes.truckIcon;
-            case 'safety':
+            case ChatDepartmentTypeEnum.Safety:
                 return ChatSvgRoutes.safetyIcon;
-            case 'repair':
+            case ChatDepartmentTypeEnum.Repair:
                 return ChatSvgRoutes.repairIcon;
-            case 'recruiting':
+            case ChatDepartmentTypeEnum.Recruiting:
                 return ChatSvgRoutes.recruitingIcon;
-            case 'accounting':
+            case ChatDepartmentTypeEnum.Accounting:
                 return ChatSvgRoutes.accountingIcon;
             default:
-                return ''; // Return a default icon or empty string
+                return '';
         }
     }
 }
