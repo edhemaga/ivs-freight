@@ -71,6 +71,10 @@ export class ChatContentFooterComponent
     public isChatTypingActivated: boolean = true;
     public isChatTypingBlurred: boolean = false;
 
+    // Mentions
+    public isMentionActive: boolean = false;
+    public mentionsList!: number[];
+
     // Emoji
     public isEmojiSelectionActive: boolean = false;
 
@@ -215,6 +219,16 @@ export class ChatContentFooterComponent
                 if (message) {
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
+                    const messageSplitted: string[] = message.split(' ');
+                    if (
+                        messageSplitted[messageSplitted.length - 1].includes(
+                            '@'
+                        )
+                    ) {
+                        this.isMentionActive = true;
+                    } else {
+                        this.isMentionActive = false;
+                    }
                 }
             });
     }
