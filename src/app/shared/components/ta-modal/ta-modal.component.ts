@@ -165,6 +165,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isAssignLoadModal: boolean = false;
     @Input() isReorderingActive: boolean = false;
     @Input() isDisableButtonHidden: boolean = false;
+    @Input() isDeactivateOnly: boolean;
     // -----------------
 
     @Input() specificCaseModalName: boolean;
@@ -372,7 +373,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'deactivate': {
-                this.isDeactivated = !this.isDeactivated;
+                if(!this.isDeactivateOnly) this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
                     action: action,
                     bool: this.isDeactivated,

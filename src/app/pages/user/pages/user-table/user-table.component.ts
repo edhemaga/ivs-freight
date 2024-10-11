@@ -910,6 +910,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         event.data?.userStatus !== TableStringEnum.OWNER &&
                         event.data?.userStatus !== TableStringEnum.EXPIRED &&
                         event.data?.userStatus !== TableStringEnum.INVITED,
+                    isDeactivateOnly: true,
                 }
             );
         }
