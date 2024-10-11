@@ -239,8 +239,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.confirmationSubscribe();
         this.confirmationMoveSubscribe();
-
-        this.handleEditSelectedTab();
     }
 
     get isModalValidToSubmit(): boolean {
@@ -346,6 +344,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     if (action === BrokerModalStringEnum.CLOSE)
                         this.reviews = this.previousReviews;
+
+                    if (action === BrokerModalStringEnum.DELETE)
+                        this.ngbActiveModal.close();
                 },
             });
     }
@@ -608,26 +609,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         } else {
             if (data.action === 'close') {
                 if (this.editData?.canOpenModal) {
-                    switch (this.editData?.key) {
-                        case 'load-modal': {
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: LoadModalComponent,
-                                size: 'small',
-                                closing: 'fastest',
-                            });
-                            break;
-                        }
-
-                        default: {
-                            break;
-                        }
-                    }
+                    if (this.editData?.key === 'load-modal')
+                        this.modalService.setProjectionModal({
+                            action: 'close',
+                            payload: {
+                                key: this.editData?.key,
+                                value: null,
+                            },
+                            component: LoadModalComponent,
+                            size: 'small',
+                            closing: 'fastest',
+                        });
                 }
+
                 return;
             }
             // Save And Add New
@@ -670,7 +664,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: false,
-                        close: true,
+                        close: false,
                     });
 
                     this.modalService.openModal(
@@ -792,10 +786,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     },
                 });
         }
-    }
-
-    private handleEditSelectedTab(): void {
-        if (this.editData?.tab) this.selectedTab = this.editData.tab;
     }
 
     private followIsBillingAddressSame(): void {
@@ -1465,6 +1455,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     checked: index === 1,
                                 };
                             });
+
                             this.selectedTab = 2;
                         }, 50);
                     }
@@ -1485,6 +1476,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
+
                     if (this.editData) {
                         this.tabs = this.tabs.map((tab) => ({
                             ...tab,

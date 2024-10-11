@@ -313,39 +313,41 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerService
             .changeBanStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public moveRemoveBrokerToDnu(id: number) {
         this.brokerService
             .changeDnuStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public onDropActions(event: any) {
         let eventType = '';
+
         if (
-            event.type == TableStringEnum.CONTRACT ||
-            event.type == TableStringEnum.EDIT ||
-            event.type == TableStringEnum.REVIEW
+            event.type === TableStringEnum.CONTRACT ||
+            event.type === TableStringEnum.EDIT ||
+            event.type === TableStringEnum.REVIEW
         ) {
             eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
 
+        const openedTab =
+            event.type === TableStringEnum.EDIT
+                ? TableStringEnum.BASIC
+                : event.type === TableStringEnum.CONTRACT
+                ? TableStringEnum.ADDITIONAL
+                : TableStringEnum.REVIEW;
+
         let eventObject = {
             data: undefined,
             id: this.brokerId,
             type: eventType,
-            openedTab: event.type,
+            openedTab,
         };
 
         let brokerData = this.brokerObject
@@ -365,11 +367,11 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 size: TableStringEnum.LOAD,
             });
         } else {
-            let eventObject = {
+            const eventObject = {
                 data: undefined,
                 id: this.brokerId,
                 type: TableStringEnum.EDIT,
-                openedTab: event,
+                openedTab: TableStringEnum.ADDITIONAL,
             };
 
             setTimeout(() => {
@@ -439,9 +441,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     if (res.subType === TableStringEnum.BAN) {
-                        this.moveRemoveBrokerToBan(res.data.id);
+                        this.moveRemoveBrokerToBan(res.data?.id);
                     } else {
-                        this.moveRemoveBrokerToDnu(res.data.id);
+                        this.moveRemoveBrokerToDnu(res.data?.id);
                     }
                 }
             });
