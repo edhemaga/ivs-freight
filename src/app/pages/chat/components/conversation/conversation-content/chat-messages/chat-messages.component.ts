@@ -38,6 +38,7 @@ import {
 import {
     ChatAttachmentCustomClassEnum,
     ChatMessageTypeEnum,
+    ConversationTypeEnum,
 } from '@pages/chat/enums';
 
 // Helpers
@@ -67,13 +68,15 @@ export class ChatMessagesComponent
     public getCurrentUserHelper = GetCurrentUserHelper;
 
     // Assets route
-    public ChatSvgRoutes = ChatSvgRoutes;
-    public ChatPngRoutes = ChatPngRoutes;
+    public chatSvgRoutes = ChatSvgRoutes;
+    public chatPngRoutes = ChatPngRoutes;
 
     // Messages
     public messages$!: Observable<ChatMessageResponse>;
     public messages: ChatMessage[] = [];
     public messageIdActionsDisplayed!: number;
+
+    public conversationTypeEnum = ConversationTypeEnum;
 
     // Form
     public messageForm!: UntypedFormGroup;

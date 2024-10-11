@@ -40,9 +40,8 @@
     .content {
         flex: 1 1 auto;
         overflow-y: scroll;
-        display: flex;
-        flex-direction: column;
         justify-content: end;
+        align-content: space-around !important;
 
         app-chat-messages {
             flex: 1 1 auto;
