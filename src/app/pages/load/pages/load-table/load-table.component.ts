@@ -235,6 +235,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 if (
                     [
+                        LoadStatusEnum[12],
                         LoadStatusEnum[52],
                         LoadStatusEnum[53],
                         LoadStatusEnum[54],
