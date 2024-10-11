@@ -220,15 +220,11 @@ export class ChatContentFooterComponent
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
                     const messageSplitted: string[] = message.split(' ');
-                    if (
+
+                    this.isMentionActive =
                         messageSplitted[messageSplitted.length - 1].includes(
                             '@'
-                        )
-                    ) {
-                        this.isMentionActive = true;
-                    } else {
-                        this.isMentionActive = false;
-                    }
+                        );
                 }
             });
     }
