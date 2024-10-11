@@ -5,6 +5,10 @@ import {
     Output,
     EventEmitter,
     HostListener,
+    ViewChild,
+    ElementRef,
+    AfterContentChecked,
+    AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, Observable, map } from 'rxjs';
@@ -23,6 +27,7 @@ import { ChatConversationType, ChatGroupEnum } from '@pages/chat/enums';
 import {
     GetCurrentUserHelper,
     UnsubscribeHelper,
+    scrollToBottom,
 } from '@pages/chat/utils/helpers';
 
 // Assets
@@ -36,13 +41,16 @@ import { ChatDropzone } from '@pages/chat/utils/configs';
 })
 export class ConversationContentComponent
     extends UnsubscribeHelper
-    implements OnInit
+    implements OnInit, AfterViewInit, AfterContentChecked
 {
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
         if (event.key === 'Escape')
             this.chatStoreService.closeAttachmentUpload();
     }
+    @ViewChild('messagesComponent', { static: false })
+    messagesComponent!: ElementRef;
+
     @Input() group: ChatGroupEnum;
 
     @Output() isProfileDetailsDisplayed: EventEmitter<boolean> =
@@ -61,6 +69,7 @@ export class ConversationContentComponent
     // Assets & configs
     public chatSvgRoutes = ChatSvgRoutes;
     public chatDropzone = ChatDropzone;
+    public wrapperHeightPx: number = 0;
 
     constructor(
         // Router
@@ -75,6 +84,15 @@ export class ConversationContentComponent
     ngOnInit(): void {
         this.getResolvedData();
         this.initStoreData();
+    }
+
+    ngAfterViewInit(): void {
+        this.scrollOnMessage();
+    }
+
+    ngAfterContentChecked(): void {
+        this.wrapperHeightPx =
+            this.messagesComponent?.nativeElement?.offsetHeight ?? 0;
     }
 
     private initStoreData(): void {
@@ -127,5 +145,11 @@ export class ConversationContentComponent
             this.chatStoreService.setAttachment(file);
         });
         this.chatStoreService.closeAttachmentUpload();
+    }
+
+    private scrollOnMessage(): void {
+        this.chatStoreService.selectMessages().subscribe(() => {
+            scrollToBottom(this.messagesComponent?.nativeElement);
+        });
     }
 }
