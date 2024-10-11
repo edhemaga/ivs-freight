@@ -10,14 +10,17 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
- 
+
 // models
 import { DriverModalFuelCardResponse } from 'appcoretruckassist';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-fuel-card',
@@ -57,11 +60,13 @@ export class TaModalTableFuelCardComponent {
         inputIndex: number;
     }> = new EventEmitter();
 
-    constructor() {}
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
+
+    constructor() {}
 
     public emitOnSelectDropdown(
         dropdownEvent: DriverModalFuelCardResponse,

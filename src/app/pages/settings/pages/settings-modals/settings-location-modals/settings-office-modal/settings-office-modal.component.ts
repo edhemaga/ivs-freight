@@ -1,7 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-    FormArray,
-    FormGroup,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import {
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -42,7 +46,6 @@ import {
 // models
 import {
     AddressEntity,
-    CompanyOfficeDepartmentContactResponse,
     CompanyOfficeModalResponse,
     CompanyOfficeResponse,
     CreateCompanyOfficeCommand,
@@ -51,6 +54,7 @@ import {
     UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { OfficeContactExtended } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/models/office-contact-extended.model';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -126,7 +130,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public isDepartmentCardsScrolling: boolean = false;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public tabs: any[] = [
         {
@@ -167,17 +171,23 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public departmentFormValid: boolean = true;
-    public isNewContactAdded: boolean;
-    public isCreatedNewDepartmentRow: boolean;
-    public departmentContactsVisible: boolean;
-    public departments: DepartmentResponse[];
-    public departmentContacts: CompanyOfficeDepartmentContactResponse[] = [];
 
-    public isResetSelected: boolean = false;
+    // contacts
+    public departmentContacts: OfficeContactExtended[] = [];
+    public updatedDepartmentContacts: OfficeContactExtended[] = [];
+
+    public isNewContactAdded: boolean = false;
+    public isEachContactRowValid: boolean = true;
+
+    public departmentOptions: DepartmentResponse[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // change detection
+        private cdRef: ChangeDetectorRef,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
@@ -186,6 +196,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.createForm();
+
         this.getCompanyOfficeDropdowns();
     }
 
@@ -198,11 +209,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             phone: [null, phoneFaxRegex],
             extensionPhone: [null, [...phoneExtension]],
             email: [null],
-            departmentContacts: this.formBuilder.array([]),
             rent: [null, rentValidation],
             payPeriod: [null],
             monthlyDay: [null],
             weeklyDay: [null],
+            contacts: [null],
         });
 
         this.inputService.customInputValidator(
@@ -214,7 +225,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+
         const dotAnimation = document.querySelector('.animation-two-tabs');
+
         this.animationObject = {
             value: this.selectedTab,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
@@ -317,6 +330,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private updateCompanyOffice(id: number): void {
         const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
+        const departmentContacts = this.mapContacts(this.departmentContacts);
+
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
@@ -331,7 +346,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             rent: rent
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
                 : null,
-            departmentContacts: this.mapDepartmentContacts(),
+            departmentContacts,
         };
 
         this.settingsLocationService
@@ -356,6 +371,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private addCompanyOffice(addNew?: boolean): void {
         const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
+        const departmentContacts = this.mapContacts(this.departmentContacts);
+
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
             address: { ...this.selectedAddress, addressUnit },
@@ -369,7 +386,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             rent: rent
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
                 : null,
-            departmentContacts: this.mapDepartmentContacts(),
+            departmentContacts,
         };
 
         this.settingsLocationService
@@ -379,14 +396,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (addNew) {
                         this.officeForm.reset();
+
                         this.officeForm
                             .get(SettingsFormEnum.IS_OWNER)
                             .patchValue(true);
-                        this.departmentContacts = [];
-                        this.isCreatedNewDepartmentRow = false;
-                        this.isNewContactAdded = false;
-                        this.departmentContactsVisible = false;
-                        this.isResetSelected = !this.isResetSelected;
+
                         this.setModalSpinner({
                             action: null,
                             status: false,
@@ -420,19 +434,33 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private mapDepartmentContacts(): FormArray {
-        const departmentContactsArray = this.officeForm.get(
-            SettingsOfficeModalStringEnum.DEPARTMENT_CONTACTS
-        ) as FormArray;
+    private mapContacts(
+        contacts: OfficeContactExtended[],
+        isFormPatch: boolean = false
+    ): OfficeContactExtended[] {
+        return contacts.map((contact, index) => {
+            const { department, phone, extensionPhone, email, phoneExt } =
+                contact;
 
-        return departmentContactsArray.value.map(
-            (contact: CompanyOfficeDepartmentContactResponse) => ({
-                ...contact,
-                departmentId: this.departments.find(
-                    (dept) => dept.name === contact.department
-                ).id,
-            })
-        );
+            return isFormPatch
+                ? {
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt:
+                          extensionPhone ??
+                          SettingsOfficeModalStringEnum.EMPTY_STRING,
+                      email,
+                  }
+                : {
+                      id: this.updatedDepartmentContacts[index]?.id,
+                      departmentId: this.departmentOptions.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      extensionPhone: phoneExt,
+                      email,
+                  };
+        });
     }
 
     private getSelectedDay(payPeriodName: string): number | null {
@@ -492,6 +520,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                             SettingsOfficeModalStringEnum.WEEKLY
                                 ? res.weeklyDay?.name
                                 : null,
+                        contacts: this.mapContacts(
+                            res.departmentContacts,
+                            true
+                        ),
                     });
 
                     this.officeName = res.name;
@@ -506,28 +538,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     if (res.extensionPhone) {
                         this.isPhoneExtExist = true;
                     }
-                    this.departmentContacts = res.departmentContacts;
-                    this.departmentContactsVisible =
-                        !!res.departmentContacts.length;
 
-                    // Set up the department contacts
-                    this.officeForm.setControl(
-                        SettingsOfficeModalStringEnum.DEPARTMENT_CONTACTS,
-                        this.formBuilder.array(
-                            res.departmentContacts.map((contact) => ({
-                                ...contact,
-                                departmentId: this.departments.find(
-                                    (department) =>
-                                        department.name ===
-                                        contact.department.name
-                                )?.id,
-                            }))
-                        )
-                    );
+                    this.updatedDepartmentContacts = res.departmentContacts;
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -542,8 +559,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 next: (res: CompanyOfficeModalResponse) => {
                     this.monthlyDays = res.payPeriodMonthly;
                     this.payPeriods = res.payPeriod;
-                    this.departments = res.departments;
                     this.weeklyDays = res.dayOfWeek;
+
+                    this.departmentOptions = res.departments;
+
                     if (this.editData?.type === TableStringEnum.EDIT) {
                         this.editCompanyOfficeById(this.editData.id);
                     } else {
@@ -562,51 +581,32 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public handleModalTableValueEmit(
-        departmentForm: CompanyOfficeDepartmentContactResponse[]
-    ): void {
-        const departmentContactsArray = this.officeForm.get(
-            SettingsOfficeModalStringEnum.DEPARTMENT_CONTACTS
-        ) as FormArray;
-
-        departmentContactsArray.clear();
-
-        departmentForm.forEach((contact) => {
-            departmentContactsArray.push(
-                this.createDepartmentContactFormGroup(contact)
-            );
-        });
-
-        this.departmentContactsVisible = !!departmentForm.length;
-    }
-
-    private createDepartmentContactFormGroup(
-        contact: CompanyOfficeDepartmentContactResponse
-    ): FormGroup {
-        return this.formBuilder.group({
-            department: [contact.department || null],
-            phone: [contact.phone || null],
-            extensionPhone: [contact.extensionPhone || null],
-            email: [contact.email || null],
-        });
-    }
-
-    public handleModalTableValidStatusEmit(validStatus: boolean): void {
-        this.departmentFormValid = validStatus;
-        this.isFormDirty = true;
-    }
-
     public addContact(): void {
-        if (this.departmentFormValid) {
-            this.isNewContactAdded = true;
-            this.isCreatedNewDepartmentRow = true;
-            this.departmentContactsVisible = true;
+        if (!this.isEachContactRowValid) return;
 
-            setTimeout(() => {
-                this.isNewContactAdded = false;
-                this.isCreatedNewDepartmentRow = false;
-            }, 400);
-        }
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: OfficeContactExtended[]
+    ): void {
+        this.departmentContacts = modalTableDataValue;
+
+        this.officeForm
+            .get(SettingsOfficeModalStringEnum.CONTACTS)
+            .patchValue(this.departmentContacts);
+
+        this.cdRef.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachContactRowValid: boolean
+    ): void {
+        this.isEachContactRowValid = isEachContactRowValid;
     }
 
     private setModalSpinner(config: {

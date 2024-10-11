@@ -2,43 +2,40 @@
     <div class="d-flex flex-column contact-table-container">
         <ng-container
             formArrayName="contactTableItems"
-            *ngFor="
-                let contactItemRow of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let contactItemRow of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item contact-item"
                 [ngClass]="{ valid: contactItemRow.valid }"
                 [formGroupName]="i"
             >
-                <div
-                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
-                >
-                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+                <div class="align-items-center contact-pinned">
+                    <div
+                        class="d-flex justify-content-center align-items-center table-item-number"
+                    >
+                        <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
-                    <svg-icon
-                        class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                        [svgStyle]="{
-                            'width.px': 18,
-                            'height.px': 18
-                        }"
-                        (click)="emitDeleteFormArrayRowClick(i)"
-                    ></svg-icon>
-                </div>
+                        <svg-icon
+                            class="delete-icon"
+                            [src]="svgRoutes.deleteIcon"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18
+                            }"
+                            (click)="emitDeleteFormArrayRowClick(i)"
+                        ></svg-icon>
+                    </div>
 
-                <div class="gradient-border-container contact-pinned contact-name">
                     <app-ta-input
                         formControlName="fullName"
                         [inputConfig]="{
-                            name: 'fullName',
+                            name: 'First Name',
                             type: 'text',
                             label: 'Full Name',
                             placeholderInsteadOfLabel: true,
                             minLength: 5,
                             maxLength: 64,
-                            textTransform: 'uppercase',
+                            textTransform: 'capitalize',
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             isInputBackgroundRemoved:
@@ -57,20 +54,22 @@
                     [inputConfig]="{
                         name: 'pm',
                         type: 'text',
-                        label: 'Departmant',
+                        label: 'Department',
                         placeholderInsteadOfLabel: true,
-                        textTransform: 'uppercase',
+                        textTransform: 'capitalize',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-120',
+                        dropdownWidthClass: 'w-col-130',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
+                        hideDropdownArrow: !isInputHoverRows[i][1],
                         isInputBackgroundRemoved:
                             contactItemRow.valid && !isInputHoverRows[i][1],
                         blackInput:
                             formArray.at(i).get('department').value &&
                             !isInputHoverRows[i][1]
                     }"
-                    [options]="repairDepartmentOptions"
+                    [activeItem]="selectedDepartment[i]"
+                    [options]="departmentOptions"
                     (selectedItem)="emitOnSelectDropdown($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
@@ -102,7 +101,7 @@
                     [inputConfig]="{
                         name: 'ext',
                         type: 'text',
-                        label: 'ext',
+                        label: 'Ext',
                         placeholderInsteadOfLabel: true,
                         minLength: 5,
                         maxLength: 64,
@@ -124,7 +123,7 @@
                     [inputConfig]="{
                         name: 'email',
                         type: 'text',
-                        label: 'email',
+                        label: 'Email',
                         placeholderInsteadOfLabel: true,
                         minLength: 5,
                         maxLength: 64,

@@ -9,23 +9,29 @@ export class HeaderRequiredStarPipe implements PipeTransform {
         headerItemIndex: number,
         isPhoneTable: boolean,
         isEmailTable: boolean,
-        isDescriptionTable: boolean,
+        isRepairBillTable: boolean,
+        isRepairOrderTable: boolean,
         isContactTable: boolean,
+        isDepartmentContactTable: boolean,
         isPMTruckTable: boolean,
         isPMTrailerTable: boolean,
         isOffDutyLocationTable: boolean,
-        isFuelCardTable: boolean
+        isFuelCardTable: boolean,
+        isPreviousAddressesTable: boolean
     ): boolean {
         return this.setRequiredStar(
             headerItemIndex,
             isPhoneTable,
             isEmailTable,
-            isDescriptionTable,
+            isRepairBillTable,
+            isRepairOrderTable,
             isContactTable,
+            isDepartmentContactTable,
             isPMTruckTable,
             isPMTrailerTable,
             isOffDutyLocationTable,
-            isFuelCardTable
+            isFuelCardTable,
+            isPreviousAddressesTable
         );
     }
 
@@ -33,17 +39,26 @@ export class HeaderRequiredStarPipe implements PipeTransform {
         i: number,
         isPhoneTable: boolean,
         isEmailTable: boolean,
-        isDescriptionTable: boolean,
+        isRepairBillTable: boolean,
+        isRepairOrderTable: boolean,
         isContactTable: boolean,
+        isDepartmentContactTable: boolean,
         isPMTruckTable: boolean,
         isPMTrailerTable: boolean,
         isOffDutyLocationTable: boolean,
-        isFuelCardTable: boolean
+        isFuelCardTable: boolean,
+        isPreviousAddressesTable: boolean
     ): boolean {
         return (
-            (i === 1 && (isPhoneTable || isEmailTable || isFuelCardTable)) ||
-            ((i === 1 || i === 3 || i === 4) && isDescriptionTable) ||
+            (i === 1 &&
+                (isPhoneTable ||
+                    isEmailTable ||
+                    isFuelCardTable ||
+                    isPreviousAddressesTable)) ||
+            ((i === 1 || i === 3 || i === 4) &&
+                (isRepairBillTable || isRepairOrderTable)) ||
             ((i === 1 || i === 2 || i === 3 || i === 5) && isContactTable) ||
+            ((i === 1 || i === 2 || i === 4) && isDepartmentContactTable) ||
             ((i === 2 || i === 3) && (isPMTruckTable || isPMTrailerTable)) ||
             ((i === 1 || i === 2) && isOffDutyLocationTable)
         );

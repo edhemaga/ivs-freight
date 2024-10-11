@@ -1,5 +1,14 @@
 .contact-table-container {
     .contact-item {
-        grid-template-columns:  120px 140px 80px 260px;
+        grid-template-columns: 130px 140px 80px 200px;
+    }
+
+    .contact-pinned {
+        display: grid;
+        grid-template-columns: 26px 166px;
+        grid-gap: 4px;
+        position: absolute;
+        left: 0;
+        margin-right: 4px;
     }
 }

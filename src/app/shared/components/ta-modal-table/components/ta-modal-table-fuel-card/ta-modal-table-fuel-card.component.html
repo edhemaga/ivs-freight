@@ -2,10 +2,7 @@
     <div class="d-flex flex-column fuel-card-table-container">
         <ng-container
             formArrayName="fuelCardTableItems"
-            *ngFor="
-                let fuelCardItemsRow of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let fuelCardItemsRow of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item"
@@ -21,7 +18,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="svgRoutes.deleteIcon"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
