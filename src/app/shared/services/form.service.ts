@@ -39,31 +39,35 @@ export class FormService implements OnDestroy {
         this.formReset$.next(true);
     }
 
-
-    public rangeValidator(min: number, max: number, maxDigits: number = 3): ValidatorFn {
+    public rangeValidator(
+        min: number,
+        max: number,
+        maxDigits: number = 3
+    ): ValidatorFn {
         return (control: AbstractControl): { [key: string]: any } | null => {
             const value = control.value;
-    
+
             if (
                 value !== null &&
-                (!this.isValidNumber(value, maxDigits) || value < min || value > max)
-
+                (!this.isValidNumber(value, maxDigits) ||
+                    value < min ||
+                    value > max)
             ) {
                 return { range: true };
             }
-    
+
             return null;
         };
     }
-    
+
     private isValidNumber(value: string | number, maxDigits: number): boolean {
-        if(!value) return false;
-        
+        if (!value) return false;
+
         value = value.toString().replace(',', '');
         const numPattern = new RegExp(`^-?\\d{1,${maxDigits}}$`);
         return numPattern.test(value);
     }
-    
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

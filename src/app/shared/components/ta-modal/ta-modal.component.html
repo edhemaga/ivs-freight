@@ -591,6 +591,13 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        isClickEnabledWhileFormInvalid ||
+                                        isModalValid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     saveAddNewSpinnerVisibility
@@ -733,7 +740,7 @@
                                 type="button"
                                 [ngStyle]="{
                                     'pointer-events':
-                                        enableClickWhileFormInvalid ||
+                                        isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
                                             : 'none'

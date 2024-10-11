@@ -145,6 +145,10 @@
         margin-bottom: 12px !important;
     }
 
+    &.form-container-with-card-2 {
+        margin-bottom: 8px !important;
+    }
+
     &.form-container-without-mb {
         margin-bottom: 0px !important;
     }
@@ -1332,57 +1336,6 @@ app-load-modal {
 
             .input-control {
                 background-color: $bw2 !important;
-            }
-        }
-    }
-}
-
-.repair-shop {
-    // Override tabs to match figma design
-    &__contact-table {
-        width: 600px;
-        overflow-x: scroll;
-        overflow-x: visible;
-        padding: 0;
-        scrollbar-width: thin !important;
-        .contact-table-header {
-            .table-header-box {
-                &:nth-child(1),
-                &:nth-child(2) {
-                    position: absolute;
-                    left: 0;
-                    top: auto;
-                    border-top-width: 1px;
-                    margin-top: -1px;
-                    background-color: $white;
-                }
-
-                &:nth-child(1) {
-                    width: 26px;
-                }
-                &:nth-child(2) {
-                    width: 170px;
-                    left: 26px;
-                }
-            }
-        }
-
-        .contact-table-container {
-            .contact-pinned {
-                position: absolute;
-                left: 0;
-                top: auto;
-                border-top-width: 1px;
-                margin-top: -1px;
-                background-color: $white;
-                z-index: 11;
-            }
-            .contact-number {
-                width: 26px;
-            }
-            .contact-name {
-                width: 170px;
-                left: 26px;
             }
         }
     }

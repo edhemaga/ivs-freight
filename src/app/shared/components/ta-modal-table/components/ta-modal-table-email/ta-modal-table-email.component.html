@@ -2,10 +2,7 @@
     <div class="d-flex flex-column email-table-container">
         <ng-container
             formArrayName="emailTableItems"
-            *ngFor="
-                let emailItemsRow of formArray.controls;
-                let i = index;
-            "
+            *ngFor="let emailItemsRow of formArray.controls; let i = index"
         >
             <div
                 class="align-items-center table-item"
@@ -21,7 +18,7 @@
 
                     <svg-icon
                         class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [src]="svgRoutes.deleteIcon"
                         [svgStyle]="{
                             'width.px': 18,
                             'height.px': 18
@@ -46,12 +43,11 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            emailItemsRow.valid &&
-                            !isInputHoverRows[i][0],
+                            emailItemsRow.valid && !isInputHoverRows[i][0],
 
                         blackInput:
-                        formArray.at(i).get('email')
-                                .value && !isInputHoverRows[i][0]
+                            formArray.at(i).get('email').value &&
+                            !isInputHoverRows[i][0]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 0)"
                     (mouseleave)="emitOnInputHover(false, i, 0)"
@@ -72,18 +68,15 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            emailItemsRow.valid &&
-                            !isInputHoverRows[i][1],
+                            emailItemsRow.valid && !isInputHoverRows[i][1],
 
                         blackInput:
-                            formArray
-                                .at(i)
-                                .get('contactEmailType').value &&
+                            formArray.at(i).get('contactEmailType').value &&
                             !isInputHoverRows[i][1]
                     }"
                     [activeItem]="selectedContactEmailType[i]"
                     [options]="contactEmailTypeOptions"
-                    (selectedItem)="emitOnSelectDropdown($event,i)"
+                    (selectedItem)="emitOnSelectDropdown($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
                 ></app-ta-input-dropdown>
