@@ -180,9 +180,9 @@ export function getUsersColumnDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Bank Name',
+            title: 'Name ',
             field: 'tableBillingDetailsBankName',
-            name: 'Bank Name',
+            name: 'Name ',
             groupName: 'Bank Detail',
             sortName: 'bankName',
             isPined: false,
