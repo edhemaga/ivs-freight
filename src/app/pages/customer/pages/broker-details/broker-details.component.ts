@@ -361,7 +361,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(event: any) {
+    public onModalAction(event: string) {
         if (event == BrokerDetailsStringEnum.LOAD) {
             this.modalService.openModal(LoadModalComponent, {
                 size: TableStringEnum.LOAD,
@@ -371,7 +371,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 data: undefined,
                 id: this.brokerId,
                 type: TableStringEnum.EDIT,
-                openedTab: TableStringEnum.ADDITIONAL,
+                openedTab:
+                    event === TableStringEnum.CONTRACT
+                        ? TableStringEnum.ADDITIONAL
+                        : event,
             };
 
             setTimeout(() => {
