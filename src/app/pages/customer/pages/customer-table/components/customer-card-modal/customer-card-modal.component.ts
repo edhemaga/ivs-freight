@@ -283,27 +283,22 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
     }
 
     private setTodefaultCards(): void {
-        this.cardsForm.patchValue({
-            numberOfRows: 4,
+        const cardsData = {
+            numberOfRows: CardsModalConstants.defaultCardsValues.numberOfRows,
             checked: true,
-            frontSelectedTitle_0: this.setDefaultDataFront[0],
-            frontSelectedTitle_1: this.setDefaultDataFront[1],
-            frontSelectedTitle_2: this.setDefaultDataFront[2],
-            frontSelectedTitle_3: this.setDefaultDataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
+            front_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? CustomerCardsModalData.frontDataBroker
+                    : CustomerCardsModalData.frontDataShipper,
+            back_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? CustomerCardsModalData.backDataBroker
+                    : CustomerCardsModalData.backDataShipper,
+        };
 
-            backSelectedTitle_0: this.setDefaultDataBack[0],
-            backSelectedTitle_1: this.setDefaultDataBack[1],
-            backSelectedTitle_2: this.setDefaultDataBack[2],
-            backSelectedTitle_3: this.setDefaultDataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
-        });
+        this.createForm(cardsData);
 
         this.resetForm = false;
-
-        this.cdr.detectChanges();
     }
 
     public getFormValueOnInit(): void {
@@ -382,9 +377,18 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
                     this.createForm(data);
                 })
         );
-        this.cardsAllData = CustomerCardsModalData.allDataLoad;
-        this.setDefaultDataFront = CustomerCardsModalData.frontDataLoad;
-        this.setDefaultDataBack = CustomerCardsModalData.backDataLoad;
+        this.cardsAllData =
+            type === TableStringEnum.ACTIVE
+                ? CustomerCardsModalData.allDataLoadBroker
+                : CustomerCardsModalData.allDataLoad;
+        this.setDefaultDataFront =
+            type === TableStringEnum.ACTIVE
+                ? CustomerCardsModalData.frontDataBroker
+                : CustomerCardsModalData.frontDataShipper;
+        this.setDefaultDataBack =
+            type === TableStringEnum.ACTIVE
+                ? CustomerCardsModalData.backDataBroker
+                : CustomerCardsModalData.backDataShipper;
     }
 
     public identity(item: CardRows): number {
