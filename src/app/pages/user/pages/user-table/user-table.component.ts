@@ -692,7 +692,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((user: UserTableData) => {
                         if (user.id === id)
-                            user.actionAnimation = TableStringEnum.UPDATE_STATUS;
+                            user.actionAnimation =
+                                TableStringEnum.UPDATE_STATUS;
 
                         return user;
                     });
@@ -1074,6 +1075,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         clearInterval(interval);
                     }, 900);
+
+                    this.tableService.sendRowsSelected([]);
+                    this.tableService.sendResetSelectedColumns(true);
                 },
                 error: () => {},
             });

@@ -91,7 +91,7 @@ export class ConfirmationModalComponent implements OnInit {
         if (this.editData.type === 'multiple delete') {
             this.confirmationDataSubject.sendConfirmationData({
                 ...data,
-                array: data.array.map((item) => item.id),
+                array: data?.array?.map((item) => item.id),
             });
         } else {
             if (!this.selectedCdl) {

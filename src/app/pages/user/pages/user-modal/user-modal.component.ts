@@ -644,11 +644,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             companyOfficeId: this.selectedOffice
                 ? this.selectedOffice.id
                 : null,
-            userType: this.selectedUserType
-                ? this.selectedUserType.name === 'Owner'
-                    ? this.selectedUserType.id
-                    : 0
-                : 0,
             isAdmin: this.selectedUserAdmin
                 ? this.selectedUserAdmin.name === 'Admin'
                 : false,
