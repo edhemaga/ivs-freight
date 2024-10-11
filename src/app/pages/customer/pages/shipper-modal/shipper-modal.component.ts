@@ -62,6 +62,7 @@ import {
 import { ShipperService } from '@pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -90,7 +91,6 @@ import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/u
 // Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
-import { AddressService } from '@shared/services/address.service';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
