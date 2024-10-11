@@ -15,10 +15,13 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-previous-addresses',
@@ -57,6 +60,8 @@ export class TaModalTablePreviousAddressesComponent {
         isInputHoverRowIndex: number;
         inputIndex: number;
     }> = new EventEmitter();
+
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;

@@ -15,10 +15,13 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 //enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 //models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-pm',
@@ -55,6 +58,8 @@ export class TaModalTablePmComponent {
     }> = new EventEmitter();
     @Output() deleteFormArrayRowClick: EventEmitter<number> =
         new EventEmitter();
+
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;

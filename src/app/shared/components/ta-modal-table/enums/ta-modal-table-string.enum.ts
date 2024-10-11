@@ -9,6 +9,7 @@ export enum TaModalTableStringEnum {
     FUEL_CARD_TABLE_ITEMS = 'fuelCardTableItems',
     PREVIOUS_ADDRESSES_TABLE_ITEMS = 'previousAddressesTableItems',
     LOAD_MODAL_TABLE_ITEMS = 'loadModalTableItems',
+    DEPARTMENT_CONTACT_ITEMS = 'departmentTableItems',
     PRICE = 'price',
     CONTACT_PHONE_TYPE = 'contact-phone-type',
     CONTACT_EMAIL_TYPE = 'contact-email-type',
@@ -24,7 +25,6 @@ export enum TaModalTableStringEnum {
     SECURE = 'secure',
     DESCRIPTION = 'description',
     HAZARDOUS = 'hazardousMaterialId',
-    DEPARTMENT_CONTACT = 'departmentTableItems',
 
     EMPTY_STRING = '',
 }
