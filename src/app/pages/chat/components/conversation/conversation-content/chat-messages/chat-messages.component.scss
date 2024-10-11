@@ -2,8 +2,6 @@
 
 .messages-container {
     width: 100%;
-
-    flex-grow: 1;
     overflow-y: scroll;
 
     background-color: $white;
@@ -19,9 +17,8 @@
         overflow: hidden;
 
         .messages-content {
-            flex-grow: 1;
             overflow-y: auto;
-            margin: 6px;
+            margin: auto 6px 0 6px;
 
             .empty-conversation {
                 margin-top: 54px;
@@ -59,7 +56,7 @@
 }
 
 .conversation-info {
-    margin: 60px auto;
+    margin: 60px auto 30px auto;
     color: $bw5;
 
     .conversation-name {

@@ -91,12 +91,13 @@
 
         <div class="content d-flex flex-column h-100 align-content-between">
             <!-- Messages  -->
-            <div class="messages-wrapper" #messagesComponent [scrollTop]="1234">
+            <div class="messages-wrapper" #messagesComponent>
                 <app-chat-messages
                     [conversation]="conversation$"
                     [conversationParticipants]="
                         (conversation$ | async)?.participants
                     "
+                    [wrapperHeightPx]="wrapperHeightPx"
                 ></app-chat-messages>
             </div>
 

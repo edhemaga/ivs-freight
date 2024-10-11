@@ -7,6 +7,7 @@ import {
     HostListener,
     ViewChild,
     ElementRef,
+    AfterContentChecked,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, Observable, map } from 'rxjs';
@@ -31,6 +32,7 @@ import {
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 import { ChatDropzone } from '@pages/chat/utils/configs';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
     selector: 'app-conversation-content',
@@ -39,7 +41,7 @@ import { ChatDropzone } from '@pages/chat/utils/configs';
 })
 export class ConversationContentComponent
     extends UnsubscribeHelper
-    implements OnInit
+    implements OnInit, AfterViewInit, AfterContentChecked
 {
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
@@ -67,6 +69,7 @@ export class ConversationContentComponent
     // Assets & configs
     public chatSvgRoutes = ChatSvgRoutes;
     public chatDropzone = ChatDropzone;
+    public wrapperHeightPx: number = 0;
 
     constructor(
         // Router
@@ -85,6 +88,11 @@ export class ConversationContentComponent
 
     ngAfterViewInit(): void {
         this.scrollOnMessage();
+    }
+
+    ngAfterContentChecked(): void {
+        this.wrapperHeightPx =
+            this.messagesComponent?.nativeElement?.offsetHeight ?? 0;
     }
 
     private initStoreData(): void {
