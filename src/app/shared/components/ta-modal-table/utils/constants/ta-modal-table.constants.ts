@@ -27,7 +27,7 @@ export class ModalTableConstants {
     static CONTACT_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'FULL NAME',
-        'DEPARTMANT',
+        'DEPARTMENT',
         'PHONE',
         'EXT',
         'EMAIL',
@@ -115,7 +115,6 @@ export class ModalTableConstants {
         false,
     ];
     static IS_INPUT_HOVER_ROW_DEPARTMENT_CONTACTS: boolean[] = [
-        false,
         false,
         false,
         false,

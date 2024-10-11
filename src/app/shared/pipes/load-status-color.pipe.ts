@@ -60,7 +60,7 @@ export class LoadStatusColorPipe implements PipeTransform {
             'Cancelled',
             'Canceled',
             'Split',
-            'LoadCancelled',
+            'LoadCanceled',
         ].includes(adjustedStatus);
         const statusDarkRed3ColorCondition = adjustedStatus === 'Tonu';
         const statusOrangeColorCondition = ['Delivered', 'Empty'].includes(

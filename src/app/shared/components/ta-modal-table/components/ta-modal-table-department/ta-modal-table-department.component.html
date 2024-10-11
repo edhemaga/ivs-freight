@@ -9,54 +9,113 @@
                 [ngClass]="{ valid: contactItemRow.valid }"
                 [formGroupName]="i"
             >
-                <div
-                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
-                >
-                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+                <div class="align-items-center contact-pinned">
+                    <div
+                        class="d-flex justify-content-center align-items-center table-item-number"
+                    >
+                        <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
-                    <svg-icon
-                        class="delete-icon"
-                        [src]="svgRoutes.deleteIcon"
-                        [svgStyle]="{
-                            'width.px': 18,
-                            'height.px': 18
-                        }"
-                        (click)="emitDeleteFormArrayRowClick(i)"
-                    ></svg-icon>
-                </div>
+                        <svg-icon
+                            class="delete-icon"
+                            [src]="svgRoutes.deleteIcon"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18
+                            }"
+                            (click)="emitDeleteFormArrayRowClick(i)"
+                        ></svg-icon>
+                    </div>
 
-                <div
-                    class="gradient-border-container contact-pinned contact-name"
-                >
                     <app-ta-input-dropdown
                         formControlName="department"
-                        [inputConfig]="departmentField"
-                        [options]="departments"
+                        [inputConfig]="{
+                            name: 'pm',
+                            type: 'text',
+                            label: 'Department',
+                            placeholderInsteadOfLabel: true,
+                            textTransform: 'capitalize',
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-130',
+                            hideErrorMessage: true,
+                            hideRequiredCheck: true,
+                            hideDropdownArrow: !isInputHoverRows[i][0],
+                            isInputBackgroundRemoved:
+                                contactItemRow.valid && !isInputHoverRows[i][0],
+                            blackInput:
+                                formArray.at(i).get('department').value &&
+                                !isInputHoverRows[i][0]
+                        }"
+                        [activeItem]="selectedDepartment[i]"
+                        [options]="departmentOptions"
                         (selectedItem)="emitOnSelectDropdown($event, i)"
-                        (mouseenter)="emitOnInputHover(true, i, 1)"
-                        (mouseleave)="emitOnInputHover(false, i, 1)"
+                        (mouseenter)="emitOnInputHover(true, i, 0)"
+                        (mouseleave)="emitOnInputHover(false, i, 0)"
                     ></app-ta-input-dropdown>
                 </div>
 
                 <app-ta-input
                     formControlName="phone"
-                    [inputConfig]="phoneField"
+                    [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        mask: '(000) 000-0000',
+                        maxLength: 14,
+                        hideRequiredCheck: true,
+                        placeholderInsteadOfLabel: true,
+                        hideErrorMessage: true,
+                        isInputBackgroundRemoved:
+                            contactItemRow.valid && !isInputHoverRows[i][1],
+                        blackInput:
+                            formArray.at(i).get('phone').value &&
+                            !isInputHoverRows[i][1]
+                    }"
+                    (mouseenter)="emitOnInputHover(true, i, 1)"
+                    (mouseleave)="emitOnInputHover(false, i, 1)"
+                ></app-ta-input>
+
+                <app-ta-input
+                    formControlName="extensionPhone"
+                    [inputConfig]="{
+                        name: 'ext',
+                        type: 'text',
+                        label: 'Ext',
+                        placeholderInsteadOfLabel: true,
+                        minLength: 5,
+                        maxLength: 64,
+                        textTransform: 'uppercase',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        isInputBackgroundRemoved:
+                            contactItemRow.valid && !isInputHoverRows[i][2],
+                        blackInput:
+                            formArray.at(i).get('extensionPhone').value &&
+                            !isInputHoverRows[i][2]
+                    }"
                     (mouseenter)="emitOnInputHover(true, i, 2)"
                     (mouseleave)="emitOnInputHover(false, i, 2)"
                 ></app-ta-input>
 
                 <app-ta-input
-                    formControlName="extensionPhone"
-                    [inputConfig]="phoneExtField"
+                    formControlName="email"
+                    [inputConfig]="{
+                        name: 'email',
+                        type: 'text',
+                        label: 'Email',
+                        placeholderInsteadOfLabel: true,
+                        minLength: 5,
+                        maxLength: 64,
+                        textTransform: 'lowercase',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        isInputBackgroundRemoved:
+                            contactItemRow.valid && !isInputHoverRows[i][3],
+                        blackInput:
+                            formArray.at(i).get('email').value &&
+                            !isInputHoverRows[i][3]
+                    }"
                     (mouseenter)="emitOnInputHover(true, i, 3)"
                     (mouseleave)="emitOnInputHover(false, i, 3)"
-                ></app-ta-input>
-
-                <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="emailField"
-                    (mouseenter)="emitOnInputHover(true, i, 4)"
-                    (mouseleave)="emitOnInputHover(false, i, 4)"
                 ></app-ta-input>
             </div>
         </ng-container>

@@ -3,53 +3,121 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 export class CustomerCardsModalData {
     static rowValues: number[] = [3, 4, 5, 6];
 
-    static frontDataLoad: CardRows[] = [
+    static frontDataBroker: CardRows[] = [
         {
-            title: 'Date Issued',
-            key: 'tableIssued',
+            title: 'Phone',
+            key: 'phone',
             selected: true,
         },
         {
-            title: 'Unit Detail • Number',
-            key: 'tableUnit',
+            title: 'Email',
+            key: 'email',
             selected: true,
         },
         {
-            title: 'Item Detail • Description',
-            key: 'items',
+            title: 'Billing Detail • Available Credit',
+            secondTitle: 'Available Credit',
+            key: 'availableCredit',
             selected: true,
         },
         {
-            title: 'Item Detail • Cost',
-            key: 'total',
+            title: 'Billing Detail • Unpaid Invoice Ageing',
+            secondTitle: 'Unpaid Invoice Ageing',
+            key: 'brokerUnpaidInvoiceAgeing',
+            secondKey: 'totalDebt',
             selected: true,
         },
+        null,
+        null,
     ];
-    static backDataLoad: CardRows[] = [
+    static backDataBroker: CardRows[] = [
         {
-            title: 'Shop Detail • Name',
-            key: 'repairShop',
-            secondKey: 'name',
+            title: 'Contacts',
+            key: 'brokerContacts',
             selected: true,
         },
         {
-            title: 'Shop Detail • Address',
-            key: 'repairShop',
+            title: 'Price per Mile',
+            key: 'pricePerMile',
+            selected: true,
+        },
+        {
+            title: 'Load Count',
+            key: 'loadCount',
+            selected: true,
+        },
+        {
+            title: 'Revenue',
+            key: 'revenue',
+            selected: true,
+        },
+        null,
+        null,
+    ];
+
+    static frontDataShipper: CardRows[] = [
+        {
+            id: 1,
+            title: 'Phone',
+            key: 'phone',
+            selected: true,
+        },
+        {
+            id: 2,
+            title: 'Email',
+            key: 'email',
+            selected: true,
+        },
+        {
+            id: 3,
+            title: 'Address',
+            key: 'address',
             secondKey: 'address',
-            thirdKey: 'address',
             selected: true,
         },
         {
-            title: 'Unit Detail • Type',
-            key: 'unitType.name',
+            id: 4,
+            title: 'Load Count',
+            key: 'loadCount',
             selected: true,
         },
-        {
-            title: 'Unit Detail • Odometer',
-            key: 'odometer',
-            selected: true,
-        },
+        null,
+        null,
     ];
+
+    static backDataShipper: CardRows[] = [
+        {
+            id: 7,
+            title: 'Work Hours • Shipping',
+            secondTitle: 'Shipping',
+            key: 'shippingFrom',
+            selected: true,
+        },
+        {
+            id: 8,
+            title: 'Work Hours • Receiving',
+            secondTitle: 'Receiving',
+            key: 'receivingFrom',
+            selected: true,
+        },
+        {
+            id: 5,
+            title: 'Avg. Wait Time • Pickup',
+            secondTitle: 'Pickup',
+            key: 'avgPickupTimeInMin',
+            selected: true,
+        },
+        {
+            id: 6,
+            title: 'Avg. Wait Time • Delivery',
+            secondTitle: 'Delivery',
+            key: 'avgDeliveryTimeInMin',
+            selected: true,
+        },
+        null,
+        null,
+    ];
+
     static allDataLoad: CardRows[] = [
         {
             id: 1,
@@ -225,12 +293,6 @@ export class CustomerCardsModalData {
             title: 'Revenue',
             key: 'revenue',
         },
-        {
-            id: 9,
-            title: 'Contacts',
-            key: 'shipperContacts',
-        },
-
         {
             id: 10,
             title: 'Date Added',

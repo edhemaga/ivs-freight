@@ -6,6 +6,7 @@
     .table-header {
         display: grid;
         grid-gap: 4px;
+        margin-bottom: 4px;
 
         &-box {
             p,
@@ -47,14 +48,38 @@
         }
 
         &.contact-table-header {
-            grid-template-columns:  120px 140px 80px 260px;
+            grid-template-columns: 130px 140px 80px 200px;
 
             .table-header-box {
                 padding-left: 6px;
-            }
 
-            .first-item {
-                padding-left: 2px;
+                &.scroll-first-item {
+                    position: absolute;
+                    left: 4px;
+                }
+
+                &.scroll-second-item {
+                    position: absolute;
+                    left: 30px;
+                }
+            }
+        }
+
+        &.department-contact-table-header {
+            grid-template-columns: 150px 80px 200px;
+
+            .table-header-box {
+                padding-left: 6px;
+
+                &.scroll-first-item {
+                    position: absolute;
+                    left: 4px;
+                }
+
+                &.scroll-second-item {
+                    position: absolute;
+                    left: 30px;
+                }
             }
         }
 
