@@ -344,6 +344,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     if (action === BrokerModalStringEnum.CLOSE)
                         this.reviews = this.previousReviews;
+
+                    if (action === BrokerModalStringEnum.DELETE)
+                        this.ngbActiveModal.close();
                 },
             });
     }
@@ -606,26 +609,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         } else {
             if (data.action === 'close') {
                 if (this.editData?.canOpenModal) {
-                    switch (this.editData?.key) {
-                        case 'load-modal': {
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: LoadModalComponent,
-                                size: 'small',
-                                closing: 'fastest',
-                            });
-                            break;
-                        }
-
-                        default: {
-                            break;
-                        }
-                    }
+                    if (this.editData?.key === 'load-modal')
+                        this.modalService.setProjectionModal({
+                            action: 'close',
+                            payload: {
+                                key: this.editData?.key,
+                                value: null,
+                            },
+                            component: LoadModalComponent,
+                            size: 'small',
+                            closing: 'fastest',
+                        });
                 }
+
                 return;
             }
             // Save And Add New
@@ -668,7 +664,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: false,
-                        close: true,
+                        close: false,
                     });
 
                     this.modalService.openModal(

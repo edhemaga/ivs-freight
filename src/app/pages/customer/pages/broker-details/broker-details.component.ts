@@ -313,20 +313,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerService
             .changeBanStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public moveRemoveBrokerToDnu(id: number) {
         this.brokerService
             .changeDnuStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public onDropActions(event: any) {
