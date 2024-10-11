@@ -65,6 +65,8 @@ export class DispatchComponent
 
     public isBoardLocked = true;
 
+    public isAllBoardsList: boolean = false;
+
     public backFilterQuery = JSON.parse(
         JSON.stringify(TableDropdownComponentConstants.DISPATCH_BACK_FILTER)
     );
@@ -104,14 +106,8 @@ export class DispatchComponent
     ngOnInit(): void {
         this.getUserId();
 
-        this.dispatcherQuery.modalBoardListData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((result) => {
-                this.getDispatcherData(result.dispatchBoards);
-            });
-        this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
-        this.dispatchBoardSmallList =
-            this.dispatcherQuery.dispatchboardShortList$;
+        this.getDispatchData();
+
         this.sendDispatchData();
 
         this.setTableFilter();
@@ -562,5 +558,26 @@ export class DispatchComponent
                   )
               )
             : getDispatchColumnDefinition();
+    }
+
+    public getDispatchData(): void {
+        this.dispatcherQuery.modalBoardListData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((result) => {
+                this.getDispatcherData(result.dispatchBoards);
+            });
+
+        this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
+
+        this.dispatcherQuery.dispatchBoardListData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.isAllBoardsList =
+                    this.selectedDispatcher?.name ===
+                    DispatchTableStringEnum.ALL_BOARDS;
+            });
+
+        this.dispatchBoardSmallList =
+            this.dispatcherQuery.dispatchboardShortList$;
     }
 }
