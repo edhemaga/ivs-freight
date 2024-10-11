@@ -424,6 +424,8 @@ export enum TableStringEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
     USER_TABLE_COUNT = 'userTableCount',
+    FORM_TYPE_1 = '1099',
+    W_2 = 'W-2',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',

@@ -245,10 +245,10 @@ export function getUsersColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Form',
-            field: 'formType ',
+            field: 'formType',
             name: 'Form',
             groupName: 'Payroll Detail',
-            sortName: 'formType ',
+            sortName: 'is1099',
             fontWeight: '600',
             hidden: true,
             isPined: false,
