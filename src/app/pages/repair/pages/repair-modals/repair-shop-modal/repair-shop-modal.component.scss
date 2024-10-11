@@ -4,11 +4,31 @@
     &__favorite {
         position: relative;
         bottom: 1px;
-    } 
+    }
 
     &-address {
         display: grid;
         grid-template-columns: 364px 1fr;
+    }
+}
+
+.repair-shop-card {
+    .no-review-repair-shop {
+        width: 460px;
+        height: 120px;
+        margin: 4px 0;
+
+        .no-review-svg {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            svg {
+                width: 460px;
+                height: 120px;
+            }
+        }
     }
 }
 

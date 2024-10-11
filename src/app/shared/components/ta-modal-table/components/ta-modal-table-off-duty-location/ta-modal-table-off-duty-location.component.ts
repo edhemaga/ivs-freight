@@ -14,7 +14,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';
@@ -22,6 +22,9 @@ import { AddressEntity } from 'appcoretruckassist';
 // pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-off-duty-location',
@@ -63,6 +66,8 @@ export class TaModalTableOffDutyLocationComponent {
         isInputHoverRowIndex: number;
         inputIndex: number;
     }> = new EventEmitter();
+
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
