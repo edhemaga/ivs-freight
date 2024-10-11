@@ -66,8 +66,7 @@ export class ConversationListComponent
     public searchForm!: UntypedFormGroup;
 
     // Assets
-    public ChatSvgRoutes = ChatSvgRoutes;
-    //TODO create enum?
+    public chatSvgRoutes = ChatSvgRoutes;
     public titleIcon: string;
 
     // Config

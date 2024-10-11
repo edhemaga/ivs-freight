@@ -1,13 +1,21 @@
 <div class="messages-container d-flex">
     <div class="messages-wrapper">
-        <div
-            class="messages-content"
-            [scrollTop]="messagesContent?.scrollHeight"
-            #messagesContent
+        <!-- TODO This is for DEMO purposes, waiting for BE changes -->
+        <!-- TODO Also change conversationType to conversationType: conversation.type -->
+        <ng-container
+            *ngTemplateOutlet="
+                conversationInfo;
+                context: {
+                    item: {
+                        conversation,
+                        conversationType: conversationTypeEnum.SINGLE_CHAT
+                    }
+                }
+            "
         >
-            <ng-container
-                *ngIf="(messages$ | async)?.count; else emptyConversation"
-            >
+        </ng-container>
+        <div class="messages-content" #messagesContent>
+            <ng-container *ngIf="(messages$ | async)?.count">
                 <ng-container
                     *ngFor="
                         let message of (messages$ | async).data;
@@ -67,27 +75,99 @@
                     </ng-container>
                 </ng-container>
             </ng-container>
-            <!-- TODO Rework empty conversation screen -->
-            <ng-template #emptyConversation>
-                <!-- <div class="d-flex justify-content-center">
-                        <div class="empty-conversation">
-                            <div
-                                class="image-wrapper d-flex justify-content-center"
-                            >
-                                <img
-                                    [src]="ChatPngRoutes.contact"
-                                    [alt]="remainingParticipants[0]?.fullName"
-                                />
-                            </div>
-                            <div class="fullname ta-font-bold">
-                                {{ remainingParticipants[0]?.fullName }}
-                            </div>
-                        </div>
-                    </div> -->
-            </ng-template>
         </div>
     </div>
 </div>
+
+<!-- Templates -->
+
+<ng-template #conversationInfo let-item="item">
+    <div
+        class="conversation-info d-flex justify-content-center align-content-center w-100"
+    >
+        <div>
+            <ng-container [ngSwitch]="item.conversationType">
+                <ng-container *ngSwitchCase="conversationTypeEnum.SINGLE_CHAT">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            conversationInfoUser;
+                            context: {
+                                item: {
+                                    imageUrl:
+                                        item?.conversation?.participants[0]
+                                            ?.avatarFile?.url,
+                                    isRound:
+                                        item?.conversation?.participants[0]
+                                            ?.userType == 'Driver'
+                                }
+                            }
+                        "
+                    >
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            conversationInfoIcon;
+                            context: {
+                                item: {
+                                    name: item?.conversation?.name
+                                }
+                            }
+                        "
+                    >
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+            <div
+                class="conversation-name d-flex justify-content-center align-content-center ta-font-bold"
+            >
+                {{ conversation.name }} Conversation Name
+            </div>
+            <div
+                class="conversation-details d-flex justify-content-center align-content-center ta-font-medium"
+            >
+                Department Name
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #conversationInfoUser let-item="item">
+    <div class="d-flex justify-content-center align-content-center">
+        <ng-container *ngIf="item.imageUrl; else illustration">
+            <app-ca-profile-image
+                [avatarImg]="item.imageUrl"
+                [size]="80"
+                [isHoverEffect]="false"
+                [isRound]="item.isRound"
+            ></app-ca-profile-image>
+        </ng-container>
+        <ng-template #illustration>
+            <img
+                width="80"
+                height="80"
+                [src]="chatPngRoutes.contact"
+                alt="Contact placeholder"
+            />
+        </ng-template>
+    </div>
+</ng-template>
+
+<ng-template #conversationInfoIcon let-item="item">
+    <div class="d-flex justify-content-center align-content-center">
+        <svg-icon
+            class="pointer d-flex justify-content-center align-items-center"
+            [ngClass]="item.name"
+            [svgStyle]="{
+                'width.px': 60,
+                'height.px': 60
+            }"
+            [src]="'general' | chatDepartmentIcon"
+        ></svg-icon>
+    </div>
+</ng-template>
 
 <ng-template #iconAction let-item="item">
     <div
