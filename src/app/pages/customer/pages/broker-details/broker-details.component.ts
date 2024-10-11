@@ -124,6 +124,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.getLoadDispatcherFilter();
 
         this.resetTableSelectedRows();
+
+        this.loadServiceListener();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -169,13 +171,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
         this.brokerConfig = BrokerDetailsHelper.getBrokerDetailsConfig(
             this.brokerConfData,
-            4,
+            this.backLoadFilterQuery.statusType ?? 4,
             1
         );
 
         this.brokerId = data?.id ? data.id : null;
-        this.brokerLoads = data?.loadStops?.loads?.data;
         this.backLoadFilterQuery.brokerId = this.brokerId;
+        this.loadBackFilter(
+            this.backLoadFilterQuery,
+            this.backLoadFilterQuery.statusType ?? 4
+        );
     }
 
     public getBrokerById(id: number) {
@@ -614,7 +619,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     this.brokerLoads = res.loads.data;
-                    this.brokerConfData.loadStops = res;
+                    this.brokerConfData = {
+                        ...this.brokerConfData,
+                        loadStops: res,
+                    };
 
                     if (loadTypeId)
                         this.brokerConfig =
@@ -744,6 +752,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.backLoadFilterQuery.sort = event.sortDirection;
 
         this.loadBackFilter(this.backLoadFilterQuery);
+    }
+
+    private loadServiceListener(): void {
+        this.loadService.modalAction$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadBackFilter(this.backLoadFilterQuery);
+            });
     }
 
     private resetTableSelectedRows(): void {
