@@ -10,7 +10,7 @@ export enum LoadStatusEnum {
     InvoicedFactoring,
     InvoicedHold,
     Delivered,
-    LoadCancelled,
+    LoadCanceled,
     Paid,
     PaidFactoring,
     RevisedPaidFactoring,
