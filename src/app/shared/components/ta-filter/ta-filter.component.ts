@@ -355,6 +355,14 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.watchLoadStatusFilterValueChanges();
 
         this.clearTruckFilters();
+
+        this.clearTrailerFilters();
+    }
+
+    private clearTrailerFilters() {
+        this.filterService.updateTrailerFilter.subscribe((truck) => {
+            this.clearAll('clearAll', true);
+        });
     }
 
     private clearTruckFilters() {
