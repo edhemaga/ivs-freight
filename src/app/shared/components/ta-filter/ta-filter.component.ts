@@ -2351,6 +2351,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
                 } else if (!this.isDispatchFilter) {
+                    // This is called only on load for truck page,
                     this.filterService.getTruckData();
                 }
                 break;

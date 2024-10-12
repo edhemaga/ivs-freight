@@ -15,8 +15,6 @@ import {
     StateService,
     DepartmentService,
     LoadService,
-    TruckService,
-    TrailerService,
     RepairTrailerFilterListResponse,
     RepairTruckFilterListResponse,
     PMTrailerListResponse,
@@ -27,6 +25,7 @@ import {
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {
@@ -43,8 +42,6 @@ export class FilterStateService implements OnDestroy {
         private stateService: StateService,
         private departmentService: DepartmentService,
         private loadService: LoadService,
-        private truckService: TruckService,
-        private trailerService: TrailerService,
         private dispatchService: DispatchService
     ) {}
 
@@ -201,8 +198,19 @@ export class FilterStateService implements OnDestroy {
         }
     }
 
+    // Send prop Active = 1 when "Active" tab is displayed and  Active = 0 when "Inactive" tab is displayed.
+    private getTruckSelectedTab(): number {
+        const tableView = JSON.parse(
+            localStorage.getItem(TableStringEnum.TRUCK_TABLE_VIEW)
+        );
+        return tableView && tableView.tabSelected === 'inactive' ? 0 : 1;
+    }
+
     public getTruckData() {
-        const truckList = this.TruckTypeService.apiTrucktypeFilterGet()
+        const truckList = this.TruckTypeService.apiTrucktypeFilterGet(
+            '',
+            this.getTruckSelectedTab()
+        )
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

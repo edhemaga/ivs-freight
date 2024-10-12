@@ -54,7 +54,6 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
 
 @Component({
     selector: 'app-truck-table',
@@ -1015,6 +1014,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendTruckData();
             }
+
+            this.truckService.updateTableFilters();
         }
         // Change View Mode
         else if (event.action === TableStringEnum.VIEW_MODE) {
