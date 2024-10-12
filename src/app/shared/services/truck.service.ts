@@ -151,6 +151,7 @@ export class TruckService implements OnDestroy {
 
     public updateTableFilters() {
         console.log('updating truck filters');
+        this.filterService.updateTruckFilters.next(true);
         this.filterService.getTruckData();
     }
 

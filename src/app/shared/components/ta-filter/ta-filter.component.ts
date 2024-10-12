@@ -353,6 +353,14 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.watchTableServiceValueChanges();
 
         this.watchLoadStatusFilterValueChanges();
+
+        this.clearTruckFilters();
+    }
+
+    private clearTruckFilters() {
+        this.filterService.updateTruckFilters.subscribe((truck) => {
+            this.clearAll('clearAll', true);
+        });
     }
 
     private createForm(): void {
@@ -1295,13 +1303,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     }
 
     public clearAll(event?, mod?): void {
-        if (event) event.stopPropagation();
+        // if (event) event.stopPropagation();
 
-        if (mod) this.hoverClose = false;
+        // if (mod) this.hoverClose = false;
 
-        const element = event.target;
-        if (!element.classList.contains(ToolbarFilterStringEnum.ACTIVE) && !mod)
-            false;
+        // if (event) {
+        //     const element = event.target;
+        //     if (
+        //         !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
+        //         !mod
+        //     )
+        //         false;
+        // }
 
         if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue =
@@ -1490,7 +1503,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.moneyFilterStatus = false;
         this.filterActiveArray = [];
         this.swipeActiveRange = 0;
-        this.autoClose.tooltip.close();
+        this.autoClose?.tooltip?.close();
         this.totalFiltersNum = 0;
         this.singleFormActive = false;
         const data = {

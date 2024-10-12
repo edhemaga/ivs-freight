@@ -446,29 +446,16 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.caSearchMultipleStatesService.currentSearchTableData
+        this.caSearchMultipleStatesService.selectedChips$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.backFilterQuery.active =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                    this.backFilterQuery.pageIndex = 1;
+                this.backFilterQuery.searchOne = res[0] ?? null;
+                this.backFilterQuery.searchTwo = res[1] ?? null;
+                this.backFilterQuery.searchThree = res[2] ?? null;
 
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.backFilterQuery
-                    );
-
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            this.truckBackFilter(searchEvent.query);
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            this.sendTruckData();
-                        }
-                    }
-                }
+                console.log('Getting back filter');
+                this.truckBackFilter(this.backFilterQuery);
+                // get new table data
             });
     }
 
@@ -944,6 +931,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         isShowMore?: boolean
     ): void {
+        console.log(this.backFilterQuery, 'calling backfilter query');
         this.truckService
             .getTruckList(
                 filter.active,
@@ -973,11 +961,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-                this.backFilterQuery = JSON.parse(
-                    JSON.stringify(
-                        TableDropdownComponentConstants.BACK_FILTER_QUERY
-                    )
-                );
+                // this.backFilterQuery = JSON.parse(
+                //     JSON.stringify(
+                //         TableDropdownComponentConstants.BACK_FILTER_QUERY
+                //     )
+                // );
             });
     }
 
@@ -1015,6 +1003,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.sendTruckData();
             }
 
+            // on tab change we need to reset chips and truck type filters
+            this.caSearchMultipleStatesService.deleteAllChips();
             this.truckService.updateTableFilters();
         }
         // Change View Mode

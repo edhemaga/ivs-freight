@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { takeUntil, Subject } from 'rxjs';
+import { takeUntil, Subject, BehaviorSubject } from 'rxjs';
 
 // store
 import { FilterStateStore } from '@shared/components/ta-filter/state/filter-state.store';
@@ -30,7 +30,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {
     private destroy$ = new Subject<void>();
-
+    public updateTruckFilters = new BehaviorSubject<any>(null);
     constructor(
         private filterStateStore: FilterStateStore,
         private http: HttpClient,
