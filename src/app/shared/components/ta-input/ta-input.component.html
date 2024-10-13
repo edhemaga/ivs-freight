@@ -1334,8 +1334,8 @@
             required: _inputConfig.isRequired && !_inputConfig.isDisabled,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'up-label':
-                getSuperControl.value ||
-                focusInput ||
+                getSuperControl.value || getSuperControl.value?.toString() === '0' || 
+                 focusInput ||
                 showDateInput ||
                 _inputConfig?.multipleInputValues?.options?.length ||
                 (!_inputConfig.dropdownImageInput?.withText &&
@@ -1351,7 +1351,7 @@
             'in-label': _inputConfig.labelInInput
         }"
     >
-        <span *ngIf="_inputConfig.label">{{ _inputConfig.label }} </span>
+        <span *ngIf="_inputConfig.label">{{ _inputConfig.label }}  </span>
         <div
             *ngIf="_inputConfig.multipleLabel?.labels?.length"
             [class]="_inputConfig.multipleLabel?.customClass"
