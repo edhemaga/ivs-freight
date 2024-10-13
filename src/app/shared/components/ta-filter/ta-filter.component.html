@@ -8,6 +8,7 @@
     (openFilter)="onFilterShown()"
     [ngClass]="{
         'active-options': activeFilter,
+        'clear-colors': hoverClose,
         'filter-active-colors':
             filterActiveArray.length > 0 ||
             filterActiveTime !== '' ||

@@ -361,13 +361,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     private clearTrailerFilters() {
         this.filterService.updateTrailerFilter.subscribe((truck) => {
-            this.clearAll('clearAll', true);
+            this.clearAll('clearAll', false);
         });
     }
 
     private clearTruckFilters() {
         this.filterService.updateTruckFilters.subscribe((truck) => {
-            this.clearAll('clearAll', true);
+            this.clearAll('clearAll', false);
         });
     }
 
@@ -1310,19 +1310,22 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.checkFilterActiveValue();
     }
 
-    public clearAll(event?, mod?): void {
-        // if (event) event.stopPropagation();
-
-        // if (mod) this.hoverClose = false;
-
-        // if (event) {
-        //     const element = event.target;
-        //     if (
-        //         !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
-        //         !mod
-        //     )
-        //         false;
-        // }
+    public clearAll(event?: Event | string, mod?: boolean) {
+        if (event instanceof Event) {
+            event.stopPropagation();
+    
+            const element = event.target as HTMLElement;
+            if (
+                !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
+                !mod
+            ) {
+                return false;
+            }
+        }
+    
+        if (mod) {
+            this.hoverClose = false;
+        }
 
         if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue =
