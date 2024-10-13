@@ -8,6 +8,7 @@ import {
     ViewChild,
     ElementRef,
     AfterContentChecked,
+    AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, Observable, map } from 'rxjs';
@@ -32,7 +33,6 @@ import {
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 import { ChatDropzone } from '@pages/chat/utils/configs';
-import { AfterViewInit } from '@angular/core';
 
 @Component({
     selector: 'app-conversation-content',
