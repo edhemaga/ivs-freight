@@ -13,7 +13,8 @@
               editData?.template !== 'repair' &&
               editData?.template !== 'repair_shop' &&
               editData?.template !== 'truck' &&
-              editData?.template !== 'driver'
+              editData?.template !== 'driver' &&
+              editData?.template !== 'user'
             ? 'Delete'
             : editData?.template === 'void'
             ? editData.type === 'activate'
@@ -276,7 +277,7 @@
                                     {{ editData?.data?.name }}
                                 </p>
                                 <p class="m-0 confirmation-text-2 large-text-2">
-                                    {{ editData?.data?.username }}
+                                    {{ editData?.data?.tableTableDept }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1204,7 +1205,7 @@
                                     <p
                                         class="m-0 confirmation-text-2 large-text-2"
                                     >
-                                        {{ item?.data?.username }}
+                                        {{ item?.data?.tableTableDept }}
                                     </p>
                                 </ng-container>
                             </div>

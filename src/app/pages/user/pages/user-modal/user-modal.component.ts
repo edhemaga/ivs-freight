@@ -208,8 +208,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TableStringEnum.DEACTIVATE:
-                this.ngbActiveModal.close();
-
                 this.modalService.openModal(
                     ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -224,8 +222,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
 
             case TableStringEnum.DELETE:
-                this.ngbActiveModal.close();
-
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },

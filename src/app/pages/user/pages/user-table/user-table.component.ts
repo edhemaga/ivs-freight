@@ -610,6 +610,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.activityTimePipe.transform(data.lastLogin)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableCantSelect: data.userStatus === TableStringEnum.OWNER,
+            formType: data.is1099
+                ? TableStringEnum.FORM_TYPE_1
+                : TableStringEnum.W_2,
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -907,6 +910,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         event.data?.userStatus !== TableStringEnum.OWNER &&
                         event.data?.userStatus !== TableStringEnum.EXPIRED &&
                         event.data?.userStatus !== TableStringEnum.INVITED,
+                    isDeactivateOnly: true,
                 }
             );
         }

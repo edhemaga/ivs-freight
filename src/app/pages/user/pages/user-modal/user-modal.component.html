@@ -4,6 +4,7 @@
     [editName]="userFullName"
     [isModalValid]="userForm.valid && isFormDirty"
     [disableDelete]="selectedUserType?.name === 'Owner'"
+    [isDeactivateOnly]="editData?.isDeactivateOnly"
     (action)="onModalAction($event)"
 >
     <div origin>
