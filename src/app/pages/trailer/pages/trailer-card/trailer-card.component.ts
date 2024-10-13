@@ -33,6 +33,7 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 
 //Svg Routes
 import { TrailerCardsSvgRoutes } from '@pages/trailer/pages/trailer-card/utils/svg-routes/trailer-cards-svg-routes';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-trailer-card',
@@ -61,6 +62,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
     public trailerImageRoutes = TrailerCardsSvgRoutes;
 
     constructor(
+        private router: Router,
         //Services
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -124,6 +126,10 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
                         tabSelected: this.selectedTab,
                     }
                 );
+                break;
+            }
+            case TableStringEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/trailer/${event.id}/details`]);
                 break;
             }
             case TableStringEnum.ADD_REGISTRATION: {
