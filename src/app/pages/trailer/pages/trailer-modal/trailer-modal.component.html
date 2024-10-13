@@ -1,13 +1,12 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
+    [modalTitle]="editData?.id  ? 'Edit Trailer' : 'Add Trailer'"
     [editData]="editData"
     [editName]="editData?.data?.trailerNumber"
     [isModalValid]="trailerForm.valid && isFormDirty"
     [saveAndAddNew]="true"
     [disableDelete]="true"
     (action)="onModalAction($event)"
-    [editDate]="editData?.type === 'edit'"
-    [editDate]="editData?.type === 'edit'"
+    [editDate]="editData?.id" 
 >
     <div origin class="origin-part-modal">
         <app-ta-tab-switch
