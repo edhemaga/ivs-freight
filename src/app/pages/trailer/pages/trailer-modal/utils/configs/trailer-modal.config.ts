@@ -163,7 +163,6 @@ export class TrailerModalConfig {
         };
     }
     static getTrailerWeightConfig(options: TrailerConfigInterface): ITaInput {
-        console.log(options, 'test');
         return {
             name: 'Empty Weight',
             type: 'text',
