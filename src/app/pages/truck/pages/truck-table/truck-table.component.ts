@@ -253,13 +253,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === TableStringEnum.SET) {
-                        this.backFilterQuery.truckType = res.queryParams;
-                        this.truckBackFilter(this.backFilterQuery);
-                    }
-
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.viewData = this.truckData;
+                    this.backFilterQuery.truckType = res.queryParams;
+                    this.truckBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -973,6 +968,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = null;
 
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;

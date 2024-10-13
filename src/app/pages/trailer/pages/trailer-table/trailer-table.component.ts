@@ -165,16 +165,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === TableStringEnum.SET) {
-                        if (res.action === TableStringEnum.SET) {
-                            this.backFilterQuery.trailerTypeIds =
-                                res.queryParams;
-                            this.trailerBackFilter(this.backFilterQuery);
-                        }
-                    }
-
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.viewData = this.trailerData;
+                    this.backFilterQuery.trailerTypeIds = res.queryParams;
+                    this.trailerBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -899,6 +891,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = null;
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
