@@ -547,4 +547,12 @@ export enum TableStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     ZERO = '0',
+
+    // Card States
+    CUSTOMER_CARD_STATE = 'customerCardState',
+    DRIVER_CARD_STATE = 'driverCardState',
+    LOAD_CARD_STATE = 'loadCardState',
+    REPAIR_CARD_STATE = "repairCardState",
+    TRAILER_CARD_STATE = "trailerCardState",
+    USER_CARD_STATE = "userCardState",
 }

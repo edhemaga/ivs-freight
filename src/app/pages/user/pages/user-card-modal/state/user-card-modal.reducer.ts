@@ -1,39 +1,56 @@
-//Store
+// Store
 import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
     setInactiveTabCards,
 } from '@pages/user/pages/user-card-modal/state/user-card-modal.actions';
 
-//Constants
+// Constants
 import { UserCardsModalConfig } from '@pages/user/pages/user-card-modal/utils/constants';
 
-//Models
+// Models
 import { UserCardData } from '@pages/user/pages/user-card-modal/models';
 
-export const userState: UserCardData = {
-    active: {
-        numberOfRows: 4,
-        checked: true,
-        front_side: UserCardsModalConfig.displayRowsFrontActive,
-        back_side: UserCardsModalConfig.displayRowsBackActive,
-    },
-    inactive: {
-        numberOfRows: 4,
-        checked: true,
-        front_side: UserCardsModalConfig.displayRowsFrontInactive,
-        back_side: UserCardsModalConfig.displayRowsBackInactive,
-    },
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+const getInitialState = (): UserCardData => {
+    const savedState = localStorage.getItem(TableStringEnum.USER_CARD_STATE);
+    if (savedState) return JSON.parse(savedState);
+    
+    return {
+        active: {
+            numberOfRows: 4,
+            checked: true,
+            front_side: UserCardsModalConfig.displayRowsFrontActive,
+            back_side: UserCardsModalConfig.displayRowsBackActive,
+        },
+        inactive: {
+            numberOfRows: 4,
+            checked: true,
+            front_side: UserCardsModalConfig.displayRowsFrontInactive,
+            back_side: UserCardsModalConfig.displayRowsBackInactive,
+        },
+    };
+};
+
+const saveStateToLocalStorage = (state: UserCardData) => {
+    localStorage.setItem(
+        TableStringEnum.USER_CARD_STATE,
+        JSON.stringify(state)
+    );
 };
 
 export const userCardModalReducer = createReducer(
-    userState,
-    on(setActiveTabCards, (state, active) => ({
-        ...state,
-        active,
-    })),
-    on(setInactiveTabCards, (state, inactive) => ({
-        ...state,
-        inactive,
-    }))
+    getInitialState(),
+    on(setActiveTabCards, (state, active) => {
+        const newState = { ...state, active };
+        saveStateToLocalStorage(newState);
+        return newState;
+    }),
+    on(setInactiveTabCards, (state, inactive) => {
+        const newState = { ...state, inactive };
+        saveStateToLocalStorage(newState);
+        return newState;
+    })
 );
