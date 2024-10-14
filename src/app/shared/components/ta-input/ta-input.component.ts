@@ -939,9 +939,9 @@ export class TaInputComponent
         }
 
         if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
-            if (parseInt(value) < 1 || parseInt(value) > 17) {
-                if (parseInt(value) < 1) {
-                    this.getSuperControl.setErrors({ min: 1 });
+            if (parseInt(value) <= 1 || parseInt(value) > 17) {
+                if (parseInt(value) <= 1) {
+                    this.getSuperControl.setErrors({ min: 2 });
                 } else if (parseInt(value) > 17) {
                     this.getSuperControl.setErrors({ max: 17 });
                }
@@ -1183,6 +1183,7 @@ export class TaInputComponent
                 'multiformsecondto',
                 'multiformthirdfrom',
                 'multiformthirdto',
+                'vehicle-unit',
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
@@ -1343,18 +1344,6 @@ export class TaInputComponent
                 return true;
             }
 
-            event.preventDefault();
-            return false;
-        }
-
-        if (['axles'].includes(this._inputConfig.name.toLowerCase())) {
-            if (
-                this.inputService
-                    .getInputRegexPattern('axles')
-                    .test(String.fromCharCode(event.charCode))
-            ) {
-                return true;
-            }
             event.preventDefault();
             return false;
         }
