@@ -17,9 +17,11 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
@@ -27,10 +29,10 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+
+// Enums
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
-import { DropDownService } from '@shared/services/drop-down.service';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',
