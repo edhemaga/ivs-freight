@@ -406,6 +406,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                         case TableStringEnum.DELETE:
                             if (res.template === TableStringEnum.BROKER) {
                                 this.deleteBrokerById(res.id);
+                            } else if (
+                                res.template === TableStringEnum.BROKER_CONTACT
+                            ) {
+                                this.deleteBrokerContactById(res.id);
                             }
                             break;
 
@@ -762,6 +766,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.loadBackFilter(this.backLoadFilterQuery);
             });
+    }
+
+    private deleteBrokerContactById(contactId: number): void {
+        console.log('updateBrokerContacts contactId', contactId);
     }
 
     private resetTableSelectedRows(): void {

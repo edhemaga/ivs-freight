@@ -393,6 +393,7 @@ export enum TableStringEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    DELTETE_CONTACT_2 = 'Delete Contact',
     CONTACT = 'contact',
     CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
@@ -547,4 +548,7 @@ export enum TableStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     ZERO = '0',
+
+    BROKER_CONTACT = 'broker contact',
+    SHIPPER_CONTACT = 'shipper contact',
 }

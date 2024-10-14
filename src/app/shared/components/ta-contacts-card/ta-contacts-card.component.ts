@@ -49,14 +49,15 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     ],
 })
 export class TaContactsCardComponent {
+    @Input() public type: string;
     @Input() public departmentContacts: DepartmentContacts[];
-    @Input() public parentId: number;
+    @Input() public viewData: any;
 
     public contactsImageRoutes = ContactsCardSvgRoutes;
 
     constructor(
         private dropDownService: DropDownService,
-        private modalService: ModalService,
+        private modalService: ModalService
     ) {}
 
     public identity(index: number, item: DepartmentContacts): number {
@@ -65,27 +66,39 @@ export class TaContactsCardComponent {
 
     public editContact(): void {
         const eventObject = {
-            data: null,
-            id: this.parentId,
+            data: this.viewData,
+            id: this.viewData.id,
             type: TableStringEnum.EDIT,
-            openedTab: TableStringEnum.CONTACT_2,
+            openedTab:
+                this.type === TableStringEnum.BROKER
+                    ? TableStringEnum.ADDITIONAL
+                    : TableStringEnum.CONTACT_2,
         };
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
-                null,
-                TableStringEnum.SHIPPER
+                this.viewData,
+                this.type
             );
         }, 100);
     }
 
-    public deleteContactModal(): void {
+    public deleteContactModal(contactData: any): void {
+        const mappedEvent = {
+            id: contactData.id,
+            data: { ...contactData, businessName: this.viewData.businessName },
+        };
+
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...event,
-                template: TableStringEnum.CONTACT,
+                ...mappedEvent,
+                modalHeaderTitle: TableStringEnum.DELTETE_CONTACT_2,
+                template:
+                    this.type === TableStringEnum.BROKER
+                        ? TableStringEnum.BROKER_CONTACT
+                        : TableStringEnum.SHIPPER_CONTACT,
                 type: TableStringEnum.DELETE,
                 svg: true,
             }
