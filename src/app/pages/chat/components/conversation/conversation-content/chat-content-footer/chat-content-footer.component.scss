@@ -283,3 +283,36 @@
         }
     }
 }
+
+.mention {
+    height: fit-content;
+    width: 240px;
+    position: absolute;
+    bottom: 52px;
+    border-radius: 3px;
+    padding: 4px;
+    background-color: $ta-black-2;
+
+    &-wrapper {
+        &:hover {
+            cursor: pointer;
+            background-color: $ta-black !important;
+        }
+    }
+    &-text {
+        margin: auto auto auto 2px;
+        font-size: 14px;
+        color: $white;
+        div {
+            .highlight {
+                line-height: 18px;
+                color: $ta-blue-19 !important;
+                background-color: rgba(59, 115, 237, 0.2) !important;
+                font-weight: bold;
+            }
+        }
+    }
+    &-avatar {
+        margin: 4px 4px 4px 6px;
+    }
+}

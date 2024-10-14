@@ -135,6 +135,20 @@
                                 </div>
                             </ng-container>
 
+                            <ng-container *ngIf="isMentionActive">
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        mention;
+                                        context: {
+                                            item: {
+                                                participants:
+                                                    mentionParticipants
+                                            }
+                                        }
+                                    "
+                                ></ng-container>
+                            </ng-container>
+
                             <app-ta-input
                                 #messagesInput
                                 formControlName="message"
@@ -144,6 +158,7 @@
                                         (attachments$ | async)?.length
                                     )
                                 "
+                                (clear)="clearInput()"
                                 (blurInput)="blurInput()"
                                 (focusInput)="focusInput()"
                                 (keyup.enter)="handleSend()"
@@ -333,3 +348,43 @@
 </ng-template>
 
 <ng-template #messageArea></ng-template>
+
+<ng-template #mention let-item="item">
+    <div class="mention">
+        <ng-container
+            *ngFor="
+                let participant of item?.participants;
+                let ind = index;
+                trackBy: 'userId' | trackByProperty
+            "
+        >
+            <div
+                class="mention-wrapper d-flex w-100"
+                (click)="selectMentionUser(participant)"
+            >
+                <div class="mention-avatar">
+                    <app-ca-profile-image
+                        [avatarImg]="participant?.avatarFile?.url"
+                        [avatarColor]="{
+                            background: '#DFC2F9',
+                            color: '#9E47EC66'
+                        }"
+                        [textShortName]="participant?.fullName | nameInitials"
+                        [size]="22"
+                        [fontSize]="9"
+                        [isHoverEffect]="false"
+                        [isRound]="participant?.userType?.name === 'Driver'"
+                    ></app-ca-profile-image>
+                </div>
+                <div class="mention-text d-flex ta-font-regular">
+                    <div
+                        [innerHTML]="
+                            participant?.fullName
+                                | chatHighlight : mentionSearchTerm
+                        "
+                    ></div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

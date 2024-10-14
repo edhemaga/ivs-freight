@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    OnDestroy,
+    ViewEncapsulation,
+    HostListener,
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     BehaviorSubject,
@@ -15,6 +22,7 @@ import {
     ChatSelectedConversation,
 } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { CompanyUserShortResponse } from 'appcoretruckassist';
 
 // Services
 import {
@@ -40,6 +48,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
     selector: 'app-chat-content-footer',
     templateUrl: './chat-content-footer.component.html',
     styleUrls: ['./chat-content-footer.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
@@ -71,6 +80,12 @@ export class ChatContentFooterComponent
     public isChatTypingActivated: boolean = true;
     public isChatTypingBlurred: boolean = false;
 
+    // Mentions
+    public isMentionActive: boolean = false;
+    public mentionSearchTerm!: string;
+    public mentionsList: CompanyUserShortResponse[] = [];
+    public mentionParticipants?: CompanyUserShortResponse[];
+
     // Emoji
     public isEmojiSelectionActive: boolean = false;
 
@@ -101,6 +116,7 @@ export class ChatContentFooterComponent
         this.conversationRemoveInDate = moment(this.conversation?.updatedAt)
             .subtract(45, 'days')
             .format();
+        this.mentionParticipants = this.conversation.participants;
     }
 
     private getDataFromStore(): void {
@@ -112,6 +128,10 @@ export class ChatContentFooterComponent
             .subscribe((attachments: UploadFile[]) => {
                 this.attachments = attachments;
             });
+        this.chatStoreService.selectConversation().subscribe(() => {
+            this.messageForm.reset();
+            this.isMentionActive = false;
+        });
     }
 
     public handleSend(): void {
@@ -215,6 +235,28 @@ export class ChatContentFooterComponent
                 if (message) {
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
+                    const messageSplitted: string[] = message.split(' ');
+                    this.mentionSearchTerm =
+                        messageSplitted[messageSplitted?.length - 1];
+                    this.isMentionActive =
+                        this.mentionSearchTerm?.includes('@');
+                    if (this.isMentionActive)
+                        this.mentionParticipants =
+                            this.conversation?.participants?.filter(
+                                (participant) =>
+                                    participant.fullName
+                                        ?.toLowerCase()
+                                        ?.trim()
+                                        ?.includes(
+                                            this.mentionSearchTerm
+                                                ?.toLowerCase()
+                                                ?.substring(1)
+                                        )
+                            );
+                } else {
+                    this.isMentionActive = false;
+                    this.mentionSearchTerm = '';
+                    this.mentionParticipants = this.conversation?.participants;
                 }
             });
     }
@@ -267,5 +309,25 @@ export class ChatContentFooterComponent
             .joinChannel(conversationId)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private appendMention(fullname: string) {
+        //Remove substring(1) if only name to remain
+        const currentValue =
+            this.messageForm
+                .get('message')
+                ?.value.replace(this.mentionSearchTerm.substring(1), '') || '';
+        this.messageForm.get('message')?.setValue(currentValue + fullname);
+    }
+
+    public selectMentionUser(participant: CompanyUserShortResponse): void {
+        if (!participant) return;
+        this.mentionsList = [...this.mentionsList, participant];
+        this.isMentionActive = false;
+        this.appendMention(participant?.fullName);
+    }
+
+    public clearInput(): void {
+        this.mentionsList = [];
     }
 }

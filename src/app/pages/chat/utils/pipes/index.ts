@@ -6,3 +6,4 @@ export * from './chat-any-exits.pipe';
 export * from './chat-remove-fullname.pipe';
 export * from './chat-department-icon.pipe';
 export * from './chat-department-icon.pipe';
+export * from './chat-highlight.pipe';
