@@ -256,6 +256,7 @@ export enum TableStringEnum {
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
+    REGISTRATION_2 = 'registration',
 
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',

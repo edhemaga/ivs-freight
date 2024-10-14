@@ -16,12 +16,14 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 // validations
 import { licensePlateValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
@@ -33,6 +35,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
 @Component({
     selector: 'app-tt-registration-modal',
@@ -82,7 +85,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         private TruckTrailerService: TruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+        private dropDownService: DropDownService
     ) {}
 
     ngOnInit() {
@@ -104,12 +108,12 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string }) {
         switch (data.action) {
-            case 'close': {
+            case ActionTypesEnum.CLOSE: {
                 break;
             }
-            case 'save': {
+            case ActionTypesEnum.SAVE: {
                 // If Form not valid
                 if (this.registrationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.registrationForm);
@@ -130,6 +134,35 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+                break;
+            }
+            case ActionTypesEnum.DELETE: {
+                data = {
+                    ...this.editData.payload,
+                    id: this.editData.file_id,
+                };
+                const name = DropActionNameHelper.dropActionNameTrailerTruck(
+                    { type: TableStringEnum.DELETE_ITEM },
+                    TableStringEnum.REGISTRATION_2 
+                );
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: true,
+                    close: true,
+                });
+                this.dropDownService.dropActions(
+                    data,
+                    name,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    data,
+                    TableStringEnum.TRAILER_2
+                );
                 break;
             }
             default: {
