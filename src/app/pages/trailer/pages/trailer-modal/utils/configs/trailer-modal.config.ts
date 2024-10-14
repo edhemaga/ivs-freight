@@ -159,18 +159,19 @@ export class TrailerModalConfig {
                     ? 'gal'
                     : 'cu_ft'
                 : null,
-            thousandSeparator: true,
+                priceSeparator: true,
+                priceSeparatorLimitation: 6, 
         };
     }
     static getTrailerWeightConfig(options: TrailerConfigInterface): ITaInput {
-        console.log(options, 'test');
         return {
             name: 'Empty Weight',
             type: 'text',
             label: 'Empty Weight',
             minLength: 4,
             maxLength: 6,
-            thousandSeparator: true,
+            priceSeparator: true,
+            priceSeparatorLimitation: 6,
             placeholderText: !options.formValue ? '' : 'ibs',
         };
     }
@@ -212,7 +213,8 @@ export class TrailerModalConfig {
             minLength: 1,
             maxLength: 10,
             placeholderText: 'mi',
-            thousandSeparator: true,
+            priceSeparator: true,
+            priceSeparatorLimitation: 6, 
         };
     }
     static getTrailerInsurancePolicyConfig(): ITaInput {
@@ -263,7 +265,8 @@ export class TrailerModalConfig {
             type: 'text',
             label: 'Purchase Price',
             maxLength: 14,
-            thousandSeparator: true,
+            priceSeparator: true,
+            priceSeparatorLimitation: 6, 
             placeholderIcon: 'dollar',
         };
     }

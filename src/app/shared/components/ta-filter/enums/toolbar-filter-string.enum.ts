@@ -36,4 +36,5 @@ export enum ToolbarFilterStringEnum {
 
     // Classes
     ACTIVE = 'active',
+    CLEAR_ALL = 'clearAll'
 }

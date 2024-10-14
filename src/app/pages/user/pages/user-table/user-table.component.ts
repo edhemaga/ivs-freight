@@ -9,10 +9,12 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { UserCardsModalService } from '@pages/user/pages/user-card-modal/services/user-cards-modal.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // helpers
 import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/users-columns';
@@ -53,6 +55,9 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyUserResponse } from 'appcoretruckassist';
 import { UserTableData } from '@pages/user/pages/user-table/models';
+
+// helpers
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-user-table',
@@ -103,6 +108,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private userCardsModalService: UserCardsModalService,
+        private confirmationActivationService: ConfirmationActivationService,
 
         // store
         private usersActiveQuery: UserActiveQuery,
@@ -137,6 +143,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentDeleteSelectedRows();
 
         this.confirmationData();
+
+        this.confirmationActivationSubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -155,14 +163,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             if (res.template === TableStringEnum.USER_1) {
                                 this.deleteUserById(res.id);
                             }
-                            break;
-                        }
-                        case TableStringEnum.ACTIVATE: {
-                            this.changeUserStatus(res.id, true);
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            this.changeUserStatus(res.id, false);
                             break;
                         }
                         case TableStringEnum.MULTIPLE_DELETE: {
@@ -540,14 +540,16 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         //leave this any for now
         if (!data.avatarFile?.url && !dontMapIndex) this.mapingIndex++;
 
+        const userFullName =
+            data?.firstName && data?.lastName
+                ? data.firstName + ' ' + data.lastName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
+
         return {
             ...data,
             isSelected: false,
             tableAvatar: {
-                name:
-                    data?.firstName && data?.lastName
-                        ? data.firstName + ' ' + data.lastName
-                        : '',
+                name: userFullName,
                 avatar: data.avatarFile?.url ?? '',
                 avatarColor: this.getAvatarColors(),
                 textShortName: this.nameInitialsPipe.transform(
@@ -556,6 +558,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : ''
                 ),
             },
+            textShortName: this.nameInitialsPipe.transform(userFullName),
+            avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
             tableTableDept: data?.department?.name
                 ? data.department.name
                 : data?.department
@@ -606,6 +610,9 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.activityTimePipe.transform(data.lastLogin)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableCantSelect: data.userStatus === TableStringEnum.OWNER,
+            formType: data.is1099
+                ? TableStringEnum.FORM_TYPE_1
+                : TableStringEnum.W_2,
             // User Dropdown Action Set Up
             tableDropdownContent: {
                 hasContent: true,
@@ -688,7 +695,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 next: () => {
                     this.viewData = this.viewData.map((user: UserTableData) => {
                         if (user.id === id)
-                            user.actionAnimation = TableStringEnum.UPDATE;
+                            user.actionAnimation =
+                                TableStringEnum.UPDATE_STATUS;
 
                         return user;
                     });
@@ -829,6 +837,37 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendUserData();
             }
+        } else if (event.action === TableStringEnum.ACTIVATE_ITEM) {
+            const mappedEvent = [];
+
+            this.viewData.map((data) => {
+                event.tabData.data.forEach((element: number) => {
+                    if (data.id === element) {
+                        mappedEvent.push({
+                            ...data,
+                            name: data?.firstName + ' ' + data?.lastName,
+                            avatarImg: data?.avatarFile,
+                            showDepartment: true,
+                        });
+                    }
+                });
+            });
+
+            this.modalService.openModal(
+                ConfirmationActivationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    data: null,
+                    array: mappedEvent,
+                    template: TableStringEnum.USER,
+                    subType: TableStringEnum.USER,
+                    type:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.DEACTIVATE_MULTIPLE
+                            : TableStringEnum.ACTIVATE_MULTIPLE,
+                    tableType: TableStringEnum.USERS,
+                }
+            );
         }
     }
 
@@ -871,6 +910,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         event.data?.userStatus !== TableStringEnum.OWNER &&
                         event.data?.userStatus !== TableStringEnum.EXPIRED &&
                         event.data?.userStatus !== TableStringEnum.INVITED,
+                    isDeactivateOnly: true,
                 }
             );
         }
@@ -886,16 +926,17 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.type === TableStringEnum.ACTIVATE
         ) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...confirmationModalData,
-                    template: TableStringEnum.USER_1,
+                    template: TableStringEnum.USER,
+                    subType: TableStringEnum.USER,
                     type:
                         this.selectedTab === TableStringEnum.ACTIVE
                             ? TableStringEnum.DEACTIVATE
                             : TableStringEnum.ACTIVATE,
-                    image: true,
+                    tableType: TableStringEnum.USER_1,
                 }
             );
         }
@@ -981,6 +1022,69 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.userCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                switch (res.type) {
+                    case TableStringEnum.ACTIVATE: {
+                        this.changeUserStatus(res.id, true);
+                        break;
+                    }
+                    case TableStringEnum.DEACTIVATE: {
+                        this.changeUserStatus(res.id, false);
+                        break;
+                    }
+                    case TableStringEnum.ACTIVATE_MULTIPLE:
+                    case TableStringEnum.DEACTIVATE_MULTIPLE:
+                        const userIds = res.array.map((user) => {
+                            return user.id;
+                        });
+                        this.changeUserStatusList(userIds);
+                        break;
+                    default:
+                        break;
+                }
+            });
+    }
+
+    private changeUserStatusList(ids: number[]): void {
+        this.userService
+            .changeUserListStatus(ids, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    ids.forEach((id: number) => {
+                        this.viewData = this.viewData.map(
+                            (user: UserTableData) => {
+                                if (user.id === id)
+                                    user.actionAnimation =
+                                        TableStringEnum.UPDATE;
+
+                                return user;
+                            }
+                        );
+                    });
+
+                    this.updateDataCount();
+
+                    const interval = setInterval(() => {
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
+
+                        clearInterval(interval);
+                    }, 900);
+
+                    this.tableService.sendRowsSelected([]);
+                    this.tableService.sendResetSelectedColumns(true);
+                },
+                error: () => {},
+            });
     }
 
     // ---------------------------  NgOnDestroy ----------------------------------

@@ -9,7 +9,8 @@
         <div
             class="dispatch-parking"
             [ngClass]="{
-                'dispatch-parking_empty svg-fill-light-grey-6 svg-hover-muted': !isParkingAssigned && !isInputInFocus,
+                'dispatch-parking_empty svg-fill-light-grey-6 svg-hover-muted':
+                    !isParkingAssigned && !isInputInFocus,
                 'dispatch-parking_assigned': isParkingAssigned,
                 'dispatch-parking-hover': isParkingAvailable,
                 'dispatch-parking-disabled': !isUnlockable,
@@ -97,6 +98,11 @@
                             [ngClass]="{
                                 'dispatch-parking-dropdown_large': isWideTable
                             }"
+                            [ngStyle]="{
+                                width: _parkingDropdownWidth
+                                    ? _parkingDropdownWidth + 'px'
+                                    : ''
+                            }"
                         >
                             <form
                                 [formGroup]="parkingForm"
@@ -128,7 +134,10 @@
                                                 class="dispatch-parking-dropdown-title ta-font-bold dispatch-parking-dropdown-item d-flex justify-content-between align-items-center"
                                                 (click)="
                                                     inputFocusedByClick = true;
-                                                    openParkingList(index, !parking.isDropdownVisible)
+                                                    openParkingList(
+                                                        index,
+                                                        !parking.isDropdownVisible
+                                                    )
                                                 "
                                             >
                                                 <span
@@ -237,7 +246,7 @@
                                 >
                                     <span class="ta-font-bold"> ADD NEW </span>
                                     <svg-icon
-                                    class="dispatch-parking-dropdown-caret svg-fill-blue-19 svg-size-12"
+                                        class="dispatch-parking-dropdown-caret svg-fill-blue-19 svg-size-12"
                                         [src]="svgRoutes.plus"
                                     ></svg-icon>
                                 </div>

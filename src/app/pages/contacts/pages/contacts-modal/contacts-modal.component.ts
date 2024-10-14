@@ -130,12 +130,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public isPhoneRowCreated: boolean = false;
     public isEachPhoneRowValid: boolean = true;
     public contactPhones: ContactPhoneResponse[] = [];
-    public updateContactPhones: ContactPhoneResponse[] = [];
+    public updatedContactPhones: ContactPhoneResponse[] = [];
 
     public isEmailRowCreated: boolean = false;
     public isEachEmailRowValid: boolean = true;
     public contactEmails: ContactEmailResponse[] = [];
-    public updateContactEmails: ContactEmailResponse[] = [];
+    public updatedContactEmails: ContactEmailResponse[] = [];
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
@@ -389,8 +389,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     this.selectedSharedDepartment = res.departmentContacts;
 
-                    this.updateContactPhones = res.contactPhones;
-                    this.updateContactEmails = res.contactEmails;
+                    this.updatedContactPhones = res.contactPhones;
+                    this.updatedContactEmails = res.contactEmails;
 
                     this.inputService.changeValidators(
                         this.contactForm.get(

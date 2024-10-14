@@ -186,12 +186,16 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             this.activeTableData?.bannedArray ||
             this.activeTableData?.closedArray
         ) {
-            this.customerFilter.filterName = data;
+            this.customerFilter = {
+                ...this.customerFilter,
+                filterName: data,
+                selectedFilter: event.selectedFilter,
+            };
+
             if (event.selectedFilter) {
                 event.filteredArray.forEach((item) => {
                     this.customerFilter.filteredArray.push(item);
                 });
-                this.customerFilter.selectedFilter = event.selectedFilter;
             } else {
                 this.customerFilter.filteredArray =
                     this.customerFilter.filteredArray.filter((item) => {
@@ -209,7 +213,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.sendCurrentSetTableFilter(
             this.customerFilter?.filteredArray.length
                 ? this.customerFilter
-                : event
+                : { ...event, filterName: data }
         );
     }
     // --------------------------------NgOnDestroy---------------------------------

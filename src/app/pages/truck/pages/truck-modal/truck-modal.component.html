@@ -388,7 +388,6 @@
                                 type: 'text',
                                 label: 'Fuel Type',
                                 isDropdown: true,
-                                isDisabled: truckForm.get('fuelType').value,
                                 dropdownWidthClass: 'w-col-164'
                             }"
                             [options]="fuelTypes"
@@ -485,8 +484,6 @@
                                 name: 'Axles',
                                 type: 'number',
                                 label: 'Axle',
-                                minLength: 1,
-                                maxLength: 2
                             }"
                         ></app-ta-input>
                         <app-ta-input-dropdown

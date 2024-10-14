@@ -20,7 +20,7 @@ import { ShipperDetailsListQuery } from '@pages/customer/state/shipper-state/shi
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums/shipper-details-string.enum';
+import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
@@ -33,7 +33,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants/shipper-loads-sort-dropdown.constants';
+import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants';
 
 // Helpers
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';

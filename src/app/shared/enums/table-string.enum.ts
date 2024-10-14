@@ -424,6 +424,8 @@ export enum TableStringEnum {
     INCOMPLETE = 'Incomplete',
     MULTIPLE_DELETE = 'multiple delete',
     USER_TABLE_COUNT = 'userTableCount',
+    FORM_TYPE_1 = '1099',
+    W_2 = 'W-2',
 
     // Styles
     STYLES = 'font-weight: 900; text-transform: uppercase;',
@@ -474,6 +476,9 @@ export enum TableStringEnum {
     CLOSED_ARRAY = 'closedArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
+    DNU_FILTER = 'dnu-filter',
+    BAN_FILTER = 'ban-filter',
+    CLOSED_FILTER = 'closed-filter',
 
     // Cards
     INNER_DROPDOWN_ACTION = '.inner-dropdown-action-title',

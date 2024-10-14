@@ -14,11 +14,14 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 //enums
-import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 
 //models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { DepartmentResponse } from 'appcoretruckassist';
+
+// svg routes
+import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-modal-table-contact',
@@ -40,7 +43,8 @@ export class TaModalTableContactComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() repairDepartmentOptions: DepartmentResponse[];
+    @Input() departmentOptions: DepartmentResponse[] = [];
+    @Input() selectedDepartment: DepartmentResponse[] = [];
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -54,6 +58,8 @@ export class TaModalTableContactComponent {
         isInputHoverRowIndex: number;
         inputIndex: number;
     }> = new EventEmitter();
+
+    public svgRoutes = ModalTableSvgRoutes;
 
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
@@ -83,7 +89,7 @@ export class TaModalTableContactComponent {
     ): void {
         this.onSelectDropdown.emit({
             dropdownEvent,
-            action: TaModalTableStringEnum.CONTACT_EMAIL_TYPE,
+            action: TaModalTableStringEnum.CONTACT_DEPARTMENT_TYPE,
             index,
         });
     }

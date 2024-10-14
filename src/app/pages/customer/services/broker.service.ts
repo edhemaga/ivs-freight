@@ -28,6 +28,7 @@ import {
     BrokerAvailableCreditResponse,
     BrokerInvoiceAgeingResponse,
     BrokerLoadsResponse,
+    BrokerByIdResponse,
 } from 'appcoretruckassist';
 
 // Enums
@@ -202,16 +203,19 @@ export class BrokerService implements OnDestroy {
     public getBrokerById(
         brokerId: number,
         getIndex?: boolean
-    ): Observable<BrokerResponse> {
+    ): Observable<BrokerByIdResponse> {
         this.brokerMinimalQuery
             .selectAll()
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.brokerList = item));
+
         if (getIndex) {
             this.currentIndex = this.brokerList.findIndex(
                 (broker) => broker.id === brokerId
             );
+
             let last = this.brokerList.at(-1);
+
             if (last.id === brokerId) {
                 this.currentIndex = --this.currentIndex;
             } else {

@@ -80,7 +80,7 @@ import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/shipper-modal/enums/broker-modal-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -141,7 +141,7 @@ export class CustomerTableComponent
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public filter: boolean = false;
+    public filter: string = null;
     public brokerActive: BrokerResponse[];
     public shipperActive: ShipperResponse[];
 
@@ -282,7 +282,7 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 if (res) {
                     if (res?.tableType) {
-                        this.filter = false;
+                        this.filter = null;
                         this.tableService.sendResetSpecialFilters(true);
 
                         if (!res.array) {
@@ -306,7 +306,7 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.filter = false;
+                    this.filter = null;
                     this.tableService.sendResetSpecialFilters(true);
 
                     if (!res.array) {
@@ -592,7 +592,29 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
-                        this.filter = true;
+                        const resetFirstFilter =
+                            res.filterName === TableStringEnum.BAN
+                                ? TableStringEnum.DNU_FILTER
+                                : res.filterName === TableStringEnum.DNU
+                                ? TableStringEnum.CLOSED_FILTER
+                                : TableStringEnum.BAN_FILTER;
+                        const resetSecondFilter =
+                            res.filterName === TableStringEnum.BAN
+                                ? TableStringEnum.CLOSED_FILTER
+                                : res.filterName === TableStringEnum.DNU
+                                ? TableStringEnum.BAN_FILTER
+                                : TableStringEnum.DNU_FILTER;
+
+                        this.tableService.sendResetSpecialFilters(
+                            true,
+                            resetFirstFilter
+                        );
+                        this.tableService.sendResetSpecialFilters(
+                            true,
+                            resetSecondFilter
+                        );
+
+                        this.filter = res.filterName;
                         this.sendCustomerData();
                         this.viewData = this.customerTableData?.filter(
                             (customerData) =>
@@ -603,10 +625,35 @@ export class CustomerTableComponent
                         );
                     }
 
-                    if (!res.selectedFilter) {
-                        this.filter = false;
+                    if (!res.selectedFilter && res.filterName === this.filter) {
+                        this.filter = null;
                         this.viewData = this.customerTableData;
                         this.sendCustomerData();
+                    }
+
+                    if (res.filterName === TableStringEnum.BAN) {
+                        this.backBrokerFilterQuery.ban = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.dnu = null;
+                        this.backBrokerFilterQuery.status = null;
+                    } else if (res.filterName === TableStringEnum.DNU) {
+                        this.backBrokerFilterQuery.dnu = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.ban = null;
+                        this.backBrokerFilterQuery.status = null;
+                    } else if (
+                        res.filterName === TableStringEnum.CLOSED_ARRAY
+                    ) {
+                        this.backBrokerFilterQuery.status = res.selectedFilter
+                            ? 0
+                            : null;
+
+                        this.backBrokerFilterQuery.ban = null;
+                        this.backBrokerFilterQuery.dnu = null;
                     }
 
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
@@ -799,7 +846,7 @@ export class CustomerTableComponent
                     res.tab === TableStringEnum.BROKER
                 ) {
                     if (this.filter) {
-                        this.filter = false;
+                        this.filter = null;
                         this.tableService.sendResetSpecialFilters(true);
                     } else {
                         this.viewData.push(this.mapBrokerData(res.data));
@@ -1156,11 +1203,10 @@ export class CustomerTableComponent
                 ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
-        const filteredBrokerData = this.filter
-            ? brokerActiveData
-            : this.filterBanDnuBrokerData(
-                  this.getTabData(TableStringEnum.ACTIVE)
-              );
+        const filteredBrokerData = this.filterBanDnuBrokerData(
+            this.getTabData(TableStringEnum.ACTIVE),
+            this.filter
+        );
 
         const shipperActiveData =
             this.selectedTab === TableStringEnum.INACTIVE
@@ -1291,9 +1337,10 @@ export class CustomerTableComponent
                 }
             );
 
-            if (!this.filter) {
-                this.viewData = this.filterBanDnuBrokerData(this.viewData);
-            }
+            this.viewData = this.filterBanDnuBrokerData(
+                this.viewData,
+                this.filter
+            );
 
             // Set data for cards based on tab active
             this.selectedTab === TableStringEnum.ACTIVE
@@ -1585,6 +1632,11 @@ export class CustomerTableComponent
 
                     this.viewData = [...newData];
                 }
+
+                this.viewData = this.filterBanDnuBrokerData(
+                    this.viewData,
+                    this.filter
+                );
             });
     }
 
@@ -1666,7 +1718,7 @@ export class CustomerTableComponent
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
-            this.filter = false;
+            this.filter = null;
 
             this.sendCustomerData();
         } else if (event.action === TableStringEnum.VIEW_MODE) {
@@ -1677,7 +1729,7 @@ export class CustomerTableComponent
             this.tableOptions.toolbarActions.hideSearch =
                 event.mode == TableStringEnum.MAP;
 
-            this.filter = false;
+            this.filter = null;
 
             if (
                 this.selectedTab === TableStringEnum.ACTIVE &&
@@ -2147,11 +2199,20 @@ export class CustomerTableComponent
             });
     }
 
-    private filterBanDnuBrokerData(data: BrokerResponse[]): BrokerResponse[] {
-        const filteredData = data.filter(
-            (brokerItem) =>
-                !brokerItem.ban && !brokerItem.dnu && brokerItem.status
-        );
+    private filterBanDnuBrokerData(
+        data: BrokerResponse[],
+        activeFilter?: string
+    ): BrokerResponse[] {
+        const filteredData = data.filter((brokerItem) => {
+            if (activeFilter) {
+                if (activeFilter === TableStringEnum.BAN) return brokerItem.ban;
+                else if (activeFilter === TableStringEnum.DNU)
+                    return brokerItem.dnu;
+                else if (activeFilter === TableStringEnum.CLOSED_ARRAY)
+                    return !brokerItem.status;
+            } else
+                return !brokerItem.ban && !brokerItem.dnu && brokerItem.status;
+        });
 
         return filteredData;
     }

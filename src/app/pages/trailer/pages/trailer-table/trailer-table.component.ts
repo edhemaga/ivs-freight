@@ -165,16 +165,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === TableStringEnum.SET) {
-                        if (res.action === TableStringEnum.SET) {
-                            this.backFilterQuery.trailerTypeIds =
-                                res.queryParams;
-                            this.trailerBackFilter(this.backFilterQuery);
-                        }
-                    }
-
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.viewData = this.trailerData;
+                    this.backFilterQuery.trailerTypeIds = res.queryParams;
+                    this.trailerBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -383,30 +375,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private search(): void {
-        this.caSearchMultipleStatesService.currentSearchTableData
+        this.caSearchMultipleStatesService.selectedChips$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res) {
-                    this.backFilterQuery.active =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-
-                    this.backFilterQuery.pageIndex = 1;
-
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.backFilterQuery
-                    );
-
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            this.trailerBackFilter(searchEvent.query);
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            this.sendTrailerData();
-                        }
-                    }
-                }
+            .subscribe((res) => {
+                this.backFilterQuery.searchOne = res[0] ?? null;
+                this.backFilterQuery.searchTwo = res[1] ?? null;
+                this.backFilterQuery.searchThree = res[2] ?? null;
+                this.trailerBackFilter(this.backFilterQuery);
             });
     }
 
@@ -901,11 +876,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-                this.backFilterQuery = JSON.parse(
-                    JSON.stringify(
-                        TableDropdownComponentConstants.BACK_FILTER_QUERY
-                    )
-                );
             });
     }
 
@@ -921,6 +891,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = null;
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
 
@@ -940,6 +911,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendTrailerData();
             }
+
+            // on tab change we need to reset chips and trailer type filters
+            this.caSearchMultipleStatesService.deleteAllChips();
+            this.trailerService.updateTableFilters();
         }
         // View Mode
         else if (event.action === TableStringEnum.VIEW_MODE) {
