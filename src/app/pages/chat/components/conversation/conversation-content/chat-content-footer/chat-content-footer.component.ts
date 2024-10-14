@@ -4,6 +4,7 @@ import {
     OnInit,
     OnDestroy,
     ViewEncapsulation,
+    HostListener,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
@@ -82,7 +83,7 @@ export class ChatContentFooterComponent
     // Mentions
     public isMentionActive: boolean = false;
     public mentionSearchTerm!: string;
-    public mentionsList!: number[];
+    public mentionsList: CompanyUserShortResponse[] = [];
     public mentionParticipants?: CompanyUserShortResponse[];
 
     // Emoji
@@ -308,5 +309,25 @@ export class ChatContentFooterComponent
             .joinChannel(conversationId)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private appendMention(fullname: string) {
+        //Remove substring(1) if only name to remain
+        const currentValue =
+            this.messageForm
+                .get('message')
+                ?.value.replace(this.mentionSearchTerm.substring(1), '') || '';
+        this.messageForm.get('message')?.setValue(currentValue + fullname);
+    }
+
+    public selectMentionUser(participant: CompanyUserShortResponse): void {
+        if (!participant) return;
+        this.mentionsList = [...this.mentionsList, participant];
+        this.isMentionActive = false;
+        this.appendMention(participant?.fullName);
+    }
+
+    public clearInput(): void {
+        this.mentionsList = [];
     }
 }

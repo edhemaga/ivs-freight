@@ -158,6 +158,7 @@
                                         (attachments$ | async)?.length
                                     )
                                 "
+                                (clear)="clearInput()"
                                 (blurInput)="blurInput()"
                                 (focusInput)="focusInput()"
                                 (keyup.enter)="handleSend()"
@@ -357,7 +358,10 @@
                 trackBy: 'userId' | trackByProperty
             "
         >
-            <div class="mention-wrapper d-flex w-100">
+            <div
+                class="mention-wrapper d-flex w-100"
+                (click)="selectMentionUser(participant)"
+            >
                 <div class="mention-avatar">
                     <app-ca-profile-image
                         [avatarImg]="participant?.avatarFile?.url"

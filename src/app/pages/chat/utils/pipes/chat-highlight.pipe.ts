@@ -9,7 +9,9 @@ export class ChatHighlightPipe implements PipeTransform {
             return value;
         }
 
-        const escapedSearch = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').substring(1);
+        const escapedSearch = search
+            .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+            .substring(1);
         const regex = new RegExp(`(${escapedSearch})`, 'gi');
 
         const highlightedText = value.replace(regex, (match) => {
