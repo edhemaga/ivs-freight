@@ -359,13 +359,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.clearTrailerFilters();
     }
 
-    private clearTrailerFilters() {
+    private clearTrailerFilters(): void {
         this.filterService.updateTrailerFilter.subscribe(() => {
             this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
         });
     }
 
-    private clearTruckFilters() {
+    private clearTruckFilters(): void {
         this.filterService.updateTruckFilters.subscribe(() => {
             this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
         });
@@ -1313,7 +1313,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public clearAll(event?: Event | string, mod?: boolean) {
         if (event instanceof Event) {
             event.stopPropagation();
-    
+
             const element = event.target as HTMLElement;
             if (
                 !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
@@ -1322,7 +1322,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 return false;
             }
         }
-    
+
         if (mod) {
             this.hoverClose = false;
         }

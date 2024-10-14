@@ -25,6 +25,8 @@ import {
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({ providedIn: 'root' })

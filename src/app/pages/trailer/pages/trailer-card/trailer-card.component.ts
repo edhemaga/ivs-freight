@@ -5,6 +5,8 @@ import {
     OnInit,
 } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
@@ -33,7 +35,6 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
 
 //Svg Routes
 import { TrailerCardsSvgRoutes } from '@pages/trailer/pages/trailer-card/utils/svg-routes/trailer-cards-svg-routes';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-trailer-card',
