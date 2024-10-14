@@ -27,6 +27,10 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',
@@ -68,7 +72,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         private TruckTrailerService: TruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+        private dropDownService: DropDownService
     ) {}
 
     ngOnInit() {
@@ -99,10 +104,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case ActionTypesEnum.CLOSE: {
                 break;
             }
-            case 'save': {
+            case ActionTypesEnum.SAVE: {
                 // If Form not valid
                 if (this.fhwaInspectionForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fhwaInspectionForm);
@@ -123,6 +128,35 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+                break;
+            }
+            case ActionTypesEnum.DELETE: {
+                data = {
+                    ...this.editData.payload,
+                    id: this.editData.file_id,
+                };
+                const name = DropActionNameHelper.dropActionNameTrailerTruck(
+                    { type: TableStringEnum.DELETE_ITEM },
+                    TableStringEnum.INSPECTION_2
+                );
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: true,
+                    close: true,
+                });
+                this.dropDownService.dropActions(
+                    data,
+                    name,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    data,
+                    TableStringEnum.TRAILER_2
+                );
                 break;
             }
             default: {

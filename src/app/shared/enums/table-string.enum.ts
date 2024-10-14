@@ -146,7 +146,7 @@ export enum TableStringEnum {
     CDL = 'CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
-    DELETE_ITEM = 'delete-item',
+    DELETE_ITEM = 'delete-item', 
     LOAD_EXTRA_STOPS = ' EXTRA',
 
     PRINT = 'print',
@@ -261,6 +261,7 @@ export enum TableStringEnum {
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',
     INSPECTION = 'Inspection',
+    INSPECTION_2 = 'inspection',
 
     TITLE = 'Title',
 
