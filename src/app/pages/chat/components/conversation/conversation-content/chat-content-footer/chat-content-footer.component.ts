@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    OnDestroy,
+    ViewEncapsulation,
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
     BehaviorSubject,
@@ -41,10 +47,12 @@ import { ChatInput } from '@pages/chat/utils/configs';
     selector: 'app-chat-content-footer',
     templateUrl: './chat-content-footer.component.html',
     styleUrls: ['./chat-content-footer.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     @Input() public conversation!: ChatSelectedConversation;
     public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
@@ -119,12 +127,10 @@ export class ChatContentFooterComponent
             .subscribe((attachments: UploadFile[]) => {
                 this.attachments = attachments;
             });
-        this.chatStoreService.selectConversation().subscribe(
-            () => {
-                this.messageForm.reset();
-                this.isMentionActive = false;
-            }
-        )
+        this.chatStoreService.selectConversation().subscribe(() => {
+            this.messageForm.reset();
+            this.isMentionActive = false;
+        });
     }
 
     public handleSend(): void {

@@ -305,8 +305,9 @@
         color: $white;
         div {
             .highlight {
-                color: yellow !important;
-                background-color: red !important;
+                line-height: 18px;
+                color: $ta-blue-19 !important;
+                background-color: rgba(59, 115, 237, 0.2) !important;
                 font-weight: bold;
             }
         }
