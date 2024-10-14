@@ -5,9 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ChatHighlightPipe implements PipeTransform {
     transform(value: string, search: string): string {
-        if (!search) {
-            return value;
-        }
+        if (!search) return value;
 
         const escapedSearch = search
             .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
