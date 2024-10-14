@@ -44,8 +44,7 @@ import { ChatInput } from '@pages/chat/utils/configs';
 })
 export class ChatContentFooterComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     @Input() public conversation!: ChatSelectedConversation;
     public conversationRemoveInDate!: string;
     public currentUserTyping!: Observable<string>;
@@ -120,6 +119,12 @@ export class ChatContentFooterComponent
             .subscribe((attachments: UploadFile[]) => {
                 this.attachments = attachments;
             });
+        this.chatStoreService.selectConversation().subscribe(
+            () => {
+                this.messageForm.reset();
+                this.isMentionActive = false;
+            }
+        )
     }
 
     public handleSend(): void {
