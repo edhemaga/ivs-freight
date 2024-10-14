@@ -111,7 +111,6 @@ export class TruckService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (truck: any) => {
-                            // TODO: CALL NEW TRUCK FILTERS
                             if (!isDispatchCall) {
                                 this.truckActiveStore.add(truck);
                                 this.truckMinimalStore.add(truck);
