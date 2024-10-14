@@ -42,12 +42,16 @@
         overflow-y: scroll;
         justify-content: end;
         align-content: space-around !important;
+        padding-top: 4px;
 
-        app-chat-messages {
+        .messages-wrapper {
             flex: 1 1 auto;
             overflow-y: scroll;
         }
 
+        app-chat-messages {
+            height: 100%;
+        }
         app-chat-content-footer {
             margin: 12px 0 0 0;
         }

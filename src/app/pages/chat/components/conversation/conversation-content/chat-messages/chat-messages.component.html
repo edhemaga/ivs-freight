@@ -1,5 +1,8 @@
 <div class="messages-container d-flex">
-    <div class="messages-wrapper">
+    <div
+        class="messages-wrapper"
+        [ngStyle]="{ 'min-height': wrapperHeightPx + 'px' }"
+    >
         <!-- TODO This is for DEMO purposes, waiting for BE changes -->
         <!-- TODO Also change conversationType to conversationType: conversation.type -->
         <ng-container
@@ -146,8 +149,8 @@
         </ng-container>
         <ng-template #illustration>
             <img
-                width="80"
-                height="80"
+                width="74"
+                height="74"
                 [src]="chatPngRoutes.contact"
                 alt="Contact placeholder"
             />

@@ -63,6 +63,7 @@ export class ChatMessagesComponent
 
     @Input() public conversationParticipants!: CompanyUserShortResponse[];
     @Input() public conversation!: ConversationResponse;
+    @Input() public wrapperHeightPx!: number;
 
     //User data
     public getCurrentUserHelper = GetCurrentUserHelper;

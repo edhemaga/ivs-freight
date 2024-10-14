@@ -91,12 +91,15 @@
 
         <div class="content d-flex flex-column h-100 align-content-between">
             <!-- Messages  -->
-            <app-chat-messages
-                [conversation]="conversation$"
-                [conversationParticipants]="
-                    (conversation$ | async)?.participants
-                "
-            ></app-chat-messages>
+            <div class="messages-wrapper" #messagesComponent>
+                <app-chat-messages
+                    [conversation]="conversation$"
+                    [conversationParticipants]="
+                        (conversation$ | async)?.participants
+                    "
+                    [wrapperHeightPx]="wrapperHeightPx"
+                ></app-chat-messages>
+            </div>
 
             <!-- Footer -->
             <app-chat-content-footer
