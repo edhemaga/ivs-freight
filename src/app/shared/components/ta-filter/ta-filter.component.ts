@@ -241,7 +241,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public multiFormThirdFromActive: any = 0;
     public multiFormThirdToActive: any = 0;
     public locationRange: number = 25;
-    public hoverClose: any = false;
+    public isHoverClose: any = false;
     public areaFilterSelected: any = 'Location';
 
     public sliderData: Options = FilterConfigConstants.SLIDER_DATA;
@@ -1310,7 +1310,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.checkFilterActiveValue();
     }
 
-    public clearAll(event?: Event | string, mod?: boolean) {
+    public clearAll(event?: Event | string, mod?: boolean): void | boolean {
         if (event instanceof Event) {
             event.stopPropagation();
 
@@ -1318,14 +1318,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             if (
                 !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
                 !mod
-            ) {
-                return false;
-            }
+            )  return false; 
         }
 
-        if (mod) {
-            this.hoverClose = false;
-        }
+        if (mod) this.isHoverClose = false;
 
         if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue =

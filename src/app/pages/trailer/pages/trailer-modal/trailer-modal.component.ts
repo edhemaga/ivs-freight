@@ -68,6 +68,7 @@ import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/con
 
 // Enums
 import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -315,7 +316,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.updateOwnerIdValidators(isCompanyOwned, ownerIdControl);
                 if (!isCompanyOwned) {
                      // Clear the owner ID when not company-owned
-                    ownerIdControl.patchValue(''); 
+                    ownerIdControl.patchValue(TableStringEnum.EMPTY_STRING_PLACEHOLDER); 
                 }
             });
     }

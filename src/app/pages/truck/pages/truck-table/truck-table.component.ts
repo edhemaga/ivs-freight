@@ -953,7 +953,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-                this.tableService.sendSelectOrDeselect("deselect");
+                this.tableService.sendSelectOrDeselect(TableStringEnum.DESELECT);
             });
     }
 

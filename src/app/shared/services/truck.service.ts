@@ -148,7 +148,7 @@ export class TruckService implements OnDestroy {
         );
     }
 
-    public updateTableFilters() {
+    public updateTableFilters(): void {
         this.filterService.updateTruckFilters.next(true);
         this.filterService.getTruckData();
     }
