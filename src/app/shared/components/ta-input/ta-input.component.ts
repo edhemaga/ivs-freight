@@ -1183,7 +1183,6 @@ export class TaInputComponent
                 'multiformsecondto',
                 'multiformthirdfrom',
                 'multiformthirdto',
-                'vehicle-unit',
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
@@ -1354,7 +1353,7 @@ export class TaInputComponent
                     .getInputRegexPattern('license plate')
                     .test(String.fromCharCode(event.charCode))
             ) {
-                this.disableConsecutivelySpaces(event);
+                this.enableOneSpaceOnly(event);
                 return true;
             }
             event.preventDefault();
