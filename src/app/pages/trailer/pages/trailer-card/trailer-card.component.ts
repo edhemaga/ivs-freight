@@ -5,6 +5,8 @@ import {
     OnInit,
 } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
@@ -61,6 +63,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
     public trailerImageRoutes = TrailerCardsSvgRoutes;
 
     constructor(
+        private router: Router,
         //Services
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -124,6 +127,10 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
                         tabSelected: this.selectedTab,
                     }
                 );
+                break;
+            }
+            case TableStringEnum.VIEW_DETAILS: {
+                this.router.navigate([`/list/trailer/${event.id}/details`]);
                 break;
             }
             case TableStringEnum.ADD_REGISTRATION: {
