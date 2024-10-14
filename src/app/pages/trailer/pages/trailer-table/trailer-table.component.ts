@@ -967,16 +967,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         direction: string;
     }): void {
         if (event.action === TableStringEnum.SORT) {
-            if (event.direction) {
-                this.backFilterQuery.active =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                this.backFilterQuery.sort = event.direction;
-                this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = event.direction ?? null;
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.backFilterQuery.pageIndex = 1;
 
-                this.trailerBackFilter(this.backFilterQuery);
-            } else {
-                this.sendTrailerData();
-            }
+            this.trailerBackFilter(this.backFilterQuery);
         }
     }
 
