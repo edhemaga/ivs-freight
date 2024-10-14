@@ -100,7 +100,7 @@ export class TaInputService {
         } else if (
             ['address-unit', 'department', 'vehicle-unit'].includes(inputName)
         ) {
-            return /^[A-Za-z0-9/]*$/g;
+            return /^[A-Za-z0-9]*$/;
         } else if ('first name' === inputName) {
             return /^[A-Za-z',\s.-]*$/;
         } else if ('last name' === inputName) {

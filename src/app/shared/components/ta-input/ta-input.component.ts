@@ -1183,7 +1183,6 @@ export class TaInputComponent
                 'multiformsecondto',
                 'multiformthirdfrom',
                 'multiformthirdto',
-                'vehicle-unit',
             ].includes(this._inputConfig.name.toLowerCase())
         ) {
             // Only numbers
