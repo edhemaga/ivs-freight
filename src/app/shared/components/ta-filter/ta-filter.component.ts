@@ -241,7 +241,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public multiFormThirdFromActive: any = 0;
     public multiFormThirdToActive: any = 0;
     public locationRange: number = 25;
-    public hoverClose: any = false;
+    public isHoverClose: any = false;
     public areaFilterSelected: any = 'Location';
 
     public sliderData: Options = FilterConfigConstants.SLIDER_DATA;
@@ -353,6 +353,22 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.watchTableServiceValueChanges();
 
         this.watchLoadStatusFilterValueChanges();
+
+        this.clearTruckFilters();
+
+        this.clearTrailerFilters();
+    }
+
+    private clearTrailerFilters(): void {
+        this.filterService.updateTrailerFilter.subscribe(() => {
+            this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
+        });
+    }
+
+    private clearTruckFilters(): void {
+        this.filterService.updateTruckFilters.subscribe(() => {
+            this.clearAll(ToolbarFilterStringEnum.CLEAR_ALL, false);
+        });
     }
 
     private createForm(): void {
@@ -1294,14 +1310,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.checkFilterActiveValue();
     }
 
-    public clearAll(event?, mod?): void {
-        if (event) event.stopPropagation();
+    public clearAll(event?: Event | string, mod?: boolean): void | boolean {
+        if (event instanceof Event) {
+            event.stopPropagation();
 
-        if (mod) this.hoverClose = false;
+            const element = event.target as HTMLElement;
+            if (
+                !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
+                !mod
+            )  return false; 
+        }
 
-        const element = event.target;
-        if (!element.classList.contains(ToolbarFilterStringEnum.ACTIVE) && !mod)
-            false;
+        if (mod) this.isHoverClose = false;
 
         if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue =
@@ -1490,7 +1510,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.moneyFilterStatus = false;
         this.filterActiveArray = [];
         this.swipeActiveRange = 0;
-        this.autoClose.tooltip.close();
+        this.autoClose?.tooltip?.close();
         this.totalFiltersNum = 0;
         this.singleFormActive = false;
         const data = {
@@ -2351,6 +2371,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
                 } else if (!this.isDispatchFilter) {
+                    // This is called only on load for truck page,
                     this.filterService.getTruckData();
                 }
                 break;

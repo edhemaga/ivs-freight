@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -64,6 +65,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
+
+// Enums
+import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -301,27 +306,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private isCompanyOwned() {
+    private isCompanyOwned(): void {
+        const ownerIdControl = this.trailerForm.get(TrailerFormFieldEnum.OWNER_ID);
+    
         this.trailerForm
-            .get('companyOwned')
+            .get(TrailerFormFieldEnum.COMPANY_OWNED)
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (!value) {
-                    this.inputService.changeValidators(
-                        this.trailerForm.get('ownerId'),
-                        true,
-                        [],
-                        false
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.trailerForm.get('ownerId'),
-                        false,
-                        [],
-                        false
-                    );
+            .subscribe((isCompanyOwned: boolean) => {
+                this.updateOwnerIdValidators(isCompanyOwned, ownerIdControl);
+                if (!isCompanyOwned) {
+                     // Clear the owner ID when not company-owned
+                    ownerIdControl.patchValue(TableStringEnum.EMPTY_STRING_PLACEHOLDER); 
                 }
             });
+    }
+
+    private updateOwnerIdValidators(isCompanyOwned: boolean, control: AbstractControl): void {
+        const shouldBeRequired = !isCompanyOwned;
+        this.inputService.changeValidators(control, shouldBeRequired, [], false);
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {

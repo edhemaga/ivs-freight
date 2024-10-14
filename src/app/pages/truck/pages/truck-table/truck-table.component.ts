@@ -54,7 +54,6 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
 
 @Component({
     selector: 'app-truck-table',
@@ -254,13 +253,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    if (res.action === TableStringEnum.SET) {
-                        this.backFilterQuery.truckType = res.queryParams;
-                        this.truckBackFilter(this.backFilterQuery);
-                    }
-
-                    if (res.action === TableStringEnum.CLEAR)
-                        this.viewData = this.truckData;
+                    this.backFilterQuery.truckType = res.queryParams;
+                    this.truckBackFilter(this.backFilterQuery);
                 }
             });
     }
@@ -447,29 +441,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     private search(): void {
-        this.caSearchMultipleStatesService.currentSearchTableData
+        this.caSearchMultipleStatesService.selectedChips$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.backFilterQuery.active =
-                        this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                    this.backFilterQuery.pageIndex = 1;
+                this.backFilterQuery.searchOne = res[0] ?? null;
+                this.backFilterQuery.searchTwo = res[1] ?? null;
+                this.backFilterQuery.searchThree = res[2] ?? null;
 
-                    const searchEvent = MethodsGlobalHelper.tableSearch(
-                        res,
-                        this.backFilterQuery
-                    );
-
-                    if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.API) {
-                            this.truckBackFilter(searchEvent.query);
-                        } else if (
-                            searchEvent.action === TableStringEnum.STORE
-                        ) {
-                            this.sendTruckData();
-                        }
-                    }
-                }
+                this.truckBackFilter(this.backFilterQuery);
             });
     }
 
@@ -974,11 +953,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-                this.backFilterQuery = JSON.parse(
-                    JSON.stringify(
-                        TableDropdownComponentConstants.BACK_FILTER_QUERY
-                    )
-                );
+                this.tableService.sendSelectOrDeselect(TableStringEnum.DESELECT);
             });
     }
 
@@ -994,6 +969,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
+            this.backFilterQuery.sort = null;
 
             this.backFilterQuery.active =
                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
@@ -1015,6 +991,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 this.sendTruckData();
             }
+
+            // on tab change we need to reset chips and truck type filters
+            this.caSearchMultipleStatesService.deleteAllChips();
+            this.truckService.updateTableFilters();
         }
         // Change View Mode
         else if (event.action === TableStringEnum.VIEW_MODE) {
