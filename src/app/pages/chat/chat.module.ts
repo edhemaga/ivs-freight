@@ -55,6 +55,7 @@ import {
     ChatAnyExist,
     ChatRemoveFullnamePipe,
     ChatDepartmentIconPipe,
+    ChatHighlightPipe,
 } from '@pages/chat/utils/pipes';
 
 // Directives
@@ -103,6 +104,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         ChatAnyExist,
         ChatRemoveFullnamePipe,
         ChatDepartmentIconPipe,
+        ChatHighlightPipe,
     ],
     providers: [
         // Pipes

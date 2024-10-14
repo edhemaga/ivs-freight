@@ -15,6 +15,7 @@ import {
     ChatSelectedConversation,
 } from '@pages/chat/models';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { CompanyUserShortResponse } from 'appcoretruckassist';
 
 // Services
 import {
@@ -73,7 +74,9 @@ export class ChatContentFooterComponent
 
     // Mentions
     public isMentionActive: boolean = false;
+    public mentionSearchTerm!: string;
     public mentionsList!: number[];
+    public mentionParticipants?: CompanyUserShortResponse[];
 
     // Emoji
     public isEmojiSelectionActive: boolean = false;
@@ -105,6 +108,7 @@ export class ChatContentFooterComponent
         this.conversationRemoveInDate = moment(this.conversation?.updatedAt)
             .subtract(45, 'days')
             .format();
+        this.mentionParticipants = this.conversation.participants;
     }
 
     private getDataFromStore(): void {
@@ -220,11 +224,27 @@ export class ChatContentFooterComponent
                     ChatHubService.notifyTyping(this.conversation.id);
                     this.checkIfContainsLink(message);
                     const messageSplitted: string[] = message.split(' ');
-
+                    this.mentionSearchTerm =
+                        messageSplitted[messageSplitted?.length - 1];
                     this.isMentionActive =
-                        messageSplitted[messageSplitted.length - 1].includes(
-                            '@'
-                        );
+                        this.mentionSearchTerm?.includes('@');
+                    if (this.isMentionActive)
+                        this.mentionParticipants =
+                            this.conversation?.participants?.filter(
+                                (participant) =>
+                                    participant.fullName
+                                        ?.toLowerCase()
+                                        ?.trim()
+                                        ?.includes(
+                                            this.mentionSearchTerm
+                                                ?.toLowerCase()
+                                                ?.substring(1)
+                                        )
+                            );
+                } else {
+                    this.isMentionActive = false;
+                    this.mentionSearchTerm = '';
+                    this.mentionParticipants = this.conversation?.participants;
                 }
             });
     }
