@@ -110,10 +110,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string }) {
         switch (data.action) {
-            case ActionTypesEnum.CLOSE: {
+            case ActionTypesEnum.CLOSE: 
                 break;
-            }
-            case ActionTypesEnum.SAVE: {
+            case ActionTypesEnum.SAVE: 
                 // If Form not valid
                 if (this.registrationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.registrationForm);
@@ -135,8 +134,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            case ActionTypesEnum.DELETE: {
+            case ActionTypesEnum.DELETE: 
                 data = {
                     ...this.editData.payload,
                     id: this.editData.file_id,
@@ -164,10 +162,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     TableStringEnum.TRAILER_2
                 );
                 break;
-            }
-            default: {
+            default: 
                 break;
-            }
+            
         }
     }
 
