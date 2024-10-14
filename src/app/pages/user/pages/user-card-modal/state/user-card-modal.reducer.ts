@@ -16,9 +16,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 const getInitialState = (): UserCardData => {
     const savedState = localStorage.getItem(TableStringEnum.USER_CARD_STATE);
-    if (savedState) {
-        return JSON.parse(savedState);
-    }
+    if (savedState) return JSON.parse(savedState);
+    
     return {
         active: {
             numberOfRows: 4,

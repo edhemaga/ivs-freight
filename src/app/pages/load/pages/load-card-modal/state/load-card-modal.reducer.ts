@@ -16,12 +16,10 @@ import { LoadCardData } from '@pages/load/pages/load-card-modal/models/load-card
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-// Utility function to get initial state from localStorage
 const getInitialState = (): LoadCardData => {
     const savedState = localStorage.getItem(TableStringEnum.LOAD_CARD_STATE);
-    if (savedState) {
-        return JSON.parse(savedState);
-    }
+    if (savedState) return JSON.parse(savedState);
+
     return {
         active: {
             numberOfRows: 4,

@@ -16,9 +16,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 const getInitialState = (): TrailerCardData => {
     const savedState = localStorage.getItem(TableStringEnum.TRAILER_CARD_STATE);
-    if (savedState) {
-        return JSON.parse(savedState);
-    }
+    if (savedState) return JSON.parse(savedState);
+
     return {
         active: {
             numberOfRows: 4,
@@ -36,7 +35,10 @@ const getInitialState = (): TrailerCardData => {
 };
 
 const saveStateToLocalStorage = (state: TrailerCardData) => {
-    localStorage.setItem(TableStringEnum.TRAILER_CARD_STATE, JSON.stringify(state));
+    localStorage.setItem(
+        TableStringEnum.TRAILER_CARD_STATE,
+        JSON.stringify(state)
+    );
 };
 
 export const trailerCardModalReducer = createReducer(

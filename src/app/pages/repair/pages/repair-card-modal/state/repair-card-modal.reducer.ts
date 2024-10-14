@@ -17,9 +17,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 const getInitialState = (): RepairCardData => {
     const savedState = localStorage.getItem(TableStringEnum.REPAIR_CARD_STATE);
-    if (savedState) {
-        return JSON.parse(savedState);
-    }
+    if (savedState) return JSON.parse(savedState);
+    
     return {
         active: {
             numberOfRows: 4,
@@ -43,7 +42,10 @@ const getInitialState = (): RepairCardData => {
 };
 
 const saveStateToLocalStorage = (state: RepairCardData) => {
-    localStorage.setItem(TableStringEnum.REPAIR_CARD_STATE, JSON.stringify(state));
+    localStorage.setItem(
+        TableStringEnum.REPAIR_CARD_STATE,
+        JSON.stringify(state)
+    );
 };
 
 export const repairCardModalReducer = createReducer(
