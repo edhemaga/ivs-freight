@@ -115,8 +115,6 @@ export class TaInputService {
             return /^[A-Za-z0-9\s-]*$/;
         } else if ('year' === inputName) {
             return /^[0-9]$/;
-        } else if ('axles' === inputName) {
-            return /\b([1-9]|1[0-7])\b/g;
         } else if ('license plate' === inputName) {
             return /^[A-Za-z0-9\s-]$/;
         } else if ('description' === inputName) {
