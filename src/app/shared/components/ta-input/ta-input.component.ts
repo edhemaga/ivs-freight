@@ -1353,7 +1353,7 @@ export class TaInputComponent
                     .getInputRegexPattern('license plate')
                     .test(String.fromCharCode(event.charCode))
             ) {
-                this.disableConsecutivelySpaces(event);
+                this.enableOneSpaceOnly(event);
                 return true;
             }
             event.preventDefault();
