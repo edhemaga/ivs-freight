@@ -1683,43 +1683,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    this.brokerForm.patchValue({
-                        businessName: res.businessName,
-                        dbaName: res.dbaName,
-                        mcNumber: res.mcNumber,
-                        ein: res.ein,
-                        email: res.email,
-                        phone: res.phone,
-                        // Physical Address
-                        physicalAddress: res.mainAddress?.address ?? null,
-                        physicalAddressUnit:
-                            res.mainAddress?.addressUnit ?? null,
-                        physicalPoBox: res.mainPoBox?.poBox ?? null,
-                        physicalPoBoxCity: res.mainPoBox?.city ?? null,
-                        // Billing Address
-                        isCheckedBillingAddress:
-                            res.mainAddress.address ===
-                            res.billingAddress.address,
-                        billingAddress: res.billingAddress?.address ?? null,
-                        billingAddressUnit:
-                            res.billingAddress?.addressUnit ?? null,
-                        billingPoBox: res.billingPoBox?.poBox ?? null,
-                        billingPoBoxCity: res.billingPoBox?.city ?? null,
-                        creditType: res.creditType,
-                        creditLimit:
-                            res.creditType.name === 'Custom'
-                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                      res.creditLimit
-                                  )
-                                : null,
-                        availableCredit: res.availableCredit,
-                        payTerm: res.payTerm?.name ?? null,
-                        note: res.note,
-                        ban: res.ban,
-                        dnu: res.dnu,
-                        contacts: this.mapContacts(res.brokerContacts, true),
-                    });
-
                     this.brokerName = res.businessName;
 
                     this.modalService.changeModalStatus({
@@ -1811,7 +1774,51 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
 
-                    this.startFormChanges();
+                    setTimeout(() => {
+                        this.brokerForm.patchValue({
+                            businessName: res.businessName,
+                            dbaName: res.dbaName,
+                            mcNumber: res.mcNumber,
+                            ein: res.ein,
+                            email: res.email,
+                            phone: res.phone,
+                            // Physical Address
+                            physicalAddress: res.mainAddress?.address ?? null,
+                            physicalAddressUnit:
+                                res.mainAddress?.addressUnit ?? null,
+                            physicalPoBox: res.mainPoBox?.poBox ?? null,
+                            physicalPoBoxCity: res.mainPoBox?.city ?? null,
+                            // Billing Address
+                            isCheckedBillingAddress:
+                                res.mainAddress.address ===
+                                res.billingAddress.address,
+                            billingAddress: res.billingAddress?.address ?? null,
+                            billingAddressUnit:
+                                res.billingAddress?.addressUnit ?? null,
+                            billingPoBox: res.billingPoBox?.poBox ?? null,
+                            billingPoBoxCity: res.billingPoBox?.city ?? null,
+                            creditType: res.creditType,
+                            creditLimit:
+                                res.creditType.name === 'Custom'
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                          res.creditLimit
+                                      )
+                                    : null,
+                            availableCredit: res.availableCredit,
+                            payTerm: res.payTerm?.name ?? null,
+                            note: res.note,
+                            ban: res.ban,
+                            dnu: res.dnu,
+                            contacts: this.mapContacts(
+                                res.brokerContacts,
+                                true
+                            ),
+                        });
+
+                        this.startFormChanges();
+
+                        this.cdRef.detectChanges();
+                    }, 100);
 
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
