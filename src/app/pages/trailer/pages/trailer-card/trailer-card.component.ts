@@ -1,8 +1,10 @@
 import {
     Component,
+    EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -43,6 +45,9 @@ import { TrailerCardsSvgRoutes } from '@pages/trailer/pages/trailer-card/utils/s
     providers: [CardHelper],
 })
 export class TrailerCardComponent implements OnInit, OnDestroy {
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
+
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
@@ -83,7 +88,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
                 this.isAllCardsFlipp = res;
 
                 this.isCardFlippedCheckInCards = [];
-                this.cardHelper.isCardFlippedArrayComparasion = []; 
+                this.cardHelper.isCardFlippedArrayComparasion = [];
             });
     }
 
@@ -206,6 +211,13 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    public saveNoteValue(note: string, id: number): void {
+        this.saveValueNote.emit({
+            value: note,
+            id: id,
+        });
     }
 
     ngOnDestroy() {
