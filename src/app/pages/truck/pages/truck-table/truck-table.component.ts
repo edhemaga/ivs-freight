@@ -491,6 +491,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
+            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
         }
 
