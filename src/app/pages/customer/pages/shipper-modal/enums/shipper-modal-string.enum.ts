@@ -10,4 +10,8 @@ export enum ShipperModalString {
     LOCALITY = 'Locality',
     ADDRESS_1 = 'address',
     COUNTRY_ADDRESS = 'countryStateAddress',
+
+    CONTACTS = 'contacts',
+
+    EMPTY_STRING = '',
 }
