@@ -528,7 +528,7 @@
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData?.bannedArray?.filteredArray?.length > 0
         "
-        [type]="'archiveFilter'"
+        [type]="'ban-filter'"
         [icon]="'ic_banned_broker'"
         [filterTitle]="'Banned'"
         [dataArray]="this.activeTableData.bannedArray"
@@ -541,7 +541,7 @@
             options.toolbarActions.showBrokerFilter &&
             this.activeTableData?.dnuArray?.filteredArray?.length > 0
         "
-        [type]="'broker-filter'"
+        [type]="'dnu-filter'"
         [icon]="'ic_dnu_broker'"
         [filterTitle]="'Do not use'"
         [dataArray]="this.activeTableData.dnuArray"
@@ -557,7 +557,7 @@
                 options.toolbarActions.showFuelPermanentlyClosed) &&
             this.activeTableData?.closedArray?.filteredArray?.length > 0
         "
-        [type]="'broker-filter'"
+        [type]="'closed-filter'"
         [icon]="'ic_closed_broker'"
         [filterTitle]="'Permanently Closed'"
         [dataArray]="this.activeTableData.closedArray"

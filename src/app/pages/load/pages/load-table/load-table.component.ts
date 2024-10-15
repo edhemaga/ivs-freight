@@ -227,14 +227,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter((statusAction) => statusAction !== null)
             )
             .subscribe((status) => {
-                const foundObject = this.viewData.find(
+                const foundObject= this.viewData.find(
                     (item) => item.id === status.id
                 );
 
                 if (!foundObject) return;
 
+                // if user selects Assigend status and 
+                // Load does not already have a truck, trailer and driver assigned we should show load modal
+                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(status.dataBack)
+                const isTruckTrailerDriverSelected = !!foundObject.driver;
+
+                if(isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
+                    this.onTableBodyActions({type: TableStringEnum.EDIT, id: foundObject.id})
+                    return;
+                }
+
                 if (
                     [
+                        LoadStatusEnum[12],
                         LoadStatusEnum[52],
                         LoadStatusEnum[53],
                         LoadStatusEnum[54],

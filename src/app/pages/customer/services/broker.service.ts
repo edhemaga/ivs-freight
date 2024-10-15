@@ -28,6 +28,7 @@ import {
     BrokerAvailableCreditResponse,
     BrokerInvoiceAgeingResponse,
     BrokerLoadsResponse,
+    BrokerByIdResponse,
 } from 'appcoretruckassist';
 
 // Enums
@@ -202,16 +203,19 @@ export class BrokerService implements OnDestroy {
     public getBrokerById(
         brokerId: number,
         getIndex?: boolean
-    ): Observable<BrokerResponse> {
+    ): Observable<BrokerByIdResponse> {
         this.brokerMinimalQuery
             .selectAll()
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.brokerList = item));
+
         if (getIndex) {
             this.currentIndex = this.brokerList.findIndex(
                 (broker) => broker.id === brokerId
             );
+
             let last = this.brokerList.at(-1);
+
             if (last.id === brokerId) {
                 this.currentIndex = --this.currentIndex;
             } else {
@@ -530,27 +534,25 @@ export class BrokerService implements OnDestroy {
     }
 
     public addNewReview(data, currentId) {
-        let brokerData = JSON.parse(
-            JSON.stringify(
-                this.brokerItemStore?.getValue()?.entities[currentId]
-            )
-        );
+        this.getBrokerById(currentId).subscribe((res) => {
+            const brokerData = { ...res };
 
-        brokerData?.ratingReviews.push(data);
+            brokerData?.ratingReviews.push(data);
 
-        this.brokerItemStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
+            this.brokerItemStore.update(brokerData.id, {
+                ratingReviews: brokerData.ratingReviews,
+            });
 
-        this.brokerStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
+            this.brokerStore.update(brokerData.id, {
+                ratingReviews: brokerData.ratingReviews,
+            });
 
-        this.tableService.sendActionAnimation({
-            animation: TableStringEnum.UPDATE,
-            tab: TableStringEnum.BROKER,
-            data: brokerData,
-            id: brokerData.id,
+            this.tableService.sendActionAnimation({
+                animation: TableStringEnum.UPDATE,
+                tab: TableStringEnum.BROKER,
+                data: brokerData,
+                id: brokerData.id,
+            });
         });
     }
 

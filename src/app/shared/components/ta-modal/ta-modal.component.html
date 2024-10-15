@@ -487,10 +487,6 @@
                                     (click)="onAction('dnu')"
                                     class="modal-deactivate-btn"
                                     type="button"
-                                    ngbTooltip
-                                    mainTooltip="Do Not Use List"
-                                    tooltipBackground="#6c6c6c"
-                                    position="top"
                                 >
                                     {{
                                         isDNU
@@ -507,10 +503,6 @@
                                     (click)="onAction('bfb')"
                                     class="modal-deactivate-btn"
                                     type="button"
-                                    ngbTooltip
-                                    mainTooltip="Banned from Broker List"
-                                    tooltipBackground="#6c6c6c"
-                                    position="top"
                                 >
                                     {{
                                         isBFB
@@ -601,6 +593,13 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn modal-save-btn-add-new"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        isClickEnabledWhileFormInvalid ||
+                                        isModalValid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     saveAddNewSpinnerVisibility
@@ -743,7 +742,7 @@
                                 type="button"
                                 [ngStyle]="{
                                     'pointer-events':
-                                        enableClickWhileFormInvalid ||
+                                        isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
                                             : 'none'
@@ -885,7 +884,8 @@
                                     'Company Terminal',
                                     'Company Parking',
                                     'Company Office',
-                                    'delete-review'
+                                    'delete-review',
+                                    'User',
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"

@@ -1,6 +1,6 @@
 export enum ShipperModalString {
-    DETAILS = 'Details',
-    CONTACT = 'Contact',
+    DETAILS = 'Basic',
+    CONTACT = 'Additional',
 
     PHYSICAL_ADDRESS = 'Physical Address',
     COORDINATES = 'Coordinates',

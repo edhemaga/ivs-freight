@@ -766,7 +766,7 @@ export class DropDownService {
                 ...parkingObject,
                 name: parkingObject?.name,
             },
-        }; 
+        };
         if (event.type === DropActionsStringEnum.EDIT) {
             switch (names) {
                 case DropActionsStringEnum.EDIT_PARKING:

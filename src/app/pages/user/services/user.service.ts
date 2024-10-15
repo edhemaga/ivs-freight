@@ -180,34 +180,123 @@ export class UserService {
         //leave this any for now
         return this.userService.apiCompanyuserListDelete(usersToDelete).pipe(
             tap(() => {
-                const storeUsers =
-                    tabSelected === TableStringEnum.ACTIVE
-                        ? this.userActiveQuery.getAll()
-                        : this.userInactiveQuery.getAll();
+                const userCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+                );
 
-                storeUsers.forEach((user: UserResponse) => {
-                    usersToDelete.map((d) => {
-                        if (d === user.id) {
-                            if (tabSelected === TableStringEnum.ACTIVE)
-                                this.userActiveStore.remove(
-                                    ({ id }) => id === user.id
-                                );
-                            else
-                                this.userInactiveStore.remove(
-                                    ({ id }) => id === user.id
-                                );
-                        }
-                    });
+                usersToDelete.forEach((userId) => {
+                    tabSelected === TableStringEnum.ACTIVE
+                        ? this.userActiveStore.remove(({ id }) => id === userId)
+                        : this.userInactiveStore.remove(
+                              ({ id }) => id === userId
+                          );
+
+                    if (tabSelected === TableStringEnum.ACTIVE)
+                        userCount.active--;
+                    else if (tabSelected === TableStringEnum.INACTIVE)
+                        userCount.inactive--;
                 });
 
                 localStorage.setItem(
                     TableStringEnum.USER_TABLE_COUNT,
                     JSON.stringify({
-                        active: storeUsers.length,
+                        active: userCount.active,
+                        inactive: userCount.inactive,
                     })
                 );
             })
         );
+    }
+
+    public changeUserListStatus(
+        userIds: number[],
+        tabSelected: string
+    ): Observable<any> {
+        // leave this any for now
+        return this.userService
+            .apiCompanyuserStatusListPut({
+                ids: userIds,
+                activate:
+                    tabSelected === TableStringEnum.INACTIVE ? true : false,
+            })
+            .pipe(
+                tap(() => {
+                    const userCount = JSON.parse(
+                        localStorage.getItem(TableStringEnum.USER_TABLE_COUNT)
+                    );
+
+                    userIds.forEach((userId) => {
+                        let userToUpdate =
+                            tabSelected === TableStringEnum.ACTIVE
+                                ? this.userActiveQuery.getAll({
+                                      filterBy: ({ id }) => id === userId,
+                                  })
+                                : this.userInactiveQuery.getAll({
+                                      filterBy: ({ id }) => id === userId,
+                                  });
+
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.userActiveStore.remove(
+                                  ({ id }) => id === userId
+                              )
+                            : this.userInactiveStore.remove(
+                                  ({ id }) => id === userId
+                              );
+
+                        tabSelected === TableStringEnum.ACTIVE
+                            ? this.userInactiveStore.add({
+                                  ...userToUpdate[0],
+                                  status: 0,
+                              })
+                            : this.userActiveStore.add({
+                                  ...userToUpdate[0],
+                                  status: 1,
+                              });
+
+                        if (tabSelected === TableStringEnum.ACTIVE) {
+                            userCount.active--;
+                            userCount.inactive++;
+                        } else if (tabSelected === TableStringEnum.INACTIVE) {
+                            userCount.active++;
+                            userCount.inactive--;
+                        }
+                    });
+
+                    localStorage.setItem(
+                        TableStringEnum.USER_TABLE_COUNT,
+                        JSON.stringify({
+                            active: userCount.active,
+                            inactive: userCount.inactive,
+                        })
+                    );
+
+                    this.getUsers(
+                        tabSelected === TableStringEnum.ACTIVE ? 0 : 1,
+                        1,
+                        25
+                    ).subscribe({
+                        next: (usersList) => {
+                            let updatedUsers = usersList.pagination.data.filter(
+                                (user) => userIds.includes(user.id)
+                            );
+
+                            updatedUsers.map((user: any) => {
+                                //leave this any for now
+                                user = {
+                                    ...user,
+                                    fullName:
+                                        user.firstName + ' ' + user.lastName,
+                                };
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_MULTIPLE,
+                                data: updatedUsers,
+                            });
+                        },
+                    });
+                })
+            );
     }
 
     public getUserByid(id: number): Observable<CompanyUserResponse> {
@@ -264,7 +353,6 @@ export class UserService {
                     localStorage.setItem(
                         TableStringEnum.USER_TABLE_COUNT,
                         JSON.stringify({
-                            applicant: userCount.applicant,
                             active: userCount.active,
                             inactive: userCount.inactive,
                         })
