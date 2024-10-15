@@ -163,6 +163,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.brokerList.findIndex(
             (broker) => broker.id === data.id
         );
+
         this.initTableOptions(data);
 
         this.businessOpen = data?.status ? true : false;
