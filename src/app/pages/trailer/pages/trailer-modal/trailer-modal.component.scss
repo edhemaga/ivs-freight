@@ -6,3 +6,24 @@
     text-align: left;
     color: $ta-black;
 }
+
+.modal-body .origin-part-modal {
+    
+    .tab-switch-holder.type1-modal-popup {
+        margin-top: 0;
+    }
+
+    .form-container {
+        margin-top: 22px;
+    }
+
+    .trailer-modal-first-row {
+        margin-bottom: 36px;
+    }
+
+    .trailer-modal-second-row {
+        grid-template-columns: 76px 200px 156px;
+        column-gap: 12px;
+        margin-bottom: 36px;
+    }
+}

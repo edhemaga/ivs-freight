@@ -1,12 +1,13 @@
 <app-ta-modal
-    [modalTitle]="editData?.id  ? 'Edit Trailer' : 'Add Trailer'"
+    [modalTitle]="editData?.id ? 'Edit Trailer' : 'Add Trailer'"
     [editData]="editData"
     [editName]="editData?.data?.trailerNumber"
     [isModalValid]="trailerForm.valid && isFormDirty"
     [saveAndAddNew]="true"
     [disableDelete]="true"
+    [editDate]="editData?.id"
+    [topDivider]="false"
     (action)="onModalAction($event)"
-    [editDate]="editData?.id" 
 >
     <div origin class="origin-part-modal">
         <app-ta-tab-switch
@@ -55,31 +56,25 @@
                             "
                         ></app-ta-input-dropdown>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <app-ta-input
-                                formControlName="year"
-                                [inputConfig]="TrailerYearConfig"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-5">
-                            <app-ta-input
-                                formControlName="vin"
-                                [inputConfig]="TrailerVinConfig"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-4">
-                            <app-ta-input-dropdown
-                                formControlName="trailerMakeId"
-                                [template]="'svg-template'"
-                                [inputConfig]="TrailerMakeConfig"
-                                [options]="trailerMakeType"
-                                [activeItem]="selectedTrailerMake"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'trailer-make')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
+                    <div class="trailer-modal-second-row d-grid">
+                        <app-ta-input
+                            formControlName="year"
+                            [inputConfig]="TrailerYearConfig"
+                        ></app-ta-input>
+                        <app-ta-input
+                            formControlName="vin"
+                            [inputConfig]="TrailerVinConfig"
+                        ></app-ta-input>
+                        <app-ta-input-dropdown
+                            formControlName="trailerMakeId"
+                            [template]="'svg-template'"
+                            [inputConfig]="TrailerMakeConfig"
+                            [options]="trailerMakeType"
+                            [activeItem]="selectedTrailerMake"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'trailer-make')
+                            "
+                        ></app-ta-input-dropdown>
                     </div>
                     <div class="custom-model-color-year-length last-row">
                         <app-ta-input
@@ -335,7 +330,7 @@
                         <app-ta-input
                             formControlName="mileage"
                             [inputConfig]="TrailerMileageConfig"
-                        ></app-ta-input> 
+                        ></app-ta-input>
                         <app-ta-input
                             formControlName="fhwaExp"
                             [inputConfig]="TrailerFhwaExpConfig"
