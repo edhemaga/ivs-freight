@@ -534,7 +534,9 @@ export class BrokerService implements OnDestroy {
     }
 
     public addNewReview(data, currentId) {
-        this.getBrokerById(currentId).subscribe((brokerData) => {
+        this.getBrokerById(currentId).subscribe((res) => {
+            const brokerData = { ...res };
+
             brokerData?.ratingReviews.push(data);
 
             this.brokerItemStore.update(brokerData.id, {
