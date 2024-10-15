@@ -421,9 +421,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const tableView = JSON.parse(
             localStorage.getItem(TableStringEnum.TRAILER_TAB_VIEW)
         );
-
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
+            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
         }
 
