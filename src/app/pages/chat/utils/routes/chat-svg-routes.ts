@@ -70,4 +70,9 @@ export class ChatSvgRoutes {
     static notSelectedIllustrationIcon: string =
         'assets/svg/chat/not-selected-illustration-icon.svg';
     static replyXIcon: string = 'assets/svg/chat/reply-x-icon.svg';
+    static circleCheckmarkIcon: string =
+        'assets/svg/chat/checkmark-circle-icon.svg';
+    static radioCheckedButtonIcon: string =
+        'assets/svg/chat/radio-button-checked-icon.svg';
+    static checkMarkIcon: string = 'assets/svg/chat/checkmark-icon.svg';
 }

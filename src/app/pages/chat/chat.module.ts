@@ -34,6 +34,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { CaProfileImageComponent } from 'ca-components';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 // Store
 import { chatDataReducer } from '@pages/chat/store';
@@ -126,6 +127,7 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
         TaAppTooltipV2Component,
         TaUploadFilesComponent,
         CaProfileImageComponent,
+        TaInputRadiobuttonsComponent,
 
         // Pipes
         NameInitialsPipe,

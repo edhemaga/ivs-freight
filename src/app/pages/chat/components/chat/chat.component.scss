@@ -125,6 +125,25 @@
                     cursor: pointer;
                 }
             }
+
+            .preferences-wrapper {
+                width: 170px;
+                line-height: 18px;
+                position: absolute;
+                top: 47px;
+                right: 90px;
+                z-index: 1;
+                padding: 4px;
+                border-radius: 3px;
+                background-color: $ta-black-2;
+                color: $white;
+                font-size: 14px;
+
+                .item-wrapper {
+                    padding: 4px;
+                    margin: 4px auto;
+                }
+            }
         }
 
         .new-chat {
@@ -282,6 +301,41 @@
 
 .full-height {
     height: calc(100% - 48px);
+}
+
+.border-top {
+    border-top: 1p solid $ta-black;
+}
+
+.border-bottom {
+    border-bottom: 1px solid $ta-black;
+}
+
+.focused-background {
+    background-color: $ta-black;
+}
+
+.rotate-0deg {
+    transform: rotate(0deg);
+    transition: transform 0.25s ease-out;
+}
+
+.rotate-180deg {
+    transform: rotate(180deg);
+    transition: transform 0.25s ease-out;
+}
+
+.value-indicator {
+    width: 14px;
+    height: 14px;
+    background-color: $bw5;
+}
+
+.preference-item {
+    margin: 4px 2px;
+    &-name {
+        padding-left: 4px;
+    }
 }
 
 @media only screen and (max-width: 1280px) {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, takeUntil, tap } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
@@ -10,8 +10,8 @@ import {
     ChatTab,
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
+    ChatPreferenceItem,
 } from '@pages/chat/models';
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import {
@@ -24,6 +24,7 @@ import {
 
 // Constants
 import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
+import { ChatPreferencesConfig } from '@pages/chat/utils/constants/chat-preferences-config.constant';
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -39,17 +40,21 @@ import {
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
 // Animations
-import { chatFadeHorizontallyAnimation } from '@shared/animations';
+import {
+    chatFadeHorizontallyAnimation,
+    chatFadeVerticallyAnimation,
+} from '@shared/animations';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
-    animations: [chatFadeHorizontallyAnimation],
+    animations: [chatFadeHorizontallyAnimation, chatFadeVerticallyAnimation],
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy {
+    implements OnInit, OnDestroy
+{
     public title!: string;
 
     // Data
@@ -77,6 +82,8 @@ export class ChatComponent
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
+    public chatPreferencesConfig: ChatPreferenceItem[] =
+        ChatPreferencesConfig.items;
 
     // Assets and enums
     public chatSvgRoutes = ChatSvgRoutes;
@@ -186,7 +193,7 @@ export class ChatComponent
             });
     }
 
-    private getConversationData(): void { }
+    private getConversationData(): void {}
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -248,5 +255,9 @@ export class ChatComponent
     }
     public toggleChatPreferences(): void {
         this.isHamburgerMenuActive = !this.isHamburgerMenuActive;
+    }
+
+    public test() {
+        console.log(this.chatPreferencesConfig[1]);
     }
 }
