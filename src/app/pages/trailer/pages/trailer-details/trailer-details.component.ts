@@ -30,6 +30,7 @@ import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-d
 import { TrailerConfigData } from '@pages/trailer/pages/trailer-details/models/trailer-config-data.model';
 import { TrailerResponse } from 'appcoretruckassist';
 import { TrailerDetailsConfig } from '@pages/trailer/pages/trailer-details/models/trailer-details-config.model';
+import { TrailerUiData, TrailerCombinedData } from '@pages/trailer/pages/trailer-modal/models/';
 
 @Component({
     selector: 'app-trailer-details',
@@ -233,8 +234,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             trailerTitles: trailerTitles$,
         })
             .pipe(
-                tap((data: any) => {
-                    let trailerData = data.trailerData;
+                tap((data: TrailerCombinedData) => {
+                    let trailerData= data.trailerData as TrailerUiData;
                     trailerData.registrations = data.trailerRegistrations;
                     trailerData.inspections = data.trailerInspection;
                     trailerData.titles = data.trailerTitles;
