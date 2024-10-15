@@ -1833,11 +1833,13 @@ export class CustomerTableComponent
                         ...event,
                         type: TableStringEnum.EDIT,
                         openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT
-                                ? TableStringEnum.CONTRACT
+                            event.type === TableStringEnum.ADD_CONTRACT ||
+                            event.type === TableStringEnum.EDIT_CONTACT ||
+                            event.type === TableStringEnum.DELTETE_CONTACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }

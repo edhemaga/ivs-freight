@@ -72,7 +72,7 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-       // TaMapsComponent,
+        // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
         TaInputDropdownTableComponent,

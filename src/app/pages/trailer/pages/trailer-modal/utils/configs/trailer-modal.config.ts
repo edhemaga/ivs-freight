@@ -1,5 +1,5 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { TrailerConfigInterface } from '../../models/trailer-config.model';
+import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/models/';
 
 export class TrailerModalConfig {
     static getTrailerNumberConfig(options: TrailerConfigInterface): ITaInput {
