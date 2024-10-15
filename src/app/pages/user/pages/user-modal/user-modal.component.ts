@@ -39,7 +39,8 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
-import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -160,12 +161,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private inputService: TaInputService,
         private modalService: ModalService,
         private companyUserService: UserService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private confirmationActivationService: ConfirmationActivationService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -173,6 +178,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
         this.onBankSelected();
         this.trackUserPayroll();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {

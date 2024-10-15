@@ -603,6 +603,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 .toLowerCase(),
             tableMake: trailerMake?.name,
             tableModel: model,
+            color: color,
             tableColor: color?.code,
             colorName: color?.name,
             tabelLength: trailerLength?.name

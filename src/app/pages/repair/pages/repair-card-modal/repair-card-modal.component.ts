@@ -40,6 +40,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 import { RepairCardsModalData } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.constants';
 import { RepairShopCardsModalData } from '@pages/repair/pages/repair-card-modal/constants/repair-shop-cards-modal.constants';
 import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
+import { RepairCardsModalConfig } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.config';
 
 //Store
 import { Store } from '@ngrx/store';
@@ -264,7 +265,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
                 this.updateStore();
                 break;
             case CardsModalStringEnum.RESET_TO_DEFAULT:
-                this.setTodefaultCards();
+                this.resetToDefault();
                 break;
             default:
                 break;
@@ -283,28 +284,27 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
-    private setTodefaultCards(): void {
-        this.cardsForm.patchValue({
-            numberOfRows: 4,
+    private resetToDefault(): void {
+        const cardsData = {
+            numberOfRows: RepairCardsModalConfig.rows,
             checked: true,
-            frontSelectedTitle_0: this.setDefaultDataFront[0],
-            frontSelectedTitle_1: this.setDefaultDataFront[1],
-            frontSelectedTitle_2: this.setDefaultDataFront[2],
-            frontSelectedTitle_3: this.setDefaultDataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
+            front_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? RepairCardsModalConfig.displayRowsFrontActive
+                    : this.tabSelected === TableStringEnum.REPAIR_SHOP
+                    ? RepairCardsModalConfig.displayRowsFrontShop
+                    : RepairCardsModalConfig.displayRowsFrontInactive,
+            back_side:
+                this.tabSelected === TableStringEnum.ACTIVE
+                    ? RepairCardsModalConfig.displayRowsBackActive
+                    : this.tabSelected === TableStringEnum.REPAIR_SHOP
+                    ? RepairCardsModalConfig.displayRowsBackShop
+                    : RepairCardsModalConfig.displayRowsBackInactive,
+        };
 
-            backSelectedTitle_0: this.setDefaultDataBack[0],
-            backSelectedTitle_1: this.setDefaultDataBack[1],
-            backSelectedTitle_2: this.setDefaultDataBack[2],
-            backSelectedTitle_3: this.setDefaultDataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
-        });
+        this.createForm(cardsData);
 
         this.resetForm = false;
-
-        this.cdr.detectChanges();
     }
 
     public getFormValueOnInit(): void {
@@ -347,12 +347,20 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
 
     private compareDataInStoreAndDefaultData(): void {
         const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.front_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? RepairCardsModalConfig.displayRowsFrontActive
+                : this.tabSelected === TableStringEnum.REPAIR_SHOP
+                ? RepairCardsModalConfig.displayRowsFrontShop
+                : RepairCardsModalConfig.displayRowsFrontInactive,
             this.setDefaultDataFront
         );
 
         const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-            this.defaultCardsValues.back_side,
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? RepairCardsModalConfig.displayRowsBackActive
+                : this.tabSelected === TableStringEnum.REPAIR_SHOP
+                ? RepairCardsModalConfig.displayRowsBackShop
+                : RepairCardsModalConfig.displayRowsBackInactive,
             this.setDefaultDataBack
         );
 
@@ -361,11 +369,9 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             areBackSidesEqual &&
             this.cardsForm.get(CardsModalStringEnum.CHECKED).value &&
             this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS).value === 4
-        ) {
+        )
             this.resetForm = false;
-        } else {
-            this.resetForm = true;
-        }
+        else this.resetForm = true;
     }
 
     private setDefaultValues(
@@ -380,20 +386,14 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$), first())
                 .subscribe((data) => {
                     this.createForm(data);
+                    this.setDefaultDataFront = data.front_side;
+                    this.setDefaultDataBack = data.back_side;
                 })
         );
         this.cardsAllData =
             type !== TableStringEnum.REPAIR_SHOP
                 ? RepairCardsModalData.allDataLoad
                 : RepairShopCardsModalData.allDataLoad;
-        this.setDefaultDataFront =
-            type !== TableStringEnum.REPAIR_SHOP
-                ? RepairCardsModalData.frontDataLoad
-                : RepairShopCardsModalData.frontDataLoad;
-        this.setDefaultDataBack =
-            type !== TableStringEnum.REPAIR_SHOP
-                ? RepairCardsModalData.BackDataLoad
-                : RepairShopCardsModalData.BackDataLoad;
     }
 
     public identity(item: CardRows): number {
