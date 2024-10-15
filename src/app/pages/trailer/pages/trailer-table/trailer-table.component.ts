@@ -877,6 +877,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
+
+                this.tableService.sendSelectOrDeselect(
+                    TableStringEnum.DESELECT
+                );
             });
     }
 
