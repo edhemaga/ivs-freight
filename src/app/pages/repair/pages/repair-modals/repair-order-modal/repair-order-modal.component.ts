@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { Subject, takeUntil } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -85,6 +85,8 @@ import {
     RepairShopShortResponse,
     RepairItemResponse,
     TagResponse,
+    RepairShopService,
+    RepairShopMinimalListResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
@@ -98,6 +100,9 @@ import {
     ExtendedRepairShopResponse,
     AddUpdateRepairProperties,
 } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
+
+// svg routes
+import { RepairOrderModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/svg-routes/repair-order-modal-svg-routes';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -215,6 +220,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // services
         private inputService: TaInputService,
         private repairService: RepairService,
+        private repairShopController: RepairShopService,
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
@@ -990,105 +996,111 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         unitType?: string,
         onlyPMS?: boolean
     ): void {
-        this.repairService
-            .getRepairModalDropdowns(truckId, trailerId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: RepairModalResponse) => {
-                // items pm dropdown
-                const truckPmDropdownList = res?.pmTrucks?.map((pmTruck) => {
+        forkJoin([
+            this.repairService.getRepairModalDropdowns(truckId, trailerId),
+            this.repairShopController.apiRepairshopListMinimalGet()
+        ])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+            const getRepairModalData: RepairModalResponse = response[0];
+            const getRepairshopListMinimalData: RepairShopMinimalListResponse = response[1];
+
+            // items pm dropdown
+            const truckPmDropdownList = getRepairModalData?.pmTrucks?.map((pmTruck) => {
+                return {
+                    ...pmTruck,
+                    name: pmTruck.title,
+                    folder: RepairOrderModalStringEnum.COMMON,
+                    subFolder: RepairOrderModalStringEnum.REPAIR_PM,
+                };
+            });
+
+            const trailerPmDropdownList = getRepairModalData?.pmTrailers?.map(
+                (pmTrailer) => {
                     return {
-                        ...pmTruck,
-                        name: pmTruck.title,
+                        ...pmTrailer,
+                        name: pmTrailer.title,
                         folder: RepairOrderModalStringEnum.COMMON,
                         subFolder: RepairOrderModalStringEnum.REPAIR_PM,
                     };
-                });
-
-                const trailerPmDropdownList = res?.pmTrailers?.map(
-                    (pmTrailer) => {
-                        return {
-                            ...pmTrailer,
-                            name: pmTrailer.title,
-                            folder: RepairOrderModalStringEnum.COMMON,
-                            subFolder: RepairOrderModalStringEnum.REPAIR_PM,
-                        };
-                    }
-                );
-
-                this.truckTrailerPmDropdownLists = {
-                    truckPmDropdownList,
-                    trailerPmDropdownList,
-                };
-
-                // if only pm dropdowns
-                if (onlyPMS) return;
-
-                // pay types
-                this.payTypeDropdownList = res.payTypes;
-
-                // unit trucks
-                this.unitTrucks = res.trucks.map((item) => {
-                    return {
-                        ...item,
-                        name: item.truckNumber,
-                    };
-                });
-
-                // unit trailers
-                this.unitTrailers = res.trailers.map((item) => {
-                    return {
-                        ...item,
-                        name: item.trailerNumber,
-                    };
-                });
-
-                // unit dropdown
-                this.unitDropdownList =
-                    unitType === RepairOrderModalStringEnum.TRAILERS
-                        ? this.unitTrailers
-                        : this.unitTrucks;
-
-                // repair shops
-                this.repairShopDropdownList = res.repairShops.map(
-                    (repairShop) => {
-                        return {
-                            ...repairShop,
-                            additionalText: repairShop.address.address,
-                        };
-                    }
-                );
-
-                // services
-                this.services = res.serviceTypes.map((item) => {
-                    return {
-                        id: item.serviceType.id,
-                        serviceType: item.serviceType.name,
-                        svg: `assets/svg/common/repair-services/${item.logoName}`,
-                        active: false,
-                        isSelected: false,
-                    };
-                });
-
-                this.repairOrderForm
-                    .get(RepairOrderModalStringEnum.SERVICES_HELPER)
-                    .patchValue(JSON.stringify(this.services));
-
-                // tags
-                this.tags = res.tags;
-
-                // ------------- EDIT --------------
-                if (
-                    this.editData?.type?.includes(
-                        RepairOrderModalStringEnum.EDIT
-                    )
-                ) {
-                    this.isCardanimationDisabled = true;
-
-                    this.editRepairById(this.editData.data);
-                } else {
-                    this.startFormChanges();
                 }
+            );
+
+            this.truckTrailerPmDropdownLists = {
+                truckPmDropdownList,
+                trailerPmDropdownList,
+            };
+
+            // if only pm dropdowns
+            if (onlyPMS) return;
+
+            // pay types
+            this.payTypeDropdownList = getRepairModalData.payTypes;
+
+            // unit trucks
+            this.unitTrucks = getRepairModalData.trucks.map((item) => {
+                return {
+                    ...item,
+                    name: item.truckNumber,
+                };
             });
+
+            // unit trailers
+            this.unitTrailers = getRepairModalData.trailers.map((item) => {
+                return {
+                    ...item,
+                    name: item.trailerNumber,
+                };
+            });
+
+            // unit dropdown
+            this.unitDropdownList =
+                unitType === RepairOrderModalStringEnum.TRAILERS
+                    ? this.unitTrailers
+                    : this.unitTrucks;
+
+            // repair shops
+            this.repairShopDropdownList = getRepairshopListMinimalData?.pagination?.data?.map(
+                (repairShop) => {
+                    return {
+                        ...repairShop,
+                        // TODO: Wait until BE add address field
+                        // additionalText: repairShop.address
+                    };
+                }
+            );
+
+            // services
+            this.services = getRepairModalData.serviceTypes.map((item) => {
+                return {
+                    id: item.serviceType.id,
+                    serviceType: item.serviceType.name,
+                    svg: `${RepairOrderModalSvgRoutes.REPAIR_SERVICES_BASE_ROUTE}${item.logoName}`,
+                    active: false,
+                    isSelected: false,
+                };
+            });
+
+            this.repairOrderForm
+                .get(RepairOrderModalStringEnum.SERVICES_HELPER)
+                .patchValue(JSON.stringify(this.services));
+
+            // tags
+            this.tags = getRepairModalData.tags;
+
+            // ------------- EDIT --------------
+            if (
+                this.editData?.type?.includes(
+                    RepairOrderModalStringEnum.EDIT
+                )
+            ) {
+                this.isCardanimationDisabled = true;
+
+                this.editRepairById(this.editData.data);
+            } else {
+                this.startFormChanges();
+            }
+        });
     }
 
     public updateTags(): void {
