@@ -100,7 +100,7 @@ export class TaInputService {
         } else if (
             ['address-unit', 'department', 'vehicle-unit'].includes(inputName)
         ) {
-            return /^[A-Za-z0-9/]*$/g;
+            return /^[A-Za-z0-9]*$/;
         } else if ('first name' === inputName) {
             return /^[A-Za-z',\s.-]*$/;
         } else if ('last name' === inputName) {
@@ -115,10 +115,8 @@ export class TaInputService {
             return /^[A-Za-z0-9\s-]*$/;
         } else if ('year' === inputName) {
             return /^[0-9]$/;
-        } else if ('axles' === inputName) {
-            return /\b([1-9]|1[0-7])\b/g;
         } else if ('license plate' === inputName) {
-            return /^[A-Za-z0-9\s-]$/;
+            return /^[A-Za-z0-9\s]*$/;
         } else if ('description' === inputName) {
             return /^[A-Za-z0-9-.,/\s]*$/;
         } else if ('dba name' === inputName) {

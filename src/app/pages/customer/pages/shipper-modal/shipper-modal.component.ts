@@ -21,7 +21,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 
 // Validators
 import {
@@ -62,6 +62,7 @@ import {
 import { ShipperService } from '@pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -85,12 +86,11 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Constants
-import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
+import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
 // Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
-import { AddressService } from '@shared/services/address.service';
+import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -829,16 +829,20 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingFrom
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingFrom
-                                  ),
+                                  )
+                                : null,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                : res.shippingTo
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
                                       res.shippingTo
-                                  ),
+                                  )
+                                : null,
                         note: res.note,
                         shipperContacts: [],
                     });
@@ -991,8 +995,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             });
                             this.tabs = this.tabs.map((item, index) => {
                                 return {
-                                    ...item, 
-                                    checked: index === 1 && this.editData?.openedTab === 'Contact',
+                                    ...item,
+                                    checked:
+                                        index === 1 &&
+                                        this.editData?.openedTab === 'Contact',
                                 };
                             });
                             this.disableCardAnimation = true;
@@ -1073,8 +1079,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     shippingOpenTwentyFourHours: this.shipperForm.get(
                         'shippingOpenTwentyFourHours'
                     ).value,
-                    shippingFrom: this.shipperForm.get('shippingFrom').value,
-                    shippingTo: this.shipperForm.get('shippingTo').value,
+                    shippingFrom:
+                        this.shipperForm.get('shippingFrom').value ?? null,
+                    shippingTo:
+                        this.shipperForm.get('shippingTo').value ?? null,
                 };
             }
         }

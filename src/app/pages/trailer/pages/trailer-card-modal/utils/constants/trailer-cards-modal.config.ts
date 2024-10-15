@@ -14,8 +14,7 @@ export class TrailerCardsModalConfig {
         },
         {
             title: 'Make',
-            key: 'trailerMake',
-            secondKey: 'name',
+            key: 'tableMake',
         },
         {
             title: 'Model',
@@ -23,8 +22,7 @@ export class TrailerCardsModalConfig {
         },
         {
             title: 'Length',
-            key: 'trailerLength',
-            secondKey: 'name',
+            key: 'tabelLength',
         },
         null,
         null,
@@ -66,8 +64,7 @@ export class TrailerCardsModalConfig {
         },
         {
             title: 'Make',
-            key: 'trailerMake',
-            secondKey: 'name',
+            key: 'tableMake',
         },
         {
             title: 'Model',
@@ -75,8 +72,7 @@ export class TrailerCardsModalConfig {
         },
         {
             title: 'Length',
-            key: 'trailerLength',
-            secondKey: 'name',
+            key: 'tabelLength',
         },
         null,
         null,

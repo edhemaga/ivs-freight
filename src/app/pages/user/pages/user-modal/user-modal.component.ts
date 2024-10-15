@@ -39,7 +39,8 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
-import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -72,6 +73,7 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -159,12 +161,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private inputService: TaInputService,
         private modalService: ModalService,
         private companyUserService: UserService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private confirmationActivationService: ConfirmationActivationService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -172,6 +178,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
         this.onBankSelected();
         this.trackUserPayroll();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -207,25 +232,20 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TableStringEnum.DEACTIVATE:
-                this.ngbActiveModal.close();
-
                 this.modalService.openModal(
-                    ConfirmationModalComponent,
+                    ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: TableStringEnum.USER_1,
-                        type: this.selectedTab
-                            ? TableStringEnum.DEACTIVATE
-                            : TableStringEnum.ACTIVATE,
-                        image: true,
+                        template: TableStringEnum.USER,
+                        subType: TableStringEnum.USER,
+                        type: TableStringEnum.DEACTIVATE,
+                        tableType: TableStringEnum.USER_1,
                     }
                 );
                 break;
 
             case TableStringEnum.DELETE:
-                this.ngbActiveModal.close();
-
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -644,11 +664,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             companyOfficeId: this.selectedOffice
                 ? this.selectedOffice.id
                 : null,
-            userType: this.selectedUserType
-                ? this.selectedUserType.name === 'Owner'
-                    ? this.selectedUserType.id
-                    : 0
-                : 0,
             isAdmin: this.selectedUserAdmin
                 ? this.selectedUserAdmin.name === 'Admin'
                 : false,
