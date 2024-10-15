@@ -1064,8 +1064,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 (repairShop) => {
                     return {
                         ...repairShop,
-                        // TODO: Wait until BE add address field
-                        // additionalText: repairShop.address
+                        additionalText: repairShop.address?.address
                     };
                 }
             );

@@ -13,6 +13,7 @@ import { FileResponse } from './fileResponse';
 import { RatingReviewResponse } from './ratingReviewResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
+import { OpenHoursTodayResponse } from './openHoursTodayResponse';
 import { EnumValue } from './enumValue';
 import { RepairShopContactResponse } from './repairShopContactResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
@@ -34,7 +35,7 @@ export interface RepairShopResponse {
     pinned?: boolean;
     order?: number;
     cost?: number;
-    openHoursToday?: string | null;
+    openHoursToday?: OpenHoursTodayResponse;
     note?: string | null;
     companyOwned?: boolean;
     bank?: BankResponse;

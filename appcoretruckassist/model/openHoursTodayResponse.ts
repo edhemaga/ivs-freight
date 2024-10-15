@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStatus } from './loadStatus';
 
 
-export interface RevertLoadStatusCommand { 
-    id?: number;
-    status?: LoadStatus;
-    dispatchId?: number | null;
+export interface OpenHoursTodayResponse { 
+    status?: string | null;
+    info?: string | null;
 }
 
