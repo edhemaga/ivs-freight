@@ -344,14 +344,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 ? TableStringEnum.ADDITIONAL
                 : TableStringEnum.REVIEW;
 
-        let eventObject = {
+        const eventObject = {
             data: undefined,
             id: this.brokerId,
             type: eventType,
             openedTab,
         };
 
-        let brokerData = this.brokerObject
+        const brokerData = this.brokerObject
             ? this.brokerObject
             : this.brokerConfData;
 
