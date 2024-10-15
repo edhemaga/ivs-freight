@@ -909,6 +909,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.selectedPhysicalAddressTab = res.locationType.id;
 
                     this.setAddressValidations(res.locationType.name);
+
                     if (this.selectedPhysicalAddressTab === 2)
                         this.shipperForm.patchValue({
                             longitude: res.longitude,
@@ -916,6 +917,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         });
 
                     this.startFormChanges();
+
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
                     }, 1000);
@@ -936,7 +938,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     // From Another Modal Data
                     if (this.editData?.type === 'edit-contact') {
                         this.isCardAnimationDisabled = true;
+
                         this.editShipperById(this.editData.id);
+
                         setTimeout(() => {
                             this.tabs = this.tabs.map((item, index) => {
                                 return {
@@ -953,7 +957,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     else {
                         if (this.editData?.id) {
                             this.isCardAnimationDisabled = true;
+
                             this.editShipperById(this.editData.id);
+
                             // this.tabs.push({
                             //     id: 3,
                             //     name: 'Review',
@@ -964,30 +970,29 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
+                    if (this.editData) {
+                        this.tabs = this.tabs.map((tab) => ({
+                            ...tab,
+                            checked: tab.name === this.editData?.openedTab,
+                        }));
+                    }
+
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {
                             this.tabChange({
                                 id:
-                                    this.editData?.openedTab === 'Contact'
+                                    this.editData?.openedTab === 'Additional'
                                         ? 2
                                         : this.editData?.openedTab === 'Review'
                                         ? 3
                                         : 1,
                             });
-                            this.tabs = this.tabs.map((item, index) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        index === 1 &&
-                                        this.editData?.openedTab === 'Contact',
-                                };
-                            });
+
                             this.isCardAnimationDisabled = true;
                         });
                     }
                 },
-                error: () => {},
             });
     }
 

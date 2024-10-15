@@ -239,45 +239,54 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onDropActions(event: any): void {
-        this.getShipperById(event.id);
+        let eventType = '';
 
-        let eventType = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         if (
-            event.type == TableStringEnum.CONTRACT ||
-            event.type == TableStringEnum.EDIT ||
-            event.type == TableStringEnum.REVIEW
+            event.type === TableStringEnum.CONTRACT ||
+            event.type === TableStringEnum.EDIT ||
+            event.type === TableStringEnum.REVIEW
         ) {
             eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
 
-        let eventObject = {
+        const openedTab =
+            event.type === TableStringEnum.EDIT
+                ? TableStringEnum.BASIC
+                : event.type === TableStringEnum.CONTRACT
+                ? TableStringEnum.ADDITIONAL
+                : TableStringEnum.REVIEW;
+
+        const eventObject = {
             data: undefined,
-            id: event.id,
+            id: this.shipperId,
             type: eventType,
-            openedTab: event.type,
+            openedTab,
         };
 
-        let shipperData = this.shipperObject
+        const brokerData = this.shipperObject
             ? this.shipperObject
             : this.shipperConfigData;
-        setTimeout(() => {
-            this.dropDownService.dropActionsHeaderShipperBroker(
-                eventObject,
-                shipperData,
-                TableStringEnum.SHIPPER
-            );
-        }, 100);
+
+        this.dropDownService.dropActionsHeaderShipperBroker(
+            eventObject,
+            brokerData,
+            TableStringEnum.SHIPPER
+        );
     }
 
     public onModalAction(event: any): void {
-        let eventObject = {
+        const eventObject = {
             data: undefined,
             id: this.shipperId,
             type: TableStringEnum.EDIT,
-            openedTab: event,
+            openedTab:
+                event === TableStringEnum.CONTRACT
+                    ? TableStringEnum.ADDITIONAL
+                    : event,
         };
+
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
