@@ -534,27 +534,23 @@ export class BrokerService implements OnDestroy {
     }
 
     public addNewReview(data, currentId) {
-        let brokerData = JSON.parse(
-            JSON.stringify(
-                this.brokerItemStore?.getValue()?.entities[currentId]
-            )
-        );
+        this.getBrokerById(currentId).subscribe((brokerData) => {
+            brokerData?.ratingReviews.push(data);
 
-        brokerData?.ratingReviews.push(data);
+            this.brokerItemStore.update(brokerData.id, {
+                ratingReviews: brokerData.ratingReviews,
+            });
 
-        this.brokerItemStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
+            this.brokerStore.update(brokerData.id, {
+                ratingReviews: brokerData.ratingReviews,
+            });
 
-        this.brokerStore.update(brokerData.id, {
-            ratingReviews: brokerData.ratingReviews,
-        });
-
-        this.tableService.sendActionAnimation({
-            animation: TableStringEnum.UPDATE,
-            tab: TableStringEnum.BROKER,
-            data: brokerData,
-            id: brokerData.id,
+            this.tableService.sendActionAnimation({
+                animation: TableStringEnum.UPDATE,
+                tab: TableStringEnum.BROKER,
+                data: brokerData,
+                id: brokerData.id,
+            });
         });
     }
 
