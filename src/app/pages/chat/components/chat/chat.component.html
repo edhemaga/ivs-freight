@@ -90,6 +90,12 @@
 
             <div
                 class="icon-wrapper d-flex justify-content-center align-items-center"
+                [ngStyle]="{
+                    'background-color': isHamburgerMenuActive
+                        ? '#424242'
+                        : '#fff'
+                }"
+                (click)="toggleChatPreferences()"
             >
                 <svg-icon
                     class="d-flex justify-content-center align-items-center"
@@ -217,4 +223,8 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #preferences let-item="item">
+    <div></div>
 </ng-template>

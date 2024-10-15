@@ -49,8 +49,7 @@ import { chatFadeHorizontallyAnimation } from '@shared/animations';
 })
 export class ChatComponent
     extends UnsubscribeHelper
-    implements OnInit, OnDestroy
-{
+    implements OnInit, OnDestroy {
     public title!: string;
 
     // Data
@@ -74,6 +73,7 @@ export class ChatComponent
     public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
 
     public isAttachmentUploadActive$: Observable<boolean>;
+    public isHamburgerMenuActive: boolean = false;
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
@@ -186,7 +186,7 @@ export class ChatComponent
             });
     }
 
-    private getConversationData(): void {}
+    private getConversationData(): void { }
 
     private getUnreadCount(
         users: CompanyUserChatResponsePaginationReduced,
@@ -245,5 +245,8 @@ export class ChatComponent
                 this.chatStoreService.setProfileDetails(data);
             })
             .add(() => this.chatStoreService.displayProfileDetails());
+    }
+    public toggleChatPreferences(): void {
+        this.isHamburgerMenuActive = !this.isHamburgerMenuActive;
     }
 }
