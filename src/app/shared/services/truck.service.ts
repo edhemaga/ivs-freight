@@ -30,6 +30,7 @@ import {
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckService implements OnDestroy {
@@ -58,7 +59,9 @@ export class TruckService implements OnDestroy {
         private TitleService: TitleService,
         private InspectionService: InspectionService,
         private formDataService: FormDataService,
-        private dispatcherService: DispatcherService
+        private dispatcherService: DispatcherService,
+
+        private filterService: FilterStateService
     ) {}
 
     //Get Truck Minimal List
@@ -133,6 +136,8 @@ export class TruckService implements OnDestroy {
                                     id: truck.id,
                                 });
                                 this.router.navigate(['/list/truck']);
+                                // update truck filters
+                                this.updateTableFilters();
                             } else {
                                 this.dispatcherService.updateDispatcherData =
                                     true;
@@ -141,6 +146,11 @@ export class TruckService implements OnDestroy {
                     });
             })
         );
+    }
+
+    public updateTableFilters(): void {
+        this.filterService.updateTruckFilters.next(true);
+        this.filterService.getTruckData();
     }
 
     public updateTruck(data: any): Observable<any> {
@@ -183,7 +193,7 @@ export class TruckService implements OnDestroy {
                                 data: truck,
                                 id: truck.id,
                             });
-
+                            this.updateTableFilters();
                             subTruck.unsubscribe();
                         },
                     });
@@ -231,6 +241,7 @@ export class TruckService implements OnDestroy {
                             });
 
                             subTruck.unsubscribe();
+                            this.updateTableFilters();
                         },
                     });
             })
@@ -296,6 +307,7 @@ export class TruckService implements OnDestroy {
                         inactive: truckCount.inactive,
                     })
                 );
+                this.updateTableFilters();
             })
         );
     }
@@ -335,6 +347,7 @@ export class TruckService implements OnDestroy {
                         inactive: truckCount.inactive,
                     })
                 );
+                this.updateTableFilters();
             })
         );
         return of(null);
@@ -439,6 +452,8 @@ export class TruckService implements OnDestroy {
                             subTruck.unsubscribe();
                         },
                     });
+
+                this.updateTableFilters();
             })
         );
     }
@@ -529,6 +544,8 @@ export class TruckService implements OnDestroy {
                     data: truck,
                     id: truck.id,
                 });
+
+                this.updateTableFilters();
             });
     }
 

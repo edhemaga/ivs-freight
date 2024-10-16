@@ -64,6 +64,7 @@ export enum DispatchTableStringEnum {
     PICKUP = 'PICKUP',
     ALL_ASSIGNED = 'All Assigned',
     DISPATCH_TABLE_CONFIG = 'dispatch-table-config',
+    DISPATCH_TABLE_COLUMN_WIDTHS = 'dispatch-table-column-widths',
     PRE_TRIP = 'PreTrip',
     CITY = 'city',
 
@@ -78,6 +79,10 @@ export enum DispatchTableStringEnum {
     PICKUP_DELIVERY = 'Pickup & Delivery',
     PICKUP_DELIVERY_2 = 'Pickup&Delivery',
     PICKUP_DELIVERY_3 = 'pickup_delivery',
+    FIRST_NAME = 'firstName',
+    TRUCK_NUMBER = 'truckNumber',
+    TRAILER_NUMBER = 'trailerNumber',
+    SLOT_NUMBER = 'slotNumber',
 
     // Progress bar
     NO_GPS_DEVICE = 'NO GPS DEVICE',

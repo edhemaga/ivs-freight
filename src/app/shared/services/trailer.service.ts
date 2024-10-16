@@ -28,6 +28,10 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+
+// enums
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
@@ -53,7 +57,8 @@ export class TrailerService implements OnDestroy {
         private formDataService: FormDataService,
         private dispatcherService: DispatcherService,
         private trailerService: TrailerTService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private filterService: FilterStateService
     ) {}
 
     /* Observable<CreateTrailerResponse> */
@@ -90,6 +95,7 @@ export class TrailerService implements OnDestroy {
                                     data: trailer,
                                     id: trailer.id,
                                 });
+                                this.updateTableFilters();
                             } else {
                                 this.dispatcherService.updateDispatcherData =
                                     true;
@@ -98,6 +104,11 @@ export class TrailerService implements OnDestroy {
                     });
             })
         );
+    }
+
+    public updateTableFilters(): void {
+        this.filterService.updateTrailerFilter.next(true);
+        this.filterService.getTrailerData();
     }
 
     //Get Trailers Minimal list
@@ -181,6 +192,7 @@ export class TrailerService implements OnDestroy {
                                 id: trailer.id,
                             });
 
+                            this.updateTableFilters();
                             subTrailer.unsubscribe();
                         },
                     });
@@ -232,6 +244,7 @@ export class TrailerService implements OnDestroy {
                                 id: trailer.id,
                             });
 
+                            this.updateTableFilters();
                             subTrailer.unsubscribe();
                         },
                     });
@@ -271,6 +284,7 @@ export class TrailerService implements OnDestroy {
                         inactive: trailerCount.inactive,
                     })
                 );
+                this.updateTableFilters();
             })
         );
     }
@@ -310,6 +324,8 @@ export class TrailerService implements OnDestroy {
                         inactive: trailerCount.inactive,
                     })
                 );
+
+                this.updateTableFilters();
             })
         );
     }
@@ -482,6 +498,7 @@ export class TrailerService implements OnDestroy {
                                     id: trailerId,
                                 });
 
+                                this.updateTableFilters();
                                 subTrailer.unsubscribe();
                             },
                         });
@@ -538,11 +555,37 @@ export class TrailerService implements OnDestroy {
                                     id: trailer.id,
                                 });
 
+                                this.updateTableFilters();
                                 subTrailer.unsubscribe();
                             },
                         });
                 },
             });
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        const storeTrailers =
+            data.selectedTab === TableActionsStringEnum.ACTIVE
+                ? this.trailerActiveQuery.getAll()
+                : this.trailerInactiveQuery.getAll();
+
+        storeTrailers.map((trailer) => {
+            if (data.id === trailer.id) {
+                data.selectedTab === TableActionsStringEnum.ACTIVE
+                    ? this.trailerActiveStore.update(trailer.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }))
+                    : this.trailerInactiveStore.update(trailer.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }));
+            }
+        });
     }
 
     ngOnDestroy(): void {

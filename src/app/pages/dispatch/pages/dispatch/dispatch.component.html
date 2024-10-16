@@ -24,9 +24,7 @@
                     [shortLists]="dispatchBoardSmallList | async"
                     [toolbarWidth]="maxToolbarWidth"
                     [columns]="columns"
-                    [isAllBoardsList]="
-                        selectedDispatcher?.name === 'All Boards'
-                    "
+                    [isAllBoardsList]="isAllBoardsList"
                     [isUnlockable]="selectedDispatcher?.canUnlock"
                     [isNoteExpanded]="isNoteExpanded"
                     [sortBy]="sortBy"

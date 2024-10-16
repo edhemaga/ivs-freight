@@ -412,11 +412,47 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = loadNum;
                 break;
             case 'USER':
-                let userName =
-                    this.httpRequest.body.firstName +
-                    ' ' +
-                    this.httpRequest.body.lastName;
-                this.message = userName;
+                let userName = '';
+
+                if (this.httpRequest.body?.has?.('firstName'))
+                    userName = this.httpRequest.body.getAll('firstName')[0];
+
+                let userLastName = '';
+
+                if (this.httpRequest.body?.has?.('lastName'))
+                    userLastName = this.httpRequest.body.getAll('lastName')[0];
+
+                let userNameFull = '';
+
+                if (userName && userLastName)
+                    userNameFull = userName + ' ' + userLastName;
+
+                let isUserActive = this.DetailsDataService.mainData?.status
+                    ? 1
+                    : 0;
+
+                if (!userNameFull)
+                    userNameFull = this.DetailsDataService.mainData?.fullName
+                        ? this.DetailsDataService.mainData?.fullName
+                        : this.DetailsDataService.mainData?.firstName +
+                          ' ' +
+                          this.DetailsDataService.mainData?.lastName;
+
+                if (this.httpRequest.method === 'PUT') {
+                    if (apiEndPoint.indexOf('status') > -1) {
+                        if (isUserActive === 1)
+                            this.actionTitle =
+                                this.toastrType === 'toast-error'
+                                    ? 'DEACTIVE'
+                                    : 'DEACTIVATED';
+                        else
+                            this.actionTitle =
+                                this.toastrType === 'toast-error'
+                                    ? 'ACTIVE'
+                                    : 'ACTIVATED';
+                    }
+                }
+                this.message = userNameFull;
                 break;
             case 'DRIVERS':
                 if (this.httpRequest.body?.ids)
@@ -639,10 +675,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             case 'SHIPPER':
             case 'BROKER':
                 let messageValue = '';
-                if (this.httpRequest.body && !this.httpRequest.body.id) {
-                    messageValue = this.httpRequest.body.getAll('dbaName')[0]
-                        ? this.httpRequest.body.getAll('dbaName')[0]
-                        : this.httpRequest.body.getAll('businessName')[0];
+                if (this.httpRequest.body && !this.httpRequest.body?.id) {
+                    messageValue = this.httpRequest?.body?.getAll?.('dbaName')?.[0]
+                        ? this.httpRequest?.body?.getAll?.('dbaName')?.[0]
+                        : this.httpRequest?.body?.getAll?.('businessName')?.[0];
                 }
 
                 if (!messageValue) {
@@ -872,6 +908,9 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
+                
+                if(!this.httpRequest.body) break;
+                
                 if (
                     this.httpRequest.body.getAll('unitType')[0] == 'Truck' ||
                     this.httpRequest.body.getAll('truckId')[0]

@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
 
-
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
 
 // Store
-import {
-    BrokerState,
-    BrokerStore,
-} from '@pages/customer/state/broker-state/broker.store';
+import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
+
+// models
+import { GetBrokerListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerResolver  {
+export class BrokerResolver {
     constructor(
         // Services
         private brokerService: BrokerService,
-        private tableService: TruckassistTableService,
 
         // Store
         private brokerStore: BrokerStore
     ) {}
-    resolve(): Observable<any> {
-        return forkJoin([
-            this.brokerService.getBrokerList(
+    resolve(): Observable<GetBrokerListResponse> {
+        return this.brokerService
+            .getBrokerList(
                 undefined,
                 undefined,
                 undefined,
@@ -42,29 +39,19 @@ export class BrokerResolver  {
                 undefined,
                 1,
                 25
-            ),
-            this.tableService.getTableConfig(4),
-        ]).pipe(
-            tap(([brokerPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'brokerShipperTableCount',
-                    JSON.stringify({
-                        broker: brokerPagination.brokerCount,
-                        shipper: brokerPagination.shipperCount,
-                    })
-                );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
+            )
+            .pipe(
+                tap((brokerPagination) => {
                     localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
+                        'brokerShipperTableCount',
+                        JSON.stringify({
+                            broker: brokerPagination.brokerCount,
+                            shipper: brokerPagination.shipperCount,
+                        })
                     );
-                }
 
-                this.brokerStore.set(brokerPagination.pagination.data);
-            })
-        );
+                    this.brokerStore.set(brokerPagination.pagination.data);
+                })
+            );
     }
 }

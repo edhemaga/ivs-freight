@@ -1,5 +1,6 @@
 .dispatch-board-main {
-    width: calc(100% - 92px) !important;
+    width: fit-content;
+    max-width: calc(100% - 92px) !important;
     position: absolute;
     top: 0;
     overflow-x: auto;

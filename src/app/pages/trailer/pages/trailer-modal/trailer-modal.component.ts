@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -64,6 +65,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
+
+// Enums
+import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -158,6 +163,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private vinDecoderService: VinDecoderService,
         private formService: FormService
     ) {}
+
+    get volumenTrailers(): string[] {
+        return TrailerModalConfig.getVolumenTrailers();
+    }
+
+    get isDoorAndLiftGate(): string[] {
+        return TrailerModalConfig.getIsDoorAndLiftGate();
+    }
 
     get TrailerNumberConfig(): ITaInput {
         return TrailerModalConfig.getTrailerNumberConfig(this.editData);
@@ -301,27 +314,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private isCompanyOwned() {
+    private isCompanyOwned(): void {
+        const ownerIdControl = this.trailerForm.get(TrailerFormFieldEnum.OWNER_ID);
+    
         this.trailerForm
-            .get('companyOwned')
+            .get(TrailerFormFieldEnum.COMPANY_OWNED)
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (!value) {
-                    this.inputService.changeValidators(
-                        this.trailerForm.get('ownerId'),
-                        true,
-                        [],
-                        false
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.trailerForm.get('ownerId'),
-                        false,
-                        [],
-                        false
-                    );
+            .subscribe((isCompanyOwned: boolean) => {
+                this.updateOwnerIdValidators(isCompanyOwned, ownerIdControl);
+                if (!isCompanyOwned) {
+                     // Clear the owner ID when not company-owned
+                    ownerIdControl.patchValue(TableStringEnum.EMPTY_STRING_PLACEHOLDER); 
                 }
             });
+    }
+
+    private updateOwnerIdValidators(isCompanyOwned: boolean, control: AbstractControl): void {
+        const shouldBeRequired = !isCompanyOwned;
+        this.inputService.changeValidators(control, shouldBeRequired, [], false);
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -439,7 +449,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
-                    console.log('res', res.trailerTypes);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,
@@ -496,9 +505,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...this.trailerForm.value,
-            trailerTypeId: this.selectedTrailerType.id,
-            trailerMakeId: this.selectedTrailerMake.id,
-            colorId: this.selectedColor ? this.selectedColor.id : null,
+            trailerTypeId: this.selectedTrailerType?.id ?? null ,
+            trailerMakeId: this.selectedTrailerMake?.id  ?? null,
+            colorId: this.selectedColor?.id ?? null,
             year: parseInt(this.trailerForm.get('year').value),
             trailerLengthId: this.selectedTrailerLength.id,
             ownerId: this.trailerForm.get('companyOwned').value

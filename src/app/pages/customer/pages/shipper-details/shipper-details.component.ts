@@ -20,7 +20,7 @@ import { ShipperDetailsListQuery } from '@pages/customer/state/shipper-state/shi
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums/shipper-details-string.enum';
+import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Models
@@ -33,7 +33,7 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants/shipper-loads-sort-dropdown.constants';
+import { ShipperLoadsSortDropdownConstants } from '@pages/customer/pages/shipper-details/utils/constants';
 
 // Helpers
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
@@ -239,45 +239,54 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onDropActions(event: any): void {
-        this.getShipperById(event.id);
+        let eventType = '';
 
-        let eventType = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         if (
-            event.type == TableStringEnum.CONTRACT ||
-            event.type == TableStringEnum.EDIT ||
-            event.type == TableStringEnum.REVIEW
+            event.type === TableStringEnum.CONTRACT ||
+            event.type === TableStringEnum.EDIT ||
+            event.type === TableStringEnum.REVIEW
         ) {
             eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
 
-        let eventObject = {
+        const openedTab =
+            event.type === TableStringEnum.EDIT
+                ? TableStringEnum.BASIC
+                : event.type === TableStringEnum.CONTRACT
+                ? TableStringEnum.ADDITIONAL
+                : TableStringEnum.REVIEW;
+
+        const eventObject = {
             data: undefined,
-            id: event.id,
+            id: this.shipperId,
             type: eventType,
-            openedTab: event.type,
+            openedTab,
         };
 
-        let shipperData = this.shipperObject
+        const brokerData = this.shipperObject
             ? this.shipperObject
             : this.shipperConfigData;
-        setTimeout(() => {
-            this.dropDownService.dropActionsHeaderShipperBroker(
-                eventObject,
-                shipperData,
-                TableStringEnum.SHIPPER
-            );
-        }, 100);
+
+        this.dropDownService.dropActionsHeaderShipperBroker(
+            eventObject,
+            brokerData,
+            TableStringEnum.SHIPPER
+        );
     }
 
     public onModalAction(event: any): void {
-        let eventObject = {
+        const eventObject = {
             data: undefined,
             id: this.shipperId,
             type: TableStringEnum.EDIT,
-            openedTab: event,
+            openedTab:
+                event === TableStringEnum.CONTRACT
+                    ? TableStringEnum.ADDITIONAL
+                    : event,
         };
+
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,

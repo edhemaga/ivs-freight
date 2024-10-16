@@ -44,6 +44,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 import { DispatchProgressBarDataConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
+import { DispatchTableColumnWidthsConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
@@ -115,7 +116,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
-
+            
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);
@@ -198,18 +199,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     public draggingType: string;
 
-    public resizedColumnsWidth: DispatchResizedColumnsModel = {
-        truckNumber: null,
-        trailerNumber: null,
-        firstName: null,
-        city: null,
-        status: null,
-        pickup_delivery: null,
-        progress: null,
-        slotNumber: null,
-        dispatcher: null,
-        note: null,
-    };
+    public resizedColumnsWidth: DispatchResizedColumnsModel =
+        DispatchTableColumnWidthsConstants.DispatchColumnWidths;
 
     private previousDragIndex: number;
     private previousDragTrailerTypeId: number;
@@ -249,6 +240,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         this.getMainBoardColumnWidths();
 
         this.getTableBodyRowWidth();
+
+        this.getColumnWidths();
     }
 
     public getLoadInformationForSignleDispatchResponse(item: DispatchResponse) {
@@ -267,8 +260,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
-
-        console.log('this.dispatchData', this.dispatchData);
 
         this.parkingCount = this.dispatchData?.dispatches?.filter(
             (item) => item.parkingSlot
@@ -1202,7 +1193,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 ? 36
                 : event.width + 11;
 
-        this.resizedColumnsWidth[columnFieldName] = maxColWidth;
+        this.resizedColumnsWidth = {
+            ...this.resizedColumnsWidth,
+            [columnFieldName]: maxColWidth,
+        };
+
+        localStorage.setItem(
+            DispatchTableStringEnum.DISPATCH_TABLE_COLUMN_WIDTHS,
+            JSON.stringify(this.resizedColumnsWidth)
+        );
 
         if (event.column.title === DispatchTableStringEnum.NOTE_2)
             this.noteWidth = event.width;
@@ -1276,6 +1275,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 this.progressBarData[index] = formattedProgressData;
             }
         });
+    }
+
+    private getColumnWidths(): void {
+        if (
+            localStorage.getItem(
+                DispatchTableStringEnum.DISPATCH_TABLE_COLUMN_WIDTHS
+            )
+        )
+            this.resizedColumnsWidth = JSON.parse(
+                localStorage.getItem(
+                    DispatchTableStringEnum.DISPATCH_TABLE_COLUMN_WIDTHS
+                )
+            );
+        else
+            this.resizedColumnsWidth =
+                DispatchTableColumnWidthsConstants.DispatchColumnWidths;
     }
 
     ngOnDestroy(): void {

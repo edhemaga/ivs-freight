@@ -42,5 +42,6 @@ export interface ApiShipperPostRequest1 {
     LocationType?: LocationType;
     ShipperContacts?: Array<ShipperContactCommand>;
     Files?: Array<Blob>;
+    Cover?: Blob;
 }
 

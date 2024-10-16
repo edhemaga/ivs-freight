@@ -399,7 +399,12 @@
                             (onActionEvent)="handleDeleteClick($event)"
                         >
                             <app-ca-upload-files
-                                [files]="uploadOptionsConstants.files"
+                                [isVisibleCropAndDrop]="
+                                    uploadOptionsConstants.isVisibleCropAndDrop
+                                "
+                                [files]="[
+                                    { url: editData?.company?.logoFile?.url }
+                                ]"
                                 [slider]="uploadOptionsConstants.slider"
                                 [carouselConfig]="
                                     uploadOptionsConstants.carouselConfig

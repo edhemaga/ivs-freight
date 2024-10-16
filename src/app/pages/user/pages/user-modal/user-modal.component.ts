@@ -7,17 +7,8 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { HttpResponseBase } from '@angular/common/http';
 
-import {
-    distinctUntilChanged,
-    Subject,
-    takeUntil,
-    switchMap,
-    of,
-    debounceTime,
-    takeWhile,
-} from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 // bootstrap
 import { Options } from 'ng5-slider';
@@ -48,7 +39,8 @@ import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
-import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -62,7 +54,6 @@ import {
     CompanyUserResponse,
     CreateCompanyUserCommand,
     UpdateCompanyUserCommand,
-    CheckUserByEmailResponse,
     AddressEntity,
     CreateResponse,
     EnumValue,
@@ -81,6 +72,8 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -168,26 +161,53 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private inputService: TaInputService,
         private modalService: ModalService,
         private companyUserService: UserService,
-        private userProfileUpdateService: UserProfileUpdateService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
-        private ngbActiveModal: NgbActiveModal
+        private confirmationActivationService: ConfirmationActivationService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
         this.onBankSelected();
-
         this.trackUserPayroll();
+        this.confirmationActivationSubscribe();
+        this.confirmationData();
+    }
 
-        this.checkUserEmail();
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        const mappedEvent = {
+            ...this.editData,
+            data: {
+                ...this.editData?.data,
+                name: this.editData?.data?.firstName,
+            },
+        };
+
         switch (data.action) {
             case TableStringEnum.SAVE: {
                 if (this.userForm.invalid || !this.isFormDirty) {
@@ -212,19 +232,30 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case TableStringEnum.DEACTIVATE:
-                if (this.editData)
-                    this.updateUserStatus(this.editData.id, false);
+                this.modalService.openModal(
+                    ConfirmationActivationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: TableStringEnum.USER,
+                        subType: TableStringEnum.USER,
+                        type: TableStringEnum.DEACTIVATE,
+                        tableType: TableStringEnum.USER_1,
+                    }
+                );
                 break;
 
             case TableStringEnum.DELETE:
-                if (this.editData) {
-                    this.deleteUserById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: TableStringEnum.DELETE,
-                        status: true,
-                        close: false,
-                    });
-                }
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: TableStringEnum.USER_1,
+                        type: TableStringEnum.DELETE,
+                        image: true,
+                    }
+                );
                 break;
             default:
                 break;
@@ -466,7 +497,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             };
-            
+
             return updatedAddress.address ? updatedAddress : null;
         }
 
@@ -517,58 +548,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
-    }
-
-    private checkUserEmail(): void {
-        if (this.editData?.type === TableStringEnum.EDIT) return;
-        this.userForm
-            .get(TableStringEnum.EMAIL_2)
-            .valueChanges.pipe(
-                takeUntil(this.destroy$),
-                takeWhile(() => !this.isEmailCheckCompleted),
-                debounceTime(500),
-                switchMap((value) => {
-                    if (this.userForm.get(TableStringEnum.EMAIL_2).valid)
-                        return this.userProfileUpdateService.checkUserByEmail(
-                            value
-                        );
-                    return of(null);
-                })
-            )
-            .subscribe({
-                next: (res: CheckUserByEmailResponse) => {
-                    this.isEmailCheckCompleted = true;
-                    if (res) {
-                        this.userForm.patchValue({
-                            firstName: res.firstName,
-                            lastName: res.lastName,
-                            email: res.email,
-                            phone: res.phone,
-                            address: res.address.address,
-                        });
-
-                        this.selectedAddress = res.address;
-                    }
-                },
-                error: () => {
-                    this.isEmailCheckCompleted = false;
-                },
-            });
-    }
-
-    public resetDataByEmail(event: boolean) {
-        if (event) {
-            this.isEmailCheckCompleted = false;
-            this.userForm.patchValue({
-                firstName: null,
-                lastName: null,
-                email: null,
-                phone: null,
-                address: null,
-            });
-            this.selectedAddress = null;
-            this.checkUserEmail();
-        }
     }
 
     private trackUserPayroll() {
@@ -675,7 +654,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
-
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
@@ -686,11 +664,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             companyOfficeId: this.selectedOffice
                 ? this.selectedOffice.id
                 : null,
-            userType: this.selectedUserType
-                ? this.selectedUserType.name === 'Owner'
-                    ? this.selectedUserType.id
-                    : 0
-                : 0,
             isAdmin: this.selectedUserAdmin
                 ? this.selectedUserAdmin.name === 'Admin'
                 : false,
@@ -965,25 +938,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                         this.disableCardAnimation = false;
                     }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    private updateUserStatus(id: number, activate: boolean): void {
-        this.companyUserService
-            .updateUserStatus(id, activate)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: HttpResponseBase) => {
-                    if (res.status === 200 || res.status === 204) {
-                        this.userStatus = !this.userStatus;
-
-                        this.modalService.changeModalStatus({
-                            name: TableStringEnum.DEACTIVATE,
-                            status: this.userStatus,
-                        });
-                    }
                 },
                 error: () => {},
             });

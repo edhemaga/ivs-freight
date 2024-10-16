@@ -156,7 +156,7 @@
             <app-ta-modal-table
                 [tableType]="modalTableTypeEnum.PHONE"
                 [isNewRowCreated]="isPhoneRowCreated"
-                [modalTableData]="updateContactPhones"
+                [modalTableData]="updatedContactPhones"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'phone')
                 "
@@ -185,7 +185,7 @@
             <app-ta-modal-table
                 [tableType]="modalTableTypeEnum.EMAIL"
                 [isNewRowCreated]="isEmailRowCreated"
-                [modalTableData]="updateContactEmails"
+                [modalTableData]="updatedContactEmails"
                 (modalTableValueEmitter)="
                     handleModalTableValueEmit($event, 'email')
                 "
@@ -242,6 +242,9 @@
                 [isCardOpen]="true"
             >
                 <app-ca-upload-files
+                    [isVisibleCropAndDrop]="
+                        uploadOptionsConstants.isVisibleCropAndDrop
+                    "
                     [files]="uploadOptionsConstants.files"
                     [slider]="uploadOptionsConstants.slider"
                     [carouselConfig]="uploadOptionsConstants.carouselConfig"

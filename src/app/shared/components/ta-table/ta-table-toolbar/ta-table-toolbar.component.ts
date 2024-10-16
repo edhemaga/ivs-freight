@@ -68,6 +68,9 @@ import {
     UntypedFormControl,
 } from '@angular/forms';
 
+// Directive
+import { PreventMultipleclicksDirective } from '@shared/directives/prevent-multipleclicks.directive';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-toolbar',
@@ -92,6 +95,9 @@ import {
 
         // Pipes
         ListNameCasePipe,
+        
+        // Directives
+        PreventMultipleclicksDirective
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -189,7 +195,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.selectedTab = changes.selectedTab.currentValue;
 
             const td = this.tableData.find((t) => t.field === this.selectedTab);
-            if(!td) return;
+            if (!td) return;
             this.listName = td.gridNameTitle;
 
             if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
@@ -333,7 +339,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     private getActiveTableData(): void {
         const td = this.tableData.find((table) => table.isActive);
-        if(!td) return;
+        if (!td) return;
 
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
@@ -387,11 +393,12 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.toolbarWidth = TableStringEnum.NUMBER_100;
         } else if (this.columns) {
             this.columns.map((column) => {
-                if (!column.hidden) {
+                if (!column.hidden && column.width) {
                     columnsSumWidth +=
                         column.width < column.minWidth
                             ? column.minWidth
                             : column.width;
+
                     if (
                         column.ngTemplate !== TableStringEnum.CHECKBOX &&
                         column.ngTemplate !== TableStringEnum.ATTACHMENTS &&
@@ -428,9 +435,12 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             this.setColumnsOptionsGroups();
 
-            this.toolbarWidth = hasMinWidth
-                ? columnsSumWidth + 26 + TableStringEnum.PX
-                : 100 + '%';
+            this.toolbarWidth =
+                this.activeViewMode === TableStringEnum.DISPATCH
+                    ? TableStringEnum.NUMBER_100
+                    : hasMinWidth
+                    ? columnsSumWidth + 26 + TableStringEnum.PX
+                    : 100 + '%';
         }
     }
 
@@ -500,7 +510,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         // There is bug if popover is open and we click on new tab, data is not updated
-        // If we first close popover then select tab data is changed 
+        // If we first close popover then select tab data is changed
         this.optionsPopupOpen = false;
         this.setColumnsOptionsGroups();
     }
@@ -736,7 +746,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Toaggle Column
     public onToaggleColumn(column: any, index: number): void {
-        if(column.isPined || column.disabled) return;
+        if (column.isPined || column.disabled) return;
 
         clearTimeout(this.timeOutToaggleColumn);
 
@@ -861,7 +871,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public identity(index: number, item: any): number {
         return item.id;
     }
-
 
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {

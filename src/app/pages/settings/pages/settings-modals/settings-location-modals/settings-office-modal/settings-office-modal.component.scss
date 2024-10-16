@@ -1,3 +1,17 @@
-.repair-shop__contact-table {
-    width: 440px;
+.no-review-office {
+    width: 460px;
+    height: 120px;
+    margin: 4px 0;
+
+    .no-review-svg {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        svg {
+            width: 460px;
+            height: 120px;
+        }
+    }
 }

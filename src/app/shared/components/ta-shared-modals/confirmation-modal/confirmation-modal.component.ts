@@ -69,9 +69,11 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 })
 export class ConfirmationModalComponent implements OnInit {
     @Input() editData: Confirmation;
+
     public cdlForm: UntypedFormGroup;
-    selectedCdl: any;
+    public selectedCdl: any;
     public confirmationImageRoutes = ConfirmationModalSvgRoutes;
+
     constructor(
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
@@ -89,7 +91,7 @@ export class ConfirmationModalComponent implements OnInit {
         if (this.editData.type === 'multiple delete') {
             this.confirmationDataSubject.sendConfirmationData({
                 ...data,
-                array: data.array.map((item) => item.id),
+                array: data?.array?.map((item) => item.id),
             });
         } else {
             if (!this.selectedCdl) {

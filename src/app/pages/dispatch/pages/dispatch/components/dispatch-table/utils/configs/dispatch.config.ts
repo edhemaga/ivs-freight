@@ -64,7 +64,7 @@ export class DispatchConfig {
         };
     }
 
-    static getDispatchParkingConfig(): ITaInput {
+    static getDispatchParkingConfig(parkingDropdownWidth: number): ITaInput {
         return {
             name: 'Spot',
             type: 'text',
@@ -74,6 +74,7 @@ export class DispatchConfig {
             blackInput: true,
             placeholderInsteadOfLabel: true,
             hideRequiredCheck: true,
+            dropdownWidthClass: `w-col-${parkingDropdownWidth}`,
         };
     }
 }

@@ -1040,6 +1040,9 @@
                             [disableAnimation]="isCardAnimationDisabled"
                         >
                             <app-ca-upload-files
+                                [isVisibleCropAndDrop]="
+                                    uploadOptionsConstants.isVisibleCropAndDrop
+                                "
                                 [files]="uploadOptionsConstants.files"
                                 [slider]="uploadOptionsConstants.slider"
                                 [carouselConfig]="

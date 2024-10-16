@@ -49,6 +49,10 @@ export class DispatchTableParkingComponent implements OnInit {
     @Input() isHoveringRow: boolean;
     @Input() isUnlockable: boolean;
 
+    @Input() set parkingDropdownWidth(value: number) {
+        this._parkingDropdownWidth = Math.round(value - 2);
+    }
+
     // Ouputs
     @Output()
     updateParking: EventEmitter<DispatchBoardParkingEmiter> =
@@ -67,13 +71,17 @@ export class DispatchTableParkingComponent implements OnInit {
     public isMultipleParkingSlots: boolean;
     public isInputInFocus: boolean = false;
 
+    public _parkingDropdownWidth: number;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private modalService: ModalService
     ) {}
 
     get getParkingConfig() {
-        return DispatchConfig.getDispatchParkingConfig();
+        return DispatchConfig.getDispatchParkingConfig(
+            this._parkingDropdownWidth
+        );
     }
 
     ngOnInit(): void {
@@ -133,7 +141,7 @@ export class DispatchTableParkingComponent implements OnInit {
 
         // If we have only one parking, open it and remove parking title
         if (!this.isMultipleParkingSlots && this.parkingList.length) {
-            this.openParkingList(0);
+            this.openParkingList(0, true);
         }
     }
 
@@ -162,11 +170,11 @@ export class DispatchTableParkingComponent implements OnInit {
         });
     }
 
-    public openParkingList(index: number): void {
+    public openParkingList(index: number, isDropdownVisible: boolean): void {
         const parking = this.filteredParkingList[index];
         this.filteredParkingList[index] = {
             ...parking,
-            isDropdownVisible: !parking.isDropdownVisible,
+            isDropdownVisible,
         };
     }
 
