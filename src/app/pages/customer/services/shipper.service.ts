@@ -303,6 +303,48 @@ export class ShipperService implements OnDestroy {
         );
     }
 
+    // Delete Shipper Contact By Id
+    public deleteShipperContactById(
+        shipperId: number,
+        contactId: number
+    ): Observable<any> {
+        return this.shipperService.apiShipperContactIdDelete(contactId).pipe(
+            tap(() => {
+                let shipperData = {
+                    ...this.shipperDetailsStore?.getValue()?.entities[
+                        shipperId
+                    ],
+                };
+                const subShipper = this.getShipperById(shipperId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shipper: any) => {
+                            this.shipperStore.remove(
+                                ({ id }) => id === shipperId
+                            );
+                            this.shipperMinimalStore.remove(
+                                ({ id }) => id === shipperId
+                            );
+
+                            shipper.loadStops = shipperData.loadStops;
+
+                            this.shipperStore.add(shipper);
+                            this.shipperMinimalStore.add(shipper);
+                            this.sListStore.update(shipper.id, shipper);
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE,
+                                tab: TableStringEnum.SHIPPER,
+                                data: shipper,
+                                id: shipper.id,
+                            });
+
+                            subShipper.unsubscribe();
+                        },
+                    });
+            })
+        );
+    }
+
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
         return this.shipperService.apiShipperModalGet();
     }

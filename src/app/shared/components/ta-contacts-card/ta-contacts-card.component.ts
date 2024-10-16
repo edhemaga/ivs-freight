@@ -18,6 +18,7 @@ import { DepartmentContacts } from '@shared/models/department-contacts.model';
 //Services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ModalService } from '@shared/services/modal.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -57,7 +58,8 @@ export class TaContactsCardComponent {
 
     constructor(
         private dropDownService: DropDownService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private DetailsDataService: DetailsDataService
     ) {}
 
     public identity(index: number, item: DepartmentContacts): number {
@@ -83,7 +85,9 @@ export class TaContactsCardComponent {
         }, 100);
     }
 
-    public deleteContactModal(contactData: any): void {
+    public deleteContactModal(contactData): void {
+        this.DetailsDataService.setContactName(contactData.fullName);
+
         const mappedEvent = {
             id: contactData.id,
             data: { ...contactData, businessName: this.viewData.businessName },
