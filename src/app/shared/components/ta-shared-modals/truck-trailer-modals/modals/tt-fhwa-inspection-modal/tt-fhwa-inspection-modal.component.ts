@@ -9,6 +9,9 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
+// Bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 // models
 import { InspectionResponse } from 'appcoretruckassist';
 
@@ -17,22 +20,23 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
-
+ 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Enums
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',
@@ -74,8 +78,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         private TruckTrailerService: TruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService,
-        private dropDownService: DropDownService
+        private formService: FormService, 
+        private ngbActiveModal: NgbActiveModal,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -94,6 +99,17 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                 payload: this.editData.data,
             };
         }
+
+        this.confirmationData();
+    }
+
+    private confirmationData(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -131,32 +147,19 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             case ActionTypesEnum.DELETE: 
-                data = {
-                    ...this.editData.payload,
+            this.modalService.setProjectionModal({
+                action: LoadModalStringEnum.OPEN,
+                payload: {
+                    value: null,
                     id: this.editData.file_id,
-                };
-                const name = DropActionNameHelper.dropActionNameTrailerTruck(
-                    { type: TableStringEnum.DELETE_ITEM },
-                    TableStringEnum.INSPECTION_2
-                );
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: true,
-                });
-                this.dropDownService.dropActions(
-                    data,
-                    name,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    data,
-                    TableStringEnum.TRAILER_2
-                );
+                    key: null,
+                    data: this.editData,
+                    template: TableStringEnum.INSPECTION_2,
+                },
+                type: LoadModalStringEnum.DELETE_2,
+                component: ConfirmationModalComponent,
+                size: LoadModalStringEnum.SMALL,
+            });
                 break;
             default: 
                 break;
