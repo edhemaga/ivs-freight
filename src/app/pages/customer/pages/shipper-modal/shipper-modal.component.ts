@@ -84,7 +84,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // svg routes
-import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/broker-modal-svg-routes';
+import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
 
 // Models
 import {

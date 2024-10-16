@@ -408,7 +408,9 @@
                                         minLength: 4,
                                         maxLength: 11
                                     }"
-                                    (blurInput)="onBlurCreditLimit()"
+                                    (blurInput)="
+                                        editData && onBlurCreditLimit()
+                                    "
                                 ></app-ta-input>
                             </div>
 
@@ -427,26 +429,32 @@
                                     (selectedItem)="onSelectDropDown($event)"
                                 ></app-ta-input-dropdown>
                             </div>
-                            <div
+
+                            <ng-container
                                 *ngIf="
+                                    editData &&
                                     this.brokerForm.get('creditType').value ===
                                         'Custom' &&
                                     brokerForm.get('creditLimit').value &&
                                     brokerForm.get('availableCredit').value
                                 "
-                                class="broker-billing-field"
-                                style="grid-column: 1 / -1"
                             >
-                                <app-ta-currency-progress-bar
-                                    [totalAmount]="
-                                        brokerForm.get('creditLimit').value
-                                    "
-                                    [paidSoFarAmount]="
-                                        brokerForm.get('availableCredit').value
-                                    "
-                                    [progressBarName]="'Available Credit'"
-                                ></app-ta-currency-progress-bar>
-                            </div>
+                                <div
+                                    class="broker-billing-field"
+                                    style="grid-column: 1 / -1"
+                                >
+                                    <app-ta-currency-progress-bar
+                                        [totalAmount]="
+                                            brokerForm.get('creditLimit').value
+                                        "
+                                        [paidSoFarAmount]="
+                                            brokerForm.get('availableCredit')
+                                                .value
+                                        "
+                                        [progressBarName]="'Available Credit'"
+                                    ></app-ta-currency-progress-bar>
+                                </div>
+                            </ng-container>
                         </div>
                     </app-ta-custom-card>
 
