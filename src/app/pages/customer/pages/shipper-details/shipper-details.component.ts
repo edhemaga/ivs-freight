@@ -398,9 +398,16 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 next: (res) => {
                     switch (res.type) {
                         case TableStringEnum.DELETE:
-                            if (res.template === TableStringEnum.SHIPPER) {
+                            if (res.template === TableStringEnum.SHIPPER)
                                 this.deleteShipperById(res?.id);
-                            }
+                            else if (
+                                res.template === TableStringEnum.SHIPPER_CONTACT
+                            )
+                                this.deleteShipperContactById(
+                                    res.data?.shipperId,
+                                    res.id
+                                );
+
                             break;
 
                         case TableStringEnum.DEACTIVATE:
@@ -642,6 +649,16 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         this.backLoadFilterQuery.sort = event.sortDirection;
 
         this.loadBackFilter(this.backLoadFilterQuery);
+    }
+
+    private deleteShipperContactById(
+        shipperId: number,
+        contactId: number
+    ): void {
+        this.shipperService
+            .deleteShipperContactById(shipperId, contactId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private resetTableSelectedRows(): void {

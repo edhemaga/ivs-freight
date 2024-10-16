@@ -146,7 +146,7 @@ export enum TableStringEnum {
     CDL = 'CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
-    DELETE_ITEM = 'delete-item', 
+    DELETE_ITEM = 'delete-item',
     LOAD_EXTRA_STOPS = ' EXTRA',
 
     PRINT = 'print',
@@ -395,6 +395,7 @@ export enum TableStringEnum {
 
     // Contact
     DELTETE_CONTACT = 'delete-contact',
+    DELTETE_CONTACT_2 = 'Delete Contact',
     CONTACT = 'contact',
     CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
@@ -550,10 +551,15 @@ export enum TableStringEnum {
     EXPIRED = 'Expired',
     ZERO = '0',
 
+    BROKER_CONTACT = 'broker contact',
+    SHIPPER_CONTACT = 'shipper contact',
+    VOIDED = 'VOIDED',
+    
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
     LOAD_CARD_STATE = 'loadCardState',
+
     REPAIR_CARD_STATE = "repairCardState",
     TRAILER_CARD_STATE = "trailerCardState",
     USER_CARD_STATE = "userCardState",

@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStatus } from './loadStatus';
+import { CompanyUserChatShortResponse } from './companyUserChatShortResponse';
 
 
-export interface RevertLoadStatusCommand { 
+export interface CompanyChannelsConversationResponse { 
     id?: number;
-    status?: LoadStatus;
-    dispatchId?: number | null;
+    participants?: Array<CompanyUserChatShortResponse> | null;
+    name?: string | null;
+    description?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

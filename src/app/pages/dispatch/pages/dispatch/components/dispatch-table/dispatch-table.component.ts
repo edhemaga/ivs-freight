@@ -116,7 +116,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     @Input() set columns(value: DispatchColumn[] | null) {
         if (value) {
             this.columnsToShow = value;
-            
+
             this.shownFields = value
                 .slice(10, 15)
                 .filter((item) => item.hidden === false);

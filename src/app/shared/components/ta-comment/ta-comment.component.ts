@@ -267,6 +267,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.loggedUserCommented = user === userLocalStorage.companyUserId;
+
+        this.cdr.detectChanges();
     }
 
     public higlitsPartOfCommentSearchValue(commentTitle: string): string {

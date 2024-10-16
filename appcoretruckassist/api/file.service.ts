@@ -23,10 +23,6 @@ import { DefaultFolderViewResponse } from '../model/defaultFolderViewResponse';
 // @ts-ignore
 import { FileManagerDefaultViewType } from '../model/fileManagerDefaultViewType';
 // @ts-ignore
-import { GetFileManagerSubfoldersQuery } from '../model/getFileManagerSubfoldersQuery';
-// @ts-ignore
-import { GetSearchFileManagerQuery } from '../model/getSearchFileManagerQuery';
-// @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 
 // @ts-ignore
@@ -172,14 +168,13 @@ export class FileService {
 
     /**
      * @param parentFolderType 
-     * @param getFileManagerSubfoldersQuery 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFileManagerParentFolderTypeGet(parentFolderType: string, getFileManagerSubfoldersQuery?: GetFileManagerSubfoldersQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DefaultFolderViewResponse>;
-    public apiFileManagerParentFolderTypeGet(parentFolderType: string, getFileManagerSubfoldersQuery?: GetFileManagerSubfoldersQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DefaultFolderViewResponse>>;
-    public apiFileManagerParentFolderTypeGet(parentFolderType: string, getFileManagerSubfoldersQuery?: GetFileManagerSubfoldersQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DefaultFolderViewResponse>>;
-    public apiFileManagerParentFolderTypeGet(parentFolderType: string, getFileManagerSubfoldersQuery?: GetFileManagerSubfoldersQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFileManagerParentFolderTypeGet(parentFolderType: FileManagerDefaultViewType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DefaultFolderViewResponse>;
+    public apiFileManagerParentFolderTypeGet(parentFolderType: FileManagerDefaultViewType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DefaultFolderViewResponse>>;
+    public apiFileManagerParentFolderTypeGet(parentFolderType: FileManagerDefaultViewType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DefaultFolderViewResponse>>;
+    public apiFileManagerParentFolderTypeGet(parentFolderType: FileManagerDefaultViewType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (parentFolderType === null || parentFolderType === undefined) {
             throw new Error('Required parameter parentFolderType was null or undefined when calling apiFileManagerParentFolderTypeGet.');
         }
@@ -221,17 +216,6 @@ export class FileService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -243,11 +227,10 @@ export class FileService {
             }
         }
 
-        let localVarPath = `/api/file/manager/${this.configuration.encodeParam({name: "parentFolderType", value: parentFolderType, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/file/manager/${this.configuration.encodeParam({name: "parentFolderType", value: parentFolderType, in: "path", style: "simple", explode: false, dataType: "FileManagerDefaultViewType", dataFormat: undefined})}`;
         return this.httpClient.request<DefaultFolderViewResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: getFileManagerSubfoldersQuery,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -539,19 +522,19 @@ export class FileService {
 
     /**
      * @param searchString 
-     * @param getSearchFileManagerQuery 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFileManagerSearchSearchStringGet(searchString: string, getSearchFileManagerQuery?: GetSearchFileManagerQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiFileManagerSearchSearchStringGet(searchString: string, getSearchFileManagerQuery?: GetSearchFileManagerQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiFileManagerSearchSearchStringGet(searchString: string, getSearchFileManagerQuery?: GetSearchFileManagerQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiFileManagerSearchSearchStringGet(searchString: string, getSearchFileManagerQuery?: GetSearchFileManagerQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (searchString === null || searchString === undefined) {
-            throw new Error('Required parameter searchString was null or undefined when calling apiFileManagerSearchSearchStringGet.');
-        }
+    public apiFileManagerSearchGet(searchString?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiFileManagerSearchGet(searchString?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiFileManagerSearchGet(searchString?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiFileManagerSearchGet(searchString?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (searchString !== undefined && searchString !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>searchString, 'searchString');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -588,17 +571,6 @@ export class FileService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -610,11 +582,10 @@ export class FileService {
             }
         }
 
-        let localVarPath = `/api/file/manager/search/${this.configuration.encodeParam({name: "searchString", value: searchString, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/file/manager/search`;
         return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: getSearchFileManagerQuery,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
