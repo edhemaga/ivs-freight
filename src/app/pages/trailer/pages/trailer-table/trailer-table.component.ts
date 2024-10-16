@@ -203,9 +203,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.detailsDataService.setNewData(res.data);
                         this.changeTrailerStatus(res.data.id);
                     } else {
-                        res.array.map((e) => {
-                            this.detailsDataService.setNewData(e);
-                            this.changeTrailerStatus(e.id);
+                        res.array.map((trailer) => {
+                            this.detailsDataService.setNewData(trailer);
+                            this.changeTrailerStatus(trailer.id);
                         });
                     }
                 }

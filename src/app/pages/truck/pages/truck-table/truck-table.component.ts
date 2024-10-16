@@ -18,6 +18,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -26,7 +27,6 @@ import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-ac
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
-import { DetailsDataService } from '@shared/services/details-data.service';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
@@ -101,21 +101,25 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsBack: CardRows[];
 
     constructor(
-        private modalService: ModalService,
         private router: Router,
-        private tableService: TruckassistTableService,
-        private truckService: TruckService,
-        private confirmationService: ConfirmationService,
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
         private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
         private TruckCardsModalService: TruckCardsModalService,
         private truckCardModalQuery: truckCardModalQuery,
+
+        // Services
         private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        private tableService: TruckassistTableService,
+        private truckService: TruckService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService,
+
+        // Pipes
+        public datePipe: DatePipe,
     ) {}
 
     ngOnInit(): void {
@@ -232,9 +236,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.detailsDataService.setNewData(res.data);
                         this.changeTruckStatus(res.data.id);
                     } else {
-                        res.array.map((e) => {
-                            this.detailsDataService.setNewData(e);
-                            this.changeTruckStatus(e.id);
+                        res.array.map((truck) => {
+                            this.detailsDataService.setNewData(truck);
+                            this.changeTruckStatus(truck.id);
                         });
                     }
                 }

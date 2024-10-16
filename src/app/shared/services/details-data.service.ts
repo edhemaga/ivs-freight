@@ -25,7 +25,7 @@ export class DetailsDataService {
         this.mainData = { ...newData };
     }
 
-    public setActivation(isActive: boolean)  {
+    public setActivation(isActive: boolean): void  {
         this.isActivationInProgress = isActive;
     }
 
