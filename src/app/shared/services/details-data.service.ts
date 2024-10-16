@@ -17,11 +17,16 @@ export class DetailsDataService {
     public documentName: any;
     public unitValue: any;
     public cdlId: any;
+    public isActivationInProgress = true;
 
     constructor() {}
 
     setNewData(newData) {
         this.mainData = { ...newData };
+    }
+
+    public setActivation(isActive: boolean): void  {
+        this.isActivationInProgress = isActive;
     }
 
     public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
