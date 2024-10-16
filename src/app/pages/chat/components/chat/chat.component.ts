@@ -23,8 +23,10 @@ import {
 } from '@pages/chat/enums';
 
 // Constants
-import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
-import { ChatPreferencesConfig } from '@pages/chat/utils/constants/chat-preferences-config.constant';
+import {
+    ChatToolbarDataConstant,
+    ChatPreferencesConfig,
+} from '@pages/chat/utils/constants';
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
