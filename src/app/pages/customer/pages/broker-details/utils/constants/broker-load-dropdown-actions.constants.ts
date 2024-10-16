@@ -1,9 +1,9 @@
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { BrokerDetailsStringEnum } from '../../enums/broker-details-string.enum';
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums';
 
 // Svg Routes
-import { BrokerDetailsSvgRoutes } from '../svg-routes/broker-details-svg-routes';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 // Models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';

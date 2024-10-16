@@ -14,4 +14,6 @@ export enum BrokerModalStringEnum {
     BFB = 'bfb',
 
     EMPTY_STRING = '',
+    
+    CUSTOM = 'Custom',
 }

@@ -2,6 +2,20 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/models/';
 
 export class TrailerModalConfig {
+    static getVolumenTrailers(): string[] {
+        return [
+            'Tanker',
+            'Hopper',
+            'Bottom Dump',
+            'End Dump',
+            'Pneumatic Tanker',
+        ];
+    }
+
+    static getIsDoorAndLiftGate(): string[] {
+        return ['Dry Van', 'Reefer', 'Container'];
+    }
+
     static getTrailerNumberConfig(options: TrailerConfigInterface): ITaInput {
         return {
             name: 'vehicle-unit',
@@ -159,8 +173,8 @@ export class TrailerModalConfig {
                     ? 'gal'
                     : 'cu_ft'
                 : null,
-                priceSeparator: true,
-                priceSeparatorLimitation: 6, 
+            priceSeparator: true,
+            priceSeparatorLimitation: 6,
         };
     }
     static getTrailerWeightConfig(options: TrailerConfigInterface): ITaInput {
@@ -214,7 +228,7 @@ export class TrailerModalConfig {
             maxLength: 10,
             placeholderText: 'mi',
             priceSeparator: true,
-            priceSeparatorLimitation: 6, 
+            priceSeparatorLimitation: 6,
         };
     }
     static getTrailerInsurancePolicyConfig(): ITaInput {
@@ -266,7 +280,7 @@ export class TrailerModalConfig {
             label: 'Purchase Price',
             maxLength: 14,
             priceSeparator: true,
-            priceSeparatorLimitation: 6, 
+            priceSeparatorLimitation: 6,
             placeholderIcon: 'dollar',
         };
     }

@@ -95,28 +95,37 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         this.getConstantData();
-
-        this.getDispatchHistory();
     }
 
     get dispatchHistoryTimeConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTimeConfig(!!this.selectedTime, this.isDisplayingCustomPeriodRange);
+        return DispatchHistoryModalConfig.getDispatchHistoryTimeConfig(
+            !!this.selectedTime,
+            this.isDisplayingCustomPeriodRange
+        );
     }
 
     get dispatchHistoryDispatchBoardConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryDispatchBoardConfig(!!this.selectedDispatchBoard);
+        return DispatchHistoryModalConfig.getDispatchHistoryDispatchBoardConfig(
+            !!this.selectedDispatchBoard
+        );
     }
 
     get dispatchHistoryTruckConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTruckConfig(!!this.selectedTruck);
+        return DispatchHistoryModalConfig.getDispatchHistoryTruckConfig(
+            !!this.selectedTruck
+        );
     }
 
     get dispatchHistoryTrailerConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryTrailerConfig(!!this.selectedTrailer);
+        return DispatchHistoryModalConfig.getDispatchHistoryTrailerConfig(
+            !!this.selectedTrailer
+        );
     }
 
     get dispatchHistoryDriverConfig(): ITaInput {
-        return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig(!!this.selectedDriver);
+        return DispatchHistoryModalConfig.getDispatchHistoryDriverConfig(
+            !!this.selectedDriver
+        );
     }
 
     public trackByIdentity = (index: number): number => index;
@@ -240,8 +249,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     private createDispatchHistoryGroupData(
         data: DispatchHistoryGroupResponse[]
     ): void {
-        console.log('group data', data);
-
         this.hasContent = !!data?.length;
 
         this.groupData = data.map((group) => {
@@ -306,8 +313,10 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     drivers,
                 } = dropdownLists;
 
+                // times
                 this.timesDropdownList = dispatchHistoryTimes;
 
+                // dispatch boards
                 this.dispatchBoardsDropdownList = dispatchBoards.map(
                     ({ id, dispatcher }) => {
                         return {
@@ -319,12 +328,19 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     }
                 );
 
+                // trucks
                 this.trucksDropdownList = trucks.map(({ id, truckNumber }) => {
                     return {
                         id,
                         name: truckNumber,
                     };
                 });
+
+                // trailers
+                const noTrailerDropdownItem = {
+                    id: -1,
+                    name: DispatchHistoryModalStringEnum.NO_TRAILER,
+                };
 
                 this.trailersDropdownList = trailers.map(
                     ({ id, trailerNumber }) => {
@@ -335,6 +351,9 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
                     }
                 );
 
+                this.trailersDropdownList.unshift(noTrailerDropdownItem);
+
+                // drivers
                 this.driversDropdownList = drivers.map(
                     ({ id, firstName, lastName }) => {
                         return {
@@ -350,27 +369,6 @@ export class DispatchHistoryModalComponent implements OnInit, OnDestroy {
     }
 
     private getDispatchHistory(): void {
-        /*   this.selectedTime = {
-            id: 12,
-            name: 'This Year',
-        };
-        this.selectedDispatchBoard = {
-            id: 15,
-            name: 'Team Board',
-        };
-        this.selectedTruck = {
-            id: 200,
-            name: '1',
-        };
-        this.selectedTrailer = {
-            id: 127,
-            name: '11',
-        };
-        this.selectedDriver = {
-            id: 245,
-            name: 'Aaa Aaa',
-        }; */
-
         const layoutParams = {
             isTimeSelected: !!this.selectedTime,
             isDispatchBoardSelected: !!this.selectedDispatchBoard,

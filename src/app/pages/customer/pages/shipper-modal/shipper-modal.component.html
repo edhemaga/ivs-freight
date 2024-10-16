@@ -4,7 +4,7 @@
     "
     [editData]="editData"
     [editName]="shipperName"
-    [isModalValid]="shipperForm.valid && isFormDirty"
+    [isModalValid]="isModalValidToSubmit"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     [isClickEnabledWhileFormInvalid]="true"
@@ -33,6 +33,7 @@
                 [@animationTabsModal]="animationObject"
             >
                 <!-------------------------------- Details Tab -------------------------------->
+
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
@@ -229,12 +230,13 @@
                         }"
                     >
                         <div class="shipper-work-hours">
-                            <div
-                                class="shipper-work-hours-field appointment"
-                                [ngClass]="{ active: isAppointmentShipping }"
-                                (click)="onAppontmentShipping()"
-                            >
-                                Appointment
+                            <div class="shipper-work-hours-field">
+                                <app-ta-checkbox
+                                    formControlName="shippingAppointment"
+                                    [name]="'shippingAppointment'"
+                                    [customClass]="'medium'"
+                                    [label]="'Appointment'"
+                                ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <app-ta-checkbox
@@ -367,38 +369,36 @@
 
                 <!-------------------------------- Review Tab -------------------------------->
 
-                <!--<div class="m-tab" [hidden]="selectedTab !== 3 && editData">
+                <div class="m-tab" [hidden]="selectedTab !== 3">
                     <app-ta-custom-card
-                        [hasCounter]="reviews.length ? reviews.length : 0"
                         [cardName]="'Review'"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasCounter]="reviews?.length"
+                        [hasActionSvg]="true"
                         [hasArrow]="false"
-                        [hasLikeDislike]="true"
+                        [hasLikeDislike]="false"
                         [isCardOpen]="true"
-                        [hasBodyData]="reviews.length > 0"
-                        [hasScrollBody]="reviews.length > 6"
+                        [hasBodyData]="reviews?.length"
+                        [hasScrollBody]="reviews?.length > 6"
+                        [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [disableAnimation]="isCardAnimationDisabled"
-                        [disableMultipleReviews]="disableOneMoreReview"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
                         (onActionEvent)="createReview()"
                     >
-                        <div class="no-review-shipper" *ngIf="!reviews.length">
-                            <svg-icon
-                                class="no-review-svg"
-                                src="assets/svg/common/ic_no_review.svg"
-                            ></svg-icon>
-                        </div>
                         <app-ta-user-review
-                            *ngIf="reviews.length"
                             [reviewData]="reviews"
-                            [isNewReview]="reviews[0].isNewReview"
+                            [isNewReview]="reviews[0]?.isNewReview"
                             (changeReviewsEvent)="changeReviewsEvent($event)"
                         ></app-ta-user-review>
                     </app-ta-custom-card>
-                </div> this is not going into this sprint -->
+
+                    <ng-container *ngIf="!reviews?.length">
+                        <div class="no-review-shipper">
+                            <svg-icon
+                                class="no-review-svg"
+                                [src]="brokerModalSvgRoutes.noReviewsIcon"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
         </form>
     </div>

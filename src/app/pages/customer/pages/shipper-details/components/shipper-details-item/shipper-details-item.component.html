@@ -150,8 +150,9 @@
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
                     <app-ta-contacts-card
+                        [type]="'shipper'"
                         [departmentContacts]="departmentContacts"
-                        [parentId]="shipper[0].data.id"
+                        [viewData]="shipper[0].data"
                     ></app-ta-contacts-card>
                 </div>
             </div>

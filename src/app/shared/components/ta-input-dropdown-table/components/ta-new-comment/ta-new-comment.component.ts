@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { User } from '@shared/models/user.model';
 
-//moment
+// moment
 import moment from 'moment';
 
 // enums
@@ -28,6 +28,9 @@ import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-s
 import { CommentsService } from '@shared/services/comments.service';
 import { TaInputDropdownTableService } from '@shared/components/ta-input-dropdown-table/services/ta-input-dropdown-table.service';
 import { LoadService } from '@shared/services/load.service';
+
+// Svg routes
+import { NewCommentSvgRoutes } from '@shared/components/ta-input-dropdown-table/components/ta-new-comment/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-new-comment',
@@ -52,6 +55,9 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
     public commentAvatar: SafeResourceUrl;
 
     public isDisabled: boolean = true;
+
+    // Svg routes
+    public newCommentSvgRoutes = NewCommentSvgRoutes;
 
     constructor(
         private loadService: LoadService,

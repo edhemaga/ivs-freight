@@ -341,11 +341,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.repairObject = data;
         this.DetailsDataService.setNewData(data);
 
-        if (data?.openHoursToday?.status === 'Closed') {
+        /* if (data?.openHoursToday === 'Closed') {
             this.togglerWorkTime = false;
         } else {
             this.togglerWorkTime = true;
-        }
+        } */
 
         this.businessOpen = data?.status ? true : false;
 
@@ -361,7 +361,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 nameDefault: 'Repair',
                 template: 'repair',
                 icon: true,
-                repairOpen: data?.openHoursToday?.status === 'Closed' ? false : true,
+                /* repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
                 length: this.repairsDataLength,
                 customText: 'Date',
                 hasDateArrow: true,
@@ -403,17 +403,19 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 customText: 'Repairs',
                 hasDateArrow: true,
                 data: data,
-                repairOpen: data?.openHoursToday?.status === 'Closed' ? false : true,
+                /*   repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
             },
             {
                 id: 3,
                 nameDefault: 'Review & Rating',
                 template: 'review',
-                length: data?.ratingReviews?.length ? data.ratingReviews.length : 0,
+                length: data?.ratingReviews?.length
+                    ? data.ratingReviews.length
+                    : 0,
                 hasDateArrow: false,
                 hide: false,
                 data: data,
-                repairOpen: data?.openHoursToday?.status === 'Closed' ? false : true,
+                /*      repairOpen: data?.openHoursToday === 'Closed' ? false : true, */
             },
         ];
 

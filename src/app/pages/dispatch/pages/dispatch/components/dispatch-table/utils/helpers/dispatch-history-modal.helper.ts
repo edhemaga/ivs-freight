@@ -426,7 +426,7 @@ export class DispatchHistoryModalHelper {
         data: DispatchHistoryResponse[]
     ): string[][] {
         const dataItems = data.map((dataItem, index) => {
-            const { dateFrom, dateTo } = dataItem;
+            const { dateFromTime, dateToTime } = dataItem;
 
             const dataArray = this.createDispatchHistoryDataArray(
                 data,
@@ -446,8 +446,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray3,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -456,8 +456,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray4,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -466,8 +466,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray5,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -476,8 +476,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray6,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -486,8 +486,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray7,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -499,8 +499,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray8,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -513,8 +513,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray9,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -527,8 +527,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray10,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -541,8 +541,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray11,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -554,8 +554,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray12,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -586,8 +586,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray17,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -596,8 +596,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray18,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -609,8 +609,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray19,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -619,8 +619,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray20,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -629,8 +629,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray21,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -639,8 +639,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray22,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -649,8 +649,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray23,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -663,8 +663,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray25,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -677,8 +677,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray26,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -687,8 +687,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray27,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         2,
                         4
                     );
@@ -707,8 +707,8 @@ export class DispatchHistoryModalHelper {
 
                     return this.addExtraItemsInDispatchHistoryData(
                         dataArray29,
-                        dateFrom,
-                        dateTo,
+                        dateFromTime,
+                        dateToTime,
                         3,
                         5
                     );
@@ -997,7 +997,7 @@ export class DispatchHistoryModalHelper {
             trailer?.trailerNumber &&
             data[index - 1]?.trailer?.trailerNumber !== trailer?.trailerNumber
                 ? trailer?.trailerNumber
-                : null,
+                : 'No Trailer',
             driver?.firstName &&
             data[index - 1]?.driver?.firstName +
                 ' ' +
@@ -1154,27 +1154,15 @@ export class DispatchHistoryModalHelper {
 
     static addExtraItemsInDispatchHistoryData(
         dataArray: string[],
-        dateFrom: string,
-        dateTo: string,
+        dateFromTime: string,
+        dateToTime: string,
         startIndex: number,
         endIndex: number
     ) {
         const newDataArray = [...dataArray];
 
-        const timeFrom = MethodsCalculationsHelper.convertDateToTimeFromBackend(
-            dateFrom,
-            true
-        );
-
-        const timeTo = dateTo
-            ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
-                  dateTo,
-                  true
-              )
-            : null;
-
-        newDataArray.splice(startIndex, 0, timeFrom);
-        newDataArray.splice(endIndex, 0, timeTo);
+        newDataArray.splice(startIndex, 0, dateFromTime);
+        newDataArray.splice(endIndex, 0, dateToTime);
 
         return newDataArray;
     }

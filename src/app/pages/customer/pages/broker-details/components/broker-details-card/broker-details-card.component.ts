@@ -19,6 +19,7 @@ import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-sta
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
 import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Models
 import {
@@ -29,13 +30,13 @@ import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-mod
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
-import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
+import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
 // Constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
-import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/broker.constants';
-import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-invoice-aging-tabs.constants';
+import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/';
+import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
 // Components
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
@@ -50,8 +51,7 @@ import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Svg routes
-import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 @Component({
     selector: 'app-broker-details-card',
@@ -252,7 +252,7 @@ export class BrokerDetailsCardComponent
                     active: item.id === event.id,
                 };
             });
-            
+
             this.detailsPageDriverSer.getDataDetailId(event.id);
         }
     }
