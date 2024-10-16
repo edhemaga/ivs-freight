@@ -76,14 +76,14 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
-import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/broker-modal.constants';
+import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
 
 // svg routes
-import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/broker-modal-svg-routes';
+import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
 
 // models
 import { ReviewComment } from '@shared/models/review-comment.model';
@@ -101,7 +101,7 @@ import {
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/broker-contact-extended.model';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/';
 
 @Component({
     selector: 'app-broker-modal',

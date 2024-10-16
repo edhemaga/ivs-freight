@@ -24,18 +24,18 @@ import {
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
-import { BrokerRatingReview } from '@pages/customer/pages/broker-details/models/broker-rating-review.model';
-import { BrokerLoadStop } from '../../models/broker-load-stop.model';
+import { BrokerRatingReview } from '@pages/customer/pages/broker-details/models/';
+import { BrokerLoadStop } from '@pages/customer/pages/broker-details/models/';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Svg routes
-import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 // Constants
-import { BrokerLoadDropdownActionsConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-load-dropdown-actions.constants';
+import { BrokerLoadDropdownActionsConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
 @Titles()
 @Component({
@@ -44,9 +44,11 @@ import { BrokerLoadDropdownActionsConstants } from '@pages/customer/pages/broker
     styleUrls: ['./broker-details-item.component.scss'],
 })
 export class BrokerDetailsItemComponent implements OnInit, OnChanges {
-    private destroy$ = new Subject<void>();
     @Input() brokerData: BrokerResponse;
     @Input() brokerLoads: LoadBrokerDetailsResponse[] = [];
+
+    private destroy$ = new Subject<void>();
+
     public brokerContacts: BrokerContactResponse[];
     public brokerLikes: number;
     public brokerDislike: number;
