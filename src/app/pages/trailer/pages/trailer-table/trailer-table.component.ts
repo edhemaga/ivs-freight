@@ -55,7 +55,10 @@ import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enu
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import {
+    CardDetails,
+    DropdownItem,
+} from '@shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -421,9 +424,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const tableView = JSON.parse(
             localStorage.getItem(TableStringEnum.TRAILER_TAB_VIEW)
         );
-
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
+            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
         }
 
@@ -1215,6 +1218,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.trailerCardsModalService.updateTab(this.selectedTab);
+    }
+
+    public saveValueNote(event: { value: string; id: number }): void {
+        this.viewData.map((item: CardDetails) => {
+            if (item.id === event.id) item.note = event.value;
+        });
+
+        const noteData = {
+            value: event.value,
+            id: event.id,
+            selectedTab: this.selectedTab,
+        };
+
+        this.trailerService.updateNote(noteData);
     }
 
     ngOnDestroy(): void {

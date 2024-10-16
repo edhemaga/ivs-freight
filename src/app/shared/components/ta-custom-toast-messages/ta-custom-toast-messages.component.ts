@@ -908,6 +908,9 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
+                
+                if(!this.httpRequest.body) break;
+                
                 if (
                     this.httpRequest.body.getAll('unitType')[0] == 'Truck' ||
                     this.httpRequest.body.getAll('truckId')[0]
