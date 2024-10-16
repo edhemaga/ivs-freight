@@ -20,7 +20,7 @@ export class ChatPreferencesConfig {
         {
             id: 'status',
             name: 'Set Status',
-            isHighlighted: true,
+            isHighlighted: false,
             isExpandable: true,
             value: false,
             icon: ChatSvgRoutes.headerArrowDownIcon,
@@ -74,12 +74,13 @@ export class ChatPreferencesConfig {
             ],
             toggleValue: function () {
                 this.value = !this.value;
+                this.isHighlighted = this.value;
             },
         },
         {
             id: 'messages',
             name: 'Sort Message',
-            isHighlighted: true,
+            isHighlighted: false,
             isExpandable: true,
             value: false,
             items: [
@@ -130,14 +131,15 @@ export class ChatPreferencesConfig {
                 },
             ],
             icon: ChatSvgRoutes.headerArrowDownIcon,
-            toggleValue() {
+            toggleValue: function () {
                 this.value = !this.value;
+                this.isHighlighted = this.value;
             },
         },
         {
             id: 'view',
             name: 'Chat View',
-            isHighlighted: true,
+            isHighlighted: false,
             isExpandable: true,
             value: false,
             items: [
@@ -171,8 +173,83 @@ export class ChatPreferencesConfig {
                 },
             ],
             icon: ChatSvgRoutes.headerArrowDownIcon,
-            toggleValue() {
+            toggleValue: function () {
                 this.value = !this.value;
+                this.isHighlighted = this.value;
+            },
+        },
+        {
+            id: 'notifications',
+            name: 'Notifications',
+            isHighlighted: false,
+            isExpandable: true,
+            value: false,
+            items: [
+                {
+                    id: 'messages',
+                    name: 'Direct Messages',
+                    isHighlighted: false,
+                    isExpandable: false,
+                    value: false,
+                    isCheckmark: true,
+                    toggleValue: function () {
+                        this.value = !this.value;
+                        this.isHighlighted = this.value;
+                    },
+                },
+                {
+                    id: 'mentions',
+                    name: 'Mentions',
+                    isHighlighted: false,
+                    isExpandable: false,
+                    value: false,
+                    isCheckmark: true,
+                    toggleValue: function () {
+                        this.value = !this.value;
+                        this.isHighlighted = this.value;
+                    },
+                },
+                {
+                    id: 'department',
+                    name: 'Department',
+                    isHighlighted: false,
+                    isExpandable: false,
+                    value: false,
+                    isCheckmark: true,
+                    toggleValue: function () {
+                        this.value = !this.value;
+                        this.isHighlighted = this.value;
+                    },
+                },
+                {
+                    id: 'dispatch',
+                    name: 'Dispatch Board',
+                    isHighlighted: false,
+                    isExpandable: false,
+                    value: false,
+                    isCheckmark: true,
+                    toggleValue: function () {
+                        this.value = !this.value;
+                        this.isHighlighted = this.value;
+                    },
+                },
+                {
+                    id: 'truck',
+                    name: 'Truck',
+                    isHighlighted: false,
+                    isExpandable: false,
+                    value: false,
+                    isCheckmark: true,
+                    toggleValue: function () {
+                        this.value = !this.value;
+                        this.isHighlighted = this.value;
+                    },
+                },
+            ],
+            icon: ChatSvgRoutes.headerArrowDownIcon,
+            toggleValue: function () {
+                this.value = !this.value;
+                this.isHighlighted = this.value;
             },
         },
         {
@@ -183,8 +260,7 @@ export class ChatPreferencesConfig {
             icon: ChatSvgRoutes.notificationIcon,
             isExpandable: false,
             value: false,
-
-            toggleValue() {
+            toggleValue: function () {
                 this.value = !this.value;
             },
         },

@@ -133,7 +133,7 @@
                 top: 47px;
                 right: 90px;
                 z-index: 1;
-                padding: 4px;
+                padding: 0 4px;
                 border-radius: 3px;
                 background-color: $ta-black-2;
                 color: $white;
@@ -304,11 +304,11 @@
 }
 
 .border-top {
-    border-top: 1p solid $ta-black;
+    border-top: 1px solid $ta-black !important;
 }
 
 .border-bottom {
-    border-bottom: 1px solid $ta-black;
+    border-bottom: 1px solid $ta-black !important;
 }
 
 .focused-background {

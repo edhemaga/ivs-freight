@@ -256,8 +256,4 @@ export class ChatComponent
     public toggleChatPreferences(): void {
         this.isHamburgerMenuActive = !this.isHamburgerMenuActive;
     }
-
-    public test() {
-        console.log(this.chatPreferencesConfig[1]);
-    }
 }
