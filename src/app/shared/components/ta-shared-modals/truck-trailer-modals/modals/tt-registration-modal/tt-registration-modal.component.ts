@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// Bootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 // models
 import {
     RegistrationModalResponse,
@@ -16,6 +19,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service'; 
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validations
 import { licensePlateValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -30,14 +34,12 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 @Component({
     selector: 'app-tt-registration-modal',
@@ -155,7 +157,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                         id: this.editData.file_id,
                         key: null,
                         data: this.editData,
-                        template: "registration",
+                        template: TableStringEnum.REGISTRATION_2,
                     },
                     type: LoadModalStringEnum.DELETE_2,
                     component: ConfirmationModalComponent,
