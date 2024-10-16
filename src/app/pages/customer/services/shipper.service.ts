@@ -310,7 +310,7 @@ export class ShipperService implements OnDestroy {
     ): Observable<any> {
         return this.shipperService.apiShipperContactIdDelete(contactId).pipe(
             tap(() => {
-                let shipperData = {
+                const shipperData = {
                     ...this.shipperDetailsStore?.getValue()?.entities[
                         shipperId
                     ],
@@ -318,7 +318,7 @@ export class ShipperService implements OnDestroy {
                 const subShipper = this.getShipperById(shipperId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (shipper: any) => {
+                        next: (shipper) => {
                             this.shipperStore.remove(
                                 ({ id }) => id === shipperId
                             );
