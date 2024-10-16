@@ -4,7 +4,7 @@
         (click)="newComment('open-new-comment', commmentsData.id)"
     >
         <span class="new-comment ta-font-bold">NEW COMMENT</span>
-        <svg-icon [src]="'assets/svg/common/ic_plus.svg'"></svg-icon>
+        <svg-icon [src]="newCommentSvgRoutes.plusIcon"></svg-icon>
     </div>
 </ng-container>
 
@@ -13,7 +13,12 @@
         <div class="d-flex justify-content-between">
             <div class="user-creds d-flex">
                 <div class="user-avatar">
-                    <img [src]="commentAvatar" alt="" />
+                    <img
+                        [src]="
+                            commentAvatar ?? newCommentSvgRoutes.userAvatarIcon
+                        "
+                        alt="User Profile Image"
+                    />
                 </div>
 
                 <div class="user-name d-grid">
@@ -37,7 +42,7 @@
                 >
                     <svg-icon
                         class="confirm-icon d-flex align-items-center justify-content-center"
-                        [src]="'assets/svg/applicant/check.svg'"
+                        [src]="newCommentSvgRoutes.checkIcon"
                         (click)="
                             newComment('add-new-comment', commmentsData.id)
                         "
@@ -59,7 +64,7 @@
                 >
                     <svg-icon
                         class="cancel-icon d-flex align-items-center justify-content-center"
-                        [src]="'assets/svg/applicant/invalid-review-x.svg'"
+                        [src]="newCommentSvgRoutes.cancelIcon"
                         [svgStyle]="{
                             'width.px': 10,
                             'height.px': 10
