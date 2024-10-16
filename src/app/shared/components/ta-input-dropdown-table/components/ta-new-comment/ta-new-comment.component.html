@@ -13,7 +13,13 @@
         <div class="d-flex justify-content-between">
             <div class="user-creds d-flex">
                 <div class="user-avatar">
-                    <img [src]="commentAvatar" alt="" />
+                    <img
+                        [src]="
+                            commentAvatar ??
+                            'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                        "
+                        alt="User Profile Image"
+                    />
                 </div>
 
                 <div class="user-name d-grid">

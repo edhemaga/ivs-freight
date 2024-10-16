@@ -29,6 +29,7 @@ import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { BrokerService } from '@pages/customer/services/broker.service';
+import { CommentsService } from '@shared/services/comments.service';
 
 // Models
 import {
@@ -39,7 +40,7 @@ import {
 import {
     CardDetails,
     DeleteComment,
-    DropdownItem, 
+    DropdownItem,
 } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
@@ -172,6 +173,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private brokerService: BrokerService,
+        private commentsService: CommentsService,
 
         //store
         private store: Store,
@@ -227,19 +229,24 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter((statusAction) => statusAction !== null)
             )
             .subscribe((status) => {
-                const foundObject= this.viewData.find(
+                const foundObject = this.viewData.find(
                     (item) => item.id === status.id
                 );
 
                 if (!foundObject) return;
 
-                // if user selects Assigend status and 
+                // if user selects Assigend status and
                 // Load does not already have a truck, trailer and driver assigned we should show load modal
-                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(status.dataBack)
+                const isAssignedStatusSelected = [LoadStatusEnum[2]].includes(
+                    status.dataBack
+                );
                 const isTruckTrailerDriverSelected = !!foundObject.driver;
 
-                if(isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
-                    this.onTableBodyActions({type: TableStringEnum.EDIT, id: foundObject.id})
+                if (isAssignedStatusSelected && !isTruckTrailerDriverSelected) {
+                    this.onTableBodyActions({
+                        type: TableStringEnum.EDIT,
+                        id: foundObject.id,
+                    });
                     return;
                 }
 
@@ -302,10 +309,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.template === TableStringEnum.COMMENT) return;
-                if (res.type === TableStringEnum.DELETE) {
+                if (res?.type === TableStringEnum.DELETE) {
                     if (res.template === TableStringEnum.BROKER) {
                         this.deleteBrokerById(res.id);
+                    } else if (res.template === TableStringEnum.COMMENT) {
+                        this.deleteCommentById(res.data);
                     } else {
                         if (this.selectedTab === TableStringEnum.TEMPLATE) {
                             this.deleteLoadTemplateById(res.id);
@@ -313,7 +321,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.deleteLoadById(res.id);
                         }
                     }
-                } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                } else if (res?.type === TableStringEnum.MULTIPLE_DELETE) {
                     if (this.selectedTab === TableStringEnum.TEMPLATE) {
                         this.deleteLoadTemplateList(res.array);
                     } else {
@@ -348,8 +356,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 const foundObject = this.viewData.findIndex(
                     (item) => item.id === data.entityTypeId
                 );
+
                 if (foundObject !== -1) {
-                    this.viewData[foundObject].comments.push(data);
+                    const commentsWithAvatarColor = {
+                        ...data,
+                        avatarColor:
+                            AvatarColorsHelper.getAvatarColors(foundObject),
+                        textShortName: this.nameInitialsPipe.transform(
+                            data.companyUser?.fullName
+                        ),
+                    };
+
+                    this.viewData[foundObject].comments.push(
+                        commentsWithAvatarColor
+                    );
 
                     this.viewData[foundObject].commentsCount =
                         this.viewData[foundObject].commentsCount + 1;
@@ -359,16 +379,25 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSubscription = this.loadServices.removeComment$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DeleteComment) => {
-                const foundObject = this.viewData.find(
-                    (item) => item.id === data.entityTypeId
-                );
-                const indexToRemove = foundObject.comments.findIndex(
-                    (comment) => comment.id === data.commentId
-                );
-                if (indexToRemove !== -1) {
-                    foundObject.comments.splice(indexToRemove, 1);
-                    foundObject.commentsCount = foundObject.commentsCount - 1;
-                }
+                this.viewData = this.viewData.map((loadData) => {
+                    if (loadData.id === data.entityTypeId) {
+                        const indexToRemove = loadData.comments.findIndex(
+                            (comment) => comment.id === data.commentId
+                        );
+                        if (indexToRemove !== -1) {
+                            const newCommentData = [...loadData.comments];
+                            newCommentData.splice(indexToRemove, 1);
+
+                            loadData = {
+                                ...loadData,
+                                comments: newCommentData,
+                                commentsCount: newCommentData.length,
+                            };
+                        }
+                    }
+
+                    return loadData;
+                });
             });
     }
 
@@ -1867,6 +1896,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.loadServices.triggerModalAction();
+            });
+    }
+
+    public deleteCommentById(data): void {
+        this.commentsService
+            .deleteCommentById(data.commentId, data.entityTypeId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.loadServices.removeComment(data);
             });
     }
 
