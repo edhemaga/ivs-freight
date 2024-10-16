@@ -305,6 +305,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     private getConstantData(): void {
         this.tabs = JSON.parse(JSON.stringify(BrokerModalConstants.TABS));
+
         this.physicalAddressTabs = JSON.parse(
             JSON.stringify(BrokerModalConstants.ADDRESS_TABS)
         );
@@ -1566,6 +1567,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.filesForDelete = [];
 
                         this.selectedTab = 1;
+
                         this.tabs = this.tabs.map((item, index) => {
                             return {
                                 ...item,

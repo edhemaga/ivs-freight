@@ -47,6 +47,7 @@ import { ShipperService } from '@pages/customer/services/shipper.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -133,7 +134,7 @@ import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/mode
     ],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any = null;
+    @Input() editData;
 
     private destroy$ = new Subject<void>();
 
@@ -146,7 +147,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public brokerModalSvgRoutes = BrokerModalSvgRoutes;
 
     public selectedTab: number = 1;
-    public tabs: Tabs[];
+    public tabs: Tabs[] = JSON.parse(
+        JSON.stringify(ShipperModalConfiguration.TABS)
+    );
 
     public selectedPhysicalAddressTab: number = 1;
     public physicalAddressTabs: Tabs[] = [
@@ -163,7 +166,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public isPhoneExtExist: boolean = false;
 
     public addNewAfterSave: boolean = false;
-    public disableOneMoreReview: boolean = false;
+    public isOneMoreReviewDisabled: boolean = false;
 
     public animationObject = {
         value: this.selectedTab,
@@ -189,6 +192,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     // reviews
     public reviews: any[] = [];
+    public previousReviews: any[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -203,21 +207,28 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService,
-        private addressService: AddressService
+        private addressService: AddressService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.createForm();
+
         this.getShipperDropdowns();
 
-        this.companyUser = JSON.parse(localStorage.getItem('user'));
+        this.getCompanyUser();
 
-        this.shipperForm
-            .get(ShipperModalString.LONGITUDE)
-            .valueChanges.subscribe(() => this.longLatChanged());
-        this.shipperForm
-            .get(ShipperModalString.LATITUDE)
-            .valueChanges.subscribe(() => this.longLatChanged());
+        this.monitorLatAndLong();
+
+        this.confirmationSubscribe();
+    }
+
+    get isModalValidToSubmit(): boolean {
+        return (
+            this.shipperForm.valid &&
+            this.isFormDirty &&
+            this.isEachContactRowValid
+        );
     }
 
     private createForm() {
@@ -253,6 +264,45 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const { template, action } = res;
+
+                    if (template === ShipperModalString.DELETE_REVIEW) {
+                        const review = {
+                            action: res.type,
+                            data: res.data.id,
+                            sortData: [],
+                        };
+
+                        this.deleteReview(false, review);
+                    }
+
+                    if (action === ShipperModalString.CLOSE)
+                        this.reviews = this.previousReviews;
+                },
+            });
+    }
+
+    private monitorLatAndLong(): void {
+        this.shipperForm
+            .get(ShipperModalString.LONGITUDE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.longLatChanged());
+
+        this.shipperForm
+            .get(ShipperModalString.LATITUDE)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.longLatChanged());
+    }
+
+    private getCompanyUser(): void {
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -344,6 +394,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
+
         let dotAnimation = document.querySelector(
             this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
         );
@@ -422,51 +473,30 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public changeReviewsEvent(reviews: ReviewComment) {
-        switch (reviews.action) {
-            case 'delete': {
-                this.deleteReview(reviews);
+    public changeReviewsEvent(review: ReviewComment): void {
+        switch (review.action) {
+            case 'delete':
+                this.deleteReview(true, review);
+
                 break;
-            }
-            case 'add': {
-                this.addReview(reviews);
+            case 'add':
+                this.addReview(review);
+
                 break;
-            }
-            case 'update': {
-                this.updateReview(reviews);
+            case 'update':
+                this.updateReview(review);
+
                 break;
-            }
-            default: {
+            case 'cancel':
+                this.reviews = this.reviews.filter((review) => review.id);
+
                 break;
-            }
+            default:
+                break;
         }
     }
 
-    // ------- Review ------
-    public createReview() {
-        if (
-            this.reviews.some((item) => item.isNewReview) ||
-            this.disableOneMoreReview
-        ) {
-            return;
-        }
-
-        this.reviews.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    ' ',
-                    this.companyUser.lastName
-                ),
-                /* avatar: this.companyUser.avatar, */
-            },
-            commentContent: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        });
-    }
-
-    private ratingChanges() {
+    private ratingChanges(): void {
         this.taLikeDislikeService.userLikeDislike$
             .pipe(takeUntil(this.destroy$))
             .subscribe((action: LikeDislikeModel) => {
@@ -518,7 +548,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 );
 
                                 if (reviewIndex !== -1) {
-                                    this.disableOneMoreReview = true;
+                                    this.isOneMoreReviewDisabled = true;
                                 }
                             }
 
@@ -529,24 +559,46 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     res.currentCompanyUserRating,
                             });
                         },
-                        error: () => {},
                     });
             });
     }
 
-    private addReview(reviews: ReviewComment) {
-        const review: CreateReviewCommand = {
-            entityTypeReviewId: 3,
+    public createReview(): void {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.isOneMoreReviewDisabled
+        ) {
+            return;
+        }
+
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                /*                 avatar: this.companyUser.avatar, */
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    private addReview(review: ReviewComment): void {
+        const reviewData: CreateReviewCommand = {
+            entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
-            comment: reviews.data.commentContent,
+            comment: review.data.commentContent,
         };
 
         this.reviewRatingService
-            .addReview(review)
+            .addReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    this.reviews = reviews.sortData.map((item, index) => {
+                    this.reviews = review.sortData.map((item, index) => {
                         if (index === 0) {
                             return {
                                 ...item,
@@ -555,32 +607,134 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                    this.disableOneMoreReview = true;
+
+                    this.isOneMoreReviewDisabled = true;
                 },
-                error: () => {},
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        this.disableOneMoreReview = false;
+    private deleteReview(isOpenModal: boolean, review?: ReviewComment): void {
+        if (isOpenModal) {
+            const { id, companyUser, updatedAt } = this.reviews.find(
+                (reviewItem) => reviewItem.id === review.data
+            );
+
+            const data = {
+                id,
+                reviewer: companyUser.fullName,
+                updatedAt,
+                businessName: this.shipperForm.get(
+                    ShipperModalString.BUSINESS_NAME
+                ).value,
+            };
+
+            this.previousReviews = [...this.reviews];
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                {
+                    size: ShipperModalString.SMALL,
+                },
+                {
+                    type: ShipperModalString.DELETE,
+                    subType: ShipperModalString.SHIPPER,
+                    data,
+                    template: ShipperModalString.DELETE_REVIEW,
+                }
+            );
+        } else {
+            this.reviews = review.sortData;
+            this.isOneMoreReviewDisabled = false;
+
+            this.reviewRatingService
+                .deleteReview(review.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+    }
+
+    private updateReview(review: ReviewComment): void {
+        this.reviews = review.sortData;
+
+        const reviewData: UpdateReviewCommand = {
+            id: review.data.id,
+            comment: review.data.commentContent,
+        };
+
         this.reviewRatingService
-            .deleteReview(reviews.data)
+            .updateReview(reviewData)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewComment) {
-        this.reviews = reviews.sortData;
-        const review: UpdateReviewCommand = {
-            id: reviews.data.id,
-            comment: reviews.data.commentContent,
-        };
-
-        this.reviewRatingService
-            .updateReview(review)
+    private getShipperDropdowns(): void {
+        this.shipperService
+            .getShipperDropdowns()
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: (res: ShipperModalResponse) => {
+                    this.departmentOptions = res.departments;
+
+                    // From Another Modal Data
+                    if (this.editData?.type === 'edit-contact') {
+                        this.isCardAnimationDisabled = true;
+
+                        this.editShipperById(this.editData.id);
+
+                        setTimeout(() => {
+                            this.tabs = this.tabs.map((item, index) => {
+                                return {
+                                    ...item,
+                                    disabled: index !== 1,
+                                    checked: index === 1,
+                                };
+                            });
+
+                            this.selectedTab = 2;
+                        }, 50);
+                    }
+                    // Normal Get By Id
+                    else {
+                        if (this.editData?.id) {
+                            this.isCardAnimationDisabled = true;
+
+                            this.editShipperById(this.editData.id);
+
+                            this.tabs.push({
+                                id: 3,
+                                name: 'Review',
+                            });
+
+                            this.ratingChanges();
+                        } else {
+                            this.startFormChanges();
+                        }
+                    }
+
+                    if (this.editData) {
+                        this.tabs = this.tabs.map((tab) => ({
+                            ...tab,
+                            checked: tab.name === this.editData?.openedTab,
+                        }));
+                    }
+
+                    // Open Tab Position
+                    if (this.editData?.openedTab) {
+                        setTimeout(() => {
+                            this.tabChange({
+                                id:
+                                    this.editData?.openedTab === 'Additional'
+                                        ? 2
+                                        : this.editData?.openedTab === 'Review'
+                                        ? 3
+                                        : 1,
+                            });
+
+                            this.isCardAnimationDisabled = true;
+                        });
+                    }
+                },
+            });
     }
 
     private addShipper(isSaveAndAddNew?: boolean) {
@@ -668,6 +822,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             .patchValue(true);
 
                         this.selectedTab = 1;
+
                         this.tabs = this.tabs.map((item, index) => {
                             return {
                                 ...item,
@@ -845,9 +1000,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         contacts: this.mapContacts(res.shipperContacts, true),
                     });
 
-                    // Contacts
-                    this.updatedShipperContacts = res.shipperContacts;
-
                     this.shipperName = res.businessName;
 
                     this.selectedAddress = res.address;
@@ -871,14 +1023,19 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.isAppointmentShipping = true;
                     }
 
-                    this.reviews = res?.reviews?.map((item: any) => ({
+                    // Contacts
+                    this.updatedShipperContacts = res.shipperContacts;
+
+                    // Review
+                    this.reviews = res.ratingReviews.map((item) => ({
                         ...item,
+                        id: item.reviewId,
                         companyUser: {
                             ...item.companyUser,
-                            avatar: item.companyUser.avatar,
+                            /*   avatar: item.companyUser.avatar, */
                         },
                         commentContent: item.comment,
-                        rating: item.ratingFromTheReviewer,
+                        rating: item.thumb,
                     }));
 
                     const reviewIndex = this.reviews?.findIndex(
@@ -888,7 +1045,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     );
 
                     if (reviewIndex !== -1) {
-                        this.disableOneMoreReview = true;
+                        this.isOneMoreReviewDisabled = true;
                     }
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
@@ -923,76 +1080,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     }, 1000);
                 },
                 error: () => {},
-            });
-    }
-
-    private getShipperDropdowns() {
-        this.shipperService
-            .getShipperDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: ShipperModalResponse) => {
-                    this.departmentOptions = res.departments;
-                    this.tabs = ShipperModalConfiguration.shipperTabs();
-
-                    // From Another Modal Data
-                    if (this.editData?.type === 'edit-contact') {
-                        this.isCardAnimationDisabled = true;
-
-                        this.editShipperById(this.editData.id);
-
-                        setTimeout(() => {
-                            this.tabs = this.tabs.map((item, index) => {
-                                return {
-                                    ...item,
-                                    disabled: index !== 1,
-                                    checked: index === 1,
-                                };
-                            });
-
-                            this.selectedTab = 2;
-                        }, 50);
-                    }
-                    // Normal Get By Id
-                    else {
-                        if (this.editData?.id) {
-                            this.isCardAnimationDisabled = true;
-
-                            this.editShipperById(this.editData.id);
-
-                            // this.tabs.push({
-                            //     id: 3,
-                            //     name: 'Review',
-                            // }); this is not going into first spring
-                            this.ratingChanges();
-                        } else {
-                            this.startFormChanges();
-                        }
-                    }
-
-                    if (this.editData) {
-                        this.tabs = this.tabs.map((tab) => ({
-                            ...tab,
-                            checked: tab.name === this.editData?.openedTab,
-                        }));
-                    }
-
-                    // Open Tab Position
-                    if (this.editData?.openedTab) {
-                        setTimeout(() => {
-                            this.tabChange({
-                                id:
-                                    this.editData?.openedTab === 'Additional'
-                                        ? 2
-                                        : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
-                            });
-
-                            this.isCardAnimationDisabled = true;
-                        });
-                    }
-                },
             });
     }
 
