@@ -164,6 +164,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private formService: FormService
     ) {}
 
+    get volumenTrailers(): string[] {
+        return TrailerModalConfig.getVolumenTrailers();
+    }
+
+    get isDoorAndLiftGate(): string[] {
+        return TrailerModalConfig.getIsDoorAndLiftGate();
+    }
+
     get TrailerNumberConfig(): ITaInput {
         return TrailerModalConfig.getTrailerNumberConfig(this.editData);
     }
@@ -497,9 +505,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...this.trailerForm.value,
-            trailerTypeId: this.selectedTrailerType.id,
-            trailerMakeId: this.selectedTrailerMake.id,
-            colorId: this.selectedColor ? this.selectedColor.id : null,
+            trailerTypeId: this.selectedTrailerType?.id ?? null ,
+            trailerMakeId: this.selectedTrailerMake?.id  ?? null,
+            colorId: this.selectedColor?.id ?? null,
             year: parseInt(this.trailerForm.get('year').value),
             trailerLengthId: this.selectedTrailerLength.id,
             ownerId: this.trailerForm.get('companyOwned').value

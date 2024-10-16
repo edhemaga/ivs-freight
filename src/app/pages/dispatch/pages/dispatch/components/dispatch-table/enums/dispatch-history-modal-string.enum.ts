@@ -21,4 +21,6 @@ export enum DispatchHistoryModalStringEnum {
     TIME_START = 'timeStart',
     DATE_END = 'dateEnd',
     TIME_END = 'timeEnd',
+
+    NO_TRAILER = 'No Trailer',
 }

@@ -17,6 +17,7 @@ import { LoadStatusHistoryResponse } from './loadStatusHistoryResponse';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
 import { LoadProgressResponse } from './loadProgressResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
+import { MilesStopResponse } from './milesStopResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
@@ -47,6 +48,7 @@ export interface LoadResponse {
     weight?: number | null;
     loadRequirements?: LoadRequirementsResponse;
     stops?: Array<LoadStopResponse> | null;
+    deadHeadLocation?: MilesStopResponse;
     splitLoad?: SplitLoadResponse;
     note?: string | null;
     baseRate?: number;

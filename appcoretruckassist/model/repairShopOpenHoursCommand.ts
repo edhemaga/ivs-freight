@@ -16,5 +16,6 @@ export interface RepairShopOpenHoursCommand {
     dayOfWeek?: OpenHoursDayOfWeek;
     startTime?: string | null;
     endTime?: string | null;
+    isWorking?: boolean;
 }
 

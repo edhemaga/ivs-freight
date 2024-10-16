@@ -179,6 +179,7 @@ export class TruckTrailerService {
                                 newData.inspections.push(inspection);
                                 this.tdlStore.add(newData);
                                 this.truckItemStore.set([newData]);
+                                
                                 this.tableService.sendActionAnimation({
                                     animation: 'update',
                                     data: newData,
@@ -187,31 +188,19 @@ export class TruckTrailerService {
                             },
                         });
                 } else if (data.trailerId) {
-                    // let trailerById = this.trailerService
-                    //     .getTrailerById(data.trailerId)
-                    //     .subscribe({
-                    //         next: (trailer: any) => {
-                    //             // Update Trailer Store
-                    //             if (data.tabSelected === 'active') {
-                    //                 this.trailerActiveStore.remove(
-                    //                     ({ id }) => id === data.driverId
-                    //                 );
-                    //                 this.trailerActiveStore.add(trailer);
-                    //             } else if (data.tabSelected === 'inactive') {
-                    //                 this.trailerInactiveStore.remove(
-                    //                     ({ id }) => id === data.driverId
-                    //                 );
-                    //                 this.trailerInactiveStore.add(trailer);
-                    //             }
-                    //             // Send Update Data To Table
-                    //             this.tableService.sendActionAnimation({
-                    //                 animation: 'update',
-                    //                 data: trailer,
-                    //                 id: trailer.id,
-                    //             });
-                    //             trailerById.unsubscribe();
-                    //         },
-                    //     });
+                    let trailerById = this.trailerService
+                        .getTrailerById(data.trailerId)
+                        .subscribe({
+                            next: (trailer: any) => {
+                                // Send Update Data To Table
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: trailer,
+                                    id: trailer.id,
+                                });
+                                trailerById.unsubscribe();
+                            },
+                        });
                 }
             })
         );

@@ -146,7 +146,7 @@ export enum TableStringEnum {
     CDL = 'CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
-    DELETE_ITEM = 'delete-item', 
+    DELETE_ITEM = 'delete-item',
     LOAD_EXTRA_STOPS = ' EXTRA',
 
     PRINT = 'print',
@@ -554,7 +554,8 @@ export enum TableStringEnum {
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
     LOAD_CARD_STATE = 'loadCardState',
-    REPAIR_CARD_STATE = "repairCardState",
-    TRAILER_CARD_STATE = "trailerCardState",
-    USER_CARD_STATE = "userCardState",
+    REPAIR_CARD_STATE = 'repairCardState',
+    TRAILER_CARD_STATE = 'trailerCardState',
+    USER_CARD_STATE = 'userCardState',
+    VOIDED = 'VOIDED',
 }

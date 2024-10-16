@@ -18,6 +18,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -100,20 +101,25 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsBack: CardRows[];
 
     constructor(
-        private modalService: ModalService,
         private router: Router,
-        private tableService: TruckassistTableService,
-        private truckService: TruckService,
-        private confirmationService: ConfirmationService,
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
         private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
         private TruckCardsModalService: TruckCardsModalService,
         private truckCardModalQuery: truckCardModalQuery,
+
+        // Services
         private confirmationActivationService: ConfirmationActivationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private detailsDataService: DetailsDataService,
+        private tableService: TruckassistTableService,
+        private truckService: TruckService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService,
+
+        // Pipes
+        public datePipe: DatePipe,
     ) {}
 
     ngOnInit(): void {
@@ -227,10 +233,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     if (!res.array) {
+                        this.detailsDataService.setNewData(res.data);
                         this.changeTruckStatus(res.data.id);
                     } else {
-                        res.array.map((e) => {
-                            this.changeTruckStatus(e.id);
+                        res.array.map((truck) => {
+                            this.detailsDataService.setNewData(truck);
+                            this.changeTruckStatus(truck.id);
                         });
                     }
                 }
@@ -491,7 +499,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
+            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
+            this.detailsDataService.setActivation(!(!!this.backFilterQuery.active));
         }
 
         this.initTableOptions();

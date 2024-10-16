@@ -80,7 +80,7 @@ import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/broker-modal-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -1385,7 +1385,7 @@ export class CustomerTableComponent
                   ' ' +
                   data.mainPoBox.state +
                   ' ' +
-                  data.mainPoBox.zipCode
+                  (data.mainPoBox.zipCode ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
@@ -1835,11 +1835,13 @@ export class CustomerTableComponent
                         ...event,
                         type: TableStringEnum.EDIT,
                         openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT
-                                ? TableStringEnum.CONTRACT
+                            event.type === TableStringEnum.ADD_CONTRACT ||
+                            event.type === TableStringEnum.EDIT_CONTACT ||
+                            event.type === TableStringEnum.DELTETE_CONTACT
+                                ? TableStringEnum.ADDITIONAL
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                : TableStringEnum.BASIC,
                     }
                 );
             }
