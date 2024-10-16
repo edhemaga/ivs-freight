@@ -14,6 +14,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 //Models
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
+import { BrokerResponse, ShipperResponse } from 'appcoretruckassist';
 
 //Services
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -52,7 +53,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 export class TaContactsCardComponent {
     @Input() public type: string;
     @Input() public departmentContacts: DepartmentContacts[];
-    @Input() public viewData: any;
+    @Input() public viewData: BrokerResponse | ShipperResponse;
 
     public contactsImageRoutes = ContactsCardSvgRoutes;
 
