@@ -30,6 +30,9 @@ import { FormDataService } from '@shared/services/form-data.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
+// enums
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
     public trailerList: any;
@@ -558,6 +561,31 @@ export class TrailerService implements OnDestroy {
                         });
                 },
             });
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        const storeTrailers =
+            data.selectedTab === TableActionsStringEnum.ACTIVE
+                ? this.trailerActiveQuery.getAll()
+                : this.trailerInactiveQuery.getAll();
+
+        storeTrailers.map((trailer) => {
+            if (data.id === trailer.id) {
+                data.selectedTab === TableActionsStringEnum.ACTIVE
+                    ? this.trailerActiveStore.update(trailer.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }))
+                    : this.trailerInactiveStore.update(trailer.id, (entity) => ({
+                          ...entity,
+                          note: data.value,
+                      }));
+            }
+        });
     }
 
     ngOnDestroy(): void {
