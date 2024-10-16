@@ -1,16 +1,16 @@
 // Models
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
-import { BrokerResponseData } from '@pages/customer/pages/broker-details/models/broker-response-data.model';
+import { BrokerResponseData } from '@pages/customer/pages/broker-details/models/';
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
 
 // Enums
-import { BrokerDetailsStringEnum } from '../../enums/broker-details-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums';
 
 // Constants
-import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/broker.constants';
+import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/';
 
 export class BrokerDetailsHelper {
     static getBrokerDetailsConfig(

@@ -11,8 +11,7 @@ export class TrailerCardsModalData {
         },
         {
             title: 'Make',
-            key: 'trailerMake',
-            secondKey: 'name',
+            key: 'tableMake',
             selected: true,
         },
         {
@@ -22,8 +21,7 @@ export class TrailerCardsModalData {
         },
         {
             title: 'Length',
-            key: 'trailerLength',
-            secondKey: 'name',
+            key: 'tabelLength',
             selected: true,
         },
     ];
@@ -69,8 +67,7 @@ export class TrailerCardsModalData {
         },
         {
             title: 'Make',
-            key: 'trailerMake',
-            secondKey: 'name',
+            key: 'tableMake',
         },
         {
             title: 'Model',
@@ -88,13 +85,11 @@ export class TrailerCardsModalData {
         },
         {
             title: 'Length',
-            key: 'trailerLength',
-            secondKey: 'name',
+            key: 'tabelLength',
         },
         {
             title: 'Owner',
-            key: 'owner',
-            secondKey: 'name',
+            key: 'tableOwner',
         },
         {
             isDropdown: true,
@@ -104,47 +99,43 @@ export class TrailerCardsModalData {
                     id: 4,
                     title: 'Weight • Empty',
                     secondTitle: 'Empty',
-                    key: 'emptyWeight',
+                    key: 'tableWeightEmpty',
                 },
                 {
                     id: 12,
                     title: 'Weight • Volume',
                     secondTitle: 'Volume',
-                    key: 'volume',
+                    key: 'tableWeightVolume',
                 },
             ],
         },
         {
             title: 'Axle',
-            key: 'axles',
+            key: 'tableAxle',
         },
         {
             title: 'Suspension',
-            key: 'suspension',
-            secondKey: 'name',
+            key: 'tableSuspension',
         },
         {
             title: 'Tire Size',
-            key: 'tireSize',
-            secondKey: 'name',
+            key: 'tableTireSize',
         },
         {
             title: 'Reefer Unit',
-            key: 'reeferUnit',
-            secondKey: 'name',
+            key: 'tableReeferUnit',
         },
         {
             title: 'Door Type',
-            key: 'doorType',
-            secondKey: 'name',
+            key: 'tableDoorType',
         },
         {
             title: 'Ins. Policy',
-            key: 'insurancePolicy',
+            key: 'tableInsPolicy',
         },
         {
             title: 'Mileage',
-            key: 'mileage',
+            key: 'tableMileage',
         },
         {
             isDropdown: true,
@@ -154,13 +145,13 @@ export class TrailerCardsModalData {
                     id: 4,
                     title: 'Purchase Detail • Date',
                     secondTitle: 'Date',
-                    key: 'purchaseDate',
+                    key: 'tablePurchaseDate',
                 },
                 {
                     id: 12,
                     title: 'Purchase Detail • Price',
                     secondTitle: 'Price',
-                    key: 'purchasePrice',
+                    key: 'tablePurchasePrice',
                 },
             ],
         },

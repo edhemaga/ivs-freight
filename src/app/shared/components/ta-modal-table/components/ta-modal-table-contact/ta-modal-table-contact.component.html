@@ -26,7 +26,7 @@
                         ></svg-icon>
                     </div>
 
-                    <app-ta-input
+                    <app-ca-input
                         formControlName="fullName"
                         [inputConfig]="{
                             name: 'First Name',
@@ -35,7 +35,7 @@
                             placeholderInsteadOfLabel: true,
                             minLength: 5,
                             maxLength: 64,
-                            textTransform: 'capitalize',
+                            textTransform: 'capitalizedcase',
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             isInputBackgroundRemoved:
@@ -46,7 +46,7 @@
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 0)"
                         (mouseleave)="emitOnInputHover(false, i, 0)"
-                    ></app-ta-input>
+                    ></app-ca-input>
                 </div>
 
                 <app-ta-input-dropdown
@@ -75,7 +75,7 @@
                     (mouseleave)="emitOnInputHover(false, i, 1)"
                 ></app-ta-input-dropdown>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="phone"
                     [inputConfig]="{
                         name: 'Phone',
@@ -94,9 +94,9 @@
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 2)"
                     (mouseleave)="emitOnInputHover(false, i, 2)"
-                ></app-ta-input>
+                ></app-ca-input>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="phoneExt"
                     [inputConfig]="{
                         name: 'ext',
@@ -116,9 +116,9 @@
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 3)"
                     (mouseleave)="emitOnInputHover(false, i, 3)"
-                ></app-ta-input>
+                ></app-ca-input>
 
-                <app-ta-input
+                <app-ca-input
                     formControlName="email"
                     [inputConfig]="{
                         name: 'email',
@@ -138,7 +138,7 @@
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 4)"
                     (mouseleave)="emitOnInputHover(false, i, 4)"
-                ></app-ta-input>
+                ></app-ca-input>
             </div>
         </ng-container>
     </div>

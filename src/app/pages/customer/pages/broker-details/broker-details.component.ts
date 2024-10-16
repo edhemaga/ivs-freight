@@ -31,16 +31,16 @@ import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdo
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Svg Routes
-import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
 
 // Helpers
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { BrokerDetailsHelper } from '@pages/customer/pages/broker-details/utils/helpers/broker-details.helper';
+import { BrokerDetailsHelper } from '@pages/customer/pages/broker-details/utils/helpers/';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -163,6 +163,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.brokerList.findIndex(
             (broker) => broker.id === data.id
         );
+
         this.initTableOptions(data);
 
         this.businessOpen = data?.status ? true : false;
@@ -343,14 +344,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 ? TableStringEnum.ADDITIONAL
                 : TableStringEnum.REVIEW;
 
-        let eventObject = {
+        const eventObject = {
             data: undefined,
             id: this.brokerId,
             type: eventType,
             openedTab,
         };
 
-        let brokerData = this.brokerObject
+        const brokerData = this.brokerObject
             ? this.brokerObject
             : this.brokerConfData;
 
@@ -361,7 +362,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onModalAction(event: any) {
+    public onModalAction(event: string) {
         if (event == BrokerDetailsStringEnum.LOAD) {
             this.modalService.openModal(LoadModalComponent, {
                 size: TableStringEnum.LOAD,
@@ -371,7 +372,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 data: undefined,
                 id: this.brokerId,
                 type: TableStringEnum.EDIT,
-                openedTab: TableStringEnum.ADDITIONAL,
+                openedTab:
+                    event === TableStringEnum.CONTRACT
+                        ? TableStringEnum.ADDITIONAL
+                        : event,
             };
 
             setTimeout(() => {

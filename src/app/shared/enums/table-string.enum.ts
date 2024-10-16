@@ -256,10 +256,12 @@ export enum TableStringEnum {
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
+    REGISTRATION_2 = 'registration',
 
     ADD_INSPECTION = 'add-inspection',
     ADD_INSPECTION_2 = 'Add Inspection',
     INSPECTION = 'Inspection',
+    INSPECTION_2 = 'inspection',
 
     TITLE = 'Title',
 
@@ -551,4 +553,13 @@ export enum TableStringEnum {
 
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
+    
+    // Card States
+    CUSTOMER_CARD_STATE = 'customerCardState',
+    DRIVER_CARD_STATE = 'driverCardState',
+    LOAD_CARD_STATE = 'loadCardState',
+    REPAIR_CARD_STATE = 'repairCardState',
+    TRAILER_CARD_STATE = 'trailerCardState',
+    USER_CARD_STATE = 'userCardState',
+    VOIDED = 'VOIDED',
 }

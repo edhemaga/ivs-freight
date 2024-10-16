@@ -26,11 +26,13 @@ export class InputErrorPipe implements PipeTransform {
             }
 
             if (value['min']) {
-                errorMessageValue = `${value['min']} Is Minimum Value`;
+                const min = value['min'] && typeof value['min'] === 'object' ? value['min'].min : value['min'];
+                errorMessageValue = `${min} Is Minimum Value`;
             }
 
             if (value['max']) {
-                errorMessageValue = `${value['max']} Is Maximum Value`;
+                const max = value['max'] && typeof value['max'] === 'object' ? value['max'].max : value['max'];
+                errorMessageValue = `${max} Is Maximum Value`;
             }
 
             if (value['passwordDontMatch']) {
