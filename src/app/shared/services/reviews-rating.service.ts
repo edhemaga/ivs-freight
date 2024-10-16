@@ -108,14 +108,14 @@ export class ReviewsRatingService {
 
     public addReview(data: CreateReviewCommand): Observable<CreateResponse> {
         return this.reviewRatingService.apiRatingreviewReviewPost(data).pipe(
-            tap((res: any) => {
-                const reviewDataNew = this.reviewRatingService
+            tap((res) => {
+                this.reviewRatingService
                     .apiRatingreviewReviewIdGet(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (resp: any) => {
-                            let splitUrl = this.router.url.split('/');
-                            let customerId = parseInt(splitUrl[3]);
+                        next: (resp) => {
+                            const splitUrl = this.router.url.split('/');
+                            const customerId = parseInt(splitUrl[3]);
 
                             if (this.router.url.indexOf('broker') > -1) {
                                 this.brokerService.addNewReview(
@@ -123,19 +123,20 @@ export class ReviewsRatingService {
                                     customerId
                                 );
                             }
+
                             if (this.router.url.indexOf('shipper') > -1) {
                                 this.shipperService.addNewReview(
                                     resp,
                                     customerId
                                 );
                             }
+
                             if (this.router.url.indexOf('shop-details') > -1) {
                                 this.repairService.addNewReview(
                                     resp,
                                     customerId
                                 );
                             }
-                            reviewDataNew.unsubscribe();
                         },
                     });
             })

@@ -496,3 +496,12 @@ app-load-modal {
         padding-left: 0 !important;
     }
 }
+
+// Use case for deleting modal opening from modal
+html ngb-modal-backdrop {
+    opacity: 0 !important;
+
+    &:first-of-type {
+        opacity: var(--bs-backdrop-opacity) !important;
+    }
+}

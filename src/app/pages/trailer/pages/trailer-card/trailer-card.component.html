@@ -259,10 +259,10 @@
                                             [src]="
                                                 '
                                                 /assets/svg/common/trailers/' +
-                                                card.trailerType.logoName
+                                                card.tableTrailerTypeIcon
                                             "
                                         ></svg-icon>
-                                        {{ card.trailerType.name }}
+                                        {{ card.tableTrailerName }}
                                     </ng-container>
 
                                     <ng-container
@@ -314,6 +314,7 @@
                                 [openedAll]="false"
                                 [parking]="false"
                                 [entityType]="'Trailer'"
+                                (saveNoteValue)="saveNoteValue($event, card.id)"
                             >
                             </app-ta-note>
                         </div>

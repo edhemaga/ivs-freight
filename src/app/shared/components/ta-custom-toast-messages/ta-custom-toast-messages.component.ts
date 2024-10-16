@@ -25,6 +25,9 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-ta-custom-toast-messages',
     templateUrl: './ta-custom-toast-messages.component.html',
@@ -676,7 +679,9 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             case 'BROKER':
                 let messageValue = '';
                 if (this.httpRequest.body && !this.httpRequest.body?.id) {
-                    messageValue = this.httpRequest?.body?.getAll?.('dbaName')?.[0]
+                    messageValue = this.httpRequest?.body?.getAll?.(
+                        'dbaName'
+                    )?.[0]
                         ? this.httpRequest?.body?.getAll?.('dbaName')?.[0]
                         : this.httpRequest?.body?.getAll?.('businessName')?.[0];
                 }
@@ -764,15 +769,17 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                         this.httpRequest.body.getAll('trailerNumber')[0];
                 }
 
-                let activeTrailer = this.DetailsDataService.mainData?.status
-                    ? true
-                    : false;
+                const activeTrailer =
+                    this.DetailsDataService.isActivationInProgress;
                 if (!trailerNum) {
                     trailerNum =
                         this.DetailsDataService.mainData?.trailerNumber;
                 }
 
-                if (apiEndPoint.indexOf('status') > -1) {
+                if (
+                    apiEndPoint.indexOf('status') > -1 &&
+                    this.DetailsDataService.mainData
+                ) {
                     if (activeTrailer) {
                         this.actionTitle =
                             this.toastrType == 'toast-error'
@@ -819,9 +826,8 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                     truckNum = this.httpRequest.body.getAll('truckNumber')[0];
                 }
 
-                let activeTruck = this.DetailsDataService.mainData?.status
-                    ? true
-                    : false;
+                const activeTruck =
+                    this.DetailsDataService.isActivationInProgress;
                 if (!truckNum) {
                     truckNum = this.DetailsDataService.mainData?.truckNumber;
                 }
@@ -838,7 +844,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                                 : 'DEACTIVATED';
                     }
 
-                    if (this.toastrType != 'toast-error') {
+                    if (
+                        this.toastrType != 'toast-error' &&
+                        this.DetailsDataService.mainData
+                    ) {
                         let newActiveStatus = 1;
                         if (this.DetailsDataService.mainData.status == 1) {
                             newActiveStatus = 0;
@@ -908,7 +917,14 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
-                if (
+
+                if (!this.httpRequest.body) break;
+
+                if (this.httpRequest.body.registrationIdToBeVoided) {
+                    this.actionTitle = TableStringEnum.REGISTRATION;
+                    this.actionType = TableStringEnum.VOIDED;
+                    messageText = `${TableStringEnum.REGISTRATION} - ${this.httpRequest.body.registrationIdToBeVoided}`;
+                } else if (
                     this.httpRequest.body.getAll('unitType')[0] == 'Truck' ||
                     this.httpRequest.body.getAll('truckId')[0]
                 ) {

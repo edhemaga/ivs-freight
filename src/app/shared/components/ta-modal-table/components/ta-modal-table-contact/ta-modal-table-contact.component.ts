@@ -11,7 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { CaInputComponent } from 'ca-components';
 
 //enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
@@ -35,8 +35,8 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
         ReactiveFormsModule,
 
         // components
-        TaInputComponent,
         TaInputDropdownComponent,
+        CaInputComponent,
     ],
 })
 export class TaModalTableContactComponent {
