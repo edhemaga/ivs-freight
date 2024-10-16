@@ -9,12 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStatus } from './loadStatus';
+import { FileResponse } from './fileResponse';
+import { EnumValue } from './enumValue';
 
 
-export interface RevertLoadStatusCommand { 
+export interface CompanyUserChatShortResponse { 
     id?: number;
-    status?: LoadStatus;
-    dispatchId?: number | null;
+    userId?: number;
+    fullName?: string | null;
+    avatarFile?: FileResponse;
+    departmentId?: number | null;
+    userType?: EnumValue;
 }
 

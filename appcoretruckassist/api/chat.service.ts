@@ -23,6 +23,8 @@ import { ActivateConversationCommand } from '../model/activateConversationComman
 // @ts-ignore
 import { ArchiveConversationCommand } from '../model/archiveConversationCommand';
 // @ts-ignore
+import { CompanyChannelsConversationResponse } from '../model/companyChannelsConversationResponse';
+// @ts-ignore
 import { CompanyUserForChatListResponse } from '../model/companyUserForChatListResponse';
 // @ts-ignore
 import { ConversationInfoResponse } from '../model/conversationInfoResponse';
@@ -141,9 +143,9 @@ export class ChatService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiChatCompanychannelsGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ConversationResponse>>;
-    public apiChatCompanychannelsGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ConversationResponse>>>;
-    public apiChatCompanychannelsGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ConversationResponse>>>;
+    public apiChatCompanychannelsGet(request?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<CompanyChannelsConversationResponse>>;
+    public apiChatCompanychannelsGet(request?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<CompanyChannelsConversationResponse>>>;
+    public apiChatCompanychannelsGet(request?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<CompanyChannelsConversationResponse>>>;
     public apiChatCompanychannelsGet(request?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -199,7 +201,7 @@ export class ChatService {
         }
 
         let localVarPath = `/api/chat/companychannels`;
-        return this.httpClient.request<Array<ConversationResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<CompanyChannelsConversationResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

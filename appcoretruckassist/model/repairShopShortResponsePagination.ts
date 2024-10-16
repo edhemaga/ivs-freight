@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStatus } from './loadStatus';
+import { RepairShopShortResponse } from './repairShopShortResponse';
 
 
-export interface RevertLoadStatusCommand { 
-    id?: number;
-    status?: LoadStatus;
-    dispatchId?: number | null;
+export interface RepairShopShortResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<RepairShopShortResponse> | null;
 }
 

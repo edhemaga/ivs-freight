@@ -1383,7 +1383,7 @@ export class CustomerTableComponent
                   ' ' +
                   data.mainPoBox.state +
                   ' ' +
-                  data.mainPoBox.zipCode
+                  (data.mainPoBox.zipCode ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
