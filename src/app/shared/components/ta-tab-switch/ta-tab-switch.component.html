@@ -18,7 +18,19 @@
     >
         >
         <div class="d-flex align-items-center tab-switch-text" mainContent>
-            <div class="tab-switch-name" [ngClass]="{'ta-font-bold tab-switch-name-big': isBold}">{{ item.name }}</div>
+            <div
+                class="tab-switch-name"
+                [ngClass]="{ 'ta-font-bold tab-switch-name-big': isBold }"
+            >
+                <ng-container *ngIf="item.tabTemplate">
+                    <ng-container
+                        *ngTemplateOutlet="item.tabTemplate"
+                    ></ng-container>
+                </ng-container>
+                <ng-container *ngIf="!item.tabTemplate">{{
+                    item.name
+                }}</ng-container>
+            </div>
             <div class="tab-counter" *ngIf="item.counter">
                 <div class="counter-number">{{ item.counter }}</div>
             </div>
@@ -40,7 +52,6 @@
             </div>
         </div>
     </div>
-
     <div
         class="slide-active-holder {{ type }}"
         [ngStyle]="{

@@ -25,7 +25,7 @@ import {
 import { PayrollFacadeService } from '../../state/services/payroll.service';
 
 import { ICaMapProps, ColumnConfig } from 'ca-components';
-import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type'; 
+import { PayrollReportTableResponse } from 'ca-components/lib/components/ca-period-content/models/payroll-report-tables.type';
 
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollProccessPaymentModalComponent } from '../../payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -598,8 +598,8 @@ export class PayrollReportComponent implements OnInit {
         this.payrollFacadeService.getPayrollDriverMileageReport(dataSend);
     }
 
-    onProccessPayroll() {
-        console.log('open payroll');
+    onProccessPayroll(payrollData: PayrollDriverMileageByIdResponse) {
+        console.log('open payroll', payrollData);
 
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -608,10 +608,7 @@ export class PayrollReportComponent implements OnInit {
             },
             {
                 type: 'new', // 'edit' stavljas ako treba kad se azurira postojeci
-                data: {
-                    id: null, // id for edit,
-                    // driverId: driverId, // TODO: a moze iz store-a da izvuces i da mi prosledis sve podatke o vozacu
-                }, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
+                data: payrollData, // da ne bi morao da pozivam kod sebe get by id, samo javi kad zavrsis
             }
         );
     }

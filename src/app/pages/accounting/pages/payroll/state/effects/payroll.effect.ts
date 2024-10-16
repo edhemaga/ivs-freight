@@ -89,6 +89,48 @@ export class PayrollEffect {
             )
     );
 
+    public closePayrollSoloMileageReport$ = createEffect(
+        (): Observable<Action> =>
+            this.actions$.pipe(
+                ofType(
+                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriver
+                ),
+                switchMap((action) => {
+                    return this.payrollService
+                        .closePayrollSoloMileageDriverReport(
+                            action.reportId,
+                            action.lastLoadDate,
+                            action.selectedCreditIds,
+                            action.selectedDeducionIds,
+                            action.selectedBonusIds
+                        )
+                        .pipe(
+                            map((data) => {
+                                return PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverSuccess(
+                                    {
+                                        payroll: data,
+                                    }
+                                );
+                            }),
+                            // tap((data) => {
+                            //     // this.store.dispatch(
+                            //     //   PaymentActions.restartRefreshDataSuccess({ flag: false })
+                            //     // );
+                            // }),
+                            catchError((error) =>
+                                of(
+                                    PayrollSoloMileageDriver.closePayrollSoloMileageReportDriverError(
+                                        {
+                                            error,
+                                        }
+                                    )
+                                )
+                            )
+                        );
+                })
+            )
+    );
+
     public getPayrollSoloMileage$ = createEffect(
         (): Observable<Action> =>
             this.actions$.pipe(

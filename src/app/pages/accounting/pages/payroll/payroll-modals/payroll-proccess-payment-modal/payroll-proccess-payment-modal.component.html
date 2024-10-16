@@ -1,25 +1,41 @@
-<app-ta-modal [modalTitle]="'Process'">
+<!-- <app-ta-modal [modalTitle]="'Process'"> -->
+<app-ca-modal
+    [modalTitle]="'Process'"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerContent"
+>
     <div origin>
         <app-ta-tab-switch
             [tabs]="tabs"
-            (switchClicked)="tabChange($event, 'main-tabs')"
+            (switchClicked)="tabChange($event)"
             [type]="'type2-modal-popup type2-modal-popup-header'"
         >
         </app-ta-tab-switch>
-
         <form
             [formGroup]="paymentForm"
-            class="form-container"
-            [ngClass]="{
-                'form-container-without-mb': selectedTab === 1,
-                'form-container-with-inputs': selectedTab === 2
-            }"
+            class="form-container form-container-without-mb"
         >
             <div
                 class="animation-two-tabs"
                 [@animationTabsModal]="animationObject"
             >
                 <!-------------------------------- Basic Tab -------------------------------->
+                <div class="m-tab" *ngIf="selectedTab === 2">
+                    <div class="payroll_procces_input_holder">
+                        <app-ca-input
+                            formControlName="amount"
+                            [inputConfig]="inputConfig"
+                        ></app-ca-input>
+                        <app-ca-input-dropdown
+                            *ngIf="dropdownOption"
+                            formControlName="option"
+                            [options]="dropdownOption"
+                            [inputConfig]="dropDownInputConfig"
+                            (selectedItem)="selectedItem($event)"
+                        ></app-ca-input-dropdown>
+                    </div>
+                </div>
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <app-ca-input
                         formControlName="amount"
@@ -29,7 +45,63 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #leftModalContent>
+    <div class="payroll-number">{{ modalData.payrollNumber }}</div>
+</ng-template>
+
+<ng-template #rightModalContent>
+    <div>
+        <svg-icon
+            class="modal-close"
+            src="assets/svg/ic_x.svg"
+            (click)="onCloseModal()"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #footerContent>
+    <div class="modal-footer">
+        <div class="button_holder d-flex gap-2 w-100">
+            <button
+                [ngStyle]="{
+                    'pointer-events': 'all'
+                }"
+                class="ta-font-bold modal-save-btn flex-1 modal-default-button"
+                type="button"
+                (click)="closeUnpaid()"
+            >
+                Close Unpaid
+            </button>
+            <button
+                [ngStyle]="{
+                    'pointer-events': paymentForm.valid ? 'all' : 'none'
+                }"
+                (click)="closePayroll()"
+                class="ta-font-bold modal-save-btn flex-1 modal-deactivate-btn"
+                type="button"
+                [class.modal-blue-btn]="paymentForm.valid"
+            >
+                Pay in Full
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #tabCustomTemplate>
+    <div class="custom_ahr_tab_template">
+        carrier<span>a.</span> <span class="ahc">ACH</span>
+    </div>
+</ng-template>
+<!-- [ngClass]="{
+    'modal-blue-btn':
+        confirmationData?.type === 'open',
+    'modal-gray-btn':
+        confirmationData?.type !== 'open'
+}" -->
+
+<!-- </app-ta-modal> -->
 
 <!-- [editData]="editData"
     [isModalValid]="payrollDeductionForm.valid && isFormDirty"

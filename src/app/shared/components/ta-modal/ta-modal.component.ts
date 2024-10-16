@@ -373,7 +373,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'deactivate': {
-                if(!this.isDeactivateOnly) this.isDeactivated = !this.isDeactivated;
+                if (!this.isDeactivateOnly)
+                    this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
                     action: action,
                     bool: this.isDeactivated,

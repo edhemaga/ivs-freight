@@ -676,6 +676,15 @@ ngb-modal-window[aria-hidden='true'] {
                     }
                 }
 
+                .modal-default-button{
+                    background: $bw2;
+                    color: $ta-black;
+
+                    &:hover {
+                        background: $ta-light-grey-5;
+                    }
+                }
+
                 .modal-red-btn {
                     background-color: $ta-red-11;
                     color: $white;

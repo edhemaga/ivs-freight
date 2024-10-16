@@ -211,7 +211,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('truckInputDropdown')
     truckInputDropdown: TaInputDropdownComponent;
 
-    @Input() editData: EditData;
+    @Input() editData: EditData<LoadResponse>;
 
     data: ICaMapProps = {
         center: {

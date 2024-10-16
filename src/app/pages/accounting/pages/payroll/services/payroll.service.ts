@@ -65,4 +65,30 @@ export class PayrollService {
             { params }
         );
     }
+
+    public closePayrollSoloMileageDriverReport(
+        reportId: number,
+        lastLoadDate: string,
+        selectedCreditIds?: number[],
+        selectedDeducionIds?: number[],
+        selectedBonusIds?: number[]
+    ): Observable<PayrollDriverMileageResponse> {
+        const body = {
+            id: reportId,
+            lastLoadDate: lastLoadDate,
+            selectedDeductionIds: selectedDeducionIds,
+            selectedCreditIds: selectedCreditIds,
+            selectedBonusIds: selectedBonusIds,
+            pay: {
+                type: 'Manual',
+                date: '2024-10-15T16:09:54.299Z',
+                amount: 200,
+            },
+        };
+
+        return this.http.put<PayrollDriverMileageResponse>(
+            `${environment.API_ENDPOINT}/api/payroll/driver/mileage/close`,
+            body
+        );
+    }
 }

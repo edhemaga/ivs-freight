@@ -38,3 +38,25 @@ export const getPayrollSoloMileageReportDriverError = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
     props<any>()
 );
+
+// GET DRIVER MILEAGE REPORT
+export const closePayrollSoloMileageReportDriver = createAction(
+    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
+    props<{
+        reportId: number;
+        lastLoadDate: string;
+        selectedCreditIds?: number[];
+        selectedDeducionIds?: number[];
+        selectedBonusIds?: number[];
+    }>()
+);
+
+export const closePayrollSoloMileageReportDriverSuccess = createAction(
+    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
+    props<{ payroll: PayrollDriverMileageResponse }>()
+);
+
+export const closePayrollSoloMileageReportDriverError = createAction(
+    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
+    props<any>()
+);

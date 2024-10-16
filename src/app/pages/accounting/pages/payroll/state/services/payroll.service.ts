@@ -15,7 +15,6 @@ import {
 } from '../selectors/payroll.selector';
 import { Observable, take } from 'rxjs';
 import {
-    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
@@ -107,6 +106,25 @@ export class PayrollFacadeService {
                             selectedDeducionIds ??
                             payrollState.selectedDeducionIds,
                     })
+                );
+            });
+    }
+
+    public closePayrollDriverMileageReport({ reportId }: { reportId: number }) {
+        this.store
+            .pipe(select(selectPayrollState), take(1))
+            .subscribe((payrollState) => {
+                this.store.dispatch(
+                    PayrollDriverMileageSolo.closePayrollSoloMileageReportDriver(
+                        {
+                            reportId,
+                            lastLoadDate: payrollState.lastLoadDate,
+                            selectedCreditIds: payrollState.selectedCreditIds,
+                            selectedBonusIds: payrollState.selectedBonusIds,
+                            selectedDeducionIds:
+                                payrollState.selectedDeducionIds,
+                        }
+                    )
                 );
             });
     }
