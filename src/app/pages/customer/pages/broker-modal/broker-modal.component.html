@@ -532,14 +532,14 @@
 
                 <div class="m-tab" [hidden]="selectedTab !== 3">
                     <app-ta-custom-card
-                        [hasCounter]="reviews.length ?? 0"
                         [cardName]="'Review'"
+                        [hasCounter]="reviews?.length"
                         [hasActionSvg]="true"
                         [hasArrow]="false"
                         [hasLikeDislike]="false"
                         [isCardOpen]="true"
-                        [hasBodyData]="reviews.length"
-                        [hasScrollBody]="reviews.length > 6"
+                        [hasBodyData]="reviews?.length"
+                        [hasScrollBody]="reviews?.length > 6"
                         [disableMultipleReviews]="isOneMoreReviewDisabled"
                         [disableAnimation]="isCardAnimationDisabled"
                         (onActionEvent)="createReview()"
@@ -551,7 +551,7 @@
                         ></app-ta-user-review>
                     </app-ta-custom-card>
 
-                    <ng-container *ngIf="!reviews.length">
+                    <ng-container *ngIf="!reviews?.length">
                         <div class="no-review-broker">
                             <svg-icon
                                 class="no-review-svg"
