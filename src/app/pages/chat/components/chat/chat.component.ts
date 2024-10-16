@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, takeUntil, tap } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
@@ -10,8 +10,8 @@ import {
     ChatTab,
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
+    ChatPreferenceItem,
 } from '@pages/chat/models';
-import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Enums
 import {
@@ -23,7 +23,10 @@ import {
 } from '@pages/chat/enums';
 
 // Constants
-import { ChatToolbarDataConstant } from '@pages/chat/utils/constants';
+import {
+    ChatToolbarDataConstant,
+    ChatPreferencesConfig,
+} from '@pages/chat/utils/constants';
 
 // Routes
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
@@ -39,13 +42,16 @@ import {
 import { UnsubscribeHelper } from '@pages/chat/utils/helpers/unsubscribe-helper';
 
 // Animations
-import { chatFadeHorizontallyAnimation } from '@shared/animations';
+import {
+    chatFadeHorizontallyAnimation,
+    chatFadeVerticallyAnimation,
+} from '@shared/animations';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
-    animations: [chatFadeHorizontallyAnimation],
+    animations: [chatFadeHorizontallyAnimation, chatFadeVerticallyAnimation],
 })
 export class ChatComponent
     extends UnsubscribeHelper
@@ -74,9 +80,12 @@ export class ChatComponent
     public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
 
     public isAttachmentUploadActive$: Observable<boolean>;
+    public isHamburgerMenuActive: boolean = false;
 
     // Tab and header ribbon configuration
     public tabs: ChatTab[] = ChatToolbarDataConstant.tabs;
+    public chatPreferencesConfig: ChatPreferenceItem[] =
+        ChatPreferencesConfig.items;
 
     // Assets and enums
     public chatSvgRoutes = ChatSvgRoutes;
@@ -245,5 +254,8 @@ export class ChatComponent
                 this.chatStoreService.setProfileDetails(data);
             })
             .add(() => this.chatStoreService.displayProfileDetails());
+    }
+    public toggleChatPreferences(): void {
+        this.isHamburgerMenuActive = !this.isHamburgerMenuActive;
     }
 }

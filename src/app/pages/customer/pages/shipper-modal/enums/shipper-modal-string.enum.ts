@@ -1,6 +1,14 @@
 export enum ShipperModalString {
-    DETAILS = 'Basic',
-    CONTACT = 'Additional',
+    BASIC = 'Basic',
+    ADDITIONAL = 'Additional',
+
+    SMALL = 'small',
+    DELETE = 'delete',
+    CLOSE = 'close',
+
+    DELETE_REVIEW = 'delete-review',
+
+    SHIPPER = 'shipper',
 
     PHYSICAL_ADDRESS = 'Physical Address',
     COORDINATES = 'Coordinates',
@@ -14,4 +22,6 @@ export enum ShipperModalString {
     CONTACTS = 'contacts',
 
     EMPTY_STRING = '',
+
+    BUSINESS_NAME = 'businessName',
 }
