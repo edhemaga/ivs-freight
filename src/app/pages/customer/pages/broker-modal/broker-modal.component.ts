@@ -765,11 +765,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         if (limit) {
             limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
 
+            const data = {
+                id: this.editData?.id ?? null,
+                creditLimit: limit,
+            };
+
             this.brokerService
-                .availableCreditBroker({
-                    id: this.editData?.id ? this.editData.id : null,
-                    creditLimit: limit,
-                })
+                .availableCreditBroker(data)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res: BrokerAvailableCreditResponse) => {
