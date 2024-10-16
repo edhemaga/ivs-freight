@@ -22,5 +22,6 @@ export interface RepairShopShortResponse {
     longitude?: number | null;
     latitude?: number | null;
     pinned?: boolean;
+    status?: number;
 }
 

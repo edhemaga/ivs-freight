@@ -13,6 +13,7 @@ import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalRespon
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
+import { OwnerResponse } from './ownerResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
 import { PayrollDeadlineShortResponse } from './payrollDeadlineShortResponse';
 import { TruckShortResponse } from './truckShortResponse';
@@ -22,7 +23,7 @@ import { PayrollFuelMinimalResponse } from './payrollFuelMinimalResponse';
 export interface PayrollOwnerResponse { 
     id?: number;
     previousLoadId?: number | null;
-    owner?: string | null;
+    owner?: OwnerResponse;
     truck?: TruckShortResponse;
     payrollNumber?: string | null;
     periodStart?: string;
