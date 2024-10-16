@@ -1799,7 +1799,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             billingPoBoxCity: res.billingPoBox?.city ?? null,
                             creditType: res.creditType,
                             creditLimit:
-                                res.creditType.name === 'Custom'
+                                res.creditType.name ===
+                                BrokerModalStringEnum.CUSTOM
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                           res.creditLimit
                                       )
