@@ -34,12 +34,7 @@ import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-b
 })
 export class TruckCardComponent implements OnInit, OnDestroy {
     @Input() set viewData(value: CardDetails[]) {
-        this._viewData = value.map((v) => {
-            return {
-                ...v,
-                features: TruckFeaturesDataHelper.truckFeaturesData(v),
-            };
-        });
+        this._viewData = value;
     }
     @Input() cardTitle: string;
     @Input() displayRowsFront: CardRows[];
@@ -70,6 +65,9 @@ export class TruckCardComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.isAllCardsFlipp = res;
+
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = [];
             });
     }
 

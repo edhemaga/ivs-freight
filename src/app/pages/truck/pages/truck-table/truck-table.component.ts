@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -15,9 +15,9 @@ import { TruckService } from '@shared/services/truck.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -25,11 +25,16 @@ import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truc
 import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
-import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
+import { select, Store } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.selectors';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { TruckCardsModalConfig } from '@pages/truck/pages/truck-card-modal/utils/constants/truck-cards-modal.config';
 
 // pipes
 import { DatePipe } from '@angular/common';
@@ -82,6 +87,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public resizeObserver: ResizeObserver;
 
     //Data to display from model Truck Active
+    public displayRowsFront: CardRows[] =
+        TruckCardDataConstants.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        TruckCardsModalConfig.displayRowsBackActive;
     public displayRowsFrontActive: CardRows[] =
         TruckCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
@@ -99,26 +108,32 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
-        private modalService: ModalService,
         private router: Router,
+
+        // Services
+        private modalService: ModalService,
         private tableService: TruckassistTableService,
         private truckService: TruckService,
         private confirmationService: ConfirmationService,
+        private truckCardsModalService: TruckCardsModalService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+
+        // Store
         private truckActiveQuery: TruckActiveQuery,
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
+        private store: Store,
+
+        // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe,
-        private TruckCardsModalService: TruckCardsModalService,
-        private truckCardModalQuery: truckCardModalQuery,
-        private confirmationActivationService: ConfirmationActivationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        public datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
-        this.updateCardView();
-
         this.sendTruckData();
 
         this.confirmationSubscribe();
@@ -149,56 +164,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.activeTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.inactiveTabCardsConfig();
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
-
             default:
                 break;
         }
-        this.TruckCardsModalService.updateTab(this.selectedTab);
+        this.truckCardsModalService.updateTab(this.selectedTab);
     }
 
-    private activeTabCardsConfig(): void {
-        this.truckCardModalQuery.active$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private inactiveTabCardsConfig(): void {
-        this.truckCardModalQuery.inactive$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
-
-                    this.sendDataToCardsFront = filteredCardRowsFront;
-
-                    this.sendDataToCardsBack = filteredCardRowsBack;
-                }
-            });
-    }
     // Confirmation Subscribe
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
@@ -491,7 +472,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (tableView) {
             this.selectedTab = tableView.tabSelected;
-            this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+            this.backFilterQuery.active =
+                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
         }
 
@@ -653,6 +635,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             truckType,
             apUnit,
             truckGrossWeight,
+            wheelBase,
+            driverAvatarFile,
+            deactivatedAt,
         } = data;
 
         return {
@@ -684,11 +669,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: year,
             tableColor: color?.code,
             colorName: color?.name,
+            color: color,
+            wheelBase: wheelBase,
             tableDriver: driver
                 ? driverAvatar
                     ? driverAvatar + driver
                     : driver
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriverAvatar: driverAvatarFile?.url,
             tableTrailer: trailerNumber,
             tabelOwnerDetailsName: owner?.name,
             tabelOwnerDetailsComm: commission
@@ -786,6 +774,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: updatedAt
+                ? this.datePipe.transform(
+                      updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDeactivated: deactivatedAt
                 ? this.datePipe.transform(
                       updatedAt,
                       TableStringEnum.DATE_FORMAT
