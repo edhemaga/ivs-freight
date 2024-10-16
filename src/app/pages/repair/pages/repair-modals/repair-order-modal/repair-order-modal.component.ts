@@ -1096,9 +1096,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.isCardanimationDisabled = true;
 
                 this.editRepairById(this.editData.data);
-            } else {
+            } else 
                 this.startFormChanges();
-            }
         });
     }
 
