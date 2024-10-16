@@ -26,6 +26,7 @@ import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-ac
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
@@ -113,7 +114,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private TruckCardsModalService: TruckCardsModalService,
         private truckCardModalQuery: truckCardModalQuery,
         private confirmationActivationService: ConfirmationActivationService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private detailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -227,9 +229,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res) {
                     if (!res.array) {
+                        this.detailsDataService.setNewData(res.data);
                         this.changeTruckStatus(res.data.id);
                     } else {
                         res.array.map((e) => {
+                            this.detailsDataService.setNewData(e);
                             this.changeTruckStatus(e.id);
                         });
                     }
@@ -493,6 +497,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedTab = tableView.tabSelected;
             this.backFilterQuery.active = this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
             this.activeViewMode = tableView.viewMode;
+            this.detailsDataService.setActivation(!(!!this.backFilterQuery.active));
         }
 
         this.initTableOptions();
