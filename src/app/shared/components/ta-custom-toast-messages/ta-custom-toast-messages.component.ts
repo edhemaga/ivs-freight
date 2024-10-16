@@ -25,6 +25,9 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-ta-custom-toast-messages',
     templateUrl: './ta-custom-toast-messages.component.html',
@@ -911,7 +914,11 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                 
                 if(!this.httpRequest.body) break;
                 
-                if (
+                if(this.httpRequest.body.registrationIdToBeVoided) {
+                    this.actionTitle = TableStringEnum.REGISTRATION;
+                    this.actionType = TableStringEnum.VOIDED;
+                    messageText = `${TableStringEnum.REGISTRATION} - ${this.httpRequest.body.registrationIdToBeVoided}`;
+                } else if (
                     this.httpRequest.body.getAll('unitType')[0] == 'Truck' ||
                     this.httpRequest.body.getAll('truckId')[0]
                 ) {

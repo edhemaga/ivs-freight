@@ -557,4 +557,5 @@ export enum TableStringEnum {
     REPAIR_CARD_STATE = "repairCardState",
     TRAILER_CARD_STATE = "trailerCardState",
     USER_CARD_STATE = "userCardState",
+    VOIDED= 'VOIDED'
 }
