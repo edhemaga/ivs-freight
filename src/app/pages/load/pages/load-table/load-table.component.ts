@@ -310,23 +310,19 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.type === TableStringEnum.DELETE) {
-                    if (res.template === TableStringEnum.BROKER) {
+                    if (res.template === TableStringEnum.BROKER)
                         this.deleteBrokerById(res.id);
-                    } else if (res.template === TableStringEnum.COMMENT) {
+                    else if (res.template === TableStringEnum.COMMENT)
                         this.deleteCommentById(res.data);
-                    } else {
-                        if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    else {
+                        if (this.selectedTab === TableStringEnum.TEMPLATE)
                             this.deleteLoadTemplateById(res.id);
-                        } else {
-                            this.deleteLoadById(res.id);
-                        }
+                        else this.deleteLoadById(res.id);
                     }
                 } else if (res?.type === TableStringEnum.MULTIPLE_DELETE) {
-                    if (this.selectedTab === TableStringEnum.TEMPLATE) {
+                    if (this.selectedTab === TableStringEnum.TEMPLATE)
                         this.deleteLoadTemplateList(res.array);
-                    } else {
-                        this.deleteLoadList(res.array);
-                    }
+                    else this.deleteLoadList(res.array);
                 }
             });
 
