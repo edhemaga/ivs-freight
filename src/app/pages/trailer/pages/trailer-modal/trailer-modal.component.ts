@@ -164,6 +164,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private formService: FormService
     ) {}
 
+    get volumenTrailers(): string[] {
+        return TrailerModalConfig.getVolumenTrailers();
+    }
+
+    get isDoorAndLiftGate(): string[] {
+        return TrailerModalConfig.getIsDoorAndLiftGate();
+    }
+
     get TrailerNumberConfig(): ITaInput {
         return TrailerModalConfig.getTrailerNumberConfig(this.editData);
     }
