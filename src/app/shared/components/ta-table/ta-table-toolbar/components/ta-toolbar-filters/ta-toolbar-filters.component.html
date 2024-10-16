@@ -141,13 +141,8 @@
     </ng-container>
 
     <!-- LOCATION FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showLocationFilter"
-        [type]="'locationFilter'"
-        [filterTitle]="'Area Filter'"
-        [icon]="'ic_address'"
-    ></app-ca-filter>
-    <!-- <app-ta-filter
+
+    <app-ta-filter
         *ngIf="options.toolbarActions.showLocationFilter"
         [type]="'locationFilter'"
         [icon]="'address'"
@@ -161,7 +156,7 @@
                 : ''
         "
     >
-    </app-ta-filter> -->
+    </app-ta-filter>
 
     <!-- FUEL STOP FILTER -->
     <app-ta-filter
@@ -229,20 +224,21 @@
             options.toolbarActions.showTruckPmFilter ||
             options.toolbarActions.showTruckDispatchFilter
         "
-        [type]="'truckFilter'"
+        [type]="'truckTypeFilter'"
         [icon]="'truck'"
         [filterTitle]="'Truck Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
         (clearAll)="onFilter($event)"
-        [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
+        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
         [class]="
             options?.toolbarActions?.filtersOrder?.truck
                 ? 'order-' + options.toolbarActions.filtersOrder.truck
                 : ''
         "
+        [truckTypeArray]="truckTypeArray"
     >
     </app-ca-filter>
 
@@ -413,7 +409,7 @@
     </app-ta-filter>
 
     <!-- TRUCK TYPE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTruckTypeFilter"
         [type]="'truckTypeFilter'"
         [icon]="'truck'"
@@ -423,13 +419,15 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.truckType
                 ? 'order-' + options.toolbarActions.filtersOrder.truckType
                 : ''
         "
+        [truckTypeArray]="truckTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- TRAILER TYPE FILTER -->
     <app-ta-filter

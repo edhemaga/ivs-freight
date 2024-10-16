@@ -418,7 +418,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.repairBackFilter(this.backFilterQuery);
 
                                 break;
-                            case RepairTableStringEnum.TRUCK_FILTER:
+                            case RepairTableStringEnum.TRUCK_TYPE_FILTER:
                                 this.backFilterQuery.truckNumbers =
                                     res.queryParams;
                                 this.repairBackFilter(this.backFilterQuery);

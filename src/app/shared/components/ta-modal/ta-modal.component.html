@@ -192,8 +192,8 @@
 
                     <ng-container *ngIf="hasTruckTypeFilter">
                         <div class="me-1">
-                            <app-ta-filter
-                                [type]="'truckFilter'"
+                            <app-ca-filter
+                                [type]="'truckTypeFilter'"
                                 [icon]="'truck'"
                                 [filterTitle]="'Truck Type Filter'"
                                 [defFilterHolder]="true"
@@ -202,8 +202,9 @@
                                 [isDispatchFilter]="!isAssignLoadModal"
                                 [isRepairFilter]="false"
                                 (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ta-filter>
+                            </app-ca-filter>
                         </div>
                     </ng-container>
 
@@ -885,7 +886,7 @@
                                     'Company Parking',
                                     'Company Office',
                                     'delete-review',
-                                    'User',
+                                    'User'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"

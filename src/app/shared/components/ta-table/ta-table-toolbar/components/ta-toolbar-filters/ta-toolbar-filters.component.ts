@@ -28,10 +28,13 @@ import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-fi
 import { MoneyFilterPipe } from '@shared/pipes/money-filter.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
+// constants
+import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
+
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -73,7 +76,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public loadStatusOptionsArray: any;
-    constructor(private tableSevice: TruckassistTableService) {}
+    public truckTypeArray: any;
+    constructor(
+        private tableSevice: TruckassistTableService,
+        private filterService: FilterStateService
+    ) {}
     public customerFilter: {
         filteredArray: any;
         selectedFilter: boolean;
@@ -86,10 +93,17 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        let truckResData;
+
+        if (this.options.toolbarActions.showTruckPmFilter) {
+            truckResData = this.filterService.getRepairTruckData();
+        } else {
+            truckResData = this.filterService.getTruckType();
+        }
+
         this.tableSevice.currentLoadStatusFilterOptions
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('checcc if som happens', res);
                 if (res) {
                     this.loadStatusOptionsArray = [...res.options];
                 }
@@ -98,13 +112,45 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.tableSevice.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                console.log('checcc if som happens', res);
                 if (res?.animation === 'list-update') {
                     this.loadStatusOptionsArray = res.data.statuses;
+
+                    if (this.options.toolbarActions.showTruckPmFilter) {
+                        this.truckTypeArray = res.data.map((type: any) => {
+                            type['name'] = type.truckNumber;
+                            return type;
+                        });
+                    } else {
+                        this.truckTypeArray = res.data.truckTypes.map(
+                            (item) => ({
+                                ...item.truckType,
+                                count: item.count,
+                                icon:
+                                    FilterIconRoutes.truckSVG +
+                                    item.truckType.logoName,
+                            })
+                        );
+                    }
                 }
-                // if (res) {
-                //     this.loadStatusOptionsArray = res.options;
-                // }
+                if (res?.animation === 'truck-list-update') {
+                    if (this.options.toolbarActions.showTruckPmFilter) {
+                        this.truckTypeArray = truckResData;
+
+                        this.truckTypeArray = res.data.map((type: any) => {
+                            type['name'] = type.truckNumber;
+                            return type;
+                        });
+                    }
+                }
+                if (res?.animation === 'truck-type-update') {
+                    this.truckTypeArray = truckResData;
+                    this.truckTypeArray = res.data.map((item) => ({
+                        ...item.truckType,
+                        count: item.count,
+                        icon:
+                            FilterIconRoutes.truckSVG + item.truckType.logoName,
+                    }));
+                }
             });
     }
 
@@ -170,17 +216,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     // On Filter
     onFilter(event: any) {
-        console.log(event, this.loadStatusOptionsArray, 'senddddd');
-        // if (event.action === 'Clear')
-        //     this.loadStatusOptionsArray.forEach((item) => {
-        //         item.isSelected = false;
-        //     });
-
-        // console.log(
-        //     event.action === 'Clear',
-        //     event.action,
-        //     this.loadStatusOptionsArray
-        // );
         this.tableSevice.sendCurrentSetTableFilter(event);
     }
 

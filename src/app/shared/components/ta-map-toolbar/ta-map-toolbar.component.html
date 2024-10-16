@@ -71,7 +71,7 @@
         [ngClass]="{ 'active-option': truckFilterActive }"
         *ngIf="!options.toolbarActions.hideTruckFilter"
     >
-        <app-ta-filter
+        <app-ca-filter
             [type]="'truckTypeFilter'"
             [filterTitle]="'Truck Type Legend'"
             [defFilterHolder]="true"
@@ -80,8 +80,9 @@
             [largeLeftIcon]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
+            (clearAll)="setFilterEvent($event)"
         >
-        </app-ta-filter>
+        </app-ca-filter>
     </div>
 
     <!-- TRAILER FILTER -->

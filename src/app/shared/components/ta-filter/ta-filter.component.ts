@@ -99,7 +99,7 @@ import { AssignedLoadResponse } from 'appcoretruckassist';
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],
     providers: [NgbDropdownConfig, ThousandSeparatorPipe, TaSvgPipe],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.Emulated,
     animations: [
         closeForm('closeForm'),
         inOutAnimation('inOutAnimation'),
@@ -1318,7 +1318,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             if (
                 !element.classList.contains(ToolbarFilterStringEnum.ACTIVE) &&
                 !mod
-            )  return false; 
+            )
+                return false;
         }
 
         if (mod) this.isHoverClose = false;

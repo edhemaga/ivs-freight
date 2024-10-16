@@ -3,6 +3,7 @@ export enum RepairTableStringEnum {
     PM_FILTER = 'pmFilter',
     TRAILER_FILTER = 'trailerFilter',
     TRUCK_FILTER = 'truckFilter',
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
     TIME_FILTER = 'timeFilter',
     MONEY_FILTER = 'moneyFilter',
     DAY = 'day',
@@ -36,5 +37,5 @@ export enum RepairTableStringEnum {
     ONE_YEAR = '1 year',
     ONE_YEAR_FUTURE = '1 year future',
     LAST_YEAR = 'last year',
-    YEAR_BEFORE_LAST = 'year before last'
+    YEAR_BEFORE_LAST = 'year before last',
 }
