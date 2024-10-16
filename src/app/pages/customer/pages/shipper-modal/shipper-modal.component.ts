@@ -395,7 +395,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public tabChange(event: any): void {
         this.selectedTab = event.id;
 
-        let dotAnimation = document.querySelector(
+        const dotAnimation = document.querySelector(
             this.editData ? '.animation-three-tabs' : '.animation-two-tabs'
         );
 
