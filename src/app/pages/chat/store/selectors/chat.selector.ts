@@ -2,6 +2,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 // Models
 import {
+    ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -57,7 +58,7 @@ export const getIsConversationParticipantsDisplayed = createSelector(
 
 export const getConversationProfileDetails = createSelector(
     selectChatState,
-    (state: ChatState): ConversationInfoResponse => state.profileDetails
+    (state: ChatState): ChatConversationDetails => state.profileDetails
 );
 
 export const getUnreadCount = createSelector(

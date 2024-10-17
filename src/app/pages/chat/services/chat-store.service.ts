@@ -36,6 +36,7 @@ import {
 
 // Models
 import {
+    ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -51,7 +52,7 @@ export class ChatStoreService {
     private messages$!: Observable<ChatMessageResponse>;
     private isProfileDetailsDisplayed$: Observable<boolean>;
     private isParticipantsDisplayed$: Observable<boolean>;
-    private conversationProfileDetails$: Observable<ConversationInfoResponse>;
+    private conversationProfileDetails$: Observable<ChatConversationDetails>;
     private editMessage$: Observable<ChatMessage>;
     private replyMessage$: Observable<ChatMessage>;
     private activeReplyOrEdit$: Observable<number>;
@@ -91,7 +92,7 @@ export class ChatStoreService {
         this.store.dispatch(displayConversationParticipants());
     }
 
-    public setProfileDetails(data: ConversationInfoResponse): void {
+    public setProfileDetails(data: ChatConversationDetails): void {
         this.store.dispatch(setProfileDetails(data));
     }
 
@@ -167,7 +168,7 @@ export class ChatStoreService {
         return this.isParticipantsDisplayed$;
     }
 
-    public selectConversationProfileDetails(): Observable<ConversationInfoResponse> {
+    public selectConversationProfileDetails(): Observable<ChatConversationDetails> {
         if (!this.conversationProfileDetails$)
             this.conversationProfileDetails$ = this.store.select(
                 getConversationProfileDetails

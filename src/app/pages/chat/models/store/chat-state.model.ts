@@ -1,6 +1,7 @@
 // Models
 import {
     ChatCompanyChannelExtended,
+    ChatConversationDetails,
     ChatMessage,
     ChatSelectedConversation,
 } from '@pages/chat/models';
@@ -35,7 +36,7 @@ export type ChatState = {
     // Conversation details
     isProfileDetailsDisplayed?: boolean;
     isConversationParticipantsDisplayed?: boolean;
-    profileDetails: ConversationInfoResponse | null;
+    profileDetails: ChatConversationDetails;
     userTyping: string;
 
     // Actions

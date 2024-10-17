@@ -18,3 +18,4 @@ export * from './chat-selected-conversation.model';
 export * from './store/chat-state.model';
 export * from './store/chat-displayed-flag.model';
 export * from './chat-preference-item.model';
+export * from './conversation-details/chat-conversation-details.model';

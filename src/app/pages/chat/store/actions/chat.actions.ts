@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 // Models
 import {
+    ChatConversationDetails,
     ChatMessage,
     ChatMessageResponse,
     ChatSelectedConversation,
@@ -49,7 +50,7 @@ export const displayProfileDetails = createAction(
 
 export const setProfileDetails = createAction(
     '[Chat] Get Profile Details',
-    props<ConversationInfoResponse>()
+    props<ChatConversationDetails>()
 );
 
 export const displayConversationParticipants = createAction(

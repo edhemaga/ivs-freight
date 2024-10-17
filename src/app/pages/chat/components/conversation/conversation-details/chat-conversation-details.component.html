@@ -27,34 +27,34 @@
                 <div class="d-flex align-content-center align-items-center">
                     <app-ca-profile-image
                         [avatarImg]="
-                            data.userAdditionalInformation?.avatarFile?.url
+                            data.userAdditionalInformation[0]?.avatarFile?.url
                         "
                         [avatarColor]="{
                             background: '#DFC2F9',
                             color: '#9E47EC66'
                         }"
                         [textShortName]="
-                            data.userAdditionalInformation?.firstName.concat(
+                            data.userAdditionalInformation[0]?.firstName.concat(
                                 ' ',
-                                data.userAdditionalInformation?.lastName
+                                data.userAdditionalInformation[0]?.lastName
                             ) | nameInitials
                         "
                         [size]="74"
                         [fontSize]="30"
                         [isHoverEffect]="false"
                         [isRound]="
-                            data.userAdditionalInformation?.userType?.name !==
-                            'Driver'
+                            data.userAdditionalInformation[0]?.userType
+                                ?.name !== 'Driver'
                         "
                     ></app-ca-profile-image>
                     <div class="text">
                         <div class="text-name ta-font-bold">
-                            {{ data.userAdditionalInformation?.firstName }}
-                            {{ data.userAdditionalInformation?.lastName }}
+                            {{ data.userAdditionalInformation[0]?.firstName }}
+                            {{ data.userAdditionalInformation[0]?.lastName }}
                         </div>
                         <div class="text-type ta-font-medium">
                             {{
-                                data.userAdditionalInformation?.userType
+                                data.userAdditionalInformation[0]?.userType
                                     ?.name || chatSearchPlaceHolders.USER
                             }}
                         </div>

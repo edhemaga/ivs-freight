@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, takeUntil } from 'rxjs';
+import { map, Observable, takeUntil } from 'rxjs';
 
 // Models
 import { ConversationInfoResponse } from 'appcoretruckassist';
@@ -11,6 +11,7 @@ import {
     ChatCompanyChannelExtended,
     ChatSelectedConversation,
     ChatPreferenceItem,
+    ChatConversationDetails,
 } from '@pages/chat/models';
 
 // Enums
@@ -77,7 +78,7 @@ export class ChatComponent
     public isProfileDetailsDisplayed$!: Observable<boolean>;
     public isParticipantsDisplayed$!: Observable<boolean>;
 
-    public conversationProfileDetails$!: Observable<ConversationInfoResponse>;
+    public conversationProfileDetails$!: Observable<ChatConversationDetails>;
 
     public isAttachmentUploadActive$: Observable<boolean>;
     public isHamburgerMenuActive: boolean = false;
@@ -249,8 +250,22 @@ export class ChatComponent
 
         this.chatService
             .getAllConversationFiles(this.selectedConversation)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: ConversationInfoResponse) => {
+            .pipe(
+                map(
+                    (
+                        data: ConversationInfoResponse
+                    ): ChatConversationDetails => {
+                        return {
+                            ...data,
+                            userAdditionalInformation: [
+                                { ...data.userAdditionalInformation },
+                            ],
+                        };
+                    }
+                ),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((data: ChatConversationDetails) => {
                 this.chatStoreService.setProfileDetails(data);
             })
             .add(() => this.chatStoreService.displayProfileDetails());
