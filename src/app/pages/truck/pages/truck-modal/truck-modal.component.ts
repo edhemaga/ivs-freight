@@ -65,6 +65,9 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 // models
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
+// Enums
+import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
+
 @Component({
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
@@ -93,6 +96,14 @@ import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
     ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
+    public truckTypesWithLength = [
+        'Box Truck',
+        'Reefer Truck',
+        'Dump Truck',
+        'Cement Truck',
+        'Garbage Truck',
+        'Car Hauler',
+    ];
     @Input() editData: any;
 
     public truckForm: UntypedFormGroup;
@@ -395,16 +406,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             case 'truck-type': {
                 this.selectedTruckType = event;
 
-                if (this.selectedTruckType?.name === 'Box Truck') {
+                if (this.isLengthRequired) {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId')
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH)
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.truckForm.get('truckLengthId'),
+                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
                         false
                     );
                     this.selectedTruckLengthId = null;
+                }
+
+                if (this.isLengthRequired) {
+                    this.selectedTruckLengthId = null;
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH).patchValue(null);
                 }
                 break;
             }
@@ -509,6 +525,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             }
             case 'truck-length': {
                 this.selectedTruckLengthId = event;
+                this.inputService.changeValidators(
+                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                    this.isLengthRequired
+                );
                 break;
             }
 
@@ -765,6 +785,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {},
             });
+    }
+
+    public get isLengthRequired(): boolean {
+        return this.truckTypesWithLength.includes(this.selectedTruckType?.name);
     }
 
     private populateStorageData(res: any) {

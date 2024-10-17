@@ -1,0 +1,1 @@
+export * from './truck-modal-form.enum'
