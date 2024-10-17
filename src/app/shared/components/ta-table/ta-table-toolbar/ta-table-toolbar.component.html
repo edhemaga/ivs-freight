@@ -543,17 +543,21 @@
 
             <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
                 <div
-                    class="new-load d-flex justify-content-center align-items-center"
-                    [ngClass]="{
-                        'new-load-locked': !dispathcboardTableLocked
-                    }"
-                    (click)="onToolBarAction('open-dispatch-load-modal')"
+                    class="modal2 d-flex justify-content-center align-items-center"
                 >
-                    <svg-icon
-                        [src]="
-                            'assets/svg/dispatchboard/ic_dispatch_toolbar_button.svg'
-                        "
-                    ></svg-icon>
+                    <div
+                        class="modal-open-container d-flex justify-content-center align-items-center"
+                        [ngClass]="{
+                            'new-load-locked': !dispathcboardTableLocked
+                        }"
+                        (click)="onToolBarAction('open-dispatch-load-modal')"
+                    >
+                        <svg-icon
+                            [src]="
+                                'assets/svg/dispatchboard/ic_dispatch_toolbar_button.svg'
+                            "
+                        ></svg-icon>
+                    </div>
                 </div>
             </ng-container>
 
