@@ -8,7 +8,7 @@ import { ChatSvgRoutes } from '@pages/chat/utils/routes';
 })
 export class ChatStatusIconPipe implements PipeTransform {
     transform(status: string): string {
-        switch (status.toLowerCase()) {
+        switch (status?.toLowerCase()) {
             case 'active':
                 return ChatSvgRoutes.activeIcon;
             case 'online':

@@ -213,7 +213,11 @@
                             [isHoverEffect]="false"
                             [isRound]="item.isRound"
                         ></app-ca-profile-image>
-                        <svg-icon [src]="item.route"></svg-icon>
+                        <div class="activitiy-status-icon">
+                            <svg-icon
+                                [src]="item.status | chatStatusIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="conversationTypeEnum.CHANNEL">
                         <ng-container

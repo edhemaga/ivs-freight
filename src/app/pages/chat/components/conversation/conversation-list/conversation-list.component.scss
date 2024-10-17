@@ -168,6 +168,12 @@
     &-regular {
         width: 26px;
         margin: 2px auto;
+
+        .activitiy-status-icon {
+            position: relative;
+            top: 7px;
+            right: 8px;
+        }
     }
 
     &-0degr {
