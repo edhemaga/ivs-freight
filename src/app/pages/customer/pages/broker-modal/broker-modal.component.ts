@@ -1703,6 +1703,46 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    this.brokerForm.patchValue({
+                        businessName: res.businessName,
+                        dbaName: res.dbaName,
+                        mcNumber: res.mcNumber,
+                        ein: res.ein,
+                        email: res.email,
+                        phone: res.phone,
+                        // Physical Address
+                        physicalAddress: res.mainAddress?.address ?? null,
+                        physicalAddressUnit:
+                            res.mainAddress?.addressUnit ?? null,
+                        physicalPoBox: res.mainPoBox?.poBox ?? null,
+                        physicalPoBoxCity: [
+                            res.mainPoBox.city,
+                            res.mainPoBox.state,
+                        ].join(', '),
+                        // Billing Address
+                        isCheckedBillingAddress:
+                            res.mainAddress.address ===
+                            res.billingAddress.address,
+                        billingAddress: res.billingAddress?.address ?? null,
+                        billingAddressUnit:
+                            res.billingAddress?.addressUnit ?? null,
+                        billingPoBox: res.billingPoBox?.poBox ?? null,
+                        billingPoBoxCity: res.billingPoBox?.city ?? null,
+                        creditType: res.creditType,
+                        creditLimit:
+                            res.creditType.name === BrokerModalStringEnum.CUSTOM
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      res.creditLimit
+                                  )
+                                : null,
+                        availableCredit: res.availableCredit,
+                        payTerm: res.payTerm?.name ?? null,
+                        note: res.note,
+                        ban: res.ban,
+                        dnu: res.dnu,
+                        contacts: this.mapContacts(res.brokerContacts, true),
+                    });
+
                     this.brokerName = res.businessName;
 
                     this.modalService.changeModalStatus({
@@ -1758,86 +1798,59 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
-                    setTimeout(() => {
-                        this.tabPhysicalAddressChange(
-                            this.selectedPhysicalAddress.address
-                                ? {
-                                      id: 3,
-                                      name: 'Physical Address',
-                                      checked: true,
-                                  }
-                                : {
-                                      id: 4,
-                                      name: 'PO Box Physical',
-                                      checked: false,
-                                  }
-                        );
+                    this.tabCreditChange(
+                        this.billingCredit.find(
+                            (item) => item.name === res.creditType.name
+                        )
+                    );
 
-                        this.tabBillingAddressChange(
-                            this.selectedBillingAddressTab === 5 ||
+                    this.tabPhysicalAddressChange(
+                        this.selectedPhysicalAddress.address
+                            ? {
+                                  id: 3,
+                                  name: 'Physical Address',
+                                  checked: true,
+                              }
+                            : {
+                                  id: 4,
+                                  name: 'PO Box Physical',
+                                  checked: false,
+                              }
+                    );
+
+                    this.tabBillingAddressChange(
+                        this.selectedBillingAddressTab === 5 ||
+                            (this.selectedPhysicalAddress.address &&
                                 res.mainAddress.address ===
-                                    res.billingAddress.address
-                                ? {
-                                      id: 5,
-                                      name: 'Billing Address',
-                                      checked: true,
-                                  }
-                                : {
-                                      id: 6,
-                                      name: 'PO Box Billing',
-                                      checked: false,
-                                  }
-                        );
+                                    res.billingAddress.address)
+                            ? {
+                                  id: 5,
+                                  name: 'Billing Address',
+                                  checked: true,
+                              }
+                            : {
+                                  id: 6,
+                                  name: 'PO Box Billing',
+                                  checked: false,
+                              }
+                    );
 
-                        this.tabCreditChange(
-                            this.billingCredit.find(
-                                (item) => item.name === res.creditType.name
-                            )
-                        );
+                    this.startFormChanges();
 
-                        this.brokerForm.patchValue({
-                            businessName: res.businessName,
-                            dbaName: res.dbaName,
-                            mcNumber: res.mcNumber,
-                            ein: res.ein,
-                            email: res.email,
-                            phone: res.phone,
-                            // Physical Address
-                            physicalAddress: res.mainAddress?.address ?? null,
-                            physicalAddressUnit:
-                                res.mainAddress?.addressUnit ?? null,
-                            physicalPoBox: res.mainPoBox?.poBox ?? null,
-                            physicalPoBoxCity: res.mainPoBox?.city ?? null,
-                            // Billing Address
-                            isCheckedBillingAddress:
-                                res.mainAddress.address ===
-                                res.billingAddress.address,
-                            billingAddress: res.billingAddress?.address ?? null,
-                            billingAddressUnit:
-                                res.billingAddress?.addressUnit ?? null,
-                            billingPoBox: res.billingPoBox?.poBox ?? null,
-                            billingPoBoxCity: res.billingPoBox?.city ?? null,
-                            creditType: res.creditType,
-                            creditLimit:
-                                res.creditType.name ===
-                                BrokerModalStringEnum.CUSTOM
-                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          res.creditLimit
-                                      )
-                                    : null,
-                            availableCredit: res.availableCredit,
-                            payTerm: res.payTerm?.name ?? null,
-                            note: res.note,
-                            ban: res.ban,
-                            dnu: res.dnu,
-                            contacts: this.mapContacts(
-                                res.brokerContacts,
-                                true
-                            ),
-                        });
+                    if (res.mainPoBox?.city) {
+                        setTimeout(() => {
+                            this.brokerForm
+                                .get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
+                                .patchValue(
+                                    [
+                                        res.mainPoBox.city,
+                                        res.mainPoBox.state,
+                                    ].join(', ')
+                                );
 
-                        this.startFormChanges();
-                    }, 100);
+                            this.cdRef.detectChanges();
+                        }, 200);
+                    }
 
                     this.cdRef.detectChanges();
 
