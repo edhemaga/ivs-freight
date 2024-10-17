@@ -1836,6 +1836,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         }, 200);
                     }
 
+                    this.cdRef.detectChanges();
+
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;
                     }, 1000);
