@@ -138,7 +138,7 @@
                     <!-- Physical address -->
 
                     <div
-                        *ngIf="selectedPhysicalAddressTab === 3"
+                        [hidden]="selectedPhysicalAddressTab !== 3"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
@@ -189,7 +189,7 @@
                     <!-- Physical PO Box -->
 
                     <div
-                        *ngIf="selectedPhysicalAddressTab === 4"
+                        [hidden]="selectedPhysicalAddressTab !== 4"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':

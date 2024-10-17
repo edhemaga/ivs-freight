@@ -452,22 +452,30 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.brokerForm.get('physicalAddress')
             );
 
+            this.brokerForm
+                .get('physicalAddress')
+                .patchValue(this.selectedPhysicalAddress?.address);
+
             this.inputService.changeValidators(
                 this.brokerForm.get('physicalPoBox'),
+                false,
+                [],
                 false
             );
 
             this.inputService.changeValidators(
                 this.brokerForm.get('physicalPoBoxCity'),
+                false,
+                [],
                 false
             );
         } else {
             this.inputService.changeValidators(
                 this.brokerForm.get('physicalAddress'),
-                false
+                false,
+                [],
+                true
             );
-
-            this.brokerForm.get('physicalAddressUnit').reset();
 
             this.inputService.changeValidators(
                 this.brokerForm.get('physicalPoBox')
