@@ -270,6 +270,52 @@
                                     </ng-container>
 
                                     <ng-container
+                                        *ngIf="cardRow.title === 'Features'"
+                                    >
+                                        <ng-container
+                                            *ngIf="
+                                                !card.tableFeatures
+                                                    ?.length;
+                                                else features
+                                            "
+                                            >/</ng-container
+                                        >
+                                        <ng-template #features>
+                                            <div class="d-flex gap-1">
+                                                <ng-container
+                                                    *ngFor="
+                                                        let features of card.tableFeatures
+                                                    "
+                                                >
+                                                    <div
+                                                        ngbTooltip
+                                                        class="features-icon"
+                                                        mainContent
+                                                        [mainTooltip]="
+                                                            features.name
+                                                        "
+                                                        position="bottom"
+                                                        tooltipBackground="#424242"
+                                                        tooltipColor="#ffff"
+                                                        tooltipTextAlign="center"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                'assets/svg/common/' +
+                                                                features.image
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 18,
+                                                                'height.px': 18
+                                                            }"
+                                                        ></svg-icon>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+
+                                    <ng-container
                                         *ngIf="
                                             cardRow.title !== 'VIN' &&
                                             cardRow.title !==
@@ -283,7 +329,8 @@
                                             cardRow.title !==
                                                 'Licence Detail • State Issued' &&
                                             cardRow.title !==
-                                                'Assigned • Driver'
+                                                'Assigned • Driver' &&
+                                            cardRow.title !== 'Features'
                                         "
                                     >
                                         {{ card | cardValue : cardRow }}
@@ -314,11 +361,29 @@
                                 [note]="card.note"
                                 [mainData]="card"
                                 [entityId]="card.id"
+                                [entityType]="'Truck'"
                                 [openedAll]="false"
                                 [parking]="false"
                             >
                             </app-ta-note>
                         </div>
+
+                        <ng-container *ngIf="card.fileCount">
+                            <div
+                                class="card-attachments-icon-container d-flex flex-column align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="truckCardImageRoutes.attachment"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                                <div class="file_count">
+                                    {{ card.fileCount }}
+                                </div>
+                            </div>
+                        </ng-container>
 
                         <!-- Expand element -->
 
