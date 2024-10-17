@@ -117,6 +117,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             value: 'DRIVER',
         },
         {
+            api: 'shipper/contact',
+            value: 'SHIPPER CONTACT',
+        },
+        {
             api: 'shipper',
             value: 'SHIPPER',
         },
@@ -127,6 +131,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'broker/availablecredit',
             value: 'CREDIT',
+        },
+        {
+            api: 'broker/contact',
+            value: 'BROKER CONTACT',
         },
         {
             api: 'broker',
@@ -887,6 +895,12 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                 }
 
                 this.message = name;
+                break;
+            case 'BROKER CONTACT':
+            case 'SHIPPER CONTACT':
+                let customerContactName = this.DetailsDataService.contactName;
+
+                this.message = customerContactName;
                 break;
             case 'CONTACT':
                 let contactName = this.httpRequest.body?.name

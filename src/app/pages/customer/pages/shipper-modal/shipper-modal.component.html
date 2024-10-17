@@ -230,12 +230,13 @@
                         }"
                     >
                         <div class="shipper-work-hours">
-                            <div
-                                class="shipper-work-hours-field appointment"
-                                [ngClass]="{ active: isAppointmentShipping }"
-                                (click)="onAppontmentShipping()"
-                            >
-                                Appointment
+                            <div class="shipper-work-hours-field">
+                                <app-ta-checkbox
+                                    formControlName="shippingAppointment"
+                                    [name]="'shippingAppointment'"
+                                    [customClass]="'medium'"
+                                    [label]="'Appointment'"
+                                ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <app-ta-checkbox
