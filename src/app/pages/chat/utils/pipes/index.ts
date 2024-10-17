@@ -7,3 +7,4 @@ export * from './chat-remove-fullname.pipe';
 export * from './chat-department-icon.pipe';
 export * from './chat-department-icon.pipe';
 export * from './chat-highlight.pipe';
+export * from './chat-status-icon.pipe';
