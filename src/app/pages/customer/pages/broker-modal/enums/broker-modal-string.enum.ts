@@ -14,6 +14,8 @@ export enum BrokerModalStringEnum {
     BFB = 'bfb',
 
     EMPTY_STRING = '',
-    
+
     CUSTOM = 'Custom',
+
+    PHYSICAL_PO_BOX_CITY = 'physicalPoBoxCity',
 }

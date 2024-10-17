@@ -1687,6 +1687,46 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    this.brokerForm.patchValue({
+                        businessName: res.businessName,
+                        dbaName: res.dbaName,
+                        mcNumber: res.mcNumber,
+                        ein: res.ein,
+                        email: res.email,
+                        phone: res.phone,
+                        // Physical Address
+                        physicalAddress: res.mainAddress?.address ?? null,
+                        physicalAddressUnit:
+                            res.mainAddress?.addressUnit ?? null,
+                        physicalPoBox: res.mainPoBox?.poBox ?? null,
+                        physicalPoBoxCity: [
+                            res.mainPoBox.city,
+                            res.mainPoBox.state,
+                        ].join(', '),
+                        // Billing Address
+                        isCheckedBillingAddress:
+                            res.mainAddress.address ===
+                            res.billingAddress.address,
+                        billingAddress: res.billingAddress?.address ?? null,
+                        billingAddressUnit:
+                            res.billingAddress?.addressUnit ?? null,
+                        billingPoBox: res.billingPoBox?.poBox ?? null,
+                        billingPoBoxCity: res.billingPoBox?.city ?? null,
+                        creditType: res.creditType,
+                        creditLimit:
+                            res.creditType.name === BrokerModalStringEnum.CUSTOM
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      res.creditLimit
+                                  )
+                                : null,
+                        availableCredit: res.availableCredit,
+                        payTerm: res.payTerm?.name ?? null,
+                        note: res.note,
+                        ban: res.ban,
+                        dnu: res.dnu,
+                        contacts: this.mapContacts(res.brokerContacts, true),
+                    });
+
                     this.brokerName = res.businessName;
 
                     this.modalService.changeModalStatus({
@@ -1764,8 +1804,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.tabBillingAddressChange(
                         this.selectedBillingAddressTab === 5 ||
-                            res.mainAddress.address ===
-                                res.billingAddress.address
+                            (this.selectedPhysicalAddress.address &&
+                                res.mainAddress.address ===
+                                    res.billingAddress.address)
                             ? {
                                   id: 5,
                                   name: 'Billing Address',
@@ -1778,52 +1819,24 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
 
-                    setTimeout(() => {
-                        this.brokerForm.patchValue({
-                            businessName: res.businessName,
-                            dbaName: res.dbaName,
-                            mcNumber: res.mcNumber,
-                            ein: res.ein,
-                            email: res.email,
-                            phone: res.phone,
-                            // Physical Address
-                            physicalAddress: res.mainAddress?.address ?? null,
-                            physicalAddressUnit:
-                                res.mainAddress?.addressUnit ?? null,
-                            physicalPoBox: res.mainPoBox?.poBox ?? null,
-                            physicalPoBoxCity: res.mainPoBox?.city ?? null,
-                            // Billing Address
-                            isCheckedBillingAddress:
-                                res.mainAddress.address ===
-                                res.billingAddress.address,
-                            billingAddress: res.billingAddress?.address ?? null,
-                            billingAddressUnit:
-                                res.billingAddress?.addressUnit ?? null,
-                            billingPoBox: res.billingPoBox?.poBox ?? null,
-                            billingPoBoxCity: res.billingPoBox?.city ?? null,
-                            creditType: res.creditType,
-                            creditLimit:
-                                res.creditType.name ===
-                                BrokerModalStringEnum.CUSTOM
-                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          res.creditLimit
-                                      )
-                                    : null,
-                            availableCredit: res.availableCredit,
-                            payTerm: res.payTerm?.name ?? null,
-                            note: res.note,
-                            ban: res.ban,
-                            dnu: res.dnu,
-                            contacts: this.mapContacts(
-                                res.brokerContacts,
-                                true
-                            ),
-                        });
+                    this.startFormChanges();
 
-                        this.startFormChanges();
+                    if (res.mainPoBox?.city) {
+                        setTimeout(() => {
+                            this.brokerForm
+                                .get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
+                                .patchValue(
+                                    [
+                                        res.mainPoBox.city,
+                                        res.mainPoBox.state,
+                                    ].join(', ')
+                                );
 
-                        this.cdRef.detectChanges();
-                    }, 100);
+                            this.cdRef.detectChanges();
+                        }, 200);
+                    }
+
+                    this.cdRef.detectChanges();
 
                     setTimeout(() => {
                         this.isCardAnimationDisabled = false;

@@ -553,13 +553,15 @@ export enum TableStringEnum {
 
     BROKER_CONTACT = 'broker contact',
     SHIPPER_CONTACT = 'shipper contact',
+    VOIDED = 'VOIDED',
     
     // Card States
     CUSTOMER_CARD_STATE = 'customerCardState',
     DRIVER_CARD_STATE = 'driverCardState',
     LOAD_CARD_STATE = 'loadCardState',
-    REPAIR_CARD_STATE = 'repairCardState',
-    TRAILER_CARD_STATE = 'trailerCardState',
-    USER_CARD_STATE = 'userCardState',
-    VOIDED = 'VOIDED',
+
+    REPAIR_CARD_STATE = "repairCardState",
+    TRAILER_CARD_STATE = "trailerCardState",
+    USER_CARD_STATE = "userCardState",
+    TRUCK_CARD_STATE = "truckCardState",
 }

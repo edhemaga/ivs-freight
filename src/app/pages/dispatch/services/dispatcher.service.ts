@@ -163,9 +163,37 @@ export class DispatcherService {
     }
 
     public reorderDispatchboard(
-        reorderData: ReorderDispatchesCommand
+        reorderData: ReorderDispatchesCommand,
+        dispatchBoardId?: number
     ): Observable<any> {
-        return this.dispatchService.apiDispatchReorderPut(reorderData);
+        return this.dispatchService.apiDispatchReorderPut(reorderData).pipe(
+            tap(() => {
+                this.getDispatchBoardByDispatcherList(
+                    dispatchBoardId
+                ).subscribe((res) => {
+                    this.dispatcherStore.update((store) => {
+                        return {
+                            ...store,
+                            dispatchList: {
+                                ...store.dispatchList.dispatchBoards,
+                                dispatchBoards:
+                                    store.dispatchList.dispatchBoards.map(
+                                        (dispatchBoard) => {
+                                            return dispatchBoard.id === res.id
+                                                ? {
+                                                      ...dispatchBoard,
+                                                      dispatches:
+                                                          res.dispatches,
+                                                  }
+                                                : dispatchBoard;
+                                        }
+                                    ),
+                            },
+                        };
+                    });
+                });
+            })
+        );
     }
 
     public switchDispathboard(
