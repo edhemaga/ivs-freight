@@ -72,10 +72,7 @@ export class TaContactsCardComponent {
             data: this.viewData,
             id: this.viewData.id,
             type: TableStringEnum.EDIT,
-            openedTab:
-                this.type === TableStringEnum.BROKER
-                    ? TableStringEnum.ADDITIONAL
-                    : TableStringEnum.CONTACT_2,
+            openedTab: TableStringEnum.ADDITIONAL,
         };
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
