@@ -77,6 +77,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     public loadStatusOptionsArray: any;
     public truckTypeArray: any;
+    public trailerTypeArray: any;
+
     constructor(
         private tableSevice: TruckassistTableService,
         private filterService: FilterStateService
@@ -94,11 +96,21 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
         let truckResData;
+        let trailerResData;
 
-        if (this.options.toolbarActions.showTruckPmFilter) {
+        if (
+            this.options.toolbarActions.showTruckPmFilter ||
+            this.options.toolbarActions.showTrailerPmFilter
+        ) {
+            trailerResData = this.filterService.getRepairTrailerData();
             truckResData = this.filterService.getRepairTruckData();
         } else {
-            truckResData = this.filterService.getTruckType();
+            truckResData = this.filterService.getTruckType(
+                this.options.toolbarActions.showTruckDispatchFilter
+            );
+            trailerResData = this.filterService.getTrailerType(
+                this.options.toolbarActions.showTrailerDispatchFilter
+            );
         }
 
         this.tableSevice.currentLoadStatusFilterOptions
@@ -114,30 +126,28 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe((res: any) => {
                 if (res?.animation === 'list-update') {
                     this.loadStatusOptionsArray = res.data.statuses;
-
-                    if (this.options.toolbarActions.showTruckPmFilter) {
-                        this.truckTypeArray = res.data.map((type: any) => {
-                            type['name'] = type.truckNumber;
-                            return type;
-                        });
-                    } else {
-                        this.truckTypeArray = res.data.truckTypes.map(
-                            (item) => ({
-                                ...item.truckType,
-                                count: item.count,
-                                icon:
-                                    FilterIconRoutes.truckSVG +
-                                    item.truckType.logoName,
-                            })
-                        );
-                    }
                 }
                 if (res?.animation === 'truck-list-update') {
-                    if (this.options.toolbarActions.showTruckPmFilter) {
+                    if (
+                        this.options.toolbarActions.showTruckPmFilter ||
+                        this.options.toolbarActions.showTrailerPmFilter
+                    ) {
                         this.truckTypeArray = truckResData;
 
                         this.truckTypeArray = res.data.map((type: any) => {
                             type['name'] = type.truckNumber;
+                            return type;
+                        });
+                    }
+                }
+                if (res?.animation === 'trailer-list-update') {
+                    if (
+                        this.options.toolbarActions.showTruckPmFilter ||
+                        this.options.toolbarActions.showTrailerPmFilter
+                    ) {
+                        this.trailerTypeArray = trailerResData;
+                        this.trailerTypeArray = res.data.map((type: any) => {
+                            type['name'] = type.trailerNumber;
                             return type;
                         });
                     }
@@ -149,6 +159,16 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         count: item.count,
                         icon:
                             FilterIconRoutes.truckSVG + item.truckType.logoName,
+                    }));
+                }
+                if (res?.animation === 'trailer-type-update') {
+                    this.trailerTypeArray = trailerResData;
+                    this.trailerTypeArray = res.data.map((item) => ({
+                        ...item.trailerType,
+                        count: item.count,
+                        icon:
+                            FilterIconRoutes.trailerSVG +
+                            item.trailerType.logoName,
                     }));
                 }
             });

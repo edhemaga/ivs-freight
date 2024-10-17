@@ -13,8 +13,8 @@ export enum LoadFilterStringEnum {
     PICKUP_FILTER = 'pickupFilter',
     DELIVERY_FILTER = 'deliveryFilter',
     LOCATION_FILTER = 'locationFilter',
-    TRUCK_FILTER = 'truckFilter',
-    TRAILER_FILTER = 'trailerFilter',
+    TRUCK_TYPE_FILTER = 'truckTypeFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
 
     // Load Tabs
     PENDING = 'pending',

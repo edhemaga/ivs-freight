@@ -91,7 +91,7 @@
         [ngClass]="{ 'active-option': trailerFilterActive }"
         *ngIf="!options.toolbarActions.hideTrailerFilter"
     >
-        <app-ta-filter
+        <app-ca-filter
             [type]="'trailerTypeFilter'"
             [filterTitle]="'Trailer Type Legend'"
             [defFilterHolder]="true"
@@ -100,8 +100,9 @@
             [largeLeftIcon]="true"
             [legendView]="true"
             (setFilter)="setFilterEvent($event)"
+            (clearAll)="setFilterEvent($event)"
         >
-        </app-ta-filter>
+        </app-ca-filter>
     </div>
 
     <!-- DRIVER FILTER -->

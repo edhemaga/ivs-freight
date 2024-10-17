@@ -258,18 +258,19 @@
     </app-ta-filter>
 
     <!-- TRAILER FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="
             options.toolbarActions.showTrailerFilter ||
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTrailerDispatchFilter
         "
-        [type]="'trailerFilter'"
+        [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
         [filterTitle]="'Trailer Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
         [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
         [class]="
@@ -277,8 +278,9 @@
                 ? 'order-' + options.toolbarActions.filtersOrder.trailer
                 : ''
         "
+        [trailerTypeArray]="trailerTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- INJURY FILTER -->
     <app-ta-filter
@@ -430,7 +432,7 @@
     </app-ca-filter>
 
     <!-- TRAILER TYPE FILTER -->
-    <app-ta-filter
+    <app-ca-filter
         *ngIf="options.toolbarActions.showTrailerTypeFilter"
         [type]="'trailerTypeFilter'"
         [icon]="'trailer'"
@@ -440,13 +442,15 @@
         [leftSideIcon]="true"
         [largeLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        (clearAll)="onFilter($event)"
         [class]="
             options?.toolbarActions?.filtersOrder?.trailerType
                 ? 'order-' + options.toolbarActions.filtersOrder.trailerType
                 : ''
         "
+        [trailerTypeArray]="trailerTypeArray"
     >
-    </app-ta-filter>
+    </app-ca-filter>
 
     <!-- MONEY FILTER -->
     <app-ca-filter

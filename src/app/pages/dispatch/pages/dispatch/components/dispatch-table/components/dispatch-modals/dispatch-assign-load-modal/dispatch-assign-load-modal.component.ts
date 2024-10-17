@@ -741,12 +741,12 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
                 this.backLoadFilterQuery.distance =
                     data.queryParams?.rangeValue ?? null;
                 break;
-            case LoadFilterStringEnum.TRUCK_FILTER:
+            case LoadFilterStringEnum.TRUCK_TYPE_FILTER:
                 this.backLoadFilterQuery.truckType = data.queryParams
                     ? data.queryParams
                     : null;
                 break;
-            case LoadFilterStringEnum.TRAILER_FILTER:
+            case LoadFilterStringEnum.TRAILER_TYPE_FILTER:
                 this.backLoadFilterQuery.trailerType = data.queryParams
                     ? data.queryParams
                     : null;

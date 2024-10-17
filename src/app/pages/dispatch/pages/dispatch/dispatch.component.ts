@@ -142,7 +142,7 @@ export class DispatchComponent
                             this.dispatchFilters(this.backFilterQuery);
 
                             break;
-                        case ToolbarFilterStringEnum.TRAILER_FILTER:
+                        case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
                             this.backFilterQuery.trailerTypes = res.queryParams;
                             this.dispatchFilters(this.backFilterQuery);
 

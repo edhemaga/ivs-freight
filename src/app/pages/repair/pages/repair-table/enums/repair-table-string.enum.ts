@@ -2,6 +2,7 @@ export enum RepairTableStringEnum {
     CATEGORY_REPAIR_FILTER = 'categoryRepairFilter',
     PM_FILTER = 'pmFilter',
     TRAILER_FILTER = 'trailerFilter',
+    TRAILER_TYPE_FILTER = 'trailerTypeFilter',
     TRUCK_FILTER = 'truckFilter',
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
     TIME_FILTER = 'timeFilter',
