@@ -231,6 +231,11 @@ export class TaInputAddressDropdownComponent
                     this.getSuperControl.setErrors(null);
                 }
 
+                if (this.inputDropdown?.popoverRef?.isOpen()) {
+                    this.activeAddress = null;
+                    this.getSuperControl.setErrors({ invalid: true });
+                }
+
                 this.inputConfig = {
                     ...this.inputConfig,
                     loadingSpinner: {
