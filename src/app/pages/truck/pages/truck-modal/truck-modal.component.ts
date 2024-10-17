@@ -95,6 +95,17 @@ import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 export class TruckModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
+    private fuelTypeTrucks: string[] = [
+        'Box Truck',
+        'Cargo Van',
+        'Reefer Truck',
+    ];
+    private truckTypesWithAdditionalColumns: string[] = [
+        'Dump Truck',
+        'Cement Truck',
+        'Garbage Truck',
+    ];
+
     public truckForm: UntypedFormGroup;
     public truckType: any[] = [];
     public truckMakeType: any[] = [];
@@ -219,6 +230,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 null,
                 [Validators.required, ...yearValidation, yearValidRegex],
             ],
+            volume: [null],
             colorId: [null],
             ownerId: [null],
             commission: [14.5],
@@ -372,6 +384,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .get('companyOwned')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                this.truckForm.get('purchaseDate').setValue(null);
+                this.truckForm.get('purchasePrice').setValue(null);
                 if (!value) {
                     this.inputService.changeValidators(
                         this.truckForm.get('ownerId'),
@@ -405,6 +419,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         false
                     );
                     this.selectedTruckLengthId = null;
+                }
+
+                if (!this.isFuelTypeEnabled) {
+                    this.selectedFuelType = null;
+                    this.truckForm.get('fuelType').setValue(null);
                 }
                 break;
             }
@@ -715,6 +734,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         blower: res.blower,
                         pto: res.pto,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
+                        volume: res.volume ?? null,
                     });
 
                     this.selectedAPUnit = res.apUnit ? res.apUnit : null;
@@ -767,6 +787,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public get isFuelTypeEnabled(): boolean {
+        return this.fuelTypeTrucks.includes(
+            this.truckForm.get('truckTypeId').value
+        );
+    }
+
+    public get isSpecialTruckType(): boolean {
+        const truckTypeId = this.truckForm.get('truckTypeId').value;
+        return this.truckTypesWithAdditionalColumns.includes(truckTypeId);
+    }
+
+    public get isBoxTruck(): boolean {
+        return this.truckForm.get('truckTypeId').value === 'Box Truck';
+    }
+
     private populateStorageData(res: any) {
         const timeout = setTimeout(() => {
             this.getTruckDropdowns();
@@ -814,6 +849,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 dashCam: res.dashCam,
                 blower: res.blower,
                 pto: res.pto,
+                volume: res.volume,
             });
 
             if (res.id) {
@@ -936,7 +972,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                           .replace(/,/g, '')
                   )
                 : null,
-            fuelType: this.selectedFuelType ? this.selectedFuelType.id : null,
+            fuelType: this.isFuelTypeEnabled
+                ? this.selectedFuelType
+                    ? this.selectedFuelType.id
+                    : null
+                : null,
             year: parseInt(this.truckForm.get('year').value),
             purchaseDate: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchaseDate').value
@@ -954,6 +994,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             files: documents,
             tags: tagsArray,
+            volume: this.truckForm.get('volume').value,
         };
 
         this.truckModalService
@@ -1158,8 +1199,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                           .replace(/,/g, '')
                   )
                 : null,
-            fuelType: this.selectedFuelType ? this.selectedFuelType.id : null,
+            fuelType: this.isFuelTypeEnabled
+                ? this.selectedFuelType
+                    ? this.selectedFuelType.id
+                    : null
+                : null,
             year: parseInt(this.truckForm.get('year').value),
+            volume: parseInt(this.truckForm.get('volume').value),
             purchaseDate: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchaseDate').value
                     ? MethodsCalculationsHelper.convertDateToBackend(
