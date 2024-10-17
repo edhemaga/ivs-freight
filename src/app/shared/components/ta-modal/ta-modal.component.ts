@@ -149,6 +149,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isStepper: boolean = false;
     @Input() isCloseIconRemoved: boolean = false;
     @Input() isVoidBtn: boolean = false;
+    @Input() hasCalendarIcon: boolean = false;
 
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
@@ -373,7 +374,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'deactivate': {
-                if(!this.isDeactivateOnly) this.isDeactivated = !this.isDeactivated;
+                if (!this.isDeactivateOnly)
+                    this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
                     action: action,
                     bool: this.isDeactivated,

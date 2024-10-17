@@ -116,6 +116,7 @@
                         </div>
                         <div class="modal-date-border"></div>
                     </ng-container>
+
                     <!-- Hazardous Logo -->
 
                     <ng-container *ngIf="isVisibleHazardous">
@@ -237,6 +238,7 @@
                     </ng-container>
 
                     <!-- Assign load modal on dispatch board -->
+
                     <ng-container *ngIf="isAssignLoadModal">
                         <div
                             ngbTooltip
@@ -286,6 +288,20 @@
                                     }"
                                 ></div>
                             </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Header close -->
+
+                    <ng-container *ngIf="hasCalendarIcon">
+                        <div
+                            class="d-flex align-items-center modal-calendar-container"
+                        >
+                            <svg-icon
+                                class="d-flex justify-content-center align-items-center modal-calendar-icon"
+                                src="assets/svg/common/ic_date.svg"
+                                (click)="onAction('calendar')"
+                            ></svg-icon>
                         </div>
                     </ng-container>
 
