@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, skip, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -426,12 +426,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Search
     private search(): void {
         this.caSearchMultipleStatesService.selectedChips$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.backFilterQuery.searchOne = res[0] ?? null;
                 this.backFilterQuery.searchTwo = res[1] ?? null;
                 this.backFilterQuery.searchThree = res[2] ?? null;
-
                 this.truckBackFilter(this.backFilterQuery);
             });
     }
